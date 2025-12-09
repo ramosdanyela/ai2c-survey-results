@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Layers, MapPin, GraduationCap, Building } from "lucide-react";
+import { MapPin, GraduationCap, Building } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { attributeDeepDive } from "@/data/surveyData";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -40,11 +40,6 @@ export function AttributeDeepDive() {
 
   return (
     <div className="space-y-8 animate-fade-in">
-      <h2 className="section-title flex items-center gap-2">
-        <Layers className="w-5 h-5 text-primary" />
-        Aprofundamento por Atributos
-      </h2>
-
       <Tabs value={activeAttribute} onValueChange={setActiveAttribute}>
         <TabsList className="w-full justify-start bg-muted/50 p-1">
           {attributeDeepDive.attributes.map((attr) => {

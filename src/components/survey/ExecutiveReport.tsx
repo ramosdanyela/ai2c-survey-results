@@ -1,4 +1,10 @@
-import { FileText, AlertTriangle, Users, ExternalLink } from "lucide-react";
+import {
+  FileText,
+  AlertTriangle,
+  Users,
+  ExternalLink,
+  ClipboardList,
+} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -47,7 +53,7 @@ export function ExecutiveReport({
       {showSummary && (
         <section>
           <h2 className="section-title flex items-center gap-2">
-            <FileText className="w-5 h-5 text-primary" />
+            <ClipboardList className="w-5 h-5 text-primary" />
             Sumário Executivo
           </h2>
 

@@ -175,7 +175,7 @@ export function FilterPanel({ onFiltersChange }: FilterPanelProps) {
     : [];
 
   return (
-    <Card className="card-elevated">
+    <Card className="card-elevated border-0 shadow-none">
       <Collapsible open={isPanelOpen} onOpenChange={setIsPanelOpen}>
         <CardContent className="pt-6 pb-6">
           {/* Header - Always visible */}

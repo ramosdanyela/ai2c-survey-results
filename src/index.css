@@ -195,6 +195,10 @@
     @apply text-[hsl(var(--foreground))] font-semibold;
   }
 
+  .header-title {
+    @apply text-2xl font-bold text-white;
+  }
+
   .section-title {
     @apply text-2xl font-bold text-foreground mb-4;
   }

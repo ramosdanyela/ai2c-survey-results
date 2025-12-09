@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { CheckSquare, User } from "lucide-react";
+import { User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -78,11 +78,6 @@ export function ImplementationPlan({ openRecId }: ImplementationPlanProps) {
 
   return (
     <div className="space-y-8 animate-fade-in">
-      <h2 className="section-title flex items-center gap-2">
-        <CheckSquare className="w-5 h-5 text-primary" />
-        Proposta de Implementação
-      </h2>
-
       <Accordion
         type="multiple"
         className="space-y-4"

@@ -17,7 +17,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Progress } from "@/components/ui/progress";
@@ -81,10 +80,17 @@ export function SurveySidebar({
             <h2 className="text-lg font-bold text-sidebar-foreground">
               {surveyInfo.title}
             </h2>
-            <p className="text-sm font-medium text-sidebar-foreground/80">
-              {surveyInfo.company} • {surveyInfo.period} •{" "}
-              {surveyInfo.totalRespondents.toLocaleString()} respondentes
-            </p>
+            <div className="space-y-1">
+              <p className="text-sm font-medium text-sidebar-foreground/80">
+                {surveyInfo.company}
+              </p>
+              <p className="text-sm font-medium text-sidebar-foreground/80">
+                {surveyInfo.period}
+              </p>
+              <p className="text-sm font-medium text-sidebar-foreground/80">
+                {surveyInfo.totalRespondents.toLocaleString()} respondentes
+              </p>
+            </div>
           </div>
         )}
         {isCollapsed && (

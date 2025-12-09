@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BarChart3, Target, Users2 } from "lucide-react";
+import { BarChart3, Target, Users2, Heart } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -57,16 +57,17 @@ export function SupportAnalysis({ subSection }: SupportAnalysisProps) {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Filter Panel */}
-      <FilterPanel onFiltersChange={handleFiltersChange} />
+      <div className="w-full lg:w-1/2 my-0">
+        <FilterPanel onFiltersChange={handleFiltersChange} />
+      </div>
       {showSentiment && (
         <section>
-          <h2 className="section-title flex items-center gap-2">
-            <BarChart3 className="w-5 h-5 text-primary" />
-            Análise de Sentimento
-          </h2>
-
           <Card className="card-elevated">
             <CardHeader>
+              <h2 className="section-title flex items-center gap-2 mb-4">
+                <Heart className="w-5 h-5 text-primary" />
+                Análise de Sentimento
+              </h2>
               <CardDescription className="text-base leading-relaxed">
                 {supportAnalysis.sentimentAnalysis.description
                   .split("\n")
@@ -139,13 +140,12 @@ export function SupportAnalysis({ subSection }: SupportAnalysisProps) {
 
       {showIntent && (
         <section>
-          <h2 className="section-title flex items-center gap-2">
-            <Target className="w-5 h-5 text-primary" />
-            Intenção de Respondentes
-          </h2>
-
           <Card className="card-elevated">
             <CardHeader>
+              <h2 className="section-title flex items-center gap-2 mb-4">
+                <Target className="w-5 h-5 text-primary" />
+                Intenção de Respondentes
+              </h2>
               <CardDescription className="text-base leading-relaxed">
                 {supportAnalysis.respondentIntent.description
                   .split("\n")
