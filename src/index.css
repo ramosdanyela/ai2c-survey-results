@@ -15,7 +15,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 20%;
 
-    --primary: 20 100% 50%; /* Orange for highlights */
+    --primary: 33 100% 58%; /* Orange for highlights - #ff9e2b */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 96%;
@@ -24,7 +24,7 @@
     --muted: 0 0% 94%;
     --muted-foreground: 0 0% 50%; /* Slightly darker gray for better readability */
 
-    --accent: 20 100% 50%; /* Orange accent */
+    --accent: 33 100% 58%; /* Orange accent - #ff9e2b */
     --accent-foreground: 0 0% 100%;
 
     /* Blue for titles and subtitles - #001dc6 */
@@ -45,30 +45,30 @@
 
     --border: 0 0% 85%;
     --input: 0 0% 85%;
-    --ring: 20 100% 50%;
+    --ring: 33 100% 58%;
 
     --radius: 0.75rem;
 
     /* Orange highlight container */
-    --highlight-orange: 20 100% 50%;
+    --highlight-orange: 33 100% 58%; /* #ff9e2b */
     --highlight-orange-foreground: 0 0% 100%;
-    --highlight-orange-light: 20 100% 95%; /* Very light orange for subtle backgrounds */
+    --highlight-orange-light: 33 100% 95%; /* Very light orange for subtle backgrounds */
 
     /* Sidebar */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 0 0% 20%;
-    --sidebar-primary: 20 100% 50%;
+    --sidebar-primary: 33 100% 58%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 0 0% 94%;
     --sidebar-accent-foreground: 0 0% 20%;
     --sidebar-border: 0 0% 85%;
-    --sidebar-ring: 20 100% 50%;
+    --sidebar-ring: 33 100% 58%;
 
     /* Chart colors */
     --chart-positive: 142 76% 36%;
     --chart-neutral: 220 14% 50%;
     --chart-negative: 0 84% 60%;
-    --chart-1: 20 100% 50%;
+    --chart-1: 33 100% 58%;
     --chart-2: 20 90% 55%;
     --chart-3: 30 85% 55%;
     --chart-4: 15 95% 52%;
@@ -83,8 +83,8 @@
     /* Gradients */
     --gradient-primary: linear-gradient(
       135deg,
-      hsl(20, 100%, 50%) 0%,
-      hsl(20, 100%, 55%) 100%
+      hsl(33, 100%, 58%) 0%,
+      hsl(33, 100%, 63%) 100%
     );
     --gradient-sidebar: linear-gradient(
       180deg,
@@ -103,7 +103,7 @@
     --popover: 0 0% 5%;
     --popover-foreground: 0 0% 100%;
 
-    --primary: 20 100% 50%;
+    --primary: 33 100% 58%; /* #ff9e2b */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 10%;
@@ -112,7 +112,7 @@
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 60%;
 
-    --accent: 20 100% 50%;
+    --accent: 33 100% 58%; /* #ff9e2b */
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62% 50%;
@@ -129,21 +129,21 @@
 
     --border: 0 0% 20%;
     --input: 0 0% 20%;
-    --ring: 20 100% 50%;
+    --ring: 33 100% 58%;
 
     --sidebar-background: 0 0% 8%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 20 100% 50%;
+    --sidebar-primary: 33 100% 58%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 0 0% 15%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 20 100% 50%;
+    --sidebar-ring: 33 100% 58%;
 
     --chart-positive: 142 70% 45%;
     --chart-neutral: 220 14% 60%;
     --chart-negative: 0 70% 55%;
-    --chart-1: 20 100% 50%;
+    --chart-1: 33 100% 58%;
     --chart-2: 20 90% 55%;
     --chart-3: 30 85% 55%;
     --chart-4: 15 95% 52%;
