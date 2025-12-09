@@ -49,11 +49,22 @@ const menuItems = [
 function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
   return (
     <div className="flex flex-col h-full py-6 px-4 w-full">
-      <div className="mb-6 pb-6 flex items-center justify-between gap-2">
-        <h1 className="text-base font-bold text-sidebar-foreground whitespace-nowrap">
-          {surveyInfo.title}
-        </h1>
-        <ThemeToggle className="shrink-0" />
+      <div className="mb-6 pb-6">
+        <div className="flex items-start justify-between gap-2 mb-3">
+          <h1 className="text-base font-bold text-sidebar-foreground whitespace-nowrap">
+            {surveyInfo.title}
+          </h1>
+          <ThemeToggle className="shrink-0" />
+        </div>
+        <div className="flex flex-col gap-1 text-sidebar-foreground/80">
+          <div className="text-sm font-semibold text-sidebar-foreground">
+            {surveyInfo.company}
+          </div>
+          <div className="text-xs">{surveyInfo.period}</div>
+          <div className="text-xs">
+            {surveyInfo.totalRespondents.toLocaleString("pt-BR")} respondentes
+          </div>
+        </div>
       </div>
       <nav className="flex flex-col gap-2 items-start w-full">
         {menuItems.map((item) => {
