@@ -131,7 +131,7 @@ Representam o maior LTV e menor churn.`,
       percentage: 42,
       characteristics: [
         "NPS médio: 9.2",
-        "Ticket médio: R$ 2.800",
+        "Ticket médio: R$ 2.8000",
         "Tempo de cliente: 3+ anos",
       ],
     },
