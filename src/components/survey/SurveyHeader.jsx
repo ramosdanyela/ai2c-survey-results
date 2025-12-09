@@ -9,7 +9,11 @@ import {
   Menu,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { COLOR_ORANGE_PRIMARY, RGBA_ORANGE_SHADOW_40 } from "@/lib/colors";
+import {
+  COLOR_ORANGE_PRIMARY,
+  RGBA_ORANGE_SHADOW_40,
+  RGBA_BLACK_SHADOW_20,
+} from "@/lib/colors";
 
 /**
  * @param {Object} props
@@ -133,7 +137,12 @@ export function SurveyHeader({ activeSection, onSectionChange, onMenuClick }) {
   };
 
   return (
-    <header className="sticky top-0 z-10 bg-background border-b border-border">
+    <header
+      className="sticky top-0 z-10 bg-background"
+      style={{
+        boxShadow: `0 2px 8px ${RGBA_BLACK_SHADOW_20}`,
+      }}
+    >
       <div className="px-3 sm:px-4 lg:px-6 py-4 flex items-center">
         {/* Hamburger Menu - Visível apenas em telas menores */}
         <div className="lg:hidden mr-3">

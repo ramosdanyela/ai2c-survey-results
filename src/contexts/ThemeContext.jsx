@@ -19,8 +19,8 @@ export function ThemeProvider({ children }) {
     if (savedTheme && (savedTheme === "light" || savedTheme === "dark")) {
       return savedTheme;
     }
-    // Padrão: dark mode
-    return "dark";
+    // Padrão: light mode
+    return "light";
   });
 
   useEffect(() => {

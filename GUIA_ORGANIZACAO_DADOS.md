@@ -1,6 +1,6 @@
-# 📊 Guia de Organização de Dados - surveyData.ts
+# 📊 Guia de Organização de Dados - surveyData.js
 
-Este documento explica como organizar os dados no arquivo `surveyData.ts` para que sejam corretamente plotados nos componentes da aplicação.
+Este documento explica como organizar os dados no arquivo `surveyData.js` para que sejam corretamente plotados nos componentes da aplicação.
 
 ---
 
@@ -20,18 +20,19 @@ Este documento explica como organizar os dados no arquivo `surveyData.ts` para q
 
 ## Estrutura Geral
 
-O arquivo `surveyData.ts` deve exportar os seguintes objetos principais:
+O arquivo `surveyData.js` deve exportar os seguintes objetos principais:
 
-```typescript
+```javascript
 export const surveyInfo = { ... }
 export const executiveReport = { ... }
 export const supportAnalysis = { ... }
 export const responseDetails = { ... }
 export const attributeDeepDive = { ... }
 export const implementationPlan = { ... }
-export type SeverityLevel = ...
 export const severityLabels = { ... }
 ```
+
+**Nota**: Este arquivo foi migrado de TypeScript para JavaScript. Não há mais tipos TypeScript (`SeverityLevel`), apenas constantes.
 
 ---
 
@@ -43,7 +44,7 @@ Usado em: `SurveySidebar`, `ResponseDetails`
 
 ### 📐 Estrutura
 
-```typescript
+```javascript
 export const surveyInfo = {
   title: string, // Título da pesquisa
   company: string, // Nome da empresa
@@ -57,7 +58,7 @@ export const surveyInfo = {
 
 ### ✅ Exemplo
 
-```typescript
+```javascript
 export const surveyInfo = {
   title: "Pesquisa de Satisfação do Cliente 2024",
   company: "TechCorp Brasil",
@@ -84,7 +85,7 @@ Usado em: `ExecutiveReport`
 
 ### 📐 Estrutura
 
-```typescript
+```javascript
 export const executiveReport = {
   summary: {
     aboutStudy: string,      // Texto sobre o estudo (pode ter quebras de linha \n)
@@ -95,7 +96,7 @@ export const executiveReport = {
     {
       id: number,                    // ID único (1, 2, 3...)
       recommendation: string,        // Texto da recomendação
-      severity: SeverityLevel,       // "critical" | "high" | "medium" | "low"
+      severity: string,              // "critical" | "high" | "medium" | "low"
       stakeholders: string[],         // Array de áreas responsáveis
     },
   ],
@@ -104,7 +105,7 @@ export const executiveReport = {
 
 ### ✅ Exemplo
 
-```typescript
+```javascript
 export const executiveReport = {
   summary: {
     aboutStudy: `Este estudo foi conduzido entre outubro e novembro de 2024...
@@ -116,7 +117,7 @@ A pesquisa abrangeu 1.247 respondentes...`,
     {
       id: 1,
       recommendation: "Implementar sistema de tickets com SLA garantido",
-      severity: "critical" as const,
+      severity: "critical",
       stakeholders: ["TI", "Suporte", "Operações"],
     },
     // ... mais recomendações
@@ -131,7 +132,7 @@ A pesquisa abrangeu 1.247 respondentes...`,
 
 ### ⚠️ Importante
 
-- Use `as const` para `severity` para garantir type safety
+- Os valores de `severity` devem ser strings: "critical", "high", "medium" ou "low"
 - Os `id` devem ser únicos e sequenciais
 - Quebras de linha (`\n`) no texto são preservadas e renderizadas
 
@@ -145,7 +146,7 @@ Usado em: `SupportAnalysis`
 
 ### 📐 Estrutura
 
-```typescript
+```javascript
 export const supportAnalysis = {
   sentimentAnalysis: {
     description: string,     // Descrição da análise (pode ter quebras de linha \n)
@@ -181,7 +182,7 @@ export const supportAnalysis = {
 
 ### ✅ Exemplo
 
-```typescript
+```javascript
 export const supportAnalysis = {
   sentimentAnalysis: {
     description: `A análise de sentimento foi realizada...`,
@@ -258,7 +259,7 @@ Usado em: `ResponseDetails`
 
 ### 📐 Estrutura
 
-```typescript
+```javascript
 export const responseDetails = {
   closedQuestions: [
     {
@@ -316,7 +317,7 @@ export const responseDetails = {
 
 ### ✅ Exemplo
 
-```typescript
+```javascript
 export const responseDetails = {
   closedQuestions: [
     {
@@ -349,9 +350,9 @@ export const responseDetails = {
           topics: [
             {
               topic: "agilidade no atendimento",
-              sentiment: "positive" as const,
+              sentiment: "positive",
             },
-            { topic: "confiabilidade da rede", sentiment: "negative" as const },
+            { topic: "confiabilidade da rede", sentiment: "negative" },
             // ... mais tópicos
           ],
         },
@@ -388,7 +389,6 @@ export const responseDetails = {
 - **ID da questão 4** é usado para identificar a questão NPS
 - **Porcentagens** em `sentimentData` devem somar 100% por categoria
 - **Topics** podem ser strings simples ou objetos com `sentiment`
-- Use `as const` para `sentiment` quando for objeto
 - **WordCloud**: `value` determina o tamanho da palavra (maior = mais frequente)
 
 ---
@@ -401,7 +401,7 @@ Usado em: `AttributeDeepDive`, `FilterPanel`
 
 ### 📐 Estrutura
 
-```typescript
+```javascript
 export const attributeDeepDive = {
   attributes: [
     {
@@ -430,7 +430,7 @@ export const attributeDeepDive = {
 
 ### ✅ Exemplo
 
-```typescript
+```javascript
 export const attributeDeepDive = {
   attributes: [
     {
@@ -476,13 +476,13 @@ Usado em: `ImplementationPlan`
 
 ### 📐 Estrutura
 
-```typescript
+```javascript
 export const implementationPlan = {
   recommendations: [
     {
       id: number, // ID único (deve corresponder a executiveReport.recommendations)
       title: string, // Título da recomendação
-      severity: SeverityLevel, // "critical" | "high" | "medium" | "low"
+      severity: string, // "critical" | "high" | "medium" | "low"
       tasks: [
         {
           task: string, // Descrição da tarefa
@@ -497,13 +497,13 @@ export const implementationPlan = {
 
 ### ✅ Exemplo
 
-```typescript
+```javascript
 export const implementationPlan = {
   recommendations: [
     {
       id: 1,
       title: "Sistema de tickets com SLA garantido",
-      severity: "critical" as const,
+      severity: "critical",
       tasks: [
         {
           task: "Avaliar e selecionar plataforma de tickets",
@@ -532,19 +532,16 @@ export const implementationPlan = {
 ### ⚠️ Importante
 
 - **IDs** devem corresponder aos IDs em `executiveReport.recommendations`
-- Use `as const` para `severity`
 - **Tarefas** podem ser marcadas como concluídas (checkboxes)
 
 ---
 
-## Tipos e Constantes
+## Constantes
 
-### SeverityLevel
+### severityLabels
 
-```typescript
-export type SeverityLevel = "critical" | "high" | "medium" | "low";
-
-export const severityLabels: Record<SeverityLevel, string> = {
+```javascript
+export const severityLabels = {
   critical: "Crítico",
   high: "Alto",
   medium: "Médio",
@@ -554,8 +551,8 @@ export const severityLabels: Record<SeverityLevel, string> = {
 
 ### ⚠️ Importante
 
-- **Não altere** os valores do tipo `SeverityLevel` sem atualizar os componentes
-- **severityLabels** mapeia os níveis para textos em português
+- **severityLabels** mapeia os níveis de severidade para textos em português
+- Os valores válidos são: "critical", "high", "medium", "low"
 
 ---
 
@@ -563,38 +560,31 @@ export const severityLabels: Record<SeverityLevel, string> = {
 
 ### ✅ DO (Faça)
 
-1. **Use `as const`** para valores literais que não devem mudar:
-
-   ```typescript
-   severity: "critical" as const,
-   sentiment: "positive" as const,
-   ```
-
-2. **Mantenha IDs únicos e sequenciais**:
+1. **Mantenha IDs únicos e sequenciais**:
 
    - `closedQuestions`: 1, 2, 3, 4...
    - `openQuestions`: 5, 6, 7...
    - `recommendations`: 1, 2, 3...
 
-3. **Use quebras de linha (`\n`)** para textos longos:
+2. **Use quebras de linha (`\n`)** para textos longos:
 
-   ```typescript
+   ```javascript
    summary: `Primeira linha.
    Segunda linha.
    Terceira linha.`;
    ```
 
-4. **Garanta que porcentagens somem 100%** quando aplicável:
+3. **Garanta que porcentagens somem 100%** quando aplicável:
 
    - `sentimentAnalysis.data`: positive + neutral + negative = 100
    - `sentiment` em atributos: positive + neutral + negative = 100
 
-5. **Mantenha consistência** entre objetos relacionados:
+4. **Mantenha consistência** entre objetos relacionados:
 
    - `distribution` e `sentiment` devem ter os mesmos segmentos
    - `executiveReport.recommendations` e `implementationPlan.recommendations` devem ter os mesmos IDs
 
-6. **Use IDs descritivos** para atributos:
+5. **Use IDs descritivos** para atributos:
    - "state", "education", "customerType" (correspondem a `FilterPanel`)
 
 ### ❌ DON'T (Não Faça)
@@ -611,7 +601,6 @@ export const severityLabels: Record<SeverityLevel, string> = {
 
 - [ ] IDs são únicos e sequenciais
 - [ ] Porcentagens somam 100% quando aplicável
-- [ ] Uso de `as const` para valores literais
 - [ ] Segmentos correspondem entre `distribution` e `sentiment`
 - [ ] IDs de recomendações correspondem entre `executiveReport` e `implementationPlan`
 - [ ] Textos longos usam quebras de linha (`\n`)
@@ -622,14 +611,14 @@ export const severityLabels: Record<SeverityLevel, string> = {
 
 ## 🔗 Referências
 
-- **Arquivo de dados**: `src/data/surveyData.ts`
+- **Arquivo de dados**: `src/data/surveyData.js`
 - **Componentes que consomem**:
-  - `ExecutiveReport.tsx`
-  - `SupportAnalysis.tsx`
-  - `ResponseDetails.tsx`
-  - `AttributeDeepDive.tsx`
-  - `ImplementationPlan.tsx`
-  - `SurveySidebar.tsx`
+  - `ExecutiveReport.jsx`
+  - `SupportAnalysis.jsx`
+  - `ResponseDetails.jsx`
+  - `AttributeDeepDive.jsx`
+  - `ImplementationPlan.jsx`
+  - `SurveySidebar.jsx`
 
 ---
 

@@ -144,7 +144,7 @@ export function ExecutiveReport({ subSection, onSectionChange }) {
                   <TableHead className="w-32 text-center text-muted-foreground">
                     Gravidade
                   </TableHead>
-                  <TableHead className="w-64 text-muted-foreground">
+                  <TableHead className="w-64 p-0 text-muted-foreground">
                     Stakeholders
                   </TableHead>
                   {onSectionChange && <TableHead className="w-12"></TableHead>}
@@ -152,19 +152,19 @@ export function ExecutiveReport({ subSection, onSectionChange }) {
               </TableHeader>
               <TableBody>
                 {executiveReport.recommendations.map((rec) => (
-                  <TableRow key={rec.id} className="hover:bg-primary/10">
-                    <TableCell className="font-medium text-muted-foreground">
+                  <TableRow key={rec.id} className="hover:bg-primary/10 py-2">
+                    <TableCell className="font-medium text-muted-foreground py-2">
                       {rec.id}
                     </TableCell>
-                    <TableCell className="font-medium text-foreground">
+                    <TableCell className="font-medium text-foreground py-2">
                       {rec.recommendation}
                     </TableCell>
-                    <TableCell className="text-center">
+                    <TableCell className="text-center py-2">
                       <Badge className={severityColors[rec.severity]}>
                         {severityLabels[rec.severity]}
                       </Badge>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="p-0 py-2">
                       <div className="flex flex-wrap gap-1">
                         {rec.stakeholders.map((stakeholder) => (
                           <Badge
@@ -179,7 +179,7 @@ export function ExecutiveReport({ subSection, onSectionChange }) {
                       </div>
                     </TableCell>
                     {onSectionChange && (
-                      <TableCell>
+                      <TableCell className="py-2">
                         <button
                           onClick={() => handleNavigateToImplementation(rec.id)}
                           className="text-muted-foreground hover:text-primary transition-colors"

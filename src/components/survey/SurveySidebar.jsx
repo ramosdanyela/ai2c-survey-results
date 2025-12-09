@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { surveyInfo } from "@/data/surveyData";
 import { forwardRef } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { RGBA_BLACK_SHADOW_20 } from "@/lib/colors";
 
 /**
  * @typedef {Object} SurveySidebarProps
@@ -49,7 +50,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
   return (
     <div className="flex flex-col h-full py-6 px-4 w-full">
       <div className="mb-6 pb-6 flex items-center justify-between gap-2">
-        <h1 className="text-xs font-bold text-sidebar-foreground whitespace-nowrap">
+        <h1 className="text-base font-bold text-sidebar-foreground whitespace-nowrap">
           {surveyInfo.title}
         </h1>
         <ThemeToggle className="shrink-0" />
@@ -93,8 +94,12 @@ export const SurveySidebar = forwardRef(
     return (
       <aside
         ref={ref}
-        className="hidden lg:flex fixed left-0 top-0 h-full bg-sidebar border-r border-sidebar-border z-20 overflow-y-auto"
-        style={{ width: "auto", minWidth: "fit-content" }}
+        className="hidden lg:flex fixed left-0 top-0 h-full bg-sidebar z-20 overflow-y-auto"
+        style={{
+          width: "auto",
+          minWidth: "fit-content",
+          boxShadow: `2px 0 8px ${RGBA_BLACK_SHADOW_20}`,
+        }}
       >
         <SidebarContent
           activeSection={activeSection}

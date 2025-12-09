@@ -19,44 +19,58 @@ Este projeto é um dashboard interativo desenvolvido para exibir e analisar resu
 ai2c_results/
 ├── src/
 │   ├── components/
-│   │   ├── survey/          # Componentes específicos da pesquisa
-│   │   │   ├── AttributeDeepDive.tsx
-│   │   │   ├── ContentRenderer.tsx
-│   │   │   ├── ExecutiveReport.tsx
-│   │   │   ├── FilterPanel.tsx
-│   │   │   ├── ImplementationPlan.tsx
-│   │   │   ├── ResponseDetails.tsx
-│   │   │   ├── SupportAnalysis.tsx
-│   │   │   ├── SurveyHeader.tsx
-│   │   │   ├── SurveyLayout.tsx
-│   │   │   ├── SurveySidebar.tsx
-│   │   │   └── WordCloud.tsx
-│   │   ├── ui/              # Componentes UI do shadcn/ui
-│   │   └── NavLink.tsx
+│   │   ├── survey/          # Componentes específicos da pesquisa (JavaScript)
+│   │   │   ├── AttributeDeepDive.jsx
+│   │   │   ├── ContentRenderer.jsx
+│   │   │   ├── ExecutiveReport.jsx
+│   │   │   ├── FilterPanel.jsx
+│   │   │   ├── ImplementationPlan.jsx
+│   │   │   ├── ResponseDetails.jsx
+│   │   │   ├── SupportAnalysis.jsx
+│   │   │   ├── SurveyHeader.jsx
+│   │   │   ├── SurveyLayout.jsx
+│   │   │   ├── SurveySidebar.jsx
+│   │   │   └── WordCloud.jsx
+│   │   ├── ui/              # Componentes UI do shadcn/ui (TypeScript)
+│   │   │   └── *.tsx        # Componentes UI mantidos em TypeScript
+│   │   ├── NavLink.jsx
+│   │   └── ThemeToggle.jsx
+│   ├── contexts/
+│   │   └── ThemeContext.jsx # Contexto de tema
 │   ├── data/
-│   │   └── surveyData.ts    # Dados da pesquisa (mock data)
+│   │   └── surveyData.js    # Dados da pesquisa (mock data)
 │   ├── hooks/               # Custom hooks
+│   │   ├── use-mobile.jsx
+│   │   └── use-toast.js
 │   ├── lib/                 # Utilitários
+│   │   ├── colors.js        # Sistema de cores centralizado
+│   │   └── utils.js         # Funções utilitárias (cn, etc.)
 │   ├── pages/               # Páginas da aplicação
-│   │   ├── Index.tsx
-│   │   └── NotFound.tsx
-│   ├── App.tsx              # Componente principal
-│   ├── main.tsx             # Entry point
-│   └── index.css            # Estilos globais
+│   │   ├── Index.jsx
+│   │   └── NotFound.jsx
+│   ├── App.jsx              # Componente principal
+│   ├── main.jsx             # Entry point
+│   ├── index.css            # Estilos globais
+│   └── vite-env.d.ts        # Declarações de tipos do Vite
 ├── public/                  # Arquivos estáticos
 ├── dist/                    # Build de produção (gerado)
 ├── package.json
-├── vite.config.ts
-└── tailwind.config.ts
+├── vite.config.js           # Configuração do Vite
+├── tailwind.config.js       # Configuração do Tailwind
+├── eslint.config.js         # Configuração do ESLint
+├── tsconfig.json            # Configuração TypeScript (para componentes UI)
+├── tsconfig.app.json        # Config TypeScript para app
+└── tsconfig.node.json       # Config TypeScript para node
 ```
 
 ## 🛠️ Tecnologias Utilizadas
 
 - **Vite** - Build tool e dev server
 - **React 18** - Biblioteca UI
-- **TypeScript** - Tipagem estática
+- **JavaScript/JSX** - Linguagem principal (código da aplicação)
+- **TypeScript** - Tipagem estática (apenas para componentes UI do shadcn/ui)
 - **React Router** - Roteamento
-- **shadcn/ui** - Componentes UI baseados em Radix UI
+- **shadcn/ui** - Componentes UI baseados em Radix UI (TypeScript)
 - **Tailwind CSS** - Framework CSS utilitário
 - **Recharts** - Biblioteca de gráficos
 - **TanStack Query** - Gerenciamento de estado do servidor
@@ -173,9 +187,9 @@ Ou arraste a pasta `dist` para o [Netlify Drop](https://app.netlify.com/drop).
 
 #### **GitHub Pages**
 
-1. Adicione o plugin do GitHub Pages no `vite.config.ts`:
+1. Adicione o plugin do GitHub Pages no `vite.config.js`:
 
-```typescript
+```javascript
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
@@ -258,13 +272,14 @@ Como esta é uma SPA usando React Router, certifique-se de que o servidor está 
 
 ### Alterar Dados da Pesquisa
 
-Os dados da pesquisa estão em `src/data/surveyData.ts`. Edite este arquivo para personalizar os dados exibidos no dashboard.
+Os dados da pesquisa estão em `src/data/surveyData.js`. Edite este arquivo para personalizar os dados exibidos no dashboard.
 
 ### Personalizar Estilos
 
 - Estilos globais: `src/index.css`
-- Configuração do Tailwind: `tailwind.config.ts`
-- Componentes UI: `src/components/ui/`
+- Sistema de cores: `src/lib/colors.js`
+- Configuração do Tailwind: `tailwind.config.js`
+- Componentes UI: `src/components/ui/` (TypeScript)
 
 ## 🔧 Desenvolvimento
 
@@ -274,13 +289,20 @@ Os dados da pesquisa estão em `src/data/surveyData.ts`. Edite este arquivo para
 - **ContentRenderer**: Renderiza o conteúdo baseado na seção ativa
 - **ExecutiveReport**: Exibe o relatório executivo
 - **SurveySidebar**: Navegação lateral entre seções
+- **ThemeContext**: Contexto para gerenciamento de tema (dark/light mode)
 
 ### Adicionar Novas Seções
 
-1. Crie o componente da nova seção em `src/components/survey/`
-2. Adicione a seção no `ContentRenderer.tsx`
-3. Adicione o item de navegação no `SurveySidebar.tsx`
-4. Atualize os dados em `surveyData.ts` se necessário
+1. Crie o componente da nova seção em `src/components/survey/` (JavaScript)
+2. Adicione a seção no `ContentRenderer.jsx`
+3. Adicione o item de navegação no `SurveySidebar.jsx`
+4. Atualize os dados em `surveyData.js` se necessário
+
+### Linguagens Utilizadas
+
+- **JavaScript/JSX**: Código principal da aplicação (componentes, hooks, utils, dados)
+- **TypeScript/TSX**: Apenas componentes UI do shadcn/ui em `src/components/ui/`
+- **Motivo**: Componentes UI mantidos em TypeScript para type safety, resto do código em JavaScript para simplicidade
 
 ## 📄 Licença
 
@@ -292,4 +314,4 @@ Para contribuir com o projeto, faça um fork, crie uma branch para sua feature e
 
 ---
 
-**Desenvolvido com ❤️ usando React, TypeScript e Vite**
+**Desenvolvido com ❤️ usando React, JavaScript e Vite**

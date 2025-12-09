@@ -134,14 +134,34 @@ export function SentimentDivergentChart({
             dataKey="negative"
             name="Negativo"
             fill="hsl(var(--chart-negative))"
-            radius={[4, 0, 0, 4]}
-          />
+            radius={[4, 4, 4, 4]}
+          >
+            <LabelList
+              dataKey="negative"
+              position="right"
+              formatter={(value) => `${Math.abs(value)}%`}
+              style={{
+                fill: "hsl(var(--foreground))",
+                fontSize: "12px",
+              }}
+            />
+          </Bar>
           <Bar
             dataKey="positive"
             name="Positivo"
             fill="hsl(var(--chart-positive))"
-            radius={[0, 4, 4, 0]}
-          />
+            radius={[4, 4, 4, 4]}
+          >
+            <LabelList
+              dataKey="positive"
+              position="right"
+              formatter={(value) => `${value}%`}
+              style={{
+                fill: "hsl(var(--foreground))",
+                fontSize: "12px",
+              }}
+            />
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </div>
@@ -252,11 +272,11 @@ export function SentimentStackedChart({
             dataKey="negative"
             name="Negativo"
             fill="hsl(var(--chart-negative))"
-            radius={[4, 0, 0, 4]}
+            radius={[4, 4, 4, 4]}
           >
             <LabelList
               dataKey="negative"
-              position="left"
+              position="right"
               formatter={(value) => `${Math.abs(value)}%`}
               style={{
                 fill: "hsl(var(--foreground))",
@@ -268,7 +288,7 @@ export function SentimentStackedChart({
             dataKey="positive"
             name="Positivo"
             fill="hsl(var(--chart-positive))"
-            radius={[0, 4, 4, 0]}
+            radius={[4, 4, 4, 4]}
           >
             <LabelList
               dataKey="positive"
@@ -381,6 +401,7 @@ export function NPSStackedChart({
 // Usado em: AttributeDeepDive - Distribuição
 //           ResponseDetails - Questões fechadas
 //           SupportAnalysis - Outras Intenções
+// NOTA: Sempre usa escala fixa de 0-100% para mostrar proporções reais
 
 /**
  * @param {Object} props
@@ -436,6 +457,7 @@ export function SimpleBarChart({
             axisLine={false}
             tickLine={false}
             hide={hideXAxis}
+            allowDataOverflow={false}
           />
           <YAxis
             type="category"

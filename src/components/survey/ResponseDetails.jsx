@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Award, CheckSquare, FileText, TrendingUp } from "lucide-react";
+import { Award, CheckSquare, Cloud, FileText, TrendingUp } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { responseDetails, surveyInfo } from "@/data/surveyData";
 import { WordCloud } from "./WordCloud";
@@ -277,15 +277,7 @@ export function ResponseDetails() {
                                   }
                                 >
                                   <div className="flex items-center gap-2 mb-3">
-                                    <span
-                                      className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                                        cat.rank === 1
-                                          ? "bg-[hsl(var(--custom-blue))] text-white"
-                                          : cat.rank === 2
-                                          ? "bg-[hsl(var(--custom-blue))]/70 text-white"
-                                          : "bg-muted-foreground text-background"
-                                      }`}
-                                    >
+                                    <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold bg-primary text-primary-foreground">
                                       {cat.rank}
                                     </span>
                                     <span className="font-bold text-sm">
@@ -401,7 +393,11 @@ export function ResponseDetails() {
                         {/* Word Cloud */}
                         {question.wordCloud && (
                           <div>
-                            <h4 className="text-base font-bold text-foreground mb-3">
+                            <h4 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
+                              <Cloud
+                                className="w-4 h-4"
+                                style={{ color: COLOR_ORANGE_PRIMARY }}
+                              />
                               Nuvem de Palavras
                             </h4>
                             <WordCloud words={question.wordCloud} />
