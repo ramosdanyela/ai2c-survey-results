@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Filter,
   X,
@@ -46,6 +46,11 @@ import { attributeDeepDive } from "@/data/surveyData";
  * @param {Function} [props.onFiltersChange]
  * @param {QuestionFilter} [props.questionFilter]
  * @param {Function} [props.onQuestionFilterChange]
+ * @param {number | null} [props.selectedQuestionId]
+ * @param {Function} [props.onSelectedQuestionIdChange]
+ * @param {Array<{id: number, question: string, type: string}>} [props.questions]
+ * @param {boolean} [props.hideQuestionFilters]
+ * @param {FilterValue[]} [props.initialFilters]
  */
 const filterOptions = [
   { value: "state", label: "Estado" },
@@ -59,11 +64,21 @@ export function FilterPanel({
   onFiltersChange,
   questionFilter,
   onQuestionFilterChange,
+  selectedQuestionId,
+  onSelectedQuestionIdChange,
+  questions = [],
+  hideQuestionFilters = false,
+  initialFilters = [],
 }) {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const [activeFilters, setActiveFilters] = useState([]);
+  const [activeFilters, setActiveFilters] = useState(initialFilters);
   const [selectedFilterType, setSelectedFilterType] = useState(null);
   const [openFilters, setOpenFilters] = useState(new Set());
+
+  // Sincronizar activeFilters com initialFilters quando mudarem
+  useEffect(() => {
+    setActiveFilters(initialFilters);
+  }, [initialFilters]);
 
   // Get available values for a filter type
   const getFilterValues = (filterType) => {
@@ -203,12 +218,13 @@ export function FilterPanel({
     ? getFilterValues(selectedFilterType)
     : [];
 
-  return (
-    <Card className="card-elevated border-0 shadow-none">
-      <Collapsible open={isPanelOpen} onOpenChange={setIsPanelOpen}>
-        <CardContent className="pt-6 pb-6">
-          {/* Question Type Filter Pills */}
-          {questionFilter !== undefined && onQuestionFilterChange && (
+  const content = (
+    <Collapsible open={isPanelOpen} onOpenChange={setIsPanelOpen}>
+      <div className={`${hideQuestionFilters ? "px-6" : ""} pt-6 pb-6`}>
+        {/* Question Type Filter Pills */}
+        {!hideQuestionFilters &&
+          questionFilter !== undefined &&
+          onQuestionFilterChange && (
             <div className="flex flex-wrap gap-2 items-center mb-4">
               <Badge
                 variant={questionFilter === "all" ? "default" : "outline"}
@@ -260,284 +276,360 @@ export function FilterPanel({
             </div>
           )}
 
-          {/* Header - Always visible */}
-          <div className="flex items-center gap-3 flex-wrap">
-            <div className="flex items-center gap-2">
-              <Filter className="w-4 h-4 text-[hsl(var(--custom-blue))]" />
-              <h3 className="font-semibold text-sm">Filtros</h3>
-            </div>
-
-            {/* Filter Type Selector - Always visible */}
-            <div className="flex-shrink-0">
+        {/* Question Selector */}
+        {!hideQuestionFilters &&
+          onSelectedQuestionIdChange &&
+          questions.length > 0 && (
+            <div className="mb-4">
+              <Label className="text-sm text-muted-foreground mb-2 block">
+                Filtrar por questão:
+              </Label>
               <Select
-                value={selectedFilterType || "none"}
-                onValueChange={handleFilterTypeSelect}
+                value={selectedQuestionId?.toString() || "all"}
+                onValueChange={(value) => {
+                  if (value === "all") {
+                    onSelectedQuestionIdChange(null);
+                  } else {
+                    onSelectedQuestionIdChange(parseInt(value, 10));
+                  }
+                }}
               >
-                <SelectTrigger
-                  id="filter-type"
-                  className="w-auto border-[hsl(var(--custom-blue))] focus:ring-[hsl(var(--custom-blue))]"
-                >
-                  <SelectValue placeholder="Selecione um tipo de filtro" />
+                <SelectTrigger className="w-full border-0 focus:ring-[hsl(var(--custom-blue))] bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80 text-white">
+                  <SelectValue placeholder="Selecione uma questão" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem
-                    value="none"
+                    value="all"
                     className="focus:bg-[hsl(var(--custom-blue))]/20 focus:text-white"
                   >
-                    Nenhum
+                    Todas as questões
                   </SelectItem>
-                  {filterOptions.map((option) => (
-                    <SelectItem
-                      key={option.value}
-                      value={option.value}
-                      className="focus:bg-[hsl(var(--custom-blue))]/20 focus:text-white"
-                    >
-                      {option.label}
-                    </SelectItem>
-                  ))}
+                  {questions.map((q, index) => {
+                    const isNPS = q.id === 1;
+                    const questionType = isNPS
+                      ? "NPS"
+                      : q.type === "open"
+                      ? "Campo Aberto"
+                      : "Múltipla Escolha";
+                    const truncatedQuestion =
+                      q.question.length > 80
+                        ? q.question.substring(0, 80) + "..."
+                        : q.question;
+                    // Renumerar questões: índice + 1 (excluindo Q3)
+                    const displayNumber = index + 1;
+
+                    return (
+                      <SelectItem
+                        key={q.id}
+                        value={q.id.toString()}
+                        className="focus:bg-[hsl(var(--custom-blue))]/20 focus:text-white"
+                      >
+                        <span className="font-semibold">Q{displayNumber}:</span>{" "}
+                        {truncatedQuestion} ({questionType})
+                      </SelectItem>
+                    );
+                  })}
                 </SelectContent>
               </Select>
             </div>
+          )}
 
-            {/* Active Filters Pills - Shown when closed */}
-            {!isPanelOpen && activeFilters.length > 0 && (
-              <div className="flex flex-wrap gap-1">
-                {activeFilters.map((filter) => {
-                  const filterLabel = filterOptions.find(
-                    (opt) => opt.value === filter.filterType
-                  )?.label;
-                  return filter.values.map((value) => (
-                    <Badge
-                      key={`${filter.filterType}-${value}`}
-                      variant="secondary"
-                      className="flex items-center gap-1 pr-1"
+        {/* Header - Always visible */}
+        <div className="flex items-center gap-3 flex-wrap">
+          <div className="flex items-center gap-2">
+            <Filter className="w-4 h-4 text-[hsl(var(--custom-blue))]" />
+            <h3 className="font-semibold text-sm">Filtros</h3>
+          </div>
+
+          {/* Filter Type Selector - Always visible */}
+          <div className="flex-shrink-0">
+            <Select
+              value={selectedFilterType || "none"}
+              onValueChange={handleFilterTypeSelect}
+            >
+              <SelectTrigger
+                id="filter-type"
+                className="w-auto border-[hsl(var(--custom-blue))] focus:ring-[hsl(var(--custom-blue))]"
+              >
+                <SelectValue placeholder="Selecione um tipo de filtro" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem
+                  value="none"
+                  className="focus:bg-[hsl(var(--custom-blue))]/20 focus:text-white"
+                >
+                  Nenhum
+                </SelectItem>
+                {filterOptions.map((option) => (
+                  <SelectItem
+                    key={option.value}
+                    value={option.value}
+                    className="focus:bg-[hsl(var(--custom-blue))]/20 focus:text-white"
+                  >
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Clear All Filters Button - Always visible when there are active filters */}
+          {activeFilters.length > 0 && (
+            <button
+              onClick={() => {
+                setActiveFilters([]);
+                setSelectedFilterType(null);
+                setOpenFilters(new Set());
+                if (onFiltersChange) {
+                  onFiltersChange([]);
+                }
+              }}
+              className="text-xs text-muted-foreground hover:text-foreground hover:underline transition-colors ml-auto"
+            >
+              Limpar todos
+            </button>
+          )}
+
+          {/* Active Filters Pills - Shown when closed */}
+          {!isPanelOpen && activeFilters.length > 0 && (
+            <div className="flex flex-wrap gap-1">
+              {activeFilters.map((filter) => {
+                const filterLabel = filterOptions.find(
+                  (opt) => opt.value === filter.filterType
+                )?.label;
+                return filter.values.map((value) => (
+                  <Badge
+                    key={`${filter.filterType}-${value}`}
+                    variant="secondary"
+                    className="flex items-center gap-1 pr-1"
+                  >
+                    <span className="text-xs font-medium">{filterLabel}:</span>
+                    <span>{value}</span>
+                    <button
+                      onClick={() =>
+                        handleRemoveValue(filter.filterType, value)
+                      }
+                      className="ml-1 hover:bg-muted-foreground/20 rounded-full p-0.5"
+                      aria-label={`Remover ${value}`}
                     >
-                      <span className="text-xs font-medium">
-                        {filterLabel}:
-                      </span>
-                      <span>{value}</span>
-                      <button
-                        onClick={() =>
-                          handleRemoveValue(filter.filterType, value)
-                        }
-                        className="ml-1 hover:bg-muted-foreground/20 rounded-full p-0.5"
-                        aria-label={`Remover ${value}`}
+                      <X className="w-3 h-3" />
+                    </button>
+                  </Badge>
+                ));
+              })}
+            </div>
+          )}
+
+          {/* Toggle Button */}
+          <button
+            onClick={() => setIsPanelOpen(!isPanelOpen)}
+            className="text-muted-foreground hover:text-foreground transition-colors"
+            aria-label={isPanelOpen ? "Fechar filtros" : "Abrir filtros"}
+          >
+            {isPanelOpen ? (
+              <ChevronDown className="w-4 h-4" />
+            ) : (
+              <ChevronRight className="w-4 h-4" />
+            )}
+          </button>
+        </div>
+      </div>
+
+      <CollapsibleContent>
+        <div className="pt-0 pb-6 px-6">
+          <div className="space-y-4">
+            {/* Active Filters Display - Collapsible */}
+            {activeFilters.length > 0 && (
+              <div className="space-y-2 pt-4 border-t">
+                <Label className="text-sm text-muted-foreground">
+                  Filtros Ativos
+                </Label>
+                <div className="space-y-2">
+                  {activeFilters.map((filter) => {
+                    const filterLabel = filterOptions.find(
+                      (opt) => opt.value === filter.filterType
+                    )?.label;
+                    const isOpen = openFilters.has(filter.filterType);
+                    const filterValues = getFilterValues(filter.filterType);
+
+                    return (
+                      <Collapsible
+                        key={filter.filterType}
+                        open={isOpen}
+                        onOpenChange={() => toggleFilter(filter.filterType)}
                       >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </Badge>
-                  ));
-                })}
+                        <CollapsibleTrigger className="w-full">
+                          <div className="flex items-center justify-between w-full p-3 rounded-md border bg-muted/30 hover:bg-muted/50 transition-colors">
+                            <div className="flex items-center gap-2">
+                              {isOpen ? (
+                                <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                              ) : (
+                                <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                              )}
+                              <span className="font-medium text-sm">
+                                {filterLabel}
+                              </span>
+                              <Badge variant="secondary" className="text-xs">
+                                {filter.values.length} selecionado
+                                {filter.values.length !== 1 ? "s" : ""}
+                              </Badge>
+                            </div>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleRemoveFilter(filter.filterType);
+                              }}
+                              className="text-muted-foreground hover:text-destructive transition-colors"
+                              aria-label={`Remover filtro ${filterLabel}`}
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent className="pt-2">
+                          <div className="space-y-2 pl-7">
+                            <Label className="text-xs text-muted-foreground">
+                              Selecione os valores
+                            </Label>
+                            <div className="space-y-2 max-h-48 overflow-y-auto">
+                              {filterValues.map((value) => (
+                                <div
+                                  key={value}
+                                  className="flex items-center space-x-2"
+                                >
+                                  <Checkbox
+                                    id={`${filter.filterType}-${value}`}
+                                    checked={isValueSelected(
+                                      filter.filterType,
+                                      value
+                                    )}
+                                    onCheckedChange={(checked) =>
+                                      handleValueToggle(
+                                        filter.filterType,
+                                        value,
+                                        checked
+                                      )
+                                    }
+                                    className="border-[hsl(var(--custom-blue))] data-[state=checked]:bg-[hsl(var(--custom-blue))] data-[state=checked]:text-white focus-visible:ring-[hsl(var(--custom-blue))]"
+                                  />
+                                  <Label
+                                    htmlFor={`${filter.filterType}-${value}`}
+                                    className="text-sm font-normal cursor-pointer flex-1"
+                                  >
+                                    {value}
+                                  </Label>
+                                </div>
+                              ))}
+                            </div>
+                            {/* Selected values as pills */}
+                            {filter.values.length > 0 && (
+                              <div className="flex flex-wrap gap-1 pt-2">
+                                {filter.values.map((value) => (
+                                  <Badge
+                                    key={`${filter.filterType}-${value}`}
+                                    variant="secondary"
+                                    className="flex items-center gap-1 pr-1"
+                                  >
+                                    <span>{value}</span>
+                                    <button
+                                      onClick={() =>
+                                        handleRemoveValue(
+                                          filter.filterType,
+                                          value
+                                        )
+                                      }
+                                      className="ml-1 hover:bg-muted-foreground/20 rounded-full p-0.5"
+                                      aria-label={`Remover ${value}`}
+                                    >
+                                      <X className="w-3 h-3" />
+                                    </button>
+                                  </Badge>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </CollapsibleContent>
+                      </Collapsible>
+                    );
+                  })}
+                </div>
+                <button
+                  onClick={() => {
+                    setActiveFilters([]);
+                    setSelectedFilterType(null);
+                    setOpenFilters(new Set());
+                    if (onFiltersChange) {
+                      onFiltersChange([]);
+                    }
+                  }}
+                  className="text-xs text-muted-foreground hover:text-foreground underline"
+                >
+                  Limpar todos os filtros
+                </button>
               </div>
             )}
 
-            {/* Toggle Button */}
-            <button
-              onClick={() => setIsPanelOpen(!isPanelOpen)}
-              className="text-muted-foreground hover:text-foreground transition-colors"
-              aria-label={isPanelOpen ? "Fechar filtros" : "Abrir filtros"}
-            >
-              {isPanelOpen ? (
-                <ChevronDown className="w-4 h-4" />
-              ) : (
-                <ChevronRight className="w-4 h-4" />
-              )}
-            </button>
-          </div>
-        </CardContent>
-
-        <CollapsibleContent>
-          <CardContent className="pt-0 pb-6">
-            <div className="space-y-4">
-              {/* Active Filters Display - Collapsible */}
-              {activeFilters.length > 0 && (
-                <div className="space-y-2 pt-4 border-t">
+            {/* Value Selection for new filter (shown when filter type is selected but not yet added) */}
+            {selectedFilterType &&
+              availableValues.length > 0 &&
+              !activeFilters.find(
+                (f) => f.filterType === selectedFilterType
+              ) && (
+                <div className="space-y-2 pt-2 border-t">
                   <Label className="text-sm text-muted-foreground">
-                    Filtros Ativos
+                    {
+                      filterOptions.find(
+                        (opt) => opt.value === selectedFilterType
+                      )?.label
+                    }{" "}
+                    - Selecione os valores
                   </Label>
-                  <div className="space-y-2">
-                    {activeFilters.map((filter) => {
-                      const filterLabel = filterOptions.find(
-                        (opt) => opt.value === filter.filterType
-                      )?.label;
-                      const isOpen = openFilters.has(filter.filterType);
-                      const filterValues = getFilterValues(filter.filterType);
-
-                      return (
-                        <Collapsible
-                          key={filter.filterType}
-                          open={isOpen}
-                          onOpenChange={() => toggleFilter(filter.filterType)}
+                  <div className="space-y-2 max-h-48 overflow-y-auto">
+                    {availableValues.map((value) => (
+                      <div key={value} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`${selectedFilterType}-${value}`}
+                          checked={isValueSelected(selectedFilterType, value)}
+                          onCheckedChange={(checked) =>
+                            handleValueToggle(
+                              selectedFilterType,
+                              value,
+                              checked
+                            )
+                          }
+                          className="border-[hsl(var(--custom-blue))] data-[state=checked]:bg-[hsl(var(--custom-blue))] data-[state=checked]:text-white focus-visible:ring-[hsl(var(--custom-blue))]"
+                        />
+                        <Label
+                          htmlFor={`${selectedFilterType}-${value}`}
+                          className="text-sm font-normal cursor-pointer flex-1"
                         >
-                          <CollapsibleTrigger className="w-full">
-                            <div className="flex items-center justify-between w-full p-3 rounded-md border bg-muted/30 hover:bg-muted/50 transition-colors">
-                              <div className="flex items-center gap-2">
-                                {isOpen ? (
-                                  <ChevronDown className="w-4 h-4 text-muted-foreground" />
-                                ) : (
-                                  <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                                )}
-                                <span className="font-medium text-sm">
-                                  {filterLabel}
-                                </span>
-                                <Badge variant="secondary" className="text-xs">
-                                  {filter.values.length} selecionado
-                                  {filter.values.length !== 1 ? "s" : ""}
-                                </Badge>
-                              </div>
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleRemoveFilter(filter.filterType);
-                                }}
-                                className="text-muted-foreground hover:text-destructive transition-colors"
-                                aria-label={`Remover filtro ${filterLabel}`}
-                              >
-                                <X className="w-4 h-4" />
-                              </button>
-                            </div>
-                          </CollapsibleTrigger>
-                          <CollapsibleContent className="pt-2">
-                            <div className="space-y-2 pl-7">
-                              <Label className="text-xs text-muted-foreground">
-                                Selecione os valores
-                              </Label>
-                              <div className="space-y-2 max-h-48 overflow-y-auto">
-                                {filterValues.map((value) => (
-                                  <div
-                                    key={value}
-                                    className="flex items-center space-x-2"
-                                  >
-                                    <Checkbox
-                                      id={`${filter.filterType}-${value}`}
-                                      checked={isValueSelected(
-                                        filter.filterType,
-                                        value
-                                      )}
-                                      onCheckedChange={(checked) =>
-                                        handleValueToggle(
-                                          filter.filterType,
-                                          value,
-                                          checked
-                                        )
-                                      }
-                                      className="border-[hsl(var(--custom-blue))] data-[state=checked]:bg-[hsl(var(--custom-blue))] data-[state=checked]:text-white focus-visible:ring-[hsl(var(--custom-blue))]"
-                                    />
-                                    <Label
-                                      htmlFor={`${filter.filterType}-${value}`}
-                                      className="text-sm font-normal cursor-pointer flex-1"
-                                    >
-                                      {value}
-                                    </Label>
-                                  </div>
-                                ))}
-                              </div>
-                              {/* Selected values as pills */}
-                              {filter.values.length > 0 && (
-                                <div className="flex flex-wrap gap-1 pt-2">
-                                  {filter.values.map((value) => (
-                                    <Badge
-                                      key={`${filter.filterType}-${value}`}
-                                      variant="secondary"
-                                      className="flex items-center gap-1 pr-1"
-                                    >
-                                      <span>{value}</span>
-                                      <button
-                                        onClick={() =>
-                                          handleRemoveValue(
-                                            filter.filterType,
-                                            value
-                                          )
-                                        }
-                                        className="ml-1 hover:bg-muted-foreground/20 rounded-full p-0.5"
-                                        aria-label={`Remover ${value}`}
-                                      >
-                                        <X className="w-3 h-3" />
-                                      </button>
-                                    </Badge>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          </CollapsibleContent>
-                        </Collapsible>
-                      );
-                    })}
+                          {value}
+                        </Label>
+                      </div>
+                    ))}
                   </div>
-                  <button
-                    onClick={() => {
-                      setActiveFilters([]);
-                      setSelectedFilterType(null);
-                      setOpenFilters(new Set());
-                      if (onFiltersChange) {
-                        onFiltersChange([]);
-                      }
-                    }}
-                    className="text-xs text-muted-foreground hover:text-foreground underline"
-                  >
-                    Limpar todos os filtros
-                  </button>
                 </div>
               )}
 
-              {/* Value Selection for new filter (shown when filter type is selected but not yet added) */}
-              {selectedFilterType &&
-                availableValues.length > 0 &&
-                !activeFilters.find(
-                  (f) => f.filterType === selectedFilterType
-                ) && (
-                  <div className="space-y-2 pt-2 border-t">
-                    <Label className="text-sm text-muted-foreground">
-                      {
-                        filterOptions.find(
-                          (opt) => opt.value === selectedFilterType
-                        )?.label
-                      }{" "}
-                      - Selecione os valores
-                    </Label>
-                    <div className="space-y-2 max-h-48 overflow-y-auto">
-                      {availableValues.map((value) => (
-                        <div
-                          key={value}
-                          className="flex items-center space-x-2"
-                        >
-                          <Checkbox
-                            id={`${selectedFilterType}-${value}`}
-                            checked={isValueSelected(selectedFilterType, value)}
-                            onCheckedChange={(checked) =>
-                              handleValueToggle(
-                                selectedFilterType,
-                                value,
-                                checked
-                              )
-                            }
-                            className="border-[hsl(var(--custom-blue))] data-[state=checked]:bg-[hsl(var(--custom-blue))] data-[state=checked]:text-white focus-visible:ring-[hsl(var(--custom-blue))]"
-                          />
-                          <Label
-                            htmlFor={`${selectedFilterType}-${value}`}
-                            className="text-sm font-normal cursor-pointer flex-1"
-                          >
-                            {value}
-                          </Label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-              {/* OK Button */}
-              <div className="flex justify-end pt-4 border-t">
-                <Button
-                  onClick={() => setIsPanelOpen(false)}
-                  className="min-w-20 bg-[hsl(var(--custom-blue))] text-white hover:bg-[hsl(var(--custom-blue))]/80"
-                >
-                  OK
-                </Button>
-              </div>
+            {/* OK Button */}
+            <div className="flex justify-end pt-4 border-t">
+              <Button
+                onClick={() => setIsPanelOpen(false)}
+                className="min-w-20 bg-[hsl(var(--custom-blue))] text-white hover:bg-[hsl(var(--custom-blue))]/80"
+              >
+                OK
+              </Button>
             </div>
-          </CardContent>
-        </CollapsibleContent>
-      </Collapsible>
-    </Card>
+          </div>
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
   );
+
+  // Se hideQuestionFilters for true, não usar Card (para uso em Popover)
+  if (hideQuestionFilters) {
+    return <div className="w-full">{content}</div>;
+  }
+
+  return <Card className="card-elevated border-0 shadow-none">{content}</Card>;
 }

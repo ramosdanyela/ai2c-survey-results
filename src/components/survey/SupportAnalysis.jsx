@@ -1,10 +1,8 @@
-import { useState } from "react";
-import { BarChart3, Target, Users2, Heart } from "lucide-react";
+import { Target, Users2, Heart } from "lucide-react";
 import {
   Card,
   CardContent,
   CardHeader,
-  CardTitle,
   CardDescription,
 } from "@/components/ui/card";
 import { supportAnalysis } from "@/data/surveyData";
@@ -16,44 +14,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { FilterPanel } from "./FilterPanel";
-import { RGBA_BLACK_SHADOW_20 } from "@/lib/colors";
 import { SentimentDivergentChart, SimpleBarChart } from "./charts/Charts";
-
-/**
- * @typedef {Object} FilterValue
- * @property {("state" | "customerType" | "education" | null)} filterType
- * @property {string[]} values
- */
 
 /**
  * @param {Object} props
  * @param {string} [props.subSection]
  */
 export function SupportAnalysis({ subSection }) {
-  /**
-   * @type {[FilterValue[], Function]}
-   */
-  const [filters, setFilters] = useState([]);
-  const showSentiment = !subSection || subSection === "support-sentiment";
-  const showIntent = !subSection || subSection === "support-intent";
-  const showSegmentation = !subSection || subSection === "support-segmentation";
-
-  /**
-   * @param {FilterValue[]} newFilters
-   */
-  const handleFiltersChange = (newFilters) => {
-    setFilters(newFilters);
-    // Aqui você pode implementar a lógica de filtragem dos dados
-    // Por enquanto, apenas armazenamos os filtros
-  };
+  // Mostrar apenas a subseção específica
+  const showSentiment = subSection === "support-sentiment";
+  const showIntent = subSection === "support-intent";
+  const showSegmentation = subSection === "support-segmentation";
 
   return (
     <div className="space-y-8 animate-fade-in">
-      {/* Filter Panel */}
-      <div className="w-full lg:w-1/2 my-0">
-        <FilterPanel onFiltersChange={handleFiltersChange} />
-      </div>
       {showSentiment && (
         <section>
           <Card className="card-elevated">

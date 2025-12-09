@@ -5,7 +5,6 @@ import {
   BarChart3,
   MessageSquare,
   Layers,
-  CheckSquare,
   Menu,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,6 +13,7 @@ import {
   RGBA_ORANGE_SHADOW_40,
   RGBA_BLACK_SHADOW_20,
 } from "@/lib/colors";
+import { responseDetails, attributeDeepDive } from "@/data/surveyData";
 
 /**
  * @param {Object} props
@@ -21,13 +21,64 @@ import {
  * @param {Function} [props.onSectionChange]
  * @param {Function} [props.onMenuClick]
  */
-// Ordem das seções principais
-const sectionOrder = [
-  "executive",
-  "support",
-  "attributes",
-  "responses",
-  "implementation",
+
+// Obter todas as perguntas para navegação
+const getAllQuestions = () => {
+  const allQuestions = [
+    ...responseDetails.closedQuestions.map((q) => ({
+      ...q,
+      type: "closed",
+    })),
+    ...responseDetails.openQuestions.map((q) => ({
+      ...q,
+      type: "open",
+    })),
+  ]
+    .filter((q) => q.id !== 3) // Ocultar Q3
+    .sort((a, b) => a.id - b.id);
+  return allQuestions.map((q) => `responses-${q.id}`);
+};
+
+// Obter número de exibição baseado no questionId real (renumeração excluindo Q3)
+const getDisplayNumber = (questionId) => {
+  const allQuestions = [
+    ...responseDetails.closedQuestions.map((q) => ({
+      ...q,
+      type: "closed",
+    })),
+    ...responseDetails.openQuestions.map((q) => ({
+      ...q,
+      type: "open",
+    })),
+  ]
+    .filter((q) => q.id !== 3) // Ocultar Q3
+    .sort((a, b) => a.id - b.id);
+
+  const index = allQuestions.findIndex((q) => q.id === questionId);
+  return index !== -1 ? index + 1 : questionId; // Retorna índice + 1 ou o ID original se não encontrar
+};
+
+// Obter todas as subseções de atributos para navegação
+const getAllAttributes = () => {
+  const attributeIcons = {
+    state: true,
+    education: true,
+    customerType: true,
+  };
+  return attributeDeepDive.attributes
+    .filter((attr) => attr.id in attributeIcons)
+    .map((attr) => `attributes-${attr.id}`);
+};
+
+// Lista completa de todas as subseções em ordem (mesma do ContentRenderer)
+const allSubsections = [
+  "executive-summary",
+  "executive-recommendations",
+  "support-sentiment",
+  "support-intent",
+  "support-segmentation",
+  ...getAllAttributes(),
+  ...getAllQuestions(),
 ];
 
 // Mapeamento de seções para títulos
@@ -41,7 +92,6 @@ const sectionTitles = {
   "support-segmentation": "Segmentação",
   responses: "Análise por Questão",
   attributes: "Aprofundamento por Atributos",
-  implementation: "Proposta de Implementação",
 };
 
 // Mapeamento de seções para ícones
@@ -55,51 +105,125 @@ const sectionIcons = {
   "support-segmentation": BarChart3,
   responses: MessageSquare,
   attributes: Layers,
-  implementation: CheckSquare,
 };
 
 function getNextSection(currentSection) {
-  // Encontrar a seção base atual
-  const baseSection = currentSection.split("-")[0];
-  const currentIndex = sectionOrder.indexOf(baseSection);
+  // Normalizar a seção atual
+  let normalizedSection = currentSection;
 
-  // Se não encontrou ou é a última seção, retorna null
-  if (currentIndex === -1 || currentIndex === sectionOrder.length - 1) {
+  // Se for apenas "executive" ou "support", mapear para a primeira subseção
+  if (currentSection === "executive") {
+    normalizedSection = "executive-summary";
+  } else if (currentSection === "support") {
+    normalizedSection = "support-sentiment";
+  } else if (currentSection === "attributes") {
+    // Se for apenas "attributes", mapear para o primeiro atributo
+    const attributes = getAllAttributes();
+    normalizedSection = attributes[0] || "attributes";
+  } else if (currentSection === "responses") {
+    // Se for apenas "responses", mapear para a primeira pergunta
+    const questions = getAllQuestions();
+    normalizedSection = questions[0] || "responses";
+  }
+
+  // Caso especial: se estiver em uma questão específica, navegar apenas entre questões
+  if (normalizedSection.startsWith("responses-")) {
+    const questions = getAllQuestions();
+    const currentIndex = questions.indexOf(normalizedSection);
+
+    // Se não encontrou ou é a última questão, verificar se há próxima seção
+    if (currentIndex === -1 || currentIndex === questions.length - 1) {
+      // Se é a última questão, verificar se há próxima seção após todas as questões
+      const lastQuestionIndex = allSubsections.indexOf(
+        questions[questions.length - 1]
+      );
+      if (
+        lastQuestionIndex !== -1 &&
+        lastQuestionIndex < allSubsections.length - 1
+      ) {
+        return allSubsections[lastQuestionIndex + 1];
+      }
+      return null;
+    }
+
+    // Retorna a próxima questão
+    return questions[currentIndex + 1];
+  }
+
+  const currentIndex = allSubsections.indexOf(normalizedSection);
+
+  // Se não encontrou ou é a última subseção, retorna null
+  if (currentIndex === -1 || currentIndex === allSubsections.length - 1) {
     return null;
   }
 
-  // Retorna a próxima seção
-  return sectionOrder[currentIndex + 1];
+  // Retorna a próxima subseção
+  return allSubsections[currentIndex + 1];
 }
 
 function getPreviousSection(currentSection) {
-  // Encontrar a seção base atual
-  const baseSection = currentSection.split("-")[0];
-  const currentIndex = sectionOrder.indexOf(baseSection);
+  // Normalizar a seção atual
+  let normalizedSection = currentSection;
 
-  // Se não encontrou ou é a primeira seção, retorna null
+  // Se for apenas "executive" ou "support", mapear para a primeira subseção
+  if (currentSection === "executive") {
+    normalizedSection = "executive-summary";
+  } else if (currentSection === "support") {
+    normalizedSection = "support-sentiment";
+  } else if (currentSection === "attributes") {
+    // Se for apenas "attributes", mapear para o primeiro atributo
+    const attributes = getAllAttributes();
+    normalizedSection = attributes[0] || "attributes";
+  } else if (currentSection === "responses") {
+    // Se for apenas "responses", mapear para a primeira pergunta
+    const questions = getAllQuestions();
+    normalizedSection = questions[0] || "responses";
+  }
+
+  // Caso especial: se estiver em uma questão específica, navegar apenas entre questões
+  if (normalizedSection.startsWith("responses-")) {
+    const questions = getAllQuestions();
+    const currentIndex = questions.indexOf(normalizedSection);
+
+    // Se não encontrou ou é a primeira questão, verificar se há seção anterior
+    if (currentIndex === -1 || currentIndex === 0) {
+      // Se é a primeira questão, verificar se há seção anterior antes de todas as questões
+      const firstQuestionIndex = allSubsections.indexOf(questions[0]);
+      if (firstQuestionIndex !== -1 && firstQuestionIndex > 0) {
+        return allSubsections[firstQuestionIndex - 1];
+      }
+      return null;
+    }
+
+    // Retorna a questão anterior
+    return questions[currentIndex - 1];
+  }
+
+  const currentIndex = allSubsections.indexOf(normalizedSection);
+
+  // Se não encontrou ou é a primeira subseção, retorna null
   if (currentIndex === -1 || currentIndex === 0) {
     return null;
   }
 
-  // Retorna a seção anterior
-  return sectionOrder[currentIndex - 1];
+  // Retorna a subseção anterior
+  return allSubsections[currentIndex - 1];
 }
 
 function getSectionTitle(activeSection) {
-  // Primeiro tenta encontrar o título exato
-  if (sectionTitles[activeSection]) {
-    return sectionTitles[activeSection];
-  }
-
-  // Se não encontrar, tenta encontrar pela seção base (antes do hífen)
+  // Sempre retornar o título da seção principal (antes do hífen)
   const baseSection = activeSection.split("-")[0];
   if (sectionTitles[baseSection]) {
     return sectionTitles[baseSection];
   }
 
+  // Se não encontrar, tenta encontrar o título exato como fallback
+  if (sectionTitles[activeSection]) {
+    return sectionTitles[activeSection];
+  }
+
   // Fallback
-  return "Dashboard";
+  return "Resultados da Pesquisa";
 }
 
 function getSectionIcon(activeSection) {
@@ -118,11 +242,96 @@ function getSectionIcon(activeSection) {
   return FileText;
 }
 
+/**
+ * Obtém o título formatado de uma subseção para exibição nos botões de navegação
+ * @param {string} sectionId - ID da subseção (ex: "executive-summary", "attributes-state", "responses-1")
+ * @param {number} maxLength - Comprimento máximo do texto (padrão: 40)
+ * @returns {string} Título formatado da subseção
+ */
+function getSubsectionTitle(sectionId, maxLength = 40) {
+  // Se for uma subseção fixa, retorna do mapeamento
+  if (sectionTitles[sectionId]) {
+    return sectionTitles[sectionId];
+  }
+
+  // Se for uma subseção de atributos (attributes-{id})
+  if (sectionId.startsWith("attributes-")) {
+    const attributeId = sectionId.replace("attributes-", "");
+    const attribute = attributeDeepDive.attributes.find(
+      (attr) => attr.id === attributeId
+    );
+    if (attribute) {
+      return attribute.name;
+    }
+  }
+
+  // Se for uma subseção de perguntas (responses-{id})
+  if (sectionId.startsWith("responses-")) {
+    const questionId = parseInt(sectionId.replace("responses-", ""), 10);
+    const displayNumber = getDisplayNumber(questionId);
+    return `Questão ${displayNumber}`;
+  }
+
+  // Fallback: retorna o ID formatado
+  return sectionId;
+}
+
+/**
+ * Obtém a seção principal e a subseção para exibição nos botões
+ * @param {string} sectionId - ID da subseção
+ * @param {number} maxLength - Comprimento máximo para subseção (padrão: 40)
+ * @returns {{section: string, subsection: string}} Objeto com seção e subseção
+ */
+function getSectionAndSubsection(sectionId, maxLength = 40) {
+  const baseSection = sectionId.split("-")[0];
+  let sectionTitle = sectionTitles[baseSection] || baseSection;
+  let subsectionTitle = getSubsectionTitle(sectionId, maxLength);
+
+  // Ajuste especial: para "Aprofundamento por Atributos", mostrar apenas "Aprofundamento"
+  if (sectionTitle === "Aprofundamento por Atributos") {
+    sectionTitle = "Aprofundamento";
+  }
+
+  // Ajuste especial: para "Análise por Questão", mostrar o número da questão como subtítulo
+  if (baseSection === "responses" && sectionId.startsWith("responses-")) {
+    const questionId = parseInt(sectionId.replace("responses-", ""), 10);
+    const displayNumber = getDisplayNumber(questionId);
+    return {
+      section: sectionTitle,
+      subsection: `Questão ${displayNumber}`,
+    };
+  }
+
+  // Se a subseção for igual à seção, não precisa mostrar duplicado
+  if (subsectionTitle === sectionTitle) {
+    return {
+      section: sectionTitle,
+      subsection: "",
+    };
+  }
+
+  return {
+    section: sectionTitle,
+    subsection: subsectionTitle,
+  };
+}
+
 export function SurveyHeader({ activeSection, onSectionChange, onMenuClick }) {
   const title = getSectionTitle(activeSection);
   const Icon = getSectionIcon(activeSection);
   const nextSection = getNextSection(activeSection);
   const previousSection = getPreviousSection(activeSection);
+
+  // Mostrar botão "Avançar" sempre que houver próxima seção
+  const shouldShowNextButton = !!nextSection;
+
+  // Obter seção e subseção formatadas para os botões
+  const previousSectionInfo = previousSection
+    ? getSectionAndSubsection(previousSection)
+    : null;
+  const nextSectionInfo = nextSection
+    ? getSectionAndSubsection(nextSection)
+    : null;
 
   const handleNext = () => {
     if (nextSection && onSectionChange) {
@@ -157,17 +366,36 @@ export function SurveyHeader({ activeSection, onSectionChange, onMenuClick }) {
         </div>
 
         <div className="flex-1 flex justify-start">
-          {previousSection && (
-            <Button
+          {previousSection && previousSectionInfo && (
+            <button
               onClick={handlePrevious}
-              size={null}
-              className="bg-[hsl(var(--custom-blue))] text-white hover:bg-[hsl(var(--custom-blue))]/80 border border-[hsl(var(--custom-blue))] p-1 text-sm h-auto flex items-center justify-center"
+              className="relative overflow-hidden rounded-lg px-4 py-3 text-white flex items-center gap-3 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              style={{
+                background:
+                  "linear-gradient(135deg, hsl(236, 90%, 50%) 0%, hsl(236, 90%, 45%) 100%)",
+                boxShadow:
+                  "0 4px 12px rgba(11, 24, 200, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1)",
+              }}
             >
-              <div className="flex items-center justify-between w-full">
-                <ChevronLeft className="w-4 h-4 p-0 m-0" />
-                <span>Voltar</span>
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.2)",
+                }}
+              >
+                <ChevronLeft className="w-4 h-4 text-white" />
               </div>
-            </Button>
+              <div className="flex flex-col items-start">
+                <span className="font-semibold text-sm leading-tight">
+                  {previousSectionInfo.section}
+                </span>
+                {previousSectionInfo.subsection && (
+                  <span className="text-xs opacity-90 leading-tight">
+                    {previousSectionInfo.subsection}
+                  </span>
+                )}
+              </div>
+            </button>
           )}
         </div>
         <div className="flex-1 flex justify-center">
@@ -185,17 +413,36 @@ export function SurveyHeader({ activeSection, onSectionChange, onMenuClick }) {
           </div>
         </div>
         <div className="flex-1 flex justify-end items-center gap-2">
-          {nextSection && (
-            <Button
+          {shouldShowNextButton && nextSectionInfo && (
+            <button
               onClick={handleNext}
-              size={null}
-              className="bg-[hsl(var(--custom-blue))] text-white hover:bg-[hsl(var(--custom-blue))]/80 border border-[hsl(var(--custom-blue))] p-1 text-sm h-auto flex items-center justify-center"
+              className="relative overflow-hidden rounded-lg px-4 py-3 text-white flex items-center gap-3 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              style={{
+                background:
+                  "linear-gradient(135deg, hsl(236, 90%, 50%) 0%, hsl(236, 90%, 45%) 100%)",
+                boxShadow:
+                  "0 4px 12px rgba(11, 24, 200, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1)",
+              }}
             >
-              <div className="flex items-center justify-between w-full">
-                <span>Avançar</span>
-                <ChevronRight className="w-4 h-4 p-0 m-0" />
+              <div className="flex flex-col items-end">
+                <span className="font-semibold text-sm leading-tight">
+                  {nextSectionInfo.section}
+                </span>
+                {nextSectionInfo.subsection && (
+                  <span className="text-xs opacity-90 leading-tight">
+                    {nextSectionInfo.subsection}
+                  </span>
+                )}
               </div>
-            </Button>
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.2)",
+                }}
+              >
+                <ChevronRight className="w-4 h-4 text-white" />
+              </div>
+            </button>
           )}
         </div>
       </div>
