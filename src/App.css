@@ -1,0 +1,87 @@
+#root {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+/* Navbar/Header Styles */
+.navbar,
+header[class*="navbar"],
+header[class*="header"] {
+  background-color: hsl(var(--background));
+  border-bottom: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+
+.navbar *,
+header[class*="navbar"] *,
+header[class*="header"] * {
+  color: hsl(var(--foreground));
+}
+
+/* Ensure all text uses foreground color (dark gray on light background) */
+body,
+body * {
+  color: hsl(var(--foreground));
+}
+
+/* Text highlight - orange background for emphasis */
+.text-highlight-orange {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+}
+
+/* Inline text highlight - orange text color (only for highlights, not main text) */
+.text-orange-highlight {
+  color: hsl(var(--primary));
+  font-weight: 600;
+}
+
+/* Orange accent line/divider */
+.accent-line-orange {
+  height: 4px;
+  background-color: hsl(var(--primary));
+  width: 100%;
+  border-radius: 2px;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em hsl(var(--primary) / 0.5));
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em hsl(var(--primary) / 0.5));
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: hsl(var(--muted-foreground));
+}
