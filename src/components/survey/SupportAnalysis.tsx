@@ -177,7 +177,7 @@ export function SupportAnalysis({ subSection }: SupportAnalysisProps) {
                   return (
                     <div className="space-y-6">
                       <div>
-                        <h3 className="text-base font-bold text-foreground mb-3">
+                        <h3 className="text-base font-bold text-white mb-3">
                           Distribuição NPS
                         </h3>
                         <div className="h-64">
@@ -259,7 +259,7 @@ export function SupportAnalysis({ subSection }: SupportAnalysisProps) {
                             <div className="text-3xl font-bold text-destructive">
                               {detratores.percentage}%
                             </div>
-                            <div className="text-sm text-muted-foreground mt-1">
+                            <div className="text-sm text-white/70 mt-1">
                               Detratores ({detratores.count.toLocaleString()})
                             </div>
                           </div>
@@ -267,7 +267,7 @@ export function SupportAnalysis({ subSection }: SupportAnalysisProps) {
                             <div className="text-3xl font-bold text-warning">
                               {neutros.percentage}%
                             </div>
-                            <div className="text-sm text-muted-foreground mt-1">
+                            <div className="text-sm text-white/70 mt-1">
                               Neutros ({neutros.count.toLocaleString()})
                             </div>
                           </div>
@@ -275,7 +275,7 @@ export function SupportAnalysis({ subSection }: SupportAnalysisProps) {
                             <div className="text-3xl font-bold text-success">
                               {promotores.percentage}%
                             </div>
-                            <div className="text-sm text-muted-foreground mt-1">
+                            <div className="text-sm text-white/70 mt-1">
                               Promotores ({promotores.count.toLocaleString()})
                             </div>
                           </div>
@@ -296,7 +296,7 @@ export function SupportAnalysis({ subSection }: SupportAnalysisProps) {
                 if (outrasIntencoes.length > 0) {
                   return (
                     <div className="mt-8">
-                      <h3 className="text-sm font-bold text-foreground mb-3">
+                      <h3 className="text-sm font-bold text-white mb-3">
                         Outras Intenções
                       </h3>
                       <div className="h-64">
@@ -385,7 +385,7 @@ export function SupportAnalysis({ subSection }: SupportAnalysisProps) {
               >
                 <CardHeader>
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-xl font-bold text-foreground">
+                    <CardTitle className="text-xl font-bold text-white">
                       {cluster.cluster}
                     </CardTitle>
                     <span
@@ -403,7 +403,7 @@ export function SupportAnalysis({ subSection }: SupportAnalysisProps) {
                   <Progress value={cluster.percentage} className="h-2" />
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4">
+                  <p className="text-sm text-white/70 mb-4">
                     {cluster.description
                       .split("\n")
                       .map((line, index, array) => (
@@ -417,7 +417,7 @@ export function SupportAnalysis({ subSection }: SupportAnalysisProps) {
                     {cluster.characteristics.map((char, i) => (
                       <div
                         key={i}
-                        className="text-xs px-3 py-2 bg-muted/50 rounded-md text-muted-foreground"
+                        className="text-xs px-3 py-2 bg-white/5 rounded-md text-white/70 border-0 shadow-[0_2px_8px_rgba(0,0,0,0.2)]"
                       >
                         {char}
                       </div>

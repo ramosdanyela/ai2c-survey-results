@@ -41,7 +41,7 @@ export function AttributeDeepDive() {
   return (
     <div className="space-y-8 animate-fade-in">
       <Tabs value={activeAttribute} onValueChange={setActiveAttribute}>
-        <TabsList className="w-full justify-start bg-muted/50 p-1">
+        <TabsList className="w-full justify-start bg-white/5 p-1 border-0 shadow-[0_2px_8px_rgba(0,0,0,0.2)]">
           {attributeDeepDive.attributes.map((attr) => {
             const Icon = attributeIcons[attr.id as keyof typeof attributeIcons];
             return (
@@ -62,12 +62,12 @@ export function AttributeDeepDive() {
             {/* Summary */}
             <Card className="card-elevated">
               <CardHeader>
-                <CardTitle className="text-xl font-bold text-foreground">
+                <CardTitle className="text-xl font-bold text-white">
                   Sumário - {attr.name}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-white/70 leading-relaxed">
                   {attr.summary.split("\n").map((line, index, array) => (
                     <span key={index}>
                       {line}
@@ -82,7 +82,7 @@ export function AttributeDeepDive() {
               {/* Distribution - Barras horizontais estilo Nussbaumer */}
               <Card className="card-elevated">
                 <CardHeader>
-                  <CardTitle className="text-xl font-bold text-foreground">
+                  <CardTitle className="text-xl font-bold text-white">
                     Distribuição de Respondentes
                   </CardTitle>
                 </CardHeader>
@@ -228,7 +228,7 @@ export function AttributeDeepDive() {
                           <TableHead className="text-right text-success">
                             Positivo
                           </TableHead>
-                          <TableHead className="text-right text-muted-foreground">
+                          <TableHead className="text-right text-white/70">
                             Neutro
                           </TableHead>
                           <TableHead className="text-right text-destructive">
@@ -245,7 +245,7 @@ export function AttributeDeepDive() {
                             <TableCell className="text-right text-success">
                               {item.positive}%
                             </TableCell>
-                            <TableCell className="text-right text-muted-foreground">
+                            <TableCell className="text-right text-white/70">
                               {item.neutral}%
                             </TableCell>
                             <TableCell className="text-right text-destructive">

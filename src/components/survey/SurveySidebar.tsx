@@ -165,7 +165,7 @@ export function SurveySidebar({
 
         {!isCollapsed && (
           <SidebarGroup className="mt-auto">
-            <div className="p-4 rounded-lg highlight-container-light mx-2 border border-[hsl(var(--highlight-orange))]/30">
+            <div className="p-4 rounded-lg highlight-container-light mx-2 border border-[hsl(var(--custom-blue))]/30">
               <div className="text-center">
                 <div className="text-4xl font-bold text-foreground">
                   {surveyInfo.nps}

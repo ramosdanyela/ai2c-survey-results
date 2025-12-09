@@ -6,23 +6,23 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 20%;
+    --background: 0 0% 0%; /* Black background */
+    --foreground: 0 0% 100%; /* White text */
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 20%;
+    --card: 0 0% 5%; /* Very dark gray for cards */
+    --card-foreground: 0 0% 100%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 20%;
+    --popover: 0 0% 5%;
+    --popover-foreground: 0 0% 100%;
 
     --primary: 33 100% 58%; /* Orange for highlights - #ff9e2b */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 20%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 0 0% 94%;
-    --muted-foreground: 0 0% 50%; /* Slightly darker gray for better readability */
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 70%; /* Light gray for muted text */
 
     --accent: 33 100% 58%; /* Orange accent - #ff9e2b */
     --accent-foreground: 0 0% 100%;
@@ -30,6 +30,9 @@
     /* Blue for titles and subtitles - #001dc6 */
     --title-blue: 231 100% 39%; /* #001dc6 - Dark blue for main titles */
     --subtitle-blue: 231 100% 45%; /* Lighter shade of #001dc6 for subtitles */
+
+    /* Custom blue - #0b18c8 */
+    --custom-blue: 236 90% 41%; /* #0b18c8 */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
@@ -43,8 +46,8 @@
     --info: 199 89% 48%;
     --info-foreground: 0 0% 100%;
 
-    --border: 0 0% 85%;
-    --input: 0 0% 85%;
+    --border: 0 0% 20%; /* Dark border instead of light */
+    --input: 0 0% 20%;
     --ring: 33 100% 58%;
 
     --radius: 0.75rem;
@@ -52,16 +55,16 @@
     /* Orange highlight container */
     --highlight-orange: 33 100% 58%; /* #ff9e2b */
     --highlight-orange-foreground: 0 0% 100%;
-    --highlight-orange-light: 33 100% 95%; /* Very light orange for subtle backgrounds */
+    --highlight-orange-light: 33 100% 15%; /* Dark orange for subtle backgrounds */
 
     /* Sidebar */
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 0 0% 20%;
+    --sidebar-background: 0 0% 8%;
+    --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 33 100% 58%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 94%;
-    --sidebar-accent-foreground: 0 0% 20%;
-    --sidebar-border: 0 0% 85%;
+    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 20%;
     --sidebar-ring: 33 100% 58%;
 
     /* Chart colors */
@@ -88,8 +91,8 @@
     );
     --gradient-sidebar: linear-gradient(
       180deg,
-      hsl(0, 0%, 98%) 0%,
-      hsl(0, 0%, 95%) 100%
+      hsl(0, 0%, 8%) 0%,
+      hsl(0, 0%, 5%) 100%
     );
   }
 
@@ -183,7 +186,7 @@
 
 @layer components {
   .card-elevated {
-    @apply bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow duration-200;
+    @apply bg-card rounded-lg border-0 shadow-[0_8px_32px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,158,43,0.1)] hover:shadow-[0_12px_48px_rgba(0,0,0,0.6),0_4px_16px_rgba(255,158,43,0.2)] transition-all duration-300;
   }
 
   /* Text styles matching the image */
@@ -200,20 +203,20 @@
   }
 
   .section-title {
-    @apply text-2xl font-bold text-foreground mb-4;
+    @apply text-2xl font-bold text-white mb-4;
   }
 
   .section-subtitle {
-    @apply text-xl font-semibold text-foreground mb-3;
+    @apply text-xl font-semibold text-white mb-3;
   }
 
   /* Orange highlight containers */
   .highlight-container {
-    @apply bg-[hsl(var(--highlight-orange))] text-[hsl(var(--highlight-orange-foreground))] rounded-lg p-4;
+    @apply bg-[hsl(var(--highlight-orange))] text-[hsl(var(--highlight-orange-foreground))] rounded-lg p-4 shadow-[0_8px_32px_rgba(255,158,43,0.3)];
   }
 
   .highlight-container-light {
-    @apply bg-[hsl(var(--highlight-orange-light))] border border-[hsl(var(--highlight-orange))]/20 rounded-lg p-4;
+    @apply bg-[hsl(var(--highlight-orange-light))] border-0 rounded-lg p-4 shadow-[0_4px_16px_rgba(255,158,43,0.15)];
   }
 
   .badge-critical {

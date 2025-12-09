@@ -3,29 +3,29 @@
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
+  background-color: #000000;
+  color: #ffffff;
 }
 
 /* Navbar/Header Styles */
 .navbar,
 header[class*="navbar"],
 header[class*="header"] {
-  background-color: hsl(var(--background));
-  border-bottom: 1px solid hsl(var(--border));
-  color: hsl(var(--foreground));
+  background-color: #000000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
 .navbar *,
 header[class*="navbar"] *,
 header[class*="header"] * {
-  color: hsl(var(--foreground));
+  color: #ffffff;
 }
 
-/* Ensure all text uses foreground color (dark gray on light background) */
+/* Ensure all text uses white color on black background */
 body,
 body * {
-  color: hsl(var(--foreground));
+  color: #ffffff;
 }
 
 /* Text highlight - orange background for emphasis */

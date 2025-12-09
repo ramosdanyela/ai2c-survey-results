@@ -152,7 +152,7 @@ export function ResponseDetails() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="px-6 pb-6">
-                  <p className="text-muted-foreground mb-6">
+                  <p className="text-white/70 mb-6">
                     {question.summary.split("\n").map((line, index, array) => (
                       <span key={index}>
                         {line}
@@ -163,12 +163,12 @@ export function ResponseDetails() {
 
                   {/* Mostrar score NPS com barra simples quando for questão de NPS */}
                   {questionFilter === "nps" && question.id === 4 && (
-                    <div className="mb-6 p-4 rounded-lg highlight-container-light border border-[hsl(var(--highlight-orange))]/30">
+                    <div className="mb-6 p-4 rounded-lg highlight-container-light border-0 shadow-[0_4px_16px_rgba(255,158,43,0.15)]">
                       <div className="text-center mb-4">
-                        <div className="text-5xl font-bold text-foreground mb-2">
+                        <div className="text-5xl font-bold text-white mb-2">
                           {surveyInfo.nps}
                         </div>
-                        <div className="text-base font-semibold text-foreground mb-3">
+                        <div className="text-base font-semibold text-white mb-3">
                           NPS Score
                         </div>
                         {/* Barra simples com o score para visualização rápida */}
@@ -313,15 +313,15 @@ export function ResponseDetails() {
                         {/* Top Categories */}
                         {question.topCategories && (
                           <div className="mb-6">
-                            <h4 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-                              <Award className="w-4 h-4 text-[hsl(var(--highlight-orange))]" />
+                            <h4 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                              <Award className="w-4 h-4 text-[#ff9e2b]" />
                               Top 3 Categorias
                             </h4>
                             <div className="grid md:grid-cols-3 gap-4">
                               {question.topCategories.map((cat) => (
                                 <div
                                   key={cat.rank}
-                                  className="p-4 rounded-lg bg-muted/50 border border-border"
+                                  className="p-4 rounded-lg bg-white/5 border-0 shadow-[0_4px_16px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_32px_rgba(255,158,43,0.2)] transition-all duration-300"
                                 >
                                   <div className="flex items-center gap-2 mb-3">
                                     <span

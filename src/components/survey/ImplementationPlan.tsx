@@ -92,15 +92,13 @@ export function ImplementationPlan({ openRecId }: ImplementationPlanProps) {
               severityBorderColors[rec.severity]
             }`}
           >
-            <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-muted/30">
+            <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-[#ff9e2b]/10">
               <div className="flex items-center gap-4 text-left w-full">
                 <Badge className={severityColors[rec.severity]}>
                   {severityLabels[rec.severity]}
                 </Badge>
-                <span className="font-bold flex-1 text-foreground">
-                  {rec.title}
-                </span>
-                <span className="text-sm text-muted-foreground">
+                <span className="font-bold flex-1 text-white">{rec.title}</span>
+                <span className="text-sm text-white/70">
                   {rec.tasks.length} tarefas
                 </span>
               </div>
@@ -108,10 +106,10 @@ export function ImplementationPlan({ openRecId }: ImplementationPlanProps) {
             <AccordionContent className="px-6 pb-6">
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-muted/50">
-                    <TableHead className="w-12"></TableHead>
-                    <TableHead>Tarefa</TableHead>
-                    <TableHead className="w-40">
+                  <TableRow className="bg-white/5">
+                    <TableHead className="w-12 text-white/70"></TableHead>
+                    <TableHead className="text-white/70">Tarefa</TableHead>
+                    <TableHead className="w-40 text-white/70">
                       <div className="flex items-center gap-1">
                         <User className="w-4 h-4" />
                         Área Responsável
@@ -135,8 +133,8 @@ export function ImplementationPlan({ openRecId }: ImplementationPlanProps) {
                         <TableCell
                           className={
                             isChecked
-                              ? "line-through text-muted-foreground"
-                              : ""
+                              ? "line-through text-white/50"
+                              : "text-white"
                           }
                         >
                           {task.task}

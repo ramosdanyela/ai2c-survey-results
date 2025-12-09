@@ -60,12 +60,12 @@ export function ExecutiveReport({
           <div className="grid gap-6">
             <Card className="card-elevated">
               <CardHeader className="pb-3">
-                <CardTitle className="text-xl font-bold text-foreground">
+                <CardTitle className="text-xl font-bold text-white">
                   Sobre o Estudo
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-[hsl(var(--muted-foreground))] font-normal leading-relaxed">
+                <p className="text-white/70 font-normal leading-relaxed">
                   {executiveReport.summary.aboutStudy
                     .split("\n")
                     .map((line, index, array) => (
@@ -80,14 +80,14 @@ export function ExecutiveReport({
 
             {/* Principais Descobertas e Conclusões lado a lado em telas maiores */}
             <div className="grid gap-6 md:grid-cols-2">
-              <Card className="card-elevated highlight-container-light border-l-4 border-l-[hsl(var(--highlight-orange))]">
+              <Card className="card-elevated highlight-container-light border-l-4 border-l-[#ff9e2b]">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-xl font-bold text-foreground">
+                  <CardTitle className="text-xl font-bold text-white">
                     Principais Descobertas
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-[hsl(var(--muted-foreground))] font-normal leading-relaxed">
+                  <p className="text-white/70 font-normal leading-relaxed">
                     {executiveReport.summary.mainFindings
                       .split("\n")
                       .map((line, index, array) => (
@@ -100,14 +100,14 @@ export function ExecutiveReport({
                 </CardContent>
               </Card>
 
-              <Card className="card-elevated border-l-4 border-l-[hsl(var(--highlight-orange))]">
+              <Card className="card-elevated border-l-4 border-l-[#ff9e2b]">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-xl font-bold text-foreground">
+                  <CardTitle className="text-xl font-bold text-white">
                     Conclusões
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-[hsl(var(--muted-foreground))] font-normal leading-relaxed">
+                  <p className="text-white/70 font-normal leading-relaxed">
                     {executiveReport.summary.conclusions
                       .split("\n")
                       .map((line, index, array) => (
@@ -134,21 +134,25 @@ export function ExecutiveReport({
           <Card className="card-elevated overflow-hidden">
             <Table>
               <TableHeader>
-                <TableRow className="bg-muted/50">
-                  <TableHead className="w-12">#</TableHead>
-                  <TableHead>Recomendação</TableHead>
-                  <TableHead className="w-32 text-center">Gravidade</TableHead>
-                  <TableHead className="w-64">Stakeholders</TableHead>
+                <TableRow className="bg-white/5">
+                  <TableHead className="w-12 text-white/70">#</TableHead>
+                  <TableHead className="text-white/70">Recomendação</TableHead>
+                  <TableHead className="w-32 text-center text-white/70">
+                    Gravidade
+                  </TableHead>
+                  <TableHead className="w-64 text-white/70">
+                    Stakeholders
+                  </TableHead>
                   {onSectionChange && <TableHead className="w-12"></TableHead>}
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {executiveReport.recommendations.map((rec) => (
-                  <TableRow key={rec.id} className="hover:bg-muted/30">
-                    <TableCell className="font-medium text-muted-foreground">
+                  <TableRow key={rec.id} className="hover:bg-[#ff9e2b]/10">
+                    <TableCell className="font-medium text-white/70">
                       {rec.id}
                     </TableCell>
-                    <TableCell className="font-medium">
+                    <TableCell className="font-medium text-white">
                       {rec.recommendation}
                     </TableCell>
                     <TableCell className="text-center">
@@ -174,7 +178,7 @@ export function ExecutiveReport({
                       <TableCell>
                         <button
                           onClick={() => handleNavigateToImplementation(rec.id)}
-                          className="text-muted-foreground hover:text-primary transition-colors"
+                          className="text-white/70 hover:text-[#ff9e2b] transition-colors"
                           title="Ver na Proposta de Implementação"
                           aria-label={`Ver recomendação ${rec.id} na Proposta de Implementação`}
                         >

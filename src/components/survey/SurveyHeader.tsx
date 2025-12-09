@@ -1,7 +1,4 @@
-import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
 import {
-  Menu,
   FileText,
   BarChart3,
   MessageSquare,
@@ -9,10 +6,13 @@ import {
   CheckSquare,
   ClipboardList,
   Heart,
+  ArrowRight,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface SurveyHeaderProps {
   activeSection: string;
+  onSectionChange?: (section: string) => void;
 }
 
 // Mapeamento de seções para títulos
@@ -75,38 +75,87 @@ function getSectionIcon(activeSection: string) {
   return FileText;
 }
 
-export function SurveyHeader({ activeSection }: SurveyHeaderProps) {
+const menuItems = [
+  {
+    id: "executive",
+    label: "Relatório Executivo",
+    icon: FileText,
+    subItems: [
+      { id: "executive-summary", label: "Sumário Executivo" },
+      { id: "executive-recommendations", label: "Recomendações" },
+    ],
+  },
+  {
+    id: "support",
+    label: "Análises de Suporte",
+    icon: BarChart3,
+    subItems: [
+      { id: "support-sentiment", label: "Análise de Sentimento" },
+      { id: "support-intent", label: "Intenção de Respondentes" },
+      { id: "support-segmentation", label: "Segmentação" },
+    ],
+  },
+  {
+    id: "responses",
+    label: "Detalhes das Respostas",
+    icon: MessageSquare,
+  },
+  {
+    id: "attributes",
+    label: "Aprofundamento por Atributos",
+    icon: Layers,
+  },
+  {
+    id: "implementation",
+    label: "Proposta de Implementação",
+    icon: CheckSquare,
+  },
+];
+
+export function SurveyHeader({
+  activeSection,
+  onSectionChange,
+}: SurveyHeaderProps) {
   const title = getSectionTitle(activeSection);
   const Icon = getSectionIcon(activeSection);
-  const { state } = useSidebar();
-  const isCollapsed = state === "collapsed";
 
   return (
-    <header className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="flex items-center gap-4 px-3 sm:px-4 lg:px-6 py-2">
-        <div className="lg:hidden">
-          <SidebarTrigger>
-            <Button variant="ghost" size="icon">
-              <Menu className="w-5 h-5" />
-            </Button>
-          </SidebarTrigger>
-        </div>
-        {isCollapsed && (
-          <div className="hidden lg:block">
-            <SidebarTrigger>
-              <Button variant="ghost" size="icon">
-                <Menu className="w-5 h-5" />
-              </Button>
-            </SidebarTrigger>
-          </div>
-        )}
-        <div className="relative inline-block mt-6 pb-3">
-          <div className="relative inline-flex items-center gap-3 bg-[hsl(var(--primary))] text-white font-bold px-10 py-4 rounded-2xl text-xl">
-            <Icon className="w-6 h-6 text-white" />
-            <h1 className="header-title">{title}</h1>
-            <span className="absolute left-1/2 -bottom-3 -translate-x-1/2 w-6 h-6 bg-[hsl(var(--primary))] rounded-full"></span>
+    <header className="sticky top-0 z-10 bg-black border-b border-white/10">
+      <div className="flex flex-col gap-4 px-3 sm:px-4 lg:px-6 py-4">
+        <div className="flex items-center gap-4">
+          <div className="relative inline-block">
+            <div className="relative inline-flex items-center gap-3 bg-[#ff9e2b] text-white font-bold px-10 py-4 rounded-2xl text-xl shadow-[0_8px_32px_rgba(255,158,43,0.3)]">
+              <Icon className="w-6 h-6 text-white" />
+              <h1 className="text-2xl font-bold text-white">{title}</h1>
+              <span className="absolute left-1/2 -bottom-3 -translate-x-1/2 w-6 h-6 bg-[#ff9e2b] rounded-full"></span>
+            </div>
           </div>
         </div>
+
+        {/* Navigation Menu */}
+        <nav className="flex flex-wrap gap-2">
+          {menuItems.map((item) => {
+            const isActive =
+              activeSection === item.id ||
+              activeSection.startsWith(item.id + "-");
+            return (
+              <div key={item.id} className="relative">
+                <button
+                  onClick={() => onSectionChange?.(item.id)}
+                  className={cn(
+                    "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
+                    isActive
+                      ? "bg-[#ff9e2b] text-white shadow-[0_4px_16px_rgba(255,158,43,0.4)]"
+                      : "text-white/80 hover:text-white hover:bg-white/10 border border-transparent hover:border-white/20"
+                  )}
+                >
+                  <item.icon className="w-4 h-4" />
+                  <span>{item.label}</span>
+                </button>
+              </div>
+            );
+          })}
+        </nav>
       </div>
     </header>
   );
