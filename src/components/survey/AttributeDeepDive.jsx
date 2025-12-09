@@ -12,7 +12,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { SentimentStackedChart, SimpleBarChart } from "./charts/Charts";
+import {
+  SentimentStackedChart,
+  SimpleBarChart,
+  NPSStackedChart,
+  SentimentThreeColorChart,
+} from "./charts/Charts";
 
 const attributeIcons = {
   state: MapPin,
@@ -21,9 +26,7 @@ const attributeIcons = {
 };
 
 export function AttributeDeepDive() {
-  const [activeAttribute, setActiveAttribute] = useState(
-    attributeDeepDive.attributes[0].id
-  );
+  const [activeAttribute, setActiveAttribute] = useState("customerType");
 
   const currentAttribute = attributeDeepDive.attributes.find(
     (attr) => attr.id === activeAttribute
@@ -63,18 +66,17 @@ export function AttributeDeepDive() {
             <Card className="card-elevated">
               <CardHeader>
                 <CardTitle className="text-xl font-bold text-card-foreground">
-                  Sumário - {attr.name}
+                  Sumário
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
-                  {attr.summary.split("\n").map((line, index, array) => (
-                    <span key={index}>
+                <div className="text-muted-foreground leading-relaxed space-y-3">
+                  {attr.summary.split("\n").map((line, index) => (
+                    <p key={index} className={line.trim() ? "" : "h-3"}>
                       {line}
-                      {index < array.length - 1 && <br />}
-                    </span>
+                    </p>
                   ))}
-                </p>
+                </div>
               </CardContent>
             </Card>
 
@@ -83,7 +85,7 @@ export function AttributeDeepDive() {
               <Card className="card-elevated">
                 <CardHeader>
                   <CardTitle className="text-xl font-bold text-card-foreground">
-                    Distribuição de Respondentes
+                    Distribuição dos respondentes
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -136,7 +138,7 @@ export function AttributeDeepDive() {
               <Card className="card-elevated">
                 <CardHeader>
                   <CardTitle className="text-xl font-bold text-foreground">
-                    Análise de Sentimento por Segmento
+                    Análise de sentimento
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -178,6 +180,335 @@ export function AttributeDeepDive() {
                 </CardContent>
               </Card>
             </div>
+
+            {/* NPS Section */}
+            {attr.npsSummary && attr.npsDistribution && (
+              <Card className="card-elevated">
+                <CardHeader>
+                  <CardTitle className="text-xl font-bold text-foreground">
+                    Qual é a probabilidade de você recomendar nossa empresa a um
+                    amigo ou colega em escala de 0 a 10?
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Sumário */}
+                  <div>
+                    <h3 className="text-lg font-bold text-foreground mb-3">
+                      Sumário
+                    </h3>
+                    <div className="text-muted-foreground leading-relaxed space-y-3">
+                      {attr.npsSummary.split("\n").map((line, index) => (
+                        <p key={index} className={line.trim() ? "" : "h-3"}>
+                          {line}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Respostas - Comparativo de NPS */}
+                  <div>
+                    <h3 className="text-lg font-bold text-foreground mb-4">
+                      Respostas
+                    </h3>
+                    <div className="space-y-6">
+                      {/* Tabela de distribuição NPS */}
+                      <div>
+                        <h4 className="text-base font-semibold text-foreground mb-3">
+                          Promotores, Neutros, Detratores
+                        </h4>
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>{attr.name}</TableHead>
+                              <TableHead className="text-right">
+                                Promotores
+                              </TableHead>
+                              <TableHead className="text-right">
+                                Neutros
+                              </TableHead>
+                              <TableHead className="text-right">
+                                Detratores
+                              </TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {attr.npsDistribution.map((item) => (
+                              <TableRow key={item.segment}>
+                                <TableCell className="font-medium">
+                                  {item.segment}
+                                </TableCell>
+                                <TableCell className="text-right">
+                                  {item.promotores}%
+                                </TableCell>
+                                <TableCell className="text-right">
+                                  {item.neutros}%
+                                </TableCell>
+                                <TableCell className="text-right">
+                                  {item.detratores}%
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+
+                      {/* Tabela de NPS */}
+                      <div>
+                        <h4 className="text-base font-semibold text-foreground mb-3">
+                          NPS
+                        </h4>
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>{attr.name}</TableHead>
+                              <TableHead className="text-right">NPS</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {attr.nps.map((item) => (
+                              <TableRow key={item.segment}>
+                                <TableCell className="font-medium">
+                                  {item.segment}
+                                </TableCell>
+                                <TableCell
+                                  className={`text-right font-bold ${
+                                    item.nps >= 0
+                                      ? "text-success"
+                                      : "text-destructive"
+                                  }`}
+                                >
+                                  {item.nps > 0 ? "+" : ""}
+                                  {item.nps}
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Satisfaction Impact Section */}
+            {attr.satisfactionImpactSummary && (
+              <Card className="card-elevated">
+                <CardHeader>
+                  <CardTitle className="text-xl font-bold text-foreground">
+                    Quais são os principais pontos que impactam sua satisfação?
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Sumário */}
+                  <div>
+                    <h3 className="text-lg font-bold text-foreground mb-3">
+                      Sumário
+                    </h3>
+                    <div className="text-muted-foreground leading-relaxed space-y-3">
+                      {attr.satisfactionImpactSummary
+                        .split("\n")
+                        .map((line, index) => (
+                          <p key={index} className={line.trim() ? "" : "h-3"}>
+                            {line}
+                          </p>
+                        ))}
+                    </div>
+                  </div>
+
+                  {/* Análise de Sentimento */}
+                  {attr.satisfactionImpactSentiment && (
+                    <div>
+                      <h3 className="text-lg font-bold text-foreground mb-3">
+                        Análise de sentimento
+                      </h3>
+                      {/* Legenda de cores única */}
+                      <div className="flex justify-center mb-4">
+                        <div className="flex gap-4 text-xs">
+                          <div className="flex items-center gap-1">
+                            <div
+                              className="w-3 h-3 rounded"
+                              style={{
+                                backgroundColor: "hsl(var(--chart-negative))",
+                              }}
+                            />
+                            <span>Negativo</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <div
+                              className="w-3 h-3 rounded"
+                              style={{
+                                backgroundColor: "hsl(var(--chart-neutral))",
+                              }}
+                            />
+                            <span>Não aplicável</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <div
+                              className="w-3 h-3 rounded"
+                              style={{
+                                backgroundColor: "hsl(var(--chart-positive))",
+                              }}
+                            />
+                            <span>Positivo</span>
+                          </div>
+                        </div>
+                      </div>
+                      <SentimentThreeColorChart
+                        data={attr.satisfactionImpactSentiment}
+                        height={192}
+                        showGrid={false}
+                        showLegend={false}
+                        axisLine={false}
+                        tickLine={false}
+                      />
+                      <div className="mt-4">
+                        {attr.satisfactionImpactSentiment.length > 0 &&
+                          (() => {
+                            const segments = Object.keys(
+                              attr.satisfactionImpactSentiment[0]
+                            ).filter((key) => key !== "sentiment");
+                            return (
+                              <Table>
+                                <TableHeader>
+                                  <TableRow>
+                                    <TableHead>Sentimento</TableHead>
+                                    {segments.map((segment) => (
+                                      <TableHead
+                                        key={segment}
+                                        className="text-right"
+                                      >
+                                        {segment}
+                                      </TableHead>
+                                    ))}
+                                  </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                  {attr.satisfactionImpactSentiment.map(
+                                    (item) => (
+                                      <TableRow key={item.sentiment}>
+                                        <TableCell className="font-medium">
+                                          {item.sentiment}
+                                        </TableCell>
+                                        {segments.map((segment) => (
+                                          <TableCell
+                                            key={segment}
+                                            className="text-right"
+                                          >
+                                            {item[segment]}%
+                                          </TableCell>
+                                        ))}
+                                      </TableRow>
+                                    )
+                                  )}
+                                </TableBody>
+                              </Table>
+                            );
+                          })()}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Categorias com Sentimento Positivo */}
+                  {attr.positiveCategories &&
+                    attr.positiveCategories.length > 0 && (
+                      <div>
+                        <h3 className="text-lg font-bold text-foreground mb-3">
+                          Categorias com sentimento positivo - Top 3
+                        </h3>
+                        {(() => {
+                          const segments = Object.keys(
+                            attr.positiveCategories[0]
+                          ).filter((key) => key !== "category");
+                          return (
+                            <Table>
+                              <TableHeader>
+                                <TableRow>
+                                  <TableHead>Categoria</TableHead>
+                                  {segments.map((segment) => (
+                                    <TableHead
+                                      key={segment}
+                                      className="text-right"
+                                    >
+                                      {segment}
+                                    </TableHead>
+                                  ))}
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                {attr.positiveCategories.map((cat) => (
+                                  <TableRow key={cat.category}>
+                                    <TableCell className="font-medium">
+                                      {cat.category}
+                                    </TableCell>
+                                    {segments.map((segment) => (
+                                      <TableCell
+                                        key={segment}
+                                        className="text-right text-success"
+                                      >
+                                        {cat[segment]}%
+                                      </TableCell>
+                                    ))}
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          );
+                        })()}
+                      </div>
+                    )}
+
+                  {/* Categorias com Sentimento Negativo */}
+                  {attr.negativeCategories &&
+                    attr.negativeCategories.length > 0 && (
+                      <div>
+                        <h3 className="text-lg font-bold text-foreground mb-3">
+                          Categorias com sentimento negativo - Top 3
+                        </h3>
+                        {(() => {
+                          const segments = Object.keys(
+                            attr.negativeCategories[0]
+                          ).filter((key) => key !== "category");
+                          return (
+                            <Table>
+                              <TableHeader>
+                                <TableRow>
+                                  <TableHead>Categoria</TableHead>
+                                  {segments.map((segment) => (
+                                    <TableHead
+                                      key={segment}
+                                      className="text-right"
+                                    >
+                                      {segment}
+                                    </TableHead>
+                                  ))}
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                {attr.negativeCategories.map((cat) => (
+                                  <TableRow key={cat.category}>
+                                    <TableCell className="font-medium">
+                                      {cat.category}
+                                    </TableCell>
+                                    {segments.map((segment) => (
+                                      <TableCell
+                                        key={segment}
+                                        className="text-right text-destructive"
+                                      >
+                                        {cat[segment]}%
+                                      </TableCell>
+                                    ))}
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          );
+                        })()}
+                      </div>
+                    )}
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
         ))}
       </Tabs>

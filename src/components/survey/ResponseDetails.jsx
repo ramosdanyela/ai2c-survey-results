@@ -2,14 +2,17 @@ import { useState, useMemo } from "react";
 import { Award, CheckSquare, Cloud, FileText, TrendingUp } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { responseDetails, surveyInfo } from "@/data/surveyData";
-import { WordCloud } from "./WordCloud";
 import {
   COLOR_ORANGE_PRIMARY,
   RGBA_ORANGE_SHADOW_15,
   RGBA_ORANGE_SHADOW_20,
   RGBA_BLACK_SHADOW_30,
 } from "@/lib/colors";
-import { SentimentStackedChart, SimpleBarChart } from "./charts/Charts";
+import {
+  SentimentStackedChart,
+  SimpleBarChart,
+  NPSStackedChart,
+} from "./charts/Charts";
 import {
   Accordion,
   AccordionContent,
@@ -48,8 +51,8 @@ export function ResponseDetails() {
     // Por enquanto, apenas armazenamos os filtros
   };
 
-  // Identificar questão de NPS (questão 4 sobre recomendação)
-  const npsQuestion = responseDetails.closedQuestions.find((q) => q.id === 4);
+  // Identificar questão de NPS (questão 1 sobre recomendação)
+  const npsQuestion = responseDetails.closedQuestions.find((q) => q.id === 1);
 
   // Filtrar questões baseado no filtro selecionado
   const filteredQuestions = useMemo(() => {
@@ -62,7 +65,9 @@ export function ResponseDetails() {
         ...q,
         type: "open",
       })),
-    ];
+    ]
+      .filter((q) => q.id !== 3) // Ocultar Q3
+      .sort((a, b) => a.id - b.id); // Ordenar por ID
 
     switch (questionFilter) {
       case "all":
@@ -98,9 +103,7 @@ export function ResponseDetails() {
               type="single"
               collapsible
               defaultValue={questionValue}
-              className={`card-elevated px-0 overflow-hidden ${
-                question.type === "open" ? "lg:col-span-2" : ""
-              }`}
+              className="card-elevated px-0 overflow-hidden lg:col-span-2"
             >
               <AccordionItem value={questionValue} className="border-0">
                 <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-muted/30">
@@ -116,7 +119,7 @@ export function ResponseDetails() {
                       <div className="flex items-center gap-2 mt-2">
                         {/* Question Type Pill */}
                         {(() => {
-                          const isNPS = question.id === 4;
+                          const isNPS = question.id === 1;
                           const questionType = isNPS
                             ? "NPS"
                             : question.type === "open"
@@ -172,65 +175,130 @@ export function ResponseDetails() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="px-6 pb-6">
-                  <p className="text-muted-foreground mb-6">
-                    {question.summary.split("\n").map((line, index, array) => (
-                      <span key={index}>
+                  <h3 className="text-lg font-bold text-foreground mb-3">
+                    Sumário:
+                  </h3>
+                  <div className="text-muted-foreground mb-6 space-y-3">
+                    {question.summary.split("\n").map((line, index) => (
+                      <p key={index} className={line.trim() ? "" : "h-3"}>
                         {line}
-                        {index < array.length - 1 && <br />}
-                      </span>
+                      </p>
                     ))}
-                  </p>
+                  </div>
 
-                  {/* Mostrar score NPS com barra simples quando for questão de NPS */}
-                  {questionFilter === "nps" && question.id === 4 && (
-                    <div
-                      className="mb-6 p-4 rounded-lg highlight-container-light border-0"
-                      style={{
-                        boxShadow: `0 4px 16px ${RGBA_ORANGE_SHADOW_15}`,
-                      }}
-                    >
-                      <div className="text-center mb-4">
-                        <div className="text-5xl font-bold text-foreground mb-2">
-                          {surveyInfo.nps}
-                        </div>
-                        <div className="text-base font-semibold text-foreground mb-3">
-                          NPS Score
-                        </div>
-                        {/* Barra simples com o score para visualização rápida */}
-                        <Progress
-                          value={(surveyInfo.nps + 100) / 2}
-                          className="h-3 mb-2"
-                        />
-                        <div className="inline-block px-3 py-1 rounded-full highlight-container text-base font-semibold">
-                          {surveyInfo.npsCategory}
+                  {/* Mostrar score NPS quando for questão de NPS */}
+                  {question.id === 1 && (
+                    <div className="mb-6 flex justify-center">
+                      <div
+                        className="p-4 rounded-2xl highlight-container-light border-0 w-full max-w-md"
+                        style={{
+                          boxShadow: `0 4px 16px ${RGBA_ORANGE_SHADOW_15}`,
+                        }}
+                      >
+                        <div className="text-center mb-4">
+                          <div className="text-5xl font-bold text-foreground mb-2">
+                            {surveyInfo.nps}
+                          </div>
+                          <div className="text-base font-semibold text-foreground mb-3">
+                            NPS Score
+                          </div>
+                          {/* Barra simples com o score para visualização rápida */}
+                          <Progress
+                            value={(surveyInfo.nps + 100) / 2}
+                            className="h-3 mb-2"
+                          />
+                          <div className="inline-block px-3 py-1 rounded-full highlight-container text-base font-semibold">
+                            {surveyInfo.npsCategory}
+                          </div>
                         </div>
                       </div>
                     </div>
                   )}
 
-                  {/* Render closed question chart */}
-                  {question.type === "closed" &&
+                  {/* Render NPS chart para questão 1 */}
+                  {question.id === 1 &&
+                    question.type === "closed" &&
                     "data" in question &&
-                    question.data && (
-                      <SimpleBarChart
-                        data={question.data}
-                        dataKey="percentage"
-                        yAxisDataKey="option"
-                        height={256}
-                        margin={{
-                          top: 10,
-                          right: 80,
-                          left: 120,
-                          bottom: 10,
-                        }}
-                        yAxisWidth={110}
-                        hideXAxis={true}
-                        tooltipFormatter={(value, name, props) => [
-                          `${props.payload.value} (${value}%)`,
-                          "Respostas",
-                        ]}
-                      />
-                    )}
+                    question.data &&
+                    (() => {
+                      // Converter dados da pergunta para formato NPS
+                      const detrator = question.data.find(
+                        (d) => d.option === "Detrator"
+                      );
+                      const promotor = question.data.find(
+                        (d) => d.option === "Promotor"
+                      );
+                      const neutro = question.data.find(
+                        (d) => d.option === "Neutro"
+                      );
+
+                      return (
+                        <>
+                          <h3 className="text-lg font-bold text-foreground mb-3">
+                            Respostas:
+                          </h3>
+                          <NPSStackedChart
+                            data={{
+                              Detratores: detrator?.percentage || 0,
+                              Neutros: neutro?.percentage || 0,
+                              Promotores: promotor?.percentage || 0,
+                            }}
+                            height={256}
+                            hideXAxis={true}
+                            showPercentagesInLegend={true}
+                          />
+                        </>
+                      );
+                    })()}
+
+                  {/* Render closed question chart para outras questões */}
+                  {question.id !== 1 &&
+                    question.type === "closed" &&
+                    "data" in question &&
+                    question.data &&
+                    (() => {
+                      // Calcular largura necessária baseada no texto mais longo
+                      const maxTextLength = Math.max(
+                        ...question.data.map((item) => item.option.length)
+                      );
+                      // Aproximadamente 8px por caractere, mínimo 120px, máximo 400px
+                      const calculatedWidth = Math.min(
+                        Math.max(maxTextLength * 8, 120),
+                        400
+                      );
+                      const calculatedMargin = Math.max(
+                        calculatedWidth + 20,
+                        140
+                      );
+                      // Reduzir margem direita para Q3 para centralizar o gráfico
+                      const rightMargin = question.id === 3 ? 50 : 80;
+
+                      return (
+                        <>
+                          <h3 className="text-lg font-bold text-foreground mb-3">
+                            Respostas:
+                          </h3>
+                          <SimpleBarChart
+                            data={question.data}
+                            dataKey="percentage"
+                            yAxisDataKey="option"
+                            height={256}
+                            margin={{
+                              top: 10,
+                              right: rightMargin,
+                              left: calculatedMargin,
+                              bottom: 10,
+                            }}
+                            yAxisWidth={calculatedWidth}
+                            hideXAxis={true}
+                            tooltipFormatter={(value, name, props) => [
+                              `${props.payload.value} (${value}%)`,
+                              "Respostas",
+                            ]}
+                          />
+                        </>
+                      );
+                    })()}
 
                   {/* Render open question content */}
                   {question.type === "open" &&
@@ -240,7 +308,7 @@ export function ResponseDetails() {
                         {/* Sentiment Chart */}
                         <div className="mb-6">
                           <h4 className="text-base font-bold text-foreground mb-3">
-                            Análise de Sentimento
+                            Top 3 categorias e principais tópicos
                           </h4>
                           <SentimentStackedChart
                             data={question.sentimentData}
@@ -400,7 +468,14 @@ export function ResponseDetails() {
                               />
                               Nuvem de Palavras
                             </h4>
-                            <WordCloud words={question.wordCloud} />
+                            <div className="flex justify-center items-center p-6 bg-muted/30 rounded-lg min-h-[200px]">
+                              <img
+                                src="/nuvem.png"
+                                alt="Nuvem de Palavras"
+                                className="max-w-full h-auto"
+                                style={{ maxHeight: "500px" }}
+                              />
+                            </div>
                           </div>
                         )}
                       </>

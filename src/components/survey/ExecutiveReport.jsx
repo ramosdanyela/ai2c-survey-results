@@ -59,16 +59,15 @@ export function ExecutiveReport({ subSection, onSectionChange }) {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground font-normal leading-relaxed">
+                <div className="text-muted-foreground font-normal leading-relaxed space-y-3">
                   {executiveReport.summary.aboutStudy
                     .split("\n")
-                    .map((line, index, array) => (
-                      <span key={index}>
+                    .map((line, index) => (
+                      <p key={index} className={line.trim() ? "" : "h-3"}>
                         {line}
-                        {index < array.length - 1 && <br />}
-                      </span>
+                      </p>
                     ))}
-                </p>
+                </div>
               </CardContent>
             </Card>
 
@@ -84,16 +83,15 @@ export function ExecutiveReport({ subSection, onSectionChange }) {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground font-normal leading-relaxed">
+                  <div className="text-muted-foreground font-normal leading-relaxed space-y-3">
                     {executiveReport.summary.mainFindings
                       .split("\n")
-                      .map((line, index, array) => (
-                        <span key={index}>
+                      .map((line, index) => (
+                        <p key={index} className={line.trim() ? "" : "h-3"}>
                           {line}
-                          {index < array.length - 1 && <br />}
-                        </span>
+                        </p>
                       ))}
-                  </p>
+                  </div>
                 </CardContent>
               </Card>
 
@@ -107,16 +105,15 @@ export function ExecutiveReport({ subSection, onSectionChange }) {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground font-normal leading-relaxed">
+                  <div className="text-muted-foreground font-normal leading-relaxed space-y-3">
                     {executiveReport.summary.conclusions
                       .split("\n")
-                      .map((line, index, array) => (
-                        <span key={index}>
+                      .map((line, index) => (
+                        <p key={index} className={line.trim() ? "" : "h-3"}>
                           {line}
-                          {index < array.length - 1 && <br />}
-                        </span>
+                        </p>
                       ))}
-                  </p>
+                  </div>
                 </CardContent>
               </Card>
             </div>

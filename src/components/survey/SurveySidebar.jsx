@@ -10,6 +10,8 @@ import { surveyInfo } from "@/data/surveyData";
 import { forwardRef } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { RGBA_BLACK_SHADOW_20 } from "@/lib/colors";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
 
 /**
  * @typedef {Object} SurveySidebarProps
@@ -51,7 +53,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
     <div className="flex flex-col h-full py-6 px-4 w-full">
       <div className="mb-6 pb-6">
         <div className="flex items-start justify-between gap-2 mb-3">
-          <h1 className="text-base font-bold text-sidebar-foreground whitespace-nowrap">
+          <h1 className="text-base font-bold text-sidebar-foreground">
             {surveyInfo.title}
           </h1>
           <ThemeToggle className="shrink-0" />
@@ -66,7 +68,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
           </div>
         </div>
       </div>
-      <nav className="flex flex-col gap-2 items-start w-full">
+      <nav className="flex flex-col gap-2 items-start w-full flex-1">
         {menuItems.map((item) => {
           const isActive =
             activeSection === item.id ||
@@ -95,6 +97,57 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
           );
         })}
       </nav>
+
+      {/* NPS Card */}
+      <div className="mt-auto pt-6">
+        <div className="bg-[#f5f0e8] dark:bg-[#2a2520] rounded-lg p-4 border border-border/50 shadow-sm">
+          {/* NPS Score */}
+          <div className="text-center mb-4">
+            <div className="text-4xl font-bold text-foreground mb-1">
+              {surveyInfo.nps}
+            </div>
+            <div className="text-xs text-muted-foreground mb-3">NPS Score</div>
+
+            {/* Progress Bar */}
+            <div className="mb-3">
+              <Progress
+                value={(surveyInfo.nps + 100) / 2}
+                className="h-2 bg-muted"
+              />
+            </div>
+
+            {/* Badge */}
+            <div className="flex justify-center">
+              <Badge className="bg-[hsl(var(--primary))] text-white border-0">
+                {surveyInfo.npsCategory}
+              </Badge>
+            </div>
+          </div>
+
+          {/* Separator */}
+          <div className="border-t border-border/50 my-4"></div>
+
+          {/* Metrics */}
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-muted-foreground">
+                Respondentes
+              </span>
+              <span className="text-xs font-semibold text-foreground">
+                {surveyInfo.totalRespondents.toLocaleString("pt-BR")}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-muted-foreground">
+                Taxa de Resposta
+              </span>
+              <span className="text-xs font-semibold text-foreground">
+                {surveyInfo.responseRate}%
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

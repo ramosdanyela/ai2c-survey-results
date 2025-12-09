@@ -135,6 +135,7 @@ export function SentimentDivergentChart({
             name="Negativo"
             fill="hsl(var(--chart-negative))"
             radius={[4, 4, 4, 4]}
+            barSize={40}
           >
             <LabelList
               dataKey="negative"
@@ -151,6 +152,7 @@ export function SentimentDivergentChart({
             name="Positivo"
             fill="hsl(var(--chart-positive))"
             radius={[4, 4, 4, 4]}
+            barSize={40}
           >
             <LabelList
               dataKey="positive"
@@ -307,7 +309,120 @@ export function SentimentStackedChart({
 }
 
 // ============================================================
-// 3. NPS STACKED CHART
+// 3. SENTIMENT THREE COLOR CHART
+// ============================================================
+// Gráfico de sentimento com três cores (Positivo/Negativo/Não aplicável)
+// Usado em: AttributeDeepDive - Análise de Sentimento por Tipo de Cliente
+
+/**
+ * @param {Object} props
+ * @param {Array<{sentiment: string, Controle: number, "Pré-pago": number, "Pós-pago": number}>} props.data
+ * @param {number|string} [props.height]
+ * @param {Object} [props.margin]
+ * @param {boolean} [props.showGrid]
+ * @param {boolean} [props.showLegend]
+ */
+export function SentimentThreeColorChart({
+  data,
+  height = 80,
+  margin = { top: 10, right: 30, left: 20, bottom: 10 },
+  showGrid = false,
+  showLegend = true,
+}) {
+  // Cores para cada sentimento
+  const sentimentColors = {
+    Negativo: "hsl(var(--chart-negative))",
+    "Não aplicável": "hsl(var(--chart-neutral))",
+    Positivo: "hsl(var(--chart-positive))",
+  };
+
+  // Extrair dinamicamente os segmentos (excluindo "sentiment")
+  const segments =
+    data.length > 0
+      ? Object.keys(data[0]).filter((key) => key !== "sentiment")
+      : [];
+
+  // Criar dados para cada segmento
+  const chartDataBySegment = segments.map((segment) => {
+    const chartData = [
+      {
+        name: segment,
+        Negativo:
+          data.find((item) => item.sentiment === "Negativo")?.[segment] || 0,
+        "Não aplicável":
+          data.find((item) => item.sentiment === "Não aplicável")?.[segment] ||
+          0,
+        Positivo:
+          data.find((item) => item.sentiment === "Positivo")?.[segment] || 0,
+      },
+    ];
+    return { segment, chartData };
+  });
+
+  return (
+    <div className="space-y-6">
+      {chartDataBySegment.map(({ segment, chartData }) => (
+        <div key={segment} className="space-y-2">
+          <div className="font-semibold text-sm mb-2">{segment}</div>
+          <div style={{ height }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartData} layout="vertical" margin={margin}>
+                {showGrid && (
+                  <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+                )}
+                <XAxis type="number" domain={[0, 100]} hide />
+                <YAxis type="category" dataKey="name" width={120} hide />
+                <Tooltip
+                  formatter={(value, name) => [`${value}%`, name]}
+                  filterNull={true}
+                />
+                <Bar
+                  dataKey="Negativo"
+                  name="Negativo"
+                  fill={sentimentColors.Negativo}
+                  stackId="a"
+                  radius={[0, 0, 0, 0]}
+                />
+                <Bar
+                  dataKey="Não aplicável"
+                  name="Não aplicável"
+                  fill={sentimentColors["Não aplicável"]}
+                  stackId="a"
+                  radius={[0, 0, 0, 0]}
+                />
+                <Bar
+                  dataKey="Positivo"
+                  name="Positivo"
+                  fill={sentimentColors.Positivo}
+                  stackId="a"
+                  radius={[4, 4, 4, 4]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          {/* Labels com valores */}
+          <div className="grid grid-cols-3 gap-2 text-xs text-center">
+            <div>
+              <div className="font-bold">{chartData[0].Negativo}%</div>
+              <div className="text-muted-foreground">Negativo</div>
+            </div>
+            <div>
+              <div className="font-bold">{chartData[0]["Não aplicável"]}%</div>
+              <div className="text-muted-foreground">Não aplicável</div>
+            </div>
+            <div>
+              <div className="font-bold">{chartData[0].Positivo}%</div>
+              <div className="text-muted-foreground">Positivo</div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ============================================================
+// 4. NPS STACKED CHART
 // ============================================================
 // Gráfico empilhado NPS (Detratores/Neutros/Promotores)
 // Usado em: SupportAnalysis - Distribuição NPS
@@ -319,6 +434,8 @@ export function SentimentStackedChart({
  * @param {Object} [props.margin]
  * @param {boolean} [props.showGrid]
  * @param {boolean} [props.showLegend]
+ * @param {boolean} [props.hideXAxis]
+ * @param {boolean} [props.showPercentagesInLegend]
  */
 export function NPSStackedChart({
   data,
@@ -326,6 +443,8 @@ export function NPSStackedChart({
   margin = { top: 20, right: 30, left: 20, bottom: 20 },
   showGrid = true,
   showLegend = true,
+  hideXAxis = false,
+  showPercentagesInLegend = false,
 }) {
   const chartData = [
     {
@@ -347,6 +466,7 @@ export function NPSStackedChart({
             type="number"
             domain={[0, 100]}
             tickFormatter={(v) => `${v}%`}
+            hide={hideXAxis}
           />
           <YAxis type="category" dataKey="name" width={60} hide />
           <Tooltip
@@ -361,13 +481,28 @@ export function NPSStackedChart({
           />
           {showLegend && (
             <Legend
-              formatter={(value) =>
-                value === "Detratores"
+              formatter={(value) => {
+                if (showPercentagesInLegend) {
+                  const percentage =
+                    value === "Detratores"
+                      ? data.Detratores
+                      : value === "Neutros"
+                      ? data.Neutros
+                      : data.Promotores;
+                  const label =
+                    value === "Detratores"
+                      ? "Detratores (0-6)"
+                      : value === "Neutros"
+                      ? "Neutros (7-8)"
+                      : "Promotores (9-10)";
+                  return `${label} - ${percentage}%`;
+                }
+                return value === "Detratores"
                   ? "Detratores (0-6)"
                   : value === "Neutros"
                   ? "Neutros (7-8)"
-                  : "Promotores (9-10)"
-              }
+                  : "Promotores (9-10)";
+              }}
             />
           )}
           <Bar
@@ -395,7 +530,7 @@ export function NPSStackedChart({
 }
 
 // ============================================================
-// 4. SIMPLE BAR CHART
+// 5. SIMPLE BAR CHART
 // ============================================================
 // Gráfico de barras simples (estilo Nussbaumer)
 // Usado em: AttributeDeepDive - Distribuição
@@ -432,7 +567,7 @@ export function SimpleBarChart({
   tooltipFormatter,
   sortData = true,
   sortDirection = "desc",
-  hideXAxis = false,
+  hideXAxis = true,
 }) {
   const sortedData = sortData
     ? [...data].sort((a, b) => {

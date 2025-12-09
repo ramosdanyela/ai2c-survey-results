@@ -11,8 +11,8 @@ export const surveyInfo = {
   period: "Outubro - Novembro 2024",
   totalRespondents: 1247,
   responseRate: 68.5,
-  nps: 47,
-  npsCategory: "Bom",
+  nps: -21,
+  npsCategory: "Ruim",
 };
 
 // ------------------------------------------------------------
@@ -21,18 +21,17 @@ export const surveyInfo = {
 export const executiveReport = {
   // 2a. Executive Summary
   summary: {
-    aboutStudy: `Este estudo foi conduzido entre outubro e novembro de 2024 com o objetivo de avaliar a satisfação geral dos clientes da TechCorp Brasil.
-A pesquisa abrangeu 1.247 respondentes de diferentes segmentos, incluindo clientes corporativos, PMEs e consumidores finais.
-A metodologia utilizada combinou questionários quantitativos com perguntas abertas para capturar insights qualitativos sobre a experiência do cliente.`,
+    aboutStudy: `O objetivo do estudo é avaliar a satisfação do cliente com os serviços de telefonia móvel para identificar os fatores que impulsionam a lealdade e o cancelamento.
+Pesquisa com 100 clientes móveis com 3 perguntas capturando experiência e intenções.`,
 
-    mainFindings: `Os resultados indicam um NPS de 47 pontos, classificado como "Bom", representando uma melhoria de 8 pontos em relação ao ano anterior.
-O atendimento ao cliente foi o atributo melhor avaliado, com 78% de satisfação.
-Por outro lado, o tempo de resposta do suporte técnico apresentou a maior oportunidade de melhoria, com apenas 52% de aprovação.
-Identificamos três clusters distintos de clientes: Entusiastas (42%), Neutros (35%) e Críticos (23%), cada um com necessidades e expectativas específicas.`,
+    mainFindings: `O Net Promoter Score é negativo, com detratores superando promotores por 21 pontos.
+Problemas no serviço de rede apresentam o maior impacto negativo devido a preocupações com cobertura e estabilidade, seguidos por limitações na cobertura da rede; opiniões sobre suporte ao cliente e preços são mistas.
+A análise por segmento revela que clientes pós-pago e controle expressam maior insatisfação em relação à funcionalidade do aplicativo, conectividade e faturamento, enquanto o sentimento regional varia significativamente, com Ceará positivo e RJ, PR, SP negativos.`,
 
-    conclusions: `A TechCorp Brasil demonstra uma trajetória positiva na satisfação do cliente, mas precisa endereçar gaps críticos no suporte técnico e na comunicação proativa.
-Os clientes valorizam especialmente a qualidade dos produtos e a expertise da equipe comercial.
-Recomenda-se foco prioritário na redução do tempo de resposta do suporte e na implementação de um programa de comunicação mais personalizado para cada segmento de cliente.`,
+    conclusions: `Foco urgente na infraestrutura de rede e monitoramento em tempo real é fundamental para reduzir a participação de detratores.
+O suporte ao cliente e a confiabilidade do aplicativo exigem melhorias personalizadas em segmentos e regiões.
+Abordar as frustrações relacionadas à rede e à cobrança ajudará a estabilizar a lealdade e limitar o churn.
+Priorizar essas áreas está alinhado com as capacidades operacionais e a competitividade do mercado.`,
   },
 
   // 2b. Recommendations
@@ -40,37 +39,57 @@ Recomenda-se foco prioritário na redução do tempo de resposta do suporte e na
     {
       id: 1,
       recommendation:
-        "Implementar sistema de tickets com SLA garantido de 4 horas para suporte técnico",
-      severity: "critical",
-      stakeholders: ["TI", "Suporte", "Operações"],
+        "Atualize a Infraestrutura de Rede para Melhorar a Cobertura e Estabilidade",
+      severity: "high",
+      stakeholders: [
+        "Engenharia de Redes",
+        "Rede de Acesso Rádio (RAN)",
+        "Operações de Rede",
+      ],
     },
     {
       id: 2,
       recommendation:
-        "Criar programa de comunicação proativa com atualizações mensais personalizadas",
+        "Implemente Monitoramento de Rede em Tempo Real e Resolução Rápida de Falhas",
       severity: "high",
-      stakeholders: ["Marketing", "Customer Success"],
+      stakeholders: [
+        "Centro de Operações de Rede (NOC)",
+        "Otimização de Rede",
+        "Tecnologia e TI",
+      ],
     },
     {
       id: 3,
       recommendation:
-        "Desenvolver portal de autoatendimento com base de conhecimento expandida",
-      severity: "high",
-      stakeholders: ["TI", "Conteúdo", "UX"],
+        "Lançar Contato Direcionado com Clientes para Abordar Preocupações sobre o Serviço de Rede",
+      severity: "medium",
+      stakeholders: [
+        "Experiência do Cliente (CX)",
+        "Operações de Atendimento ao Cliente",
+        "Comunicação Corporativa",
+      ],
     },
     {
       id: 4,
       recommendation:
-        "Implementar programa de fidelidade com benefícios escalonados",
+        "Melhore a Qualidade do Sinal por meio da Otimização Avançada da Rede de Acesso Rádio",
       severity: "medium",
-      stakeholders: ["Marketing", "Comercial", "Financeiro"],
+      stakeholders: [
+        "Rede de Acesso Rádio (RAN)",
+        "Otimização de Rede",
+        "Engenharia de Rede",
+      ],
     },
     {
       id: 5,
       recommendation:
-        "Realizar treinamentos trimestrais de atendimento para equipe comercial",
-      severity: "low",
-      stakeholders: ["RH", "Comercial"],
+        "Aprimorar o Treinamento de Suporte ao Cliente focado na Resolução de Problemas de Rede",
+      severity: "medium",
+      stakeholders: [
+        "Atendimento ao Cliente",
+        "Central de Atendimento",
+        "Recursos Humanos",
+      ],
     },
   ],
 };
@@ -87,76 +106,142 @@ Os resultados mostram predominância de sentimentos positivos no atendimento e q
 Enquanto suporte técnico e tempo de resposta apresentam maior proporção de sentimentos negativos.`,
 
     data: [
-      { category: "Atendimento", positive: 65, neutral: 20, negative: 15 },
       {
-        category: "Qualidade do Produto",
-        positive: 72,
-        neutral: 18,
-        negative: 10,
+        category: "Serviço de rede",
+        positive: 10.5,
+        neutral: 51.4,
+        negative: 38.1,
       },
-      { category: "Preço", positive: 35, neutral: 40, negative: 25 },
-      { category: "Suporte Técnico", positive: 28, neutral: 24, negative: 48 },
       {
-        category: "Tempo de Resposta",
-        positive: 22,
-        neutral: 30,
-        negative: 48,
+        category: "Suporte ao cliente",
+        positive: 6.4,
+        neutral: 83.1,
+        negative: 10.5,
       },
-      { category: "Inovação", positive: 55, neutral: 32, negative: 13 },
+      {
+        category: "Cobertura de rede",
+        positive: 1.8,
+        neutral: 84.6,
+        negative: 13.6,
+      },
+      {
+        category: "Oferta e preços",
+        positive: 3.3,
+        neutral: 90.1,
+        negative: 6.6,
+      },
+      {
+        category: "Outro",
+        positive: 2.8,
+        neutral: 90.8,
+        negative: 6.4,
+      },
     ],
   },
 
   // 3b. Respondent Intent
   respondentIntent: {
-    description: `A intenção dos respondentes foi categorizada com base em suas respostas sobre comportamento futuro e recomendação.
-Os dados indicam alta propensão de recompra entre os clientes satisfeitos, mas alertam para um grupo significativo de detratores que podem impactar negativamente a reputação da marca.`,
+    description: `Há um risco significativo de perda de clientes, com 36% dos respondentes provavelmente parando de usar o serviço e mais 34% expressando preocupações, indicando necessidade urgente de estratégias de retenção direcionadas e melhoria da qualidade do serviço.
+Apenas 27% são promotores fortes, apresentando oportunidade de melhorar experiências positivas do cliente e advocacy da marca.
+Além disso, uma taxa de satisfação estável muito baixa de 2% sinaliza insatisfação subjacente, mesmo entre clientes menos vocais, necessitando engajamento proativo para prevenir problemas adicionais.`,
 
     data: [
-      { intent: "Promotores (NPS 9-10)", percentage: 52, count: 649 },
-      { intent: "Neutros (NPS 7-8)", percentage: 25, count: 312 },
-      { intent: "Detratores (NPS 0-6)", percentage: 23, count: 286 },
-      { intent: "Intenção de Recompra Alta", percentage: 68, count: 848 },
-      { intent: "Intenção de Recompra Média", percentage: 22, count: 274 },
-      { intent: "Intenção de Recompra Baixa", percentage: 10, count: 125 },
+      {
+        intent: "Provavelmente parará de usar o produto/serviço",
+        percentage: 36.0,
+        count: 449,
+      },
+      {
+        intent: "Pretende ficar, mas expressa preocupações",
+        percentage: 34.0,
+        count: 424,
+      },
+      {
+        intent: "Muito satisfeito e promoveria o produto/serviço",
+        percentage: 27.0,
+        count: 337,
+      },
+      { intent: "Satisfeito e estável", percentage: 2.0, count: 25 },
     ],
   },
 
   // 3c. Respondent Segmentation
   segmentation: [
     {
-      cluster: "Entusiastas",
-      description: `Clientes altamente satisfeitos, promotores ativos da marca.
-Valorizam qualidade e inovação.
-Representam o maior LTV e menor churn.`,
-      percentage: 42,
+      cluster: "Campeão em Treinamento de IA",
+      description: `Adotante entusiasmado que valoriza treinamento e desenvolvimento de capacidades em pesquisa de marketing orientada por IA dentro de TI.`,
+      percentage: 38.5,
+      id: 1,
       characteristics: [
-        "NPS médio: 9.2",
-        "Ticket médio: R$ 2.8000",
-        "Tempo de cliente: 3+ anos",
+        "Foco em treinamento e capacitação",
+        "Alto engajamento com IA",
+        "Pesquisa de marketing em TI",
       ],
     },
     {
-      cluster: "Neutros",
-      description: `Clientes satisfeitos mas não engajados.
-Sensíveis a preço e concorrência.
-Potencial de conversão para Entusiastas com ações direcionadas.`,
-      percentage: 35,
+      cluster: "Detrator de TI Focado em Treinamento",
+      description: `Cliente crítico em relação a eventos de dados e produtos de IA, enfatizando lacunas no treinamento e no desenvolvimento de capacidades.`,
+      percentage: 15.4,
+      id: 2,
       characteristics: [
-        "NPS médio: 7.5",
-        "Ticket médio: R$ 1.500",
-        "Tempo de cliente: 1-2 anos",
+        "Crítico sobre eventos de dados",
+        "Foco em lacunas de treinamento",
+        "Produtos de IA",
       ],
     },
     {
-      cluster: "Críticos",
-      description: `Clientes insatisfeitos com alto risco de churn.
-Principais queixas relacionadas a suporte e tempo de resposta.
-Requerem atenção imediata.`,
-      percentage: 23,
+      cluster: "Otimização do Construtor de Capacidade",
+      description: `Satisfeito com as iniciativas de treinamento e capacitação em eventos de dados e IA para pesquisa de marketing em TI.`,
+      percentage: 15.4,
+      id: 3,
       characteristics: [
-        "NPS médio: 4.1",
-        "Ticket médio: R$ 900",
-        "Tempo de cliente: < 1 ano",
+        "Satisfeito com treinamento",
+        "Eventos de dados e IA",
+        "Pesquisa de marketing em TI",
+      ],
+    },
+    {
+      cluster: "Defensor de Marketing Focado em ROI",
+      description: `Promotor aproveitando eventos de dados e IA para medir rigorosamente o ROI de marketing em pesquisa de marketing de TI.`,
+      percentage: 12.8,
+      id: 4,
+      characteristics: [
+        "Foco em ROI de marketing",
+        "Medição rigorosa",
+        "Eventos de dados e IA",
+      ],
+    },
+    {
+      cluster: "Cético em ROI no Marketing de TI",
+      description: `Cliente insatisfeito com a medição do ROI de marketing usando Data Events e IA em pesquisa de marketing de TI.`,
+      percentage: 5.1,
+      id: 5,
+      characteristics: [
+        "Insatisfeito com medição de ROI",
+        "Data Events e IA",
+        "Pesquisa de marketing de TI",
+      ],
+    },
+    {
+      cluster: "Estrategista de Dados de TI Neutro",
+      description: `Cliente de TI passivamente envolvido avaliando eventos de dados e IA dentro de contextos de pesquisa de marketing.`,
+      percentage: 5.1,
+      id: 6,
+      characteristics: [
+        "Envolvimento passivo",
+        "Avaliação de eventos de dados",
+        "Contextos de pesquisa de marketing",
+      ],
+    },
+    {
+      cluster: "Outros",
+      description: `Grupo de 3 pequenos segmentos que não formam clusters estatisticamente relevantes ou distintos por si só.`,
+      percentage: 7.8,
+      id: null,
+      characteristics: [
+        "Segmentos diversos",
+        "Baixa representatividade estatística",
+        "Agrupamento residual",
       ],
     },
   ],
@@ -170,41 +255,82 @@ export const responseDetails = {
   closedQuestions: [
     {
       id: 1,
-      question: "Qual seu nível de satisfação geral com a TechCorp?",
-      summary: `A maioria dos respondentes (67%) demonstra satisfação alta ou muito alta com a empresa.
-Apenas 12% expressaram insatisfação, indicando uma base sólida de clientes satisfeitos.`,
+      question:
+        "Qual é a probabilidade de você recomendar nossa empresa a um amigo ou colega em uma escala de 0 a 10?",
+      summary: `Com 51% dos entrevistados classificados como detratores e apenas 30% como promotores, a empresa enfrenta um risco significativo de boca a boca negativo impactando a aquisição e retenção de clientes no competitivo mercado de telefonia móvel.`,
       data: [
-        { option: "Muito Satisfeito", value: 324, percentage: 26 },
-        { option: "Satisfeito", value: 511, percentage: 41 },
-        { option: "Neutro", value: 262, percentage: 21 },
-        { option: "Insatisfeito", value: 112, percentage: 9 },
-        { option: "Muito Insatisfeito", value: 38, percentage: 3 },
-      ],
-    },
-    {
-      id: 2,
-      question: "Como você avalia a qualidade dos nossos produtos?",
-      summary: `A qualidade dos produtos é o ponto mais forte da empresa, com 78% de avaliações positivas.
-Este é um diferencial competitivo importante a ser mantido.`,
-      data: [
-        { option: "Excelente", value: 412, percentage: 33 },
-        { option: "Muito Boa", value: 561, percentage: 45 },
-        { option: "Boa", value: 187, percentage: 15 },
-        { option: "Regular", value: 62, percentage: 5 },
-        { option: "Ruim", value: 25, percentage: 2 },
+        { option: "Detrator", value: 636, percentage: 51.0 },
+        { option: "Promotor", value: 374, percentage: 30.0 },
+        { option: "Neutro", value: 237, percentage: 19.0 },
       ],
     },
     {
       id: 3,
-      question: "Com que frequência você utiliza nossos serviços?",
+      question:
+        "Dentre as opções qual é o principal ponto que impacta sua satisfação?",
       summary:
-        "Mais da metade dos clientes (54%) utiliza os serviços semanalmente ou diariamente, indicando alto engajamento com a plataforma.",
+        "Problemas relacionados à internet, particularmente quedas e ausência de sinal, representam aproximadamente 26% da insatisfação dos clientes, indicando uma necessidade crítica de melhorar a estabilidade e a cobertura da rede para aumentar a satisfação nos serviços de telefonia móvel.",
       data: [
-        { option: "Diariamente", value: 299, percentage: 24 },
-        { option: "Semanalmente", value: 374, percentage: 30 },
-        { option: "Quinzenalmente", value: 237, percentage: 19 },
-        { option: "Mensalmente", value: 224, percentage: 18 },
-        { option: "Raramente", value: 113, percentage: 9 },
+        {
+          option: "Queda / instabilidade na internet / internet trava / oscila",
+          value: 168,
+          percentage: 13.5,
+        },
+        { option: "Falta de sinal de internet", value: 156, percentage: 12.5 },
+        {
+          option: "Custo benefício do plano/oferta é ruim",
+          value: 117,
+          percentage: 9.4,
+        },
+        { option: "Outro motivo", value: 117, percentage: 9.4 },
+        {
+          option: "Qualidade do sinal / Cobertura",
+          value: 91,
+          percentage: 7.3,
+        },
+        {
+          option: "Qualidade do Sinal / Cobertura ruim",
+          value: 91,
+          percentage: 7.3,
+        },
+        {
+          option: "Pacote de internet suficiente / dura o mês todo",
+          value: 77,
+          percentage: 6.2,
+        },
+        {
+          option: "Estabilidade na internet / internet não trava / não oscila",
+          value: 65,
+          percentage: 5.2,
+        },
+        {
+          option: "Custo benefício do plano/oferta é bom",
+          value: 52,
+          percentage: 4.2,
+        },
+        {
+          option: "Velocidade da internet rápida / boa",
+          value: 52,
+          percentage: 4.2,
+        },
+        {
+          option: "Qualidade do sinal / Cobertura boa",
+          value: 52,
+          percentage: 4.2,
+        },
+        { option: "Velocidade da internet", value: 52, percentage: 4.2 },
+        {
+          option:
+            "Pacote de internet acaba rápido / não suficiente/ não dura o mês todo",
+          value: 39,
+          percentage: 3.1,
+        },
+        { option: "Estabilidade na internet", value: 26, percentage: 2.1 },
+        {
+          option: "Existência de sinal de internet",
+          value: 26,
+          percentage: 2.1,
+        },
       ],
     },
     {
@@ -224,6 +350,122 @@ Este é um diferencial competitivo importante a ser mantido.`,
 
   // Open Questions
   openQuestions: [
+    {
+      id: 2,
+      question: "Quais são os principais pontos que impactam sua satisfação?",
+      summary: `A satisfação do cliente é impactada principalmente por problemas no serviço de rede, com 51 menções negativas focadas em cobertura, confiabilidade e estabilidade da rede superando 16 menções positivas sobre qualidade e velocidade do serviço, enquanto o suporte ao cliente apresenta um sentimento negativo menor, mas notável.`,
+      sentimentData: [
+        {
+          category: "Serviço de rede",
+          positive: 10.5,
+          neutral: 51.4,
+          negative: 38.1,
+        },
+        {
+          category: "Suporte ao cliente",
+          positive: 6.4,
+          neutral: 83.1,
+          negative: 10.5,
+        },
+        {
+          category: "Cobertura de rede",
+          positive: 1.8,
+          neutral: 84.6,
+          negative: 13.6,
+        },
+        {
+          category: "Oferta e preços",
+          positive: 3.3,
+          neutral: 90.1,
+          negative: 6.6,
+        },
+        { category: "Outro", positive: 2.8, neutral: 90.8, negative: 6.4 },
+      ],
+      topCategories: [
+        {
+          rank: 1,
+          category: "Serviço de rede",
+          mentions: 67,
+          percentage: 100,
+          topics: [
+            { topic: "agilidade no atendimento", sentiment: "positive" },
+            { topic: "qualidade dos resultados", sentiment: "positive" },
+            { topic: "eficiência do serviço", sentiment: "positive" },
+            { topic: "confiabilidade do serviço", sentiment: "negative" },
+            { topic: "confiabilidade da rede", sentiment: "negative" },
+            { topic: "estabilidade da rede", sentiment: "negative" },
+          ],
+        },
+        {
+          rank: 2,
+          category: "Suporte ao cliente",
+          mentions: 17,
+          percentage: 25,
+          topics: [
+            { topic: "atenção ao cliente", sentiment: "positive" },
+            { topic: "tratamento respeitoso", sentiment: "positive" },
+            { topic: "prontidão de resposta", sentiment: "positive" },
+            {
+              topic: "preocupações com a retenção de clientes",
+              sentiment: "negative",
+            },
+            { topic: "usabilidade do aplicativo", sentiment: "negative" },
+            {
+              topic: "intenção de cancelamento do cliente",
+              sentiment: "negative",
+            },
+          ],
+        },
+        {
+          rank: 3,
+          category: "Cobertura de rede",
+          mentions: 15,
+          percentage: 22,
+          topics: [
+            { topic: "cobertura de rede", sentiment: "positive" },
+            { topic: "qualidade do sinal", sentiment: "positive" },
+            { topic: "disponibilidade do serviço", sentiment: "negative" },
+          ],
+        },
+      ],
+      wordCloud: [
+        { text: "confiabilidade", value: 51 },
+        { text: "rede", value: 48 },
+        { text: "qualidade", value: 45 },
+        { text: "estabilidade", value: 42 },
+        { text: "conectividade", value: 38 },
+        { text: "velocidade", value: 35 },
+        { text: "cobertura", value: 32 },
+        { text: "sinal", value: 28 },
+        { text: "preço", value: 25 },
+        { text: "disponibilidade", value: 22 },
+        { text: "atendimento", value: 20 },
+        { text: "conexão", value: 18 },
+        { text: "intensidade", value: 16 },
+        { text: "internet", value: 14 },
+        { text: "resposta", value: 12 },
+        { text: "desempenho", value: 10 },
+        { text: "resolução", value: 9 },
+        { text: "problema", value: 8 },
+        { text: "eficiência", value: 7 },
+        { text: "agilidade", value: 6 },
+        { text: "resultado", value: 5 },
+        { text: "faturamento", value: 4 },
+        { text: "autonomia", value: 3 },
+        { text: "serviço", value: 3 },
+        { text: "satisfação", value: 2 },
+        { text: "cancelamento", value: 2 },
+        { text: "retenção", value: 2 },
+        { text: "renovação", value: 1 },
+        { text: "telemarketing", value: 1 },
+        { text: "duração", value: 1 },
+        { text: "plano", value: 1 },
+        { text: "móvel", value: 1 },
+        { text: "comunicação", value: 1 },
+        { text: "mudança", value: 1 },
+        { text: "4G", value: 1 },
+      ],
+    },
     {
       id: 5,
       question: "O que você mais gosta na TechCorp?",
@@ -400,18 +642,130 @@ Seguida pela comunicação e transparência de preços.`,
 export const attributeDeepDive = {
   attributes: [
     {
+      id: "customerType",
+      name: "Tipo de Cliente",
+      summary: `O NPS negativo geral em todos os tipos de clientes sinaliza uma necessidade crítica de melhorar a qualidade do serviço para aumentar a defesa do cliente, com os segmentos pós-pago e controle exigindo atenção imediata devido aos seus níveis mais altos de insatisfação.
+Os principais pontos problemáticos variam por segmento: clientes pós-pago estão frustrados principalmente com a funcionalidade do aplicativo e problemas de conectividade 5G, enquanto usuários controle enfrentam problemas de faturamento e serviço 4G, e clientes pré-pago, embora relativamente mais satisfeitos, ainda levantam preocupações sobre concorrência e desempenho do aplicativo.
+Melhorias direcionadas focadas na confiabilidade do aplicativo, desempenho da rede e faturamento transparente, adaptadas aos problemas específicos de cada segmento, podem aumentar significativamente a satisfação do cliente e reduzir a rotatividade.`,
+      distribution: [
+        { segment: "Pré-pago", count: 37, percentage: 37.0 },
+        { segment: "Controle", count: 35, percentage: 35.0 },
+        { segment: "Pós-pago", count: 28, percentage: 28.0 },
+      ],
+      sentiment: [
+        { segment: "Controle", positive: 24.3, neutral: 0.7, negative: 75.0 },
+        { segment: "Pré-pago", positive: 35.8, neutral: 0.8, negative: 63.4 },
+        { segment: "Pós-pago", positive: 13.8, neutral: 0.8, negative: 85.4 },
+      ],
+      npsSummary: `Os escores NPS para todos os tipos de clientes (controle, pré-pago, pós-pago) são negativos, indicando insatisfação geral e baixa probabilidade de recomendação da empresa.
+O segmento pré-pago apresenta um sentimento relativamente melhor, com menor proporção de detratores e um NPS menos negativo (-13.5), em comparação com clientes controle e pós-pago, que têm maiores percentuais de detratores e escores mais negativos (-22.8 e -28.6, respectivamente).
+Há uma necessidade urgente de melhorias direcionadas na qualidade do serviço e experiência do cliente, especialmente para usuários pós-pago e controle, para aumentar a defesa da marca e reduzir a rotatividade no competitivo mercado de telefonia móvel.`,
+      nps: [
+        { segment: "Controle", nps: -22.8 },
+        { segment: "Pré-pago", nps: -13.5 },
+        { segment: "Pós-pago", nps: -28.6 },
+      ],
+      npsDistribution: [
+        {
+          segment: "Controle",
+          promotores: 28.6,
+          neutros: 20.0,
+          detratores: 51.4,
+        },
+        {
+          segment: "Pré-pago",
+          promotores: 35.1,
+          neutros: 16.2,
+          detratores: 48.6,
+        },
+        {
+          segment: "Pós-pago",
+          promotores: 25.0,
+          neutros: 21.4,
+          detratores: 53.6,
+        },
+      ],
+      positiveCategories: [
+        {
+          category: "Serviço de rede",
+          Controle: 27.8,
+          "Pré-pago": 43.2,
+          "Pós-pago": 70.6,
+        },
+        {
+          category: "Suporte ao cliente",
+          Controle: 47.2,
+          "Pré-pago": 18.2,
+          "Pós-pago": 0.0,
+        },
+        {
+          category: "Oferta e preços",
+          Controle: 16.7,
+          "Pré-pago": 15.9,
+          "Pós-pago": 0.0,
+        },
+      ],
+      negativeCategories: [
+        {
+          category: "Serviço de rede",
+          Controle: 46.8,
+          "Pré-pago": 56.4,
+          "Pós-pago": 50.5,
+        },
+        {
+          category: "Cobertura de rede",
+          Controle: 22.5,
+          "Pré-pago": 19.2,
+          "Pós-pago": 12.4,
+        },
+        {
+          category: "Suporte ao cliente",
+          Controle: 18.0,
+          "Pré-pago": 6.4,
+          "Pós-pago": 15.2,
+        },
+      ],
+      satisfactionImpactSummary: `Clientes pós-pagos apresentam o maior sentimento negativo (85,4%), principalmente devido a problemas relacionados ao aplicativo e à conectividade 5G que afetam sua satisfação.
+Clientes pré-pagos têm um feedback relativamente mais positivo, valorizando a cobertura da rede e os sistemas de bônus, embora existam algumas preocupações sobre a concorrência e o desempenho do aplicativo.
+Clientes controle apreciam o suporte ao cliente e os planos acessíveis, mas relatam problemas de faturamento e serviço 4G que impactam negativamente a satisfação.`,
+      satisfactionImpactSentiment: [
+        {
+          sentiment: "Negativo",
+          Controle: 75.0,
+          "Pré-pago": 63.4,
+          "Pós-pago": 85.4,
+        },
+        {
+          sentiment: "Não aplicável",
+          Controle: 0.7,
+          "Pré-pago": 0.8,
+          "Pós-pago": 0.8,
+        },
+        {
+          sentiment: "Positivo",
+          Controle: 24.3,
+          "Pré-pago": 35.8,
+          "Pós-pago": 13.8,
+        },
+      ],
+    },
+    {
       id: "state",
       name: "Estado",
-      summary: `A distribuição geográfica mostra concentração no Sudeste (68%), com São Paulo liderando em volume de respondentes.
-O sentimento varia significativamente por região.
-Com o Sul apresentando os maiores índices de satisfação.`,
+      summary: `A lealdade e satisfação do cliente variam significativamente entre os estados, com o Ceará (CE) demonstrando um forte sentimento positivo principalmente devido à excelente cobertura de rede, enquanto Rio de Janeiro (RJ), Paraná (PR) e São Paulo (SP) enfrentam desafios críticos refletidos em pontuações negativas de NPS e alta insatisfação relacionada ao suporte ao cliente deficiente e à usabilidade do aplicativo.
+Para aumentar a satisfação do cliente e reduzir o churn, a empresa deve priorizar melhorias direcionadas nos serviços de suporte ao cliente e na experiência digital do aplicativo em RJ, PR e SP, além de manter e promover as vantagens da cobertura de rede no CE.
+Implementar estratégias específicas para cada região que abordem esses pontos críticos será essencial para converter detratores em promotores e impulsionar um crescimento equilibrado em todos os estados.`,
       distribution: [
-        { segment: "São Paulo", count: 498, percentage: 40 },
-        { segment: "Rio de Janeiro", count: 224, percentage: 18 },
-        { segment: "Minas Gerais", count: 125, percentage: 10 },
-        { segment: "Paraná", count: 112, percentage: 9 },
-        { segment: "Rio Grande do Sul", count: 100, percentage: 8 },
-        { segment: "Outros", count: 188, percentage: 15 },
+        { segment: "RJ", count: 14, percentage: 14.0 },
+        { segment: "PR", count: 14, percentage: 14.0 },
+        { segment: "PE", count: 13, percentage: 13.0 },
+        { segment: "SP", count: 11, percentage: 11.0 },
+        { segment: "CE", count: 11, percentage: 11.0 },
+        { segment: "DF", count: 9, percentage: 9.0 },
+        { segment: "SC", count: 9, percentage: 9.0 },
+        { segment: "BA", count: 9, percentage: 9.0 },
+        { segment: "RS", count: 5, percentage: 5.0 },
+        { segment: "MG", count: 5, percentage: 5.0 },
       ],
       sentiment: [
         { segment: "São Paulo", positive: 62, neutral: 23, negative: 15 },
@@ -425,6 +779,129 @@ Com o Sul apresentando os maiores índices de satisfação.`,
           negative: 8,
         },
         { segment: "Outros", positive: 58, neutral: 27, negative: 15 },
+      ],
+      npsSummary: `Os dados revelam uma disparidade clara na lealdade do cliente entre os estados, com o Ceará (CE) apresentando um NPS fortemente positivo de 9,1, impulsionado por uma alta proporção de promotores, enquanto todos os outros estados exibem escores NPS negativos, indicando insatisfação geral.
+Os piores escores estão no Rio de Janeiro (RJ) e no Paraná (PR), onde os detratores predominam, sugerindo problemas significativos com a qualidade do serviço ou o valor percebido nessas regiões.
+Intervenções direcionadas que abordem pontos problemáticos específicos de cada região, especialmente em RJ e PR, serão críticas para melhorar a satisfação do cliente e reduzir o churn.`,
+      nps: [
+        { segment: "CE", nps: 9.1 },
+        { segment: "PE", nps: -7.7 },
+        { segment: "PR", nps: -14.3 },
+        { segment: "RJ", nps: -28.6 },
+        { segment: "SP", nps: -18.2 },
+      ],
+      npsDistribution: [
+        {
+          segment: "CE",
+          promotores: 45.5,
+          neutros: 18.2,
+          detratores: 36.4,
+        },
+        {
+          segment: "PE",
+          promotores: 38.5,
+          neutros: 15.4,
+          detratores: 46.2,
+        },
+        {
+          segment: "PR",
+          promotores: 35.7,
+          neutros: 14.3,
+          detratores: 50.0,
+        },
+        {
+          segment: "RJ",
+          promotores: 21.4,
+          neutros: 28.6,
+          detratores: 50.0,
+        },
+        {
+          segment: "SP",
+          promotores: 27.3,
+          neutros: 27.3,
+          detratores: 45.5,
+        },
+      ],
+      satisfactionImpactSummary: `A satisfação do cliente varia significativamente por região, com SP apresentando o maior sentimento negativo (94,6%), impulsionado principalmente por suporte ao cliente deficiente e problemas de usabilidade do aplicativo.
+O feedback positivo no CE está fortemente ligado à cobertura de rede, enquanto em PE e PR, o suporte ao cliente e os sistemas de bônus são os principais fatores de satisfação.
+Abordar as deficiências no suporte ao cliente e os problemas relacionados ao aplicativo em regiões com alta negatividade, especialmente SP e RJ, deve ser priorizado para melhorar a satisfação geral.`,
+      satisfactionImpactSentiment: [
+        {
+          sentiment: "Negativo",
+          CE: 77.4,
+          PE: 62.5,
+          PR: 58.3,
+          RJ: 71.7,
+          SP: 94.6,
+        },
+        {
+          sentiment: "Não aplicável",
+          CE: 0.0,
+          PE: 0.0,
+          PR: 2.8,
+          RJ: 3.8,
+          SP: 0.0,
+        },
+        {
+          sentiment: "Positivo",
+          CE: 22.6,
+          PE: 37.5,
+          PR: 38.9,
+          RJ: 24.5,
+          SP: 5.4,
+        },
+      ],
+      positiveCategories: [
+        {
+          category: "Serviço de rede",
+          CE: 14.3,
+          PE: 28.6,
+          PR: 21.4,
+          RJ: 76.9,
+          SP: 33.3,
+        },
+        {
+          category: "Suporte ao cliente",
+          CE: 14.3,
+          PE: 23.8,
+          PR: 21.4,
+          RJ: 23.1,
+          SP: 33.3,
+        },
+        {
+          category: "Oferta e preços",
+          CE: 0.0,
+          PE: 28.6,
+          PR: 42.9,
+          RJ: 0.0,
+          SP: 0.0,
+        },
+      ],
+      negativeCategories: [
+        {
+          category: "Serviço de rede",
+          CE: 58.3,
+          PE: 34.3,
+          PR: 66.7,
+          RJ: 28.9,
+          SP: 41.5,
+        },
+        {
+          category: "Cobertura de rede",
+          CE: 41.7,
+          PE: 17.1,
+          PR: 0.0,
+          RJ: 28.9,
+          SP: 13.2,
+        },
+        {
+          category: "Suporte ao cliente",
+          CE: 0.0,
+          PE: 11.4,
+          PR: 0.0,
+          RJ: 21.1,
+          SP: 28.3,
+        },
       ],
     },
     {
@@ -445,30 +922,6 @@ Há oportunidade de melhorar a experiência para clientes com ensino médio, que
         { segment: "Outros", positive: 52, neutral: 30, negative: 18 },
       ],
     },
-    {
-      id: "customerType",
-      name: "Tipo de Cliente",
-      summary: `Clientes corporativos (Enterprise) apresentam os maiores níveis de satisfação.
-Enquanto consumidores finais têm maior variabilidade.
-PMEs representam uma oportunidade de crescimento com ações focadas em suas necessidades específicas.`,
-      distribution: [
-        { segment: "Enterprise", count: 374, percentage: 30 },
-        { segment: "PME", count: 436, percentage: 35 },
-        { segment: "Consumidor Final", count: 312, percentage: 25 },
-        { segment: "Governo", count: 125, percentage: 10 },
-      ],
-      sentiment: [
-        { segment: "Enterprise", positive: 75, neutral: 17, negative: 8 },
-        { segment: "PME", positive: 58, neutral: 25, negative: 17 },
-        {
-          segment: "Consumidor Final",
-          positive: 52,
-          neutral: 28,
-          negative: 20,
-        },
-        { segment: "Governo", positive: 65, neutral: 25, negative: 10 },
-      ],
-    },
   ],
 };
 
@@ -479,33 +932,65 @@ export const implementationPlan = {
   recommendations: [
     {
       id: 1,
-      title: "Sistema de tickets com SLA garantido",
-      severity: "critical",
+      title:
+        "Atualize a Infraestrutura de Rede para Melhorar a Cobertura e Estabilidade",
+      severity: "high",
       tasks: [
         {
-          task: "Avaliar e selecionar plataforma de tickets",
-          owner: "TI",
-          deadline: "Semana 1-2",
+          task: "Realizar avaliação da infraestrutura de rede atual",
+          owner: "Engenharia de Redes",
         },
         {
-          task: "Configurar SLAs e escalações automáticas",
-          owner: "Operações",
-          deadline: "Semana 3-4",
+          task: "Identificar lacunas de cobertura e estabilidade",
+          owner: "Engenharia de Redes",
         },
         {
-          task: "Treinar equipe de suporte",
-          owner: "RH",
-          deadline: "Semana 5",
+          task: "Definir requisitos técnicos",
+          owner: "Engenharia de Redes",
         },
         {
-          task: "Implementar dashboards de monitoramento",
-          owner: "TI",
-          deadline: "Semana 6",
+          task: "Desenvolver plano de projeto detalhado",
+          owner: "Engenharia de Redes",
         },
         {
-          task: "Go-live e acompanhamento",
-          owner: "Suporte",
-          deadline: "Semana 7-8",
+          task: "Coordenar com RAN para alocação de recursos",
+          owner: "Rede de acesso via rádio (RAN)",
+        },
+        {
+          task: "Selecionar soluções de hardware e software",
+          owner: "Engenharia de Redes",
+        },
+        {
+          task: "Adquirir equipamentos e licenças",
+          owner: "Engenharia de Redes",
+        },
+        {
+          task: "Agendar janelas de instalação",
+          owner: "Operações de rede",
+        },
+        {
+          task: "Implementar atualizações",
+          owner: "Operações de rede",
+        },
+        {
+          task: "Testar componentes",
+          owner: "Operações de rede",
+        },
+        {
+          task: "Monitorar desempenho",
+          owner: "Operações de rede",
+        },
+        {
+          task: "Resolver problemas identificados durante testes e monitoramento",
+          owner: "Operações de rede",
+        },
+        {
+          task: "Fornecer treinamento sobre novos sistemas para equipe de Operações de rede",
+          owner: "Engenharia de Redes",
+        },
+        {
+          task: "Documentar alterações e atualizar registros de configuração de rede",
+          owner: "Engenharia de Redes",
         },
       ],
     },
