@@ -26,8 +26,12 @@ export interface FilterValue {
   values: string[];
 }
 
+type QuestionFilter = "all" | "open" | "closed" | "nps";
+
 interface FilterPanelProps {
   onFiltersChange?: (filters: FilterValue[]) => void;
+  questionFilter?: QuestionFilter;
+  onQuestionFilterChange?: (filter: QuestionFilter) => void;
 }
 
 const filterOptions = [
@@ -36,7 +40,11 @@ const filterOptions = [
   { value: "education", label: "Escolaridade" },
 ];
 
-export function FilterPanel({ onFiltersChange }: FilterPanelProps) {
+export function FilterPanel({
+  onFiltersChange,
+  questionFilter,
+  onQuestionFilterChange,
+}: FilterPanelProps) {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<FilterValue[]>([]);
   const [selectedFilterType, setSelectedFilterType] =
@@ -61,6 +69,9 @@ export function FilterPanel({ onFiltersChange }: FilterPanelProps) {
     }
     const filterType = value as FilterType;
     setSelectedFilterType(filterType);
+
+    // Open the main accordion when any filter other than "none" is selected
+    setIsPanelOpen(true);
 
     // If filter doesn't exist yet, open it automatically
     const exists = activeFilters.find((f) => f.filterType === filterType);
@@ -134,9 +145,12 @@ export function FilterPanel({ onFiltersChange }: FilterPanelProps) {
         onFiltersChange(newFilters);
       }
 
-      // Auto-open the filter when values are added
-      if (checked && !existingFilter) {
-        setOpenFilters((prev) => new Set([...prev, filterType]));
+      // Auto-open the main accordion and the filter when values are added
+      if (checked) {
+        setIsPanelOpen(true);
+        if (!existingFilter) {
+          setOpenFilters((prev) => new Set([...prev, filterType]));
+        }
       }
 
       return newFilters;
@@ -178,26 +192,88 @@ export function FilterPanel({ onFiltersChange }: FilterPanelProps) {
     <Card className="card-elevated border-0 shadow-none">
       <Collapsible open={isPanelOpen} onOpenChange={setIsPanelOpen}>
         <CardContent className="pt-6 pb-6">
+          {/* Question Type Filter Pills */}
+          {questionFilter !== undefined && onQuestionFilterChange && (
+            <div className="flex flex-wrap gap-2 items-center mb-4">
+              <Badge
+                variant={questionFilter === "all" ? "default" : "outline"}
+                className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full ${
+                  questionFilter === "all"
+                    ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
+                    : ""
+                }`}
+                onClick={() => onQuestionFilterChange("all")}
+              >
+                Todas
+              </Badge>
+              <Badge
+                variant={questionFilter === "open" ? "default" : "outline"}
+                className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full ${
+                  questionFilter === "open"
+                    ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
+                    : ""
+                }`}
+                onClick={() => onQuestionFilterChange("open")}
+              >
+                Questões de Campo Aberto
+              </Badge>
+              <Badge
+                variant={questionFilter === "closed" ? "default" : "outline"}
+                className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full ${
+                  questionFilter === "closed"
+                    ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
+                    : ""
+                }`}
+                onClick={() => onQuestionFilterChange("closed")}
+              >
+                Questões Fechadas
+              </Badge>
+              <Badge
+                variant={questionFilter === "nps" ? "default" : "outline"}
+                className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full ${
+                  questionFilter === "nps"
+                    ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
+                    : ""
+                }`}
+                onClick={() => onQuestionFilterChange("nps")}
+              >
+                NPS
+              </Badge>
+            </div>
+          )}
+
           {/* Header - Always visible */}
           <div className="flex items-center gap-3 flex-wrap">
             <div className="flex items-center gap-2">
-              <Filter className="w-4 h-4 text-primary" />
+              <Filter className="w-4 h-4 text-[hsl(var(--custom-blue))]" />
               <h3 className="font-semibold text-sm">Filtros</h3>
             </div>
 
             {/* Filter Type Selector - Always visible */}
-            <div className="flex-1 min-w-[200px]">
+            <div className="flex-shrink-0">
               <Select
                 value={selectedFilterType || "none"}
                 onValueChange={handleFilterTypeSelect}
               >
-                <SelectTrigger id="filter-type" className="w-full">
+                <SelectTrigger
+                  id="filter-type"
+                  className="w-auto border-[hsl(var(--custom-blue))] focus:ring-[hsl(var(--custom-blue))]"
+                >
                   <SelectValue placeholder="Selecione um tipo de filtro" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="none">Nenhum</SelectItem>
+                  <SelectItem
+                    value="none"
+                    className="focus:bg-[hsl(var(--custom-blue))]/20 focus:text-white"
+                  >
+                    Nenhum
+                  </SelectItem>
                   {filterOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
+                    <SelectItem
+                      key={option.value}
+                      value={option.value}
+                      className="focus:bg-[hsl(var(--custom-blue))]/20 focus:text-white"
+                    >
                       {option.label}
                     </SelectItem>
                   ))}
@@ -327,6 +403,7 @@ export function FilterPanel({ onFiltersChange }: FilterPanelProps) {
                                           checked as boolean
                                         )
                                       }
+                                      className="border-[hsl(var(--custom-blue))] data-[state=checked]:bg-[hsl(var(--custom-blue))] data-[state=checked]:text-white focus-visible:ring-[hsl(var(--custom-blue))]"
                                     />
                                     <Label
                                       htmlFor={`${filter.filterType}-${value}`}
@@ -416,6 +493,7 @@ export function FilterPanel({ onFiltersChange }: FilterPanelProps) {
                                 checked as boolean
                               )
                             }
+                            className="border-[hsl(var(--custom-blue))] data-[state=checked]:bg-[hsl(var(--custom-blue))] data-[state=checked]:text-white focus-visible:ring-[hsl(var(--custom-blue))]"
                           />
                           <Label
                             htmlFor={`${selectedFilterType}-${value}`}
@@ -433,7 +511,7 @@ export function FilterPanel({ onFiltersChange }: FilterPanelProps) {
               <div className="flex justify-end pt-4 border-t">
                 <Button
                   onClick={() => setIsPanelOpen(false)}
-                  className="min-w-20"
+                  className="min-w-20 bg-[hsl(var(--custom-blue))] text-white hover:bg-[hsl(var(--custom-blue))]/80"
                 >
                   OK
                 </Button>

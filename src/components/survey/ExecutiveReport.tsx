@@ -80,7 +80,7 @@ export function ExecutiveReport({
 
             {/* Principais Descobertas e Conclusões lado a lado em telas maiores */}
             <div className="grid gap-6 md:grid-cols-2">
-              <Card className="card-elevated highlight-container-light border-l-4 border-l-[#ff9e2b]">
+              <Card className="card-elevated highlight-container-light border-l-4 border-l-[#ff9e2b] bg-white/10">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-xl font-bold text-white">
                     Principais Descobertas
@@ -100,7 +100,7 @@ export function ExecutiveReport({
                 </CardContent>
               </Card>
 
-              <Card className="card-elevated border-l-4 border-l-[#ff9e2b]">
+              <Card className="card-elevated border-l-4 border-l-[#ff9e2b] bg-white/10">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-xl font-bold text-white">
                     Conclusões
@@ -131,7 +131,7 @@ export function ExecutiveReport({
             Recomendações
           </h2>
 
-          <Card className="card-elevated overflow-hidden">
+          <Card className="card-elevated overflow-hidden bg-white/10">
             <Table>
               <TableHeader>
                 <TableRow className="bg-white/5">

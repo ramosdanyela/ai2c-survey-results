@@ -48,7 +48,7 @@ export function AttributeDeepDive() {
               <TabsTrigger
                 key={attr.id}
                 value={attr.id}
-                className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                className="flex items-center gap-2 data-[state=active]:bg-[hsl(var(--custom-blue))] data-[state=active]:text-white"
               >
                 <Icon className="w-4 h-4" />
                 {attr.name}

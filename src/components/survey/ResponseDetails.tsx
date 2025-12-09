@@ -66,60 +66,13 @@ export function ResponseDetails() {
 
   return (
     <div className="space-y-8 animate-fade-in">
-      {/* Filter Panel and Question Type Filter Pills */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start mb-6">
-        {/* Filter Panel - Ocupa metade da tela */}
-        <div className="lg:col-span-1">
-          <FilterPanel onFiltersChange={handleFiltersChange} />
-        </div>
-
-        {/* Question Type Filter Pills - Ocupa a outra metade */}
-        <div className="flex flex-wrap gap-2 items-center justify-center lg:justify-start lg:col-span-1 h-full">
-          <Badge
-            variant={questionFilter === "all" ? "default" : "outline"}
-            className={`cursor-pointer px-4 py-2 text-base font-normal ${
-              questionFilter === "all"
-                ? "bg-primary/70 hover:bg-primary/80"
-                : ""
-            }`}
-            onClick={() => setQuestionFilter("all")}
-          >
-            Todas
-          </Badge>
-          <Badge
-            variant={questionFilter === "open" ? "default" : "outline"}
-            className={`cursor-pointer px-4 py-2 text-base font-normal ${
-              questionFilter === "open"
-                ? "bg-primary/70 hover:bg-primary/80"
-                : ""
-            }`}
-            onClick={() => setQuestionFilter("open")}
-          >
-            Questões de Campo Aberto
-          </Badge>
-          <Badge
-            variant={questionFilter === "closed" ? "default" : "outline"}
-            className={`cursor-pointer px-4 py-2 text-base font-normal ${
-              questionFilter === "closed"
-                ? "bg-primary/70 hover:bg-primary/80"
-                : ""
-            }`}
-            onClick={() => setQuestionFilter("closed")}
-          >
-            Questões Fechadas
-          </Badge>
-          <Badge
-            variant={questionFilter === "nps" ? "default" : "outline"}
-            className={`cursor-pointer px-4 py-2 text-base font-normal ${
-              questionFilter === "nps"
-                ? "bg-primary/70 hover:bg-primary/80"
-                : ""
-            }`}
-            onClick={() => setQuestionFilter("nps")}
-          >
-            NPS
-          </Badge>
-        </div>
+      {/* Filter Panel with Question Type Filter Pills */}
+      <div className="mb-6">
+        <FilterPanel
+          onFiltersChange={handleFiltersChange}
+          questionFilter={questionFilter}
+          onQuestionFilterChange={setQuestionFilter}
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -327,9 +280,9 @@ export function ResponseDetails() {
                                     <span
                                       className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
                                         cat.rank === 1
-                                          ? "bg-primary text-primary-foreground"
+                                          ? "bg-[hsl(var(--custom-blue))] text-white"
                                           : cat.rank === 2
-                                          ? "bg-accent text-accent-foreground"
+                                          ? "bg-[hsl(var(--custom-blue))]/70 text-white"
                                           : "bg-muted-foreground text-background"
                                       }`}
                                     >
