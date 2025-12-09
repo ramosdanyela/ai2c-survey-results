@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { COLOR_ORANGE_PRIMARY } from "@/lib/colors";
 
 const Table = React.forwardRef<
   HTMLTableElement,
@@ -22,7 +23,7 @@ const TableHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <thead
     ref={ref}
-    className={cn("[&_tr]:border-b [&_tr]:border-white/10", className)}
+    className={cn("[&_tr]:border-b [&_tr]:border-border", className)}
     {...props}
   />
 ));
@@ -47,7 +48,7 @@ const TableFooter = React.forwardRef<
   <tfoot
     ref={ref}
     className={cn(
-      "border-t border-white/10 bg-muted/30 font-medium [&>tr]:last:border-b-0",
+      "border-t border-border bg-muted/30 font-medium [&>tr]:last:border-b-0",
       className
     )}
     {...props}
@@ -62,7 +63,7 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      "border-b border-white/10 transition-all duration-200 data-[state=selected]:bg-[#ff9e2b]/20 hover:bg-[#ff9e2b]/10",
+      "border-b border-border transition-all duration-200 data-[state=selected]:bg-primary/20 hover:bg-primary/10",
       className
     )}
     {...props}

@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Filter, X, ChevronDown, ChevronRight } from "lucide-react";
+import {
+  Filter,
+  X,
+  ChevronDown,
+  ChevronRight,
+  FileText,
+  CheckSquare,
+  TrendingUp,
+} from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -208,35 +216,38 @@ export function FilterPanel({
               </Badge>
               <Badge
                 variant={questionFilter === "open" ? "default" : "outline"}
-                className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full ${
+                className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
                   questionFilter === "open"
                     ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
                     : ""
                 }`}
                 onClick={() => onQuestionFilterChange("open")}
               >
-                Questões de Campo Aberto
+                <FileText className="w-3 h-3" />
+                Campo Aberto
               </Badge>
               <Badge
                 variant={questionFilter === "closed" ? "default" : "outline"}
-                className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full ${
+                className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
                   questionFilter === "closed"
                     ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
                     : ""
                 }`}
                 onClick={() => onQuestionFilterChange("closed")}
               >
-                Questões Fechadas
+                <CheckSquare className="w-3 h-3" />
+                Múltipla Escolha
               </Badge>
               <Badge
                 variant={questionFilter === "nps" ? "default" : "outline"}
-                className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full ${
+                className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
                   questionFilter === "nps"
                     ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
                     : ""
                 }`}
                 onClick={() => onQuestionFilterChange("nps")}
               >
+                <TrendingUp className="w-3 h-3" />
                 NPS
               </Badge>
             </div>

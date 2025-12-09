@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { COLOR_ORANGE_PRIMARY } from "@/lib/colors";
 import {
   executiveReport,
   severityLabels,
@@ -60,12 +61,12 @@ export function ExecutiveReport({
           <div className="grid gap-6">
             <Card className="card-elevated">
               <CardHeader className="pb-3">
-                <CardTitle className="text-xl font-bold text-white">
+                <CardTitle className="text-xl font-bold text-card-foreground">
                   Sobre o Estudo
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-white/70 font-normal leading-relaxed">
+                <p className="text-muted-foreground font-normal leading-relaxed">
                   {executiveReport.summary.aboutStudy
                     .split("\n")
                     .map((line, index, array) => (
@@ -80,14 +81,17 @@ export function ExecutiveReport({
 
             {/* Principais Descobertas e Conclusões lado a lado em telas maiores */}
             <div className="grid gap-6 md:grid-cols-2">
-              <Card className="card-elevated highlight-container-light border-l-4 border-l-[#ff9e2b] bg-white/10">
+              <Card
+                className="card-elevated highlight-container-light border-l-4 bg-muted/10"
+                style={{ borderLeftColor: COLOR_ORANGE_PRIMARY }}
+              >
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-xl font-bold text-white">
+                  <CardTitle className="text-xl font-bold text-card-foreground">
                     Principais Descobertas
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-white/70 font-normal leading-relaxed">
+                  <p className="text-muted-foreground font-normal leading-relaxed">
                     {executiveReport.summary.mainFindings
                       .split("\n")
                       .map((line, index, array) => (
@@ -100,14 +104,17 @@ export function ExecutiveReport({
                 </CardContent>
               </Card>
 
-              <Card className="card-elevated border-l-4 border-l-[#ff9e2b] bg-white/10">
+              <Card
+                className="card-elevated border-l-4 bg-muted/10"
+                style={{ borderLeftColor: COLOR_ORANGE_PRIMARY }}
+              >
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-xl font-bold text-white">
+                  <CardTitle className="text-xl font-bold text-card-foreground">
                     Conclusões
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-white/70 font-normal leading-relaxed">
+                  <p className="text-muted-foreground font-normal leading-relaxed">
                     {executiveReport.summary.conclusions
                       .split("\n")
                       .map((line, index, array) => (
@@ -131,16 +138,20 @@ export function ExecutiveReport({
             Recomendações
           </h2>
 
-          <Card className="card-elevated overflow-hidden bg-white/10">
-            <Table>
+          <Card className="card-elevated overflow-hidden bg-muted/10">
+            <Table className="table-auto">
               <TableHeader>
-                <TableRow className="bg-white/5">
-                  <TableHead className="w-12 text-white/70">#</TableHead>
-                  <TableHead className="text-white/70">Recomendação</TableHead>
-                  <TableHead className="w-32 text-center text-white/70">
+                <TableRow className="bg-muted/5">
+                  <TableHead className="w-12 text-muted-foreground">
+                    #
+                  </TableHead>
+                  <TableHead className="text-muted-foreground">
+                    Recomendação
+                  </TableHead>
+                  <TableHead className="w-32 text-center text-muted-foreground">
                     Gravidade
                   </TableHead>
-                  <TableHead className="w-64 text-white/70">
+                  <TableHead className="w-64 text-muted-foreground">
                     Stakeholders
                   </TableHead>
                   {onSectionChange && <TableHead className="w-12"></TableHead>}
@@ -148,11 +159,11 @@ export function ExecutiveReport({
               </TableHeader>
               <TableBody>
                 {executiveReport.recommendations.map((rec) => (
-                  <TableRow key={rec.id} className="hover:bg-[#ff9e2b]/10">
-                    <TableCell className="font-medium text-white/70">
+                  <TableRow key={rec.id} className="hover:bg-primary/10">
+                    <TableCell className="font-medium text-muted-foreground">
                       {rec.id}
                     </TableCell>
-                    <TableCell className="font-medium text-white">
+                    <TableCell className="font-medium text-foreground">
                       {rec.recommendation}
                     </TableCell>
                     <TableCell className="text-center">
@@ -178,7 +189,7 @@ export function ExecutiveReport({
                       <TableCell>
                         <button
                           onClick={() => handleNavigateToImplementation(rec.id)}
-                          className="text-white/70 hover:text-[#ff9e2b] transition-colors"
+                          className="text-muted-foreground hover:text-primary transition-colors"
                           title="Ver na Proposta de Implementação"
                           aria-label={`Ver recomendação ${rec.id} na Proposta de Implementação`}
                         >

@@ -3,6 +3,7 @@ import { MapPin, GraduationCap, Building } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { attributeDeepDive } from "@/data/surveyData";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { RGBA_BLACK_SHADOW_20 } from "@/lib/colors";
 import {
   Table,
   TableBody,
@@ -11,17 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  ResponsiveContainer,
-  Tooltip,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Legend,
-  LabelList,
-} from "recharts";
+import { SentimentStackedChart, SimpleBarChart } from "./charts/Charts";
 
 const attributeIcons = {
   state: MapPin,
@@ -41,7 +32,7 @@ export function AttributeDeepDive() {
   return (
     <div className="space-y-8 animate-fade-in">
       <Tabs value={activeAttribute} onValueChange={setActiveAttribute}>
-        <TabsList className="w-full justify-start bg-white/5 p-1 border-0 shadow-[0_2px_8px_rgba(0,0,0,0.2)]">
+        <TabsList className="w-full justify-start bg-muted/10 p-1 border-0">
           {attributeDeepDive.attributes.map((attr) => {
             const Icon = attributeIcons[attr.id as keyof typeof attributeIcons];
             return (
@@ -62,12 +53,12 @@ export function AttributeDeepDive() {
             {/* Summary */}
             <Card className="card-elevated">
               <CardHeader>
-                <CardTitle className="text-xl font-bold text-white">
+                <CardTitle className="text-xl font-bold text-card-foreground">
                   Sumário - {attr.name}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-white/70 leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed">
                   {attr.summary.split("\n").map((line, index, array) => (
                     <span key={index}>
                       {line}
@@ -82,63 +73,27 @@ export function AttributeDeepDive() {
               {/* Distribution - Barras horizontais estilo Nussbaumer */}
               <Card className="card-elevated">
                 <CardHeader>
-                  <CardTitle className="text-xl font-bold text-white">
+                  <CardTitle className="text-xl font-bold text-card-foreground">
                     Distribuição de Respondentes
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-64">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={[...attr.distribution].sort(
-                          (a, b) => b.percentage - a.percentage
-                        )}
-                        layout="vertical"
-                        margin={{ top: 10, right: 80, left: 120, bottom: 10 }}
-                      >
-                        {/* Removido CartesianGrid - estilo Nussbaumer */}
-                        <XAxis
-                          type="number"
-                          domain={[0, 100]}
-                          tickFormatter={(v) => `${v}%`}
-                          axisLine={false}
-                          tickLine={false}
-                        />
-                        <YAxis
-                          type="category"
-                          dataKey="segment"
-                          width={110}
-                          axisLine={false}
-                          tickLine={false}
-                        />
-                        <Tooltip
-                          formatter={(
-                            value: number,
-                            name: string,
-                            props: any
-                          ) => [
-                            `${props.payload.count.toLocaleString()} respondentes (${value}%)`,
-                            props.payload.segment,
-                          ]}
-                        />
-                        <Bar
-                          dataKey="percentage"
-                          fill="hsl(var(--primary))"
-                          radius={[0, 4, 4, 0]}
-                        >
-                          <LabelList
-                            dataKey="percentage"
-                            position="right"
-                            formatter={(value: number) => `${value}%`}
-                            style={{
-                              fill: "hsl(var(--foreground))",
-                              fontSize: "12px",
-                            }}
-                          />
-                        </Bar>
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
+                  <SimpleBarChart
+                    data={attr.distribution}
+                    dataKey="percentage"
+                    yAxisDataKey="segment"
+                    height={256}
+                    margin={{ top: 10, right: 80, left: 120, bottom: 10 }}
+                    yAxisWidth={110}
+                    tooltipFormatter={(
+                      value: number,
+                      name: string,
+                      props: any
+                    ) => [
+                      `${props.payload.count.toLocaleString()} respondentes (${value}%)`,
+                      props.payload.segment,
+                    ]}
+                  />
                   <div className="mt-4">
                     <Table>
                       <TableHeader>
@@ -180,46 +135,11 @@ export function AttributeDeepDive() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-64">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={attr.sentiment}
-                        layout="vertical"
-                        margin={{ top: 10, right: 30, left: 100, bottom: 10 }}
-                      >
-                        <CartesianGrid
-                          strokeDasharray="3 3"
-                          horizontal={false}
-                        />
-                        <XAxis
-                          type="number"
-                          domain={[0, 100]}
-                          tickFormatter={(v) => `${v}%`}
-                        />
-                        <YAxis type="category" dataKey="segment" width={90} />
-                        <Tooltip formatter={(v: number) => [`${v}%`, ""]} />
-                        <Legend />
-                        <Bar
-                          dataKey="positive"
-                          name="Positivo"
-                          fill="hsl(var(--chart-positive))"
-                          stackId="a"
-                        />
-                        <Bar
-                          dataKey="neutral"
-                          name="Neutro"
-                          fill="hsl(var(--chart-neutral))"
-                          stackId="a"
-                        />
-                        <Bar
-                          dataKey="negative"
-                          name="Negativo"
-                          fill="hsl(var(--chart-negative))"
-                          stackId="a"
-                        />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
+                  <SentimentStackedChart
+                    data={attr.sentiment}
+                    height={256}
+                    yAxisDataKey="segment"
+                  />
                   <div className="mt-4">
                     <Table>
                       <TableHeader>
@@ -227,9 +147,6 @@ export function AttributeDeepDive() {
                           <TableHead>Segmento</TableHead>
                           <TableHead className="text-right text-success">
                             Positivo
-                          </TableHead>
-                          <TableHead className="text-right text-white/70">
-                            Neutro
                           </TableHead>
                           <TableHead className="text-right text-destructive">
                             Negativo
@@ -244,9 +161,6 @@ export function AttributeDeepDive() {
                             </TableCell>
                             <TableCell className="text-right text-success">
                               {item.positive}%
-                            </TableCell>
-                            <TableCell className="text-right text-white/70">
-                              {item.neutral}%
                             </TableCell>
                             <TableCell className="text-right text-destructive">
                               {item.negative}%

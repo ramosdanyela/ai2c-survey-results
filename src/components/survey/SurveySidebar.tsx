@@ -7,6 +7,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { surveyInfo } from "@/data/surveyData";
+import { forwardRef, type Ref } from "react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface SurveySidebarProps {
   activeSection: string;
@@ -49,11 +51,14 @@ function SidebarContent({
   onItemClick,
 }: SurveySidebarProps) {
   return (
-    <div className="flex flex-col h-full py-6 px-4">
-      <div className="mb-6 pb-6">
-        <h1 className="text-xs font-bold text-white">{surveyInfo.title}</h1>
+    <div className="flex flex-col h-full py-6 px-4 w-full">
+      <div className="mb-6 pb-6 flex items-center justify-between gap-2">
+        <h1 className="text-xs font-bold text-sidebar-foreground whitespace-nowrap">
+          {surveyInfo.title}
+        </h1>
+        <ThemeToggle className="shrink-0" />
       </div>
-      <nav className="flex flex-col gap-2 items-start">
+      <nav className="flex flex-col gap-2 items-start w-full">
         {menuItems.map((item) => {
           const isActive =
             activeSection === item.id ||
@@ -68,10 +73,10 @@ function SidebarContent({
                 }
               }}
               className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 text-left w-full",
+                "flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 text-left",
                 isActive
                   ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_4px_16px_hsl(var(--custom-blue),0.4)]"
-                  : "text-white/80 hover:text-white hover:bg-[hsl(var(--custom-blue))]/20 border border-transparent hover:border-[hsl(var(--custom-blue))]/40"
+                  : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 border border-transparent hover:border-[hsl(var(--custom-blue))]/40"
               )}
             >
               <item.icon className="w-4 h-4 flex-shrink-0" />
@@ -87,19 +92,23 @@ function SidebarContent({
 }
 
 // Sidebar para desktop (sempre visível em telas grandes)
-export function SurveySidebar({
-  activeSection,
-  onSectionChange,
-}: SurveySidebarProps) {
-  return (
-    <aside className="hidden lg:flex fixed left-0 top-0 h-full w-80 bg-black border-r border-white/10 z-20 overflow-y-auto">
-      <SidebarContent
-        activeSection={activeSection}
-        onSectionChange={onSectionChange}
-      />
-    </aside>
-  );
-}
+export const SurveySidebar = forwardRef<HTMLElement, SurveySidebarProps>(
+  ({ activeSection, onSectionChange }, ref) => {
+    return (
+      <aside
+        ref={ref}
+        className="hidden lg:flex fixed left-0 top-0 h-full bg-sidebar border-r border-sidebar-border z-20 overflow-y-auto"
+        style={{ width: "auto", minWidth: "fit-content" }}
+      >
+        <SidebarContent
+          activeSection={activeSection}
+          onSectionChange={onSectionChange}
+        />
+      </aside>
+    );
+  }
+);
+SurveySidebar.displayName = "SurveySidebar";
 
 // Componente para o conteúdo da sidebar no mobile (dentro do Sheet)
 export function SurveySidebarMobile({
@@ -108,7 +117,10 @@ export function SurveySidebarMobile({
   onItemClick,
 }: SurveySidebarProps) {
   return (
-    <div className="w-80 bg-black h-full overflow-y-auto">
+    <div
+      className="bg-sidebar h-full overflow-y-auto"
+      style={{ width: "auto", minWidth: "fit-content" }}
+    >
       <SidebarContent
         activeSection={activeSection}
         onSectionChange={onSectionChange}

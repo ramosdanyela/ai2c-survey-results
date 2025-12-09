@@ -1,18 +1,15 @@
 import { useState, useMemo } from "react";
-import { Award } from "lucide-react";
+import { Award, CheckSquare, FileText, TrendingUp } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { responseDetails, surveyInfo } from "@/data/surveyData";
 import { WordCloud } from "./WordCloud";
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  LabelList,
-} from "recharts";
+  COLOR_ORANGE_PRIMARY,
+  RGBA_ORANGE_SHADOW_15,
+  RGBA_ORANGE_SHADOW_20,
+  RGBA_BLACK_SHADOW_30,
+} from "@/lib/colors";
+import { SentimentStackedChart, SimpleBarChart } from "./charts/Charts";
 import {
   Accordion,
   AccordionContent,
@@ -90,22 +87,75 @@ export function ResponseDetails() {
             >
               <AccordionItem value={questionValue} className="border-0">
                 <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-muted/30">
-                  <div className="flex items-start gap-3 text-left">
-                    <Badge
-                      variant="outline"
-                      className={`shrink-0 ${
-                        question.type === "open"
-                          ? "bg-accent/10 text-accent border-accent"
-                          : ""
-                      }`}
-                    >
+                  <div className="flex items-start gap-3 text-left w-full">
+                    <Badge variant="outline" className="shrink-0">
                       Q{question.id}
                     </Badge>
-                    <span className="font-medium">{question.question}</span>
+                    <div className="flex-1">
+                      <span className="font-medium block mb-2">
+                        {question.question}
+                      </span>
+                      {/* Question Type and Response Count Pills */}
+                      <div className="flex items-center gap-2 mt-2">
+                        {/* Question Type Pill */}
+                        {(() => {
+                          const isNPS = question.id === 4;
+                          const questionType = isNPS
+                            ? "NPS"
+                            : question.type === "open"
+                            ? "Campo Aberto"
+                            : "Múltipla Escolha";
+                          const QuestionIcon = isNPS
+                            ? TrendingUp
+                            : question.type === "open"
+                            ? FileText
+                            : CheckSquare;
+
+                          // Aplicar cor especial para campo aberto
+                          const pillClassName =
+                            question.type === "open"
+                              ? "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-accent/10 text-accent border border-accent/30 text-xs font-semibold"
+                              : "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted text-foreground text-xs font-semibold";
+
+                          return (
+                            <div className={pillClassName}>
+                              <QuestionIcon className="w-3 h-3" />
+                              <span>{questionType}</span>
+                            </div>
+                          );
+                        })()}
+
+                        {/* Response Count Pill */}
+                        {(() => {
+                          let totalResponses = 0;
+                          if (
+                            question.type === "closed" &&
+                            "data" in question
+                          ) {
+                            // Para questões fechadas, somar todos os valores
+                            totalResponses = question.data.reduce(
+                              (sum, item) => sum + item.value,
+                              0
+                            );
+                          } else if (question.type === "open") {
+                            // Para questões abertas, usar o total de respondentes do survey
+                            totalResponses = surveyInfo.totalRespondents;
+                          }
+
+                          return (
+                            <div className="inline-flex items-center px-2.5 py-1 rounded-full bg-muted/80 text-muted-foreground text-xs font-semibold">
+                              <span>
+                                {totalResponses.toLocaleString()} respostas
+                              </span>
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    </div>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="px-6 pb-6">
-                  <p className="text-white/70 mb-6">
+                  <p className="text-muted-foreground mb-6">
                     {question.summary.split("\n").map((line, index, array) => (
                       <span key={index}>
                         {line}
@@ -116,12 +166,17 @@ export function ResponseDetails() {
 
                   {/* Mostrar score NPS com barra simples quando for questão de NPS */}
                   {questionFilter === "nps" && question.id === 4 && (
-                    <div className="mb-6 p-4 rounded-lg highlight-container-light border-0 shadow-[0_4px_16px_rgba(255,158,43,0.15)]">
+                    <div
+                      className="mb-6 p-4 rounded-lg highlight-container-light border-0"
+                      style={{
+                        boxShadow: `0 4px 16px ${RGBA_ORANGE_SHADOW_15}`,
+                      }}
+                    >
                       <div className="text-center mb-4">
-                        <div className="text-5xl font-bold text-white mb-2">
+                        <div className="text-5xl font-bold text-foreground mb-2">
                           {surveyInfo.nps}
                         </div>
-                        <div className="text-base font-semibold text-white mb-3">
+                        <div className="text-base font-semibold text-foreground mb-3">
                           NPS Score
                         </div>
                         {/* Barra simples com o score para visualização rápida */}
@@ -140,63 +195,28 @@ export function ResponseDetails() {
                   {question.type === "closed" &&
                     "data" in question &&
                     question.data && (
-                      <div className="h-64">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <BarChart
-                            data={[...question.data].sort(
-                              (a, b) => b.percentage - a.percentage
-                            )}
-                            layout="vertical"
-                            margin={{
-                              top: 10,
-                              right: 80,
-                              left: 120,
-                              bottom: 10,
-                            }}
-                          >
-                            {/* Removido CartesianGrid - estilo Nussbaumer */}
-                            <XAxis
-                              type="number"
-                              tickFormatter={(v) => `${v}%`}
-                              axisLine={false}
-                              tickLine={false}
-                              hide={true}
-                            />
-                            <YAxis
-                              type="category"
-                              dataKey="option"
-                              width={110}
-                              axisLine={false}
-                              tickLine={false}
-                            />
-                            <Tooltip
-                              formatter={(
-                                value: number,
-                                name: string,
-                                props: any
-                              ) => [
-                                `${props.payload.value} (${value}%)`,
-                                "Respostas",
-                              ]}
-                            />
-                            <Bar
-                              dataKey="percentage"
-                              fill="hsl(var(--primary))"
-                              radius={[0, 4, 4, 0]}
-                            >
-                              <LabelList
-                                dataKey="percentage"
-                                position="right"
-                                formatter={(value: number) => `${value}%`}
-                                style={{
-                                  fill: "hsl(var(--foreground))",
-                                  fontSize: "12px",
-                                }}
-                              />
-                            </Bar>
-                          </BarChart>
-                        </ResponsiveContainer>
-                      </div>
+                      <SimpleBarChart
+                        data={question.data}
+                        dataKey="percentage"
+                        yAxisDataKey="option"
+                        height={256}
+                        margin={{
+                          top: 10,
+                          right: 80,
+                          left: 120,
+                          bottom: 10,
+                        }}
+                        yAxisWidth={110}
+                        hideXAxis={true}
+                        tooltipFormatter={(
+                          value: number,
+                          name: string,
+                          props: any
+                        ) => [
+                          `${props.payload.value} (${value}%)`,
+                          "Respostas",
+                        ]}
+                      />
                     )}
 
                   {/* Render open question content */}
@@ -209,72 +229,39 @@ export function ResponseDetails() {
                           <h4 className="text-base font-bold text-foreground mb-3">
                             Análise de Sentimento
                           </h4>
-                          <div className="h-48">
-                            <ResponsiveContainer width="100%" height="100%">
-                              <BarChart
-                                data={question.sentimentData}
-                                layout="vertical"
-                                margin={{
-                                  top: 10,
-                                  right: 30,
-                                  left: 100,
-                                  bottom: 10,
-                                }}
-                              >
-                                {/* Removido CartesianGrid - estilo Nussbaumer */}
-                                <XAxis
-                                  type="number"
-                                  tickFormatter={(v) => `${v}%`}
-                                  domain={[0, 100]}
-                                  axisLine={false}
-                                  tickLine={false}
-                                />
-                                <YAxis
-                                  type="category"
-                                  dataKey="category"
-                                  width={90}
-                                  axisLine={false}
-                                  tickLine={false}
-                                />
-                                <Tooltip
-                                  formatter={(v: number) => [`${v}%`, ""]}
-                                />
-                                <Legend />
-                                <Bar
-                                  dataKey="positive"
-                                  name="Positivo"
-                                  fill="hsl(var(--chart-positive))"
-                                  stackId="a"
-                                />
-                                <Bar
-                                  dataKey="neutral"
-                                  name="Neutro"
-                                  fill="hsl(var(--chart-neutral))"
-                                  stackId="a"
-                                />
-                                <Bar
-                                  dataKey="negative"
-                                  name="Negativo"
-                                  fill="hsl(var(--chart-negative))"
-                                  stackId="a"
-                                />
-                              </BarChart>
-                            </ResponsiveContainer>
-                          </div>
+                          <SentimentStackedChart
+                            data={question.sentimentData}
+                            height={192}
+                            showGrid={false}
+                            axisLine={false}
+                            tickLine={false}
+                          />
                         </div>
 
                         {/* Top Categories */}
                         {question.topCategories && (
                           <div className="mb-6">
-                            <h4 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
-                              <Award className="w-4 h-4 text-[#ff9e2b]" />
+                            <h4 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
+                              <Award
+                                className="w-4 h-4"
+                                style={{ color: COLOR_ORANGE_PRIMARY }}
+                              />
                               Top 3 Categorias
                             </h4>
                             <div className="grid md:grid-cols-3 gap-4">
                               {question.topCategories.map((cat) => (
                                 <div
                                   key={cat.rank}
-                                  className="p-4 rounded-lg bg-white/5 border-0 shadow-[0_4px_16px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_32px_rgba(255,158,43,0.2)] transition-all duration-300"
+                                  className="p-4 rounded-lg bg-muted/10 border-0 transition-all duration-300"
+                                  style={{
+                                    boxShadow: `0 4px 16px ${RGBA_BLACK_SHADOW_30}`,
+                                  }}
+                                  onMouseEnter={(e) =>
+                                    (e.currentTarget.style.boxShadow = `0 8px 32px ${RGBA_ORANGE_SHADOW_20}`)
+                                  }
+                                  onMouseLeave={(e) =>
+                                    (e.currentTarget.style.boxShadow = `0 4px 16px ${RGBA_BLACK_SHADOW_30}`)
+                                  }
                                 >
                                   <div className="flex items-center gap-2 mb-3">
                                     <span

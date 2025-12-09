@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { SurveyHeader } from "@/components/survey/SurveyHeader";
 import { ContentRenderer } from "@/components/survey/ContentRenderer";
 import {
@@ -17,6 +17,53 @@ export function SurveyLayout({
   onSectionChange,
 }: SurveyLayoutProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [sidebarWidth, setSidebarWidth] = useState(0);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const sidebarRef = useRef<HTMLAsideElement>(null);
+
+  useEffect(() => {
+    const checkIsDesktop = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+
+    checkIsDesktop();
+    window.addEventListener("resize", checkIsDesktop);
+
+    return () => {
+      window.removeEventListener("resize", checkIsDesktop);
+    };
+  }, []);
+
+  useEffect(() => {
+    const updateSidebarWidth = () => {
+      if (sidebarRef.current && isDesktop) {
+        setSidebarWidth(sidebarRef.current.offsetWidth);
+      } else {
+        setSidebarWidth(0);
+      }
+    };
+
+    // Aguardar um frame para garantir que o DOM está renderizado
+    const timeoutId = setTimeout(updateSidebarWidth, 0);
+    window.addEventListener("resize", updateSidebarWidth);
+
+    // Usar MutationObserver para detectar mudanças no conteúdo da sidebar
+    const observer = new MutationObserver(updateSidebarWidth);
+    if (sidebarRef.current) {
+      observer.observe(sidebarRef.current, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("resize", updateSidebarWidth);
+      observer.disconnect();
+    };
+  }, [activeSection, isDesktop]);
 
   const handleSectionChange = (section: string) => {
     onSectionChange(section);
@@ -24,16 +71,21 @@ export function SurveyLayout({
   };
 
   return (
-    <div className="min-h-screen flex w-full bg-black">
+    <div className="min-h-screen flex w-full bg-background">
       {/* Sidebar Desktop - Sempre visível em telas grandes */}
       <SurveySidebar
+        ref={sidebarRef}
         activeSection={activeSection}
         onSectionChange={onSectionChange}
       />
 
       {/* Sidebar Mobile - Menu hamburger */}
       <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-        <SheetContent side="left" className="p-0 w-80">
+        <SheetContent
+          side="left"
+          className="p-0"
+          style={{ width: "auto", minWidth: "fit-content" }}
+        >
           <SurveySidebarMobile
             activeSection={activeSection}
             onSectionChange={handleSectionChange}
@@ -42,7 +94,12 @@ export function SurveyLayout({
         </SheetContent>
       </Sheet>
 
-      <div className="flex-1 flex flex-col lg:pl-80">
+      <div
+        className="flex-1 flex flex-col transition-all duration-200"
+        style={{
+          marginLeft: isDesktop ? `${sidebarWidth}px` : "0",
+        }}
+      >
         <SurveyHeader
           activeSection={activeSection}
           onSectionChange={onSectionChange}

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { COLOR_ORANGE_PRIMARY } from "@/lib/colors";
 import {
   implementationPlan,
   severityLabels,
@@ -92,13 +93,15 @@ export function ImplementationPlan({ openRecId }: ImplementationPlanProps) {
               severityBorderColors[rec.severity]
             }`}
           >
-            <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-[#ff9e2b]/10">
+            <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-primary/10">
               <div className="flex items-center gap-4 text-left w-full">
                 <Badge className={severityColors[rec.severity]}>
                   {severityLabels[rec.severity]}
                 </Badge>
-                <span className="font-bold flex-1 text-white">{rec.title}</span>
-                <span className="text-sm text-white/70">
+                <span className="font-bold flex-1 text-foreground">
+                  {rec.title}
+                </span>
+                <span className="text-sm text-muted-foreground">
                   {rec.tasks.length} tarefas
                 </span>
               </div>
@@ -106,10 +109,12 @@ export function ImplementationPlan({ openRecId }: ImplementationPlanProps) {
             <AccordionContent className="px-6 pb-6">
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-white/5">
-                    <TableHead className="w-12 text-white/70"></TableHead>
-                    <TableHead className="text-white/70">Tarefa</TableHead>
-                    <TableHead className="w-40 text-white/70">
+                  <TableRow className="bg-muted/10">
+                    <TableHead className="w-12 text-muted-foreground"></TableHead>
+                    <TableHead className="text-muted-foreground">
+                      Tarefa
+                    </TableHead>
+                    <TableHead className="w-40 text-muted-foreground">
                       <div className="flex items-center gap-1">
                         <User className="w-4 h-4" />
                         Área Responsável
@@ -133,8 +138,8 @@ export function ImplementationPlan({ openRecId }: ImplementationPlanProps) {
                         <TableCell
                           className={
                             isChecked
-                              ? "line-through text-white/50"
-                              : "text-white"
+                              ? "line-through text-muted-foreground/50"
+                              : "text-foreground"
                           }
                         >
                           {task.task}

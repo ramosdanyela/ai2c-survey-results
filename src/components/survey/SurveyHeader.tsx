@@ -9,6 +9,7 @@ import {
   Menu,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { COLOR_ORANGE_PRIMARY, RGBA_ORANGE_SHADOW_40 } from "@/lib/colors";
 
 interface SurveyHeaderProps {
   activeSection: string;
@@ -136,7 +137,7 @@ export function SurveyHeader({
   };
 
   return (
-    <header className="sticky top-0 z-10 bg-black border-b border-white/10">
+    <header className="sticky top-0 z-10 bg-background border-b border-border">
       <div className="px-3 sm:px-4 lg:px-6 py-4 flex items-center">
         {/* Hamburger Menu - Visível apenas em telas menores */}
         <div className="lg:hidden mr-3">
@@ -144,7 +145,7 @@ export function SurveyHeader({
             onClick={onMenuClick}
             variant="ghost"
             size="icon"
-            className="text-white hover:bg-white/10"
+            className="text-foreground hover:bg-muted"
           >
             <Menu className="w-5 h-5" />
           </Button>
@@ -165,14 +166,20 @@ export function SurveyHeader({
           )}
         </div>
         <div className="flex-1 flex justify-center">
-          <div className="bg-[#ff9e2b] text-white shadow-[0_4px_16px_rgba(255,158,43,0.4)] px-4 py-2 rounded-lg flex items-center gap-2">
+          <div
+            className="text-white px-4 py-2 rounded-lg flex items-center gap-2"
+            style={{
+              backgroundColor: COLOR_ORANGE_PRIMARY,
+              boxShadow: `0 4px 16px ${RGBA_ORANGE_SHADOW_40}`,
+            }}
+          >
             <Icon className="w-4 h-4 flex-shrink-0" />
             <h1 className="text-2xl font-bold text-white whitespace-nowrap">
               {title}
             </h1>
           </div>
         </div>
-        <div className="flex-1 flex justify-end">
+        <div className="flex-1 flex justify-end items-center gap-2">
           {nextSection && (
             <Button
               onClick={handleNext}

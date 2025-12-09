@@ -16,19 +16,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-  LabelList,
-} from "recharts";
 import { Progress } from "@/components/ui/progress";
 import { FilterPanel, type FilterValue } from "./FilterPanel";
+import { RGBA_BLACK_SHADOW_20 } from "@/lib/colors";
+import {
+  SentimentDivergentChart,
+  NPSStackedChart,
+  SimpleBarChart,
+} from "./charts/Charts";
 
 interface SupportAnalysisProps {
   subSection?: string;
@@ -39,14 +34,6 @@ export function SupportAnalysis({ subSection }: SupportAnalysisProps) {
   const showSentiment = !subSection || subSection === "support-sentiment";
   const showIntent = !subSection || subSection === "support-intent";
   const showSegmentation = !subSection || subSection === "support-segmentation";
-
-  // Transform data for divergent bar chart
-  const divergentData = supportAnalysis.sentimentAnalysis.data.map((item) => ({
-    category: item.category,
-    positive: item.positive,
-    neutral: item.neutral,
-    negative: -item.negative,
-  }));
 
   const handleFiltersChange = (newFilters: FilterValue[]) => {
     setFilters(newFilters);
@@ -80,59 +67,10 @@ export function SupportAnalysis({ subSection }: SupportAnalysisProps) {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={divergentData}
-                    layout="vertical"
-                    margin={{ top: 20, right: 30, left: 100, bottom: 20 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                    <XAxis
-                      type="number"
-                      domain={[-60, 80]}
-                      tickFormatter={(value) => `${Math.abs(value)}%`}
-                    />
-                    <YAxis type="category" dataKey="category" width={90} />
-                    <Tooltip
-                      formatter={(value: number, name: string) => [
-                        `${Math.abs(value)}%`,
-                        name === "negative"
-                          ? "Negativo"
-                          : name === "positive"
-                          ? "Positivo"
-                          : "Neutro",
-                      ]}
-                    />
-                    <Legend
-                      formatter={(value) =>
-                        value === "negative"
-                          ? "Negativo"
-                          : value === "positive"
-                          ? "Positivo"
-                          : "Neutro"
-                      }
-                    />
-                    <Bar
-                      dataKey="negative"
-                      fill="hsl(var(--chart-negative))"
-                      stackId="stack"
-                      radius={[4, 0, 0, 4]}
-                    />
-                    <Bar
-                      dataKey="neutral"
-                      fill="hsl(var(--chart-neutral))"
-                      stackId="stack"
-                    />
-                    <Bar
-                      dataKey="positive"
-                      fill="hsl(var(--chart-positive))"
-                      stackId="stack"
-                      radius={[0, 4, 4, 0]}
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
+              <SentimentDivergentChart
+                data={supportAnalysis.sentimentAnalysis.data}
+                height={320}
+              />
             </CardContent>
           </Card>
         </section>
@@ -177,89 +115,23 @@ export function SupportAnalysis({ subSection }: SupportAnalysisProps) {
                   return (
                     <div className="space-y-6">
                       <div>
-                        <h3 className="text-base font-bold text-white mb-3">
+                        <h3 className="text-base font-bold text-foreground mb-3">
                           Distribuição NPS
                         </h3>
-                        <div className="h-64">
-                          <ResponsiveContainer width="100%" height="100%">
-                            <BarChart
-                              data={[
-                                {
-                                  name: "NPS",
-                                  Detratores: detratores.percentage,
-                                  Neutros: neutros.percentage,
-                                  Promotores: promotores.percentage,
-                                },
-                              ]}
-                              layout="vertical"
-                              margin={{
-                                top: 20,
-                                right: 30,
-                                left: 20,
-                                bottom: 20,
-                              }}
-                            >
-                              <CartesianGrid
-                                strokeDasharray="3 3"
-                                horizontal={false}
-                              />
-                              <XAxis
-                                type="number"
-                                domain={[0, 100]}
-                                tickFormatter={(v) => `${v}%`}
-                              />
-                              <YAxis
-                                type="category"
-                                dataKey="name"
-                                width={60}
-                                hide
-                              />
-                              <Tooltip
-                                formatter={(value: number, name: string) => [
-                                  `${value}%`,
-                                  name === "Detratores"
-                                    ? "Detratores"
-                                    : name === "Neutros"
-                                    ? "Neutros"
-                                    : "Promotores",
-                                ]}
-                              />
-                              <Legend
-                                formatter={(value) =>
-                                  value === "Detratores"
-                                    ? "Detratores (0-6)"
-                                    : value === "Neutros"
-                                    ? "Neutros (7-8)"
-                                    : "Promotores (9-10)"
-                                }
-                              />
-                              <Bar
-                                dataKey="Detratores"
-                                fill="hsl(var(--chart-negative))"
-                                stackId="a"
-                                radius={[0, 0, 0, 0]}
-                              />
-                              <Bar
-                                dataKey="Neutros"
-                                fill="hsl(var(--chart-neutral))"
-                                stackId="a"
-                                radius={[0, 0, 0, 0]}
-                              />
-                              <Bar
-                                dataKey="Promotores"
-                                fill="hsl(var(--chart-positive))"
-                                stackId="a"
-                                radius={[4, 4, 4, 4]}
-                              />
-                            </BarChart>
-                          </ResponsiveContainer>
-                        </div>
+                        <NPSStackedChart
+                          data={{
+                            Detratores: detratores.percentage,
+                            Neutros: neutros.percentage,
+                            Promotores: promotores.percentage,
+                          }}
+                          height={256}
+                        />
                         <div className="mt-4 grid grid-cols-3 gap-4 text-center">
                           <div>
                             <div className="text-3xl font-bold text-destructive">
                               {detratores.percentage}%
                             </div>
-                            <div className="text-sm text-white/70 mt-1">
+                            <div className="text-sm text-muted-foreground mt-1">
                               Detratores ({detratores.count.toLocaleString()})
                             </div>
                           </div>
@@ -267,7 +139,7 @@ export function SupportAnalysis({ subSection }: SupportAnalysisProps) {
                             <div className="text-3xl font-bold text-warning">
                               {neutros.percentage}%
                             </div>
-                            <div className="text-sm text-white/70 mt-1">
+                            <div className="text-sm text-muted-foreground mt-1">
                               Neutros ({neutros.count.toLocaleString()})
                             </div>
                           </div>
@@ -275,7 +147,7 @@ export function SupportAnalysis({ subSection }: SupportAnalysisProps) {
                             <div className="text-3xl font-bold text-success">
                               {promotores.percentage}%
                             </div>
-                            <div className="text-sm text-white/70 mt-1">
+                            <div className="text-sm text-muted-foreground mt-1">
                               Promotores ({promotores.count.toLocaleString()})
                             </div>
                           </div>
@@ -296,64 +168,30 @@ export function SupportAnalysis({ subSection }: SupportAnalysisProps) {
                 if (outrasIntencoes.length > 0) {
                   return (
                     <div className="mt-8">
-                      <h3 className="text-sm font-bold text-white mb-3">
+                      <h3 className="text-sm font-bold text-foreground mb-3">
                         Outras Intenções
                       </h3>
-                      <div className="h-64">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <BarChart
-                            data={outrasIntencoes}
-                            layout="vertical"
-                            margin={{
-                              top: 10,
-                              right: 80,
-                              left: 200,
-                              bottom: 10,
-                            }}
-                          >
-                            {/* Removido CartesianGrid - estilo Nussbaumer */}
-                            <XAxis
-                              type="number"
-                              domain={[0, 100]}
-                              tickFormatter={(v) => `${v}%`}
-                              axisLine={false}
-                              tickLine={false}
-                            />
-                            <YAxis
-                              type="category"
-                              dataKey="intent"
-                              width={190}
-                              axisLine={false}
-                              tickLine={false}
-                            />
-                            <Tooltip
-                              formatter={(
-                                value: number,
-                                name: string,
-                                props: any
-                              ) => [
-                                `${props.payload.count.toLocaleString()} (${value}%)`,
-                                "Respostas",
-                              ]}
-                            />
-                            <Bar
-                              dataKey="percentage"
-                              fill="hsl(var(--primary))"
-                              radius={[0, 4, 4, 0]}
-                            >
-                              <LabelList
-                                dataKey="percentage"
-                                position="right"
-                                formatter={(value: number) => `${value}%`}
-                                style={{
-                                  fill: "hsl(var(--foreground))",
-                                  fontSize: "12px",
-                                }}
-                              />
-                            </Bar>
-                          </BarChart>
-                        </ResponsiveContainer>
-                      </div>
+                      <SimpleBarChart
+                        data={outrasIntencoes}
+                        dataKey="percentage"
+                        yAxisDataKey="intent"
+                        height={256}
+                        margin={{
+                          top: 10,
+                          right: 80,
+                          left: 200,
+                          bottom: 10,
+                        }}
+                        yAxisWidth={190}
+                        tooltipFormatter={(
+                          value: number,
+                          name: string,
+                          props: any
+                        ) => [
+                          `${props.payload.count.toLocaleString()} (${value}%)`,
+                          "Respostas",
+                        ]}
+                      />
                     </div>
                   );
                 }
@@ -385,7 +223,7 @@ export function SupportAnalysis({ subSection }: SupportAnalysisProps) {
               >
                 <CardHeader>
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-xl font-bold text-white">
+                    <CardTitle className="text-xl font-bold text-card-foreground">
                       {cluster.cluster}
                     </CardTitle>
                     <span
@@ -403,7 +241,7 @@ export function SupportAnalysis({ subSection }: SupportAnalysisProps) {
                   <Progress value={cluster.percentage} className="h-2" />
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-white/70 mb-4">
+                  <p className="text-sm text-muted-foreground mb-4">
                     {cluster.description
                       .split("\n")
                       .map((line, index, array) => (
@@ -417,7 +255,10 @@ export function SupportAnalysis({ subSection }: SupportAnalysisProps) {
                     {cluster.characteristics.map((char, i) => (
                       <div
                         key={i}
-                        className="text-xs px-3 py-2 bg-white/5 rounded-md text-white/70 border-0 shadow-[0_2px_8px_rgba(0,0,0,0.2)]"
+                        className="text-xs px-3 py-2 bg-muted/10 rounded-md text-muted-foreground border-0"
+                        style={{
+                          boxShadow: `0 2px 8px ${RGBA_BLACK_SHADOW_20}`,
+                        }}
                       >
                         {char}
                       </div>
