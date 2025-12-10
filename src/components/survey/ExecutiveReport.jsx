@@ -78,45 +78,32 @@ export function ExecutiveReport({ subSection, onSectionChange }) {
     <div className="space-y-8 animate-fade-in">
       {showSummary && (
         <section>
-          <h2 className="section-title flex items-center gap-2">
-            <ClipboardList className="w-5 h-5 text-primary" />
-            Sumário Executivo
-          </h2>
-
-          <div className="grid gap-6">
+          <div className="space-y-6">
+            {/* Section Title */}
             <Card className="card-elevated">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-xl font-bold text-card-foreground">
-                  Sobre o Estudo
+              <CardHeader className="py-6 flex items-center justify-center">
+                <CardTitle className="text-2xl font-bold text-card-foreground flex items-center gap-2">
+                  <FileText className="w-6 h-6" />
+                  Sumário Executivo
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="text-muted-foreground font-normal leading-relaxed space-y-3">
-                  {executiveReport.summary.aboutStudy
-                    .split("\n")
-                    .map((line, index) => (
-                      <p key={index} className={line.trim() ? "" : "h-3"}>
-                        {line}
-                      </p>
-                    ))}
-                </div>
-              </CardContent>
             </Card>
 
-            {/* Principais Descobertas e Conclusões lado a lado em telas maiores */}
-            <div className="grid gap-6 md:grid-cols-2">
-              <Card
-                className="card-elevated highlight-container-light border-l-4 bg-muted/10"
-                style={{ borderLeftColor: COLOR_ORANGE_PRIMARY }}
-              >
-                <CardHeader className="pb-3">
+            <div className="grid gap-6">
+              <Card className="card-elevated">
+                <CardHeader>
                   <CardTitle className="text-xl font-bold text-card-foreground">
-                    Principais Descobertas
+                    Sobre o Estudo
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
+                  <div>
+                    <h2 className="text-xl font-bold text-card-foreground mb-3">
+                      Sobre o Estudo
+                    </h2>
+                  </div>
                   <div className="text-muted-foreground font-normal leading-relaxed space-y-3">
-                    {executiveReport.summary.mainFindings
+                    {executiveReport.summary.aboutStudy
                       .split("\n")
                       .map((line, index) => (
                         <p key={index} className={line.trim() ? "" : "h-3"}>
@@ -127,27 +114,52 @@ export function ExecutiveReport({ subSection, onSectionChange }) {
                 </CardContent>
               </Card>
 
-              <Card
-                className="card-elevated border-l-4 bg-muted/10"
-                style={{ borderLeftColor: COLOR_ORANGE_PRIMARY }}
-              >
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-xl font-bold text-card-foreground">
-                    Conclusões
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-muted-foreground font-normal leading-relaxed space-y-3">
-                    {executiveReport.summary.conclusions
-                      .split("\n")
-                      .map((line, index) => (
-                        <p key={index} className={line.trim() ? "" : "h-3"}>
-                          {line}
-                        </p>
-                      ))}
-                  </div>
-                </CardContent>
-              </Card>
+              {/* Principais Descobertas e Conclusões lado a lado em telas maiores */}
+              <div className="grid gap-6 md:grid-cols-2">
+                <Card
+                  className="card-elevated highlight-container-light border-l-4 bg-muted/10"
+                  style={{ borderLeftColor: COLOR_ORANGE_PRIMARY }}
+                >
+                  <CardHeader>
+                    <CardTitle className="text-xl font-bold text-card-foreground">
+                      Principais Descobertas
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-muted-foreground font-normal leading-relaxed space-y-3">
+                      {executiveReport.summary.mainFindings
+                        .split("\n")
+                        .map((line, index) => (
+                          <p key={index} className={line.trim() ? "" : "h-3"}>
+                            {line}
+                          </p>
+                        ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card
+                  className="card-elevated border-l-4 bg-muted/10"
+                  style={{ borderLeftColor: COLOR_ORANGE_PRIMARY }}
+                >
+                  <CardHeader>
+                    <CardTitle className="text-xl font-bold text-card-foreground">
+                      Conclusões
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-muted-foreground font-normal leading-relaxed space-y-3">
+                      {executiveReport.summary.conclusions
+                        .split("\n")
+                        .map((line, index) => (
+                          <p key={index} className={line.trim() ? "" : "h-3"}>
+                            {line}
+                          </p>
+                        ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </div>
         </section>
@@ -155,171 +167,180 @@ export function ExecutiveReport({ subSection, onSectionChange }) {
 
       {showRecommendations && (
         <section>
-          <h2 className="section-title flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5 text-primary" />
-            Recomendações
-          </h2>
+          <div className="space-y-6">
+            {/* Section Title */}
+            <Card className="card-elevated">
+              <CardHeader className="py-6 flex items-center justify-center">
+                <CardTitle className="text-2xl font-bold text-card-foreground flex items-center gap-2">
+                  <AlertTriangle className="w-6 h-6" />
+                  Recomendações
+                </CardTitle>
+              </CardHeader>
+            </Card>
 
-          <Card className="card-elevated overflow-hidden bg-muted/10">
-            <Table className="table-auto">
-              <TableHeader>
-                <TableRow className="bg-muted/5">
-                  <TableHead className="w-12 text-muted-foreground">
-                    #
-                  </TableHead>
-                  <TableHead className="text-muted-foreground">
-                    Recomendação
-                  </TableHead>
-                  <TableHead className="w-32 text-center text-muted-foreground">
-                    Gravidade
-                  </TableHead>
-                  <TableHead className="w-64 p-0 text-muted-foreground">
-                    Stakeholders
-                  </TableHead>
-                  <TableHead className="w-12 text-muted-foreground"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {executiveReport.recommendations.map((rec) => {
-                  const isExpanded = expandedRecs.has(rec.id);
-                  const tasks = getRecTasks(rec.id);
-                  const hasTasks = tasks.length > 0;
+            <Card className="card-elevated overflow-hidden bg-muted/10">
+              <CardContent>
+                <Table className="table-auto">
+                  <TableHeader>
+                    <TableRow className="bg-muted/5">
+                      <TableHead className="w-12 text-muted-foreground">
+                        #
+                      </TableHead>
+                      <TableHead className="text-muted-foreground">
+                        Recomendação
+                      </TableHead>
+                      <TableHead className="w-32 text-center text-muted-foreground">
+                        Gravidade
+                      </TableHead>
+                      <TableHead className="w-64 p-0 text-muted-foreground">
+                        Stakeholders
+                      </TableHead>
+                      <TableHead className="w-12 text-muted-foreground"></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {executiveReport.recommendations.map((rec) => {
+                      const isExpanded = expandedRecs.has(rec.id);
+                      const tasks = getRecTasks(rec.id);
+                      const hasTasks = tasks.length > 0;
 
-                  return (
-                    <>
-                      <TableRow
-                        key={rec.id}
-                        className={`hover:bg-primary/10 py-2 ${
-                          hasTasks ? "cursor-pointer" : ""
-                        }`}
-                        onClick={
-                          hasTasks
-                            ? () => toggleRecExpansion(rec.id)
-                            : undefined
-                        }
-                      >
-                        <TableCell className="font-medium text-muted-foreground py-2">
-                          {rec.id}
-                        </TableCell>
-                        <TableCell className="font-medium text-foreground py-2">
-                          {rec.recommendation}
-                        </TableCell>
-                        <TableCell className="text-center py-2">
-                          <Badge className={severityColors[rec.severity]}>
-                            {severityLabels[rec.severity]}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="p-0 py-2">
-                          <div className="flex flex-wrap gap-1">
-                            {rec.stakeholders.map((stakeholder) => (
-                              <Badge
-                                key={stakeholder}
-                                variant="outline"
-                                className="text-sm"
-                              >
-                                <Users className="w-3 h-3 mr-1" />
-                                {stakeholder}
+                      return (
+                        <>
+                          <TableRow
+                            key={rec.id}
+                            className={`hover:bg-primary/10 py-2 ${
+                              hasTasks ? "cursor-pointer" : ""
+                            }`}
+                            onClick={
+                              hasTasks
+                                ? () => toggleRecExpansion(rec.id)
+                                : undefined
+                            }
+                          >
+                            <TableCell className="font-medium text-muted-foreground py-2">
+                              {rec.id}
+                            </TableCell>
+                            <TableCell className="font-medium text-foreground py-2">
+                              {rec.recommendation}
+                            </TableCell>
+                            <TableCell className="text-center py-2">
+                              <Badge className={severityColors[rec.severity]}>
+                                {severityLabels[rec.severity]}
                               </Badge>
-                            ))}
-                          </div>
-                        </TableCell>
-                        <TableCell className="py-2">
-                          {hasTasks && (
-                            <div
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                toggleRecExpansion(rec.id);
-                              }}
-                              className="text-muted-foreground hover:text-primary transition-colors inline-block"
-                              title={
-                                isExpanded
-                                  ? "Ocultar tarefas"
-                                  : "Mostrar tarefas"
-                              }
-                              aria-label={`${
-                                isExpanded ? "Ocultar" : "Mostrar"
-                              } tarefas da recomendação ${rec.id}`}
-                            >
-                              {isExpanded ? (
-                                <ChevronDown className="w-4 h-4" />
-                              ) : (
-                                <ChevronRight className="w-4 h-4" />
+                            </TableCell>
+                            <TableCell className="p-0 py-2">
+                              <div className="flex flex-wrap gap-1">
+                                {rec.stakeholders.map((stakeholder) => (
+                                  <Badge
+                                    key={stakeholder}
+                                    variant="outline"
+                                    className="text-sm"
+                                  >
+                                    <Users className="w-3 h-3 mr-1" />
+                                    {stakeholder}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </TableCell>
+                            <TableCell className="py-2">
+                              {hasTasks && (
+                                <div
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleRecExpansion(rec.id);
+                                  }}
+                                  className="text-muted-foreground hover:text-primary transition-colors inline-block"
+                                  title={
+                                    isExpanded
+                                      ? "Ocultar tarefas"
+                                      : "Mostrar tarefas"
+                                  }
+                                  aria-label={`${
+                                    isExpanded ? "Ocultar" : "Mostrar"
+                                  } tarefas da recomendação ${rec.id}`}
+                                >
+                                  {isExpanded ? (
+                                    <ChevronDown className="w-4 h-4" />
+                                  ) : (
+                                    <ChevronRight className="w-4 h-4" />
+                                  )}
+                                </div>
                               )}
-                            </div>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                      {hasTasks && isExpanded && (
-                        <TableRow>
-                          <TableCell colSpan={5} className="p-0 bg-muted/5">
-                            <div className="pl-8 pr-4 py-4">
-                              <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-                                <ClipboardList className="w-4 h-4" />
-                                Tarefas de Implementação
-                              </h3>
-                              <Table>
-                                <TableHeader>
-                                  <TableRow className="bg-muted/10">
-                                    <TableHead className="w-12 text-muted-foreground"></TableHead>
-                                    <TableHead className="text-muted-foreground">
-                                      Tarefa
-                                    </TableHead>
-                                    <TableHead className="w-40 text-muted-foreground">
-                                      <div className="flex items-center gap-1">
-                                        <User className="w-4 h-4" />
-                                        Área Responsável
-                                      </div>
-                                    </TableHead>
-                                  </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                  {tasks.map((task, index) => {
-                                    const taskKey = `rec-${rec.id}-task-${index}`;
-                                    const isChecked =
-                                      checkedTasks[taskKey] || false;
-                                    return (
-                                      <TableRow key={index}>
-                                        <TableCell>
-                                          <Checkbox
-                                            checked={isChecked}
-                                            onCheckedChange={() =>
-                                              toggleTask(rec.id, index)
-                                            }
-                                            className="cursor-pointer"
-                                          />
-                                        </TableCell>
-                                        <TableCell
-                                          className={
-                                            isChecked
-                                              ? "line-through text-muted-foreground/50"
-                                              : "text-foreground"
-                                          }
-                                        >
-                                          {task.task}
-                                        </TableCell>
-                                        <TableCell>
-                                          <Badge
-                                            variant="outline"
-                                            className="font-normal"
-                                          >
-                                            {task.owner}
-                                          </Badge>
-                                        </TableCell>
+                            </TableCell>
+                          </TableRow>
+                          {hasTasks && isExpanded && (
+                            <TableRow>
+                              <TableCell colSpan={5} className="p-0 bg-muted/5">
+                                <div className="pl-8 pr-4 py-4">
+                                  <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                                    <ClipboardList className="w-4 h-4" />
+                                    Tarefas de Implementação
+                                  </h3>
+                                  <Table>
+                                    <TableHeader>
+                                      <TableRow className="bg-muted/10">
+                                        <TableHead className="w-12 text-muted-foreground"></TableHead>
+                                        <TableHead className="text-muted-foreground">
+                                          Tarefa
+                                        </TableHead>
+                                        <TableHead className="w-40 text-muted-foreground">
+                                          <div className="flex items-center gap-1">
+                                            <User className="w-4 h-4" />
+                                            Área Responsável
+                                          </div>
+                                        </TableHead>
                                       </TableRow>
-                                    );
-                                  })}
-                                </TableBody>
-                              </Table>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      )}
-                    </>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </Card>
+                                    </TableHeader>
+                                    <TableBody>
+                                      {tasks.map((task, index) => {
+                                        const taskKey = `rec-${rec.id}-task-${index}`;
+                                        const isChecked =
+                                          checkedTasks[taskKey] || false;
+                                        return (
+                                          <TableRow key={index}>
+                                            <TableCell>
+                                              <Checkbox
+                                                checked={isChecked}
+                                                onCheckedChange={() =>
+                                                  toggleTask(rec.id, index)
+                                                }
+                                                className="cursor-pointer"
+                                              />
+                                            </TableCell>
+                                            <TableCell
+                                              className={
+                                                isChecked
+                                                  ? "line-through text-muted-foreground/50"
+                                                  : "text-foreground"
+                                              }
+                                            >
+                                              {task.task}
+                                            </TableCell>
+                                            <TableCell>
+                                              <Badge
+                                                variant="outline"
+                                                className="font-normal"
+                                              >
+                                                {task.owner}
+                                              </Badge>
+                                            </TableCell>
+                                          </TableRow>
+                                        );
+                                      })}
+                                    </TableBody>
+                                  </Table>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          )}
+                        </>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </div>
         </section>
       )}
     </div>

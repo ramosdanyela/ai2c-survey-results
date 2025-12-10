@@ -67,7 +67,7 @@ export function SentimentDivergentChart({
   height = 320,
   margin = { top: 20, right: 30, left: 100, bottom: 20 },
   xAxisDomain,
-  showGrid = true,
+  showGrid = false,
 }) {
   // Transform data: negative values become negative for divergent display
   // Only plot positive and negative, ignore neutral completely
@@ -96,15 +96,33 @@ export function SentimentDivergentChart({
     <div style={{ height }}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={divergentData} layout="vertical" margin={margin}>
-          {showGrid && (
-            <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-          )}
+          {/* Linha tracejada apenas no marco 0 */}
+          <ReferenceLine
+            x={0}
+            stroke="hsl(var(--foreground))"
+            strokeWidth={1}
+            strokeDasharray="3 3"
+          />
+          {/* Sem grid - removido CartesianGrid completamente */}
           <XAxis
             type="number"
             domain={domain}
-            tickFormatter={(value) => `${Math.abs(value)}%`}
+            tickFormatter={(value) => {
+              if (value === 0) return "0%";
+              return "";
+            }}
+            ticks={[0]}
+            axisLine={false}
+            tickLine={false}
+            allowDataOverflow={false}
           />
-          <YAxis type="category" dataKey="category" width={90} />
+          <YAxis
+            type="category"
+            dataKey="category"
+            width={90}
+            axisLine={false}
+            tickLine={false}
+          />
           <Tooltip
             formatter={(value, name) => {
               if (name === "neutral") return null;
@@ -224,12 +242,14 @@ export function SentimentStackedChart({
     <div style={{ height }}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={transformedData} layout="vertical" margin={margin}>
+          {/* Linha tracejada apenas no marco 0 */}
           <ReferenceLine
             x={0}
             stroke="hsl(var(--foreground))"
             strokeWidth={1}
             strokeDasharray="3 3"
           />
+          {/* Sem grid - removido CartesianGrid */}
           <XAxis
             type="number"
             domain={domain}
@@ -600,6 +620,7 @@ export function SimpleBarChart({
             width={yAxisWidth}
             axisLine={false}
             tickLine={false}
+            interval={0}
           />
           <Tooltip
             formatter={tooltipFormatter || ((value) => [`${value}%`, ""])}

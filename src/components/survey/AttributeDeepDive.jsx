@@ -47,14 +47,20 @@ export function AttributeDeepDive({ attributeId }) {
 
   return (
     <div className="space-y-8 animate-fade-in">
+      {/* Section Title */}
+      <Card className="card-elevated">
+        <CardHeader className="py-6 flex items-center justify-center">
+          <CardTitle className="text-2xl font-bold text-card-foreground flex items-center gap-2">
+            <Icon className="w-6 h-6" />
+            {attr.name}
+          </CardTitle>
+        </CardHeader>
+      </Card>
+
       <div className="space-y-6">
         {/* Summary */}
         <Card className="card-elevated">
           <CardHeader>
-            <h2 className="section-title flex items-center gap-2 mb-3">
-              <Icon className="w-5 h-5 text-primary" />
-              {attr.name}
-            </h2>
             <CardTitle className="text-xl font-bold text-card-foreground">
               Sumário
             </CardTitle>
@@ -70,28 +76,30 @@ export function AttributeDeepDive({ attributeId }) {
           </CardContent>
         </Card>
 
-        <div className="grid lg:grid-cols-2 gap-6">
+        <div className="grid lg:grid-cols-2 gap-6 items-stretch">
           {/* Distribution - Barras horizontais estilo Nussbaumer */}
-          <Card className="card-elevated">
-            <CardHeader>
+          <Card className="card-elevated flex flex-col">
+            <CardHeader className="flex-shrink-0">
               <CardTitle className="text-xl font-bold text-card-foreground">
                 Distribuição dos respondentes
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <SimpleBarChart
-                data={attr.distribution}
-                dataKey="percentage"
-                yAxisDataKey="segment"
-                height={256}
-                margin={{ top: 10, right: 80, left: 120, bottom: 10 }}
-                yAxisWidth={110}
-                tooltipFormatter={(value, name, props) => [
-                  `${props.payload.count.toLocaleString()} respondentes (${value}%)`,
-                  props.payload.segment,
-                ]}
-              />
-              <div className="mt-4">
+            <CardContent className="flex-1 flex flex-col">
+              <div className="flex-shrink-0 mb-4" style={{ height: "400px" }}>
+                <SimpleBarChart
+                  data={attr.distribution}
+                  dataKey="percentage"
+                  yAxisDataKey="segment"
+                  height={400}
+                  margin={{ top: 10, right: 80, left: 120, bottom: 10 }}
+                  yAxisWidth={attr.id === "state" ? 150 : 110}
+                  tooltipFormatter={(value, name, props) => [
+                    `${props.payload.count.toLocaleString()} respondentes (${value}%)`,
+                    props.payload.segment,
+                  ]}
+                />
+              </div>
+              <div>
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -123,24 +131,30 @@ export function AttributeDeepDive({ attributeId }) {
           </Card>
 
           {/* Sentiment by Segment */}
-          <Card className="card-elevated">
-            <CardHeader>
+          <Card className="card-elevated flex flex-col">
+            <CardHeader className="flex-shrink-0">
               <CardTitle className="text-xl font-bold text-foreground">
                 Análise de sentimento
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <SentimentStackedChart
-                data={attr.sentiment}
-                height={256}
-                yAxisDataKey="segment"
-              />
-              <div className="mt-4">
+            <CardContent className="flex-1 flex flex-col">
+              <div className="flex-shrink-0 mb-4" style={{ height: "400px" }}>
+                <SentimentStackedChart
+                  data={attr.sentiment}
+                  height={400}
+                  showGrid={false}
+                  yAxisDataKey="segment"
+                />
+              </div>
+              <div>
                 <Table>
                   <TableHeader>
                     <TableRow>
                       <TableHead>Segmento</TableHead>
-                      <TableHead className="text-right text-success">
+                      <TableHead
+                        className="text-right"
+                        style={{ color: "hsl(var(--chart-positive))" }}
+                      >
                         Positivo
                       </TableHead>
                       <TableHead className="text-right text-destructive">
@@ -154,7 +168,10 @@ export function AttributeDeepDive({ attributeId }) {
                         <TableCell className="font-medium">
                           {item.segment}
                         </TableCell>
-                        <TableCell className="text-right text-success">
+                        <TableCell
+                          className="text-right"
+                          style={{ color: "hsl(var(--chart-positive))" }}
+                        >
                           {item.positive}%
                         </TableCell>
                         <TableCell className="text-right text-destructive">
@@ -257,11 +274,13 @@ export function AttributeDeepDive({ attributeId }) {
                               {item.segment}
                             </TableCell>
                             <TableCell
-                              className={`text-right font-bold ${
-                                item.nps >= 0
-                                  ? "text-success"
-                                  : "text-destructive"
-                              }`}
+                              className="text-right font-bold"
+                              style={{
+                                color:
+                                  item.nps >= 0
+                                    ? "hsl(var(--chart-positive))"
+                                    : "hsl(var(--chart-negative))",
+                              }}
                             >
                               {item.nps > 0 ? "+" : ""}
                               {item.nps}
@@ -379,6 +398,14 @@ export function AttributeDeepDive({ attributeId }) {
                                     <TableCell
                                       key={segment}
                                       className="text-right"
+                                      style={{
+                                        color:
+                                          item.sentiment === "Positivo"
+                                            ? "hsl(var(--chart-positive))"
+                                            : item.sentiment === "Negativo"
+                                            ? "hsl(var(--chart-negative))"
+                                            : undefined,
+                                      }}
                                     >
                                       {item[segment]}%
                                     </TableCell>
@@ -425,7 +452,10 @@ export function AttributeDeepDive({ attributeId }) {
                                 {segments.map((segment) => (
                                   <TableCell
                                     key={segment}
-                                    className="text-right text-success"
+                                    className="text-right"
+                                    style={{
+                                      color: "hsl(var(--chart-positive))",
+                                    }}
                                   >
                                     {cat[segment]}%
                                   </TableCell>

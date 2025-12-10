@@ -252,11 +252,6 @@ export function ResponseDetails({ questionId }) {
    * @param {number} questionId
    */
   const ActiveFiltersPills = ({ questionId }) => {
-    // Mostrar filtros de pills apenas na Questão 1
-    if (questionId !== 1) {
-      return null;
-    }
-
     const filters = questionFilters[questionId] || [];
 
     if (!hasActiveFilters(questionId)) {
