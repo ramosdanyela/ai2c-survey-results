@@ -43,7 +43,7 @@ export function SupportAnalysis({ subSection }) {
             </Card>
 
             <Card className="card-elevated">
-              <CardContent>
+              <CardContent className="pt-6">
                 <CardDescription className="text-base leading-relaxed space-y-3">
                   {supportAnalysis.sentimentAnalysis.description
                     .split("\n")
@@ -78,8 +78,8 @@ export function SupportAnalysis({ subSection }) {
             </Card>
 
             <Card className="card-elevated">
-              <CardContent>
-                <CardDescription className="text-base leading-relaxed space-y-3">
+              <CardContent className="pt-6">
+                <div className="text-muted-foreground font-normal leading-relaxed space-y-3">
                   {supportAnalysis.respondentIntent.description
                     .split("\n")
                     .map((line, index) => (
@@ -87,7 +87,7 @@ export function SupportAnalysis({ subSection }) {
                         {line}
                       </p>
                     ))}
-                </CardDescription>
+                </div>
                 <SimpleBarChart
                   data={[...supportAnalysis.respondentIntent.data].sort(
                     (a, b) => b.percentage - a.percentage

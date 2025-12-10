@@ -97,11 +97,7 @@ export function ExecutiveReport({ subSection, onSectionChange }) {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div>
-                    <h2 className="text-xl font-bold text-card-foreground mb-3">
-                      Sobre o Estudo
-                    </h2>
-                  </div>
+                  
                   <div className="text-muted-foreground font-normal leading-relaxed space-y-3">
                     {executiveReport.summary.aboutStudy
                       .split("\n")
