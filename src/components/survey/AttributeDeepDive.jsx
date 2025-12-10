@@ -81,7 +81,7 @@ export function AttributeDeepDive({ attributeId }) {
           <Card className="card-elevated flex flex-col">
             <CardHeader className="flex-shrink-0">
               <CardTitle className="text-xl font-bold text-card-foreground">
-                Distribuição dos respondentes
+                Distribuição dos respondentess
               </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 flex flex-col">
