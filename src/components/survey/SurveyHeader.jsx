@@ -12,6 +12,9 @@ import {
   COLOR_ORANGE_PRIMARY,
   RGBA_ORANGE_SHADOW_40,
   RGBA_BLACK_SHADOW_20,
+  getBlueGradient,
+  getBlueButtonShadow,
+  RGBA_WHITE_20,
 } from "@/lib/colors";
 import { responseDetails, attributeDeepDive } from "@/data/surveyData";
 
@@ -371,16 +374,14 @@ export function SurveyHeader({ activeSection, onSectionChange, onMenuClick }) {
               onClick={handlePrevious}
               className="relative overflow-hidden rounded-lg px-4 py-3 text-white flex items-center gap-3 transition-all hover:scale-[1.02] active:scale-[0.98]"
               style={{
-                background:
-                  "linear-gradient(135deg, hsl(236, 90%, 50%) 0%, hsl(236, 90%, 45%) 100%)",
-                boxShadow:
-                  "0 4px 12px rgba(11, 24, 200, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1)",
+                background: getBlueGradient(),
+                boxShadow: getBlueButtonShadow(),
               }}
             >
               <div
                 className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
                 style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.2)",
+                  backgroundColor: RGBA_WHITE_20,
                 }}
               >
                 <ChevronLeft className="w-4 h-4 text-white" />
@@ -418,10 +419,8 @@ export function SurveyHeader({ activeSection, onSectionChange, onMenuClick }) {
               onClick={handleNext}
               className="relative overflow-hidden rounded-lg px-4 py-3 text-white flex items-center gap-3 transition-all hover:scale-[1.02] active:scale-[0.98]"
               style={{
-                background:
-                  "linear-gradient(135deg, hsl(236, 90%, 50%) 0%, hsl(236, 90%, 45%) 100%)",
-                boxShadow:
-                  "0 4px 12px rgba(11, 24, 200, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1)",
+                background: getBlueGradient(),
+                boxShadow: getBlueButtonShadow(),
               }}
             >
               <div className="flex flex-col items-end">
@@ -437,7 +436,7 @@ export function SurveyHeader({ activeSection, onSectionChange, onMenuClick }) {
               <div
                 className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
                 style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.2)",
+                  backgroundColor: RGBA_WHITE_20,
                 }}
               >
                 <ChevronRight className="w-4 h-4 text-white" />

@@ -1,0 +1,15 @@
+{
+  "ignorePatterns": {
+    "files": [
+      "**/*.config.js",
+      "**/*.config.ts",
+      "vite.config.js",
+      "eslint.config.js"
+    ],
+    "exports": ["components/ui/**"],
+    "reasons": {
+      "components/ui/**": "Componentes shadcn podem ser usados no futuro"
+    }
+  },
+  "entryPoints": ["src/main.jsx", "src/App.jsx"]
+}

@@ -1,0 +1,22 @@
+{
+  "duplicates": [
+    {
+      "baseName": "surveyData.js",
+      "files": [
+        {
+          "path": "data/surveyData.js",
+          "absolute": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData.js",
+          "size": 40326
+        },
+        {
+          "path": "data/surveyData copy.js",
+          "absolute": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData copy.js",
+          "size": 22871
+        }
+      ]
+    }
+  ],
+  "copyFiles": [
+    "data/surveyData copy.js"
+  ]
+}

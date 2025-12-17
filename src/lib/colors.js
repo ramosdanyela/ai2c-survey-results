@@ -73,8 +73,17 @@ export const RGBA_BLACK_SHADOW_30 = "rgba(0,0,0,0.3)";
 /** Sombra preta - rgba(0,0,0,0.2) */
 export const RGBA_BLACK_SHADOW_20 = "rgba(0,0,0,0.2)";
 
+/** Sombra preta - rgba(0,0,0,0.1) */
+export const RGBA_BLACK_SHADOW_10 = "rgba(0,0,0,0.1)";
+
+/** Sombra preta - rgba(0,0,0,0.08) */
+export const RGBA_BLACK_SHADOW_08 = "rgba(0,0,0,0.08)";
+
 /** Branco translúcido - rgba(255,255,255,0.1) */
 export const RGBA_WHITE_10 = "rgba(255,255,255,0.1)";
+
+/** Branco translúcido - rgba(255,255,255,0.2) */
+export const RGBA_WHITE_20 = "rgba(255,255,255,0.2)";
 
 // ============================================================================
 // Cores Light Mode
@@ -89,6 +98,9 @@ export const COLOR_LIGHT_TEXT = "#000000";
 /** Texto secundário no light mode - #374151 */
 export const COLOR_LIGHT_TEXT_SECONDARY = "#374151";
 
+/** Cinza escuro - #1f2937 */
+export const COLOR_GRAY_DARK = "#1f2937";
+
 /** Card claro - #FFFFFF */
 export const COLOR_LIGHT_CARD = "#FFFFFF";
 
@@ -100,6 +112,9 @@ export const RGBA_LIGHT_SHADOW = "rgba(0,0,0,0.1)";
 
 /** Sombra clara hover - rgba(0,0,0,0.15) */
 export const RGBA_LIGHT_SHADOW_HOVER = "rgba(0,0,0,0.15)";
+
+/** Sombra azul customizado - rgba(11, 24, 200, 0.3) */
+export const RGBA_BLUE_CUSTOM_SHADOW_30 = "rgba(11, 24, 200, 0.3)";
 
 // ============================================================================
 // Funções para obter cores baseadas no tema
@@ -239,6 +254,22 @@ export const getCombinedShadowHover = () => {
   return `0 12px 48px ${RGBA_BLACK_SHADOW_60}, 0 4px 16px ${RGBA_ORANGE_SHADOW_20}`;
 };
 
+/**
+ * Retorna gradiente azul customizado para botões
+ * @returns {string} String de gradiente linear
+ */
+export const getBlueGradient = () => {
+  return "linear-gradient(135deg, hsl(236, 90%, 50%) 0%, hsl(236, 90%, 45%) 100%)";
+};
+
+/**
+ * Retorna sombra para botões azuis
+ * @returns {string} String de box-shadow
+ */
+export const getBlueButtonShadow = () => {
+  return `0 4px 12px ${RGBA_BLUE_CUSTOM_SHADOW_30}, 0 2px 4px ${RGBA_BLACK_SHADOW_10}`;
+};
+
 // ============================================================================
 // Exportação de todas as cores como objeto (para referência)
 // ============================================================================
@@ -274,6 +305,10 @@ export const Colors = {
     blackShadow40: RGBA_BLACK_SHADOW_40,
     blackShadow30: RGBA_BLACK_SHADOW_30,
     blackShadow20: RGBA_BLACK_SHADOW_20,
+    blackShadow10: RGBA_BLACK_SHADOW_10,
+    blackShadow08: RGBA_BLACK_SHADOW_08,
     white10: RGBA_WHITE_10,
+    white20: RGBA_WHITE_20,
+    blueCustomShadow30: RGBA_BLUE_CUSTOM_SHADOW_30,
   },
 };

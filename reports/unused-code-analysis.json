@@ -1,0 +1,3042 @@
+{
+  "unusedExports": [
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/utils.js::cn",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/utils.js",
+      "name": "cn",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/utils.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::COLOR_ORANGE_PRIMARY",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "COLOR_ORANGE_PRIMARY",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::COLOR_BLUE_TITLE",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "COLOR_BLUE_TITLE",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::COLOR_BLUE_CUSTOM",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "COLOR_BLUE_CUSTOM",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::COLOR_BLACK",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "COLOR_BLACK",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::COLOR_WHITE",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "COLOR_WHITE",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::HSL_ORANGE_PRIMARY",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "HSL_ORANGE_PRIMARY",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::HSL_BLUE_CUSTOM",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "HSL_BLUE_CUSTOM",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::HSL_BLUE_TITLE",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "HSL_BLUE_TITLE",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::HSL_BLUE_SUBTITLE",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "HSL_BLUE_SUBTITLE",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::RGBA_ORANGE_SHADOW_40",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "RGBA_ORANGE_SHADOW_40",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::RGBA_ORANGE_SHADOW_30",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "RGBA_ORANGE_SHADOW_30",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::RGBA_ORANGE_SHADOW_20",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "RGBA_ORANGE_SHADOW_20",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::RGBA_ORANGE_SHADOW_15",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "RGBA_ORANGE_SHADOW_15",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::RGBA_ORANGE_SHADOW_10",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "RGBA_ORANGE_SHADOW_10",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::RGBA_BLACK_SHADOW_60",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "RGBA_BLACK_SHADOW_60",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::RGBA_BLACK_SHADOW_40",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "RGBA_BLACK_SHADOW_40",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::RGBA_BLACK_SHADOW_30",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "RGBA_BLACK_SHADOW_30",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::RGBA_BLACK_SHADOW_20",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "RGBA_BLACK_SHADOW_20",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::RGBA_WHITE_10",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "RGBA_WHITE_10",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::COLOR_LIGHT_BACKGROUND",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "COLOR_LIGHT_BACKGROUND",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::COLOR_LIGHT_TEXT",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "COLOR_LIGHT_TEXT",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::COLOR_LIGHT_TEXT_SECONDARY",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "COLOR_LIGHT_TEXT_SECONDARY",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::COLOR_LIGHT_CARD",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "COLOR_LIGHT_CARD",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::COLOR_LIGHT_BORDER",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "COLOR_LIGHT_BORDER",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::RGBA_LIGHT_SHADOW",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "RGBA_LIGHT_SHADOW",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::RGBA_LIGHT_SHADOW_HOVER",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "RGBA_LIGHT_SHADOW_HOVER",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::getBackgroundColor",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "getBackgroundColor",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::getTextColor",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "getTextColor",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::getTextSecondaryColor",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "getTextSecondaryColor",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::getCardColor",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "getCardColor",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::getBorderColor",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "getBorderColor",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::getShadow",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "getShadow",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::getOrangeClass",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "getOrangeClass",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::getBlueCustomClass",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "getBlueCustomClass",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::getOrangeTextClass",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "getOrangeTextClass",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::getBlueCustomTextClass",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "getBlueCustomTextClass",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::getOrangeBorderClass",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "getOrangeBorderClass",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::getBlueCustomBorderClass",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "getBlueCustomBorderClass",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::getOrangeShadow",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "getOrangeShadow",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::getBlackShadow",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "getBlackShadow",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::getCombinedShadow",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "getCombinedShadow",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::getCombinedShadowHover",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "getCombinedShadowHover",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js::Colors",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "name": "Colors",
+      "type": "named",
+      "used": false,
+      "relativePath": "lib/colors.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/hooks/use-toast.js::reducer",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/hooks/use-toast.js",
+      "name": "reducer",
+      "type": "named",
+      "used": false,
+      "relativePath": "hooks/use-toast.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/hooks/use-toast.js::useToast",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/hooks/use-toast.js",
+      "name": "useToast",
+      "type": "named",
+      "used": false,
+      "relativePath": "hooks/use-toast.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/hooks/use-toast.js::toast",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/hooks/use-toast.js",
+      "name": "toast",
+      "type": "named",
+      "used": false,
+      "relativePath": "hooks/use-toast.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData.js::surveyInfo",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData.js",
+      "name": "surveyInfo",
+      "type": "named",
+      "used": false,
+      "relativePath": "data/surveyData.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData.js::executiveReport",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData.js",
+      "name": "executiveReport",
+      "type": "named",
+      "used": false,
+      "relativePath": "data/surveyData.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData.js::supportAnalysis",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData.js",
+      "name": "supportAnalysis",
+      "type": "named",
+      "used": false,
+      "relativePath": "data/surveyData.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData.js::responseDetails",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData.js",
+      "name": "responseDetails",
+      "type": "named",
+      "used": false,
+      "relativePath": "data/surveyData.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData.js::attributeDeepDive",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData.js",
+      "name": "attributeDeepDive",
+      "type": "named",
+      "used": false,
+      "relativePath": "data/surveyData.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData.js::implementationPlan",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData.js",
+      "name": "implementationPlan",
+      "type": "named",
+      "used": false,
+      "relativePath": "data/surveyData.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData.js::severityLabels",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData.js",
+      "name": "severityLabels",
+      "type": "named",
+      "used": false,
+      "relativePath": "data/surveyData.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData copy.js::surveyInfo",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData copy.js",
+      "name": "surveyInfo",
+      "type": "named",
+      "used": false,
+      "relativePath": "data/surveyData copy.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData copy.js::executiveReport",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData copy.js",
+      "name": "executiveReport",
+      "type": "named",
+      "used": false,
+      "relativePath": "data/surveyData copy.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData copy.js::supportAnalysis",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData copy.js",
+      "name": "supportAnalysis",
+      "type": "named",
+      "used": false,
+      "relativePath": "data/surveyData copy.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData copy.js::responseDetails",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData copy.js",
+      "name": "responseDetails",
+      "type": "named",
+      "used": false,
+      "relativePath": "data/surveyData copy.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData copy.js::attributeDeepDive",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData copy.js",
+      "name": "attributeDeepDive",
+      "type": "named",
+      "used": false,
+      "relativePath": "data/surveyData copy.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData copy.js::implementationPlan",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData copy.js",
+      "name": "implementationPlan",
+      "type": "named",
+      "used": false,
+      "relativePath": "data/surveyData copy.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData copy.js::severityLabels",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData copy.js",
+      "name": "severityLabels",
+      "type": "named",
+      "used": false,
+      "relativePath": "data/surveyData copy.js"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/hooks/use-mobile.jsx::useIsMobile",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/hooks/use-mobile.jsx",
+      "name": "useIsMobile",
+      "type": "named",
+      "used": false,
+      "relativePath": "hooks/use-mobile.jsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/contexts/ThemeContext.jsx::ThemeProvider",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/contexts/ThemeContext.jsx",
+      "name": "ThemeProvider",
+      "type": "named",
+      "used": false,
+      "relativePath": "contexts/ThemeContext.jsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/contexts/ThemeContext.jsx::useTheme",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/contexts/ThemeContext.jsx",
+      "name": "useTheme",
+      "type": "named",
+      "used": false,
+      "relativePath": "contexts/ThemeContext.jsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ThemeToggle.jsx::ThemeToggle",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ThemeToggle.jsx",
+      "name": "ThemeToggle",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ThemeToggle.jsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/NavLink.jsx::NavLink",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/NavLink.jsx",
+      "name": "NavLink",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/NavLink.jsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/WordCloud.jsx::WordCloud",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/WordCloud.jsx",
+      "name": "WordCloud",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/survey/WordCloud.jsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/SurveySidebar.jsx::SurveySidebar",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/SurveySidebar.jsx",
+      "name": "SurveySidebar",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/survey/SurveySidebar.jsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/SurveySidebar.jsx::SurveySidebarMobile",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/SurveySidebar.jsx",
+      "name": "SurveySidebarMobile",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/survey/SurveySidebar.jsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/SurveyLayout.jsx::SurveyLayout",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/SurveyLayout.jsx",
+      "name": "SurveyLayout",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/survey/SurveyLayout.jsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/SurveyHeader.jsx::SurveyHeader",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/SurveyHeader.jsx",
+      "name": "SurveyHeader",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/survey/SurveyHeader.jsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/SupportAnalysis.jsx::SupportAnalysis",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/SupportAnalysis.jsx",
+      "name": "SupportAnalysis",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/survey/SupportAnalysis.jsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/ResponseDetails.jsx::ResponseDetails",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/ResponseDetails.jsx",
+      "name": "ResponseDetails",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/survey/ResponseDetails.jsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/ImplementationPlan.jsx::ImplementationPlan",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/ImplementationPlan.jsx",
+      "name": "ImplementationPlan",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/survey/ImplementationPlan.jsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/ExecutiveReport.jsx::ExecutiveReport",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/ExecutiveReport.jsx",
+      "name": "ExecutiveReport",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/survey/ExecutiveReport.jsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/ContentRenderer.jsx::ContentRenderer",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/ContentRenderer.jsx",
+      "name": "ContentRenderer",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/survey/ContentRenderer.jsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/AttributeDeepDive.jsx::AttributeDeepDive",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/AttributeDeepDive.jsx",
+      "name": "AttributeDeepDive",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/survey/AttributeDeepDive.jsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/use-toast.ts::useToast",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/use-toast.ts",
+      "name": "useToast",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/use-toast.ts"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/use-toast.ts::toast",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/use-toast.ts",
+      "name": "toast",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/use-toast.ts"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/tooltip.tsx::Tooltip",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/tooltip.tsx",
+      "name": "Tooltip",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/tooltip.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/tooltip.tsx::TooltipTrigger",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/tooltip.tsx",
+      "name": "TooltipTrigger",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/tooltip.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/tooltip.tsx::TooltipContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/tooltip.tsx",
+      "name": "TooltipContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/tooltip.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/tooltip.tsx::TooltipProvider",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/tooltip.tsx",
+      "name": "TooltipProvider",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/tooltip.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toggle.tsx::Toggle",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toggle.tsx",
+      "name": "Toggle",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/toggle.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toggle.tsx::toggleVariants",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toggle.tsx",
+      "name": "toggleVariants",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/toggle.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toggle-group.tsx::ToggleGroup",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toggle-group.tsx",
+      "name": "ToggleGroup",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/toggle-group.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toggle-group.tsx::ToggleGroupItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toggle-group.tsx",
+      "name": "ToggleGroupItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/toggle-group.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toaster.tsx::Toaster",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toaster.tsx",
+      "name": "Toaster",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/toaster.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toast.tsx::type ToastProps",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toast.tsx",
+      "name": "type ToastProps",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/toast.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toast.tsx::type ToastActionElement",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toast.tsx",
+      "name": "type ToastActionElement",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/toast.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toast.tsx::ToastProvider",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toast.tsx",
+      "name": "ToastProvider",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/toast.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toast.tsx::ToastViewport",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toast.tsx",
+      "name": "ToastViewport",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/toast.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toast.tsx::Toast",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toast.tsx",
+      "name": "Toast",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/toast.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toast.tsx::ToastTitle",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toast.tsx",
+      "name": "ToastTitle",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/toast.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toast.tsx::ToastDescription",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toast.tsx",
+      "name": "ToastDescription",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/toast.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toast.tsx::ToastClose",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toast.tsx",
+      "name": "ToastClose",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/toast.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toast.tsx::ToastAction",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toast.tsx",
+      "name": "ToastAction",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/toast.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/textarea.tsx::Textarea",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/textarea.tsx",
+      "name": "Textarea",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/textarea.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/tabs.tsx::Tabs",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/tabs.tsx",
+      "name": "Tabs",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/tabs.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/tabs.tsx::TabsList",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/tabs.tsx",
+      "name": "TabsList",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/tabs.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/tabs.tsx::TabsTrigger",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/tabs.tsx",
+      "name": "TabsTrigger",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/tabs.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/tabs.tsx::TabsContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/tabs.tsx",
+      "name": "TabsContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/tabs.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/table.tsx::Table",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/table.tsx",
+      "name": "Table",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/table.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/table.tsx::TableHeader",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/table.tsx",
+      "name": "TableHeader",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/table.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/table.tsx::TableBody",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/table.tsx",
+      "name": "TableBody",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/table.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/table.tsx::TableFooter",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/table.tsx",
+      "name": "TableFooter",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/table.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/table.tsx::TableHead",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/table.tsx",
+      "name": "TableHead",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/table.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/table.tsx::TableRow",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/table.tsx",
+      "name": "TableRow",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/table.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/table.tsx::TableCell",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/table.tsx",
+      "name": "TableCell",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/table.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/table.tsx::TableCaption",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/table.tsx",
+      "name": "TableCaption",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/table.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/switch.tsx::Switch",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/switch.tsx",
+      "name": "Switch",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/switch.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sonner.tsx::Toaster",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sonner.tsx",
+      "name": "Toaster",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sonner.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sonner.tsx::toast",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sonner.tsx",
+      "name": "toast",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sonner.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/slider.tsx::Slider",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/slider.tsx",
+      "name": "Slider",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/slider.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/skeleton.tsx::Skeleton",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/skeleton.tsx",
+      "name": "Skeleton",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/skeleton.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::Sidebar",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "Sidebar",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarFooter",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarFooter",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarGroup",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarGroup",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarGroupAction",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarGroupAction",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarGroupContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarGroupContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarGroupLabel",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarGroupLabel",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarHeader",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarHeader",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarInput",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarInput",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarInset",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarInset",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarMenu",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarMenu",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarMenuAction",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarMenuAction",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarMenuBadge",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarMenuBadge",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarMenuButton",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarMenuButton",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarMenuItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarMenuItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarMenuSkeleton",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarMenuSkeleton",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarMenuSub",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarMenuSub",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarMenuSubButton",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarMenuSubButton",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarMenuSubItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarMenuSubItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarProvider",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarProvider",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarRail",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarRail",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarSeparator",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarSeparator",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::SidebarTrigger",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "SidebarTrigger",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx::useSidebar",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "name": "useSidebar",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sidebar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx::Sheet",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx",
+      "name": "Sheet",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sheet.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx::SheetClose",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx",
+      "name": "SheetClose",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sheet.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx::SheetContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx",
+      "name": "SheetContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sheet.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx::SheetDescription",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx",
+      "name": "SheetDescription",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sheet.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx::SheetFooter",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx",
+      "name": "SheetFooter",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sheet.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx::SheetHeader",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx",
+      "name": "SheetHeader",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sheet.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx::SheetOverlay",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx",
+      "name": "SheetOverlay",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sheet.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx::SheetPortal",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx",
+      "name": "SheetPortal",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sheet.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx::SheetTitle",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx",
+      "name": "SheetTitle",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sheet.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx::SheetTrigger",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx",
+      "name": "SheetTrigger",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/sheet.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/separator.tsx::Separator",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/separator.tsx",
+      "name": "Separator",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/separator.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx::Select",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx",
+      "name": "Select",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/select.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx::SelectGroup",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx",
+      "name": "SelectGroup",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/select.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx::SelectValue",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx",
+      "name": "SelectValue",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/select.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx::SelectTrigger",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx",
+      "name": "SelectTrigger",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/select.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx::SelectContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx",
+      "name": "SelectContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/select.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx::SelectLabel",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx",
+      "name": "SelectLabel",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/select.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx::SelectItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx",
+      "name": "SelectItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/select.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx::SelectSeparator",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx",
+      "name": "SelectSeparator",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/select.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx::SelectScrollUpButton",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx",
+      "name": "SelectScrollUpButton",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/select.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx::SelectScrollDownButton",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx",
+      "name": "SelectScrollDownButton",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/select.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/scroll-area.tsx::ScrollArea",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/scroll-area.tsx",
+      "name": "ScrollArea",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/scroll-area.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/scroll-area.tsx::ScrollBar",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/scroll-area.tsx",
+      "name": "ScrollBar",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/scroll-area.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/resizable.tsx::ResizablePanelGroup",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/resizable.tsx",
+      "name": "ResizablePanelGroup",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/resizable.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/resizable.tsx::ResizablePanel",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/resizable.tsx",
+      "name": "ResizablePanel",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/resizable.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/resizable.tsx::ResizableHandle",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/resizable.tsx",
+      "name": "ResizableHandle",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/resizable.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/radio-group.tsx::RadioGroup",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/radio-group.tsx",
+      "name": "RadioGroup",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/radio-group.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/radio-group.tsx::RadioGroupItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/radio-group.tsx",
+      "name": "RadioGroupItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/radio-group.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/progress.tsx::Progress",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/progress.tsx",
+      "name": "Progress",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/progress.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/popover.tsx::Popover",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/popover.tsx",
+      "name": "Popover",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/popover.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/popover.tsx::PopoverTrigger",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/popover.tsx",
+      "name": "PopoverTrigger",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/popover.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/popover.tsx::PopoverContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/popover.tsx",
+      "name": "PopoverContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/popover.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/pagination.tsx::Pagination",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/pagination.tsx",
+      "name": "Pagination",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/pagination.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/pagination.tsx::PaginationContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/pagination.tsx",
+      "name": "PaginationContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/pagination.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/pagination.tsx::PaginationEllipsis",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/pagination.tsx",
+      "name": "PaginationEllipsis",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/pagination.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/pagination.tsx::PaginationItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/pagination.tsx",
+      "name": "PaginationItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/pagination.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/pagination.tsx::PaginationLink",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/pagination.tsx",
+      "name": "PaginationLink",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/pagination.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/pagination.tsx::PaginationNext",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/pagination.tsx",
+      "name": "PaginationNext",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/pagination.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/pagination.tsx::PaginationPrevious",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/pagination.tsx",
+      "name": "PaginationPrevious",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/pagination.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/navigation-menu.tsx::navigationMenuTriggerStyle",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/navigation-menu.tsx",
+      "name": "navigationMenuTriggerStyle",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/navigation-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/navigation-menu.tsx::NavigationMenu",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/navigation-menu.tsx",
+      "name": "NavigationMenu",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/navigation-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/navigation-menu.tsx::NavigationMenuList",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/navigation-menu.tsx",
+      "name": "NavigationMenuList",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/navigation-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/navigation-menu.tsx::NavigationMenuItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/navigation-menu.tsx",
+      "name": "NavigationMenuItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/navigation-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/navigation-menu.tsx::NavigationMenuContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/navigation-menu.tsx",
+      "name": "NavigationMenuContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/navigation-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/navigation-menu.tsx::NavigationMenuTrigger",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/navigation-menu.tsx",
+      "name": "NavigationMenuTrigger",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/navigation-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/navigation-menu.tsx::NavigationMenuLink",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/navigation-menu.tsx",
+      "name": "NavigationMenuLink",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/navigation-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/navigation-menu.tsx::NavigationMenuIndicator",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/navigation-menu.tsx",
+      "name": "NavigationMenuIndicator",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/navigation-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/navigation-menu.tsx::NavigationMenuViewport",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/navigation-menu.tsx",
+      "name": "NavigationMenuViewport",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/navigation-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx::Menubar",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx",
+      "name": "Menubar",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/menubar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx::MenubarMenu",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx",
+      "name": "MenubarMenu",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/menubar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx::MenubarTrigger",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx",
+      "name": "MenubarTrigger",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/menubar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx::MenubarContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx",
+      "name": "MenubarContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/menubar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx::MenubarItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx",
+      "name": "MenubarItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/menubar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx::MenubarSeparator",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx",
+      "name": "MenubarSeparator",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/menubar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx::MenubarLabel",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx",
+      "name": "MenubarLabel",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/menubar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx::MenubarCheckboxItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx",
+      "name": "MenubarCheckboxItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/menubar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx::MenubarRadioGroup",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx",
+      "name": "MenubarRadioGroup",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/menubar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx::MenubarRadioItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx",
+      "name": "MenubarRadioItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/menubar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx::MenubarPortal",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx",
+      "name": "MenubarPortal",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/menubar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx::MenubarSubContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx",
+      "name": "MenubarSubContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/menubar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx::MenubarSubTrigger",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx",
+      "name": "MenubarSubTrigger",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/menubar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx::MenubarGroup",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx",
+      "name": "MenubarGroup",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/menubar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx::MenubarSub",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx",
+      "name": "MenubarSub",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/menubar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx::MenubarShortcut",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx",
+      "name": "MenubarShortcut",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/menubar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/label.tsx::Label",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/label.tsx",
+      "name": "Label",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/label.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/input.tsx::Input",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/input.tsx",
+      "name": "Input",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/input.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/input-otp.tsx::InputOTP",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/input-otp.tsx",
+      "name": "InputOTP",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/input-otp.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/input-otp.tsx::InputOTPGroup",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/input-otp.tsx",
+      "name": "InputOTPGroup",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/input-otp.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/input-otp.tsx::InputOTPSlot",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/input-otp.tsx",
+      "name": "InputOTPSlot",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/input-otp.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/input-otp.tsx::InputOTPSeparator",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/input-otp.tsx",
+      "name": "InputOTPSeparator",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/input-otp.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/hover-card.tsx::HoverCard",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/hover-card.tsx",
+      "name": "HoverCard",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/hover-card.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/hover-card.tsx::HoverCardTrigger",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/hover-card.tsx",
+      "name": "HoverCardTrigger",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/hover-card.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/hover-card.tsx::HoverCardContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/hover-card.tsx",
+      "name": "HoverCardContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/hover-card.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/form.tsx::useFormField",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/form.tsx",
+      "name": "useFormField",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/form.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/form.tsx::Form",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/form.tsx",
+      "name": "Form",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/form.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/form.tsx::FormItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/form.tsx",
+      "name": "FormItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/form.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/form.tsx::FormLabel",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/form.tsx",
+      "name": "FormLabel",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/form.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/form.tsx::FormControl",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/form.tsx",
+      "name": "FormControl",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/form.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/form.tsx::FormDescription",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/form.tsx",
+      "name": "FormDescription",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/form.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/form.tsx::FormMessage",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/form.tsx",
+      "name": "FormMessage",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/form.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/form.tsx::FormField",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/form.tsx",
+      "name": "FormField",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/form.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx::DropdownMenu",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx",
+      "name": "DropdownMenu",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dropdown-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx::DropdownMenuTrigger",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx",
+      "name": "DropdownMenuTrigger",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dropdown-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx::DropdownMenuContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx",
+      "name": "DropdownMenuContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dropdown-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx::DropdownMenuItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx",
+      "name": "DropdownMenuItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dropdown-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx::DropdownMenuCheckboxItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx",
+      "name": "DropdownMenuCheckboxItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dropdown-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx::DropdownMenuRadioItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx",
+      "name": "DropdownMenuRadioItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dropdown-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx::DropdownMenuLabel",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx",
+      "name": "DropdownMenuLabel",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dropdown-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx::DropdownMenuSeparator",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx",
+      "name": "DropdownMenuSeparator",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dropdown-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx::DropdownMenuShortcut",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx",
+      "name": "DropdownMenuShortcut",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dropdown-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx::DropdownMenuGroup",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx",
+      "name": "DropdownMenuGroup",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dropdown-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx::DropdownMenuPortal",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx",
+      "name": "DropdownMenuPortal",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dropdown-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx::DropdownMenuSub",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx",
+      "name": "DropdownMenuSub",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dropdown-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx::DropdownMenuSubContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx",
+      "name": "DropdownMenuSubContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dropdown-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx::DropdownMenuSubTrigger",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx",
+      "name": "DropdownMenuSubTrigger",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dropdown-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx::DropdownMenuRadioGroup",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx",
+      "name": "DropdownMenuRadioGroup",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dropdown-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx::Drawer",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx",
+      "name": "Drawer",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/drawer.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx::DrawerPortal",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx",
+      "name": "DrawerPortal",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/drawer.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx::DrawerOverlay",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx",
+      "name": "DrawerOverlay",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/drawer.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx::DrawerTrigger",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx",
+      "name": "DrawerTrigger",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/drawer.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx::DrawerClose",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx",
+      "name": "DrawerClose",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/drawer.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx::DrawerContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx",
+      "name": "DrawerContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/drawer.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx::DrawerHeader",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx",
+      "name": "DrawerHeader",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/drawer.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx::DrawerFooter",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx",
+      "name": "DrawerFooter",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/drawer.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx::DrawerTitle",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx",
+      "name": "DrawerTitle",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/drawer.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx::DrawerDescription",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx",
+      "name": "DrawerDescription",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/drawer.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx::Dialog",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx",
+      "name": "Dialog",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx::DialogPortal",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx",
+      "name": "DialogPortal",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx::DialogOverlay",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx",
+      "name": "DialogOverlay",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx::DialogClose",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx",
+      "name": "DialogClose",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx::DialogTrigger",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx",
+      "name": "DialogTrigger",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx::DialogContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx",
+      "name": "DialogContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx::DialogHeader",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx",
+      "name": "DialogHeader",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx::DialogFooter",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx",
+      "name": "DialogFooter",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx::DialogTitle",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx",
+      "name": "DialogTitle",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx::DialogDescription",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx",
+      "name": "DialogDescription",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx::ContextMenu",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx",
+      "name": "ContextMenu",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/context-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx::ContextMenuTrigger",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx",
+      "name": "ContextMenuTrigger",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/context-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx::ContextMenuContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx",
+      "name": "ContextMenuContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/context-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx::ContextMenuItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx",
+      "name": "ContextMenuItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/context-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx::ContextMenuCheckboxItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx",
+      "name": "ContextMenuCheckboxItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/context-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx::ContextMenuRadioItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx",
+      "name": "ContextMenuRadioItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/context-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx::ContextMenuLabel",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx",
+      "name": "ContextMenuLabel",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/context-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx::ContextMenuSeparator",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx",
+      "name": "ContextMenuSeparator",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/context-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx::ContextMenuShortcut",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx",
+      "name": "ContextMenuShortcut",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/context-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx::ContextMenuGroup",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx",
+      "name": "ContextMenuGroup",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/context-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx::ContextMenuPortal",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx",
+      "name": "ContextMenuPortal",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/context-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx::ContextMenuSub",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx",
+      "name": "ContextMenuSub",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/context-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx::ContextMenuSubContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx",
+      "name": "ContextMenuSubContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/context-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx::ContextMenuSubTrigger",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx",
+      "name": "ContextMenuSubTrigger",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/context-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx::ContextMenuRadioGroup",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx",
+      "name": "ContextMenuRadioGroup",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/context-menu.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/command.tsx::Command",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/command.tsx",
+      "name": "Command",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/command.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/command.tsx::CommandDialog",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/command.tsx",
+      "name": "CommandDialog",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/command.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/command.tsx::CommandInput",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/command.tsx",
+      "name": "CommandInput",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/command.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/command.tsx::CommandList",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/command.tsx",
+      "name": "CommandList",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/command.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/command.tsx::CommandEmpty",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/command.tsx",
+      "name": "CommandEmpty",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/command.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/command.tsx::CommandGroup",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/command.tsx",
+      "name": "CommandGroup",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/command.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/command.tsx::CommandItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/command.tsx",
+      "name": "CommandItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/command.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/command.tsx::CommandShortcut",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/command.tsx",
+      "name": "CommandShortcut",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/command.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/command.tsx::CommandSeparator",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/command.tsx",
+      "name": "CommandSeparator",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/command.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/collapsible.tsx::Collapsible",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/collapsible.tsx",
+      "name": "Collapsible",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/collapsible.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/collapsible.tsx::CollapsibleTrigger",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/collapsible.tsx",
+      "name": "CollapsibleTrigger",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/collapsible.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/collapsible.tsx::CollapsibleContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/collapsible.tsx",
+      "name": "CollapsibleContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/collapsible.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/checkbox.tsx::Checkbox",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/checkbox.tsx",
+      "name": "Checkbox",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/checkbox.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/chart.tsx::ChartContainer",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/chart.tsx",
+      "name": "ChartContainer",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/chart.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/chart.tsx::ChartTooltip",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/chart.tsx",
+      "name": "ChartTooltip",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/chart.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/chart.tsx::ChartTooltipContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/chart.tsx",
+      "name": "ChartTooltipContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/chart.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/chart.tsx::ChartLegend",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/chart.tsx",
+      "name": "ChartLegend",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/chart.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/chart.tsx::ChartLegendContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/chart.tsx",
+      "name": "ChartLegendContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/chart.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/chart.tsx::ChartStyle",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/chart.tsx",
+      "name": "ChartStyle",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/chart.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/carousel.tsx::type CarouselApi",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/carousel.tsx",
+      "name": "type CarouselApi",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/carousel.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/carousel.tsx::Carousel",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/carousel.tsx",
+      "name": "Carousel",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/carousel.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/carousel.tsx::CarouselContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/carousel.tsx",
+      "name": "CarouselContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/carousel.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/carousel.tsx::CarouselItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/carousel.tsx",
+      "name": "CarouselItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/carousel.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/carousel.tsx::CarouselPrevious",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/carousel.tsx",
+      "name": "CarouselPrevious",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/carousel.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/carousel.tsx::CarouselNext",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/carousel.tsx",
+      "name": "CarouselNext",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/carousel.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/card.tsx::Card",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/card.tsx",
+      "name": "Card",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/card.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/card.tsx::CardHeader",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/card.tsx",
+      "name": "CardHeader",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/card.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/card.tsx::CardFooter",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/card.tsx",
+      "name": "CardFooter",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/card.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/card.tsx::CardTitle",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/card.tsx",
+      "name": "CardTitle",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/card.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/card.tsx::CardDescription",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/card.tsx",
+      "name": "CardDescription",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/card.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/card.tsx::CardContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/card.tsx",
+      "name": "CardContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/card.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/calendar.tsx::Calendar",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/calendar.tsx",
+      "name": "Calendar",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/calendar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/button.tsx::Button",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/button.tsx",
+      "name": "Button",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/button.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/button.tsx::buttonVariants",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/button.tsx",
+      "name": "buttonVariants",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/button.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/breadcrumb.tsx::Breadcrumb",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/breadcrumb.tsx",
+      "name": "Breadcrumb",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/breadcrumb.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/breadcrumb.tsx::BreadcrumbList",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/breadcrumb.tsx",
+      "name": "BreadcrumbList",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/breadcrumb.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/breadcrumb.tsx::BreadcrumbItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/breadcrumb.tsx",
+      "name": "BreadcrumbItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/breadcrumb.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/breadcrumb.tsx::BreadcrumbLink",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/breadcrumb.tsx",
+      "name": "BreadcrumbLink",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/breadcrumb.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/breadcrumb.tsx::BreadcrumbPage",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/breadcrumb.tsx",
+      "name": "BreadcrumbPage",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/breadcrumb.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/breadcrumb.tsx::BreadcrumbSeparator",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/breadcrumb.tsx",
+      "name": "BreadcrumbSeparator",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/breadcrumb.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/breadcrumb.tsx::BreadcrumbEllipsis",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/breadcrumb.tsx",
+      "name": "BreadcrumbEllipsis",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/breadcrumb.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/badge.tsx::Badge",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/badge.tsx",
+      "name": "Badge",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/badge.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/badge.tsx::badgeVariants",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/badge.tsx",
+      "name": "badgeVariants",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/badge.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/avatar.tsx::Avatar",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/avatar.tsx",
+      "name": "Avatar",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/avatar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/avatar.tsx::AvatarImage",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/avatar.tsx",
+      "name": "AvatarImage",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/avatar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/avatar.tsx::AvatarFallback",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/avatar.tsx",
+      "name": "AvatarFallback",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/avatar.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/aspect-ratio.tsx::AspectRatio",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/aspect-ratio.tsx",
+      "name": "AspectRatio",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/aspect-ratio.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert.tsx::Alert",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert.tsx",
+      "name": "Alert",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/alert.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert.tsx::AlertTitle",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert.tsx",
+      "name": "AlertTitle",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/alert.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert.tsx::AlertDescription",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert.tsx",
+      "name": "AlertDescription",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/alert.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx::AlertDialog",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx",
+      "name": "AlertDialog",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/alert-dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx::AlertDialogPortal",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx",
+      "name": "AlertDialogPortal",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/alert-dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx::AlertDialogOverlay",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx",
+      "name": "AlertDialogOverlay",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/alert-dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx::AlertDialogTrigger",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx",
+      "name": "AlertDialogTrigger",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/alert-dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx::AlertDialogContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx",
+      "name": "AlertDialogContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/alert-dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx::AlertDialogHeader",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx",
+      "name": "AlertDialogHeader",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/alert-dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx::AlertDialogFooter",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx",
+      "name": "AlertDialogFooter",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/alert-dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx::AlertDialogTitle",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx",
+      "name": "AlertDialogTitle",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/alert-dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx::AlertDialogDescription",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx",
+      "name": "AlertDialogDescription",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/alert-dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx::AlertDialogAction",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx",
+      "name": "AlertDialogAction",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/alert-dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx::AlertDialogCancel",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx",
+      "name": "AlertDialogCancel",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/alert-dialog.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/accordion.tsx::Accordion",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/accordion.tsx",
+      "name": "Accordion",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/accordion.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/accordion.tsx::AccordionItem",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/accordion.tsx",
+      "name": "AccordionItem",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/accordion.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/accordion.tsx::AccordionTrigger",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/accordion.tsx",
+      "name": "AccordionTrigger",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/accordion.tsx"
+    },
+    {
+      "key": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/accordion.tsx::AccordionContent",
+      "file": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/accordion.tsx",
+      "name": "AccordionContent",
+      "type": "named",
+      "used": false,
+      "relativePath": "components/ui/accordion.tsx"
+    }
+  ],
+  "unusedFiles": [
+    {
+      "file": "lib/utils.js",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/lib/utils.js",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "lib/colors.js",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/lib/colors.js",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "hooks/use-toast.js",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/hooks/use-toast.js",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "data/surveyData.js",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData.js",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "data/surveyData copy.js",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/data/surveyData copy.js",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "pages/NotFound.jsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/pages/NotFound.jsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "pages/Index.jsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/pages/Index.jsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "pages/Export.jsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/pages/Export.jsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "hooks/use-mobile.jsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/hooks/use-mobile.jsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "contexts/ThemeContext.jsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/contexts/ThemeContext.jsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ThemeToggle.jsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ThemeToggle.jsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/NavLink.jsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/NavLink.jsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/survey/WordCloud.jsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/WordCloud.jsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/survey/SurveySidebar.jsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/SurveySidebar.jsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/survey/SurveyLayout.jsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/SurveyLayout.jsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/survey/SurveyHeader.jsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/SurveyHeader.jsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/survey/ImplementationPlan.jsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/ImplementationPlan.jsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/survey/FilterPanel.jsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/FilterPanel.jsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/survey/ExecutiveReport.jsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/ExecutiveReport.jsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/survey/ContentRenderer.jsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/ContentRenderer.jsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/survey/charts/Charts.jsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/survey/charts/Charts.jsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/use-toast.ts",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/use-toast.ts",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/tooltip.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/tooltip.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/toggle.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toggle.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/toggle-group.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toggle-group.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/toaster.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toaster.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/toast.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/toast.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/textarea.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/textarea.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/tabs.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/tabs.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/table.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/table.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/switch.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/switch.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/sonner.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sonner.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/slider.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/slider.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/skeleton.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/skeleton.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/sidebar.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sidebar.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/sheet.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/sheet.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/separator.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/separator.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/select.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/select.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/scroll-area.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/scroll-area.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/resizable.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/resizable.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/radio-group.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/radio-group.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/progress.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/progress.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/popover.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/popover.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/pagination.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/pagination.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/navigation-menu.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/navigation-menu.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/menubar.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/menubar.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/label.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/label.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/input.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/input.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/input-otp.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/input-otp.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/hover-card.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/hover-card.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/form.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/form.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/dropdown-menu.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dropdown-menu.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/drawer.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/drawer.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/dialog.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/dialog.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/context-menu.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/context-menu.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/command.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/command.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/collapsible.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/collapsible.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/checkbox.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/checkbox.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/chart.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/chart.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/carousel.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/carousel.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/card.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/card.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/calendar.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/calendar.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/button.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/button.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/breadcrumb.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/breadcrumb.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/badge.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/badge.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/avatar.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/avatar.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/aspect-ratio.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/aspect-ratio.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/alert.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/alert-dialog.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/alert-dialog.tsx",
+      "reason": "Nunca importado"
+    },
+    {
+      "file": "components/ui/accordion.tsx",
+      "absolutePath": "/Users/danyelaramos/Documents/ai2c_results/src/components/ui/accordion.tsx",
+      "reason": "Nunca importado"
+    }
+  ],
+  "statistics": {
+    "totalFiles": 75,
+    "totalExports": 345,
+    "unusedExports": 335,
+    "unusedFiles": 70
+  }
+}

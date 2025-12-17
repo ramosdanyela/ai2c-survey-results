@@ -32,6 +32,11 @@ import {
   RGBA_BLACK_SHADOW_20,
   RGBA_ORANGE_SHADOW_20,
   COLOR_ORANGE_PRIMARY,
+  COLOR_LIGHT_BACKGROUND,
+  RGBA_ORANGE_SHADOW_15,
+  COLOR_GRAY_DARK,
+  RGBA_BLACK_SHADOW_08,
+  RGBA_BLACK_SHADOW_10,
 } from "@/lib/colors";
 import {
   Collapsible,
@@ -173,8 +178,8 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
           <div
             className="rounded-lg p-3 border border-border/50"
             style={{
-              backgroundColor: "#faf8f5", // Bege claro/off-white
-              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+              backgroundColor: COLOR_LIGHT_BACKGROUND,
+              boxShadow: `0 2px 8px ${RGBA_BLACK_SHADOW_08}`,
             }}
           >
             <div className="space-y-2">
@@ -205,14 +210,14 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                 <div
                   className="flex-1 rounded-lg p-2 bg-white"
                   style={{
-                    boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                    boxShadow: `0 1px 3px ${RGBA_BLACK_SHADOW_10}`,
                   }}
                 >
                   <div className="flex items-center gap-2">
                     <div
                       className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
                       style={{
-                        backgroundColor: "rgba(255,158,43,0.15)",
+                        backgroundColor: RGBA_ORANGE_SHADOW_15,
                       }}
                     >
                       <Users
@@ -223,7 +228,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                     <div className="flex-1 min-w-0">
                       <div
                         className="text-lg font-bold mb-0.5"
-                        style={{ color: "#1f2937" }}
+                        style={{ color: COLOR_GRAY_DARK }}
                       >
                         {surveyInfo.totalRespondents.toLocaleString("pt-BR")}
                       </div>
@@ -238,14 +243,14 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                 <div
                   className="flex-1 rounded-lg p-2 bg-white min-w-[100px]"
                   style={{
-                    boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                    boxShadow: `0 1px 3px ${RGBA_BLACK_SHADOW_10}`,
                   }}
                 >
                   <div className="flex items-center gap-2">
                     <div
                       className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
                       style={{
-                        backgroundColor: "rgba(255,158,43,0.15)",
+                        backgroundColor: RGBA_ORANGE_SHADOW_15,
                       }}
                     >
                       <TrendingUp
@@ -256,7 +261,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                     <div className="flex-1 min-w-0">
                       <div
                         className="text-lg font-bold mb-0.5"
-                        style={{ color: "#1f2937" }}
+                        style={{ color: COLOR_GRAY_DARK }}
                       >
                         {Math.round(surveyInfo.responseRate)}%
                       </div>
@@ -271,14 +276,14 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                 <div
                   className="rounded-lg px-2 py-2 bg-white w-[110px] flex-shrink-0"
                   style={{
-                    boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                    boxShadow: `0 1px 3px ${RGBA_BLACK_SHADOW_10}`,
                   }}
                 >
                   <div className="flex items-center gap-2">
                     <div
                       className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
                       style={{
-                        backgroundColor: "rgba(255,158,43,0.15)",
+                        backgroundColor: RGBA_ORANGE_SHADOW_15,
                       }}
                     >
                       <ClipboardList
@@ -289,7 +294,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                     <div className="flex-1 min-w-0">
                       <div
                         className="text-lg font-bold mb-0.5"
-                        style={{ color: "#1f2937" }}
+                        style={{ color: COLOR_GRAY_DARK }}
                       >
                         {(() => {
                           const allQuestions = [
