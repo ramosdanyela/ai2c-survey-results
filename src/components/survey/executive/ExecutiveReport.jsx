@@ -1,21 +1,12 @@
 import { useState } from "react";
-import {
-  FileText,
-  AlertTriangle,
-  Users,
-  ClipboardList,
-  ChevronDown,
-  ChevronRight,
-  User,
-} from "@/lib/icons";
+import { FileText, AlertTriangle } from "@/lib/icons";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "@/components/ui-components/card";
-import { Badge } from "@/components/ui-components/badge";
-import { Checkbox } from "@/components/ui/checkbox";
+import { SubsectionTitle } from "@/components/SubsectionTitle";
 import { COLOR_ORANGE_PRIMARY } from "@/lib/colors";
 import {
   executiveReport,
@@ -23,14 +14,8 @@ import {
   implementationPlan,
   uiTexts,
 } from "@/data/surveyData";
-import { RecommendationsTable, TasksTable } from "./tables/Tables";
-
-const severityColors = {
-  critical: "bg-severity-critical text-white",
-  high: "bg-severity-high text-white",
-  medium: "bg-severity-medium text-white",
-  low: "bg-severity-low text-white",
-};
+import { RecommendationsTable, TasksTable } from "../shared/tables/Tables";
+import { severityColors } from "../shared/badgeTypes.jsx";
 
 export function ExecutiveReport({ subSection, onSectionChange }) {
   // State to control which recommendations have their tasks expanded
@@ -74,14 +59,10 @@ export function ExecutiveReport({ subSection, onSectionChange }) {
         <section>
           <div className="space-y-6">
             {/* Section Title */}
-            <Card className="card-elevated">
-              <CardHeader className="py-6 flex items-center justify-center">
-                <CardTitle className="text-2xl font-bold text-card-foreground flex items-center gap-2">
-                  <FileText className="w-6 h-6" />
-                  {uiTexts.executiveReport.executiveSummary}
-                </CardTitle>
-              </CardHeader>
-            </Card>
+            <SubsectionTitle
+              title={uiTexts.executiveReport.executiveSummary}
+              icon={FileText}
+            />
 
             <div className="grid gap-6">
               <Card className="card-elevated">
@@ -158,14 +139,10 @@ export function ExecutiveReport({ subSection, onSectionChange }) {
         <section>
           <div className="space-y-6">
             {/* Section Title */}
-            <Card className="card-elevated">
-              <CardHeader className="py-6 flex items-center justify-center">
-                <CardTitle className="text-2xl font-bold text-card-foreground flex items-center gap-2">
-                  <AlertTriangle className="w-6 h-6" />
-                  {uiTexts.executiveReport.recommendations}
-                </CardTitle>
-              </CardHeader>
-            </Card>
+            <SubsectionTitle
+              title={uiTexts.executiveReport.recommendations}
+              icon={AlertTriangle}
+            />
 
             <Card className="card-elevated overflow-hidden bg-muted/10">
               <CardContent>

@@ -55,6 +55,61 @@ export { Award, Cloud } from "lucide-react";
 // Pagination icons
 export { MoreHorizontal } from "lucide-react";
 
+// Import all icons for mapping
+import * as LucideIcons from "lucide-react";
+
+/**
+ * Icon name to component mapping
+ * Converts string icon names to React icon components
+ */
+export const iconMap = {
+  AlertTriangle: LucideIcons.AlertTriangle,
+  ArrowLeft: LucideIcons.ArrowLeft,
+  ArrowRight: LucideIcons.ArrowRight,
+  Award: LucideIcons.Award,
+  BarChart3: LucideIcons.BarChart3,
+  Building: LucideIcons.Building,
+  Check: LucideIcons.Check,
+  CheckSquare: LucideIcons.CheckSquare,
+  ChevronDown: LucideIcons.ChevronDown,
+  ChevronLeft: LucideIcons.ChevronLeft,
+  ChevronRight: LucideIcons.ChevronRight,
+  ChevronUp: LucideIcons.ChevronUp,
+  Cloud: LucideIcons.Cloud,
+  ClipboardList: LucideIcons.ClipboardList,
+  Download: LucideIcons.Download,
+  FileText: LucideIcons.FileText,
+  Filter: LucideIcons.Filter,
+  GraduationCap: LucideIcons.GraduationCap,
+  Heart: LucideIcons.Heart,
+  HelpCircle: LucideIcons.HelpCircle,
+  Layers: LucideIcons.Layers,
+  MapPin: LucideIcons.MapPin,
+  Menu: LucideIcons.Menu,
+  MessageSquare: LucideIcons.MessageSquare,
+  Moon: LucideIcons.Moon,
+  MoreHorizontal: LucideIcons.MoreHorizontal,
+  Percent: LucideIcons.Percent,
+  Presentation: LucideIcons.Presentation,
+  Sun: LucideIcons.Sun,
+  Target: LucideIcons.Target,
+  TrendingUp: LucideIcons.TrendingUp,
+  User: LucideIcons.User,
+  Users: LucideIcons.Users,
+  Users2: LucideIcons.Users2,
+  X: LucideIcons.X,
+};
+
+/**
+ * Get icon component by name
+ * @param {string} iconName - Name of the icon (e.g., "FileText", "BarChart3")
+ * @returns {React.Component} - Icon component or null if not found
+ */
+export function getIcon(iconName) {
+  if (!iconName) return null;
+  return iconMap[iconName] || null;
+}
+
 /**
  * Icon mapping by category (for reference)
  */

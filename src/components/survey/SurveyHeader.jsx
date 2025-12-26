@@ -2,10 +2,8 @@ import {
   ChevronRight,
   ChevronLeft,
   FileText,
-  BarChart3,
-  MessageSquare,
-  Layers,
   Menu,
+  getIcon,
 } from "@/lib/icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,7 +14,12 @@ import {
   getBlueButtonShadow,
   RGBA_WHITE_20,
 } from "@/lib/colors";
-import { responseDetails, attributeDeepDive, uiTexts } from "@/data/surveyData";
+import {
+  responseDetails,
+  attributeDeepDive,
+  uiTexts,
+  sectionsConfig,
+} from "@/data/surveyData";
 
 // Get all questions for navigation
 const getAllQuestions = () => {
@@ -56,13 +59,8 @@ const getDisplayNumber = (questionId) => {
 
 // Get all attribute subsections for navigation
 const getAllAttributes = () => {
-  const attributeIcons = {
-    state: true,
-    education: true,
-    customerType: true,
-  };
   return attributeDeepDive.attributes
-    .filter((attr) => attr.id in attributeIcons)
+    .filter((attr) => attr.icon)
     .map((attr) => `attributes-${attr.id}`);
 };
 
@@ -90,18 +88,66 @@ const sectionTitles = {
   attributes: uiTexts.surveyHeader.attributeDeepDive,
 };
 
-// Section to icon mapping
-const sectionIcons = {
-  executive: FileText,
-  "executive-summary": FileText,
-  "executive-recommendations": FileText,
-  support: BarChart3,
-  "support-sentiment": BarChart3,
-  "support-intent": BarChart3,
-  "support-segmentation": BarChart3,
-  responses: MessageSquare,
-  attributes: Layers,
-};
+// Get icon for a section or subsection
+function getSectionIconFromConfig(sectionId) {
+  // First try to find exact match in sectionsConfig
+  for (const section of sectionsConfig.sections) {
+    // Check if it's the main section
+    if (section.id === sectionId) {
+      return getIcon(section.icon);
+    }
+    // Check subsections
+    if (section.subsections) {
+      const subsection = section.subsections.find(
+        (sub) => sub.id === sectionId
+      );
+      if (subsection) {
+        return getIcon(subsection.icon);
+      }
+    }
+  }
+
+  // Check if it's an attribute subsection
+  if (sectionId.startsWith("attributes-")) {
+    const attributeId = sectionId.replace("attributes-", "");
+    const attribute = attributeDeepDive.attributes.find(
+      (attr) => attr.id === attributeId
+    );
+    if (attribute && attribute.icon) {
+      return getIcon(attribute.icon);
+    }
+    // Fallback to section icon
+    const attributesSection = sectionsConfig.sections.find(
+      (s) => s.id === "attributes"
+    );
+    if (attributesSection) {
+      return getIcon(attributesSection.icon);
+    }
+  }
+
+  // Check if it's a question subsection
+  if (sectionId.startsWith("responses-")) {
+    const questionId = parseInt(sectionId.replace("responses-", ""), 10);
+    const allQuestions = [
+      ...responseDetails.closedQuestions,
+      ...responseDetails.openQuestions,
+    ];
+    const question = allQuestions.find((q) => q.id === questionId);
+    if (question && question.icon) {
+      return getIcon(question.icon);
+    }
+    // Fallback to section icon
+    const responsesSection = sectionsConfig.sections.find(
+      (s) => s.id === "responses"
+    );
+    if (responsesSection) {
+      return getIcon(responsesSection.icon);
+    }
+  }
+
+  // Fallback
+  return FileText;
+}
 
 function getNextSection(currentSection) {
   // Normalize the current section
@@ -223,19 +269,7 @@ function getSectionTitle(activeSection) {
 }
 
 function getSectionIcon(activeSection) {
-  // First try to find exact icon
-  if (sectionIcons[activeSection]) {
-    return sectionIcons[activeSection];
-  }
-
-  // If not found, try to find by base section (before hyphen)
-  const baseSection = activeSection.split("-")[0];
-  if (sectionIcons[baseSection]) {
-    return sectionIcons[baseSection];
-  }
-
-  // Fallback
-  return FileText;
+  return getSectionIconFromConfig(activeSection);
 }
 
 function getSubsectionTitle(sectionId, maxLength = 40) {

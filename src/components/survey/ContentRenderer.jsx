@@ -1,7 +1,7 @@
-import { ExecutiveReport } from "@/components/survey/ExecutiveReport";
-import { SupportAnalysis } from "@/components/survey/SupportAnalysis";
-import { ResponseDetails } from "@/components/survey/ResponseDetails";
-import { AttributeDeepDive } from "@/components/survey/AttributeDeepDive";
+import { ExecutiveReport } from "@/components/survey/executive/ExecutiveReport";
+import { SupportAnalysis } from "@/components/survey/support/SupportAnalysis";
+import { ResponseDetails } from "@/components/survey/responses/ResponseDetails";
+import { AttributeDeepDive } from "@/components/survey/attributes/AttributeDeepDive";
 import { responseDetails, attributeDeepDive } from "@/data/surveyData";
 
 // Get all questions for navigation

@@ -5,14 +5,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui-components/card";
+import { SubsectionTitle } from "@/components/SubsectionTitle";
 import { attributeDeepDive, uiTexts } from "@/data/surveyData";
 import { RGBA_BLACK_SHADOW_20 } from "@/lib/colors";
 import {
   SentimentStackedChart,
   SimpleBarChart,
-  NPSStackedChart,
   SentimentThreeColorChart,
-} from "./charts/Charts";
+} from "../shared/charts/Charts";
 import {
   DistributionTable,
   SentimentTable,
@@ -21,7 +21,7 @@ import {
   SentimentImpactTable,
   PositiveCategoriesTable,
   NegativeCategoriesTable,
-} from "./tables/Tables";
+} from "../shared/tables/Tables";
 
 const attributeIcons = {
   state: MapPin,
@@ -50,14 +50,7 @@ export function AttributeDeepDive({ attributeId }) {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Section Title */}
-      <Card className="card-elevated">
-        <CardHeader className="py-6 flex items-center justify-center">
-          <CardTitle className="text-2xl font-bold text-card-foreground flex items-center gap-2">
-            <Icon className="w-6 h-6" />
-            {attr.name}
-          </CardTitle>
-        </CardHeader>
-      </Card>
+      <SubsectionTitle title={attr.name} icon={Icon} />
 
       <div className="space-y-6">
         {/* Summary */}

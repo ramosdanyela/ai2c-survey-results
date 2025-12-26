@@ -21,7 +21,7 @@ import {
   SentimentStackedChart,
   SimpleBarChart,
   NPSStackedChart,
-} from "./charts/Charts";
+} from "../shared/charts/Charts";
 import {
   Accordion,
   AccordionContent,
@@ -31,7 +31,7 @@ import {
 import { Badge } from "@/components/ui-components/badge";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { FilterPanel } from "./FilterPanel";
+import { FilterPanel } from "../FilterPanel";
 import {
   Popover,
   PopoverContent,

@@ -1,4 +1,4 @@
-import { Target, Users2, Heart, BarChart3 } from "@/lib/icons";
+import { Target, Users2, Heart } from "@/lib/icons";
 import {
   Card,
   CardContent,
@@ -6,9 +6,10 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui-components/card";
+import { SubsectionTitle } from "@/components/SubsectionTitle";
 import { supportAnalysis, uiTexts } from "@/data/surveyData";
-import { SentimentDivergentChart, SimpleBarChart } from "./charts/Charts";
-import { SegmentationTable } from "./tables/Tables";
+import { SentimentDivergentChart, SimpleBarChart } from "../shared/charts/Charts";
+import { SegmentationTable } from "../shared/tables/Tables";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export function SupportAnalysis({ subSection }) {
@@ -25,14 +26,10 @@ export function SupportAnalysis({ subSection }) {
         <section>
           <div className="space-y-6">
             {/* Section Title */}
-            <Card className="card-elevated">
-              <CardHeader className="py-6 flex items-center justify-center">
-                <CardTitle className="text-2xl font-bold text-card-foreground flex items-center gap-2">
-                  <Heart className="w-6 h-6" />
-                  {uiTexts.supportAnalysis.sentimentAnalysis}
-                </CardTitle>
-              </CardHeader>
-            </Card>
+            <SubsectionTitle
+              title={uiTexts.supportAnalysis.sentimentAnalysis}
+              icon={Heart}
+            />
 
             <Card className="card-elevated">
               <CardContent className="pt-6">
@@ -60,14 +57,10 @@ export function SupportAnalysis({ subSection }) {
         <section>
           <div className="space-y-6">
             {/* Section Title */}
-            <Card className="card-elevated">
-              <CardHeader className="py-6 flex items-center justify-center">
-                <CardTitle className="text-2xl font-bold text-card-foreground flex items-center gap-2">
-                  <Target className="w-6 h-6" />
-                  {uiTexts.supportAnalysis.respondentIntent}
-                </CardTitle>
-              </CardHeader>
-            </Card>
+            <SubsectionTitle
+              title={uiTexts.supportAnalysis.respondentIntent}
+              icon={Target}
+            />
 
             <Card className="card-elevated">
               <CardContent className="pt-6">
@@ -120,14 +113,10 @@ export function SupportAnalysis({ subSection }) {
         <section>
           <div className="space-y-6">
             {/* Section Title */}
-            <Card className="card-elevated">
-              <CardHeader className="py-6 flex items-center justify-center">
-                <CardTitle className="text-2xl font-bold text-card-foreground flex items-center gap-2">
-                  <Users2 className="w-6 h-6" />
-                  {uiTexts.supportAnalysis.segmentation}
-                </CardTitle>
-              </CardHeader>
-            </Card>
+            <SubsectionTitle
+              title={uiTexts.supportAnalysis.segmentation}
+              icon={Users2}
+            />
 
             <Card className="card-elevated">
               <CardContent>

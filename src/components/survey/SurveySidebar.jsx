@@ -1,24 +1,11 @@
 import {
-  FileText,
-  BarChart3,
-  MessageSquare,
-  Layers,
   ChevronDown,
   ChevronRight,
-  MapPin,
-  GraduationCap,
-  Building,
   Users,
-  Percent,
-  HelpCircle,
-  Heart,
-  Target,
-  Users2,
-  ClipboardList,
-  AlertTriangle,
   TrendingUp,
-  Download,
+  ClipboardList,
   X,
+  getIcon,
 } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 import {
@@ -26,6 +13,7 @@ import {
   responseDetails,
   attributeDeepDive,
   uiTexts,
+  sectionsConfig,
 } from "@/data/surveyData";
 import { forwardRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -52,41 +40,11 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-const menuItems = [
-  {
-    id: "executive",
-    label: uiTexts.surveySidebar.executiveReport,
-    icon: FileText,
-  },
-  {
-    id: "support",
-    label: uiTexts.surveySidebar.supportAnalysis,
-    icon: BarChart3,
-  },
-  {
-    id: "attributes",
-    label: uiTexts.surveySidebar.attributeDeepDive,
-    icon: Layers,
-  },
-  {
-    id: "responses",
-    label: uiTexts.surveySidebar.questionAnalysis,
-    icon: MessageSquare,
-  },
-  {
-    id: "export",
-    label: uiTexts.surveySidebar.export,
-    icon: Download,
-    isRoute: true, // Indicates it's a route, not a section
-  },
-];
-
-// Icons for attributes
-const attributeIcons = {
-  state: MapPin,
-  education: GraduationCap,
-  customerType: Building,
-};
+// Get menu items from sectionsConfig with icon components
+const menuItems = sectionsConfig.sections.map((section) => ({
+  ...section,
+  icon: getIcon(section.icon),
+}));
 
 // Internal component to render sidebar content
 function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
@@ -129,7 +87,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
     if (sectionId === "support") return "support-sentiment";
     if (sectionId === "attributes") {
       const allAttributes = attributeDeepDive.attributes.filter(
-        (attr) => attr.id in attributeIcons
+        (attr) => attr.icon
       );
       return allAttributes.length > 0
         ? `attributes-${allAttributes[0].id}`
@@ -335,9 +293,9 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
             // If it's the "attributes" section, show attribute subsections
             if (item.id === "attributes") {
               const isExpanded = expandedSections.attributes;
-              // Get all available attributes
+              // Get all available attributes with icons from surveyData
               const allAttributes = attributeDeepDive.attributes.filter(
-                (attr) => attr.id in attributeIcons
+                (attr) => attr.icon
               );
               return (
                 <Collapsible
@@ -358,9 +316,11 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                           : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 border border-transparent hover:border-[hsl(var(--custom-blue))]/40"
                       )}
                     >
-                      <item.icon className="w-4 h-4 flex-shrink-0" />
+                      {item.icon && (
+                        <item.icon className="w-4 h-4 flex-shrink-0" />
+                      )}
                       <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
-                        {item.label}
+                        {item.name}
                       </span>
                       {isExpanded ? (
                         <ChevronDown className="w-4 h-4 flex-shrink-0" />
@@ -375,7 +335,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         const attributeSectionId = `attributes-${attr.id}`;
                         const isAttributeActive =
                           activeSection === attributeSectionId;
-                        const Icon = attributeIcons[attr.id];
+                        const Icon = getIcon(attr.icon);
                         return (
                           <button
                             key={attr.id}
@@ -425,9 +385,11 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                           : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 border border-transparent hover:border-[hsl(var(--custom-blue))]/40"
                       )}
                     >
-                      <item.icon className="w-4 h-4 flex-shrink-0" />
+                      {item.icon && (
+                        <item.icon className="w-4 h-4 flex-shrink-0" />
+                      )}
                       <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
-                        {item.label}
+                        {item.name}
                       </span>
                       {isExpanded ? (
                         <ChevronDown className="w-4 h-4 flex-shrink-0" />
@@ -496,39 +458,16 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
             // For other sections with subsections (executive, support)
             if (hasSubsections) {
               const isExpanded = expandedSections[item.id];
-              const subsections =
-                item.id === "executive"
-                  ? [
-                      {
-                        id: "executive-summary",
-                        label: uiTexts.surveySidebar.executiveSummary,
-                        icon: ClipboardList,
-                      },
-                      {
-                        id: "executive-recommendations",
-                        label: uiTexts.surveySidebar.recommendations,
-                        icon: AlertTriangle,
-                      },
-                    ]
-                  : item.id === "support"
-                  ? [
-                      {
-                        id: "support-sentiment",
-                        label: uiTexts.surveySidebar.sentimentAnalysis,
-                        icon: Heart,
-                      },
-                      {
-                        id: "support-intent",
-                        label: uiTexts.surveySidebar.respondentIntent,
-                        icon: Target,
-                      },
-                      {
-                        id: "support-segmentation",
-                        label: uiTexts.surveySidebar.segmentation,
-                        icon: Users2,
-                      },
-                    ]
-                  : [];
+              // Get subsections from sectionsConfig
+              const sectionConfig = sectionsConfig.sections.find(
+                (s) => s.id === item.id
+              );
+              const subsections = sectionConfig?.subsections
+                ? sectionConfig.subsections.map((sub) => ({
+                    ...sub,
+                    icon: getIcon(sub.icon),
+                  }))
+                : [];
 
               return (
                 <Collapsible
@@ -547,9 +486,11 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                           : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 border border-transparent hover:border-[hsl(var(--custom-blue))]/40"
                       )}
                     >
-                      <item.icon className="w-4 h-4 flex-shrink-0" />
+                      {item.icon && (
+                        <item.icon className="w-4 h-4 flex-shrink-0" />
+                      )}
                       <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
-                        {item.label}
+                        {item.name}
                       </span>
                       {isExpanded ? (
                         <ChevronDown className="w-4 h-4 flex-shrink-0" />
@@ -583,7 +524,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                             {SubsectionIcon && (
                               <SubsectionIcon className="w-4 h-4 shrink-0" />
                             )}
-                            <span className="flex-1">{subsection.label}</span>
+                            <span className="flex-1">{subsection.name}</span>
                           </button>
                         );
                       })}
@@ -612,9 +553,9 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                       : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 border border-transparent hover:border-[hsl(var(--custom-blue))]/40"
                   )}
                 >
-                  <item.icon className="w-4 h-4 flex-shrink-0" />
+                  {item.icon && <item.icon className="w-4 h-4 flex-shrink-0" />}
                   <span className="text-lg font-bold whitespace-nowrap flex-1">
-                    {item.label}
+                    {item.name}
                   </span>
                 </button>
               );
@@ -642,9 +583,9 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                     : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 border border-transparent hover:border-[hsl(var(--custom-blue))]/40"
                 )}
               >
-                <item.icon className="w-4 h-4 flex-shrink-0" />
+                {item.icon && <item.icon className="w-4 h-4 flex-shrink-0" />}
                 <span className="text-lg font-bold whitespace-nowrap flex-1">
-                  {item.label}
+                  {item.name}
                 </span>
               </button>
             );

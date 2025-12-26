@@ -257,6 +257,7 @@ export const responseDetails = {
       id: 1,
       question:
         "Qual é a probabilidade de você recomendar nossa empresa a um amigo ou colega em uma escala de 0 a 10?",
+      icon: "Percent",
       summary: `Com 51% dos entrevistados classificados como detratores e apenas 30% como promotores, a empresa enfrenta um risco significativo de boca a boca negativo impactando a aquisição e retenção de clientes no competitivo mercado de telefonia móvel.`,
       data: [
         { option: "Detrator", value: 636, percentage: 51.0 },
@@ -268,6 +269,7 @@ export const responseDetails = {
       id: 3,
       question:
         "Dentre as opções qual é o principal ponto que impacta sua satisfação?",
+      icon: "HelpCircle",
       summary:
         "Problemas relacionados à internet, particularmente quedas e ausência de sinal, representam aproximadamente 26% da insatisfação dos clientes, indicando uma necessidade crítica de melhorar a estabilidade e a cobertura da rede para aumentar a satisfação nos serviços de telefonia móvel.",
       data: [
@@ -336,6 +338,7 @@ export const responseDetails = {
     {
       id: 4,
       question: "Você recomendaria a TechCorp para um colega ou amigo?",
+      icon: "Heart",
       summary:
         "O alto índice de recomendação (72%) valida o NPS positivo e indica potencial para crescimento orgânico através de indicações.",
       data: [
@@ -353,6 +356,7 @@ export const responseDetails = {
     {
       id: 2,
       question: "Quais são os principais pontos que impactam sua satisfação?",
+      icon: "MessageSquare",
       summary: `A satisfação do cliente é impactada principalmente por problemas no serviço de rede, com 51 menções negativas focadas em cobertura, confiabilidade e estabilidade da rede superando 16 menções positivas sobre qualidade e velocidade do serviço, enquanto o suporte ao cliente apresenta um sentimento negativo menor, mas notável.`,
       sentimentData: [
         {
@@ -469,6 +473,7 @@ export const responseDetails = {
     {
       id: 5,
       question: "O que você mais gosta na TechCorp?",
+      icon: "Heart",
       summary:
         "As respostas abertas destacam principalmente a qualidade dos produtos e o atendimento personalizado como os maiores diferenciais percebidos pelos clientes.",
       sentimentData: [
@@ -565,6 +570,7 @@ export const responseDetails = {
     {
       id: 6,
       question: "O que podemos melhorar?",
+      icon: "TrendingUp",
       summary: `O tempo de resposta do suporte técnico é a principal área de melhoria apontada pelos clientes.
 Seguida pela comunicação e transparência de preços.`,
       sentimentData: [
@@ -644,6 +650,7 @@ export const attributeDeepDive = {
     {
       id: "customerType",
       name: "Tipo de Cliente",
+      icon: "Building",
       summary: `O NPS negativo geral em todos os tipos de clientes sinaliza uma necessidade crítica de melhorar a qualidade do serviço para aumentar a defesa do cliente, com os segmentos pós-pago e controle exigindo atenção imediata devido aos seus níveis mais altos de insatisfação.
 Os principais pontos problemáticos variam por segmento: clientes pós-pago estão frustrados principalmente com a funcionalidade do aplicativo e problemas de conectividade 5G, enquanto usuários controle enfrentam problemas de faturamento e serviço 4G, e clientes pré-pago, embora relativamente mais satisfeitos, ainda levantam preocupações sobre concorrência e desempenho do aplicativo.
 Melhorias direcionadas focadas na confiabilidade do aplicativo, desempenho da rede e faturamento transparente, adaptadas aos problemas específicos de cada segmento, podem aumentar significativamente a satisfação do cliente e reduzir a rotatividade.`,
@@ -752,6 +759,7 @@ Clientes controle apreciam o suporte ao cliente e os planos acessíveis, mas rel
     {
       id: "state",
       name: "Estado",
+      icon: "MapPin",
       summary: `A lealdade e satisfação do cliente variam significativamente entre os estados, com o Ceará (CE) demonstrando um forte sentimento positivo principalmente devido à excelente cobertura de rede, enquanto Rio de Janeiro (RJ), Paraná (PR) e São Paulo (SP) enfrentam desafios críticos refletidos em pontuações negativas de NPS e alta insatisfação relacionada ao suporte ao cliente deficiente e à usabilidade do aplicativo.
 Para aumentar a satisfação do cliente e reduzir o churn, a empresa deve priorizar melhorias direcionadas nos serviços de suporte ao cliente e na experiência digital do aplicativo em RJ, PR e SP, além de manter e promover as vantagens da cobertura de rede no CE.
 Implementar estratégias específicas para cada região que abordem esses pontos críticos será essencial para converter detratores em promotores e impulsionar um crescimento equilibrado em todos os estados.`,
@@ -907,6 +915,7 @@ Abordar as deficiências no suporte ao cliente e os problemas relacionados ao ap
     {
       id: "education",
       name: "Escolaridade",
+      icon: "GraduationCap",
       summary: `Clientes com pós-graduação representam a maior parcela (45%) e demonstram os maiores níveis de satisfação.
 Há oportunidade de melhorar a experiência para clientes com ensino médio, que apresentam maior proporção de sentimentos negativos.`,
       distribution: [
@@ -1290,6 +1299,69 @@ export const uiTexts = {
     selectAtLeastOneSection:
       "Selecione pelo menos uma seção ou o relatório completo para exportar",
   },
+};
+
+// ------------------------------------------------------------
+// 8. SECTIONS CONFIGURATION - Sections and subsections with icons
+// ------------------------------------------------------------
+export const sectionsConfig = {
+  sections: [
+    {
+      id: "executive",
+      name: uiTexts.surveySidebar.executiveReport,
+      icon: "FileText",
+      subsections: [
+        {
+          id: "executive-summary",
+          name: uiTexts.surveySidebar.executiveSummary,
+          icon: "ClipboardList",
+        },
+        {
+          id: "executive-recommendations",
+          name: uiTexts.surveySidebar.recommendations,
+          icon: "AlertTriangle",
+        },
+      ],
+    },
+    {
+      id: "support",
+      name: uiTexts.surveySidebar.supportAnalysis,
+      icon: "BarChart3",
+      subsections: [
+        {
+          id: "support-sentiment",
+          name: uiTexts.surveySidebar.sentimentAnalysis,
+          icon: "Heart",
+        },
+        {
+          id: "support-intent",
+          name: uiTexts.surveySidebar.respondentIntent,
+          icon: "Target",
+        },
+        {
+          id: "support-segmentation",
+          name: uiTexts.surveySidebar.segmentation,
+          icon: "Users2",
+        },
+      ],
+    },
+    {
+      id: "attributes",
+      name: uiTexts.surveySidebar.attributeDeepDive,
+      icon: "Layers",
+    },
+    {
+      id: "responses",
+      name: uiTexts.surveySidebar.questionAnalysis,
+      icon: "MessageSquare",
+    },
+    {
+      id: "export",
+      name: uiTexts.surveySidebar.export,
+      icon: "Download",
+      isRoute: true,
+    },
+  ],
 };
 
 // ------------------------------------------------------------
