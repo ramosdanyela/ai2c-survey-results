@@ -48,7 +48,7 @@
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 161 94% 30%; /* #059669 - Unificado com dark mode */
+    --success: 142 76% 36%;
     --success-foreground: 0 0% 100%;
 
     --warning: 38 92% 50%;
@@ -132,7 +132,7 @@
     --destructive: 0 84% 60%; /* #EF4444 - Unificado com light mode */
     --destructive-foreground: 0 0% 100%;
 
-    --success: 161 94% 30%; /* #059669 - Unificado com light mode */
+    --success: 142 70% 45%;
     --success-foreground: 0 0% 100%;
 
     --warning: 38 90% 55%;

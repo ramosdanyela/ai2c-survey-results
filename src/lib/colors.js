@@ -14,11 +14,11 @@
 /** Laranja principal - #ff9e2b */
 export const COLOR_ORANGE_PRIMARY = "#ff9e2b";
 
-/** Azul escuro para títulos - #001dc6 */
-export const COLOR_BLUE_TITLE = "#001dc6";
+/** Azul escuro para títulos - #1982d8 */
+export const COLOR_BLUE_TITLE = "#1982d8";
 
 /** Azul customizado - #0b18c8 */
-export const COLOR_BLUE_CUSTOM = "#0b18c8";
+export const COLOR_BLUE_CUSTOM = "#1982d8";
 
 /** Preto - #000000 */
 export const COLOR_BLACK = "#000000";
@@ -33,14 +33,14 @@ export const COLOR_WHITE = "#ffffff";
 /** Laranja principal em HSL - 33 100% 58% */
 export const HSL_ORANGE_PRIMARY = "33 100% 58%";
 
-/** Azul customizado em HSL - 236 90% 41% */
-export const HSL_BLUE_CUSTOM = "236 90% 41%";
+/** Azul customizado em HSL - 207 79% 47% */
+export const HSL_BLUE_CUSTOM = "207 79% 47%";
 
-/** Azul título em HSL - 231 100% 39% */
-export const HSL_BLUE_TITLE = "231 100% 39%";
+/** Azul título em HSL - 207 79% 47% */
+export const HSL_BLUE_TITLE = "207 79% 47%";
 
-/** Azul subtítulo em HSL - 231 100% 45% */
-export const HSL_BLUE_SUBTITLE = "231 100% 45%";
+/** Azul subtítulo em HSL - 207 79% 53% */
+export const HSL_BLUE_SUBTITLE = "207 79% 53%";
 
 // ============================================================================
 // Cores RGBA - Sombras e Overlays
@@ -113,8 +113,8 @@ export const RGBA_LIGHT_SHADOW = "rgba(0,0,0,0.1)";
 /** Sombra clara hover - rgba(0,0,0,0.15) */
 export const RGBA_LIGHT_SHADOW_HOVER = "rgba(0,0,0,0.15)";
 
-/** Sombra azul customizado - rgba(11, 24, 200, 0.3) */
-export const RGBA_BLUE_CUSTOM_SHADOW_30 = "rgba(11, 24, 200, 0.3)";
+/** Sombra azul customizado - rgba(25, 130, 216, 0.3) */
+export const RGBA_BLUE_CUSTOM_SHADOW_30 = "rgba(25, 130, 216, 0.3)";
 
 // ============================================================================
 // Funções para obter cores baseadas no tema
@@ -163,22 +163,18 @@ export const getBorderColor = (theme) => {
 export const getShadow = (theme, hover = false) => {
   if (theme === "light") {
     return hover
-      ? `0 4px 6px ${RGBA_LIGHT_SHADOW_HOVER}, 0 2px 4px ${RGBA_ORANGE_SHADOW_10}`
-      : `0 1px 3px ${RGBA_LIGHT_SHADOW}, 0 1px 2px ${RGBA_ORANGE_SHADOW_10}`;
+      ? `0 3px 5px ${RGBA_LIGHT_SHADOW_HOVER}, 0 1px 3px ${RGBA_ORANGE_SHADOW_10}`
+      : `0 1px 2px ${RGBA_LIGHT_SHADOW}, 0 1px 1px ${RGBA_ORANGE_SHADOW_10}`;
   }
   return hover
-    ? `0 12px 48px ${RGBA_BLACK_SHADOW_60}, 0 4px 16px ${RGBA_ORANGE_SHADOW_20}`
-    : `0 8px 32px ${RGBA_BLACK_SHADOW_40}, 0 2px 8px ${RGBA_ORANGE_SHADOW_10}`;
+    ? `0 8px 32px ${RGBA_BLACK_SHADOW_60}, 0 3px 12px ${RGBA_ORANGE_SHADOW_20}`
+    : `0 6px 24px ${RGBA_BLACK_SHADOW_40}, 0 2px 6px ${RGBA_ORANGE_SHADOW_10}`;
 };
 
 // ============================================================================
 // Classes Tailwind para cores (para uso em className)
 // ============================================================================
 
-/**
- * Retorna a classe Tailwind para cor laranja primária
- * @param opacity Opacidade (0-100)
- */
 export const getOrangeClass = (opacity) => {
   if (opacity !== undefined) {
     return `bg-[${COLOR_ORANGE_PRIMARY}]/${opacity}`;
@@ -186,10 +182,6 @@ export const getOrangeClass = (opacity) => {
   return `bg-[${COLOR_ORANGE_PRIMARY}]`;
 };
 
-/**
- * Retorna a classe Tailwind para cor azul customizada
- * @param opacity Opacidade (0-100)
- */
 export const getBlueCustomClass = (opacity) => {
   if (opacity !== undefined) {
     return `bg-[hsl(var(--custom-blue))]/${opacity}`;
@@ -222,50 +214,32 @@ export const getBlueCustomBorderClass = () =>
 // Funções para sombras (para uso em style ou className)
 // ============================================================================
 
-/**
- * Retorna string de sombra para laranja
- * @param opacity Opacidade (0-1)
- * @param blur Blur em pixels (padrão: 16)
- */
 export const getOrangeShadow = (opacity = 0.4, blur = 16) => {
-  return `0 4px ${blur}px rgba(255,158,43,${opacity})`;
+  return `0 3px ${blur}px rgba(255,158,43,${opacity})`;
 };
 
-/**
- * Retorna string de sombra para preto
- * @param opacity Opacidade (0-1)
- * @param blur Blur em pixels (padrão: 32)
- */
 export const getBlackShadow = (opacity = 0.4, blur = 32) => {
-  return `0 8px ${blur}px rgba(0,0,0,${opacity})`;
+  return `0 6px ${blur}px rgba(0,0,0,${opacity})`;
 };
 
 /**
  * Retorna string de sombra combinada (preto + laranja)
  */
 export const getCombinedShadow = () => {
-  return `0 8px 32px ${RGBA_BLACK_SHADOW_40}, 0 2px 8px ${RGBA_ORANGE_SHADOW_10}`;
+  return `0 6px 24px ${RGBA_BLACK_SHADOW_40}, 0 2px 6px ${RGBA_ORANGE_SHADOW_10}`;
 };
 
 /**
  * Retorna string de sombra combinada hover
  */
 export const getCombinedShadowHover = () => {
-  return `0 12px 48px ${RGBA_BLACK_SHADOW_60}, 0 4px 16px ${RGBA_ORANGE_SHADOW_20}`;
+  return `0 8px 32px ${RGBA_BLACK_SHADOW_60}, 0 3px 12px ${RGBA_ORANGE_SHADOW_20}`;
 };
 
-/**
- * Retorna gradiente azul customizado para botões
- * @returns {string} String de gradiente linear
- */
 export const getBlueGradient = () => {
-  return "linear-gradient(135deg, hsl(236, 90%, 50%) 0%, hsl(236, 90%, 45%) 100%)";
+  return "linear-gradient(135deg, hsl(207, 79%, 50%) 0%, hsl(207, 79%, 45%) 100%)";
 };
 
-/**
- * Retorna sombra para botões azuis
- * @returns {string} String de box-shadow
- */
 export const getBlueButtonShadow = () => {
   return `0 4px 12px ${RGBA_BLUE_CUSTOM_SHADOW_30}, 0 2px 4px ${RGBA_BLACK_SHADOW_10}`;
 };

@@ -7,16 +7,10 @@ import {
 } from "@/components/survey/SurveySidebar";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 
-/**
- * @param {Object} props
- * @param {string} props.activeSection
- * @param {Function} props.onSectionChange
- */
 export function SurveyLayout({ activeSection, onSectionChange }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(0);
   const [isDesktop, setIsDesktop] = useState(false);
-  /** @type {import('react').MutableRefObject<HTMLAsideElement | null>} */
   const sidebarRef = useRef(null);
 
   useEffect(() => {
@@ -81,8 +75,7 @@ export function SurveyLayout({ activeSection, onSectionChange }) {
       <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
         <SheetContent
           side="left"
-          className="p-0"
-          style={{ width: "auto", minWidth: "fit-content" }}
+          className="p-0 bg-sidebar border-0 h-full overflow-hidden w-full sm:w-[320px]"
         >
           <SurveySidebarMobile
             activeSection={activeSection}
@@ -105,7 +98,7 @@ export function SurveyLayout({ activeSection, onSectionChange }) {
         />
 
         <main className="flex-1 flex flex-col overflow-auto">
-          <div className="flex-1 px-3 sm:px-4 lg:px-6 py-6 lg:py-8">
+          <div className="flex-1 px-2 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
             <div className="max-w-full xl:max-w-[98%] 2xl:max-w-[96%] mx-auto">
               <ContentRenderer
                 activeSection={activeSection}

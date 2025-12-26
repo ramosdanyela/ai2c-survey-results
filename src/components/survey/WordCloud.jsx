@@ -1,14 +1,5 @@
 import { useMemo, useRef, useEffect, useState } from "react";
 
-/**
- * @typedef {Object} WordCloudWord
- * @property {string} text
- * @property {number} value
- */
-
-/**
- * Calcula o bounding box de uma palavra considerando rotação
- */
 function getBoundingBox(text, fontSize, rotation, x, y) {
   // Aproximação: largura baseada no comprimento do texto
   const width = text.length * fontSize * 0.6;
@@ -82,11 +73,6 @@ function findFreePosition(word, placedWords, containerWidth, containerHeight) {
   };
 }
 
-/**
- * @param {Object} props
- * @param {WordCloudWord[]} props.words
- * @param {number} [props.maxWords]
- */
 export function WordCloud({ words, maxWords = 15 }) {
   const containerRef = useRef(null);
   const [containerSize, setContainerSize] = useState({

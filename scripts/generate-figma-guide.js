@@ -219,7 +219,7 @@ Este documento contém **TODAS** as informações necessárias para replicar fie
   }
   if (colors.hex.blue_title) {
     md += `| **Azul Título** | \`${colors.hex.blue_title}\` | \`${
-      colors.hsl.blue_title || "231 100% 39%"
+      colors.hsl.blue_title || "207 79% 47%"
     }\` | Títulos principais |\n`;
   }
   if (colors.hex.blue_custom) {

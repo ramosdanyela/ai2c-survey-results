@@ -16,12 +16,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { SentimentDivergentChart, SimpleBarChart } from "./charts/Charts";
+import { useIsMobile } from "@/hooks/use-mobile";
 
-/**
- * @param {Object} props
- * @param {string} [props.subSection]
- */
 export function SupportAnalysis({ subSection }) {
+  const isMobile = useIsMobile();
+
   // Mostrar apenas a subseção específica
   const showSentiment = subSection === "support-sentiment";
   const showIntent = subSection === "support-intent";
@@ -94,14 +93,24 @@ export function SupportAnalysis({ subSection }) {
                   )}
                   dataKey="percentage"
                   yAxisDataKey="intent"
-                  height={256}
-                  margin={{
-                    top: 10,
-                    right: 80,
-                    left: 250,
-                    bottom: 10,
-                  }}
-                  yAxisWidth={240}
+                  height={isMobile ? 400 : 256}
+                  margin={
+                    isMobile
+                      ? {
+                          top: 10,
+                          right: 35,
+                          left: 4,
+                          bottom: 10,
+                        }
+                      : {
+                          top: 10,
+                          right: 80,
+                          left: 250,
+                          bottom: 10,
+                        }
+                  }
+                  yAxisWidth={isMobile ? 130 : 240}
+                  yAxisFontSize={isMobile ? 9 : 12}
                   hideXAxis={true}
                   tooltipFormatter={(value, name, props) => [
                     `${props.payload.count.toLocaleString()} (${value}%)`,

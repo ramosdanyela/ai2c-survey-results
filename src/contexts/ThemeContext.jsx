@@ -1,17 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-/**
- * @typedef {Object} ThemeContextType
- * @property {("light"|"dark")} theme
- * @property {Function} toggleTheme
- * @property {Function} setTheme
- */
 const ThemeContext = createContext(undefined);
 
-/**
- * @param {Object} props
- * @param {React.ReactNode} props.children
- */
 export function ThemeProvider({ children }) {
   const [theme, setThemeState] = useState(() => {
     // Verificar se há tema salvo no localStorage

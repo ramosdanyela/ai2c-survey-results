@@ -18,6 +18,7 @@ import {
   AlertTriangle,
   TrendingUp,
   Download,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -50,12 +51,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-/**
- * @typedef {Object} SurveySidebarProps
- * @property {string} activeSection
- * @property {Function} onSectionChange
- * @property {Function} [onItemClick]
- */
 const menuItems = [
   {
     id: "executive",
@@ -169,70 +164,79 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
 
   return (
     <TooltipProvider>
-      <div className="flex flex-col h-full px-3 w-full">
-        <div className="pt-3 mb-4 pb-4">
+      <div className="flex flex-col h-full px-2 sm:px-3 w-full overflow-x-hidden">
+        {/* Botão de fechar no mobile */}
+        <div className="lg:hidden flex justify-end pt-2 sm:pt-3 pb-1.5 sm:pb-2">
+          <button
+            onClick={onItemClick}
+            className="rounded-lg p-1.5 sm:p-2 text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 border border-transparent hover:border-[hsl(var(--custom-blue))]/40 transition-all duration-200"
+          >
+            <X className="w-4 h-4 sm:w-5 sm:h-5" />
+          </button>
+        </div>
+        <div className="pt-2 sm:pt-3 mb-3 sm:mb-4 pb-3 sm:pb-4">
           <div className="flex items-start justify-end gap-2 mb-3">
             <ThemeToggle className="shrink-0 hidden" />
           </div>
           {/* Survey Info Card */}
           <div
-            className="rounded-lg p-3 border border-border/50"
+            className="rounded-lg p-2 sm:p-3 border border-border/50"
             style={{
               backgroundColor: COLOR_LIGHT_BACKGROUND,
               boxShadow: `0 2px 8px ${RGBA_BLACK_SHADOW_08}`,
             }}
           >
-            <div className="space-y-2">
+            <div className="space-y-1.5 sm:space-y-2">
               {/* Survey Title */}
               <div className="mb-0.5">
-                <h2 className="text-lg font-bold text-foreground leading-tight">
+                <h2 className="text-sm sm:text-lg font-bold text-foreground leading-tight">
                   {surveyInfo.title}
                 </h2>
               </div>
 
               {/* Company */}
               <div className="mb-0.5">
-                <div className="text-xs font-normal text-foreground">
+                <div className="text-[10px] sm:text-xs font-normal text-foreground">
                   {surveyInfo.company}
                 </div>
               </div>
 
               {/* Period */}
-              <div className="mb-3">
-                <div className="text-[10px] font-normal text-foreground">
+              <div className="mb-2 sm:mb-3">
+                <div className="text-[9px] sm:text-[10px] font-normal text-foreground">
                   {surveyInfo.period}
                 </div>
               </div>
 
               {/* Metrics Cards - Horizontal Layout */}
-              <div className="flex items-stretch gap-2">
+              <div className="flex items-stretch gap-1.5 sm:gap-2">
                 {/* Total Respondents */}
                 <div
-                  className="flex-1 rounded-lg p-2 bg-white"
+                  className="flex-1 rounded-lg p-1.5 sm:p-2 bg-white min-w-0"
                   style={{
                     boxShadow: `0 1px 3px ${RGBA_BLACK_SHADOW_10}`,
                   }}
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
                     <div
-                      className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                      className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center flex-shrink-0"
                       style={{
                         backgroundColor: RGBA_ORANGE_SHADOW_15,
                       }}
                     >
                       <Users
-                        className="w-4 h-4"
+                        className="w-3 h-3 sm:w-4 sm:h-4"
                         style={{ color: COLOR_ORANGE_PRIMARY }}
                       />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div
-                        className="text-lg font-bold mb-0.5"
+                        className="text-sm sm:text-lg font-bold mb-0.5 truncate"
                         style={{ color: COLOR_GRAY_DARK }}
                       >
                         {surveyInfo.totalRespondents.toLocaleString("pt-BR")}
                       </div>
-                      <div className="text-[10px] font-normal text-foreground/70">
+                      <div className="text-[9px] sm:text-[10px] font-normal text-foreground/70 truncate">
                         Respondentes
                       </div>
                     </div>
@@ -241,31 +245,31 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
 
                 {/* Response Rate */}
                 <div
-                  className="flex-1 rounded-lg p-2 bg-white min-w-[100px]"
+                  className="flex-1 rounded-lg p-1.5 sm:p-2 bg-white min-w-0"
                   style={{
                     boxShadow: `0 1px 3px ${RGBA_BLACK_SHADOW_10}`,
                   }}
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
                     <div
-                      className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                      className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center flex-shrink-0"
                       style={{
                         backgroundColor: RGBA_ORANGE_SHADOW_15,
                       }}
                     >
                       <TrendingUp
-                        className="w-4 h-4"
+                        className="w-3 h-3 sm:w-4 sm:h-4"
                         style={{ color: COLOR_ORANGE_PRIMARY }}
                       />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div
-                        className="text-lg font-bold mb-0.5"
+                        className="text-sm sm:text-lg font-bold mb-0.5 truncate"
                         style={{ color: COLOR_GRAY_DARK }}
                       >
                         {Math.round(surveyInfo.responseRate)}%
                       </div>
-                      <div className="text-[10px] font-normal text-foreground/70 whitespace-nowrap">
+                      <div className="text-[9px] sm:text-[10px] font-normal text-foreground/70 truncate">
                         Taxa de Adesão
                       </div>
                     </div>
@@ -274,26 +278,26 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
 
                 {/* Number of Questions */}
                 <div
-                  className="rounded-lg px-2 py-2 bg-white w-[110px] flex-shrink-0"
+                  className="flex-1 rounded-lg p-1.5 sm:p-2 bg-white min-w-0"
                   style={{
                     boxShadow: `0 1px 3px ${RGBA_BLACK_SHADOW_10}`,
                   }}
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
                     <div
-                      className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                      className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center flex-shrink-0"
                       style={{
                         backgroundColor: RGBA_ORANGE_SHADOW_15,
                       }}
                     >
                       <ClipboardList
-                        className="w-4 h-4"
+                        className="w-3 h-3 sm:w-4 sm:h-4"
                         style={{ color: COLOR_ORANGE_PRIMARY }}
                       />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div
-                        className="text-lg font-bold mb-0.5"
+                        className="text-sm sm:text-lg font-bold mb-0.5 truncate"
                         style={{ color: COLOR_GRAY_DARK }}
                       >
                         {(() => {
@@ -304,7 +308,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                           return allQuestions.length;
                         })()}
                       </div>
-                      <div className="text-[10px] font-normal text-foreground/70">
+                      <div className="text-[9px] sm:text-[10px] font-normal text-foreground/70 truncate">
                         Perguntas
                       </div>
                     </div>
@@ -314,7 +318,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
             </div>
           </div>
         </div>
-        <nav className="flex flex-col gap-2 items-start w-full flex-1">
+        <nav className="flex flex-col gap-1.5 sm:gap-2 items-start w-full flex-1 overflow-x-hidden">
           {menuItems.map((item) => {
             const isActive =
               activeSection === item.id ||
@@ -347,14 +351,14 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                     <button
                       onClick={(e) => handleSectionClick("attributes", e)}
                       className={cn(
-                        "flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 text-left w-full",
+                        "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-left w-full",
                         isActive
-                          ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_4px_16px_hsl(var(--custom-blue),0.4)]"
+                          ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_3px_12px_hsl(var(--custom-blue),0.4)]"
                           : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 border border-transparent hover:border-[hsl(var(--custom-blue))]/40"
                       )}
                     >
                       <item.icon className="w-4 h-4 flex-shrink-0" />
-                      <span className="text-lg font-bold whitespace-nowrap flex-1">
+                      <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
                         {item.label}
                       </span>
                       {isExpanded ? (
@@ -381,7 +385,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                               }
                             }}
                             className={cn(
-                              "flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-left w-full text-sm",
+                              "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-left w-full text-xs sm:text-sm",
                               isAttributeActive
                                 ? "bg-[hsl(var(--custom-blue))]/30 text-sidebar-foreground border border-[hsl(var(--custom-blue))]/30"
                                 : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/30 border border-transparent hover:border-[hsl(var(--custom-blue))]/30"
@@ -414,14 +418,14 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                     <button
                       onClick={(e) => handleSectionClick("responses", e)}
                       className={cn(
-                        "flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 text-left w-full",
+                        "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-left w-full",
                         isActive
-                          ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_4px_16px_hsl(var(--custom-blue),0.4)]"
+                          ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_3px_12px_hsl(var(--custom-blue),0.4)]"
                           : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 border border-transparent hover:border-[hsl(var(--custom-blue))]/40"
                       )}
                     >
                       <item.icon className="w-4 h-4 flex-shrink-0" />
-                      <span className="text-lg font-bold whitespace-nowrap flex-1">
+                      <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
                         {item.label}
                       </span>
                       {isExpanded ? (
@@ -536,14 +540,14 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                     <button
                       onClick={(e) => handleSectionClick(item.id, e)}
                       className={cn(
-                        "flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 text-left w-full",
+                        "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-left w-full",
                         isActive
-                          ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_4px_16px_hsl(var(--custom-blue),0.4)]"
+                          ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_3px_12px_hsl(var(--custom-blue),0.4)]"
                           : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 border border-transparent hover:border-[hsl(var(--custom-blue))]/40"
                       )}
                     >
                       <item.icon className="w-4 h-4 flex-shrink-0" />
-                      <span className="text-lg font-bold whitespace-nowrap flex-1">
+                      <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
                         {item.label}
                       </span>
                       {isExpanded ? (
@@ -569,7 +573,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                               }
                             }}
                             className={cn(
-                              "flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-left w-full text-sm",
+                              "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-left w-full text-xs sm:text-sm",
                               isSubsectionActive
                                 ? "bg-[hsl(var(--custom-blue))]/30 text-sidebar-foreground border border-[hsl(var(--custom-blue))]/30"
                                 : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/30 border border-transparent hover:border-[hsl(var(--custom-blue))]/30"
@@ -603,7 +607,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                   className={cn(
                     "flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 text-left w-full my-2",
                     isExportActive
-                      ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_4px_16px_hsl(var(--custom-blue),0.4)]"
+                      ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_3px_12px_hsl(var(--custom-blue),0.4)]"
                       : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 border border-transparent hover:border-[hsl(var(--custom-blue))]/40"
                   )}
                 >
@@ -633,7 +637,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                 className={cn(
                   "flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 text-left w-full",
                   isActive
-                    ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_4px_16px_hsl(var(--custom-blue),0.4)]"
+                    ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_3px_12px_hsl(var(--custom-blue),0.4)]"
                     : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 border border-transparent hover:border-[hsl(var(--custom-blue))]/40"
                 )}
               >
@@ -680,10 +684,7 @@ export function SurveySidebarMobile({
   onItemClick,
 }) {
   return (
-    <div
-      className="bg-sidebar h-full overflow-y-auto"
-      style={{ width: "auto", minWidth: "fit-content" }}
-    >
+    <div className="bg-sidebar h-screen overflow-y-auto w-full">
       <SidebarContent
         activeSection={activeSection}
         onSectionChange={onSectionChange}

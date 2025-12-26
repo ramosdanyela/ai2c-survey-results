@@ -33,11 +33,7 @@ const severityColors = {
   low: "bg-severity-low text-white",
 };
 
-/**
- * @param {Object} props
- * @param {string} [props.subSection]
- * @param {Function} [props.onSectionChange]
- */
+
 export function ExecutiveReport({ subSection, onSectionChange }) {
   // Estado para controlar quais recomendações têm suas tarefas expandidas
   const [expandedRecs, setExpandedRecs] = useState(new Set());

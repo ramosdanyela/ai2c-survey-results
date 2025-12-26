@@ -23,10 +23,6 @@ const attributeIcons = {
   customerType: Building,
 };
 
-/**
- * @param {Object} props
- * @param {string} [props.attributeId] - ID do atributo específico para exibir (ex: "customerType", "state", "education")
- */
 export function AttributeDeepDive({ attributeId }) {
   // Se não houver attributeId, usar o primeiro atributo como padrão
   const defaultAttributeId =

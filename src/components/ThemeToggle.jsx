@@ -3,11 +3,6 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "@/contexts/ThemeContext";
 import { cn } from "@/lib/utils";
 
-/**
- * @param {Object} props
- * @param {string} [props.className]
- * @param {boolean} [props.hidden]
- */
 export function ThemeToggle({ className, hidden = false }) {
   const { theme, toggleTheme } = useTheme();
 

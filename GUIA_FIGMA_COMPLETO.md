@@ -28,15 +28,15 @@ Este documento contém **TODAS** as informações necessárias para replicar fie
 
 #### Light Mode
 
-| Nome                 | Hex       | HSL            | Uso                                  |
-| -------------------- | --------- | -------------- | ------------------------------------ |
-| **Laranja Primário** | `#ff9e2b` | `33 100% 58%`  | Destaques, botões principais, badges |
-| **Azul Título**      | `#001dc6` | `231 100% 39%` | Títulos principais                   |
-| **Azul Customizado** | `#0b18c8` | `236 90% 41%`  | Botões de navegação, sidebar ativa   |
-| **Fundo Claro**      | `#F9FAFB` | `0 0% 98%`     | Background principal                 |
-| **Card Claro**       | `#FFFFFF` | `0 0% 100%`    | Cards e containers                   |
-| **Texto Escuro**     | `#000000` | `0 0% 0%`      | Texto principal                      |
-| **Borda Clara**      | `#E5E7EB` | `0 0% 90%`     | Bordas e divisores                   |
+| Nome                 | Hex       | HSL           | Uso                                  |
+| -------------------- | --------- | ------------- | ------------------------------------ |
+| **Laranja Primário** | `#ff9e2b` | `33 100% 58%` | Destaques, botões principais, badges |
+| **Azul Título**      | `#1982d8` | `207 79% 47%` | Títulos principais                   |
+| **Azul Customizado** | `#0b18c8` | `236 90% 41%` | Botões de navegação, sidebar ativa   |
+| **Fundo Claro**      | `#F9FAFB` | `0 0% 98%`    | Background principal                 |
+| **Card Claro**       | `#FFFFFF` | `0 0% 100%`   | Cards e containers                   |
+| **Texto Escuro**     | `#000000` | `0 0% 0%`     | Texto principal                      |
+| **Borda Clara**      | `#E5E7EB` | `0 0% 90%`    | Bordas e divisores                   |
 
 #### Dark Mode
 
@@ -455,3 +455,4 @@ O sistema usa a escala padrão do Tailwind (baseada em 4px):
 
 **Última atualização**: 14/12/2025, 18:26:46
 **Gerado automaticamente por**: `scripts/generate-figma-guide.js`
+

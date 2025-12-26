@@ -38,58 +38,16 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-/**
- * @typedef {("all" | "open" | "closed" | "nps")} QuestionFilter
- */
-
-/**
- * @typedef {Object} FilterValue
- * @property {("state" | "customerType" | "education" | null)} filterType
- * @property {string[]} values
- */
-
-/**
- * @param {Object} props
- * @param {number} [props.questionId] - ID da pergunta específica para rolar até ela
- */
 export function ResponseDetails({ questionId }) {
-  /**
-   * @type {[Object<number, FilterValue[]>, Function]}
-   */
   const [questionFilters, setQuestionFilters] = useState({});
-  /**
-   * @type {[Object<number, boolean>, Function]}
-   */
   const [questionFilterOpen, setQuestionFilterOpen] = useState({});
-  /**
-   * @type {[Object<number, boolean>, Function]}
-   */
   const [questionDownloadOpen, setQuestionDownloadOpen] = useState({});
-  /**
-   * @type {[QuestionFilter, Function]}
-   */
   const [questionFilter, setQuestionFilter] = useState("all");
-  /**
-   * @type {[number | null, Function]}
-   */
   const [selectedQuestionId, setSelectedQuestionId] = useState(null);
-  /**
-   * @type {[string | undefined, Function]}
-   */
   const [openAccordionValue, setOpenAccordionValue] = useState(undefined);
-  /**
-   * @type {[number | null, Function]}
-   */
   const [highlightedQuestionId, setHighlightedQuestionId] = useState(null);
-  /**
-   * @type {[boolean, Function]}
-   */
   const [showWordCloud, setShowWordCloud] = useState(true);
 
-  /**
-   * @param {number} questionId
-   * @param {FilterValue[]} newFilters
-   */
   const handleQuestionFiltersChange = (questionId, newFilters) => {
     setQuestionFilters((prev) => ({
       ...prev,
@@ -97,10 +55,6 @@ export function ResponseDetails({ questionId }) {
     }));
   };
 
-  /**
-   * @param {number} questionId
-   * @param {boolean} isOpen
-   */
   const handleQuestionFilterOpenChange = (questionId, isOpen) => {
     setQuestionFilterOpen((prev) => ({
       ...prev,
@@ -108,10 +62,6 @@ export function ResponseDetails({ questionId }) {
     }));
   };
 
-  /**
-   * @param {number} questionId
-   * @param {boolean} isOpen
-   */
   const handleQuestionDownloadOpenChange = (questionId, isOpen) => {
     setQuestionDownloadOpen((prev) => ({
       ...prev,
@@ -130,40 +80,20 @@ export function ResponseDetails({ questionId }) {
   // Helper Functions - Question Type & Response Count
   // ============================================================
 
-  /**
-   * Verifica se uma questão é do tipo NPS
-   * @param {number} questionId
-   * @returns {boolean}
-   */
   const isNPSQuestion = (questionId) => questionId === 1;
 
-  /**
-   * Obtém o tipo de questão como string
-   * @param {Object} question
-   * @returns {string}
-   */
   const getQuestionType = (question) => {
     if (isNPSQuestion(question.id)) return "NPS";
     if (question.type === "open") return "Campo Aberto";
     return "Múltipla Escolha";
   };
 
-  /**
-   * Obtém o ícone apropriado para o tipo de questão
-   * @param {Object} question
-   * @returns {React.ComponentType}
-   */
   const getQuestionIcon = (question) => {
     if (isNPSQuestion(question.id)) return TrendingUp;
     if (question.type === "open") return FileText;
     return CheckSquare;
   };
 
-  /**
-   * Calcula o total de respostas para uma questão
-   * @param {Object} question
-   * @returns {number}
-   */
   const getTotalResponses = (question) => {
     // Para questões fechadas (incluindo NPS), somar todos os valores
     if (question.type === "closed" && "data" in question && question.data) {
@@ -177,22 +107,11 @@ export function ResponseDetails({ questionId }) {
     return 0;
   };
 
-  /**
-   * Verifica se uma questão tem filtros ativos
-   * @param {number} questionId
-   * @returns {boolean}
-   */
   const hasActiveFilters = (questionId) => {
     const filters = questionFilters[questionId] || [];
     return filters.some((f) => f.values && f.values.length > 0);
   };
 
-  /**
-   * Remove um valor específico de um filtro de uma questão
-   * @param {number} questionId
-   * @param {string} filterType
-   * @param {string} value
-   */
   const handleRemoveFilterValue = (questionId, filterType, value) => {
     const currentFilters = questionFilters[questionId] || [];
     const updatedFilters = currentFilters
@@ -215,10 +134,6 @@ export function ResponseDetails({ questionId }) {
   // Component Components - Pills
   // ============================================================
 
-  /**
-   * Componente para exibir o tipo de questão como pill
-   * @param {Object} question
-   */
   const QuestionTypePill = ({ question }) => {
     const questionType = getQuestionType(question);
     const QuestionIcon = getQuestionIcon(question);
@@ -233,10 +148,6 @@ export function ResponseDetails({ questionId }) {
     );
   };
 
-  /**
-   * Componente para exibir o total de respostas como pill
-   * @param {Object} question
-   */
   const ResponseCountPill = ({ question }) => {
     const totalResponses = getTotalResponses(question);
 
@@ -247,10 +158,6 @@ export function ResponseDetails({ questionId }) {
     );
   };
 
-  /**
-   * Componente para exibir os filtros ativos como pills
-   * @param {number} questionId
-   */
   const ActiveFiltersPills = ({ questionId }) => {
     const filters = questionFilters[questionId] || [];
 
@@ -504,7 +411,7 @@ export function ResponseDetails({ questionId }) {
               }}
               className={`transition-all duration-500 ${
                 isHighlighted
-                  ? "ring-4 ring-[hsl(var(--custom-blue))] ring-offset-4 rounded-lg shadow-[0_0_20px_hsl(var(--custom-blue),0.5)] animate-pulse"
+                  ? "ring-4 ring-[hsl(var(--custom-blue))] ring-offset-4 rounded-lg shadow-[0_0_14px_hsl(var(--custom-blue),0.5)] animate-pulse"
                   : ""
               }`}
               style={{ scrollMarginTop: "120px" }}

@@ -27,31 +27,6 @@ import {
 } from "@/components/ui/collapsible";
 import { attributeDeepDive } from "@/data/surveyData";
 
-/**
- * @typedef {("state" | "customerType" | "education" | null)} FilterType
- */
-
-/**
- * @typedef {Object} FilterValue
- * @property {FilterType} filterType
- * @property {string[]} values
- */
-
-/**
- * @typedef {("all" | "open" | "closed" | "nps")} QuestionFilter
- */
-
-/**
- * @param {Object} props
- * @param {Function} [props.onFiltersChange]
- * @param {QuestionFilter} [props.questionFilter]
- * @param {Function} [props.onQuestionFilterChange]
- * @param {number | null} [props.selectedQuestionId]
- * @param {Function} [props.onSelectedQuestionIdChange]
- * @param {Array<{id: number, question: string, type: string}>} [props.questions]
- * @param {boolean} [props.hideQuestionFilters]
- * @param {FilterValue[]} [props.initialFilters]
- */
 const filterOptions = [
   { value: "state", label: "Estado" },
   { value: "customerType", label: "Tipo de Cliente" },

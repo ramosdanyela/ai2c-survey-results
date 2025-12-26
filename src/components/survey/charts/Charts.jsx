@@ -24,48 +24,15 @@ import {
 // 4. SimpleBarChart - Gráfico de barras simples
 //
 // ============================================================
-// TYPES (JSDoc)
-// ============================================================
-
-/**
- * @typedef {Object} SentimentDataItem
- * @property {string} [category]
- * @property {string} [segment]
- * @property {number} positive
- * @property {number} neutral
- * @property {number} negative
- */
-
-/**
- * @typedef {Object} NPSData
- * @property {number} Detratores
- * @property {number} Neutros
- * @property {number} Promotores
- */
-
-/**
- * @typedef {Object} SimpleBarDataItem
- * @property {string|number|undefined} [key]
- */
-
-// ============================================================
 // 1. SENTIMENT DIVERGENT CHART
 // ============================================================
 // Gráfico divergente onde negativo aparece à esquerda e positivo à direita
 // Usado em: SupportAnalysis - Análise de Sentimento
 
-/**
- * @param {Object} props
- * @param {SentimentDataItem[]} props.data
- * @param {number|string} [props.height]
- * @param {Object} [props.margin]
- * @param {[number, number]} [props.xAxisDomain]
- * @param {boolean} [props.showGrid]
- */
 export function SentimentDivergentChart({
   data,
   height = 320,
-  margin = { top: 20, right: 30, left: 100, bottom: 20 },
+  margin = { top: 20, right: 60, left: 100, bottom: 20 },
   xAxisDomain,
   showGrid = false,
 }) {
@@ -134,8 +101,9 @@ export function SentimentDivergentChart({
             filterNull={true}
           />
           <Legend
-            wrapperStyle={{ paddingTop: "20px" }}
+            wrapperStyle={{ paddingTop: "20px", paddingLeft: "20px" }}
             iconType="square"
+            align="left"
             formatter={(value) => {
               // Only show negative and positive, filter out neutral
               if (value === "neutral" || value === "Neutro") {
@@ -195,18 +163,6 @@ export function SentimentDivergentChart({
 // Usado em: AttributeDeepDive - Sentiment by Segment
 //           ResponseDetails - Sentiment Analysis
 
-/**
- * @param {Object} props
- * @param {SentimentDataItem[]} props.data
- * @param {number|string} [props.height]
- * @param {Object} [props.margin]
- * @param {string} [props.yAxisDataKey]
- * @param {number} [props.yAxisWidth]
- * @param {boolean} [props.showGrid]
- * @param {boolean} [props.showLegend]
- * @param {boolean} [props.axisLine]
- * @param {boolean} [props.tickLine]
- */
 export function SentimentStackedChart({
   data,
   height = 256,
@@ -334,14 +290,6 @@ export function SentimentStackedChart({
 // Gráfico de sentimento com três cores (Positivo/Negativo/Não aplicável)
 // Usado em: AttributeDeepDive - Análise de Sentimento por Tipo de Cliente
 
-/**
- * @param {Object} props
- * @param {Array<{sentiment: string, Controle: number, "Pré-pago": number, "Pós-pago": number}>} props.data
- * @param {number|string} [props.height]
- * @param {Object} [props.margin]
- * @param {boolean} [props.showGrid]
- * @param {boolean} [props.showLegend]
- */
 export function SentimentThreeColorChart({
   data,
   height = 80,
@@ -447,16 +395,6 @@ export function SentimentThreeColorChart({
 // Gráfico empilhado NPS (Detratores/Neutros/Promotores)
 // Usado em: SupportAnalysis - Distribuição NPS
 
-/**
- * @param {Object} props
- * @param {NPSData} props.data
- * @param {number|string} [props.height]
- * @param {Object} [props.margin]
- * @param {boolean} [props.showGrid]
- * @param {boolean} [props.showLegend]
- * @param {boolean} [props.hideXAxis]
- * @param {boolean} [props.showPercentagesInLegend]
- */
 export function NPSStackedChart({
   data,
   height = 256,
@@ -558,22 +496,6 @@ export function NPSStackedChart({
 //           SupportAnalysis - Outras Intenções
 // NOTA: Sempre usa escala fixa de 0-100% para mostrar proporções reais
 
-/**
- * @param {Object} props
- * @param {SimpleBarDataItem[]} props.data
- * @param {string} props.dataKey
- * @param {string} props.yAxisDataKey
- * @param {number|string} [props.height]
- * @param {Object} [props.margin]
- * @param {number} [props.yAxisWidth]
- * @param {string} [props.fillColor]
- * @param {boolean} [props.showLabels]
- * @param {Function} [props.labelFormatter]
- * @param {Function} [props.tooltipFormatter]
- * @param {boolean} [props.sortData]
- * @param {("asc"|"desc")} [props.sortDirection]
- * @param {boolean} [props.hideXAxis]
- */
 export function SimpleBarChart({
   data,
   dataKey,
@@ -588,6 +510,7 @@ export function SimpleBarChart({
   sortData = true,
   sortDirection = "desc",
   hideXAxis = true,
+  yAxisFontSize = 12,
 }) {
   const sortedData = sortData
     ? [...data].sort((a, b) => {
@@ -621,6 +544,7 @@ export function SimpleBarChart({
             axisLine={false}
             tickLine={false}
             interval={0}
+            tick={{ fontSize: yAxisFontSize }}
           />
           <Tooltip
             formatter={tooltipFormatter || ((value) => [`${value}%`, ""])}

@@ -104,11 +104,6 @@ function getPreviousSection(currentSection) {
   return allSubsections[currentIndex - 1];
 }
 
-/**
- * @param {Object} props
- * @param {string} props.activeSection
- * @param {Function} [props.onSectionChange]
- */
 export function ContentRenderer({ activeSection, onSectionChange }) {
   let content;
 

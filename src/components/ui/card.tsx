@@ -20,8 +20,8 @@ const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
-  const defaultShadow = `0 8px 32px ${RGBA_BLACK_SHADOW_40}, 0 2px 8px ${RGBA_ORANGE_SHADOW_10}`;
-  const hoverShadow = `0 12px 48px ${RGBA_BLACK_SHADOW_60}, 0 4px 16px ${RGBA_ORANGE_SHADOW_20}`;
+  const defaultShadow = `0 6px 24px ${RGBA_BLACK_SHADOW_40}, 0 2px 6px ${RGBA_ORANGE_SHADOW_10}`;
+  const hoverShadow = `0 8px 32px ${RGBA_BLACK_SHADOW_60}, 0 3px 12px ${RGBA_ORANGE_SHADOW_20}`;
 
   return (
     <div
