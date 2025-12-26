@@ -456,3 +456,4 @@ O sistema usa a escala padrão do Tailwind (baseada em 4px):
 **Última atualização**: 14/12/2025, 18:26:46
 **Gerado automaticamente por**: `scripts/generate-figma-guide.js`
 
+
