@@ -5,18 +5,18 @@
 /* 
  * Design System - Dark Theme with Orange Highlights
  * 
- * NOTA: Todas as cores estão centralizadas em src/lib/colors.ts
- * Para usar cores no código TypeScript/TSX, importe as constantes de @/lib/colors
+ * NOTE: All colors are centralized in src/lib/colors.ts
+ * To use colors in TypeScript/TSX code, import constants from @/lib/colors
  * 
- * Cores principais:
- * - Laranja: #ff9e2b (COLOR_ORANGE_PRIMARY)
- * - Azul customizado: #0b18c8 (COLOR_BLUE_CUSTOM)
- * - Azul título: #001dc6 (COLOR_BLUE_TITLE)
+ * Main colors:
+ * - Orange: #ff9e2b (COLOR_ORANGE_PRIMARY)
+ * - Custom blue: #0b18c8 (COLOR_BLUE_CUSTOM)
+ * - Title blue: #001dc6 (COLOR_BLUE_TITLE)
  */
 
 @layer base {
   :root {
-    /* Light Mode (padrão) */
+    /* Light Mode (default) */
     --background: 0 0% 98%; /* #F9FAFB - Light gray background */
     --foreground: 0 0% 0%; /* Black text */
 
@@ -185,6 +185,16 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Root element styles */
+  #root {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+
   /* Headings use Poppins for a more distinctive look */
   h1,
   h2,
@@ -252,8 +262,19 @@
   }
 
   /* Navbar/Header Styles */
-  .navbar {
+  .navbar,
+  header[class*="navbar"],
+  header[class*="header"] {
     @apply bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border;
+    background-color: hsl(var(--background));
+    border-bottom: 1px solid hsl(var(--border));
+    color: hsl(var(--foreground));
+  }
+
+  .navbar *,
+  header[class*="navbar"] *,
+  header[class*="header"] * {
+    color: hsl(var(--foreground));
   }
 
   .navbar-text {
@@ -287,6 +308,52 @@
   .accent-line {
     @apply h-1 bg-[hsl(var(--primary))] w-full;
   }
+
+  .accent-line-orange {
+    height: 4px;
+    background-color: hsl(var(--primary));
+    width: 100%;
+    border-radius: 2px;
+  }
+
+  /* Text highlight variants (aliases for compatibility) */
+  .text-highlight-orange {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+  }
+
+  .text-orange-highlight {
+    color: hsl(var(--primary));
+    font-weight: 600;
+  }
+
+  /* Logo styles */
+  .logo {
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter;
+    transition: filter 300ms;
+  }
+
+  .logo:hover {
+    filter: drop-shadow(0 0 2em hsl(var(--primary) / 0.5));
+  }
+
+  .logo.react:hover {
+    filter: drop-shadow(0 0 2em hsl(var(--primary) / 0.5));
+  }
+
+  /* Card base styles */
+  .card {
+    padding: 2em;
+  }
+
+  /* Utility classes */
+  .read-the-docs {
+    color: hsl(var(--muted-foreground));
+  }
 }
 
 @layer utilities {
@@ -298,5 +365,21 @@
   /* Orange divider line */
   .divider-orange {
     @apply border-t-2 border-[hsl(var(--primary))];
+  }
+}
+
+/* Animations */
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
   }
 }

@@ -7,9 +7,9 @@ import {
   FileText,
   CheckSquare,
   TrendingUp,
-} from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+} from "@/lib/icons";
+import { Card, CardContent } from "@/components/ui-components/card";
+import { Badge } from "@/components/ui-components/badge";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -25,12 +25,12 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { attributeDeepDive } from "@/data/surveyData";
+import { attributeDeepDive, uiTexts } from "@/data/surveyData";
 
 const filterOptions = [
-  { value: "state", label: "Estado" },
-  { value: "customerType", label: "Tipo de Cliente" },
-  { value: "education", label: "Escolaridade" },
+  { value: "state", label: uiTexts.filterPanel.state },
+  { value: "customerType", label: uiTexts.filterPanel.customerType },
+  { value: "education", label: uiTexts.filterPanel.education },
 ];
 
 const VALID_FILTER_TYPES = ["state", "customerType", "education", null];
@@ -50,7 +50,7 @@ export function FilterPanel({
   const [selectedFilterType, setSelectedFilterType] = useState(null);
   const [openFilters, setOpenFilters] = useState(new Set());
 
-  // Sincronizar activeFilters com initialFilters quando mudarem
+  // Sync activeFilters with initialFilters when they change
   useEffect(() => {
     setActiveFilters(initialFilters);
   }, [initialFilters]);
@@ -71,7 +71,7 @@ export function FilterPanel({
       setSelectedFilterType(null);
       return;
     }
-    // Validar que o valor é um FilterType válido
+    // Validate that the value is a valid FilterType
     if (!VALID_FILTER_TYPES.includes(value)) {
       console.warn(`Invalid filterType: ${value}`);
       return;
@@ -210,7 +210,7 @@ export function FilterPanel({
                 }`}
                 onClick={() => onQuestionFilterChange("all")}
               >
-                Todas
+                {uiTexts.filterPanel.all}
               </Badge>
               <Badge
                 variant={questionFilter === "open" ? "default" : "outline"}
@@ -222,7 +222,7 @@ export function FilterPanel({
                 onClick={() => onQuestionFilterChange("open")}
               >
                 <FileText className="w-3 h-3" />
-                Campo Aberto
+                {uiTexts.filterPanel.openField}
               </Badge>
               <Badge
                 variant={questionFilter === "closed" ? "default" : "outline"}
@@ -234,7 +234,7 @@ export function FilterPanel({
                 onClick={() => onQuestionFilterChange("closed")}
               >
                 <CheckSquare className="w-3 h-3" />
-                Múltipla Escolha
+                {uiTexts.filterPanel.multipleChoice}
               </Badge>
               <Badge
                 variant={questionFilter === "nps" ? "default" : "outline"}
@@ -246,7 +246,7 @@ export function FilterPanel({
                 onClick={() => onQuestionFilterChange("nps")}
               >
                 <TrendingUp className="w-3 h-3" />
-                NPS
+                {uiTexts.filterPanel.nps}
               </Badge>
             </div>
           )}
@@ -257,7 +257,7 @@ export function FilterPanel({
           questions.length > 0 && (
             <div className="mb-4">
               <Label className="text-sm text-muted-foreground mb-2 block">
-                Filtrar por questão:
+                {uiTexts.filterPanel.filterByQuestion}
               </Label>
               <Select
                 value={selectedQuestionId?.toString() || "all"}
@@ -270,27 +270,29 @@ export function FilterPanel({
                 }}
               >
                 <SelectTrigger className="w-full border-0 focus:ring-[hsl(var(--custom-blue))] bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80 text-white">
-                  <SelectValue placeholder="Selecione uma questão" />
+                  <SelectValue
+                    placeholder={uiTexts.filterPanel.selectQuestion}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem
                     value="all"
                     className="focus:bg-[hsl(var(--custom-blue))]/20 focus:text-white"
                   >
-                    Todas as questões
+                    {uiTexts.filterPanel.allQuestions}
                   </SelectItem>
                   {questions.map((q, index) => {
                     const isNPS = q.id === 1;
                     const questionType = isNPS
-                      ? "NPS"
+                      ? uiTexts.filterPanel.nps
                       : q.type === "open"
-                      ? "Campo Aberto"
-                      : "Múltipla Escolha";
+                      ? uiTexts.filterPanel.openField
+                      : uiTexts.filterPanel.multipleChoice;
                     const truncatedQuestion =
                       q.question.length > 80
                         ? q.question.substring(0, 80) + "..."
                         : q.question;
-                    // Renumerar questões: índice + 1 (excluindo Q3)
+                    // Renumber questions: index + 1 (excluding Q3)
                     const displayNumber = index + 1;
 
                     return (
@@ -299,7 +301,10 @@ export function FilterPanel({
                         value={q.id.toString()}
                         className="focus:bg-[hsl(var(--custom-blue))]/20 focus:text-white"
                       >
-                        <span className="font-semibold">Q{displayNumber}:</span>{" "}
+                        <span className="font-semibold">
+                          {uiTexts.filterPanel.questionPrefix}
+                          {displayNumber}:
+                        </span>{" "}
                         {truncatedQuestion} ({questionType})
                       </SelectItem>
                     );
@@ -313,7 +318,9 @@ export function FilterPanel({
         <div className="flex items-center gap-3 flex-wrap">
           <div className="flex items-center gap-2">
             <Filter className="w-4 h-4 text-[hsl(var(--custom-blue))]" />
-            <h3 className="font-semibold text-sm">Filtros</h3>
+            <h3 className="font-semibold text-sm">
+              {uiTexts.filterPanel.filters}
+            </h3>
           </div>
 
           {/* Filter Type Selector - Always visible */}
@@ -326,14 +333,16 @@ export function FilterPanel({
                 id="filter-type"
                 className="w-auto border-[hsl(var(--custom-blue))] focus:ring-[hsl(var(--custom-blue))]"
               >
-                <SelectValue placeholder="Selecione um tipo de filtro" />
+                <SelectValue
+                  placeholder={uiTexts.filterPanel.selectFilterType}
+                />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem
                   value="none"
                   className="focus:bg-[hsl(var(--custom-blue))]/20 focus:text-white"
                 >
-                  Nenhum
+                  {uiTexts.filterPanel.none}
                 </SelectItem>
                 {filterOptions.map((option) => (
                   <SelectItem
@@ -361,7 +370,7 @@ export function FilterPanel({
               }}
               className="text-xs text-muted-foreground hover:text-foreground hover:underline transition-colors ml-auto"
             >
-              Limpar todos
+              {uiTexts.filterPanel.clearAll}
             </button>
           )}
 
@@ -385,7 +394,7 @@ export function FilterPanel({
                         handleRemoveValue(filter.filterType, value)
                       }
                       className="ml-1 hover:bg-muted-foreground/20 rounded-full p-0.5"
-                      aria-label={`Remover ${value}`}
+                      aria-label={`Remove ${value}`}
                     >
                       <X className="w-3 h-3" />
                     </button>
@@ -399,7 +408,11 @@ export function FilterPanel({
           <button
             onClick={() => setIsPanelOpen(!isPanelOpen)}
             className="text-muted-foreground hover:text-foreground transition-colors"
-            aria-label={isPanelOpen ? "Fechar filtros" : "Abrir filtros"}
+            aria-label={
+              isPanelOpen
+                ? uiTexts.filterPanel.closeFilters
+                : uiTexts.filterPanel.openFilters
+            }
           >
             {isPanelOpen ? (
               <ChevronDown className="w-4 h-4" />
@@ -417,7 +430,7 @@ export function FilterPanel({
             {activeFilters.length > 0 && (
               <div className="space-y-2 pt-4 border-t">
                 <Label className="text-sm text-muted-foreground">
-                  Filtros Ativos
+                  {uiTexts.filterPanel.activeFilters}
                 </Label>
                 <div className="space-y-2">
                   {activeFilters.map((filter) => {
@@ -445,8 +458,10 @@ export function FilterPanel({
                                 {filterLabel}
                               </span>
                               <Badge variant="secondary" className="text-xs">
-                                {filter.values.length} selecionado
-                                {filter.values.length !== 1 ? "s" : ""}
+                                {filter.values.length}{" "}
+                                {filter.values.length !== 1
+                                  ? uiTexts.filterPanel.selectedPlural
+                                  : uiTexts.filterPanel.selected}
                               </Badge>
                             </div>
                             <button
@@ -455,7 +470,7 @@ export function FilterPanel({
                                 handleRemoveFilter(filter.filterType);
                               }}
                               className="text-muted-foreground hover:text-destructive transition-colors"
-                              aria-label={`Remover filtro ${filterLabel}`}
+                              aria-label={`Remove filter ${filterLabel}`}
                             >
                               <X className="w-4 h-4" />
                             </button>
@@ -464,7 +479,7 @@ export function FilterPanel({
                         <CollapsibleContent className="pt-2">
                           <div className="space-y-2 pl-7">
                             <Label className="text-xs text-muted-foreground">
-                              Selecione os valores
+                              {uiTexts.filterPanel.selectValues}
                             </Label>
                             <div className="space-y-2 max-h-48 overflow-y-auto">
                               {filterValues.map((value) => (
@@ -514,7 +529,7 @@ export function FilterPanel({
                                         )
                                       }
                                       className="ml-1 hover:bg-muted-foreground/20 rounded-full p-0.5"
-                                      aria-label={`Remover ${value}`}
+                                      aria-label={`Remove ${value}`}
                                     >
                                       <X className="w-3 h-3" />
                                     </button>
@@ -539,7 +554,7 @@ export function FilterPanel({
                   }}
                   className="text-xs text-muted-foreground hover:text-foreground underline"
                 >
-                  Limpar todos os filtros
+                  {uiTexts.filterPanel.clearAllFilters}
                 </button>
               </div>
             )}
@@ -557,7 +572,7 @@ export function FilterPanel({
                         (opt) => opt.value === selectedFilterType
                       )?.label
                     }{" "}
-                    - Selecione os valores
+                    - {uiTexts.filterPanel.selectValues}
                   </Label>
                   <div className="space-y-2 max-h-48 overflow-y-auto">
                     {availableValues.map((value) => (
@@ -592,7 +607,7 @@ export function FilterPanel({
                 onClick={() => setIsPanelOpen(false)}
                 className="min-w-20 bg-[hsl(var(--custom-blue))] text-white hover:bg-[hsl(var(--custom-blue))]/80"
               >
-                OK
+                {uiTexts.filterPanel.ok}
               </Button>
             </div>
           </div>
@@ -601,7 +616,7 @@ export function FilterPanel({
     </Collapsible>
   );
 
-  // Se hideQuestionFilters for true, não usar Card (para uso em Popover)
+  // If hideQuestionFilters is true, don't use Card (for use in Popover)
   if (hideQuestionFilters) {
     return <div className="w-full">{content}</div>;
   }

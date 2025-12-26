@@ -6,7 +6,7 @@ import {
   MessageSquare,
   Layers,
   Menu,
-} from "lucide-react";
+} from "@/lib/icons";
 import { Button } from "@/components/ui/button";
 import {
   COLOR_ORANGE_PRIMARY,
@@ -16,9 +16,9 @@ import {
   getBlueButtonShadow,
   RGBA_WHITE_20,
 } from "@/lib/colors";
-import { responseDetails, attributeDeepDive } from "@/data/surveyData";
+import { responseDetails, attributeDeepDive, uiTexts } from "@/data/surveyData";
 
-// Obter todas as perguntas para navegação
+// Get all questions for navigation
 const getAllQuestions = () => {
   const allQuestions = [
     ...responseDetails.closedQuestions.map((q) => ({
@@ -30,12 +30,12 @@ const getAllQuestions = () => {
       type: "open",
     })),
   ]
-    .filter((q) => q.id !== 3) // Ocultar Q3
+    .filter((q) => q.id !== 3) // Hide Q3
     .sort((a, b) => a.id - b.id);
   return allQuestions.map((q) => `responses-${q.id}`);
 };
 
-// Obter número de exibição baseado no questionId real (renumeração excluindo Q3)
+// Get display number based on real questionId (renumbering excluding Q3)
 const getDisplayNumber = (questionId) => {
   const allQuestions = [
     ...responseDetails.closedQuestions.map((q) => ({
@@ -47,14 +47,14 @@ const getDisplayNumber = (questionId) => {
       type: "open",
     })),
   ]
-    .filter((q) => q.id !== 3) // Ocultar Q3
+    .filter((q) => q.id !== 3) // Hide Q3
     .sort((a, b) => a.id - b.id);
 
   const index = allQuestions.findIndex((q) => q.id === questionId);
-  return index !== -1 ? index + 1 : questionId; // Retorna índice + 1 ou o ID original se não encontrar
+  return index !== -1 ? index + 1 : questionId; // Return index + 1 or original ID if not found
 };
 
-// Obter todas as subseções de atributos para navegação
+// Get all attribute subsections for navigation
 const getAllAttributes = () => {
   const attributeIcons = {
     state: true,
@@ -66,7 +66,7 @@ const getAllAttributes = () => {
     .map((attr) => `attributes-${attr.id}`);
 };
 
-// Lista completa de todas as subseções em ordem (mesma do ContentRenderer)
+// Complete list of all subsections in order (same as ContentRenderer)
 const allSubsections = [
   "executive-summary",
   "executive-recommendations",
@@ -77,20 +77,20 @@ const allSubsections = [
   ...getAllQuestions(),
 ];
 
-// Mapeamento de seções para títulos
+// Section to title mapping
 const sectionTitles = {
-  executive: "Relatório Executivo",
-  "executive-summary": "Sumário Executivo",
-  "executive-recommendations": "Recomendações",
-  support: "Análises de Suporte",
-  "support-sentiment": "Análise de Sentimento",
-  "support-intent": "Intenção de Respondentes",
-  "support-segmentation": "Segmentação",
-  responses: "Análise por Questão",
-  attributes: "Aprofundamento por Atributos",
+  executive: uiTexts.surveyHeader.executiveReport,
+  "executive-summary": uiTexts.surveyHeader.executiveSummary,
+  "executive-recommendations": uiTexts.surveyHeader.recommendations,
+  support: uiTexts.surveyHeader.supportAnalysis,
+  "support-sentiment": uiTexts.surveyHeader.sentimentAnalysis,
+  "support-intent": uiTexts.surveyHeader.respondentIntent,
+  "support-segmentation": uiTexts.surveyHeader.segmentation,
+  responses: uiTexts.surveyHeader.questionAnalysis,
+  attributes: uiTexts.surveyHeader.attributeDeepDive,
 };
 
-// Mapeamento de seções para ícones
+// Section to icon mapping
 const sectionIcons = {
   executive: FileText,
   "executive-summary": FileText,
@@ -104,32 +104,32 @@ const sectionIcons = {
 };
 
 function getNextSection(currentSection) {
-  // Normalizar a seção atual
+  // Normalize the current section
   let normalizedSection = currentSection;
 
-  // Se for apenas "executive" ou "support", mapear para a primeira subseção
+  // If it's just "executive" or "support", map to the first subsection
   if (currentSection === "executive") {
     normalizedSection = "executive-summary";
   } else if (currentSection === "support") {
     normalizedSection = "support-sentiment";
   } else if (currentSection === "attributes") {
-    // Se for apenas "attributes", mapear para o primeiro atributo
+    // If it's just "attributes", map to the first attribute
     const attributes = getAllAttributes();
     normalizedSection = attributes[0] || "attributes";
   } else if (currentSection === "responses") {
-    // Se for apenas "responses", mapear para a primeira pergunta
+    // If it's just "responses", map to the first question
     const questions = getAllQuestions();
     normalizedSection = questions[0] || "responses";
   }
 
-  // Caso especial: se estiver em uma questão específica, navegar apenas entre questões
+  // Special case: if in a specific question, navigate only between questions
   if (normalizedSection.startsWith("responses-")) {
     const questions = getAllQuestions();
     const currentIndex = questions.indexOf(normalizedSection);
 
-    // Se não encontrou ou é a última questão, verificar se há próxima seção
+    // If not found or is last question, check if there's a next section
     if (currentIndex === -1 || currentIndex === questions.length - 1) {
-      // Se é a última questão, verificar se há próxima seção após todas as questões
+      // If it's the last question, check if there's a next section after all questions
       const lastQuestionIndex = allSubsections.indexOf(
         questions[questions.length - 1]
       );
@@ -142,48 +142,48 @@ function getNextSection(currentSection) {
       return null;
     }
 
-    // Retorna a próxima questão
+    // Return the next question
     return questions[currentIndex + 1];
   }
 
   const currentIndex = allSubsections.indexOf(normalizedSection);
 
-  // Se não encontrou ou é a última subseção, retorna null
+  // If not found or is last subsection, return null
   if (currentIndex === -1 || currentIndex === allSubsections.length - 1) {
     return null;
   }
 
-  // Retorna a próxima subseção
+  // Return the next subsection
   return allSubsections[currentIndex + 1];
 }
 
 function getPreviousSection(currentSection) {
-  // Normalizar a seção atual
+  // Normalize the current section
   let normalizedSection = currentSection;
 
-  // Se for apenas "executive" ou "support", mapear para a primeira subseção
+  // If it's just "executive" or "support", map to the first subsection
   if (currentSection === "executive") {
     normalizedSection = "executive-summary";
   } else if (currentSection === "support") {
     normalizedSection = "support-sentiment";
   } else if (currentSection === "attributes") {
-    // Se for apenas "attributes", mapear para o primeiro atributo
+    // If it's just "attributes", map to the first attribute
     const attributes = getAllAttributes();
     normalizedSection = attributes[0] || "attributes";
   } else if (currentSection === "responses") {
-    // Se for apenas "responses", mapear para a primeira pergunta
+    // If it's just "responses", map to the first question
     const questions = getAllQuestions();
     normalizedSection = questions[0] || "responses";
   }
 
-  // Caso especial: se estiver em uma questão específica, navegar apenas entre questões
+  // Special case: if in a specific question, navigate only between questions
   if (normalizedSection.startsWith("responses-")) {
     const questions = getAllQuestions();
     const currentIndex = questions.indexOf(normalizedSection);
 
-    // Se não encontrou ou é a primeira questão, verificar se há seção anterior
+    // If not found or is first question, check if there's a previous section
     if (currentIndex === -1 || currentIndex === 0) {
-      // Se é a primeira questão, verificar se há seção anterior antes de todas as questões
+      // If it's the first question, check if there's a previous section before all questions
       const firstQuestionIndex = allSubsections.indexOf(questions[0]);
       if (firstQuestionIndex !== -1 && firstQuestionIndex > 0) {
         return allSubsections[firstQuestionIndex - 1];
@@ -191,44 +191,44 @@ function getPreviousSection(currentSection) {
       return null;
     }
 
-    // Retorna a questão anterior
+    // Return the previous question
     return questions[currentIndex - 1];
   }
 
   const currentIndex = allSubsections.indexOf(normalizedSection);
 
-  // Se não encontrou ou é a primeira subseção, retorna null
+  // If not found or is first subsection, return null
   if (currentIndex === -1 || currentIndex === 0) {
     return null;
   }
 
-  // Retorna a subseção anterior
+  // Return the previous subsection
   return allSubsections[currentIndex - 1];
 }
 
 function getSectionTitle(activeSection) {
-  // Sempre retornar o título da seção principal (antes do hífen)
+  // Always return the main section title (before the hyphen)
   const baseSection = activeSection.split("-")[0];
   if (sectionTitles[baseSection]) {
     return sectionTitles[baseSection];
   }
 
-  // Se não encontrar, tenta encontrar o título exato como fallback
+  // If not found, try to find exact title as fallback
   if (sectionTitles[activeSection]) {
     return sectionTitles[activeSection];
   }
 
   // Fallback
-  return "Resultados da Pesquisa";
+  return uiTexts.surveyHeader.results;
 }
 
 function getSectionIcon(activeSection) {
-  // Primeiro tenta encontrar o ícone exato
+  // First try to find exact icon
   if (sectionIcons[activeSection]) {
     return sectionIcons[activeSection];
   }
 
-  // Se não encontrar, tenta encontrar pela seção base (antes do hífen)
+  // If not found, try to find by base section (before hyphen)
   const baseSection = activeSection.split("-")[0];
   if (sectionIcons[baseSection]) {
     return sectionIcons[baseSection];
@@ -239,12 +239,12 @@ function getSectionIcon(activeSection) {
 }
 
 function getSubsectionTitle(sectionId, maxLength = 40) {
-  // Se for uma subseção fixa, retorna do mapeamento
+  // If it's a fixed subsection, return from mapping
   if (sectionTitles[sectionId]) {
     return sectionTitles[sectionId];
   }
 
-  // Se for uma subseção de atributos (attributes-{id})
+  // If it's an attribute subsection (attributes-{id})
   if (sectionId.startsWith("attributes-")) {
     const attributeId = sectionId.replace("attributes-", "");
     const attribute = attributeDeepDive.attributes.find(
@@ -255,14 +255,14 @@ function getSubsectionTitle(sectionId, maxLength = 40) {
     }
   }
 
-  // Se for uma subseção de perguntas (responses-{id})
+  // If it's a question subsection (responses-{id})
   if (sectionId.startsWith("responses-")) {
     const questionId = parseInt(sectionId.replace("responses-", ""), 10);
     const displayNumber = getDisplayNumber(questionId);
-    return `Questão ${displayNumber}`;
+    return `${uiTexts.surveyHeader.question} ${displayNumber}`;
   }
 
-  // Fallback: retorna o ID formatado
+  // Fallback: return formatted ID
   return sectionId;
 }
 
@@ -271,22 +271,22 @@ function getSectionAndSubsection(sectionId, maxLength = 40) {
   let sectionTitle = sectionTitles[baseSection] || baseSection;
   let subsectionTitle = getSubsectionTitle(sectionId, maxLength);
 
-  // Ajuste especial: para "Aprofundamento por Atributos", mostrar apenas "Aprofundamento"
-  if (sectionTitle === "Aprofundamento por Atributos") {
-    sectionTitle = "Aprofundamento";
+  // Special adjustment: for "Attribute Deep Dive", show only "Deep Dive"
+  if (sectionTitle === uiTexts.surveyHeader.attributeDeepDive) {
+    sectionTitle = uiTexts.surveyHeader.deepDive;
   }
 
-  // Ajuste especial: para "Análise por Questão", mostrar o número da questão como subtítulo
+  // Special adjustment: for "Question Analysis", show question number as subtitle
   if (baseSection === "responses" && sectionId.startsWith("responses-")) {
     const questionId = parseInt(sectionId.replace("responses-", ""), 10);
     const displayNumber = getDisplayNumber(questionId);
     return {
       section: sectionTitle,
-      subsection: `Questão ${displayNumber}`,
+      subsection: `${uiTexts.surveyHeader.question} ${displayNumber}`,
     };
   }
 
-  // Se a subseção for igual à seção, não precisa mostrar duplicado
+  // If subsection equals section, don't show duplicate
   if (subsectionTitle === sectionTitle) {
     return {
       section: sectionTitle,
@@ -306,10 +306,10 @@ export function SurveyHeader({ activeSection, onSectionChange, onMenuClick }) {
   const nextSection = getNextSection(activeSection);
   const previousSection = getPreviousSection(activeSection);
 
-  // Mostrar botão "Avançar" sempre que houver próxima seção
+  // Show "Next" button whenever there's a next section
   const shouldShowNextButton = !!nextSection;
 
-  // Obter seção e subseção formatadas para os botões
+  // Get formatted section and subsection for buttons
   const previousSectionInfo = previousSection
     ? getSectionAndSubsection(previousSection)
     : null;
@@ -317,7 +317,7 @@ export function SurveyHeader({ activeSection, onSectionChange, onMenuClick }) {
     ? getSectionAndSubsection(nextSection)
     : null;
 
-  // Obter ícones das seções para os botões
+  // Get section icons for buttons
   const PreviousIcon = previousSection ? getSectionIcon(previousSection) : null;
   const NextIcon = nextSection ? getSectionIcon(nextSection) : null;
 
@@ -341,7 +341,7 @@ export function SurveyHeader({ activeSection, onSectionChange, onMenuClick }) {
       }}
     >
       <div className="px-2 sm:px-4 lg:px-6 py-2 sm:py-4 flex items-center gap-1 sm:gap-0">
-        {/* Hamburger Menu - Visível apenas em telas menores */}
+        {/* Hamburger Menu - Visible only on smaller screens */}
         <div className="lg:hidden mr-2 sm:mr-3">
           <Button
             onClick={onMenuClick}
@@ -371,7 +371,7 @@ export function SurveyHeader({ activeSection, onSectionChange, onMenuClick }) {
               >
                 <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
               </div>
-              {/* Mobile: ícone + subseção lado a lado */}
+              {/* Mobile: icon + subsection side by side */}
               <div className="sm:hidden flex items-center gap-1.5">
                 {PreviousIcon && (
                   <PreviousIcon className="w-3.5 h-3.5 flex-shrink-0" />
@@ -382,7 +382,7 @@ export function SurveyHeader({ activeSection, onSectionChange, onMenuClick }) {
                   </span>
                 )}
               </div>
-              {/* Desktop: seção + subseção em coluna */}
+              {/* Desktop: section + subsection in column */}
               <div className="hidden sm:flex flex-col items-start">
                 <span className="font-semibold text-sm leading-tight">
                   {previousSectionInfo.section}
@@ -420,7 +420,7 @@ export function SurveyHeader({ activeSection, onSectionChange, onMenuClick }) {
                 boxShadow: getBlueButtonShadow(),
               }}
             >
-              {/* Mobile: ícone + subseção lado a lado */}
+              {/* Mobile: icon + subsection side by side */}
               <div className="sm:hidden flex items-center gap-1.5">
                 {NextIcon && <NextIcon className="w-3.5 h-3.5 flex-shrink-0" />}
                 {nextSectionInfo.subsection && (
@@ -429,7 +429,7 @@ export function SurveyHeader({ activeSection, onSectionChange, onMenuClick }) {
                   </span>
                 )}
               </div>
-              {/* Desktop: seção + subseção em coluna */}
+              {/* Desktop: section + subsection in column */}
               <div className="hidden sm:flex flex-col items-end">
                 <span className="font-semibold text-sm leading-tight">
                   {nextSectionInfo.section}

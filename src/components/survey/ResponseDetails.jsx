@@ -8,9 +8,9 @@ import {
   Filter,
   X,
   Download,
-} from "lucide-react";
+} from "@/lib/icons";
 import { Progress } from "@/components/ui/progress";
-import { responseDetails, surveyInfo } from "@/data/surveyData";
+import { responseDetails, surveyInfo, uiTexts } from "@/data/surveyData";
 import {
   COLOR_ORANGE_PRIMARY,
   RGBA_ORANGE_SHADOW_15,
@@ -28,7 +28,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/components/ui-components/badge";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { FilterPanel } from "./FilterPanel";
@@ -69,11 +69,11 @@ export function ResponseDetails({ questionId }) {
     }));
   };
 
-  // Opções de filtro para obter labels
+  // Filter options to get labels
   const filterOptions = [
-    { value: "state", label: "Estado" },
-    { value: "customerType", label: "Tipo de Cliente" },
-    { value: "education", label: "Escolaridade" },
+    { value: "state", label: uiTexts.filterPanel.state },
+    { value: "customerType", label: uiTexts.filterPanel.customerType },
+    { value: "education", label: uiTexts.filterPanel.education },
   ];
 
   // ============================================================
@@ -83,9 +83,9 @@ export function ResponseDetails({ questionId }) {
   const isNPSQuestion = (questionId) => questionId === 1;
 
   const getQuestionType = (question) => {
-    if (isNPSQuestion(question.id)) return "NPS";
-    if (question.type === "open") return "Campo Aberto";
-    return "Múltipla Escolha";
+    if (isNPSQuestion(question.id)) return uiTexts.responseDetails.nps;
+    if (question.type === "open") return uiTexts.responseDetails.openField;
+    return uiTexts.responseDetails.multipleChoice;
   };
 
   const getQuestionIcon = (question) => {
@@ -95,15 +95,15 @@ export function ResponseDetails({ questionId }) {
   };
 
   const getTotalResponses = (question) => {
-    // Para questões fechadas (incluindo NPS), somar todos os valores
+    // For closed questions (including NPS), sum all values
     if (question.type === "closed" && "data" in question && question.data) {
       return question.data.reduce((sum, item) => sum + (item.value || 0), 0);
     }
-    // Para questões abertas, usar o total de respondentes do survey
+    // For open questions, use total survey respondents
     if (question.type === "open") {
       return surveyInfo.totalRespondents;
     }
-    // Fallback: retornar 0 se não conseguir determinar
+    // Fallback: return 0 if unable to determine
     return 0;
   };
 
@@ -119,7 +119,7 @@ export function ResponseDetails({ questionId }) {
         if (filter.filterType === filterType && filter.values) {
           const updatedValues = filter.values.filter((v) => v !== value);
           if (updatedValues.length === 0) {
-            return null; // Remove o filtro se não houver mais valores
+            return null; // Remove filter if no values left
           }
           return { ...filter, values: updatedValues };
         }
@@ -153,7 +153,10 @@ export function ResponseDetails({ questionId }) {
 
     return (
       <div className="inline-flex items-center px-2.5 py-1 rounded-full bg-muted/80 text-muted-foreground text-xs font-semibold">
-        <span>{totalResponses.toLocaleString()} respostas</span>
+        <span>
+          {totalResponses.toLocaleString()}{" "}
+          {uiTexts.responseDetails.responsesCount}
+        </span>
       </div>
     );
   };
@@ -189,7 +192,7 @@ export function ResponseDetails({ questionId }) {
                   handleRemoveFilterValue(questionId, filter.filterType, value);
                 }}
                 className="ml-0.5 hover:bg-[hsl(var(--custom-blue))]/30 rounded-full p-0.5 transition-colors"
-                aria-label={`Remover filtro ${value}`}
+                aria-label={`${uiTexts.responseDetails.removeFilter} ${value}`}
               >
                 <X className="w-3 h-3" />
               </button>
@@ -200,7 +203,7 @@ export function ResponseDetails({ questionId }) {
     );
   };
 
-  // Obter todas as questões disponíveis filtradas pelo tipo selecionado
+  // Get all available questions filtered by selected type
   const allAvailableQuestions = useMemo(() => {
     const allQuestions = [
       ...responseDetails.closedQuestions.map((q) => ({
@@ -212,10 +215,10 @@ export function ResponseDetails({ questionId }) {
         type: "open",
       })),
     ]
-      .filter((q) => q.id !== 3) // Ocultar Q3
-      .sort((a, b) => a.id - b.id); // Ordenar por ID
+      .filter((q) => q.id !== 3) // Hide Q3
+      .sort((a, b) => a.id - b.id); // Sort by ID
 
-    // Aplicar filtro baseado no questionFilter
+    // Apply filter based on questionFilter
     if (questionFilter === "all") {
       return allQuestions;
     }
@@ -225,30 +228,30 @@ export function ResponseDetails({ questionId }) {
     }
 
     if (questionFilter === "closed") {
-      // Fechadas mas não NPS
+      // Closed but not NPS
       return allQuestions.filter(
         (q) => q.type === "closed" && !isNPSQuestion(q.id)
       );
     }
 
     if (questionFilter === "nps") {
-      // Apenas questão NPS (id === 1)
+      // Only NPS question (id === 1)
       return allQuestions.filter((q) => isNPSQuestion(q.id));
     }
 
     return allQuestions;
   }, [questionFilter]);
 
-  // Refs para cada pergunta para permitir scroll
+  // Refs for each question to enable scrolling
   const questionRefs = useRef({});
 
-  // Efeito para rolar até a pergunta específica quando questionId é fornecido (vindo da navbar ou botões de navegação)
+  // Effect to scroll to specific question when questionId is provided (from navbar or navigation buttons)
   useEffect(() => {
     if (questionId) {
-      // Resetar filtro de questão específica quando vem da navbar ou navegação
+      // Reset specific question filter when coming from navbar or navigation
       setSelectedQuestionId(null);
 
-      // Buscar a questão em todas as questões (não apenas nas filtradas)
+      // Find question in all questions (not just filtered ones)
       const allQuestions = [
         ...responseDetails.closedQuestions.map((q) => ({
           ...q,
@@ -263,27 +266,27 @@ export function ResponseDetails({ questionId }) {
       const question = allQuestions.find((q) => q.id === questionId);
 
       if (question) {
-        // Não ajustar filtros automaticamente - manter como "all" para mostrar todas as questões
-        // Os filtros só devem ser aplicados quando o usuário clicar
+        // Don't adjust filters automatically - keep as "all" to show all questions
+        // Filters should only be applied when user clicks
 
-        // Lógica combinada: primeiro abrir o accordion, depois fazer scroll
-        // Aguardar um frame para garantir que o DOM está atualizado
+        // Combined logic: first open accordion, then scroll
+        // Wait one frame to ensure DOM is updated
         setTimeout(() => {
           const questionValue = `${question.type}-${question.id}`;
           setOpenAccordionValue(questionValue);
 
-          // Aguardar um pouco mais para o accordion abrir antes de fazer scroll
+          // Wait a bit more for accordion to open before scrolling
           setTimeout(() => {
             const element = questionRefs.current[questionId];
             if (element) {
-              // Usar scrollIntoView nativo com block: "start" para alinhar ao topo
-              // O scroll-margin-top no CSS compensa o header sticky automaticamente
+              // Use native scrollIntoView with block: "start" to align to top
+              // CSS scroll-margin-top automatically compensates for sticky header
               element.scrollIntoView({
                 behavior: "smooth",
                 block: "start",
               });
             } else {
-              // Se o elemento ainda não estiver disponível, tentar novamente após um delay
+              // If element is not yet available, try again after a delay
               setTimeout(() => {
                 const retryElement = questionRefs.current[questionId];
                 if (retryElement) {
@@ -300,7 +303,7 @@ export function ResponseDetails({ questionId }) {
     }
   }, [questionId]);
 
-  // Efeito para quando selectedQuestionId muda (vindo do filtro)
+  // Effect for when selectedQuestionId changes (from filter)
   useEffect(() => {
     if (selectedQuestionId !== null) {
       const question = allAvailableQuestions.find(
@@ -310,12 +313,12 @@ export function ResponseDetails({ questionId }) {
         const questionValue = `${question.type}-${question.id}`;
         setOpenAccordionValue(questionValue);
 
-        // Scroll com delay
+        // Scroll with delay
         setTimeout(() => {
           const element = questionRefs.current[selectedQuestionId];
           if (element) {
-            // Usar scrollIntoView nativo com block: "start" para alinhar ao topo
-            // O scroll-margin-top no CSS compensa o header sticky automaticamente
+            // Use native scrollIntoView with block: "start" to align to top
+            // CSS scroll-margin-top automatically compensates for sticky header
             element.scrollIntoView({
               behavior: "smooth",
               block: "start",
@@ -339,7 +342,7 @@ export function ResponseDetails({ questionId }) {
           }`}
           onClick={() => setQuestionFilter("all")}
         >
-          Todas
+          {uiTexts.responseDetails.all}
         </Badge>
         <Badge
           variant={questionFilter === "open" ? "default" : "outline"}
@@ -351,7 +354,7 @@ export function ResponseDetails({ questionId }) {
           onClick={() => setQuestionFilter("open")}
         >
           <FileText className="w-3 h-3" />
-          Campo Aberto
+          {uiTexts.responseDetails.openField}
         </Badge>
         <Badge
           variant={questionFilter === "closed" ? "default" : "outline"}
@@ -363,7 +366,7 @@ export function ResponseDetails({ questionId }) {
           onClick={() => setQuestionFilter("closed")}
         >
           <CheckSquare className="w-3 h-3" />
-          Múltipla Escolha
+          {uiTexts.responseDetails.multipleChoice}
         </Badge>
         <Badge
           variant={questionFilter === "nps" ? "default" : "outline"}
@@ -375,7 +378,7 @@ export function ResponseDetails({ questionId }) {
           onClick={() => setQuestionFilter("nps")}
         >
           <TrendingUp className="w-3 h-3" />
-          NPS
+          {uiTexts.responseDetails.nps}
         </Badge>
         {/* Word Cloud Toggle */}
         <div className="flex items-center gap-2 ml-auto">
@@ -383,7 +386,7 @@ export function ResponseDetails({ questionId }) {
             htmlFor="word-cloud-toggle"
             className="text-xs text-muted-foreground cursor-pointer"
           >
-            Nuvem de Palavras
+            {uiTexts.responseDetails.wordCloud}
           </Label>
           <Switch
             id="word-cloud-toggle"
@@ -398,7 +401,7 @@ export function ResponseDetails({ questionId }) {
           const questionValue = `${question.type}-${question.id}`;
           const isHighlighted = highlightedQuestionId === question.id;
           const isOpen = openAccordionValue === questionValue;
-          // Renumerar questões: índice + 1 (excluindo Q3)
+          // Renumber questions: index + 1 (excluding Q3)
           const displayNumber = index + 1;
 
           return (
@@ -427,7 +430,8 @@ export function ResponseDetails({ questionId }) {
                   <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-muted/30">
                     <div className="flex items-start gap-3 text-left w-full">
                       <Badge variant="outline" className="shrink-0">
-                        Q{displayNumber}
+                        {uiTexts.responseDetails.questionPrefix}
+                        {displayNumber}
                       </Badge>
                       <div className="flex-1">
                         <div className="flex items-start justify-between gap-3 mb-2">
@@ -459,7 +463,9 @@ export function ResponseDetails({ questionId }) {
                                       ? "bg-[hsl(var(--custom-blue))]/20 text-[hsl(var(--custom-blue))]"
                                       : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                                   }`}
-                                  aria-label="Filtrar questão"
+                                  aria-label={
+                                    uiTexts.responseDetails.filterQuestion
+                                  }
                                 >
                                   <Filter className="w-4 h-4" />
                                 </button>
@@ -508,7 +514,9 @@ export function ResponseDetails({ questionId }) {
                                     );
                                   }}
                                   className="shrink-0 p-1.5 rounded-md transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                                  aria-label="Download questão"
+                                  aria-label={
+                                    uiTexts.responseDetails.downloadQuestion
+                                  }
                                 >
                                   <Download className="w-4 h-4" />
                                 </button>
@@ -529,7 +537,7 @@ export function ResponseDetails({ questionId }) {
                                     }}
                                     className="w-full text-left px-3 py-2 rounded-md text-sm hover:bg-muted/50 transition-colors cursor-pointer"
                                   >
-                                    PNG
+                                    {uiTexts.responseDetails.png}
                                   </button>
                                   <button
                                     onClick={(e) => {
@@ -541,7 +549,7 @@ export function ResponseDetails({ questionId }) {
                                     }}
                                     className="w-full text-left px-3 py-2 rounded-md text-sm hover:bg-muted/50 transition-colors cursor-pointer"
                                   >
-                                    PDF
+                                    {uiTexts.responseDetails.pdf}
                                   </button>
                                 </div>
                               </PopoverContent>
@@ -562,7 +570,7 @@ export function ResponseDetails({ questionId }) {
                     {!hasActiveFilters(question.id) && (
                       <>
                         <h3 className="text-lg font-bold text-foreground mb-3">
-                          Sumário:
+                          {uiTexts.responseDetails.summary}
                         </h3>
                         <div className="text-muted-foreground mb-6 space-y-3">
                           {question.summary.split("\n").map((line, index) => (
@@ -574,7 +582,7 @@ export function ResponseDetails({ questionId }) {
                       </>
                     )}
 
-                    {/* Mostrar score NPS quando for questão de NPS */}
+                    {/* Show NPS score when it's an NPS question */}
                     {question.id === 1 && (
                       <div className="mb-6 flex justify-center">
                         <div
@@ -588,9 +596,9 @@ export function ResponseDetails({ questionId }) {
                               {surveyInfo.nps}
                             </div>
                             <div className="text-base font-semibold text-foreground mb-3">
-                              NPS Score
+                              {uiTexts.responseDetails.npsScore}
                             </div>
-                            {/* Barra simples com o score para visualização rápida */}
+                            {/* Simple bar with score for quick visualization */}
                             <Progress
                               value={(surveyInfo.nps + 100) / 2}
                               className="h-3 mb-2"
@@ -603,13 +611,13 @@ export function ResponseDetails({ questionId }) {
                       </div>
                     )}
 
-                    {/* Render NPS chart para questão 1 */}
+                    {/* Render NPS chart for question 1 */}
                     {question.id === 1 &&
                       question.type === "closed" &&
                       "data" in question &&
                       question.data &&
                       (() => {
-                        // Converter dados da pergunta para formato NPS
+                        // Convert question data to NPS format
                         const detrator = question.data.find(
                           (d) => d.option === "Detrator"
                         );
@@ -623,7 +631,7 @@ export function ResponseDetails({ questionId }) {
                         return (
                           <>
                             <h3 className="text-lg font-bold text-foreground mb-3">
-                              Respostas:
+                              {uiTexts.responseDetails.responses}
                             </h3>
                             <NPSStackedChart
                               data={{
@@ -639,17 +647,17 @@ export function ResponseDetails({ questionId }) {
                         );
                       })()}
 
-                    {/* Render closed question chart para outras questões */}
+                    {/* Render closed question chart for other questions */}
                     {question.id !== 1 &&
                       question.type === "closed" &&
                       "data" in question &&
                       question.data &&
                       (() => {
-                        // Calcular largura necessária baseada no texto mais longo
+                        // Calculate required width based on longest text
                         const maxTextLength = Math.max(
                           ...question.data.map((item) => item.option.length)
                         );
-                        // Aproximadamente 8px por caractere, mínimo 120px, máximo 400px
+                        // Approximately 8px per character, minimum 120px, maximum 400px
                         const calculatedWidth = Math.min(
                           Math.max(maxTextLength * 8, 120),
                           400
@@ -658,13 +666,13 @@ export function ResponseDetails({ questionId }) {
                           calculatedWidth + 20,
                           140
                         );
-                        // Reduzir margem direita para Q3 para centralizar o gráfico
+                        // Reduce right margin for Q3 to center the chart
                         const rightMargin = question.id === 3 ? 50 : 80;
 
                         return (
                           <>
                             <h3 className="text-lg font-bold text-foreground mb-3">
-                              Respostas:
+                              {uiTexts.responseDetails.responses}
                             </h3>
                             <SimpleBarChart
                               data={question.data}
@@ -681,7 +689,7 @@ export function ResponseDetails({ questionId }) {
                               hideXAxis={true}
                               tooltipFormatter={(value, name, props) => [
                                 `${props.payload.value} (${value}%)`,
-                                "Respostas",
+                                uiTexts.responseDetails.responses,
                               ]}
                             />
                           </>
@@ -696,7 +704,7 @@ export function ResponseDetails({ questionId }) {
                           {/* Sentiment Chart */}
                           <div className="mb-6">
                             <h4 className="text-base font-bold text-foreground mb-3">
-                              Top 3 categorias e principais tópicos
+                              {uiTexts.responseDetails.top3CategoriesTopics}
                             </h4>
                             <SentimentStackedChart
                               data={question.sentimentData}
@@ -715,7 +723,7 @@ export function ResponseDetails({ questionId }) {
                                   className="w-4 h-4"
                                   style={{ color: COLOR_ORANGE_PRIMARY }}
                                 />
-                                Top 3 Categorias
+                                {uiTexts.responseDetails.top3Categories}
                               </h4>
                               <div className="grid md:grid-cols-3 gap-4">
                                 {question.topCategories.map((cat) => (
@@ -741,11 +749,13 @@ export function ResponseDetails({ questionId }) {
                                       </span>
                                     </div>
                                     <div className="text-sm text-muted-foreground mb-3">
-                                      {cat.mentions} menções ({cat.percentage}%)
+                                      {cat.mentions}{" "}
+                                      {uiTexts.responseDetails.mentions} (
+                                      {cat.percentage}%)
                                     </div>
                                     {cat.topics &&
                                       (() => {
-                                        // Separar tópicos por sentimento
+                                        // Separate topics by sentiment
                                         const positiveTopics = cat.topics
                                           .map((topicItem) => {
                                             const topic =
@@ -782,10 +792,13 @@ export function ResponseDetails({ questionId }) {
 
                                         return (
                                           <div className="grid grid-cols-2 gap-4">
-                                            {/* Coluna Positivos */}
+                                            {/* Positive Column */}
                                             <div className="space-y-1.5">
                                               <div className="text-xs font-semibold text-blue-600 dark:text-blue-400 mb-2">
-                                                Positivos
+                                                {
+                                                  uiTexts.responseDetails
+                                                    .positive
+                                                }
                                               </div>
                                               {positiveTopics.length > 0 ? (
                                                 positiveTopics.map(
@@ -805,15 +818,21 @@ export function ResponseDetails({ questionId }) {
                                                 )
                                               ) : (
                                                 <div className="text-xs text-muted-foreground italic">
-                                                  Nenhum tópico positivo
+                                                  {
+                                                    uiTexts.responseDetails
+                                                      .noPositiveTopics
+                                                  }
                                                 </div>
                                               )}
                                             </div>
 
-                                            {/* Coluna Negativos */}
+                                            {/* Negative Column */}
                                             <div className="space-y-1.5">
                                               <div className="text-xs font-semibold text-red-600 dark:text-red-400 mb-2">
-                                                Negativos
+                                                {
+                                                  uiTexts.responseDetails
+                                                    .negative
+                                                }
                                               </div>
                                               {negativeTopics.length > 0 ? (
                                                 negativeTopics.map(
@@ -833,7 +852,10 @@ export function ResponseDetails({ questionId }) {
                                                 )
                                               ) : (
                                                 <div className="text-xs text-muted-foreground italic">
-                                                  Nenhum tópico negativo
+                                                  {
+                                                    uiTexts.responseDetails
+                                                      .noNegativeTopics
+                                                  }
                                                 </div>
                                               )}
                                             </div>
@@ -854,12 +876,12 @@ export function ResponseDetails({ questionId }) {
                                   className="w-4 h-4"
                                   style={{ color: COLOR_ORANGE_PRIMARY }}
                                 />
-                                Nuvem de Palavras
+                                {uiTexts.responseDetails.wordCloud}
                               </h4>
                               <div className="flex justify-center items-center p-6 bg-muted/30 rounded-lg min-h-[200px]">
                                 <img
                                   src="/nuvem.png"
-                                  alt="Nuvem de Palavras"
+                                  alt="Word Cloud"
                                   className="max-w-full h-auto"
                                   style={{ maxHeight: "500px" }}
                                 />

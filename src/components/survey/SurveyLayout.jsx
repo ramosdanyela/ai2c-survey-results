@@ -35,11 +35,11 @@ export function SurveyLayout({ activeSection, onSectionChange }) {
       }
     };
 
-    // Aguardar um frame para garantir que o DOM está renderizado
+    // Wait one frame to ensure DOM is rendered
     const timeoutId = setTimeout(updateSidebarWidth, 0);
     window.addEventListener("resize", updateSidebarWidth);
 
-    // Usar MutationObserver para detectar mudanças no conteúdo da sidebar
+    // Use MutationObserver to detect changes in sidebar content
     const observer = new MutationObserver(updateSidebarWidth);
     if (sidebarRef.current) {
       observer.observe(sidebarRef.current, {
@@ -59,19 +59,19 @@ export function SurveyLayout({ activeSection, onSectionChange }) {
 
   const handleSectionChange = (section) => {
     onSectionChange(section);
-    setIsMobileMenuOpen(false); // Fecha o menu mobile ao selecionar uma seção
+    setIsMobileMenuOpen(false); // Close mobile menu when selecting a section
   };
 
   return (
     <div className="min-h-screen flex w-full bg-background">
-      {/* Sidebar Desktop - Sempre visível em telas grandes */}
+      {/* Desktop Sidebar - Always visible on large screens */}
       <SurveySidebar
         ref={sidebarRef}
         activeSection={activeSection}
         onSectionChange={onSectionChange}
       />
 
-      {/* Sidebar Mobile - Menu hamburger */}
+      {/* Mobile Sidebar - Hamburger menu */}
       <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
         <SheetContent
           side="left"

@@ -1,11 +1,12 @@
 import { useMemo, useRef, useEffect, useState } from "react";
+import { uiTexts } from "@/data/surveyData";
 
 function getBoundingBox(text, fontSize, rotation, x, y) {
-  // Aproximação: largura baseada no comprimento do texto
+  // Approximation: width based on text length
   const width = text.length * fontSize * 0.6;
   const height = fontSize * 1.2;
 
-  // Aplicar rotação para calcular dimensões reais
+  // Apply rotation to calculate actual dimensions
   const rad = (rotation * Math.PI) / 180;
   const cos = Math.abs(Math.cos(rad));
   const sin = Math.abs(Math.sin(rad));
@@ -22,7 +23,7 @@ function getBoundingBox(text, fontSize, rotation, x, y) {
 }
 
 /**
- * Verifica se dois bounding boxes se sobrepõem
+ * Checks if two bounding boxes overlap
  */
 function boxesOverlap(box1, box2, padding = 5) {
   return (
@@ -34,20 +35,20 @@ function boxesOverlap(box1, box2, padding = 5) {
 }
 
 /**
- * Encontra uma posição livre para a palavra
+ * Finds a free position for the word
  */
 function findFreePosition(word, placedWords, containerWidth, containerHeight) {
   const maxAttempts = 100;
   const padding = 10;
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    // Tentar posição aleatória
+    // Try random position
     const x = Math.random() * (containerWidth - 200) + 100;
     const y = Math.random() * (containerHeight - 100) + 50;
 
     const box = getBoundingBox(word.text, word.size, word.rotation, x, y);
 
-    // Verificar colisão com palavras já posicionadas
+    // Check collision with already positioned words
     const hasCollision = placedWords.some((placed) => {
       const placedBox = getBoundingBox(
         placed.text,
@@ -64,7 +65,7 @@ function findFreePosition(word, placedWords, containerWidth, containerHeight) {
     }
   }
 
-  // Se não encontrou posição livre, usar posição sequencial
+  // If no free position found, use sequential position
   const row = Math.floor(placedWords.length / 5);
   const col = placedWords.length % 5;
   return {
@@ -114,11 +115,11 @@ export function WordCloud({ words, maxWords = 15 }) {
     }));
   }, [words, maxWords]);
 
-  // Posicionar palavras sem sobreposição
+  // Position words without overlap
   const positionedWords = useMemo(() => {
     const placed = [];
 
-    // Ordenar por tamanho (maiores primeiro) para melhor distribuição
+    // Sort by size (largest first) for better distribution
     const sortedBySize = [...processedWords].sort((a, b) => b.size - a.size);
 
     sortedBySize.forEach((word) => {
@@ -166,7 +167,7 @@ export function WordCloud({ words, maxWords = 15 }) {
             opacity: 0.7 + (word.value / processedWords[0].value) * 0.3,
             whiteSpace: "nowrap",
           }}
-          title={`${word.text}: ${word.value} menções`}
+          title={`${word.text}: ${word.value} ${uiTexts.wordCloud.mentions}`}
         >
           {word.text}
         </span>

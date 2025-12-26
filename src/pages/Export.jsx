@@ -7,7 +7,7 @@ import {
   Presentation,
   ChevronDown,
   ChevronRight,
-} from "lucide-react";
+} from "@/lib/icons";
 import * as React from "react";
 import {
   Card,
@@ -15,7 +15,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/ui-components/card";
 import {
   SurveySidebar,
   SurveySidebarMobile,
@@ -30,10 +30,21 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { COLOR_ORANGE_PRIMARY, RGBA_BLACK_SHADOW_20 } from "@/lib/colors";
-import { responseDetails, attributeDeepDive } from "@/data/surveyData";
+import { responseDetails, attributeDeepDive, uiTexts } from "@/data/surveyData";
 import { cn } from "@/lib/utils";
 
-// Componente para checkbox com estado indeterminado
+// Local texts for the Export component
+const exportTexts = {
+  title: uiTexts.export.title,
+  description: uiTexts.export.description,
+  exportFullReport: uiTexts.export.exportFullReport,
+  selectSpecificSections: uiTexts.export.selectSpecificSections,
+  exportAsPDF: uiTexts.export.exportAsPDF,
+  exportAsPPT: uiTexts.export.exportAsPPT,
+  selectAtLeastOneSection: uiTexts.export.selectAtLeastOneSection,
+};
+
+// Component for checkbox with indeterminate state
 const SectionCheckbox = React.forwardRef(
   ({ checked, indeterminate, ...props }, ref) => {
     const internalRef = React.useRef(null);
@@ -41,7 +52,7 @@ const SectionCheckbox = React.forwardRef(
 
     React.useEffect(() => {
       if (checkboxRef.current) {
-        // Acessar o elemento input dentro do Checkbox
+        // Access the input element inside the Checkbox
         const inputElement = checkboxRef.current.querySelector(
           'input[type="checkbox"]'
         );
@@ -63,7 +74,7 @@ export default function Export() {
   const [isDesktop, setIsDesktop] = useState(false);
   const sidebarRef = useRef(null);
 
-  // Estado para controle de seleção
+  // State for selection control
   const [exportFullReport, setExportFullReport] = useState(false);
   const [selectedSections, setSelectedSections] = useState(new Set());
   const [isSpecificSectionsExpanded, setIsSpecificSectionsExpanded] =
@@ -75,12 +86,12 @@ export default function Export() {
     responses: true,
   });
 
-  // Verificar se alguma seção específica está selecionada
-  // Só considerar como selecionado se não for relatório completo
+  // Check if any specific section is selected
+  // Only consider as selected if it's not a full report
   const hasSpecificSectionsSelected =
     !exportFullReport && selectedSections.size > 0;
 
-  // Obter todas as perguntas
+  // Get all questions
   const allQuestions = [
     ...responseDetails.closedQuestions.map((q) => ({
       ...q,
@@ -94,33 +105,45 @@ export default function Export() {
     .filter((q) => q.id !== 3)
     .sort((a, b) => a.id - b.id);
 
-  // Obter atributos disponíveis
+  // Get available attributes
   const availableAttributes = attributeDeepDive.attributes.filter((attr) =>
     ["state", "education", "customerType"].includes(attr.id)
   );
 
-  // Estrutura de seções
+  // Section structure - using texts from surveyData
   const sections = [
     {
       id: "executive",
-      label: "Relatório Executivo",
+      label: uiTexts.surveyHeader.executiveReport,
       subsections: [
-        { id: "executive-summary", label: "Sumário Executivo" },
-        { id: "executive-recommendations", label: "Recomendações" },
+        {
+          id: "executive-summary",
+          label: uiTexts.surveyHeader.executiveSummary,
+        },
+        {
+          id: "executive-recommendations",
+          label: uiTexts.surveyHeader.recommendations,
+        },
       ],
     },
     {
       id: "support",
-      label: "Análises de Suporte",
+      label: uiTexts.surveyHeader.supportAnalysis,
       subsections: [
-        { id: "support-sentiment", label: "Análise de Sentimento" },
-        { id: "support-intent", label: "Intenção de Respondentes" },
-        { id: "support-segmentation", label: "Segmentação" },
+        {
+          id: "support-sentiment",
+          label: uiTexts.surveyHeader.sentimentAnalysis,
+        },
+        { id: "support-intent", label: uiTexts.surveyHeader.respondentIntent },
+        {
+          id: "support-segmentation",
+          label: uiTexts.surveyHeader.segmentation,
+        },
       ],
     },
     {
       id: "attributes",
-      label: "Aprofundamento por Atributos",
+      label: uiTexts.surveyHeader.attributeDeepDive,
       subsections: availableAttributes.map((attr) => ({
         id: `attributes-${attr.id}`,
         label: attr.name,
@@ -128,15 +151,19 @@ export default function Export() {
     },
     {
       id: "responses",
-      label: "Análise por Questão",
-      subsections: allQuestions.map((q) => ({
-        id: `responses-${q.id}`,
-        label: `Q${q.id}: ${
-          q.question.length > 60
-            ? q.question.substring(0, 60) + "..."
-            : q.question
-        }`,
-      })),
+      label: uiTexts.surveyHeader.questionAnalysis,
+      subsections: allQuestions.map((q, index) => {
+        // Renumber questions: index + 1 (excluding Q3)
+        const displayNumber = index + 1;
+        return {
+          id: `responses-${q.id}`,
+          label: `${uiTexts.surveyHeader.question}${displayNumber}: ${
+            q.question.length > 60
+              ? q.question.substring(0, 60) + "..."
+              : q.question
+          }`,
+        };
+      }),
     },
   ];
 
@@ -144,10 +171,10 @@ export default function Export() {
   const handleFullReportChange = (checked) => {
     setExportFullReport(checked);
     if (checked) {
-      // Quando marcar "Exportar Relatório Completo", limpar seleções específicas
-      // Não selecionar todas as seções para não marcar o checkbox de "Selecione seções específicas"
+      // When checking "Export Full Report", clear specific selections
+      // Don't select all sections to avoid checking the "Select specific sections" checkbox
       setSelectedSections(new Set());
-      // Fechar o collapsible de seções específicas se estiver aberto
+      // Close the specific sections collapsible if it's open
       setIsSpecificSectionsExpanded(false);
     }
   };
@@ -197,8 +224,8 @@ export default function Export() {
   };
 
   const handleExport = (format) => {
-    // Placeholder - função de exportação será implementada depois
-    console.log(`Exportando em ${format}:`, {
+    // Placeholder - export function will be implemented later
+    console.log(`Exporting in ${format}:`, {
       fullReport: exportFullReport,
       selectedSections: Array.from(selectedSections),
     });
@@ -247,7 +274,7 @@ export default function Export() {
   }, [isDesktop]);
 
   const handleSectionChange = (section) => {
-    // Se não for uma rota, navegar de volta para a página principal
+    // If it's not a route, navigate back to the main page
     if (section !== "export") {
       navigate("/");
     }
@@ -256,14 +283,14 @@ export default function Export() {
 
   return (
     <div className="min-h-screen flex w-full bg-background">
-      {/* Sidebar Desktop - Sempre visível em telas grandes */}
+      {/* Desktop Sidebar - Always visible on large screens */}
       <SurveySidebar
         ref={sidebarRef}
         activeSection="export"
         onSectionChange={handleSectionChange}
       />
 
-      {/* Sidebar Mobile - Menu hamburger */}
+      {/* Mobile Sidebar - Hamburger menu */}
       <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
         <SheetContent
           side="left"
@@ -292,7 +319,7 @@ export default function Export() {
           }}
         >
           <div className="px-3 sm:px-4 lg:px-6 py-4 flex items-center">
-            {/* Hamburger Menu - Visível apenas em telas menores */}
+            {/* Hamburger Menu - Visible only on smaller screens */}
             <div className="lg:hidden mr-3">
               <Button
                 onClick={() => setIsMobileMenuOpen(true)}
@@ -314,7 +341,7 @@ export default function Export() {
               >
                 <Download className="w-4 h-4 flex-shrink-0" />
                 <h1 className="text-2xl font-bold text-white whitespace-nowrap">
-                  Export de Dados
+                  {exportTexts.title}
                 </h1>
               </div>
             </div>
@@ -340,17 +367,17 @@ export default function Export() {
                     </div>
                     <div>
                       <CardTitle className="text-2xl">
-                        Export de Dados
+                        {exportTexts.title}
                       </CardTitle>
                       <CardDescription>
-                        Exporte os dados da pesquisa em diferentes formatos
+                        {exportTexts.description}
                       </CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-6">
-                    {/* Opção de Relatório Completo */}
+                    {/* Full Report Option */}
                     <div className="flex items-center space-x-3 p-4 rounded-lg border-2 border-primary/20 bg-primary/5">
                       <Checkbox
                         id="full-report"
@@ -362,13 +389,13 @@ export default function Export() {
                         htmlFor="full-report"
                         className="text-lg font-semibold cursor-pointer flex-1"
                       >
-                        Exportar Relatório Completo
+                        {exportTexts.exportFullReport}
                       </label>
                     </div>
 
                     <Separator />
 
-                    {/* Seções */}
+                    {/* Sections */}
                     <Collapsible
                       open={isSpecificSectionsExpanded}
                       onOpenChange={setIsSpecificSectionsExpanded}
@@ -381,10 +408,10 @@ export default function Export() {
                               checked={hasSpecificSectionsSelected}
                               onCheckedChange={(checked) => {
                                 if (checked) {
-                                  // Quando marcar "Selecione seções específicas", desmarcar "Exportar Relatório Completo"
+                                  // When checking "Select specific sections", uncheck "Export Full Report"
                                   setExportFullReport(false);
                                 } else {
-                                  // Quando desmarcar, limpar todas as seleções
+                                  // When unchecking, clear all selections
                                   setSelectedSections(new Set());
                                 }
                               }}
@@ -395,7 +422,7 @@ export default function Export() {
                               htmlFor="specific-sections"
                               className="text-lg font-semibold cursor-pointer flex-1"
                             >
-                              Selecione seções específicas
+                              {exportTexts.selectSpecificSections}
                             </label>
                             {isSpecificSectionsExpanded ? (
                               <ChevronDown className="w-5 h-5" />
@@ -494,7 +521,7 @@ export default function Export() {
 
                     <Separator />
 
-                    {/* Botões de Exportação */}
+                    {/* Export Buttons */}
                     <div className="flex flex-col sm:flex-row gap-4 pt-4">
                       <Button
                         onClick={() => handleExport("PDF")}
@@ -508,7 +535,7 @@ export default function Export() {
                         }}
                       >
                         <FileText className="w-5 h-5 mr-2" />
-                        Exportar como PDF
+                        {exportTexts.exportAsPDF}
                       </Button>
                       <Button
                         onClick={() => handleExport("PPT")}
@@ -522,14 +549,13 @@ export default function Export() {
                         }}
                       >
                         <Presentation className="w-5 h-5 mr-2" />
-                        Exportar como PPT
+                        {exportTexts.exportAsPPT}
                       </Button>
                     </div>
 
                     {!exportFullReport && selectedSections.size === 0 && (
                       <p className="text-sm text-muted-foreground text-center">
-                        Selecione pelo menos uma seção ou o relatório completo
-                        para exportar
+                        {exportTexts.selectAtLeastOneSection}
                       </p>
                     )}
                   </div>

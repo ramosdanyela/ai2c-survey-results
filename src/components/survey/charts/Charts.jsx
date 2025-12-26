@@ -10,46 +10,86 @@ import {
   LabelList,
   ReferenceLine,
 } from "recharts";
+import { NPS_COLOR_MAP, SENTIMENT_COLOR_MAP, CHART_COLORS } from "@/lib/colors";
 
 // ============================================================
-// SURVEY CHARTS - Todos os gráficos utilizados no projeto
+// SURVEY CHARTS - All charts used in the project
 // ============================================================
-// Este arquivo contém todos os componentes de gráficos usados
-// nos componentes de pesquisa (survey).
+// This file contains all chart components used
+// in the survey components.
 //
-// Componentes disponíveis:
-// 1. SentimentDivergentChart - Gráfico divergente de sentimento
-// 2. SentimentStackedChart - Gráfico empilhado de sentimento
-// 3. NPSStackedChart - Gráfico empilhado NPS
-// 4. SimpleBarChart - Gráfico de barras simples
-//
+// Available components:
+// 1. SentimentDivergentChart - Divergent sentiment chart
+// 3. SentimentThreeColorChart - Three-color sentiment chart
+// 4. NPSStackedChart - NPS stacked chart
+// 5. SimpleBarChart - Simple bar chart
+
 // ============================================================
-// 1. SENTIMENT DIVERGENT CHART
+// 1. SENTIMENT DIVERGENT CHART (UNIFIED COMPONENT)
 // ============================================================
-// Gráfico divergente onde negativo aparece à esquerda e positivo à direita
-// Usado em: SupportAnalysis - Análise de Sentimento
+// Divergent chart where negative appears on the left and positive on the right
+// Used in: SupportAnalysis - Sentiment Analysis
+//           AttributeDeepDive - Sentiment by Segment
+//           ResponseDetails - Sentiment Analysis
 
 export function SentimentDivergentChart({
   data,
   height = 320,
-  margin = { top: 20, right: 60, left: 100, bottom: 20 },
+  margin = { top: 20, right: 30, left: 100, bottom: 20 },
   xAxisDomain,
+  yAxisDataKey = "category",
+  yAxisWidth = 90,
   showGrid = false,
+  showLegend = true,
+  axisLine = false,
+  tickLine = false,
+  barSize,
+  allowDataOverflow = false,
+  legendWrapperStyle,
+  legendIconType,
+  labels,
 }) {
+  // Extract labels from data or use provided labels
+  // Try to get labels from first data item if available
+  const defaultLabels =
+    data && data.length > 0
+      ? {
+          positive: data[0].positiveLabel || "Positive",
+          negative: data[0].negativeLabel || "Negative",
+        }
+      : { positive: "Positive", negative: "Negative" };
+
+  const chartLabels = labels || defaultLabels;
+  // Default values specific to SentimentDivergentChart (when not specified)
+  // null means "do not apply" (for SentimentStackedChart)
+  const finalBarSize =
+    barSize === null ? undefined : barSize !== undefined ? barSize : 40;
+  const finalLegendWrapperStyle =
+    legendWrapperStyle === null
+      ? undefined
+      : legendWrapperStyle !== undefined
+      ? legendWrapperStyle
+      : { paddingTop: "20px" };
+  const finalLegendIconType =
+    legendIconType === null
+      ? undefined
+      : legendIconType !== undefined
+      ? legendIconType
+      : "square";
   // Transform data: negative values become negative for divergent display
   // Only plot positive and negative, ignore neutral completely
-  const divergentData = data.map((item) => {
-    const transformed = {
-      category: item.category || item.segment || "",
+  const transformedData = data.map((item) => {
+    const categoryValue = item.category || item.segment || "";
+    return {
+      [yAxisDataKey]: categoryValue,
       positive: item.positive,
       negative: -item.negative,
     };
-    return transformed;
   });
 
   // Calculate dynamic domain if not provided
   const maxValue = Math.max(
-    ...divergentData.flatMap((item) => [
+    ...transformedData.flatMap((item) => [
       Math.abs(item.positive),
       Math.abs(item.negative),
     ])
@@ -62,15 +102,15 @@ export function SentimentDivergentChart({
   return (
     <div style={{ height }}>
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={divergentData} layout="vertical" margin={margin}>
-          {/* Linha tracejada apenas no marco 0 */}
+        <BarChart data={transformedData} layout="vertical" margin={margin}>
+          {/* Dashed line only at the 0 mark */}
           <ReferenceLine
             x={0}
-            stroke="hsl(var(--foreground))"
+            stroke={CHART_COLORS.foreground}
             strokeWidth={1}
             strokeDasharray="3 3"
           />
-          {/* Sem grid - removido CartesianGrid completamente */}
+          {/* No grid - CartesianGrid completely removed */}
           <XAxis
             type="number"
             domain={domain}
@@ -79,73 +119,80 @@ export function SentimentDivergentChart({
               return "";
             }}
             ticks={[0]}
-            axisLine={false}
-            tickLine={false}
-            allowDataOverflow={false}
+            axisLine={axisLine}
+            tickLine={tickLine}
+            allowDataOverflow={allowDataOverflow}
           />
           <YAxis
             type="category"
-            dataKey="category"
-            width={90}
-            axisLine={false}
-            tickLine={false}
+            dataKey={yAxisDataKey}
+            width={yAxisWidth}
+            axisLine={axisLine}
+            tickLine={tickLine}
           />
           <Tooltip
             formatter={(value, name) => {
               if (name === "neutral") return null;
               return [
                 `${Math.abs(value)}%`,
-                name === "negative" ? "Negativo" : "Positivo",
+                name === "negative"
+                  ? chartLabels.negative
+                  : chartLabels.positive,
               ];
             }}
             filterNull={true}
           />
-          <Legend
-            wrapperStyle={{ paddingTop: "20px", paddingLeft: "20px" }}
-            iconType="square"
-            align="left"
-            formatter={(value) => {
-              // Only show negative and positive, filter out neutral
-              if (value === "neutral" || value === "Neutro") {
-                return "";
-              }
-              return value === "negative" || value === "Negativo"
-                ? "Negativo"
-                : value === "positive" || value === "Positivo"
-                ? "Positivo"
-                : "";
-            }}
-          />
+          {showLegend && (
+            <Legend
+              {...(finalLegendWrapperStyle !== undefined && {
+                wrapperStyle: finalLegendWrapperStyle,
+              })}
+              {...(finalLegendIconType !== undefined && {
+                iconType: finalLegendIconType,
+              })}
+              formatter={(value) => {
+                // Only show negative and positive, filter out neutral
+                if (value === "neutral" || value === "Neutral") {
+                  return "";
+                }
+                return value === "negative" || value === "Negative"
+                  ? chartLabels.negative
+                  : value === "positive" || value === "Positive"
+                  ? chartLabels.positive
+                  : "";
+              }}
+            />
+          )}
           <Bar
             dataKey="negative"
-            name="Negativo"
-            fill="hsl(var(--chart-negative))"
+            name={chartLabels.negative}
+            fill={CHART_COLORS.negative}
             radius={[4, 4, 4, 4]}
-            barSize={40}
+            {...(finalBarSize !== undefined && { barSize: finalBarSize })}
           >
             <LabelList
               dataKey="negative"
               position="right"
               formatter={(value) => `${Math.abs(value)}%`}
               style={{
-                fill: "hsl(var(--foreground))",
+                fill: CHART_COLORS.foreground,
                 fontSize: "12px",
               }}
             />
           </Bar>
           <Bar
             dataKey="positive"
-            name="Positivo"
-            fill="hsl(var(--chart-positive))"
+            name={chartLabels.positive}
+            fill={CHART_COLORS.positive}
             radius={[4, 4, 4, 4]}
-            barSize={40}
+            {...(finalBarSize !== undefined && { barSize: finalBarSize })}
           >
             <LabelList
               dataKey="positive"
               position="right"
               formatter={(value) => `${value}%`}
               style={{
-                fill: "hsl(var(--foreground))",
+                fill: CHART_COLORS.foreground,
                 fontSize: "12px",
               }}
             />
@@ -157,11 +204,13 @@ export function SentimentDivergentChart({
 }
 
 // ============================================================
-// 2. SENTIMENT STACKED CHART
+// 2. SENTIMENT STACKED CHART (COMPATIBILITY WRAPPER)
 // ============================================================
-// Gráfico empilhado de sentimento (0-100%)
-// Usado em: AttributeDeepDive - Sentiment by Segment
+// Stacked sentiment chart (0-100%)
+// Used in: AttributeDeepDive - Sentiment by Segment
 //           ResponseDetails - Sentiment Analysis
+// NOTE: Wrapper that maintains compatibility with existing code
+//       Uses SentimentDivergentChart internally with different default values
 
 export function SentimentStackedChart({
   data,
@@ -174,121 +223,29 @@ export function SentimentStackedChart({
   axisLine = true,
   tickLine = true,
 }) {
-  // Transform data: negative values become negative for divergent display
-  // Remove neutral, keep original positive and negative values
-  const transformedData = data.map((item) => {
-    const categoryValue = item.category || item.segment || "";
-    return {
-      [yAxisDataKey]: categoryValue,
-      positive: item.positive,
-      negative: -item.negative, // Negative values go to the left
-    };
-  });
-
-  // Calculate dynamic domain based on data
-  const maxValue = Math.max(
-    ...transformedData.flatMap((item) => [
-      Math.abs(item.positive),
-      Math.abs(item.negative),
-    ])
-  );
-  const domain = [-Math.ceil(maxValue * 1.1), Math.ceil(maxValue * 1.1)];
-
   return (
-    <div style={{ height }}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={transformedData} layout="vertical" margin={margin}>
-          {/* Linha tracejada apenas no marco 0 */}
-          <ReferenceLine
-            x={0}
-            stroke="hsl(var(--foreground))"
-            strokeWidth={1}
-            strokeDasharray="3 3"
-          />
-          {/* Sem grid - removido CartesianGrid */}
-          <XAxis
-            type="number"
-            domain={domain}
-            tickFormatter={(v) => {
-              if (v === 0) return "0%";
-              return "";
-            }}
-            ticks={[0]}
-            axisLine={axisLine}
-            tickLine={tickLine}
-          />
-          <YAxis
-            type="category"
-            dataKey={yAxisDataKey}
-            width={yAxisWidth}
-            axisLine={axisLine}
-            tickLine={tickLine}
-          />
-          <Tooltip
-            formatter={(v, name) => {
-              if (name === "neutral") return null;
-              return [
-                `${Math.abs(v)}%`,
-                name === "negative" ? "Negativo" : "Positivo",
-              ];
-            }}
-            filterNull={true}
-          />
-          {showLegend && (
-            <Legend
-              formatter={(value) => {
-                if (value === "neutral" || value === "Neutro") return "";
-                return value === "negative" || value === "Negativo"
-                  ? "Negativo"
-                  : value === "positive" || value === "Positivo"
-                  ? "Positivo"
-                  : "";
-              }}
-            />
-          )}
-          <Bar
-            dataKey="negative"
-            name="Negativo"
-            fill="hsl(var(--chart-negative))"
-            radius={[4, 4, 4, 4]}
-          >
-            <LabelList
-              dataKey="negative"
-              position="right"
-              formatter={(value) => `${Math.abs(value)}%`}
-              style={{
-                fill: "hsl(var(--foreground))",
-                fontSize: "12px",
-              }}
-            />
-          </Bar>
-          <Bar
-            dataKey="positive"
-            name="Positivo"
-            fill="hsl(var(--chart-positive))"
-            radius={[4, 4, 4, 4]}
-          >
-            <LabelList
-              dataKey="positive"
-              position="right"
-              formatter={(value) => `${value}%`}
-              style={{
-                fill: "hsl(var(--foreground))",
-                fontSize: "12px",
-              }}
-            />
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
+    <SentimentDivergentChart
+      data={data}
+      height={height}
+      margin={margin}
+      yAxisDataKey={yAxisDataKey}
+      yAxisWidth={yAxisWidth}
+      showGrid={showGrid}
+      showLegend={showLegend}
+      axisLine={axisLine}
+      tickLine={tickLine}
+      barSize={null}
+      legendWrapperStyle={null}
+      legendIconType={null}
+    />
   );
 }
 
 // ============================================================
 // 3. SENTIMENT THREE COLOR CHART
 // ============================================================
-// Gráfico de sentimento com três cores (Positivo/Negativo/Não aplicável)
-// Usado em: AttributeDeepDive - Análise de Sentimento por Tipo de Cliente
+// Three-color sentiment chart (Positive/Negative/Not applicable)
+// Used in: AttributeDeepDive - Sentiment Analysis by Customer Type
 
 export function SentimentThreeColorChart({
   data,
@@ -297,39 +254,36 @@ export function SentimentThreeColorChart({
   showGrid = false,
   showLegend = true,
 }) {
-  // Cores para cada sentimento
-  const sentimentColors = {
-    Negativo: "hsl(var(--chart-negative))",
-    "Não aplicável": "hsl(var(--chart-neutral))",
-    Positivo: "hsl(var(--chart-positive))",
-  };
+  // Colors for each sentiment (from centralized color config)
+  const sentimentColors = SENTIMENT_COLOR_MAP;
 
-  // Extrair dinamicamente os segmentos (excluindo "sentiment")
+  // Extract sentiment labels dynamically from data
+  const sentimentKeys = data.map((item) => item.sentiment).filter(Boolean);
+  const uniqueSentiments = [...new Set(sentimentKeys)];
+
+  // Dynamically extract segments (excluding "sentiment")
   const segments =
     data.length > 0
       ? Object.keys(data[0]).filter((key) => key !== "sentiment")
       : [];
 
-  // Criar dados para cada segmento
+  // Create data for each segment
   const chartDataBySegment = segments.map((segment) => {
-    const chartData = [
-      {
-        name: segment,
-        Negativo:
-          data.find((item) => item.sentiment === "Negativo")?.[segment] || 0,
-        "Não aplicável":
-          data.find((item) => item.sentiment === "Não aplicável")?.[segment] ||
-          0,
-        Positivo:
-          data.find((item) => item.sentiment === "Positivo")?.[segment] || 0,
-      },
-    ];
-    return { segment, chartData };
+    const chartDataItem = { name: segment };
+
+    // Dynamically add sentiment values using actual sentiment keys from data
+    uniqueSentiments.forEach((sentiment) => {
+      chartDataItem[sentiment] =
+        data.find((item) => item.sentiment === sentiment)?.[segment] || 0;
+    });
+
+    const chartData = [chartDataItem];
+    return { segment, chartData, sentiments: uniqueSentiments };
   });
 
   return (
     <div className="space-y-6">
-      {chartDataBySegment.map(({ segment, chartData }) => (
+      {chartDataBySegment.map(({ segment, chartData, sentiments }) => (
         <div key={segment} className="space-y-2">
           <div className="font-semibold text-sm mb-2">{segment}</div>
           <div style={{ height }}>
@@ -344,44 +298,34 @@ export function SentimentThreeColorChart({
                   formatter={(value, name) => [`${value}%`, name]}
                   filterNull={true}
                 />
-                <Bar
-                  dataKey="Negativo"
-                  name="Negativo"
-                  fill={sentimentColors.Negativo}
-                  stackId="a"
-                  radius={[0, 0, 0, 0]}
-                />
-                <Bar
-                  dataKey="Não aplicável"
-                  name="Não aplicável"
-                  fill={sentimentColors["Não aplicável"]}
-                  stackId="a"
-                  radius={[0, 0, 0, 0]}
-                />
-                <Bar
-                  dataKey="Positivo"
-                  name="Positivo"
-                  fill={sentimentColors.Positivo}
-                  stackId="a"
-                  radius={[4, 4, 4, 4]}
-                />
+                {sentiments.map((sentiment, index) => (
+                  <Bar
+                    key={sentiment}
+                    dataKey={sentiment}
+                    name={sentiment}
+                    fill={sentimentColors[sentiment] || CHART_COLORS.primary}
+                    stackId="a"
+                    radius={
+                      index === sentiments.length - 1
+                        ? [4, 4, 4, 4]
+                        : [0, 0, 0, 0]
+                    }
+                  />
+                ))}
               </BarChart>
             </ResponsiveContainer>
           </div>
-          {/* Labels com valores */}
-          <div className="grid grid-cols-3 gap-2 text-xs text-center">
-            <div>
-              <div className="font-bold">{chartData[0].Negativo}%</div>
-              <div className="text-muted-foreground">Negativo</div>
-            </div>
-            <div>
-              <div className="font-bold">{chartData[0]["Não aplicável"]}%</div>
-              <div className="text-muted-foreground">Não aplicável</div>
-            </div>
-            <div>
-              <div className="font-bold">{chartData[0].Positivo}%</div>
-              <div className="text-muted-foreground">Positivo</div>
-            </div>
+          {/* Labels with values - dynamically generated from sentiments */}
+          <div
+            className="grid gap-2 text-xs text-center"
+            style={{ gridTemplateColumns: `repeat(${sentiments.length}, 1fr)` }}
+          >
+            {sentiments.map((sentiment) => (
+              <div key={sentiment}>
+                <div className="font-bold">{chartData[0][sentiment]}%</div>
+                <div className="text-muted-foreground">{sentiment}</div>
+              </div>
+            ))}
           </div>
         </div>
       ))}
@@ -392,8 +336,8 @@ export function SentimentThreeColorChart({
 // ============================================================
 // 4. NPS STACKED CHART
 // ============================================================
-// Gráfico empilhado NPS (Detratores/Neutros/Promotores)
-// Usado em: SupportAnalysis - Distribuição NPS
+// NPS stacked chart (Detractors/Neutrals/Promoters)
+// Used in: SupportAnalysis - NPS Distribution
 
 export function NPSStackedChart({
   data,
@@ -403,15 +347,34 @@ export function NPSStackedChart({
   showLegend = true,
   hideXAxis = false,
   showPercentagesInLegend = false,
+  chartName = "NPS",
+  ranges,
 }) {
+  // Extract keys dynamically from data object
+  const dataKeys = Object.keys(data).filter(
+    (key) => typeof data[key] === "number"
+  );
+
+  // Create chart data dynamically from data keys
   const chartData = [
     {
-      name: "NPS",
-      Detratores: data.Detratores,
-      Neutros: data.Neutros,
-      Promotores: data.Promotores,
+      name: chartName,
+      ...dataKeys.reduce((acc, key) => {
+        acc[key] = data[key];
+        return acc;
+      }, {}),
     },
   ];
+
+  // Range mapping for NPS categories - use provided ranges or extract from data
+  // Try to get ranges from data first (if data has range information)
+  const defaultRanges = ranges || {};
+
+  // Get color for a key, fallback to primary if not in map
+  const getColor = (key) => NPS_COLOR_MAP[key] || CHART_COLORS.primary;
+
+  // Get range for a key, return empty string if not in map
+  const getRange = (key) => defaultRanges[key] || "";
 
   return (
     <div style={{ height }}>
@@ -427,60 +390,31 @@ export function NPSStackedChart({
             hide={hideXAxis}
           />
           <YAxis type="category" dataKey="name" width={60} hide />
-          <Tooltip
-            formatter={(value, name) => [
-              `${value}%`,
-              name === "Detratores"
-                ? "Detratores"
-                : name === "Neutros"
-                ? "Neutros"
-                : "Promotores",
-            ]}
-          />
+          <Tooltip formatter={(value, name) => [`${value}%`, name || ""]} />
           {showLegend && (
             <Legend
               formatter={(value) => {
-                if (showPercentagesInLegend) {
-                  const percentage =
-                    value === "Detratores"
-                      ? data.Detratores
-                      : value === "Neutros"
-                      ? data.Neutros
-                      : data.Promotores;
-                  const label =
-                    value === "Detratores"
-                      ? "Detratores (0-6)"
-                      : value === "Neutros"
-                      ? "Neutros (7-8)"
-                      : "Promotores (9-10)";
+                const percentage = data[value];
+                const range = getRange(value);
+                const label = range ? `${value} ${range}` : value;
+                if (showPercentagesInLegend && percentage !== undefined) {
                   return `${label} - ${percentage}%`;
                 }
-                return value === "Detratores"
-                  ? "Detratores (0-6)"
-                  : value === "Neutros"
-                  ? "Neutros (7-8)"
-                  : "Promotores (9-10)";
+                return label;
               }}
             />
           )}
-          <Bar
-            dataKey="Detratores"
-            fill="hsl(var(--chart-negative))"
-            stackId="a"
-            radius={[0, 0, 0, 0]}
-          />
-          <Bar
-            dataKey="Neutros"
-            fill="hsl(var(--chart-neutral))"
-            stackId="a"
-            radius={[0, 0, 0, 0]}
-          />
-          <Bar
-            dataKey="Promotores"
-            fill="hsl(var(--chart-positive))"
-            stackId="a"
-            radius={[4, 4, 4, 4]}
-          />
+          {dataKeys.map((key, index) => (
+            <Bar
+              key={key}
+              dataKey={key}
+              fill={getColor(key)}
+              stackId="a"
+              radius={
+                index === dataKeys.length - 1 ? [4, 4, 4, 4] : [0, 0, 0, 0]
+              }
+            />
+          ))}
         </BarChart>
       </ResponsiveContainer>
     </div>
@@ -490,11 +424,11 @@ export function NPSStackedChart({
 // ============================================================
 // 5. SIMPLE BAR CHART
 // ============================================================
-// Gráfico de barras simples (estilo Nussbaumer)
-// Usado em: AttributeDeepDive - Distribuição
-//           ResponseDetails - Questões fechadas
-//           SupportAnalysis - Outras Intenções
-// NOTA: Sempre usa escala fixa de 0-100% para mostrar proporções reais
+// Simple bar chart (Nussbaumer style)
+// Used in: AttributeDeepDive - Distribution
+//           ResponseDetails - Closed questions
+//           SupportAnalysis - Other Intentions
+// NOTE: Always uses fixed scale of 0-100% to show real proportions
 
 export function SimpleBarChart({
   data,
@@ -503,20 +437,19 @@ export function SimpleBarChart({
   height = 256,
   margin = { top: 10, right: 80, left: 120, bottom: 10 },
   yAxisWidth = 110,
-  fillColor = "hsl(var(--primary))",
+  fillColor = CHART_COLORS.primary,
   showLabels = true,
   labelFormatter = (value) => `${value}%`,
   tooltipFormatter,
   sortData = true,
   sortDirection = "desc",
   hideXAxis = true,
-  yAxisFontSize = 12,
 }) {
   const sortedData = sortData
     ? [...data].sort((a, b) => {
         const aVal = a[dataKey];
         const bVal = b[dataKey];
-        // Validar que são números
+        // Validate that they are numbers
         if (typeof aVal !== "number" || typeof bVal !== "number") {
           return 0;
         }
@@ -544,7 +477,6 @@ export function SimpleBarChart({
             axisLine={false}
             tickLine={false}
             interval={0}
-            tick={{ fontSize: yAxisFontSize }}
           />
           <Tooltip
             formatter={tooltipFormatter || ((value) => [`${value}%`, ""])}
@@ -556,7 +488,7 @@ export function SimpleBarChart({
                 position="right"
                 formatter={labelFormatter}
                 style={{
-                  fill: "hsl(var(--foreground))",
+                  fill: CHART_COLORS.foreground,
                   fontSize: "12px",
                 }}
               />

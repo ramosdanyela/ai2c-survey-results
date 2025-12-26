@@ -1,27 +1,20 @@
-import { Target, Users2, Heart, BarChart3 } from "lucide-react";
+import { Target, Users2, Heart, BarChart3 } from "@/lib/icons";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardDescription,
-} from "@/components/ui/card";
-import { supportAnalysis } from "@/data/surveyData";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui-components/card";
+import { supportAnalysis, uiTexts } from "@/data/surveyData";
 import { SentimentDivergentChart, SimpleBarChart } from "./charts/Charts";
+import { SegmentationTable } from "./tables/Tables";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export function SupportAnalysis({ subSection }) {
   const isMobile = useIsMobile();
 
-  // Mostrar apenas a subseção específica
+  // Show only the specific subsection
   const showSentiment = subSection === "support-sentiment";
   const showIntent = subSection === "support-intent";
   const showSegmentation = subSection === "support-segmentation";
@@ -36,7 +29,7 @@ export function SupportAnalysis({ subSection }) {
               <CardHeader className="py-6 flex items-center justify-center">
                 <CardTitle className="text-2xl font-bold text-card-foreground flex items-center gap-2">
                   <Heart className="w-6 h-6" />
-                  Análise de Sentimento
+                  {uiTexts.supportAnalysis.sentimentAnalysis}
                 </CardTitle>
               </CardHeader>
             </Card>
@@ -71,7 +64,7 @@ export function SupportAnalysis({ subSection }) {
               <CardHeader className="py-6 flex items-center justify-center">
                 <CardTitle className="text-2xl font-bold text-card-foreground flex items-center gap-2">
                   <Target className="w-6 h-6" />
-                  Intenção de Respondentes
+                  {uiTexts.supportAnalysis.respondentIntent}
                 </CardTitle>
               </CardHeader>
             </Card>
@@ -114,7 +107,7 @@ export function SupportAnalysis({ subSection }) {
                   hideXAxis={true}
                   tooltipFormatter={(value, name, props) => [
                     `${props.payload.count.toLocaleString()} (${value}%)`,
-                    "Respostas",
+                    uiTexts.supportAnalysis.responses,
                   ]}
                 />
               </CardContent>
@@ -131,51 +124,14 @@ export function SupportAnalysis({ subSection }) {
               <CardHeader className="py-6 flex items-center justify-center">
                 <CardTitle className="text-2xl font-bold text-card-foreground flex items-center gap-2">
                   <Users2 className="w-6 h-6" />
-                  Segmentação
+                  {uiTexts.supportAnalysis.segmentation}
                 </CardTitle>
               </CardHeader>
             </Card>
 
             <Card className="card-elevated">
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[200px]">
-                        Rótulo de Cluster
-                      </TableHead>
-                      <TableHead>Descrição do Cluster</TableHead>
-                      <TableHead className="w-[150px] text-right">
-                        Porcentagem de Membros
-                      </TableHead>
-                      <TableHead className="w-[100px] text-center">
-                        ID do Cluster
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {[...supportAnalysis.segmentation]
-                      .sort((a, b) => b.percentage - a.percentage)
-                      .map((cluster, index) => (
-                        <TableRow key={cluster.cluster}>
-                          <TableCell className="font-semibold">
-                            {cluster.cluster}
-                          </TableCell>
-                          <TableCell className="text-muted-foreground">
-                            {cluster.description}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <span className="font-bold text-foreground">
-                              {cluster.percentage}%
-                            </span>
-                          </TableCell>
-                          <TableCell className="text-center text-muted-foreground">
-                            {cluster.id || "-"}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
+                <SegmentationTable data={supportAnalysis.segmentation} />
               </CardContent>
             </Card>
           </div>

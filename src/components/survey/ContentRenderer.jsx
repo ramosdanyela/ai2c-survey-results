@@ -4,7 +4,7 @@ import { ResponseDetails } from "@/components/survey/ResponseDetails";
 import { AttributeDeepDive } from "@/components/survey/AttributeDeepDive";
 import { responseDetails, attributeDeepDive } from "@/data/surveyData";
 
-// Obter todas as perguntas para navegação
+// Get all questions for navigation
 const getAllQuestions = () => {
   const allQuestions = [
     ...responseDetails.closedQuestions.map((q) => ({
@@ -16,12 +16,12 @@ const getAllQuestions = () => {
       type: "open",
     })),
   ]
-    .filter((q) => q.id !== 3) // Ocultar Q3
+    .filter((q) => q.id !== 3) // Hide Q3
     .sort((a, b) => a.id - b.id);
   return allQuestions.map((q) => `responses-${q.id}`);
 };
 
-// Obter todas as subseções de atributos para navegação
+// Get all attribute subsections for navigation
 const getAllAttributes = () => {
   const attributeIcons = {
     state: true,
@@ -33,7 +33,7 @@ const getAllAttributes = () => {
     .map((attr) => `attributes-${attr.id}`);
 };
 
-// Lista completa de todas as subseções em ordem
+// Complete list of all subsections in order
 const allSubsections = [
   "executive-summary",
   "executive-recommendations",
@@ -45,83 +45,83 @@ const allSubsections = [
 ];
 
 function getNextSection(currentSection) {
-  // Normalizar a seção atual
+  // Normalize the current section
   let normalizedSection = currentSection;
 
-  // Se for apenas "executive" ou "support", mapear para a primeira subseção
+  // If it's just "executive" or "support", map to the first subsection
   if (currentSection === "executive") {
     normalizedSection = "executive-summary";
   } else if (currentSection === "support") {
     normalizedSection = "support-sentiment";
   } else if (currentSection === "attributes") {
-    // Se for apenas "attributes", mapear para o primeiro atributo
+    // If it's just "attributes", map to the first attribute
     const attributes = getAllAttributes();
     normalizedSection = attributes[0] || "attributes";
   } else if (currentSection === "responses") {
-    // Se for apenas "responses", mapear para a primeira pergunta
+    // If it's just "responses", map to the first question
     const questions = getAllQuestions();
     normalizedSection = questions[0] || "responses";
   }
 
   const currentIndex = allSubsections.indexOf(normalizedSection);
 
-  // Se não encontrou ou é a última subseção, retorna null
+  // If not found or is the last subsection, return null
   if (currentIndex === -1 || currentIndex === allSubsections.length - 1) {
     return null;
   }
 
-  // Retorna a próxima subseção
+  // Return the next subsection
   return allSubsections[currentIndex + 1];
 }
 
 function getPreviousSection(currentSection) {
-  // Normalizar a seção atual
+  // Normalize the current section
   let normalizedSection = currentSection;
 
-  // Se for apenas "executive" ou "support", mapear para a primeira subseção
+  // If it's just "executive" or "support", map to the first subsection
   if (currentSection === "executive") {
     normalizedSection = "executive-summary";
   } else if (currentSection === "support") {
     normalizedSection = "support-sentiment";
   } else if (currentSection === "attributes") {
-    // Se for apenas "attributes", mapear para o primeiro atributo
+    // If it's just "attributes", map to the first attribute
     const attributes = getAllAttributes();
     normalizedSection = attributes[0] || "attributes";
   } else if (currentSection === "responses") {
-    // Se for apenas "responses", mapear para a primeira pergunta
+    // If it's just "responses", map to the first question
     const questions = getAllQuestions();
     normalizedSection = questions[0] || "responses";
   }
 
   const currentIndex = allSubsections.indexOf(normalizedSection);
 
-  // Se não encontrou ou é a primeira subseção, retorna null
+  // If not found or is the first subsection, return null
   if (currentIndex === -1 || currentIndex === 0) {
     return null;
   }
 
-  // Retorna a subseção anterior
+  // Return the previous subsection
   return allSubsections[currentIndex - 1];
 }
 
 export function ContentRenderer({ activeSection, onSectionChange }) {
   let content;
 
-  // Normalizar activeSection para garantir que seja uma subseção específica
+  // Normalize activeSection to ensure it's a specific subsection
   let normalizedSection = activeSection;
   if (activeSection === "executive") {
     normalizedSection = "executive-summary";
   } else if (activeSection === "support") {
     normalizedSection = "support-sentiment";
   } else if (activeSection === "attributes") {
-    // Se for apenas "attributes", mapear para o primeiro atributo
+    // If it's just "attributes", map to the first attribute
     const attributes = getAllAttributes();
     normalizedSection = attributes[0] || "attributes";
   }
 
-  // Renderiza seções executivas
+  // Render executive sections
   if (normalizedSection.startsWith("executive")) {
-    // Sempre passar a subseção específica
+    // Always pass the specific subsection
     content = (
       <ExecutiveReport
         subSection={normalizedSection}
@@ -129,38 +129,38 @@ export function ContentRenderer({ activeSection, onSectionChange }) {
       />
     );
   }
-  // Renderiza análises de suporte
+  // Render support analyses
   else if (normalizedSection.startsWith("support")) {
-    // Sempre passar a subseção específica
+    // Always pass the specific subsection
     content = <SupportAnalysis subSection={normalizedSection} />;
   }
-  // Renderiza detalhes das respostas
+  // Render response details
   else if (
     normalizedSection === "responses" ||
     normalizedSection.startsWith("responses-")
   ) {
-    // Extrair o ID da pergunta se for uma subseção específica (ex: responses-1)
+    // Extract question ID if it's a specific subsection (e.g., responses-1)
     const questionIdMatch = normalizedSection.match(/responses-(\d+)/);
     const questionId = questionIdMatch
       ? parseInt(questionIdMatch[1], 10)
       : undefined;
-    // Usar key para garantir que o componente seja atualizado quando questionId muda
-    // Isso garante que a lógica combinada (abrir accordion + scroll) seja aplicada
+    // Use key to ensure component updates when questionId changes
+    // This ensures the combined logic (open accordion + scroll) is applied
     content = (
       <ResponseDetails key={`question-${questionId}`} questionId={questionId} />
     );
   }
-  // Renderiza aprofundamento por atributos
+  // Render attribute deep dive
   else if (
     normalizedSection === "attributes" ||
     normalizedSection.startsWith("attributes-")
   ) {
-    // Extrair o ID do atributo se for uma subseção específica (ex: attributes-customerType)
+    // Extract attribute ID if it's a specific subsection (e.g., attributes-customerType)
     const attributeIdMatch = normalizedSection.match(/attributes-(.+)/);
     const attributeId = attributeIdMatch ? attributeIdMatch[1] : undefined;
     content = <AttributeDeepDive attributeId={attributeId} />;
   }
-  // Fallback para primeira subseção
+  // Fallback to first subsection
   else {
     content = (
       <ExecutiveReport

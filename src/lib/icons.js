@@ -1,11 +1,15 @@
 /**
- * Ícones centralizados da aplicação
+ * Centralized application icons
  *
- * Este arquivo reúne todos os ícones do lucide-react utilizados na aplicação
- * para facilitar a manutenção e garantir consistência.
+ * This file gathers all lucide-react icons used in the application
+ * to facilitate maintenance and ensure consistency.
+ *
+ * Includes icons used in:
+ * - Application components
+ * - UI components (shadcn/ui)
  */
 
-// Ícones de navegação e UI
+// Navigation and UI icons
 export {
   ChevronDown,
   ChevronUp,
@@ -15,43 +19,44 @@ export {
   ArrowRight,
   Menu,
   X,
+  Check,
 } from "lucide-react";
 
-// Ícones de documentos e arquivos
+// Document and file icons
 export { FileText, Download, Presentation, ClipboardList } from "lucide-react";
 
-// Ícones de gráficos e análise
+// Chart and analysis icons
 export { BarChart3, TrendingUp, Target, Heart } from "lucide-react";
 
-// Ícones de comunicação
+// Communication icons
 export { MessageSquare } from "lucide-react";
 
-// Ícones de organização e estrutura
+// Organization and structure icons
 export { Layers, Filter } from "lucide-react";
 
-// Ícones de localização e atributos
+// Location and attribute icons
 export { MapPin, GraduationCap, Building } from "lucide-react";
 
-// Ícones de usuários e pessoas
+// User and people icons
 export { Users, Users2, User } from "lucide-react";
 
-// Ícones de métricas e dados
-export { Percent, HelpCircle, CheckSquare, Check } from "lucide-react";
+// Metrics and data icons
+export { Percent, HelpCircle, CheckSquare } from "lucide-react";
 
-// Ícones de alertas e notificações
+// Alert and notification icons
 export { AlertTriangle } from "lucide-react";
 
-// Ícones de tema
+// Theme icons
 export { Moon, Sun } from "lucide-react";
 
-// Ícones de conteúdo
+// Content icons
 export { Award, Cloud } from "lucide-react";
 
-// Ícones de paginação
+// Pagination icons
 export { MoreHorizontal } from "lucide-react";
 
 /**
- * Mapeamento de ícones por categoria (para referência)
+ * Icon mapping by category (for reference)
  */
 export const iconCategories = {
   navigation: [
@@ -63,6 +68,7 @@ export const iconCategories = {
     "ArrowRight",
     "Menu",
     "X",
+    "Check",
   ],
   documents: ["FileText", "Download", "Presentation", "ClipboardList"],
   charts: ["BarChart3", "TrendingUp", "Target", "Heart"],
@@ -78,7 +84,7 @@ export const iconCategories = {
 };
 
 /**
- * Lista completa de todos os ícones utilizados (em ordem alfabética)
+ * Complete list of all icons used (in alphabetical order)
  */
 export const allIcons = [
   "AlertTriangle",

@@ -1126,6 +1126,173 @@ export const implementationPlan = {
 };
 
 // ------------------------------------------------------------
+// 7. UI TEXTS - All hardcoded texts from components
+// ------------------------------------------------------------
+export const uiTexts = {
+  // AttributeDeepDive
+  attributeDeepDive: {
+    summary: "Sumário",
+    distribution: "Distribuição dos respondentes",
+    segment: "Segmento",
+    quantity: "Quantidade",
+    percentage: "%",
+    sentimentAnalysis: "Análise de sentimento",
+    positive: "Positivo",
+    negative: "Negativo",
+    npsQuestion:
+      "Qual é a probabilidade de você recomendar nossa empresa a um amigo ou colega em escala de 0 a 10?",
+    responses: "Respostas",
+    promotersNeutralsDetractors: "Promotores, Neutros, Detratores",
+    promoters: "Promotores",
+    neutrals: "Neutros",
+    detractors: "Detratores",
+    nps: "NPS",
+    satisfactionImpactQuestion:
+      "Quais são os principais pontos que impactam sua satisfação?",
+    positiveCategories: "Categorias com sentimento positivo - Top 3",
+    negativeCategories: "Categorias com sentimento negativo - Top 3",
+    sentiment: "Sentimento",
+    notApplicable: "Não aplicável",
+    category: "Categoria",
+    tooltip: {
+      respondents: (count, percentage) =>
+        `${count.toLocaleString()} respondentes (${percentage}%)`,
+    },
+  },
+  // ExecutiveReport
+  executiveReport: {
+    executiveSummary: "Sumário Executivo",
+    aboutStudy: "Sobre o Estudo",
+    mainFindings: "Principais Descobertas",
+    conclusions: "Conclusões",
+    recommendations: "Recomendações",
+    tableHeaders: {
+      number: "#",
+      recommendation: "Recomendação",
+      severity: "Gravidade",
+      stakeholders: "Stakeholders",
+    },
+    tasks: {
+      hideTasks: "Ocultar tarefas",
+      showTasks: "Mostrar tarefas",
+      hide: "Ocultar",
+      show: "Mostrar",
+      implementationTasks: "Tarefas de Implementação",
+      task: "Tarefa",
+      responsibleArea: "Área Responsável",
+    },
+  },
+  // FilterPanel
+  filterPanel: {
+    all: "Todas",
+    openField: "Campo Aberto",
+    multipleChoice: "Múltipla Escolha",
+    nps: "NPS",
+    filterByQuestion: "Filtrar por questão:",
+    selectQuestion: "Selecione uma questão",
+    allQuestions: "Todas as questões",
+    filters: "Filtros",
+    selectFilterType: "Selecione um tipo de filtro",
+    none: "Nenhum",
+    state: "Estado",
+    customerType: "Tipo de Cliente",
+    education: "Escolaridade",
+    clearAll: "Limpar todos",
+    closeFilters: "Fechar filtros",
+    openFilters: "Abrir filtros",
+    activeFilters: "Filtros Ativos",
+    selected: "selecionado",
+    selectedPlural: "selecionados",
+    selectValues: "Selecione os valores",
+    clearAllFilters: "Limpar todos os filtros",
+    ok: "OK",
+    questionPrefix: "Q",
+  },
+  // SurveyHeader
+  surveyHeader: {
+    results: "Resultados da Pesquisa",
+    question: "Questão",
+    executiveReport: "Relatório Executivo",
+    executiveSummary: "Sumário Executivo",
+    recommendations: "Recomendações",
+    supportAnalysis: "Análises de Suporte",
+    sentimentAnalysis: "Análise de Sentimento",
+    respondentIntent: "Intenção de Respondentes",
+    segmentation: "Segmentação",
+    questionAnalysis: "Análise por Questão",
+    attributeDeepDive: "Aprofundamento por Atributos",
+    deepDive: "Aprofundamento",
+  },
+  // ResponseDetails
+  responseDetails: {
+    all: "Todas",
+    openField: "Campo Aberto",
+    multipleChoice: "Múltipla Escolha",
+    nps: "NPS",
+    wordCloud: "Nuvem de Palavras",
+    summary: "Sumário:",
+    responses: "Respostas:",
+    npsScore: "NPS Score",
+    top3CategoriesTopics: "Top 3 categorias e principais tópicos",
+    top3Categories: "Top 3 Categorias",
+    mentions: "menções",
+    positive: "Positivos",
+    negative: "Negativos",
+    noPositiveTopics: "Nenhum tópico positivo",
+    noNegativeTopics: "Nenhum tópico negativo",
+    filterQuestion: "Filtrar questão",
+    downloadQuestion: "Download questão",
+    png: "PNG",
+    pdf: "PDF",
+    removeFilter: "Remover filtro",
+    responsesCount: "respostas",
+    questionPrefix: "Q",
+  },
+  // SupportAnalysis
+  supportAnalysis: {
+    sentimentAnalysis: "Análise de Sentimento",
+    respondentIntent: "Intenção de Respondentes",
+    segmentation: "Segmentação",
+    clusterLabel: "Rótulo de Cluster",
+    clusterDescription: "Descrição do Cluster",
+    memberPercentage: "Porcentagem de Membros",
+    clusterId: "ID do Cluster",
+    responses: "Respostas",
+  },
+  // SurveySidebar
+  surveySidebar: {
+    executiveReport: "Relatório Executivo",
+    supportAnalysis: "Análises de Suporte",
+    attributeDeepDive: "Aprofundamento por Atributos",
+    questionAnalysis: "Análise por Questão",
+    export: "Export",
+    executiveSummary: "Sumário Executivo",
+    recommendations: "Recomendações",
+    sentimentAnalysis: "Análise de Sentimento",
+    respondentIntent: "Intenção de Respondentes",
+    segmentation: "Segmentação",
+    respondents: "Respondentes",
+    responseRate: "Taxa de Adesão",
+    questions: "Perguntas",
+  },
+  // WordCloud
+  wordCloud: {
+    mentions: "menções",
+  },
+  // Export
+  export: {
+    title: "Export de Dados",
+    description: "Exporte os dados da pesquisa em diferentes formatos",
+    exportFullReport: "Exportar Relatório Completo",
+    selectSpecificSections: "Selecione seções específicas",
+    exportAsPDF: "Exportar como PDF",
+    exportAsPPT: "Exportar como PPT",
+    selectAtLeastOneSection:
+      "Selecione pelo menos uma seção ou o relatório completo para exportar",
+  },
+};
+
+// ------------------------------------------------------------
 // HELPER CONSTANTS
 // ------------------------------------------------------------
 export const severityLabels = {

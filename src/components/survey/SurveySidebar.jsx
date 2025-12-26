@@ -19,12 +19,13 @@ import {
   TrendingUp,
   Download,
   X,
-} from "lucide-react";
+} from "@/lib/icons";
 import { cn } from "@/lib/utils";
 import {
   surveyInfo,
   responseDetails,
   attributeDeepDive,
+  uiTexts,
 } from "@/data/surveyData";
 import { forwardRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -54,45 +55,45 @@ import {
 const menuItems = [
   {
     id: "executive",
-    label: "Relatório Executivo",
+    label: uiTexts.surveySidebar.executiveReport,
     icon: FileText,
   },
   {
     id: "support",
-    label: "Análises de Suporte",
+    label: uiTexts.surveySidebar.supportAnalysis,
     icon: BarChart3,
   },
   {
     id: "attributes",
-    label: "Aprofundamento por Atributos",
+    label: uiTexts.surveySidebar.attributeDeepDive,
     icon: Layers,
   },
   {
     id: "responses",
-    label: "Análise por Questão",
+    label: uiTexts.surveySidebar.questionAnalysis,
     icon: MessageSquare,
   },
   {
     id: "export",
-    label: "Export",
+    label: uiTexts.surveySidebar.export,
     icon: Download,
-    isRoute: true, // Indica que é uma rota, não uma seção
+    isRoute: true, // Indicates it's a route, not a section
   },
 ];
 
-// Ícones para os atributos
+// Icons for attributes
 const attributeIcons = {
   state: MapPin,
   education: GraduationCap,
   customerType: Building,
 };
 
-// Componente interno para renderizar o conteúdo da sidebar
+// Internal component to render sidebar content
 function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Estado para controlar quais seções estão expandidas - todas começam abertas
+  // State to control which sections are expanded - all start open
   const [expandedSections, setExpandedSections] = useState({
     executive: true,
     support: true,
@@ -100,7 +101,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
     responses: true,
   });
 
-  // Obter todas as perguntas para a seção "responses"
+  // Get all questions for "responses" section
   const allQuestions = [
     ...responseDetails.closedQuestions.map((q) => ({
       ...q,
@@ -111,10 +112,10 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
       type: "open",
     })),
   ]
-    .filter((q) => q.id !== 3) // Ocultar Q3
+    .filter((q) => q.id !== 3) // Hide Q3
     .sort((a, b) => a.id - b.id);
 
-  // Função simplificada: define o estado diretamente baseado no valor recebido do Collapsible
+  // Simplified function: sets state directly based on value received from Collapsible
   const setSectionExpanded = (sectionId, isOpen) => {
     setExpandedSections((prev) => ({
       ...prev,
@@ -122,7 +123,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
     }));
   };
 
-  // Função para obter a primeira subseção de uma seção
+  // Function to get the first subsection of a section
   const getFirstSubsection = (sectionId) => {
     if (sectionId === "executive") return "executive-summary";
     if (sectionId === "support") return "support-sentiment";
@@ -140,23 +141,23 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
     return null;
   };
 
-  // Handler para quando uma seção é expandida/colapsada
+  // Handler for when a section is expanded/collapsed
   const handleSectionToggle = (sectionId, isOpen) => {
     setSectionExpanded(sectionId, isOpen);
   };
 
-  // Handler para quando clica no botão da seção principal
-  // Sempre navega para a primeira subseção
-  // Se estiver fechada, o Collapsible vai abrir automaticamente
+  // Handler for when clicking the main section button
+  // Always navigates to the first subsection
+  // If closed, Collapsible will open automatically
   const handleSectionClick = (sectionId) => {
     const firstSubsection = getFirstSubsection(sectionId);
 
-    // Sempre navega para a primeira subseção quando clicar na seção principal
+    // Always navigate to first subsection when clicking main section
     if (firstSubsection && onSectionChange) {
       onSectionChange(firstSubsection);
     }
 
-    // Se houver callback de item click (mobile), chama também
+    // If there's an item click callback (mobile), call it too
     if (onItemClick) {
       onItemClick();
     }
@@ -165,7 +166,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
   return (
     <TooltipProvider>
       <div className="flex flex-col h-full px-2 sm:px-3 w-full overflow-x-hidden">
-        {/* Botão de fechar no mobile */}
+        {/* Close button on mobile */}
         <div className="lg:hidden flex justify-end pt-2 sm:pt-3 pb-1.5 sm:pb-2">
           <button
             onClick={onItemClick}
@@ -237,7 +238,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         {surveyInfo.totalRespondents.toLocaleString("pt-BR")}
                       </div>
                       <div className="text-[9px] sm:text-[10px] font-normal text-foreground/70 truncate">
-                        Respondentes
+                        {uiTexts.surveySidebar.respondents}
                       </div>
                     </div>
                   </div>
@@ -270,7 +271,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         {Math.round(surveyInfo.responseRate)}%
                       </div>
                       <div className="text-[9px] sm:text-[10px] font-normal text-foreground/70 truncate">
-                        Taxa de Adesão
+                        {uiTexts.surveySidebar.responseRate}
                       </div>
                     </div>
                   </div>
@@ -309,7 +310,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         })()}
                       </div>
                       <div className="text-[9px] sm:text-[10px] font-normal text-foreground/70 truncate">
-                        Perguntas
+                        {uiTexts.surveySidebar.questions}
                       </div>
                     </div>
                   </div>
@@ -324,17 +325,17 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
               activeSection === item.id ||
               activeSection.startsWith(item.id + "-");
 
-            // Verificar se a seção tem subseções
+            // Check if section has subsections
             const hasSubsections =
               item.id === "executive" ||
               item.id === "support" ||
               item.id === "attributes" ||
               item.id === "responses";
 
-            // Se for a seção "attributes", mostrar subseções de atributos
+            // If it's the "attributes" section, show attribute subsections
             if (item.id === "attributes") {
               const isExpanded = expandedSections.attributes;
-              // Obter todos os atributos disponíveis
+              // Get all available attributes
               const allAttributes = attributeDeepDive.attributes.filter(
                 (attr) => attr.id in attributeIcons
               );
@@ -402,7 +403,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
               );
             }
 
-            // Se for a seção "responses", mostrar subseções de perguntas
+            // If it's the "responses" section, show question subsections
             if (item.id === "responses") {
               const isExpanded = expandedSections.responses;
               return (
@@ -441,7 +442,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         const questionSectionId = `responses-${question.id}`;
                         const isQuestionActive =
                           activeSection === questionSectionId;
-                        // Renumerar questões: índice + 1 (excluindo Q3)
+                        // Renumber questions: index + 1 (excluding Q3)
                         const displayNumber = index + 1;
                         return (
                           <button
@@ -492,7 +493,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
               );
             }
 
-            // Para outras seções com subseções (executive, support)
+            // For other sections with subsections (executive, support)
             if (hasSubsections) {
               const isExpanded = expandedSections[item.id];
               const subsections =
@@ -500,12 +501,12 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                   ? [
                       {
                         id: "executive-summary",
-                        label: "Sumário Executivo",
+                        label: uiTexts.surveySidebar.executiveSummary,
                         icon: ClipboardList,
                       },
                       {
                         id: "executive-recommendations",
-                        label: "Recomendações",
+                        label: uiTexts.surveySidebar.recommendations,
                         icon: AlertTriangle,
                       },
                     ]
@@ -513,17 +514,17 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                   ? [
                       {
                         id: "support-sentiment",
-                        label: "Análise de Sentimento",
+                        label: uiTexts.surveySidebar.sentimentAnalysis,
                         icon: Heart,
                       },
                       {
                         id: "support-intent",
-                        label: "Intenção de Respondentes",
+                        label: uiTexts.surveySidebar.respondentIntent,
                         icon: Target,
                       },
                       {
                         id: "support-segmentation",
-                        label: "Segmentação",
+                        label: uiTexts.surveySidebar.segmentation,
                         icon: Users2,
                       },
                     ]
@@ -592,7 +593,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
               );
             }
 
-            // Se for o item Export, usar navegação por rota
+            // If it's the Export item, use route navigation
             if (item.isRoute) {
               const isExportActive = location.pathname === "/export";
               return (
@@ -619,7 +620,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
               );
             }
 
-            // Para seções sem subseções (fallback - não deveria acontecer com as seções atuais)
+            // For sections without subsections (fallback - shouldn't happen with current sections)
             return (
               <button
                 key={item.id}
@@ -654,7 +655,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
   );
 }
 
-// Sidebar para desktop (sempre visível em telas grandes)
+// Desktop sidebar (always visible on large screens)
 export const SurveySidebar = forwardRef(
   ({ activeSection, onSectionChange }, ref) => {
     return (
@@ -677,7 +678,7 @@ export const SurveySidebar = forwardRef(
 );
 SurveySidebar.displayName = "SurveySidebar";
 
-// Componente para o conteúdo da sidebar no mobile (dentro do Sheet)
+// Component for mobile sidebar content (inside Sheet)
 export function SurveySidebarMobile({
   activeSection,
   onSectionChange,

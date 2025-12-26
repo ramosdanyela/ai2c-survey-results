@@ -4,24 +4,24 @@ const ThemeContext = createContext(undefined);
 
 export function ThemeProvider({ children }) {
   const [theme, setThemeState] = useState(() => {
-    // Verificar se há tema salvo no localStorage
+    // Check if there's a saved theme in localStorage
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme && (savedTheme === "light" || savedTheme === "dark")) {
       return savedTheme;
     }
-    // Padrão: light mode
+    // Default: light mode
     return "light";
   });
 
   useEffect(() => {
-    // Aplicar tema ao documento
+    // Apply theme to document
     const root = document.documentElement;
     if (theme === "light") {
       root.classList.remove("dark");
     } else {
       root.classList.add("dark");
     }
-    // Salvar no localStorage
+    // Save to localStorage
     localStorage.setItem("theme", theme);
   }, [theme]);
 

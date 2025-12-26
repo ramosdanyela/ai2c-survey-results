@@ -1,8 +1,8 @@
 import * as React from "react";
 
-// Breakpoint para detectar mobile vs desktop
-// Nota: O design é otimizado para 375px (iPhone SE) como referência mínima
-// Garantindo boa experiência em todos os dispositivos mobile
+// Breakpoint to detect mobile vs desktop
+// Note: The design is optimized for 375px (iPhone SE) as minimum reference
+// Ensuring good experience on all mobile devices
 const MOBILE_BREAKPOINT = 768;
 
 export function useIsMobile() {
