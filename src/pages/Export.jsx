@@ -91,7 +91,7 @@ export default function Export() {
   const hasSpecificSectionsSelected =
     !exportFullReport && selectedSections.size > 0;
 
-  // Get all questions
+  // Get all questions (sorted by index, excluding Q3)
   const allQuestions = [
     ...responseDetails.closedQuestions.map((q) => ({
       ...q,
@@ -103,12 +103,12 @@ export default function Export() {
     })),
   ]
     .filter((q) => q.id !== 3)
-    .sort((a, b) => a.id - b.id);
+    .sort((a, b) => (a.index || 0) - (b.index || 0));
 
-  // Get available attributes
-  const availableAttributes = attributeDeepDive.attributes.filter((attr) =>
-    ["state", "education", "customerType"].includes(attr.id)
-  );
+  // Get available attributes (sorted by index)
+  const availableAttributes = attributeDeepDive.attributes
+    .filter((attr) => ["state", "education", "customerType"].includes(attr.id))
+    .sort((a, b) => (a.index || 0) - (b.index || 0));
 
   // Section structure - using texts from surveyData
   const sections = [

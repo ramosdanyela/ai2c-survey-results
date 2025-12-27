@@ -8,12 +8,7 @@ import {
 } from "@/components/ui-components/card";
 import { SubsectionTitle } from "@/components/SubsectionTitle";
 import { COLOR_ORANGE_PRIMARY } from "@/lib/colors";
-import {
-  executiveReport,
-  severityLabels,
-  implementationPlan,
-  uiTexts,
-} from "@/data/surveyData";
+import { executiveReport, severityLabels, uiTexts } from "@/data/surveyData";
 import { RecommendationsTable, TasksTable } from "../shared/tables/Tables";
 import { severityColors } from "../shared/badgeTypes.jsx";
 
@@ -45,8 +40,8 @@ export function ExecutiveReport({ subSection, onSectionChange }) {
 
   // Function to get tasks for a recommendation
   const getRecTasks = (recId) => {
-    const rec = implementationPlan.recommendations.find((r) => r.id === recId);
-    return rec ? rec.tasks : [];
+    const rec = executiveReport.recommendations.find((r) => r.id === recId);
+    return rec?.tasks || [];
   };
 
   // Show only the specific subsection

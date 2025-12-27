@@ -4,7 +4,7 @@ import { ResponseDetails } from "@/components/survey/responses/ResponseDetails";
 import { AttributeDeepDive } from "@/components/survey/attributes/AttributeDeepDive";
 import { responseDetails, attributeDeepDive } from "@/data/surveyData";
 
-// Get all questions for navigation
+// Get all questions for navigation (sorted by index, excluding Q3)
 const getAllQuestions = () => {
   const allQuestions = [
     ...responseDetails.closedQuestions.map((q) => ({
@@ -17,92 +17,17 @@ const getAllQuestions = () => {
     })),
   ]
     .filter((q) => q.id !== 3) // Hide Q3
-    .sort((a, b) => a.id - b.id);
+    .sort((a, b) => (a.index || 0) - (b.index || 0));
   return allQuestions.map((q) => `responses-${q.id}`);
 };
 
-// Get all attribute subsections for navigation
+// Get all attribute subsections for navigation (sorted by index)
 const getAllAttributes = () => {
-  const attributeIcons = {
-    state: true,
-    education: true,
-    customerType: true,
-  };
   return attributeDeepDive.attributes
-    .filter((attr) => attr.id in attributeIcons)
+    .filter((attr) => attr.icon)
+    .sort((a, b) => (a.index || 0) - (b.index || 0))
     .map((attr) => `attributes-${attr.id}`);
 };
-
-// Complete list of all subsections in order
-const allSubsections = [
-  "executive-summary",
-  "executive-recommendations",
-  "support-sentiment",
-  "support-intent",
-  "support-segmentation",
-  ...getAllAttributes(),
-  ...getAllQuestions(),
-];
-
-function getNextSection(currentSection) {
-  // Normalize the current section
-  let normalizedSection = currentSection;
-
-  // If it's just "executive" or "support", map to the first subsection
-  if (currentSection === "executive") {
-    normalizedSection = "executive-summary";
-  } else if (currentSection === "support") {
-    normalizedSection = "support-sentiment";
-  } else if (currentSection === "attributes") {
-    // If it's just "attributes", map to the first attribute
-    const attributes = getAllAttributes();
-    normalizedSection = attributes[0] || "attributes";
-  } else if (currentSection === "responses") {
-    // If it's just "responses", map to the first question
-    const questions = getAllQuestions();
-    normalizedSection = questions[0] || "responses";
-  }
-
-  const currentIndex = allSubsections.indexOf(normalizedSection);
-
-  // If not found or is the last subsection, return null
-  if (currentIndex === -1 || currentIndex === allSubsections.length - 1) {
-    return null;
-  }
-
-  // Return the next subsection
-  return allSubsections[currentIndex + 1];
-}
-
-function getPreviousSection(currentSection) {
-  // Normalize the current section
-  let normalizedSection = currentSection;
-
-  // If it's just "executive" or "support", map to the first subsection
-  if (currentSection === "executive") {
-    normalizedSection = "executive-summary";
-  } else if (currentSection === "support") {
-    normalizedSection = "support-sentiment";
-  } else if (currentSection === "attributes") {
-    // If it's just "attributes", map to the first attribute
-    const attributes = getAllAttributes();
-    normalizedSection = attributes[0] || "attributes";
-  } else if (currentSection === "responses") {
-    // If it's just "responses", map to the first question
-    const questions = getAllQuestions();
-    normalizedSection = questions[0] || "responses";
-  }
-
-  const currentIndex = allSubsections.indexOf(normalizedSection);
-
-  // If not found or is the first subsection, return null
-  if (currentIndex === -1 || currentIndex === 0) {
-    return null;
-  }
-
-  // Return the previous subsection
-  return allSubsections[currentIndex - 1];
-}
 
 export function ContentRenderer({ activeSection, onSectionChange }) {
   let content;

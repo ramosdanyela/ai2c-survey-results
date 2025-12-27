@@ -59,7 +59,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
     responses: true,
   });
 
-  // Get all questions for "responses" section
+  // Get all questions for "responses" section (sorted by index, excluding Q3)
   const allQuestions = [
     ...responseDetails.closedQuestions.map((q) => ({
       ...q,
@@ -71,7 +71,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
     })),
   ]
     .filter((q) => q.id !== 3) // Hide Q3
-    .sort((a, b) => a.id - b.id);
+    .sort((a, b) => (a.index || 0) - (b.index || 0));
 
   // Simplified function: sets state directly based on value received from Collapsible
   const setSectionExpanded = (sectionId, isOpen) => {
@@ -86,9 +86,9 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
     if (sectionId === "executive") return "executive-summary";
     if (sectionId === "support") return "support-sentiment";
     if (sectionId === "attributes") {
-      const allAttributes = attributeDeepDive.attributes.filter(
-        (attr) => attr.icon
-      );
+      const allAttributes = attributeDeepDive.attributes
+        .filter((attr) => attr.icon)
+        .sort((a, b) => (a.index || 0) - (b.index || 0));
       return allAttributes.length > 0
         ? `attributes-${allAttributes[0].id}`
         : null;
@@ -293,10 +293,10 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
             // If it's the "attributes" section, show attribute subsections
             if (item.id === "attributes") {
               const isExpanded = expandedSections.attributes;
-              // Get all available attributes with icons from surveyData
-              const allAttributes = attributeDeepDive.attributes.filter(
-                (attr) => attr.icon
-              );
+              // Get all available attributes with icons from surveyData (sorted by index)
+              const allAttributes = attributeDeepDive.attributes
+                .filter((attr) => attr.icon)
+                .sort((a, b) => (a.index || 0) - (b.index || 0));
               return (
                 <Collapsible
                   key={item.id}

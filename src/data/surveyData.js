@@ -255,6 +255,7 @@ export const responseDetails = {
   closedQuestions: [
     {
       id: 1,
+      index: 1,
       question:
         "Qual é a probabilidade de você recomendar nossa empresa a um amigo ou colega em uma escala de 0 a 10?",
       icon: "Percent",
@@ -267,6 +268,7 @@ export const responseDetails = {
     },
     {
       id: 3,
+      index: 2,
       question:
         "Dentre as opções qual é o principal ponto que impacta sua satisfação?",
       icon: "HelpCircle",
@@ -337,6 +339,7 @@ export const responseDetails = {
     },
     {
       id: 4,
+      index: 3,
       question: "Você recomendaria a TechCorp para um colega ou amigo?",
       icon: "Heart",
       summary:
@@ -355,6 +358,7 @@ export const responseDetails = {
   openQuestions: [
     {
       id: 2,
+      index: 4,
       question: "Quais são os principais pontos que impactam sua satisfação?",
       icon: "MessageSquare",
       summary: `A satisfação do cliente é impactada principalmente por problemas no serviço de rede, com 51 menções negativas focadas em cobertura, confiabilidade e estabilidade da rede superando 16 menções positivas sobre qualidade e velocidade do serviço, enquanto o suporte ao cliente apresenta um sentimento negativo menor, mas notável.`,
@@ -472,6 +476,7 @@ export const responseDetails = {
     },
     {
       id: 5,
+      index: 5,
       question: "O que você mais gosta na TechCorp?",
       icon: "Heart",
       summary:
@@ -569,6 +574,7 @@ export const responseDetails = {
     },
     {
       id: 6,
+      index: 6,
       question: "O que podemos melhorar?",
       icon: "TrendingUp",
       summary: `O tempo de resposta do suporte técnico é a principal área de melhoria apontada pelos clientes.
@@ -649,6 +655,7 @@ export const attributeDeepDive = {
   attributes: [
     {
       id: "customerType",
+      index: 1,
       name: "Tipo de Cliente",
       icon: "Building",
       summary: `O NPS negativo geral em todos os tipos de clientes sinaliza uma necessidade crítica de melhorar a qualidade do serviço para aumentar a defesa do cliente, com os segmentos pós-pago e controle exigindo atenção imediata devido aos seus níveis mais altos de insatisfação.
@@ -758,6 +765,7 @@ Clientes controle apreciam o suporte ao cliente e os planos acessíveis, mas rel
     },
     {
       id: "state",
+      index: 2,
       name: "Estado",
       icon: "MapPin",
       summary: `A lealdade e satisfação do cliente variam significativamente entre os estados, com o Ceará (CE) demonstrando um forte sentimento positivo principalmente devido à excelente cobertura de rede, enquanto Rio de Janeiro (RJ), Paraná (PR) e São Paulo (SP) enfrentam desafios críticos refletidos em pontuações negativas de NPS e alta insatisfação relacionada ao suporte ao cliente deficiente e à usabilidade do aplicativo.
@@ -914,6 +922,7 @@ Abordar as deficiências no suporte ao cliente e os problemas relacionados ao ap
     },
     {
       id: "education",
+      index: 3,
       name: "Escolaridade",
       icon: "GraduationCap",
       summary: `Clientes com pós-graduação representam a maior parcela (45%) e demonstram os maiores níveis de satisfação.
@@ -1308,16 +1317,19 @@ export const sectionsConfig = {
   sections: [
     {
       id: "executive",
+      index: 1,
       name: uiTexts.surveySidebar.executiveReport,
       icon: "FileText",
       subsections: [
         {
           id: "executive-summary",
+          index: 1,
           name: uiTexts.surveySidebar.executiveSummary,
           icon: "ClipboardList",
         },
         {
           id: "executive-recommendations",
+          index: 2,
           name: uiTexts.surveySidebar.recommendations,
           icon: "AlertTriangle",
         },
@@ -1325,21 +1337,25 @@ export const sectionsConfig = {
     },
     {
       id: "support",
+      index: 2,
       name: uiTexts.surveySidebar.supportAnalysis,
       icon: "BarChart3",
       subsections: [
         {
           id: "support-sentiment",
+          index: 1,
           name: uiTexts.surveySidebar.sentimentAnalysis,
           icon: "Heart",
         },
         {
           id: "support-intent",
+          index: 2,
           name: uiTexts.surveySidebar.respondentIntent,
           icon: "Target",
         },
         {
           id: "support-segmentation",
+          index: 3,
           name: uiTexts.surveySidebar.segmentation,
           icon: "Users2",
         },
@@ -1347,16 +1363,19 @@ export const sectionsConfig = {
     },
     {
       id: "attributes",
+      index: 3,
       name: uiTexts.surveySidebar.attributeDeepDive,
       icon: "Layers",
     },
     {
       id: "responses",
+      index: 4,
       name: uiTexts.surveySidebar.questionAnalysis,
       icon: "MessageSquare",
     },
     {
       id: "export",
+      index: 5,
       name: uiTexts.surveySidebar.export,
       icon: "Download",
       isRoute: true,

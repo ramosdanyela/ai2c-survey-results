@@ -8,9 +8,11 @@ import {
   Filter,
   X,
   Download,
+  getIcon,
 } from "@/lib/icons";
 import { Progress } from "@/components/ui/progress";
 import { responseDetails, surveyInfo, uiTexts } from "@/data/surveyData";
+import { getBadgeConfig } from "@/lib/questionBadgeTypes";
 import {
   COLOR_ORANGE_PRIMARY,
   RGBA_ORANGE_SHADOW_15,
@@ -83,12 +85,27 @@ export function ResponseDetails({ questionId }) {
   const isNPSQuestion = (questionId) => questionId === 1;
 
   const getQuestionType = (question) => {
+    // Usa o tipo definido na questão, com fallback para detecção automática
+    const questionType = question.type;
+
+    if (questionType === "nps") return uiTexts.responseDetails.nps;
+    if (questionType === "open") return uiTexts.responseDetails.openField;
+    if (questionType === "closed")
+      return uiTexts.responseDetails.multipleChoice;
+
+    // Fallback para compatibilidade (detecção automática)
     if (isNPSQuestion(question.id)) return uiTexts.responseDetails.nps;
     if (question.type === "open") return uiTexts.responseDetails.openField;
     return uiTexts.responseDetails.multipleChoice;
   };
 
   const getQuestionIcon = (question) => {
+    // Use the icon defined in the question data if available
+    if (question.icon) {
+      const IconComponent = getIcon(question.icon);
+      if (IconComponent) return IconComponent;
+    }
+    // Fallback to default icons based on question type
     if (isNPSQuestion(question.id)) return TrendingUp;
     if (question.type === "open") return FileText;
     return CheckSquare;
@@ -135,16 +152,34 @@ export function ResponseDetails({ questionId }) {
   // ============================================================
 
   const QuestionTypePill = ({ question }) => {
-    const questionType = getQuestionType(question);
-    const QuestionIcon = getQuestionIcon(question);
+    // Obtém o tipo da questão (nps, open, closed)
+    const questionType =
+      question.type ||
+      (isNPSQuestion(question.id)
+        ? "nps"
+        : question.type === "open"
+        ? "open"
+        : "closed");
+
+    // Obtém configuração do badge baseado no tipo
+    const badgeConfig = getBadgeConfig(questionType);
+
+    // Usa configuração do badge ou fallback
+    const badgeVariant = badgeConfig?.variant || "outline";
+    const badgeLabel = badgeConfig?.label || getQuestionType(question);
+    const badgeIconName = badgeConfig?.icon || question.icon;
+    const BadgeIcon = badgeIconName
+      ? getIcon(badgeIconName)
+      : getQuestionIcon(question);
+
     const pillClassName =
       "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted text-foreground text-xs font-semibold";
 
     return (
-      <div className={pillClassName}>
-        <QuestionIcon className="w-3 h-3" />
-        <span>{questionType}</span>
-      </div>
+      <Badge variant={badgeVariant} className={pillClassName}>
+        {BadgeIcon && <BadgeIcon className="w-3 h-3" />}
+        <span>{badgeLabel}</span>
+      </Badge>
     );
   };
 

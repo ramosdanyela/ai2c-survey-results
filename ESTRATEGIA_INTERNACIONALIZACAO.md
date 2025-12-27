@@ -659,6 +659,7 @@ A migração deve seguir os seguintes princípios:
    ```
 
 3. **Context Provider com Fallback**
+
    ```javascript
    export function SurveyDataProvider({ children }) {
      const [surveyData, setSurveyData] = useState(null);
@@ -700,6 +701,7 @@ A migração deve seguir os seguintes princípios:
    - Verificar performance
 
 3. **Validação de Dados**
+
    ```javascript
    // src/lib/dataValidator.js
    export function validateDataStructure(data) {

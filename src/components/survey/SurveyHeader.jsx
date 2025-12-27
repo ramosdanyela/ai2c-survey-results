@@ -21,7 +21,7 @@ import {
   sectionsConfig,
 } from "@/data/surveyData";
 
-// Get all questions for navigation
+// Get all questions for navigation (sorted by index, excluding Q3)
 const getAllQuestions = () => {
   const allQuestions = [
     ...responseDetails.closedQuestions.map((q) => ({
@@ -34,8 +34,11 @@ const getAllQuestions = () => {
     })),
   ]
     .filter((q) => q.id !== 3) // Hide Q3
-    .sort((a, b) => a.id - b.id);
-  return allQuestions.map((q) => `responses-${q.id}`);
+    .sort((a, b) => (a.index || 0) - (b.index || 0));
+  return allQuestions.map((q) => ({
+    id: `responses-${q.id}`,
+    index: q.index || 0,
+  }));
 };
 
 // Get display number based on real questionId (renumbering excluding Q3)
@@ -51,29 +54,57 @@ const getDisplayNumber = (questionId) => {
     })),
   ]
     .filter((q) => q.id !== 3) // Hide Q3
-    .sort((a, b) => a.id - b.id);
+    .sort((a, b) => (a.index || 0) - (b.index || 0));
 
   const index = allQuestions.findIndex((q) => q.id === questionId);
   return index !== -1 ? index + 1 : questionId; // Return index + 1 or original ID if not found
 };
 
-// Get all attribute subsections for navigation
+// Get all attribute subsections for navigation (sorted by index)
 const getAllAttributes = () => {
   return attributeDeepDive.attributes
     .filter((attr) => attr.icon)
-    .map((attr) => `attributes-${attr.id}`);
+    .sort((a, b) => (a.index || 0) - (b.index || 0))
+    .map((attr) => ({
+      id: `attributes-${attr.id}`,
+      index: attr.index || 0,
+    }));
 };
 
-// Complete list of all subsections in order (same as ContentRenderer)
-const allSubsections = [
-  "executive-summary",
-  "executive-recommendations",
-  "support-sentiment",
-  "support-intent",
-  "support-segmentation",
-  ...getAllAttributes(),
-  ...getAllQuestions(),
-];
+// Build complete ordered list of all subsections based on indices
+const buildOrderedSubsections = () => {
+  const subsections = [];
+
+  // Process sections in order
+  sectionsConfig.sections
+    .filter((section) => !section.isRoute) // Exclude routes like "export"
+    .sort((a, b) => (a.index || 0) - (b.index || 0))
+    .forEach((section) => {
+      if (section.subsections) {
+        // Section with fixed subsections (executive, support)
+        section.subsections
+          .sort((a, b) => (a.index || 0) - (b.index || 0))
+          .forEach((subsection) => {
+            subsections.push(subsection.id);
+          });
+      } else if (section.id === "attributes") {
+        // Dynamic attributes section
+        getAllAttributes().forEach((attr) => {
+          subsections.push(attr.id);
+        });
+      } else if (section.id === "responses") {
+        // Dynamic questions section
+        getAllQuestions().forEach((question) => {
+          subsections.push(question.id);
+        });
+      }
+    });
+
+  return subsections;
+};
+
+// Complete list of all subsections in order (programmatically built from indices)
+const allSubsections = buildOrderedSubsections();
 
 // Section to title mapping
 const sectionTitles = {
@@ -150,10 +181,10 @@ function getSectionIconFromConfig(sectionId) {
 }
 
 function getNextSection(currentSection) {
-  // Normalize the current section
+  // Normalize the current section to a specific subsection
   let normalizedSection = currentSection;
 
-  // If it's just "executive" or "support", map to the first subsection
+  // If it's just a section ID, map to the first subsection
   if (currentSection === "executive") {
     normalizedSection = "executive-summary";
   } else if (currentSection === "support") {
@@ -161,37 +192,14 @@ function getNextSection(currentSection) {
   } else if (currentSection === "attributes") {
     // If it's just "attributes", map to the first attribute
     const attributes = getAllAttributes();
-    normalizedSection = attributes[0] || "attributes";
+    normalizedSection = attributes.length > 0 ? attributes[0].id : "attributes";
   } else if (currentSection === "responses") {
     // If it's just "responses", map to the first question
     const questions = getAllQuestions();
-    normalizedSection = questions[0] || "responses";
+    normalizedSection = questions.length > 0 ? questions[0].id : "responses";
   }
 
-  // Special case: if in a specific question, navigate only between questions
-  if (normalizedSection.startsWith("responses-")) {
-    const questions = getAllQuestions();
-    const currentIndex = questions.indexOf(normalizedSection);
-
-    // If not found or is last question, check if there's a next section
-    if (currentIndex === -1 || currentIndex === questions.length - 1) {
-      // If it's the last question, check if there's a next section after all questions
-      const lastQuestionIndex = allSubsections.indexOf(
-        questions[questions.length - 1]
-      );
-      if (
-        lastQuestionIndex !== -1 &&
-        lastQuestionIndex < allSubsections.length - 1
-      ) {
-        return allSubsections[lastQuestionIndex + 1];
-      }
-      return null;
-    }
-
-    // Return the next question
-    return questions[currentIndex + 1];
-  }
-
+  // Find the current section in the ordered list
   const currentIndex = allSubsections.indexOf(normalizedSection);
 
   // If not found or is last subsection, return null
@@ -204,10 +212,10 @@ function getNextSection(currentSection) {
 }
 
 function getPreviousSection(currentSection) {
-  // Normalize the current section
+  // Normalize the current section to a specific subsection
   let normalizedSection = currentSection;
 
-  // If it's just "executive" or "support", map to the first subsection
+  // If it's just a section ID, map to the first subsection
   if (currentSection === "executive") {
     normalizedSection = "executive-summary";
   } else if (currentSection === "support") {
@@ -215,32 +223,14 @@ function getPreviousSection(currentSection) {
   } else if (currentSection === "attributes") {
     // If it's just "attributes", map to the first attribute
     const attributes = getAllAttributes();
-    normalizedSection = attributes[0] || "attributes";
+    normalizedSection = attributes.length > 0 ? attributes[0].id : "attributes";
   } else if (currentSection === "responses") {
     // If it's just "responses", map to the first question
     const questions = getAllQuestions();
-    normalizedSection = questions[0] || "responses";
+    normalizedSection = questions.length > 0 ? questions[0].id : "responses";
   }
 
-  // Special case: if in a specific question, navigate only between questions
-  if (normalizedSection.startsWith("responses-")) {
-    const questions = getAllQuestions();
-    const currentIndex = questions.indexOf(normalizedSection);
-
-    // If not found or is first question, check if there's a previous section
-    if (currentIndex === -1 || currentIndex === 0) {
-      // If it's the first question, check if there's a previous section before all questions
-      const firstQuestionIndex = allSubsections.indexOf(questions[0]);
-      if (firstQuestionIndex !== -1 && firstQuestionIndex > 0) {
-        return allSubsections[firstQuestionIndex - 1];
-      }
-      return null;
-    }
-
-    // Return the previous question
-    return questions[currentIndex - 1];
-  }
-
+  // Find the current section in the ordered list
   const currentIndex = allSubsections.indexOf(normalizedSection);
 
   // If not found or is first subsection, return null
