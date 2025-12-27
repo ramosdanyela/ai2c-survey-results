@@ -18,7 +18,7 @@ export const SURVEY_DATA_QUERY_KEY = ["surveyData"];
 
 /**
  * Hook para buscar dados da pesquisa usando React Query
- * 
+ *
  * @returns {Object} Objeto com dados e estados
  * @property {Object|null} data - Dados completos da pesquisa
  * @property {boolean} loading - Se está carregando (primeira vez)
@@ -68,4 +68,3 @@ export const useSurveyData = () => {
     severityLabels: data?.severityLabels,
   };
 };
-

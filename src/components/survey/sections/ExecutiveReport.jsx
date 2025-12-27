@@ -5,12 +5,11 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/ui-components/card";
-import { SubsectionTitle } from "@/components/SubsectionTitle";
-import { COLOR_ORANGE_PRIMARY } from "@/lib/colors";
+} from "@/components/ui/card";
+import { SubsectionTitle } from "../widgets/SubsectionTitle";
+import { COLOR_ORANGE_PRIMARY, severityColors } from "@/lib/colors";
 import { executiveReport, severityLabels, uiTexts } from "@/data/surveyData";
-import { RecommendationsTable, TasksTable } from "../shared/tables/Tables";
-import { severityColors } from "../shared/badgeTypes.jsx";
+import { RecommendationsTable, TasksTable } from "../widgets/Tables";
 
 export function ExecutiveReport({ subSection, onSectionChange }) {
   // State to control which recommendations have their tasks expanded

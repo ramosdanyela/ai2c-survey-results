@@ -1,7 +1,7 @@
-import { ExecutiveReport } from "@/components/survey/executive/ExecutiveReport";
-import { SupportAnalysis } from "@/components/survey/support/SupportAnalysis";
-import { ResponseDetails } from "@/components/survey/responses/ResponseDetails";
-import { AttributeDeepDive } from "@/components/survey/attributes/AttributeDeepDive";
+import { ExecutiveReport } from "@/components/survey/sections/ExecutiveReport";
+import { SupportAnalysis } from "@/components/survey/sections/SupportAnalysis";
+import { ResponseDetails } from "@/components/survey/sections/ResponseDetails";
+import { AttributeDeepDive } from "@/components/survey/sections/AttributeDeepDive";
 import { responseDetails, attributeDeepDive } from "@/data/surveyData";
 
 // Get all questions for navigation (sorted by index, excluding Q3)
@@ -97,3 +97,4 @@ export function ContentRenderer({ activeSection, onSectionChange }) {
 
   return <div className="space-y-8">{content}</div>;
 }
+

@@ -2,14 +2,9 @@ import {
   ChevronRight,
   ChevronLeft,
   FileText,
-  Menu,
   getIcon,
 } from "@/lib/icons";
-import { Button } from "@/components/ui/button";
 import {
-  COLOR_ORANGE_PRIMARY,
-  RGBA_ORANGE_SHADOW_40,
-  RGBA_BLACK_SHADOW_20,
   getBlueGradient,
   getBlueButtonShadow,
   RGBA_WHITE_20,
@@ -242,24 +237,8 @@ function getPreviousSection(currentSection) {
   return allSubsections[currentIndex - 1];
 }
 
-function getSectionTitle(activeSection) {
-  // Always return the main section title (before the hyphen)
-  const baseSection = activeSection.split("-")[0];
-  if (sectionTitles[baseSection]) {
-    return sectionTitles[baseSection];
-  }
-
-  // If not found, try to find exact title as fallback
-  if (sectionTitles[activeSection]) {
-    return sectionTitles[activeSection];
-  }
-
-  // Fallback
-  return uiTexts.surveyHeader.results;
-}
-
-function getSectionIcon(activeSection) {
-  return getSectionIconFromConfig(activeSection);
+function getSectionIcon(sectionId) {
+  return getSectionIconFromConfig(sectionId);
 }
 
 function getSubsectionTitle(sectionId, maxLength = 40) {
@@ -324,11 +303,9 @@ function getSectionAndSubsection(sectionId, maxLength = 40) {
   };
 }
 
-export function SurveyHeader({ activeSection, onSectionChange, onMenuClick }) {
-  const title = getSectionTitle(activeSection);
-  const Icon = getSectionIcon(activeSection);
-  const nextSection = getNextSection(activeSection);
-  const previousSection = getPreviousSection(activeSection);
+export function NavigationButtons({ currentSection, onSectionChange }) {
+  const nextSection = getNextSection(currentSection);
+  const previousSection = getPreviousSection(currentSection);
 
   // Show "Next" button whenever there's a next section
   const shouldShowNextButton = !!nextSection;
@@ -357,125 +334,99 @@ export function SurveyHeader({ activeSection, onSectionChange, onMenuClick }) {
     }
   };
 
-  return (
-    <header
-      className="sticky top-0 z-10 bg-background"
+  const previousButton = previousSection && previousSectionInfo ? (
+    <button
+      onClick={handlePrevious}
+      className="relative overflow-hidden rounded-lg px-1.5 py-1 sm:px-4 sm:py-3 text-white flex items-center gap-1 sm:gap-3 transition-all hover:scale-[1.02] active:scale-[0.98]"
       style={{
-        boxShadow: `0 2px 8px ${RGBA_BLACK_SHADOW_20}`,
+        background: getBlueGradient(),
+        boxShadow: getBlueButtonShadow(),
       }}
     >
-      <div className="px-2 sm:px-4 lg:px-6 py-2 sm:py-4 flex items-center gap-1 sm:gap-0">
-        {/* Hamburger Menu - Visible only on smaller screens */}
-        <div className="lg:hidden mr-2 sm:mr-3">
-          <Button
-            onClick={onMenuClick}
-            variant="ghost"
-            size="icon"
-            className="text-foreground hover:bg-muted"
-          >
-            <Menu className="w-5 h-5" />
-          </Button>
-        </div>
-
-        <div className="flex-1 flex justify-start">
-          {previousSection && previousSectionInfo && (
-            <button
-              onClick={handlePrevious}
-              className="relative overflow-hidden rounded-lg px-1.5 py-1 sm:px-4 sm:py-3 text-white flex items-center gap-1 sm:gap-3 transition-all hover:scale-[1.02] active:scale-[0.98]"
-              style={{
-                background: getBlueGradient(),
-                boxShadow: getBlueButtonShadow(),
-              }}
-            >
-              <div
-                className="w-5 h-5 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{
-                  backgroundColor: RGBA_WHITE_20,
-                }}
-              >
-                <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
-              </div>
-              {/* Mobile: icon + subsection side by side */}
-              <div className="sm:hidden flex items-center gap-1.5">
-                {PreviousIcon && (
-                  <PreviousIcon className="w-3.5 h-3.5 flex-shrink-0" />
-                )}
-                {previousSectionInfo.subsection && (
-                  <span className="text-[8px] sm:text-[9px] font-semibold leading-tight whitespace-nowrap max-w-[120px] truncate">
-                    {previousSectionInfo.subsection}
-                  </span>
-                )}
-              </div>
-              {/* Desktop: section + subsection in column */}
-              <div className="hidden sm:flex flex-col items-start">
-                <span className="font-semibold text-sm leading-tight">
-                  {previousSectionInfo.section}
-                </span>
-                {previousSectionInfo.subsection && (
-                  <span className="text-xs opacity-90 leading-tight">
-                    {previousSectionInfo.subsection}
-                  </span>
-                )}
-              </div>
-            </button>
-          )}
-        </div>
-        <div className="flex-1 flex justify-center">
-          <div
-            className="text-white px-1.5 py-1 sm:px-4 sm:py-2 rounded-lg flex items-center gap-1 sm:gap-2"
-            style={{
-              backgroundColor: COLOR_ORANGE_PRIMARY,
-              boxShadow: `0 4px 16px ${RGBA_ORANGE_SHADOW_40}`,
-            }}
-          >
-            <Icon className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-            <h1 className="text-sm sm:text-2xl font-bold text-white whitespace-nowrap">
-              {title}
-            </h1>
-          </div>
-        </div>
-        <div className="flex-1 flex justify-end items-center gap-2">
-          {shouldShowNextButton && nextSectionInfo && (
-            <button
-              onClick={handleNext}
-              className="relative overflow-hidden rounded-lg px-1.5 py-1 sm:px-4 sm:py-3 text-white flex items-center gap-1 sm:gap-3 transition-all hover:scale-[1.02] active:scale-[0.98]"
-              style={{
-                background: getBlueGradient(),
-                boxShadow: getBlueButtonShadow(),
-              }}
-            >
-              {/* Mobile: icon + subsection side by side */}
-              <div className="sm:hidden flex items-center gap-1.5">
-                {NextIcon && <NextIcon className="w-3.5 h-3.5 flex-shrink-0" />}
-                {nextSectionInfo.subsection && (
-                  <span className="text-[8px] sm:text-[9px] font-semibold leading-tight whitespace-nowrap max-w-[120px] truncate">
-                    {nextSectionInfo.subsection}
-                  </span>
-                )}
-              </div>
-              {/* Desktop: section + subsection in column */}
-              <div className="hidden sm:flex flex-col items-end">
-                <span className="font-semibold text-sm leading-tight">
-                  {nextSectionInfo.section}
-                </span>
-                {nextSectionInfo.subsection && (
-                  <span className="text-xs opacity-90 leading-tight">
-                    {nextSectionInfo.subsection}
-                  </span>
-                )}
-              </div>
-              <div
-                className="w-5 h-5 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{
-                  backgroundColor: RGBA_WHITE_20,
-                }}
-              >
-                <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
-              </div>
-            </button>
-          )}
-        </div>
+      <div
+        className="w-5 h-5 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0"
+        style={{
+          backgroundColor: RGBA_WHITE_20,
+        }}
+      >
+        <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
       </div>
-    </header>
-  );
+      {/* Mobile: icon + subsection side by side */}
+      <div className="sm:hidden flex items-center gap-1.5">
+        {PreviousIcon && (
+          <PreviousIcon className="w-3.5 h-3.5 flex-shrink-0" />
+        )}
+        {previousSectionInfo.subsection && (
+          <span className="text-[8px] sm:text-[9px] font-semibold leading-tight whitespace-nowrap max-w-[120px] truncate">
+            {previousSectionInfo.subsection}
+          </span>
+        )}
+      </div>
+      {/* Desktop: section + subsection in column */}
+      <div className="hidden sm:flex flex-col items-start">
+        <span className="font-semibold text-sm leading-tight">
+          {previousSectionInfo.section}
+        </span>
+        {previousSectionInfo.subsection && (
+          <span className="text-xs opacity-90 leading-tight">
+            {previousSectionInfo.subsection}
+          </span>
+        )}
+      </div>
+    </button>
+  ) : null;
+
+  const nextButton = shouldShowNextButton && nextSectionInfo ? (
+    <button
+      onClick={handleNext}
+      className="relative overflow-hidden rounded-lg px-1.5 py-1 sm:px-4 sm:py-3 text-white flex items-center gap-1 sm:gap-3 transition-all hover:scale-[1.02] active:scale-[0.98]"
+      style={{
+        background: getBlueGradient(),
+        boxShadow: getBlueButtonShadow(),
+      }}
+    >
+      {/* Mobile: icon + subsection side by side */}
+      <div className="sm:hidden flex items-center gap-1.5">
+        {NextIcon && <NextIcon className="w-3.5 h-3.5 flex-shrink-0" />}
+        {nextSectionInfo.subsection && (
+          <span className="text-[8px] sm:text-[9px] font-semibold leading-tight whitespace-nowrap max-w-[120px] truncate">
+            {nextSectionInfo.subsection}
+          </span>
+        )}
+      </div>
+      {/* Desktop: section + subsection in column */}
+      <div className="hidden sm:flex flex-col items-end">
+        <span className="font-semibold text-sm leading-tight">
+          {nextSectionInfo.section}
+        </span>
+        {nextSectionInfo.subsection && (
+          <span className="text-xs opacity-90 leading-tight">
+            {nextSectionInfo.subsection}
+          </span>
+        )}
+      </div>
+      <div
+        className="w-5 h-5 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0"
+        style={{
+          backgroundColor: RGBA_WHITE_20,
+        }}
+      >
+        <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+      </div>
+    </button>
+  ) : null;
+
+  return {
+    previousButtonDiv: (
+      <div className="flex-1 flex justify-start">
+        {previousButton}
+      </div>
+    ),
+    nextButtonDiv: (
+      <div className="flex-1 flex justify-end items-center gap-2">
+        {nextButton}
+      </div>
+    ),
+  };
 }
+

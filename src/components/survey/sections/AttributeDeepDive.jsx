@@ -4,15 +4,15 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/ui-components/card";
-import { SubsectionTitle } from "@/components/SubsectionTitle";
+} from "@/components/ui/card";
+import { SubsectionTitle } from "../widgets/SubsectionTitle";
 import { attributeDeepDive, uiTexts } from "@/data/surveyData";
 import { RGBA_BLACK_SHADOW_20 } from "@/lib/colors";
 import {
   SentimentStackedChart,
   SimpleBarChart,
   SentimentThreeColorChart,
-} from "../shared/charts/Charts";
+} from "../widgets/Charts";
 import {
   DistributionTable,
   SentimentTable,
@@ -21,7 +21,7 @@ import {
   SentimentImpactTable,
   PositiveCategoriesTable,
   NegativeCategoriesTable,
-} from "../shared/tables/Tables";
+} from "../widgets/Tables";
 
 const attributeIcons = {
   state: MapPin,

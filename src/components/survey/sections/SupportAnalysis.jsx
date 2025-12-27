@@ -5,11 +5,11 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-} from "@/components/ui-components/card";
-import { SubsectionTitle } from "@/components/SubsectionTitle";
+} from "@/components/ui/card";
+import { SubsectionTitle } from "../widgets/SubsectionTitle";
 import { supportAnalysis, uiTexts } from "@/data/surveyData";
-import { SentimentDivergentChart, SimpleBarChart } from "../shared/charts/Charts";
-import { SegmentationTable } from "../shared/tables/Tables";
+import { SentimentDivergentChart, SimpleBarChart } from "../widgets/Charts";
+import { SegmentationTable } from "../widgets/Tables";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export function SupportAnalysis({ subSection }) {

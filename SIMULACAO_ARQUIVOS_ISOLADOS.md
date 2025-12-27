@@ -7,19 +7,24 @@ Este documento lista todos os arquivos criados para a simulação de API. **Todo
 ## 🗂️ Arquivos Criados
 
 ### 1. **Dados JSON**
+
 - `src/data/surveyData.json` - Versão JSON dos dados (pode ser deletado)
 
 ### 2. **Serviço de Simulação**
+
 - `src/services/surveyDataService.js` - Simula chamada de API
 
 ### 3. **Hook**
+
 - `src/hooks/useSurveyData.js` - Hook com React Query
 
 ### 4. **Componentes UI**
+
 - `src/components/survey/SurveyLoading.jsx` - Componente de loading
 - `src/components/survey/SurveyError.jsx` - Componente de erro
 
 ### 5. **Script de Conversão** (temporário)
+
 - `scripts/convert-to-json.mjs` - Script para converter JS → JSON (pode deletar após uso)
 
 ---
@@ -29,6 +34,7 @@ Este documento lista todos os arquivos criados para a simulação de API. **Todo
 ### Passo 1: Reverter Imports nos Componentes
 
 Substituir:
+
 ```javascript
 // ANTES (com simulação)
 import { useSurveyData } from "@/hooks/useSurveyData";
@@ -36,6 +42,7 @@ const { surveyInfo, loading } = useSurveyData();
 ```
 
 Por:
+
 ```javascript
 // DEPOIS (import direto)
 import { surveyInfo } from "@/data/surveyData";
@@ -57,6 +64,7 @@ rm scripts/convert-to-json.mjs
 ### Passo 3: Remover Estados de Loading/Error
 
 Remover de todos os componentes:
+
 - `if (loading) return <SurveyLoading />`
 - `if (error) return <SurveyError />`
 - Imports de `SurveyLoading` e `SurveyError`
@@ -90,4 +98,3 @@ Remover de todos os componentes:
 - O arquivo original `src/data/surveyData.js` **NÃO deve ser deletado** - ele é a fonte de verdade
 - Todos os arquivos de simulação são isolados e podem ser removidos sem afetar o código original
 - A estrutura de dados permanece idêntica, facilitando a migração
-

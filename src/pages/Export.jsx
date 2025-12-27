@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Download,
@@ -15,11 +15,11 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui-components/card";
+} from "@/components/ui/card";
 import {
   SurveySidebar,
   SurveySidebarMobile,
-} from "@/components/survey/SurveySidebar";
+} from "@/components/survey/components/SurveySidebar";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -30,7 +30,12 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { COLOR_ORANGE_PRIMARY, RGBA_BLACK_SHADOW_20 } from "@/lib/colors";
-import { responseDetails, attributeDeepDive, uiTexts } from "@/data/surveyData";
+import {
+  responseDetails,
+  attributeDeepDive,
+  uiTexts,
+  sectionsConfig,
+} from "@/data/surveyData";
 import { cn } from "@/lib/utils";
 
 // Local texts for the Export component
@@ -91,81 +96,69 @@ export default function Export() {
   const hasSpecificSectionsSelected =
     !exportFullReport && selectedSections.size > 0;
 
-  // Get all questions (sorted by index, excluding Q3)
-  const allQuestions = [
-    ...responseDetails.closedQuestions.map((q) => ({
-      ...q,
-      type: "closed",
-    })),
-    ...responseDetails.openQuestions.map((q) => ({
-      ...q,
-      type: "open",
-    })),
-  ]
-    .filter((q) => q.id !== 3)
-    .sort((a, b) => (a.index || 0) - (b.index || 0));
+  // Build sections structure from sectionsConfig
+  const sections = useMemo(() => {
+    return sectionsConfig.sections
+      .filter((section) => !section.isRoute) // Exclude export route
+      .map((section) => {
+        let subsections = [];
 
-  // Get available attributes (sorted by index)
-  const availableAttributes = attributeDeepDive.attributes
-    .filter((attr) => ["state", "education", "customerType"].includes(attr.id))
-    .sort((a, b) => (a.index || 0) - (b.index || 0));
+        // If section has fixed subsections (executive, support)
+        if (section.subsections) {
+          subsections = section.subsections.map((sub) => ({
+            id: sub.id,
+            label: sub.name,
+          }));
+        }
+        // If it's the "attributes" section, get from attributeDeepDive
+        else if (section.id === "attributes") {
+          const availableAttributes = attributeDeepDive.attributes
+            .filter((attr) =>
+              ["state", "education", "customerType"].includes(attr.id)
+            )
+            .sort((a, b) => (a.index || 0) - (b.index || 0));
 
-  // Section structure - using texts from surveyData
-  const sections = [
-    {
-      id: "executive",
-      label: uiTexts.surveyHeader.executiveReport,
-      subsections: [
-        {
-          id: "executive-summary",
-          label: uiTexts.surveyHeader.executiveSummary,
-        },
-        {
-          id: "executive-recommendations",
-          label: uiTexts.surveyHeader.recommendations,
-        },
-      ],
-    },
-    {
-      id: "support",
-      label: uiTexts.surveyHeader.supportAnalysis,
-      subsections: [
-        {
-          id: "support-sentiment",
-          label: uiTexts.surveyHeader.sentimentAnalysis,
-        },
-        { id: "support-intent", label: uiTexts.surveyHeader.respondentIntent },
-        {
-          id: "support-segmentation",
-          label: uiTexts.surveyHeader.segmentation,
-        },
-      ],
-    },
-    {
-      id: "attributes",
-      label: uiTexts.surveyHeader.attributeDeepDive,
-      subsections: availableAttributes.map((attr) => ({
-        id: `attributes-${attr.id}`,
-        label: attr.name,
-      })),
-    },
-    {
-      id: "responses",
-      label: uiTexts.surveyHeader.questionAnalysis,
-      subsections: allQuestions.map((q, index) => {
-        // Renumber questions: index + 1 (excluding Q3)
-        const displayNumber = index + 1;
+          subsections = availableAttributes.map((attr) => ({
+            id: `attributes-${attr.id}`,
+            label: attr.name,
+          }));
+        }
+        // If it's the "responses" section, get from responseDetails
+        else if (section.id === "responses") {
+          const allQuestions = [
+            ...responseDetails.closedQuestions.map((q) => ({
+              ...q,
+              type: "closed",
+            })),
+            ...responseDetails.openQuestions.map((q) => ({
+              ...q,
+              type: "open",
+            })),
+          ]
+            .filter((q) => q.id !== 3) // Exclude Q3
+            .sort((a, b) => (a.index || 0) - (b.index || 0));
+
+          subsections = allQuestions.map((q, index) => {
+            // Renumber questions: index + 1 (excluding Q3)
+            const displayNumber = index + 1;
+            return {
+              id: `responses-${q.id}`,
+              label: `${uiTexts.surveyHeader.question}${displayNumber}: ${
+                q.question.length > 60
+                  ? q.question.substring(0, 60) + "..."
+                  : q.question
+              }`,
+            };
+          });
+        }
+
         return {
-          id: `responses-${q.id}`,
-          label: `${uiTexts.surveyHeader.question}${displayNumber}: ${
-            q.question.length > 60
-              ? q.question.substring(0, 60) + "..."
-              : q.question
-          }`,
+          id: section.id,
+          label: section.name,
+          subsections,
         };
-      }),
-    },
-  ];
+      });
+  }, []);
 
   // Handlers
   const handleFullReportChange = (checked) => {

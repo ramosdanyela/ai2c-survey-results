@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import { SurveyHeader } from "@/components/survey/SurveyHeader";
-import { ContentRenderer } from "@/components/survey/ContentRenderer";
+import { SurveyHeader } from "@/components/survey/components/SurveyHeader";
+import { ContentRenderer } from "@/components/survey/components/ContentRenderer";
 import {
   SurveySidebar,
   SurveySidebarMobile,
-} from "@/components/survey/SurveySidebar";
+} from "@/components/survey/components/SurveySidebar";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 export function SurveyLayout({ activeSection, onSectionChange }) {
@@ -111,3 +111,4 @@ export function SurveyLayout({ activeSection, onSectionChange }) {
     </div>
   );
 }
+

@@ -22,6 +22,7 @@ Cada questão em `responseDetails` possui um campo `type` que indica o tipo da q
 Os tipos são definidos em `src/lib/questionBadgeTypes.js`:
 
 ### 1. **NPS** (`type: "nps"`)
+
 - **Variant**: `"default"`
 - **Label**: `"NPS"`
 - **Icon**: `"TrendingUp"`
@@ -29,6 +30,7 @@ Os tipos são definidos em `src/lib/questionBadgeTypes.js`:
 - **Exemplo**: Q1 - "Qual é a probabilidade de você recomendar..."
 
 ### 2. **Campo Aberto** (`type: "open"`)
+
 - **Variant**: `"secondary"`
 - **Label**: `"Campo Aberto"`
 - **Icon**: `"FileText"`
@@ -36,6 +38,7 @@ Os tipos são definidos em `src/lib/questionBadgeTypes.js`:
 - **Exemplo**: Q2, Q5, Q6
 
 ### 3. **Múltipla Escolha** (`type: "closed"`)
+
 - **Variant**: `"outline"`
 - **Label**: `"Múltipla Escolha"`
 - **Icon**: `"CheckSquare"`
@@ -103,12 +106,8 @@ import { getBadgeConfig } from "@/lib/questionBadgeTypes";
 
 const QuestionTypePill = ({ question }) => {
   const badgeConfig = getBadgeConfig(question.type);
-  
-  return (
-    <Badge variant={badgeConfig.variant}>
-      {badgeConfig.label}
-    </Badge>
-  );
+
+  return <Badge variant={badgeConfig.variant}>{badgeConfig.label}</Badge>;
 };
 ```
 
@@ -119,4 +118,3 @@ const QuestionTypePill = ({ question }) => {
 - Todos os badges são opcionais (fallback para comportamento padrão se não existir)
 - Os tipos são determinados automaticamente baseado no tipo de questão
 - As variantes podem ser customizadas por questão se necessário
-

@@ -7,6 +7,7 @@ Este documento mostra como usar o hook `useSurveyData` nos componentes.
 ## 🎯 Exemplo Básico
 
 ### Antes (Import Direto)
+
 ```javascript
 import { surveyInfo, executiveReport } from "@/data/surveyData";
 
@@ -17,13 +18,15 @@ function Component() {
 ```
 
 ### Depois (Com Hook)
+
 ```javascript
 import { useSurveyData } from "@/hooks/useSurveyData";
 import { SurveyLoading } from "@/components/survey/SurveyLoading";
 import { SurveyError } from "@/components/survey/SurveyError";
 
 function Component() {
-  const { surveyInfo, executiveReport, loading, error, refetch } = useSurveyData();
+  const { surveyInfo, executiveReport, loading, error, refetch } =
+    useSurveyData();
 
   if (loading) return <SurveyLoading />;
   if (error) return <SurveyError error={error} onRetry={refetch} />;
@@ -55,9 +58,9 @@ export function SurveyLayout({ activeSection, onSectionChange }) {
   // Renderização normal (componentes filhos podem usar useSurveyData também)
   return (
     <div>
-      <ContentRenderer 
-        activeSection={activeSection} 
-        onSectionChange={onSectionChange} 
+      <ContentRenderer
+        activeSection={activeSection}
+        onSectionChange={onSectionChange}
       />
     </div>
   );
@@ -94,6 +97,7 @@ function ExecutiveReport({ subSection }) {
 ## ⚡ Vantagens do React Query
 
 ### 1. **Cache Automático**
+
 ```javascript
 // Componente A
 const { surveyInfo } = useSurveyData(); // Faz requisição
@@ -103,10 +107,11 @@ const { surveyInfo } = useSurveyData(); // Usa cache, não faz nova requisição
 ```
 
 ### 2. **Refetch Manual**
+
 ```javascript
 function RefreshButton() {
   const { refetch, isFetching } = useSurveyData();
-  
+
   return (
     <Button onClick={refetch} disabled={isFetching}>
       {isFetching ? "Atualizando..." : "Atualizar"}
@@ -116,13 +121,14 @@ function RefreshButton() {
 ```
 
 ### 3. **Estados Granulares**
+
 ```javascript
-const { 
-  loading,      // Primeira carga
-  isFetching,   // Qualquer busca (inclui refetch)
-  isSuccess,    // Sucesso
-  isError,      // Erro
-  error         // Objeto de erro
+const {
+  loading, // Primeira carga
+  isFetching, // Qualquer busca (inclui refetch)
+  isSuccess, // Sucesso
+  isError, // Erro
+  error, // Objeto de erro
 } = useSurveyData();
 ```
 
@@ -155,4 +161,3 @@ function Component() {
 2. **Loading States**: Use `loading` para primeira carga, `isFetching` para refetch
 3. **Error Handling**: Sempre verifique `isError` antes de usar `error`
 4. **Null Safety**: Sempre verifique se dados existem antes de usar: `if (!surveyInfo) return null;`
-

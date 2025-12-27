@@ -12,7 +12,7 @@ import {
 } from "@/lib/icons";
 import { Progress } from "@/components/ui/progress";
 import { responseDetails, surveyInfo, uiTexts } from "@/data/surveyData";
-import { getBadgeConfig } from "@/lib/questionBadgeTypes";
+import { getBadgeConfig } from "../widgets/badgeTypes";
 import {
   COLOR_ORANGE_PRIMARY,
   RGBA_ORANGE_SHADOW_15,
@@ -23,14 +23,14 @@ import {
   SentimentStackedChart,
   SimpleBarChart,
   NPSStackedChart,
-} from "../shared/charts/Charts";
+} from "../widgets/Charts";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Badge } from "@/components/ui-components/badge";
+import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { FilterPanel } from "../FilterPanel";

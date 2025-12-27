@@ -15,7 +15,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui-components/card";
+} from "@/components/ui/card";
 
 export function SurveyError({ error, onRetry }) {
   return (
@@ -49,4 +49,3 @@ export function SurveyError({ error, onRetry }) {
     </div>
   );
 }
-

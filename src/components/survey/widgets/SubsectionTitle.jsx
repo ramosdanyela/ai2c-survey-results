@@ -1,10 +1,10 @@
-import { Card, CardHeader, CardTitle } from "@/components/ui-components/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { getIcon } from "@/lib/icons";
 
 /**
  * Reusable component for section and subsection titles
  * Used across all sections (executive, support, attributes, responses)
- * 
+ *
  * @param {string} title - The title text to display
  * @param {React.Component|string} icon - Icon component or icon name string
  * @param {string} className - Additional CSS classes for the Card
@@ -24,4 +24,3 @@ export function SubsectionTitle({ title, icon, className = "" }) {
     </Card>
   );
 }
-

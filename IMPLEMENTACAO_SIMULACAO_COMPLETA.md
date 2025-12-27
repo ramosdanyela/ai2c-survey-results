@@ -3,12 +3,14 @@
 ## 📦 Arquivos Criados (Todos Isolados)
 
 ### ✅ 1. Dados JSON
-- **`src/data/surveyData.json`** 
+
+- **`src/data/surveyData.json`**
   - Versão JSON completa dos dados
   - Estrutura idêntica ao `surveyData.js`
   - Pode ser deletado para voltar aos imports diretos
 
 ### ✅ 2. Serviço de Simulação
+
 - **`src/services/surveyDataService.js`**
   - Simula chamada de API com delay configurável
   - Importa JSON diretamente (Vite suporta nativamente)
@@ -16,6 +18,7 @@
   - Função de erro simulado para testes
 
 ### ✅ 3. Hook com React Query
+
 - **`src/hooks/useSurveyData.js`**
   - Usa `@tanstack/react-query` (já instalado)
   - Cache automático (5min stale, 10min gc)
@@ -24,7 +27,9 @@
   - Helpers para compatibilidade: surveyInfo, executiveReport, etc.
 
 ### ✅ 4. Componentes UI
+
 - **`src/components/survey/SurveyLoading.jsx`**
+
   - Componente de loading elegante
   - Spinner animado + mensagem
 
@@ -34,11 +39,13 @@
   - Card estilizado
 
 ### ✅ 5. Documentação
+
 - **`SIMULACAO_ARQUIVOS_ISOLADOS.md`** - Guia de remoção
 - **`EXEMPLO_USO_HOOK.md`** - Exemplos de uso
 - **`ESTRATEGIA_MIGRACAO_DADOS_HOOK.md`** - Estratégia completa
 
 ### ✅ 6. Script de Conversão
+
 - **`scripts/convert-to-json.mjs`**
   - Converte `surveyData.js` → `surveyData.json`
   - Pode ser deletado após uso
@@ -48,17 +55,20 @@
 ## 🎯 Status da Implementação
 
 ### ✅ Fase 1: Preparação - COMPLETA
+
 - [x] Converter `surveyData.js` para JSON
 - [x] Validar estrutura do JSON
 - [x] Testar importação do JSON
 
 ### ✅ Fase 2: Infraestrutura - COMPLETA
+
 - [x] Criar `surveyDataService.js`
 - [x] Criar `useSurveyData.js` hook (React Query)
 - [x] Criar componentes `SurveyLoading` e `SurveyError`
 - [x] Verificar QueryClient no App.jsx ✅ (já configurado)
 
 ### ⏳ Fase 3: Migração - PENDENTE
+
 - [ ] Migrar `SurveyLayout` (adicionar loading/error)
 - [ ] Migrar `SurveyHeader`
 - [ ] Migrar `SurveySidebar`
@@ -75,6 +85,7 @@
 ## 🚀 Próximos Passos
 
 ### Opção 1: Testar Hook Isoladamente
+
 ```javascript
 // Criar componente de teste
 import { useSurveyData } from "@/hooks/useSurveyData";
@@ -87,13 +98,16 @@ function TestComponent() {
 ```
 
 ### Opção 2: Migrar um Componente por Vez
+
 Começar por `SurveyLayout` (componente raiz):
+
 1. Adicionar import do hook
 2. Adicionar estados de loading/error
 3. Testar
 4. Repetir para outros componentes
 
 ### Opção 3: Remover Simulação
+
 Se não quiser usar, basta deletar os arquivos listados em `SIMULACAO_ARQUIVOS_ISOLADOS.md`
 
 ---
@@ -116,18 +130,21 @@ Para migrar cada componente:
 ## 🔍 Como Testar
 
 ### 1. Testar Loading
+
 ```javascript
 // Em surveyDataService.js, aumentar delay:
 const delay = 3000; // 3 segundos para ver loading
 ```
 
 ### 2. Testar Error
+
 ```javascript
 // Em useSurveyData.js, usar função de erro:
 queryFn: fetchSurveyDataWithError, // ao invés de fetchSurveyData
 ```
 
 ### 3. Testar Cache
+
 ```javascript
 // Renderizar múltiplos componentes que usam useSurveyData()
 // Verificar no React Query DevTools que só há 1 requisição
@@ -166,14 +183,13 @@ Quando for migrar para API real, basta alterar:
 export const fetchSurveyData = async () => {
   const API_URL = import.meta.env.VITE_API_URL;
   const response = await fetch(`${API_URL}/api/survey/data`);
-  
+
   if (!response.ok) {
     throw new Error(`Erro: ${response.statusText}`);
   }
-  
+
   return await response.json();
 };
 ```
 
 **Nenhum componente precisa ser alterado!** 🎉
-

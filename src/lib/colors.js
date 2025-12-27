@@ -281,6 +281,32 @@ export const SENTIMENT_COLOR_MAP = {
 };
 
 // ============================================================================
+// Severity Badge Colors
+// ============================================================================
+
+/**
+ * Severity color classes mapping
+ * Uses CSS variables defined in index.css
+ */
+export const severityColors = {
+  critical: "bg-severity-critical text-white",
+  high: "bg-severity-high text-white",
+  medium: "bg-severity-medium text-white",
+  low: "bg-severity-low text-white",
+};
+
+/**
+ * Severity CSS class names (from index.css)
+ * These classes are defined in index.css with @apply directives
+ */
+export const severityClassNames = {
+  critical: "badge-critical",
+  high: "badge-high",
+  medium: "badge-medium",
+  low: "badge-low",
+};
+
+// ============================================================================
 // Export of all colors as object (for reference)
 // ============================================================================
 
