@@ -65,6 +65,6 @@ export const useSurveyData = () => {
     attributeDeepDive: data?.attributeDeepDive,
     uiTexts: data?.uiTexts,
     sectionsConfig: data?.sectionsConfig,
-    severityLabels: data?.severityLabels,
+    severityLabels: data?.uiTexts?.severityLabels,
   };
 };

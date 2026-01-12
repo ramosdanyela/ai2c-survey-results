@@ -12,6 +12,7 @@ import {
 } from "@/lib/icons";
 import { Progress } from "@/components/ui/progress";
 import { responseDetails, surveyInfo, uiTexts } from "@/data/surveyData";
+import { useSurveyData } from "@/hooks/useSurveyData";
 import { getBadgeConfig } from "../widgets/badgeTypes";
 import {
   COLOR_ORANGE_PRIMARY,
@@ -33,7 +34,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { FilterPanel } from "../FilterPanel";
+import { FilterPanel } from "../components/FilterPanel";
 import {
   Popover,
   PopoverContent,
@@ -41,6 +42,79 @@ import {
 } from "@/components/ui/popover";
 
 export function ResponseDetails({ questionId }) {
+  const { data } = useSurveyData();
+
+  // Get configuration from JSON
+  const responsesConfig = useMemo(() => {
+    if (!data?.sectionsConfig?.sections) return null;
+    const responsesSection = data.sectionsConfig.sections.find(
+      (s) => s.id === "responses"
+    );
+    return responsesSection?.data?.config || null;
+  }, [data]);
+
+  // Get question configuration with defaults
+  // All styling properties (margins, heights, etc.) are hardcoded in the code, not in JSON
+  const questionConfig = useMemo(() => {
+    if (!responsesConfig?.questions) {
+      return {
+        hiddenIds: [],
+        excludedFromChartIds: [],
+        // Styling defaults hardcoded in code
+        specialMargins: { 3: 50 }, // Special margin for question 3
+        defaultMargin: 80, // Default margin for charts
+      };
+    }
+    return {
+      hiddenIds: responsesConfig.questions.hiddenIds || [],
+      excludedFromChartIds:
+        responsesConfig.questions.excludedFromChartIds || [],
+      // Styling defaults hardcoded in code (not from JSON)
+      specialMargins: { 3: 50 }, // Special margin for question 3
+      defaultMargin: 80, // Default margin for charts
+    };
+  }, [responsesConfig]);
+
+  // Get NPS categories configuration with defaults
+  const npsCategoriesConfig = useMemo(() => {
+    if (!responsesConfig?.npsCategories) {
+      return {
+        detractor: "Detrator",
+        promoter: "Promotor",
+        neutral: "Neutro",
+        labels: {
+          detractors: "Detratores",
+          neutrals: "Neutros",
+          promoters: "Promotores",
+        },
+      };
+    }
+    return {
+      detractor: responsesConfig.npsCategories.detractor || "Detrator",
+      promoter: responsesConfig.npsCategories.promoter || "Promotor",
+      neutral: responsesConfig.npsCategories.neutral || "Neutro",
+      labels: {
+        detractors:
+          responsesConfig.npsCategories.labels?.detractors || "Detratores",
+        neutrals: responsesConfig.npsCategories.labels?.neutrals || "Neutros",
+        promoters:
+          responsesConfig.npsCategories.labels?.promoters || "Promotores",
+      },
+    };
+  }, [responsesConfig]);
+
+  // Get word cloud configuration
+  const wordCloudConfig = useMemo(() => {
+    if (!responsesConfig?.wordCloud) {
+      return {
+        imagePath: "/nuvem.png",
+      };
+    }
+    return {
+      imagePath: responsesConfig.wordCloud.imagePath || "/nuvem.png",
+    };
+  }, [responsesConfig]);
+
   const [questionFilters, setQuestionFilters] = useState({});
   const [questionFilterOpen, setQuestionFilterOpen] = useState({});
   const [questionDownloadOpen, setQuestionDownloadOpen] = useState({});
@@ -82,7 +156,7 @@ export function ResponseDetails({ questionId }) {
   // Helper Functions - Question Type & Response Count
   // ============================================================
 
-  const isNPSQuestion = (questionId) => questionId === 1;
+  const isNPSQuestion = (question) => question?.type === "nps";
 
   const getQuestionType = (question) => {
     // Usa o tipo definido na questão, com fallback para detecção automática
@@ -94,7 +168,7 @@ export function ResponseDetails({ questionId }) {
       return uiTexts.responseDetails.multipleChoice;
 
     // Fallback para compatibilidade (detecção automática)
-    if (isNPSQuestion(question.id)) return uiTexts.responseDetails.nps;
+    if (isNPSQuestion(question)) return uiTexts.responseDetails.nps;
     if (question.type === "open") return uiTexts.responseDetails.openField;
     return uiTexts.responseDetails.multipleChoice;
   };
@@ -106,14 +180,18 @@ export function ResponseDetails({ questionId }) {
       if (IconComponent) return IconComponent;
     }
     // Fallback to default icons based on question type
-    if (isNPSQuestion(question.id)) return TrendingUp;
+    if (isNPSQuestion(question)) return TrendingUp;
     if (question.type === "open") return FileText;
     return CheckSquare;
   };
 
   const getTotalResponses = (question) => {
-    // For closed questions (including NPS), sum all values
-    if (question.type === "closed" && "data" in question && question.data) {
+    // For closed questions and NPS questions, sum all values
+    if (
+      (question.type === "closed" || question.type === "nps") &&
+      "data" in question &&
+      question.data
+    ) {
       return question.data.reduce((sum, item) => sum + (item.value || 0), 0);
     }
     // For open questions, use total survey respondents
@@ -155,7 +233,7 @@ export function ResponseDetails({ questionId }) {
     // Obtém o tipo da questão (nps, open, closed)
     const questionType =
       question.type ||
-      (isNPSQuestion(question.id)
+      (isNPSQuestion(question)
         ? "nps"
         : question.type === "open"
         ? "open"
@@ -240,18 +318,9 @@ export function ResponseDetails({ questionId }) {
 
   // Get all available questions filtered by selected type
   const allAvailableQuestions = useMemo(() => {
-    const allQuestions = [
-      ...responseDetails.closedQuestions.map((q) => ({
-        ...q,
-        type: "closed",
-      })),
-      ...responseDetails.openQuestions.map((q) => ({
-        ...q,
-        type: "open",
-      })),
-    ]
-      .filter((q) => q.id !== 3) // Hide Q3
-      .sort((a, b) => a.id - b.id); // Sort by ID
+    const allQuestions = (responseDetails.questions || [])
+      .filter((q) => !questionConfig.hiddenIds.includes(q.id)) // Hide questions from config
+      .sort((a, b) => (a.index || 0) - (b.index || 0)); // Sort by index
 
     // Apply filter based on questionFilter
     if (questionFilter === "all") {
@@ -265,17 +334,17 @@ export function ResponseDetails({ questionId }) {
     if (questionFilter === "closed") {
       // Closed but not NPS
       return allQuestions.filter(
-        (q) => q.type === "closed" && !isNPSQuestion(q.id)
+        (q) => q.type === "closed" && !isNPSQuestion(q)
       );
     }
 
     if (questionFilter === "nps") {
-      // Only NPS question (id === 1)
-      return allQuestions.filter((q) => isNPSQuestion(q.id));
+      // Only NPS questions
+      return allQuestions.filter((q) => isNPSQuestion(q));
     }
 
     return allQuestions;
-  }, [questionFilter]);
+  }, [questionFilter, questionConfig]);
 
   // Refs for each question to enable scrolling
   const questionRefs = useRef({});
@@ -287,16 +356,9 @@ export function ResponseDetails({ questionId }) {
       setSelectedQuestionId(null);
 
       // Find question in all questions (not just filtered ones)
-      const allQuestions = [
-        ...responseDetails.closedQuestions.map((q) => ({
-          ...q,
-          type: "closed",
-        })),
-        ...responseDetails.openQuestions.map((q) => ({
-          ...q,
-          type: "open",
-        })),
-      ].filter((q) => q.id !== 3);
+      const allQuestions = (responseDetails.questions || []).filter(
+        (q) => !questionConfig.hiddenIds.includes(q.id)
+      );
 
       const question = allQuestions.find((q) => q.id === questionId);
 
@@ -618,7 +680,7 @@ export function ResponseDetails({ questionId }) {
                     )}
 
                     {/* Show NPS score when it's an NPS question */}
-                    {question.id === 1 && (
+                    {question.type === "nps" && (
                       <div className="mb-6 flex justify-center">
                         <div
                           className="p-4 rounded-2xl highlight-container-light border-0 w-full max-w-md"
@@ -646,21 +708,21 @@ export function ResponseDetails({ questionId }) {
                       </div>
                     )}
 
-                    {/* Render NPS chart for question 1 */}
-                    {question.id === 1 &&
+                    {/* Render NPS chart for NPS questions */}
+                    {question.type === "nps" &&
                       question.type === "closed" &&
                       "data" in question &&
                       question.data &&
                       (() => {
-                        // Convert question data to NPS format
+                        // Convert question data to NPS format using config
                         const detrator = question.data.find(
-                          (d) => d.option === "Detrator"
+                          (d) => d.option === npsCategoriesConfig.detractor
                         );
                         const promotor = question.data.find(
-                          (d) => d.option === "Promotor"
+                          (d) => d.option === npsCategoriesConfig.promoter
                         );
                         const neutro = question.data.find(
-                          (d) => d.option === "Neutro"
+                          (d) => d.option === npsCategoriesConfig.neutral
                         );
 
                         return (
@@ -670,9 +732,12 @@ export function ResponseDetails({ questionId }) {
                             </h3>
                             <NPSStackedChart
                               data={{
-                                Detratores: detrator?.percentage || 0,
-                                Neutros: neutro?.percentage || 0,
-                                Promotores: promotor?.percentage || 0,
+                                [npsCategoriesConfig.labels.detractors]:
+                                  detrator?.percentage || 0,
+                                [npsCategoriesConfig.labels.neutrals]:
+                                  neutro?.percentage || 0,
+                                [npsCategoriesConfig.labels.promoters]:
+                                  promotor?.percentage || 0,
                               }}
                               height={256}
                               hideXAxis={true}
@@ -683,7 +748,9 @@ export function ResponseDetails({ questionId }) {
                       })()}
 
                     {/* Render closed question chart for other questions */}
-                    {question.id !== 1 &&
+                    {!questionConfig.excludedFromChartIds.includes(
+                      question.id
+                    ) &&
                       question.type === "closed" &&
                       "data" in question &&
                       question.data &&
@@ -701,8 +768,10 @@ export function ResponseDetails({ questionId }) {
                           calculatedWidth + 20,
                           140
                         );
-                        // Reduce right margin for Q3 to center the chart
-                        const rightMargin = question.id === 3 ? 50 : 80;
+                        // Use special margin from config if available, otherwise use default
+                        const rightMargin =
+                          questionConfig.specialMargins[question.id] ||
+                          questionConfig.defaultMargin;
 
                         return (
                           <>
@@ -915,7 +984,7 @@ export function ResponseDetails({ questionId }) {
                               </h4>
                               <div className="flex justify-center items-center p-6 bg-muted/30 rounded-lg min-h-[200px]">
                                 <img
-                                  src="/nuvem.png"
+                                  src={wordCloudConfig.imagePath}
                                   alt="Word Cloud"
                                   className="max-w-full h-auto"
                                   style={{ maxHeight: "500px" }}

@@ -479,7 +479,27 @@ export function SimpleBarChart({
             interval={0}
           />
           <Tooltip
-            formatter={tooltipFormatter || ((value) => [`${value}%`, ""])}
+            formatter={
+              tooltipFormatter && typeof tooltipFormatter === "function"
+                ? (value, name, props) => {
+                    try {
+                      const result = tooltipFormatter(value, name, props);
+                      // Ensure result is always an array
+                      if (Array.isArray(result)) {
+                        return result;
+                      }
+                      // If it's a string or number, wrap it in an array
+                      return [result, name || ""];
+                    } catch (error) {
+                      console.warn("Tooltip formatter error:", error);
+                      return [`${value}%`, name || ""];
+                    }
+                  }
+                : (value, name, props) => {
+                    // Default formatter - ensure it always returns an array
+                    return [`${value}%`, name || ""];
+                  }
+            }
           />
           <Bar dataKey={dataKey} fill={fillColor} radius={[0, 4, 4, 0]}>
             {showLabels && (

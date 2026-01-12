@@ -125,16 +125,7 @@ export default function Export() {
         }
         // If it's the "responses" section, get from responseDetails
         else if (section.id === "responses") {
-          const allQuestions = [
-            ...responseDetails.closedQuestions.map((q) => ({
-              ...q,
-              type: "closed",
-            })),
-            ...responseDetails.openQuestions.map((q) => ({
-              ...q,
-              type: "open",
-            })),
-          ]
+          const allQuestions = (responseDetails.questions || [])
             .filter((q) => q.id !== 3) // Exclude Q3
             .sort((a, b) => (a.index || 0) - (b.index || 0));
 

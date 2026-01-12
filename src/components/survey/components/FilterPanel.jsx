@@ -282,7 +282,7 @@ export function FilterPanel({
                     {uiTexts.filterPanel.allQuestions}
                   </SelectItem>
                   {questions.map((q, index) => {
-                    const isNPS = q.id === 1;
+                    const isNPS = q.type === "nps";
                     const questionType = isNPS
                       ? uiTexts.filterPanel.nps
                       : q.type === "open"

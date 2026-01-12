@@ -111,4 +111,3 @@ export function SurveyLayout({ activeSection, onSectionChange }) {
     </div>
   );
 }
-

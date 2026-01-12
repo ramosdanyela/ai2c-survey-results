@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { FileText, AlertTriangle } from "@/lib/icons";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { SubsectionTitle } from "../widgets/SubsectionTitle";
-import { COLOR_ORANGE_PRIMARY, severityColors } from "@/lib/colors";
-import { executiveReport, severityLabels, uiTexts } from "@/data/surveyData";
+import { CardContent } from "@/components/ui/card";
+import { GenericSubsection } from "../common/GenericSubsection";
+import { GenericCard } from "../common/GenericCard";
+import { severityColors } from "@/lib/colors";
+import { executiveReport, uiTexts } from "@/data/surveyData";
+
+const severityLabels = uiTexts.severityLabels;
 import { RecommendationsTable, TasksTable } from "../widgets/Tables";
 
 export function ExecutiveReport({ subSection, onSectionChange }) {
@@ -50,116 +48,62 @@ export function ExecutiveReport({ subSection, onSectionChange }) {
   return (
     <div className="space-y-8 animate-fade-in">
       {showSummary && (
-        <section>
-          <div className="space-y-6">
-            {/* Section Title */}
-            <SubsectionTitle
-              title={uiTexts.executiveReport.executiveSummary}
-              icon={FileText}
+        <GenericSubsection
+          title={uiTexts.executiveReport.executiveSummary}
+          icon={FileText}
+          componentsContainerClassName="grid gap-6"
+        >
+          <GenericCard
+            title={uiTexts.executiveReport.aboutStudy}
+            content={executiveReport.summary.aboutStudy}
+            style="elevated"
+          />
+
+          {/* Main Findings and Conclusions side by side on larger screens */}
+          <div className="grid gap-6 md:grid-cols-2">
+            <GenericCard
+              title={uiTexts.executiveReport.mainFindings}
+              content={executiveReport.summary.mainFindings}
+              style="elevated"
+              className="highlight-container-light border-l-4 bg-muted/10"
+              borderLeftColor="orange"
             />
 
-            <div className="grid gap-6">
-              <Card className="card-elevated">
-                <CardHeader>
-                  <CardTitle className="text-xl font-bold text-card-foreground">
-                    {uiTexts.executiveReport.aboutStudy}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-muted-foreground font-normal leading-relaxed space-y-3">
-                    {executiveReport.summary.aboutStudy
-                      .split("\n")
-                      .map((line, index) => (
-                        <p key={index} className={line.trim() ? "" : "h-3"}>
-                          {line}
-                        </p>
-                      ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Main Findings and Conclusions side by side on larger screens */}
-              <div className="grid gap-6 md:grid-cols-2">
-                <Card
-                  className="card-elevated highlight-container-light border-l-4 bg-muted/10"
-                  style={{ borderLeftColor: COLOR_ORANGE_PRIMARY }}
-                >
-                  <CardHeader>
-                    <CardTitle className="text-xl font-bold text-card-foreground">
-                      {uiTexts.executiveReport.mainFindings}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-muted-foreground font-normal leading-relaxed space-y-3">
-                      {executiveReport.summary.mainFindings
-                        .split("\n")
-                        .map((line, index) => (
-                          <p key={index} className={line.trim() ? "" : "h-3"}>
-                            {line}
-                          </p>
-                        ))}
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card
-                  className="card-elevated border-l-4 bg-muted/10"
-                  style={{ borderLeftColor: COLOR_ORANGE_PRIMARY }}
-                >
-                  <CardHeader>
-                    <CardTitle className="text-xl font-bold text-card-foreground">
-                      {uiTexts.executiveReport.conclusions}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-muted-foreground font-normal leading-relaxed space-y-3">
-                      {executiveReport.summary.conclusions
-                        .split("\n")
-                        .map((line, index) => (
-                          <p key={index} className={line.trim() ? "" : "h-3"}>
-                            {line}
-                          </p>
-                        ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
+            <GenericCard
+              title={uiTexts.executiveReport.conclusions}
+              content={executiveReport.summary.conclusions}
+              style="elevated"
+              className="border-l-4 bg-muted/10"
+              borderLeftColor="orange"
+            />
           </div>
-        </section>
+        </GenericSubsection>
       )}
 
       {showRecommendations && (
-        <section>
-          <div className="space-y-6">
-            {/* Section Title */}
-            <SubsectionTitle
-              title={uiTexts.executiveReport.recommendations}
-              icon={AlertTriangle}
-            />
-
-            <Card className="card-elevated overflow-hidden bg-muted/10">
-              <CardContent>
-                <RecommendationsTable
-                  recommendations={executiveReport.recommendations}
-                  severityLabels={severityLabels}
-                  severityColors={severityColors}
-                  expandedRecs={expandedRecs}
-                  onToggleRec={toggleRecExpansion}
-                  getRecTasks={getRecTasks}
-                  renderTasksTable={(recId, tasks) => (
-                    <TasksTable
-                      tasks={tasks}
-                      recId={recId}
-                      checkedTasks={checkedTasks}
-                      onToggleTask={toggleTask}
-                    />
-                  )}
+        <GenericSubsection
+          title={uiTexts.executiveReport.recommendations}
+          icon={AlertTriangle}
+        >
+          <GenericCard style="elevated" className="overflow-hidden bg-muted/10">
+            <RecommendationsTable
+              recommendations={executiveReport.recommendations}
+              severityLabels={severityLabels}
+              severityColors={severityColors}
+              expandedRecs={expandedRecs}
+              onToggleRec={toggleRecExpansion}
+              getRecTasks={getRecTasks}
+              renderTasksTable={(recId, tasks) => (
+                <TasksTable
+                  tasks={tasks}
+                  recId={recId}
+                  checkedTasks={checkedTasks}
+                  onToggleTask={toggleTask}
                 />
-              </CardContent>
-            </Card>
-          </div>
-        </section>
+              )}
+            />
+          </GenericCard>
+        </GenericSubsection>
       )}
     </div>
   );

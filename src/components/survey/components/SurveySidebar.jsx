@@ -15,7 +15,8 @@ import {
   uiTexts,
   sectionsConfig,
 } from "@/data/surveyData";
-import { forwardRef, useState } from "react";
+import { useSurveyData } from "@/hooks/useSurveyData";
+import { forwardRef, useState, useMemo, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
@@ -46,32 +47,253 @@ const menuItems = sectionsConfig.sections.map((section) => ({
   icon: getIcon(section.icon),
 }));
 
+/**
+ * Helper function to resolve data path from nested object
+ */
+function resolveDataPath(data, path) {
+  if (!data || !path) return null;
+  const keys = path.split(".");
+  let current = data;
+  for (const key of keys) {
+    if (current && typeof current === "object" && key in current) {
+      current = current[key];
+    } else {
+      return null;
+    }
+  }
+  return current;
+}
+
+/**
+ * Helper function to check if a section has subsections
+ */
+function hasSubsections(item, data) {
+  // Priority 1: Check if has subsections in config
+  if (
+    item.subsections &&
+    Array.isArray(item.subsections) &&
+    item.subsections.length > 0
+  ) {
+    return true;
+  }
+
+  // Priority 2: Check if has renderSchema with subsections
+  if (
+    item.data?.renderSchema?.subsections &&
+    Array.isArray(item.data.renderSchema.subsections) &&
+    item.data.renderSchema.subsections.length > 0
+  ) {
+    return true;
+  }
+
+  // Priority 3: Check dynamic subsections (attributes, responses) - even without dynamicSubsections flag
+  // Check attributes (known dynamic section)
+  if (item.id === "attributes") {
+    const attrs = data?.attributeDeepDive?.attributes || [];
+    return attrs.filter((a) => a.icon).length > 0;
+  }
+
+  // Check responses (known dynamic section)
+  if (item.id === "responses") {
+    const questions = data?.responseDetails?.questions || [];
+    const responsesSection = data?.sectionsConfig?.sections?.find(
+      (s) => s.id === "responses"
+    );
+    const hiddenIds =
+      responsesSection?.data?.config?.questions?.hiddenIds || [];
+    return questions.filter((q) => !hiddenIds.includes(q.id)).length > 0;
+  }
+
+  // Priority 4: Check if has dynamicSubsections flag with config
+  if (item.dynamicSubsections) {
+    const config = item.dynamicSubsectionsConfig || {};
+    const dataPath = config.dataPath;
+    if (dataPath) {
+      const items = resolveDataPath(data, dataPath) || [];
+      return items.length > 0;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Helper function to get dynamic subsections based on configuration
+ */
+function getDynamicSubsections(section, data) {
+  // Special handling for attributes (always works, even without dynamicSubsections flag)
+  if (section.id === "attributes") {
+    const attrs = data?.attributeDeepDive?.attributes || [];
+    const filtered = attrs
+      .filter((attr) => attr.icon)
+      .sort((a, b) => (a.index || 0) - (b.index || 0));
+    return filtered.map((attr) => ({
+      id: `attributes-${attr.id}`,
+      name: attr.name,
+      icon: attr.icon,
+      index: attr.index ?? 999,
+    }));
+  }
+
+  // Special handling for responses (always works, even without dynamicSubsections flag)
+  if (section.id === "responses") {
+    const responsesSection = data?.sectionsConfig?.sections?.find(
+      (s) => s.id === "responses"
+    );
+    const questions = responsesSection?.data?.questions || [];
+    const hiddenIds =
+      responsesSection?.data?.config?.questions?.hiddenIds || [];
+    const filtered = questions
+      .filter((q) => !hiddenIds.includes(q.id))
+      .sort((a, b) => (a.index || 0) - (b.index || 0));
+    return filtered.map((question) => ({
+      id: `responses-${question.id}`,
+      name: question.question,
+      icon: question.icon,
+      index: question.index ?? 999,
+      question: question, // Keep full question object for special rendering
+    }));
+  }
+
+  // Generic handling for other dynamic sections (requires dynamicSubsections flag)
+  if (!section.dynamicSubsections) return [];
+
+  const config = section.dynamicSubsectionsConfig || {};
+  const dataPath = config.dataPath;
+  const idPrefix = config.idPrefix || `${section.id}-`;
+  const filterKey = config.filter; // ex: "icon"
+  const sortBy = config.sortBy || "index";
+  const nameKey = config.nameKey || "name";
+
+  // Resolve dataPath
+  const items = resolveDataPath(data, dataPath) || [];
+
+  // Apply filter if specified
+  let filtered = items;
+  if (filterKey) {
+    filtered = items.filter((item) => item[filterKey]);
+  }
+
+  // Apply additional filters (ex: hiddenIds for questions)
+  if (config.hiddenIdsPath) {
+    const hiddenIds = resolveDataPath(data, config.hiddenIdsPath) || [];
+    filtered = filtered.filter((item) => !hiddenIds.includes(item.id));
+  }
+
+  // Sort
+  filtered.sort((a, b) => {
+    const aVal = a[sortBy] ?? 999;
+    const bVal = b[sortBy] ?? 999;
+    return aVal - bVal;
+  });
+
+  // Map to subsection format
+  return filtered.map((item) => ({
+    id: `${idPrefix}${item.id}`,
+    name: item[nameKey] || item.question || item.cluster || String(item.id),
+    icon: item.icon,
+    index: item.index ?? 999,
+  }));
+}
+
+/**
+ * Helper function to get the first subsection of a section
+ */
+function getFirstSubsectionHelper(sectionId, data) {
+  if (!data?.sectionsConfig?.sections) {
+    // Fallback for known sections (backward compatibility)
+    const fallbacks = {
+      executive: "executive-summary",
+      support: "support-sentiment",
+    };
+    return fallbacks[sectionId] || null;
+  }
+
+  const section = data.sectionsConfig.sections.find((s) => s.id === sectionId);
+  if (!section) return null;
+
+  // Priority 1: Subsections from config
+  if (section.subsections?.length > 0) {
+    const sorted = [...section.subsections].sort(
+      (a, b) => (a.index ?? 999) - (b.index ?? 999)
+    );
+    return sorted[0].id;
+  }
+
+  // Priority 2: RenderSchema subsections
+  if (section.data?.renderSchema?.subsections?.length > 0) {
+    const sorted = [...section.data.renderSchema.subsections].sort(
+      (a, b) => (a.index ?? 999) - (b.index ?? 999)
+    );
+    return sorted[0].id;
+  }
+
+  // Priority 3: Dynamic subsections
+  if (section.dynamicSubsections) {
+    const dynamicSubs = getDynamicSubsections(section, data);
+    if (dynamicSubs.length > 0) return dynamicSubs[0].id;
+  }
+
+  return null;
+}
+
 // Internal component to render sidebar content
 function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { data } = useSurveyData();
 
-  // State to control which sections are expanded - all start open
-  const [expandedSections, setExpandedSections] = useState({
-    executive: true,
-    support: true,
-    attributes: true,
-    responses: true,
+  // Get surveyInfo from data (JSON) or fallback to imported
+  const currentSurveyInfo = data?.surveyInfo || surveyInfo;
+
+  // State to control which sections are expanded - initialize dynamically
+  const [expandedSections, setExpandedSections] = useState(() => {
+    if (!data?.sectionsConfig?.sections) {
+      // Fallback for known sections (backward compatibility)
+      return {
+        executive: true,
+        support: true,
+        attributes: true,
+        responses: true,
+      };
+    }
+
+    const initialState = {};
+    data.sectionsConfig.sections.forEach((section) => {
+      initialState[section.id] = section.defaultExpanded ?? true;
+    });
+
+    return initialState;
   });
 
-  // Get all questions for "responses" section (sorted by index, excluding Q3)
-  const allQuestions = [
-    ...responseDetails.closedQuestions.map((q) => ({
-      ...q,
-      type: "closed",
-    })),
-    ...responseDetails.openQuestions.map((q) => ({
-      ...q,
-      type: "open",
-    })),
-  ]
-    .filter((q) => q.id !== 3) // Hide Q3
-    .sort((a, b) => (a.index || 0) - (b.index || 0));
+  // Update expanded sections when data changes (for new sections added dynamically)
+  useEffect(() => {
+    if (data?.sectionsConfig?.sections) {
+      setExpandedSections((prev) => {
+        const updated = { ...prev };
+        data.sectionsConfig.sections.forEach((section) => {
+          if (!(section.id in updated)) {
+            updated[section.id] = section.defaultExpanded ?? true;
+          }
+        });
+        return updated;
+      });
+    }
+  }, [data?.sectionsConfig?.sections]);
+
+  // Get all questions for "responses" section (sorted by index, using config for hiddenIds)
+  const allQuestions = useMemo(() => {
+    const responsesSection = data?.sectionsConfig?.sections?.find(
+      (s) => s.id === "responses"
+    );
+    const questions = responsesSection?.data?.questions || [];
+    const hiddenIds =
+      responsesSection?.data?.config?.questions?.hiddenIds || [];
+
+    return questions
+      .filter((q) => !hiddenIds.includes(q.id))
+      .sort((a, b) => (a.index || 0) - (b.index || 0));
+  }, [data]);
 
   // Simplified function: sets state directly based on value received from Collapsible
   const setSectionExpanded = (sectionId, isOpen) => {
@@ -82,22 +304,32 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
   };
 
   // Function to get the first subsection of a section
-  const getFirstSubsection = (sectionId) => {
-    if (sectionId === "executive") return "executive-summary";
-    if (sectionId === "support") return "support-sentiment";
-    if (sectionId === "attributes") {
-      const allAttributes = attributeDeepDive.attributes
-        .filter((attr) => attr.icon)
-        .sort((a, b) => (a.index || 0) - (b.index || 0));
-      return allAttributes.length > 0
-        ? `attributes-${allAttributes[0].id}`
-        : null;
-    }
-    if (sectionId === "responses") {
-      return allQuestions.length > 0 ? `responses-${allQuestions[0].id}` : null;
-    }
-    return null;
-  };
+  const getFirstSubsection = useCallback(
+    (sectionId) => {
+      // Use helper function with data from hook
+      const result = getFirstSubsectionHelper(sectionId, data);
+
+      // Fallback for legacy behavior if helper returns null
+      if (!result) {
+        if (sectionId === "attributes") {
+          const allAttributes = attributeDeepDive.attributes
+            .filter((attr) => attr.icon)
+            .sort((a, b) => (a.index || 0) - (b.index || 0));
+          return allAttributes.length > 0
+            ? `attributes-${allAttributes[0].id}`
+            : null;
+        }
+        if (sectionId === "responses") {
+          return allQuestions.length > 0
+            ? `responses-${allQuestions[0].id}`
+            : null;
+        }
+      }
+
+      return result;
+    },
+    [data, allQuestions]
+  );
 
   // Handler for when a section is expanded/collapsed
   const handleSectionToggle = (sectionId, isOpen) => {
@@ -128,7 +360,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
         <div className="lg:hidden flex justify-end pt-2 sm:pt-3 pb-1.5 sm:pb-2">
           <button
             onClick={onItemClick}
-            className="rounded-lg p-1.5 sm:p-2 text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 border border-transparent hover:border-[hsl(var(--custom-blue))]/40 transition-all duration-200"
+            className="rounded-lg p-1.5 sm:p-2 text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 transition-all duration-200"
           >
             <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
@@ -149,21 +381,21 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
               {/* Survey Title */}
               <div className="mb-0.5">
                 <h2 className="text-sm sm:text-lg font-bold text-foreground leading-tight">
-                  {surveyInfo.title}
+                  {currentSurveyInfo.title}
                 </h2>
               </div>
 
               {/* Company */}
               <div className="mb-0.5">
                 <div className="text-[10px] sm:text-xs font-normal text-foreground">
-                  {surveyInfo.company}
+                  {currentSurveyInfo.company}
                 </div>
               </div>
 
               {/* Period */}
               <div className="mb-2 sm:mb-3">
                 <div className="text-[9px] sm:text-[10px] font-normal text-foreground">
-                  {surveyInfo.period}
+                  {currentSurveyInfo.period}
                 </div>
               </div>
 
@@ -193,7 +425,9 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         className="text-sm sm:text-lg font-bold mb-0.5 truncate"
                         style={{ color: COLOR_GRAY_DARK }}
                       >
-                        {surveyInfo.totalRespondents.toLocaleString("pt-BR")}
+                        {currentSurveyInfo.totalRespondents.toLocaleString(
+                          "pt-BR"
+                        )}
                       </div>
                       <div className="text-[9px] sm:text-[10px] font-normal text-foreground/70 truncate">
                         {uiTexts.surveySidebar.respondents}
@@ -226,7 +460,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         className="text-sm sm:text-lg font-bold mb-0.5 truncate"
                         style={{ color: COLOR_GRAY_DARK }}
                       >
-                        {Math.round(surveyInfo.responseRate)}%
+                        {Math.round(currentSurveyInfo.responseRate)}%
                       </div>
                       <div className="text-[9px] sm:text-[10px] font-normal text-foreground/70 truncate">
                         {uiTexts.surveySidebar.responseRate}
@@ -259,13 +493,22 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         className="text-sm sm:text-lg font-bold mb-0.5 truncate"
                         style={{ color: COLOR_GRAY_DARK }}
                       >
-                        {(() => {
-                          const allQuestions = [
-                            ...responseDetails.closedQuestions,
-                            ...responseDetails.openQuestions,
-                          ].filter((q) => q.id !== 3); // Ocultar Q3
-                          return allQuestions.length;
-                        })()}
+                        {currentSurveyInfo?.questions ||
+                          (() => {
+                            // Fallback: calcula a partir das perguntas no JSON
+                            const responsesSection =
+                              data?.sectionsConfig?.sections?.find(
+                                (s) => s.id === "responses"
+                              );
+                            const questions =
+                              responsesSection?.data?.questions || [];
+                            const hiddenIds =
+                              responsesSection?.data?.config?.questions
+                                ?.hiddenIds || [];
+                            return questions.filter(
+                              (q) => !hiddenIds.includes(q.id)
+                            ).length;
+                          })()}
                       </div>
                       <div className="text-[9px] sm:text-[10px] font-normal text-foreground/70 truncate">
                         {uiTexts.surveySidebar.questions}
@@ -283,191 +526,286 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
               activeSection === item.id ||
               activeSection.startsWith(item.id + "-");
 
-            // Check if section has subsections
-            const hasSubsections =
-              item.id === "executive" ||
-              item.id === "support" ||
+            // Check if section has subsections (dynamic detection)
+            const itemHasSubsections = hasSubsections(item, data);
+
+            // If it's a section with dynamic subsections (attributes, responses, or any configured)
+            // Check by ID first (attributes, responses) or by dynamicSubsections flag
+            if (
               item.id === "attributes" ||
-              item.id === "responses";
-
-            // If it's the "attributes" section, show attribute subsections
-            if (item.id === "attributes") {
-              const isExpanded = expandedSections.attributes;
-              // Get all available attributes with icons from surveyData (sorted by index)
-              const allAttributes = attributeDeepDive.attributes
-                .filter((attr) => attr.icon)
-                .sort((a, b) => (a.index || 0) - (b.index || 0));
-              return (
-                <Collapsible
-                  key={item.id}
-                  open={isExpanded}
-                  onOpenChange={(open) =>
-                    handleSectionToggle("attributes", open)
-                  }
-                  className="w-full"
-                >
-                  <CollapsibleTrigger asChild>
-                    <button
-                      onClick={(e) => handleSectionClick("attributes", e)}
-                      className={cn(
-                        "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-left w-full",
-                        isActive
-                          ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_3px_12px_hsl(var(--custom-blue),0.4)]"
-                          : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 border border-transparent hover:border-[hsl(var(--custom-blue))]/40"
-                      )}
-                    >
-                      {item.icon && (
-                        <item.icon className="w-4 h-4 flex-shrink-0" />
-                      )}
-                      <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
-                        {item.name}
-                      </span>
-                      {isExpanded ? (
-                        <ChevronDown className="w-4 h-4 flex-shrink-0" />
-                      ) : (
-                        <ChevronRight className="w-4 h-4 flex-shrink-0" />
-                      )}
-                    </button>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent className="w-full mt-1">
-                    <div className="flex flex-col gap-1 ml-4 pl-4 border-l-2 border-[hsl(var(--custom-blue))]/30">
-                      {allAttributes.map((attr) => {
-                        const attributeSectionId = `attributes-${attr.id}`;
-                        const isAttributeActive =
-                          activeSection === attributeSectionId;
-                        const Icon = getIcon(attr.icon);
-                        return (
-                          <button
-                            key={attr.id}
-                            onClick={() => {
-                              onSectionChange(attributeSectionId);
-                              if (onItemClick) {
-                                onItemClick();
-                              }
-                            }}
-                            className={cn(
-                              "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-left w-full text-xs sm:text-sm",
-                              isAttributeActive
-                                ? "bg-[hsl(var(--custom-blue))]/30 text-sidebar-foreground border border-[hsl(var(--custom-blue))]/30"
-                                : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/30 border border-transparent hover:border-[hsl(var(--custom-blue))]/30"
-                            )}
-                          >
-                            {Icon && <Icon className="w-4 h-4 shrink-0" />}
-                            <span className="flex-1">{attr.name}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </CollapsibleContent>
-                </Collapsible>
-              );
-            }
-
-            // If it's the "responses" section, show question subsections
-            if (item.id === "responses") {
-              const isExpanded = expandedSections.responses;
-              return (
-                <Collapsible
-                  key={item.id}
-                  open={isExpanded}
-                  onOpenChange={(open) =>
-                    handleSectionToggle("responses", open)
-                  }
-                  className="w-full"
-                >
-                  <CollapsibleTrigger asChild>
-                    <button
-                      onClick={(e) => handleSectionClick("responses", e)}
-                      className={cn(
-                        "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-left w-full",
-                        isActive
-                          ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_3px_12px_hsl(var(--custom-blue),0.4)]"
-                          : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 border border-transparent hover:border-[hsl(var(--custom-blue))]/40"
-                      )}
-                    >
-                      {item.icon && (
-                        <item.icon className="w-4 h-4 flex-shrink-0" />
-                      )}
-                      <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
-                        {item.name}
-                      </span>
-                      {isExpanded ? (
-                        <ChevronDown className="w-4 h-4 flex-shrink-0" />
-                      ) : (
-                        <ChevronRight className="w-4 h-4 flex-shrink-0" />
-                      )}
-                    </button>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent className="w-full mt-1">
-                    <div className="flex flex-col gap-1 ml-4 pl-4 border-l-2 border-[hsl(var(--custom-blue))]/30">
-                      {allQuestions.map((question, index) => {
-                        const questionSectionId = `responses-${question.id}`;
-                        const isQuestionActive =
-                          activeSection === questionSectionId;
-                        // Renumber questions: index + 1 (excluding Q3)
-                        const displayNumber = index + 1;
-                        return (
-                          <button
-                            key={question.id}
-                            onClick={() => {
-                              onSectionChange(questionSectionId);
-                              if (onItemClick) {
-                                onItemClick();
-                              }
-                            }}
-                            className={cn(
-                              "flex items-start gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-left w-full text-sm",
-                              isQuestionActive
-                                ? "bg-[hsl(var(--custom-blue))]/30 text-sidebar-foreground border border-[hsl(var(--custom-blue))]/30"
-                                : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/30 border border-transparent hover:border-[hsl(var(--custom-blue))]/30"
-                            )}
-                          >
-                            <span className="font-semibold shrink-0">
-                              Q{displayNumber}
-                            </span>
-                            {question.question.length > 60 ? (
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <span className="flex-1 line-clamp-2">
-                                    {question.question.substring(0, 60) + "..."}
-                                  </span>
-                                </TooltipTrigger>
-                                <TooltipContent
-                                  side="right"
-                                  className="max-w-xs p-3 text-sm"
-                                >
-                                  <p className="whitespace-normal">
-                                    {question.question}
-                                  </p>
-                                </TooltipContent>
-                              </Tooltip>
-                            ) : (
-                              <span className="flex-1 line-clamp-2">
-                                {question.question}
-                              </span>
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </CollapsibleContent>
-                </Collapsible>
-              );
-            }
-
-            // For other sections with subsections (executive, support)
-            if (hasSubsections) {
+              item.id === "responses" ||
+              item.dynamicSubsections
+            ) {
               const isExpanded = expandedSections[item.id];
-              // Get subsections from sectionsConfig
-              const sectionConfig = sectionsConfig.sections.find(
-                (s) => s.id === item.id
-              );
-              const subsections = sectionConfig?.subsections
+              // Get dynamic subsections using helper function
+              const dynamicSubs = getDynamicSubsections(item, data);
+
+              // Fallback for legacy attributes section (backward compatibility)
+              if (item.id === "attributes" && dynamicSubs.length === 0) {
+                const allAttributes = attributeDeepDive.attributes
+                  .filter((attr) => attr.icon)
+                  .sort((a, b) => (a.index || 0) - (b.index || 0));
+                return (
+                  <Collapsible
+                    key={item.id}
+                    open={isExpanded}
+                    onOpenChange={(open) => handleSectionToggle(item.id, open)}
+                    className="w-full"
+                  >
+                    <CollapsibleTrigger asChild>
+                      <button
+                        onClick={(e) => handleSectionClick(item.id, e)}
+                        className={cn(
+                          "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-left w-full",
+                          isActive
+                            ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_3px_12px_hsl(var(--custom-blue),0.4)]"
+                            : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20"
+                        )}
+                      >
+                        {item.icon && (
+                          <item.icon className="w-4 h-4 flex-shrink-0" />
+                        )}
+                        <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
+                          {item.name}
+                        </span>
+                        {isExpanded ? (
+                          <ChevronDown className="w-4 h-4 flex-shrink-0" />
+                        ) : (
+                          <ChevronRight className="w-4 h-4 flex-shrink-0" />
+                        )}
+                      </button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="w-full mt-1">
+                      <div className="flex flex-col gap-1 ml-4 pl-4 border-l-2 border-[hsl(var(--custom-blue))]/30">
+                        {allAttributes.map((attr) => {
+                          const attributeSectionId = `attributes-${attr.id}`;
+                          const isAttributeActive =
+                            activeSection === attributeSectionId;
+                          const Icon = getIcon(attr.icon);
+                          return (
+                            <button
+                              key={attr.id}
+                              onClick={() => {
+                                onSectionChange(attributeSectionId);
+                                if (onItemClick) {
+                                  onItemClick();
+                                }
+                              }}
+                              className={cn(
+                                "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-left w-full text-xs sm:text-sm",
+                                isAttributeActive
+                                  ? "bg-[hsl(var(--custom-blue))]/30 text-sidebar-foreground border border-[hsl(var(--custom-blue))]/30"
+                                  : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/30"
+                              )}
+                            >
+                              {Icon && <Icon className="w-4 h-4 shrink-0" />}
+                              <span className="flex-1">{attr.name}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
+                );
+              }
+
+              // Generic rendering for dynamic subsections
+              if (dynamicSubs.length > 0) {
+                // Special rendering for responses (questions with Q prefix)
+                if (item.id === "responses") {
+                  return (
+                    <Collapsible
+                      key={item.id}
+                      open={isExpanded}
+                      onOpenChange={(open) =>
+                        handleSectionToggle(item.id, open)
+                      }
+                      className="w-full"
+                    >
+                      <CollapsibleTrigger asChild>
+                        <button
+                          onClick={(e) => handleSectionClick(item.id, e)}
+                          className={cn(
+                            "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-left w-full",
+                            isActive
+                              ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_3px_12px_hsl(var(--custom-blue),0.4)]"
+                              : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20"
+                          )}
+                        >
+                          {item.icon && (
+                            <item.icon className="w-4 h-4 flex-shrink-0" />
+                          )}
+                          <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
+                            {item.name}
+                          </span>
+                          {isExpanded ? (
+                            <ChevronDown className="w-4 h-4 flex-shrink-0" />
+                          ) : (
+                            <ChevronRight className="w-4 h-4 flex-shrink-0" />
+                          )}
+                        </button>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="w-full mt-1">
+                        <div className="flex flex-col gap-1 ml-4 pl-4 border-l-2 border-[hsl(var(--custom-blue))]/30">
+                          {dynamicSubs.map((sub, index) => {
+                            const isSubActive = activeSection === sub.id;
+                            const displayNumber = index + 1;
+                            return (
+                              <button
+                                key={sub.id}
+                                onClick={() => {
+                                  onSectionChange(sub.id);
+                                  if (onItemClick) {
+                                    onItemClick();
+                                  }
+                                }}
+                                className={cn(
+                                  "flex items-start gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-left w-full text-sm",
+                                  isSubActive
+                                    ? "bg-[hsl(var(--custom-blue))]/30 text-sidebar-foreground border border-[hsl(var(--custom-blue))]/30"
+                                    : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/30"
+                                )}
+                              >
+                                <span className="font-semibold shrink-0">
+                                  Q{displayNumber}
+                                </span>
+                                {sub.name && sub.name.length > 60 ? (
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <span className="flex-1 line-clamp-2">
+                                        {sub.name.substring(0, 60) + "..."}
+                                      </span>
+                                    </TooltipTrigger>
+                                    <TooltipContent
+                                      side="right"
+                                      className="max-w-xs p-3 text-sm"
+                                    >
+                                      <p className="whitespace-normal">
+                                        {sub.name}
+                                      </p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                ) : (
+                                  <span className="flex-1 line-clamp-2">
+                                    {sub.name}
+                                  </span>
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  );
+                }
+
+                // Generic rendering for other dynamic subsections (attributes, etc)
+                return (
+                  <Collapsible
+                    key={item.id}
+                    open={isExpanded}
+                    onOpenChange={(open) => handleSectionToggle(item.id, open)}
+                    className="w-full"
+                  >
+                    <CollapsibleTrigger asChild>
+                      <button
+                        onClick={(e) => handleSectionClick(item.id, e)}
+                        className={cn(
+                          "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-left w-full",
+                          isActive
+                            ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_3px_12px_hsl(var(--custom-blue),0.4)]"
+                            : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20"
+                        )}
+                      >
+                        {item.icon && (
+                          <item.icon className="w-4 h-4 flex-shrink-0" />
+                        )}
+                        <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
+                          {item.name}
+                        </span>
+                        {isExpanded ? (
+                          <ChevronDown className="w-4 h-4 flex-shrink-0" />
+                        ) : (
+                          <ChevronRight className="w-4 h-4 flex-shrink-0" />
+                        )}
+                      </button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="w-full mt-1">
+                      <div className="flex flex-col gap-1 ml-4 pl-4 border-l-2 border-[hsl(var(--custom-blue))]/30">
+                        {dynamicSubs.map((sub) => {
+                          const isSubActive = activeSection === sub.id;
+                          const SubIcon = sub.icon ? getIcon(sub.icon) : null;
+                          return (
+                            <button
+                              key={sub.id}
+                              onClick={() => {
+                                onSectionChange(sub.id);
+                                if (onItemClick) {
+                                  onItemClick();
+                                }
+                              }}
+                              className={cn(
+                                "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-left w-full text-xs sm:text-sm",
+                                isSubActive
+                                  ? "bg-[hsl(var(--custom-blue))]/30 text-sidebar-foreground border border-[hsl(var(--custom-blue))]/30"
+                                  : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/30"
+                              )}
+                            >
+                              {SubIcon && (
+                                <SubIcon className="w-4 h-4 shrink-0" />
+                              )}
+                              <span className="flex-1">{sub.name}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
+                );
+              }
+            }
+
+            // Note: responses section is now handled by dynamicSubsections above
+            // This block is kept for backward compatibility but should not be reached
+            // if dynamicSubsections is properly configured
+
+            // For other sections with subsections (executive, support, or any new section)
+            if (
+              itemHasSubsections &&
+              !(
+                item.id === "attributes" ||
+                item.id === "responses" ||
+                item.dynamicSubsections
+              )
+            ) {
+              const isExpanded = expandedSections[item.id];
+              // Get subsections from data (dynamic) or fallback to static sectionsConfig
+              const sectionConfigFromData =
+                data?.sectionsConfig?.sections?.find((s) => s.id === item.id);
+              const sectionConfig =
+                sectionConfigFromData ||
+                sectionsConfig.sections.find((s) => s.id === item.id);
+
+              // Try subsections from config first, then from renderSchema
+              let subsections = sectionConfig?.subsections
                 ? sectionConfig.subsections.map((sub) => ({
                     ...sub,
                     icon: getIcon(sub.icon),
                   }))
                 : [];
+
+              // If no subsections in config, try renderSchema
+              if (
+                subsections.length === 0 &&
+                sectionConfig?.data?.renderSchema?.subsections
+              ) {
+                subsections = sectionConfig.data.renderSchema.subsections
+                  .sort((a, b) => (a.index ?? 999) - (b.index ?? 999))
+                  .map((sub) => ({
+                    ...sub,
+                    icon: getIcon(sub.icon),
+                  }));
+              }
 
               return (
                 <Collapsible
@@ -483,7 +821,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-left w-full",
                         isActive
                           ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_3px_12px_hsl(var(--custom-blue),0.4)]"
-                          : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 border border-transparent hover:border-[hsl(var(--custom-blue))]/40"
+                          : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20"
                       )}
                     >
                       {item.icon && (
@@ -518,7 +856,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                               "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-left w-full text-xs sm:text-sm",
                               isSubsectionActive
                                 ? "bg-[hsl(var(--custom-blue))]/30 text-sidebar-foreground border border-[hsl(var(--custom-blue))]/30"
-                                : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/30 border border-transparent hover:border-[hsl(var(--custom-blue))]/30"
+                                : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/30"
                             )}
                           >
                             {SubsectionIcon && (

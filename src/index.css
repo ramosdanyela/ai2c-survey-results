@@ -42,8 +42,8 @@
     --title-blue: 231 100% 39%; /* #001dc6 - Dark blue for main titles */
     --subtitle-blue: 231 100% 45%; /* Lighter shade of #001dc6 for subtitles */
 
-    /* Custom blue - #0b18c8 */
-    --custom-blue: 236 90% 41%; /* #0b18c8 */
+    /* Custom blue - #1982d8 (same as control buttons) */
+    --custom-blue: 207 79% 47%; /* #1982d8 */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;

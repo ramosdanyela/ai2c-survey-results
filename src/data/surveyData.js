@@ -1308,6 +1308,13 @@ export const uiTexts = {
     selectAtLeastOneSection:
       "Selecione pelo menos uma seção ou o relatório completo para exportar",
   },
+  // SeverityLabels
+  severityLabels: {
+    critical: "Crítico",
+    high: "Alto",
+    medium: "Médio",
+    low: "Baixo",
+  },
 };
 
 // ------------------------------------------------------------
@@ -1386,9 +1393,5 @@ export const sectionsConfig = {
 // ------------------------------------------------------------
 // HELPER CONSTANTS
 // ------------------------------------------------------------
-export const severityLabels = {
-  critical: "Crítico",
-  high: "Alto",
-  medium: "Médio",
-  low: "Baixo",
-};
+// Export severityLabels from uiTexts for backward compatibility
+export const severityLabels = uiTexts.severityLabels;

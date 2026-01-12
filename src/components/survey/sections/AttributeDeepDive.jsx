@@ -1,13 +1,11 @@
-import { MapPin, GraduationCap, Building } from "@/lib/icons";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { SubsectionTitle } from "../widgets/SubsectionTitle";
+import { getIcon } from "@/lib/icons";
+import { GenericSubsection } from "../common/GenericSubsection";
+import { GenericCard } from "../common/GenericCard";
 import { attributeDeepDive, uiTexts } from "@/data/surveyData";
+import { useSurveyData } from "@/hooks/useSurveyData";
+import { useMemo } from "react";
 import { RGBA_BLACK_SHADOW_20 } from "@/lib/colors";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   SentimentStackedChart,
   SimpleBarChart,
@@ -23,13 +21,23 @@ import {
   NegativeCategoriesTable,
 } from "../widgets/Tables";
 
-const attributeIcons = {
-  state: MapPin,
-  education: GraduationCap,
-  customerType: Building,
-};
-
 export function AttributeDeepDive({ attributeId }) {
+  const { data } = useSurveyData();
+
+  // Get configuration from JSON
+  const attributesConfig = useMemo(() => {
+    if (!data?.sectionsConfig?.sections) return null;
+    const attributesSection = data.sectionsConfig.sections.find(
+      (s) => s.id === "attributes"
+    );
+    return attributesSection?.data?.config || null;
+  }, [data]);
+
+  // Get default icon from config with fallback
+  const defaultIcon = useMemo(() => {
+    return attributesConfig?.defaultIcon || "Building";
+  }, [attributesConfig]);
+
   // If no attributeId, use the first attribute as default
   const defaultAttributeId =
     attributeId || attributeDeepDive.attributes[0]?.id || "customerType";
@@ -45,33 +53,25 @@ export function AttributeDeepDive({ attributeId }) {
 
   // Render only the active attribute
   const attr = currentAttribute;
-  const Icon = attributeIcons[attr.id] || Building;
+  // Get icon from JSON data (attr.icon) or use default from config
+  const Icon = attr.icon ? getIcon(attr.icon) : getIcon(defaultIcon);
 
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Section Title */}
-      <SubsectionTitle title={attr.name} icon={Icon} />
-
-      <div className="space-y-6">
+      <GenericSubsection
+        title={attr.name}
+        icon={Icon}
+        componentsContainerClassName="space-y-6"
+      >
         {/* Summary */}
-        <Card className="card-elevated">
-          <CardHeader>
-            <CardTitle className="text-xl font-bold text-card-foreground">
-              {uiTexts.attributeDeepDive.summary}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-muted-foreground leading-relaxed space-y-3">
-              {attr.summary.split("\n").map((line, index) => (
-                <p key={index} className={line.trim() ? "" : "h-3"}>
-                  {line}
-                </p>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <GenericCard
+          title={uiTexts.attributeDeepDive.summary}
+          content={attr.summary}
+          style="elevated"
+        />
 
-        <div className="grid lg:grid-cols-2 gap-6 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
           {/* Distribution - Horizontal bars Nussbaumer style */}
           <Card className="card-elevated flex flex-col">
             <CardHeader className="flex-shrink-0">
@@ -282,7 +282,7 @@ export function AttributeDeepDive({ attributeId }) {
             </CardContent>
           </Card>
         )}
-      </div>
+      </GenericSubsection>
     </div>
   );
 }

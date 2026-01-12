@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { FileText, Menu, getIcon } from "@/lib/icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -5,41 +6,66 @@ import {
   RGBA_ORANGE_SHADOW_40,
   RGBA_BLACK_SHADOW_20,
 } from "@/lib/colors";
-import {
-  responseDetails,
-  attributeDeepDive,
-  uiTexts,
-  sectionsConfig,
-} from "@/data/surveyData";
+import { useSurveyData } from "@/hooks/useSurveyData";
 import { NavigationButtons } from "@/components/survey/components/NavigationButtons";
 
-// Section to title mapping
-const sectionTitles = {
-  executive: uiTexts.surveyHeader.executiveReport,
-  "executive-summary": uiTexts.surveyHeader.executiveSummary,
-  "executive-recommendations": uiTexts.surveyHeader.recommendations,
-  support: uiTexts.surveyHeader.supportAnalysis,
-  "support-sentiment": uiTexts.surveyHeader.sentimentAnalysis,
-  "support-intent": uiTexts.surveyHeader.respondentIntent,
-  "support-segmentation": uiTexts.surveyHeader.segmentation,
-  responses: uiTexts.surveyHeader.questionAnalysis,
-  attributes: uiTexts.surveyHeader.attributeDeepDive,
-};
+/**
+ * Get section title from data (programmatic)
+ */
+function getSectionTitleFromData(activeSection, data) {
+  if (!data?.uiTexts?.surveyHeader) {
+    return activeSection;
+  }
 
-// Get icon for a section or subsection
-function getSectionIconFromConfig(sectionId) {
+  const uiTexts = data.uiTexts.surveyHeader;
+
+  // Always return the main section title (before the hyphen)
+  const baseSection = activeSection.split("-")[0];
+
+  // Map section IDs to title keys
+  const titleMap = {
+    executive: uiTexts.executiveReport || "Relatório Executivo",
+    "executive-summary": uiTexts.executiveSummary || "Sumário Executivo",
+    "executive-recommendations": uiTexts.recommendations || "Recomendações",
+    support: uiTexts.supportAnalysis || "Análises de Suporte",
+    "support-sentiment": uiTexts.sentimentAnalysis || "Análise de Sentimento",
+    "support-intent": uiTexts.respondentIntent || "Intenção de Respondentes",
+    "support-segmentation": uiTexts.segmentation || "Segmentação",
+    responses: uiTexts.questionAnalysis || "Análise por Questão",
+    attributes: uiTexts.attributeDeepDive || "Aprofundamento por Atributos",
+  };
+
+  if (titleMap[baseSection]) {
+    return titleMap[baseSection];
+  }
+
+  // If not found, try to find exact title as fallback
+  if (titleMap[activeSection]) {
+    return titleMap[activeSection];
+  }
+
+  // Fallback
+  return uiTexts.results || "Resultados da Pesquisa";
+}
+
+/**
+ * Get icon for a section or subsection (programmatic)
+ */
+function getSectionIconFromConfig(sectionId, data) {
+  if (!data?.sectionsConfig?.sections) return FileText;
+
   // First try to find exact match in sectionsConfig
-  for (const section of sectionsConfig.sections) {
+  for (const section of data.sectionsConfig.sections) {
     // Check if it's the main section
     if (section.id === sectionId) {
       return getIcon(section.icon);
     }
     // Check subsections
-    if (section.subsections) {
+    if (section.subsections && Array.isArray(section.subsections)) {
       const subsection = section.subsections.find(
         (sub) => sub.id === sectionId
       );
-      if (subsection) {
+      if (subsection && subsection.icon) {
         return getIcon(subsection.icon);
       }
     }
@@ -48,17 +74,17 @@ function getSectionIconFromConfig(sectionId) {
   // Check if it's an attribute subsection
   if (sectionId.startsWith("attributes-")) {
     const attributeId = sectionId.replace("attributes-", "");
-    const attribute = attributeDeepDive.attributes.find(
+    const attribute = data?.attributeDeepDive?.attributes?.find(
       (attr) => attr.id === attributeId
     );
     if (attribute && attribute.icon) {
       return getIcon(attribute.icon);
     }
     // Fallback to section icon
-    const attributesSection = sectionsConfig.sections.find(
+    const attributesSection = data.sectionsConfig.sections.find(
       (s) => s.id === "attributes"
     );
-    if (attributesSection) {
+    if (attributesSection && attributesSection.icon) {
       return getIcon(attributesSection.icon);
     }
   }
@@ -66,19 +92,16 @@ function getSectionIconFromConfig(sectionId) {
   // Check if it's a question subsection
   if (sectionId.startsWith("responses-")) {
     const questionId = parseInt(sectionId.replace("responses-", ""), 10);
-    const allQuestions = [
-      ...responseDetails.closedQuestions,
-      ...responseDetails.openQuestions,
-    ];
+    const allQuestions = data?.responseDetails?.questions || [];
     const question = allQuestions.find((q) => q.id === questionId);
     if (question && question.icon) {
       return getIcon(question.icon);
     }
     // Fallback to section icon
-    const responsesSection = sectionsConfig.sections.find(
+    const responsesSection = data.sectionsConfig.sections.find(
       (s) => s.id === "responses"
     );
-    if (responsesSection) {
+    if (responsesSection && responsesSection.icon) {
       return getIcon(responsesSection.icon);
     }
   }
@@ -87,34 +110,21 @@ function getSectionIconFromConfig(sectionId) {
   return FileText;
 }
 
-function getSectionTitle(activeSection) {
-  // Always return the main section title (before the hyphen)
-  const baseSection = activeSection.split("-")[0];
-  if (sectionTitles[baseSection]) {
-    return sectionTitles[baseSection];
-  }
-
-  // If not found, try to find exact title as fallback
-  if (sectionTitles[activeSection]) {
-    return sectionTitles[activeSection];
-  }
-
-  // Fallback
-  return uiTexts.surveyHeader.results;
-}
-
-function getSectionIcon(activeSection) {
-  return getSectionIconFromConfig(activeSection);
-}
-
 export function SurveyHeader({
   activeSection,
   onSectionChange,
   onMenuClick,
   navigationButtons,
 }) {
-  const title = getSectionTitle(activeSection);
-  const Icon = getSectionIcon(activeSection);
+  const { data } = useSurveyData();
+
+  const title = useMemo(() => {
+    return getSectionTitleFromData(activeSection, data);
+  }, [activeSection, data]);
+
+  const Icon = useMemo(() => {
+    return getSectionIconFromConfig(activeSection, data);
+  }, [activeSection, data]);
 
   // Use provided navigationButtons or default NavigationButtons component
   let previousButtonDiv = null;
@@ -228,4 +238,3 @@ export function SurveyHeader({
     </header>
   );
 }
-
