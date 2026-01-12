@@ -1,9 +1,4 @@
-import { ExecutiveReport } from "@/components/survey/sections/ExecutiveReport";
-import { SupportAnalysis } from "@/components/survey/sections/SupportAnalysis";
-import { ResponseDetails } from "@/components/survey/sections/ResponseDetails";
-import { AttributeDeepDive } from "@/components/survey/sections/AttributeDeepDive";
 import { GenericSectionRenderer } from "@/components/survey/common/GenericSectionRenderer";
-import { responseDetails, attributeDeepDive } from "@/data/surveyData";
 import { useSurveyData } from "@/hooks/useSurveyData";
 import { useMemo } from "react";
 
@@ -42,19 +37,17 @@ function getFirstSubsectionHelper(sectionId, data) {
   // Priority 3: Dynamic subsections (attributes, responses)
   if (section.dynamicSubsections) {
     if (section.id === "attributes") {
-      const attrs = data?.attributeDeepDive?.attributes || [];
+      const sectionData = section.data || {};
+      const attrs = sectionData?.attributes || [];
       const filtered = attrs
         .filter((a) => a.icon)
         .sort((a, b) => (a.index ?? 999) - (b.index ?? 999));
       return filtered.length > 0 ? `attributes-${filtered[0].id}` : null;
     }
     if (section.id === "responses") {
-      const questions = data?.responseDetails?.questions || [];
-      const responsesSection = data?.sectionsConfig?.sections?.find(
-        (s) => s.id === "responses"
-      );
-      const hiddenIds =
-        responsesSection?.data?.config?.questions?.hiddenIds || [];
+      const sectionData = section.data || {};
+      const questions = sectionData?.questions || [];
+      const hiddenIds = sectionData?.config?.questions?.hiddenIds || [];
       const filtered = questions
         .filter((q) => !hiddenIds.includes(q.id))
         .sort((a, b) => (a.index ?? 999) - (b.index ?? 999));
@@ -103,30 +96,6 @@ function normalizeSection(activeSection, data) {
 
   return activeSection;
 }
-
-// Get all questions for navigation (sorted by index, using config for hiddenIds)
-const getAllQuestions = (data) => {
-  const questions =
-    data?.responseDetails?.questions || responseDetails.questions || [];
-  const responsesSection = data?.sectionsConfig?.sections?.find(
-    (s) => s.id === "responses"
-  );
-  const hiddenIds = responsesSection?.data?.config?.questions?.hiddenIds || [];
-
-  return questions
-    .filter((q) => !hiddenIds.includes(q.id))
-    .sort((a, b) => (a.index || 0) - (b.index || 0))
-    .map((q) => `responses-${q.id}`);
-};
-
-// Get all attribute subsections for navigation (sorted by index)
-// Note: This is kept for backward compatibility but normalization now uses getFirstSubsectionHelper
-const getAllAttributes = () => {
-  return attributeDeepDive.attributes
-    .filter((attr) => attr.icon)
-    .sort((a, b) => (a.index || 0) - (b.index || 0))
-    .map((attr) => `attributes-${attr.id}`);
-};
 
 /**
  * Check if a section has a renderSchema (generic rendering)
@@ -247,7 +216,7 @@ function extractSectionId(data, activeSection) {
   return null;
 }
 
-export function ContentRenderer({ activeSection, onSectionChange }) {
+export function ContentRenderer({ activeSection }) {
   const { data } = useSurveyData();
   let content;
 
@@ -274,16 +243,9 @@ export function ContentRenderer({ activeSection, onSectionChange }) {
     }
   }
 
-  // Check if section has renderSchema
-  // IMPORTANT: Only use generic renderer if section actually has schema
-  // BUT: support section always uses legacy component, even with schema
-  if (
-    finalSectionId &&
-    data &&
-    hasRenderSchema(data, finalSectionId) &&
-    finalSectionId !== "support"
-  ) {
-    // Use generic renderer (but not for support)
+  // Use generic renderer if section has schema
+  // All sections must have schema in JSON - this is the "proof of fire"
+  if (finalSectionId && data && hasRenderSchema(data, finalSectionId)) {
     content = (
       <GenericSectionRenderer
         sectionId={finalSectionId}
@@ -291,69 +253,11 @@ export function ContentRenderer({ activeSection, onSectionChange }) {
       />
     );
   }
-  // Render support analyses (legacy - always uses legacy component)
-  // But also check if it's a valid support subsection first
-  else if (
-    normalizedSection.startsWith("support-") ||
-    finalSectionId === "support"
-  ) {
-    // Check if it's a valid subsection
-    const supportSection = data?.sectionsConfig?.sections?.find(
-      (s) => s.id === "support"
-    );
-    const isValidSubsection =
-      supportSection?.subsections?.some(
-        (sub) => sub.id === normalizedSection
-      ) ||
-      supportSection?.data?.renderSchema?.subsections?.some(
-        (sub) => sub.id === normalizedSection
-      );
-
-    if (isValidSubsection || normalizedSection.startsWith("support-")) {
-      // Always pass the specific subsection
-      content = <SupportAnalysis subSection={normalizedSection} />;
-    } else {
-      // Invalid subsection, fallback to first
-      const firstSub =
-        getFirstSubsectionHelper("support", data) || "support-sentiment";
-      content = <SupportAnalysis subSection={firstSub} />;
-    }
-  }
-  // Render response details (legacy - only if no schema)
-  else if (
-    (normalizedSection === "responses" ||
-      normalizedSection.startsWith("responses-")) &&
-    !(data && hasRenderSchema(data, "responses"))
-  ) {
-    // Extract question ID if it's a specific subsection (e.g., responses-1)
-    const questionIdMatch = normalizedSection.match(/responses-(\d+)/);
-    const questionId = questionIdMatch
-      ? parseInt(questionIdMatch[1], 10)
-      : undefined;
-    // Use key to ensure component updates when questionId changes
-    // This ensures the combined logic (open accordion + scroll) is applied
-    content = (
-      <ResponseDetails key={`question-${questionId}`} questionId={questionId} />
-    );
-  }
-  // Render attribute deep dive (legacy - only if no schema)
-  else if (
-    (normalizedSection === "attributes" ||
-      normalizedSection.startsWith("attributes-")) &&
-    !(data && hasRenderSchema(data, "attributes"))
-  ) {
-    // Extract attribute ID if it's a specific subsection (e.g., attributes-customerType)
-    const attributeIdMatch = normalizedSection.match(/attributes-(.+)/);
-    const attributeId = attributeIdMatch ? attributeIdMatch[1] : undefined;
-    content = <AttributeDeepDive attributeId={attributeId} />;
-  }
-  // Fallback: if we couldn't determine the section, try to extract from normalizedSection
+  // Fallback: try to extract section ID from pattern
   else {
-    // Try to extract section ID from pattern (e.g., "support-sentiment" -> "support")
     const fallbackSectionId = extractSectionId(data, normalizedSection);
 
     if (fallbackSectionId && data && hasRenderSchema(data, fallbackSectionId)) {
-      // Use generic renderer with fallback section
       content = (
         <GenericSectionRenderer
           sectionId={fallbackSectionId}
@@ -361,23 +265,21 @@ export function ContentRenderer({ activeSection, onSectionChange }) {
         />
       );
     } else {
-      // Last resort: use executive as fallback
-      if (data && hasRenderSchema(data, "executive")) {
-        content = (
-          <GenericSectionRenderer
-            sectionId="executive"
-            subSection="executive-summary"
-          />
-        );
-      } else {
-        // Legacy fallback only if no schema
-        content = (
-          <ExecutiveReport
-            subSection="executive-summary"
-            onSectionChange={onSectionChange}
-          />
-        );
-      }
+      // Error state: section not found or missing schema
+      content = (
+        <div className="space-y-8 animate-fade-in p-8 text-center">
+          <div className="text-muted-foreground">
+            <p className="text-lg font-semibold mb-2">Seção não encontrada</p>
+            <p className="text-sm">
+              A seção "{normalizedSection}" não foi encontrada ou não possui
+              schema de renderização.
+            </p>
+            {finalSectionId && (
+              <p className="text-xs mt-2">Section ID: {finalSectionId}</p>
+            )}
+          </div>
+        </div>
+      );
     }
   }
 

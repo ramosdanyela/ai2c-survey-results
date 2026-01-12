@@ -100,10 +100,7 @@ export function SurveyLayout({ activeSection, onSectionChange }) {
         <main className="flex-1 flex flex-col overflow-auto">
           <div className="flex-1 px-2 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
             <div className="max-w-full xl:max-w-[98%] 2xl:max-w-[96%] mx-auto">
-              <ContentRenderer
-                activeSection={activeSection}
-                onSectionChange={onSectionChange}
-              />
+              <ContentRenderer activeSection={activeSection} />
             </div>
           </div>
         </main>

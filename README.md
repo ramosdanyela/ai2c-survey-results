@@ -1,317 +1,234 @@
-# AI2C Results - Dashboard de Resultados de Pesquisa
+# 📊 AI2C Results - Survey Dashboard
 
-Aplicação web para visualização e análise de resultados de pesquisas de satisfação do cliente. O dashboard apresenta relatórios executivos, análises detalhadas, nuvens de palavras, planos de implementação e muito mais.
+Sistema de visualização de resultados de pesquisa **100% genérico** e baseado em JSON programático. Todas as seções, subseções e componentes são renderizados dinamicamente através de schemas definidos no JSON.
 
-## 📋 Sobre o Projeto
-
-Este projeto é um dashboard interativo desenvolvido para exibir e analisar resultados de pesquisas de satisfação. A aplicação oferece:
-
-- **Relatório Executivo**: Resumo executivo com principais descobertas e conclusões
-- **Análise de Atributos**: Deep dive em atributos específicos da pesquisa
-- **Nuvem de Palavras**: Visualização de termos mais mencionados
-- **Análise de Suporte**: Métricas e insights sobre suporte ao cliente
-- **Plano de Implementação**: Recomendações e ações prioritárias
-- **Detalhes de Respostas**: Visualização detalhada das respostas coletadas
-
-## 🏗️ Estrutura do Projeto
-
-```
-ai2c_results/
-├── src/
-│   ├── components/
-│   │   ├── survey/          # Componentes específicos da pesquisa (JavaScript)
-│   │   │   ├── AttributeDeepDive.jsx
-│   │   │   ├── ContentRenderer.jsx
-│   │   │   ├── ExecutiveReport.jsx
-│   │   │   ├── FilterPanel.jsx
-│   │   │   ├── ImplementationPlan.jsx
-│   │   │   ├── ResponseDetails.jsx
-│   │   │   ├── SupportAnalysis.jsx
-│   │   │   ├── SurveyHeader.jsx
-│   │   │   ├── SurveyLayout.jsx
-│   │   │   ├── SurveySidebar.jsx
-│   │   │   └── WordCloud.jsx
-│   │   ├── ui/              # Componentes UI do shadcn/ui (TypeScript)
-│   │   │   └── *.tsx        # Componentes UI mantidos em TypeScript
-│   │   ├── NavLink.jsx
-│   │   └── ThemeToggle.jsx
-│   ├── contexts/
-│   │   └── ThemeContext.jsx # Contexto de tema
-│   ├── data/
-│   │   └── surveyData.js    # Dados da pesquisa (mock data)
-│   ├── hooks/               # Custom hooks
-│   │   ├── use-mobile.jsx
-│   │   └── use-toast.js
-│   ├── lib/                 # Utilitários
-│   │   ├── colors.js        # Sistema de cores centralizado
-│   │   └── utils.js         # Funções utilitárias (cn, etc.)
-│   ├── pages/               # Páginas da aplicação
-│   │   ├── Index.jsx
-│   │   └── NotFound.jsx
-│   ├── App.jsx              # Componente principal
-│   ├── main.jsx             # Entry point
-│   ├── index.css            # Estilos globais
-│   └── vite-env.d.ts        # Declarações de tipos do Vite
-├── public/                  # Arquivos estáticos
-├── dist/                    # Build de produção (gerado)
-├── package.json
-├── vite.config.js           # Configuração do Vite
-├── tailwind.config.js       # Configuração do Tailwind
-├── eslint.config.js         # Configuração do ESLint
-├── tsconfig.json            # Configuração TypeScript (para componentes UI)
-├── tsconfig.app.json        # Config TypeScript para app
-└── tsconfig.node.json       # Config TypeScript para node
-```
-
-## 🛠️ Tecnologias Utilizadas
-
-- **Vite** - Build tool e dev server
-- **React 18** - Biblioteca UI
-- **JavaScript/JSX** - Linguagem principal (código da aplicação)
-- **TypeScript** - Tipagem estática (apenas para componentes UI do shadcn/ui)
-- **React Router** - Roteamento
-- **shadcn/ui** - Componentes UI baseados em Radix UI (TypeScript)
-- **Tailwind CSS** - Framework CSS utilitário
-- **Recharts** - Biblioteca de gráficos
-- **TanStack Query** - Gerenciamento de estado do servidor
-- **Lucide React** - Ícones
-
-## 🚀 Como Executar Localmente
-
-### Pré-requisitos
-
-- Node.js (versão 18 ou superior) - [Instalar com nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-- npm ou yarn
-
-### Passos para Instalação
-
-1. **Clone o repositório** (se aplicável):
+## 🚀 Início Rápido
 
 ```bash
-git clone <URL_DO_REPOSITORIO>
-cd ai2c_results
-```
-
-2. **Instale as dependências**:
-
-```bash
+# Instalar dependências
 npm install
-```
 
-3. **Inicie o servidor de desenvolvimento**:
-
-```bash
+# Executar em desenvolvimento
 npm run dev
-```
 
-4. **Acesse a aplicação**:
-   - Abra seu navegador em `http://localhost:8080`
-   - O servidor recarrega automaticamente quando você faz alterações
-
-### Scripts Disponíveis
-
-- `npm run dev` - Inicia o servidor de desenvolvimento na porta 8080
-- `npm run build` - Cria o build de produção na pasta `dist/`
-- `npm run build:dev` - Cria o build em modo desenvolvimento
-- `npm run preview` - Visualiza o build de produção localmente
-- `npm run lint` - Executa o linter ESLint
-
-## 📦 Como Fazer o Build
-
-Para criar uma versão otimizada para produção:
-
-```bash
+# Build para produção
 npm run build
-```
 
-O build será gerado na pasta `dist/`, contendo todos os arquivos estáticos otimizados e prontos para deploy.
-
-Para testar o build localmente antes de fazer deploy:
-
-```bash
-npm run build
+# Preview do build
 npm run preview
 ```
 
-## 🌐 Como Colocar no Ar (Deploy)
+## ✨ Características Principais
 
-### Opção 1: Deploy Estático (Recomendado)
+- 🎯 **100% Genérico** - Sistema totalmente baseado em JSON, sem código hardcoded
+- 🔄 **Renderização Dinâmica** - Seções e subseções renderizadas automaticamente
+- 📊 **Componentes Ricos** - Suporte a cards, charts, tables, accordions, filtros, etc.
+- 🎨 **Temas** - Suporte a tema claro/escuro com transição suave
+- 📱 **Responsivo** - Interface adaptável para desktop, tablet e mobile
+- 🔍 **Filtros Avançados** - Sistema de filtros por atributos (estado, tipo de cliente, etc.)
+- 📈 **Visualizações** - Gráficos interativos com Recharts
+- 🎭 **UI Moderna** - Baseado em shadcn/ui e Radix UI
 
-A aplicação é uma SPA (Single Page Application) e pode ser hospedada em qualquer serviço de hospedagem estática:
+## 🏗️ Arquitetura
 
-#### **Vercel** (Recomendado - Gratuito)
+O sistema utiliza uma arquitetura baseada em **schemas JSON** que define completamente a estrutura e renderização das seções:
 
-1. Instale a CLI da Vercel:
+1. **JSON Define Tudo** - O arquivo `surveyData.json` contém toda a estrutura
+2. **GenericSectionRenderer** - Componente principal que processa os schemas
+3. **Componentes Genéricos** - Widgets reutilizáveis (cards, charts, tables, etc.)
+4. **Resolução Dinâmica** - Dados e estilos resolvidos em tempo de execução
 
-```bash
-npm i -g vercel
+### Fluxo de Renderização
+
+```
+JSON (surveyData.json)
+  ↓
+sectionsConfig.sections[].data.renderSchema
+  ↓
+GenericSectionRenderer
+  ↓
+SchemaComponent (processa cada tipo)
+  ↓
+Componentes Finais (Card, Chart, Table, etc.)
 ```
 
-2. Faça login:
+## 📁 Estrutura do Projeto
 
-```bash
-vercel login
+```
+src/
+├── components/
+│   └── survey/
+│       ├── common/              # Componentes genéricos
+│       │   ├── GenericCard.jsx
+│       │   ├── GenericSectionRenderer.jsx  # ⭐ Core do sistema
+│       │   ├── GenericSubsection.jsx
+│       │   └── QuestionsList.jsx
+│       ├── components/          # Componentes de layout
+│       │   ├── ContentRenderer.jsx
+│       │   ├── SurveyLayout.jsx
+│       │   ├── SurveySidebar.jsx
+│       │   └── SurveyHeader.jsx
+│       └── widgets/             # Widgets reutilizáveis
+│           ├── Charts.jsx       # Gráficos (Bar, Stacked, NPS, etc.)
+│           ├── Tables.jsx       # Tabelas (Distribution, Sentiment, etc.)
+│           ├── WordCloud.jsx
+│           └── badgeTypes.jsx
+├── data/
+│   ├── surveyData.json          # ⭐ Dados e schemas da pesquisa
+│   └── surveyData.js            # Fallback (legacy)
+├── services/
+│   ├── dataResolver.js          # Resolve paths de dados
+│   ├── styleResolver.js         # Resolve estilos e variantes
+│   └── surveyDataService.js     # Serviço de dados
+├── hooks/
+│   ├── useSurveyData.js         # Hook principal para dados
+│   └── useSectionData.js
+└── pages/
+    └── Index.jsx                # Página principal
 ```
 
-3. Deploy:
+## 🛠️ Tecnologias
 
-```bash
-npm run build
-vercel --prod
-```
+- **React 18** - Framework principal
+- **Vite** - Build tool e dev server
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Estilização
+- **shadcn/ui** - Componentes UI
+- **Radix UI** - Primitivos acessíveis
+- **Recharts** - Gráficos e visualizações
+- **React Router** - Roteamento
+- **Lucide React** - Ícones
 
-Ou conecte seu repositório GitHub no [Vercel Dashboard](https://vercel.com) para deploy automático.
+## 📚 Documentação
 
-#### **Netlify** (Gratuito)
+Toda a documentação está na pasta [`docs/`](./docs/):
 
-1. Instale a CLI do Netlify:
+- **[SURVEY_DATA_DOCUMENTATION.md](./docs/SURVEY_DATA_DOCUMENTATION.md)** - 📖 Documentação completa da estrutura do JSON, componentes disponíveis, templates e exemplos
+- **[QUICK_REFERENCE.md](./docs/QUICK_REFERENCE.md)** - ⚡ Guia rápido para criar seções e componentes
 
-```bash
-npm i -g netlify-cli
-```
+### Documentação Rápida
 
-2. Faça login:
+#### Criar uma Nova Seção
 
-```bash
-netlify login
-```
+1. Adicione a seção em `sectionsConfig.sections` no JSON
+2. Defina `hasSchema: true`
+3. Crie o `renderSchema` com componentes
+4. A seção será renderizada automaticamente!
 
-3. Deploy:
-
-```bash
-npm run build
-netlify deploy --prod --dir=dist
-```
-
-Ou arraste a pasta `dist` para o [Netlify Drop](https://app.netlify.com/drop).
-
-#### **GitHub Pages**
-
-1. Adicione o plugin do GitHub Pages no `vite.config.js`:
-
-```javascript
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
-import path from "path";
-
-export default defineConfig({
-  base: "/ai2c_results/", // Nome do seu repositório
-  // ... resto da configuração
-});
-```
-
-2. Crie um script no `package.json`:
+Exemplo mínimo:
 
 ```json
-"scripts": {
-  "deploy": "npm run build && gh-pages -d dist"
+{
+  "sectionsConfig": {
+    "sections": [
+      {
+        "id": "minha-secao",
+        "index": 0,
+        "name": "Minha Seção",
+        "icon": "FileText",
+        "hasSchema": true,
+        "data": {
+          "renderSchema": {
+            "components": [
+              {
+                "type": "card",
+                "index": 0,
+                "title": "Título",
+                "content": "Conteúdo",
+                "styleVariant": "default"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
 }
 ```
 
-3. Instale `gh-pages`:
+## 🎨 Componentes Disponíveis
+
+### Tipos de Componentes Suportados
+
+- **Cards** - `type: "card"` - Cards com título e conteúdo
+- **Gráficos** - `type: "barChart"`, `type: "sentimentStackedChart"`, etc.
+- **Tabelas** - `type: "distributionTable"`, `type: "sentimentTable"`, etc.
+- **Listas** - `type: "questionsList"` - Lista de questões com filtros
+- **Accordions** - `type: "accordion"` - Acordeões expansíveis
+- **Filtros** - `type: "filterPills"` - Pills de filtro
+- **Word Cloud** - `type: "wordCloud"` - Nuvem de palavras
+
+Veja a [documentação completa](./docs/SURVEY_DATA_DOCUMENTATION.md) para todos os tipos.
+
+## 📜 Scripts Disponíveis
 
 ```bash
-npm install --save-dev gh-pages
+# Desenvolvimento
+npm run dev              # Inicia servidor de desenvolvimento
+
+# Build
+npm run build           # Build para produção
+npm run build:dev       # Build em modo desenvolvimento
+npm run preview         # Preview do build
+
+# Análise
+npm run lint            # Executa ESLint
+npm run analyze:unused  # Analisa código não utilizado
+npm run analyze:deps    # Analisa dependências
+npm run analyze:all   # Executa todas as análises
 ```
 
-4. Deploy:
+## 🔧 Configuração
 
-```bash
-npm run deploy
-```
+### Variáveis de Ambiente
 
-#### **AWS S3 + CloudFront**
+O projeto suporta variáveis de ambiente para configuração:
 
-1. Faça o build:
+- `VITE_API_DELAY` - Delay simulado para chamadas de API (padrão: 800ms)
 
-```bash
-npm run build
-```
+### Personalização
 
-2. Faça upload da pasta `dist` para um bucket S3
-3. Configure o bucket para hospedagem de site estático
-4. (Opcional) Configure CloudFront para CDN
+- **Temas**: Configurados em `src/contexts/ThemeContext.jsx`
+- **Cores**: Definidas em `src/lib/colors.js`
+- **Estilos**: Variantes em `src/styles/variants.js`
 
-#### **Outros Serviços**
+## 🎯 Conceitos Principais
 
-A pasta `dist` pode ser hospedada em qualquer serviço que suporte sites estáticos:
+### Sistema Genérico
 
-- **Firebase Hosting**
-- **Azure Static Web Apps**
-- **Cloudflare Pages**
-- **Surge.sh**
-- **Render**
+O sistema foi projetado para ser **100% programático**. Isso significa:
 
-### Opção 2: Servidor Node.js
+- ✅ Nenhuma seção é hardcoded
+- ✅ Tudo é definido no JSON
+- ✅ Fácil adicionar novas seções sem código
+- ✅ Fácil modificar estrutura existente
+- ✅ "Prova de fogo" - se o JSON está correto, tudo funciona
 
-Se preferir usar um servidor Node.js:
+### Render Schema
 
-1. Instale `serve`:
+Cada seção com `hasSchema: true` deve ter um `renderSchema` que define:
 
-```bash
-npm install -g serve
-```
-
-2. Faça o build:
-
-```bash
-npm run build
-```
-
-3. Inicie o servidor:
-
-```bash
-serve -s dist -l 3000
-```
-
-### Configuração Importante para SPAs
-
-Como esta é uma SPA usando React Router, certifique-se de que o servidor está configurado para redirecionar todas as rotas para `index.html`. A maioria dos serviços de hospedagem estática faz isso automaticamente.
-
-## 📝 Personalização
-
-### Alterar Dados da Pesquisa
-
-Os dados da pesquisa estão em `src/data/surveyData.js`. Edite este arquivo para personalizar os dados exibidos no dashboard.
-
-### Personalizar Estilos
-
-- Estilos globais: `src/index.css`
-- Sistema de cores: `src/lib/colors.js`
-- Configuração do Tailwind: `tailwind.config.js`
-- Componentes UI: `src/components/ui/` (TypeScript)
-
-## 🔧 Desenvolvimento
-
-### Estrutura de Componentes
-
-- **SurveyLayout**: Layout principal com sidebar e header
-- **ContentRenderer**: Renderiza o conteúdo baseado na seção ativa
-- **ExecutiveReport**: Exibe o relatório executivo
-- **SurveySidebar**: Navegação lateral entre seções
-- **ThemeContext**: Contexto para gerenciamento de tema (dark/light mode)
-
-### Adicionar Novas Seções
-
-1. Crie o componente da nova seção em `src/components/survey/` (JavaScript)
-2. Adicione a seção no `ContentRenderer.jsx`
-3. Adicione o item de navegação no `SurveySidebar.jsx`
-4. Atualize os dados em `surveyData.js` se necessário
-
-### Linguagens Utilizadas
-
-- **JavaScript/JSX**: Código principal da aplicação (componentes, hooks, utils, dados)
-- **TypeScript/TSX**: Apenas componentes UI do shadcn/ui em `src/components/ui/`
-- **Motivo**: Componentes UI mantidos em TypeScript para type safety, resto do código em JavaScript para simplicidade
-
-## 📄 Licença
-
-Este projeto é privado.
+- **Subseções** (opcional) - Se a seção tem subseções
+- **Componentes** - Array de componentes a renderizar
+- **Configurações** - Configurações específicas de cada componente
 
 ## 🤝 Contribuindo
 
-Para contribuir com o projeto, faça um fork, crie uma branch para sua feature e abra um pull request.
+1. Mantenha o sistema genérico - evite código hardcoded
+2. Documente novas funcionalidades
+3. Siga os padrões existentes de estrutura JSON
+4. Teste com diferentes estruturas de dados
+
+## 📝 Notas
+
+- O sistema prioriza o JSON (`surveyData.json`) sobre código hardcoded
+- Componentes legacy existem mas não são mais usados no fluxo principal
+- O `GenericSectionRenderer` é o coração do sistema
+
+## 📄 Licença
+
+Este projeto é privado e proprietário.
 
 ---
 
-**Desenvolvido com ❤️ usando React, JavaScript e Vite**
+**Desenvolvido com ❤️ usando React, Vite e Tailwind CSS**

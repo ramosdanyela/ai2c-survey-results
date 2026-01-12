@@ -372,41 +372,50 @@ export function QuestionsList({
     },
   ];
 
+  // Map question types to labels using type from JSON
+  const questionTypeMap = {
+    nps: safeUiTexts.responseDetails.nps || "NPS",
+    open: safeUiTexts.responseDetails.openField || "Campo Aberto",
+    closed: safeUiTexts.responseDetails.multipleChoice || "Múltipla Escolha",
+  };
+
   const getQuestionType = (question) => {
     const questionType = question.type;
-    if (questionType === "nps") return safeUiTexts.responseDetails.nps || "NPS";
-    if (questionType === "open")
-      return safeUiTexts.responseDetails.openField || "Campo Aberto";
-    if (questionType === "closed")
-      return safeUiTexts.responseDetails.multipleChoice || "Múltipla Escolha";
-    if (isNPSQuestion(question))
-      return safeUiTexts.responseDetails.nps || "NPS";
-    if (question.type === "open")
-      return safeUiTexts.responseDetails.openField || "Campo Aberto";
-    return safeUiTexts.responseDetails.multipleChoice || "Múltipla Escolha";
+    // Use type directly from JSON
+    return questionTypeMap[questionType] || questionTypeMap.closed;
+  };
+
+  // Map question types to icons using type from JSON
+  const questionIconMap = {
+    nps: TrendingUp,
+    open: FileText,
+    closed: CheckSquare,
   };
 
   const getQuestionIcon = (question) => {
+    // Use icon from question if specified, otherwise use type-based icon
     if (question.icon) {
       const IconComponent = getIcon(question.icon);
       if (IconComponent) return IconComponent;
     }
-    if (isNPSQuestion(question)) return TrendingUp;
-    if (question.type === "open") return FileText;
-    return CheckSquare;
+    // Use type from JSON to get icon
+    const questionType = question.type || "closed";
+    return questionIconMap[questionType] || CheckSquare;
   };
 
   const getTotalResponses = (question) => {
-    // For closed questions and NPS questions, sum all values
+    const questionType = question.type;
+    // Use type from JSON to determine response calculation
+    // For closed and NPS questions, sum all values
     if (
-      (question.type === "closed" || question.type === "nps") &&
+      (questionType === "closed" || questionType === "nps") &&
       "data" in question &&
       question.data
     ) {
       return question.data.reduce((sum, item) => sum + (item.value || 0), 0);
     }
     // For open questions, use total survey respondents
-    if (question.type === "open") {
+    if (questionType === "open") {
       return surveyInfo.totalRespondents;
     }
     return 0;

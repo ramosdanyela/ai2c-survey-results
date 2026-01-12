@@ -158,27 +158,21 @@ function SchemaCard({ component, data, children }) {
  */
 function getBarChartConfig(component, data, isMobile) {
   const config = component.config || {};
-  const dataPath = component.dataPath || "";
+  const preset = config.preset; // Use preset from JSON instead of checking dataPath
 
-  // Determine defaults based on context
-  let height = 256;
-  let margin = { top: 10, right: 80, left: 120, bottom: 10 };
-  let yAxisWidth = 110;
+  // Determine defaults based on preset (from JSON) or fallback to defaults
+  let height = config.height || 256;
+  let margin = config.margin || { top: 10, right: 80, left: 120, bottom: 10 };
+  let yAxisWidth = config.yAxisWidth || 110;
 
-  // Support analysis respondent intent chart
-  if (dataPath.includes("respondentIntent")) {
+  // Use preset to determine chart configuration
+  if (preset === "respondentIntent") {
     height = isMobile ? 400 : 256;
     margin = isMobile
       ? { top: 10, right: 35, left: 4, bottom: 10 }
       : { top: 10, right: 80, left: 250, bottom: 10 };
     yAxisWidth = isMobile ? 130 : 240;
-  }
-  // Attribute deep dive distribution chart
-  else if (
-    dataPath.includes("distribution") &&
-    config.dataKey === "percentage" &&
-    config.yAxisDataKey === "segment"
-  ) {
+  } else if (preset === "distribution") {
     height = 400;
     margin = { top: 10, right: 80, left: 120, bottom: 10 };
     yAxisWidth = data.currentAttributeYAxisWidth || 110;
@@ -251,16 +245,17 @@ function SchemaBarChart({ component, data }) {
     />
   );
 
-  // Hardcoded wrapperClassName based on context
-  // Attribute deep dive distribution chart
-  if (
-    component.dataPath &&
-    component.dataPath.includes("distribution") &&
-    chartConfig.dataKey === "percentage" &&
-    chartConfig.yAxisDataKey === "segment"
-  ) {
+  // Use wrapperClassName from component config or preset-based wrapper
+  const wrapperClassName = component.wrapperClassName;
+  if (wrapperClassName || component.config?.preset === "distribution") {
+    const finalClassName = wrapperClassName || "flex-shrink-0 mb-4";
+    const wrapperStyle =
+      component.wrapperStyle ||
+      (component.config?.preset === "distribution"
+        ? { height: "400px" }
+        : undefined);
     return (
-      <div className="flex-shrink-0 mb-4" style={{ height: "400px" }}>
+      <div className={finalClassName} style={wrapperStyle}>
         {chart}
       </div>
     );
@@ -416,25 +411,20 @@ function SchemaSegmentationTable({ component, data }) {
  */
 function getSentimentStackedChartConfig(component, data) {
   const config = component.config || {};
-  const dataPath = component.dataPath || "";
+  const preset = config.preset; // Use preset from JSON instead of checking dataPath
 
-  // Defaults
-  let height = 256;
-  let margin = { top: 10, right: 30, left: 100, bottom: 10 };
-  let showGrid = true;
-  let axisLine = true;
-  let tickLine = true;
+  // Defaults - use config values or fallback to defaults
+  let height = config.height || 256;
+  let margin = config.margin || { top: 10, right: 30, left: 100, bottom: 10 };
+  let showGrid = config.showGrid !== undefined ? config.showGrid : true;
+  let axisLine = config.axisLine !== undefined ? config.axisLine : true;
+  let tickLine = config.tickLine !== undefined ? config.tickLine : true;
 
-  // Attribute deep dive sentiment chart
-  if (dataPath.includes("sentiment") && config.yAxisDataKey === "segment") {
+  // Use preset to determine chart configuration
+  if (preset === "attributeSentiment") {
     height = 400;
     showGrid = false;
-  }
-  // Open question sentiment chart
-  else if (
-    dataPath.includes("sentimentData") ||
-    dataPath.includes("question.sentimentData")
-  ) {
+  } else if (preset === "questionSentiment") {
     height = 192;
     showGrid = false;
     axisLine = false;
@@ -482,16 +472,17 @@ function SchemaSentimentStackedChart({ component, data }) {
     />
   );
 
-  // Hardcoded wrapperClassName based on context
-  // Attribute deep dive sentiment chart
-  if (
-    component.dataPath &&
-    component.dataPath.includes("sentiment") &&
-    chartConfig.yAxisDataKey === "segment" &&
-    chartConfig.height === 400
-  ) {
+  // Use wrapperClassName from component config or preset-based wrapper
+  const wrapperClassName = component.wrapperClassName;
+  if (wrapperClassName || component.config?.preset === "attributeSentiment") {
+    const finalClassName = wrapperClassName || "flex-shrink-0 mb-4";
+    const wrapperStyle =
+      component.wrapperStyle ||
+      (component.config?.preset === "attributeSentiment"
+        ? { height: "400px" }
+        : undefined);
     return (
-      <div className="flex-shrink-0 mb-4" style={{ height: "400px" }}>
+      <div className={finalClassName} style={wrapperStyle}>
         {chart}
       </div>
     );
@@ -1210,32 +1201,50 @@ function SchemaComponent({ component, data, subSection }) {
     const wrapper = component.wrapper || "div";
     const wrapperProps = component.wrapperProps || {};
 
-    // h3 wrapper
-    if (wrapper === "h3") {
+    // Use className from wrapperProps if provided, otherwise use wrapper type mapping
+    if (wrapperProps.className) {
+      return wrapperProps.className;
+    }
+
+    // Map wrapper types to default classNames (based on type from JSON)
+    const wrapperTypeMap = {
+      h3: "text-lg font-bold text-foreground mb-3",
+      h4: "text-base font-semibold text-foreground mb-3",
+      span: "",
+      div: "",
+    };
+
+    // Get base className from wrapper type
+    let baseClassName = wrapperTypeMap[wrapper] || "";
+
+    // Special case for h3 with "Respostas" content (can be overridden by className in wrapperProps)
+    if (wrapper === "h3" && !wrapperProps.className) {
       const content = resolveTemplate(component.content || "", data);
-      // h3 with mb-4 (for "Respostas" section)
       if (
         content &&
         (content.includes("Respostas") || content.includes("responses"))
       ) {
-        return "text-lg font-bold text-foreground mb-4";
+        baseClassName = "text-lg font-bold text-foreground mb-4";
       }
-      return "text-lg font-bold text-foreground mb-3";
     }
 
-    // h4 wrapper
-    if (wrapper === "h4") {
-      return "text-base font-semibold text-foreground mb-3";
-    }
+    return baseClassName;
 
-    // span wrapper (for legend labels)
-    if (wrapper === "span") {
-      return "";
-    }
-
-    // div wrappers
+    // div wrappers - use layout property from JSON instead of checking component types
     if (wrapper === "div") {
-      // Executive summary grid (2 cards)
+      // Use layout property from component config
+      const componentLayout = component.layout || component.gridType;
+      if (componentLayout) {
+        const layoutMap = {
+          "two-cards": "grid gap-6 md:grid-cols-2",
+          "chart-pair": "grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch",
+          "nps-tables": "space-y-6",
+          "text-content": "text-muted-foreground leading-relaxed space-y-3",
+        };
+        return layoutMap[componentLayout] || "";
+      }
+
+      // Fallback: check component types only if layout not specified (backward compatibility)
       if (
         component.components &&
         component.components.length === 2 &&
@@ -1244,7 +1253,6 @@ function SchemaComponent({ component, data, subSection }) {
         return "grid gap-6 md:grid-cols-2";
       }
 
-      // Attribute deep dive grid (distribution + sentiment)
       if (
         component.components &&
         component.components.length === 2 &&
@@ -1254,15 +1262,6 @@ function SchemaComponent({ component, data, subSection }) {
         return "grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch";
       }
 
-      // Text content wrapper (summary text) - check by content and index
-      if (component.content && !component.components) {
-        const content = resolveTemplate(component.content || "", data);
-        if (content && component.index === 1) {
-          return "text-muted-foreground leading-relaxed space-y-3";
-        }
-      }
-
-      // NPS tables wrapper
       if (
         component.components &&
         (component.components.some((c) => c.type === "npsDistributionTable") ||
@@ -1271,7 +1270,22 @@ function SchemaComponent({ component, data, subSection }) {
         return "space-y-6";
       }
 
-      // Sentiment three color chart legend container (wrapper with 1 child that has 3 legend items)
+      // Use layout property from component config instead of checking component structure
+      const wrapperLayout = component.layout;
+      if (wrapperLayout) {
+        const wrapperLayoutMap = {
+          "legend-container": "flex justify-center mb-4",
+          "legend-items": "flex gap-4 text-xs",
+          "legend-item": "flex items-center gap-1",
+          "color-indicator": "w-3 h-3 rounded",
+        };
+        const layoutClassName = wrapperLayoutMap[wrapperLayout];
+        if (layoutClassName) {
+          return layoutClassName;
+        }
+      }
+
+      // Fallback: check component structure only if layout not specified (backward compatibility)
       if (component.components && component.components.length === 1) {
         const firstChild = component.components[0];
         if (
@@ -1287,7 +1301,6 @@ function SchemaComponent({ component, data, subSection }) {
         }
       }
 
-      // Legend items wrapper (flex gap-4) - wrapper with 3 div children, each with 2 components
       if (
         component.components &&
         component.components.length === 3 &&
@@ -1303,8 +1316,6 @@ function SchemaComponent({ component, data, subSection }) {
         return "flex gap-4 text-xs";
       }
 
-      // Legend item wrapper (flex items-center) - wrapper with 2 children: div (color) and span (label)
-      // Detected by: empty div wrapper + span wrapper as children
       if (
         component.components &&
         component.components.length === 2 &&
@@ -1316,14 +1327,11 @@ function SchemaComponent({ component, data, subSection }) {
         return "flex items-center gap-1";
       }
 
-      // Color indicator wrapper (w-3 h-3 rounded) - empty div wrapper with no children
-      // Used for sentiment legend color indicators
       if (
         component.components &&
         component.components.length === 0 &&
         wrapper === "div"
       ) {
-        // Check if parent has sentiment-related content
         const parentHasSentimentContent =
           data?.currentAttribute?.satisfactionImpactSentiment;
         if (parentHasSentimentContent) {
@@ -1331,7 +1339,12 @@ function SchemaComponent({ component, data, subSection }) {
         }
       }
 
-      // Sentiment impact table wrapper (after chart) - wrapper with 1 child that is sentimentImpactTable
+      // Use layout or className from component config
+      if (component.layout === "after-chart" || component.className) {
+        return component.className || "mt-4";
+      }
+
+      // Fallback: check component type only if layout not specified (backward compatibility)
       if (
         component.components &&
         component.components.length === 1 &&
@@ -1388,8 +1401,21 @@ function SchemaComponent({ component, data, subSection }) {
         // If this empty div is part of a structure with a span sibling, check the span content
         // For now, we'll use index 0/1/2 pattern which matches the JSON structure
 
-        // The JSON shows these are in a wrapper with index 0, 1, 2
-        // So we can use component.index to determine color
+        // Use sentimentType or color from component config instead of index
+        const sentimentType = component.sentimentType || component.color;
+        if (sentimentType) {
+          const colorMap = {
+            negative: "hsl(var(--chart-negative))",
+            neutral: "hsl(var(--chart-neutral))",
+            positive: "hsl(var(--chart-positive))",
+          };
+          const backgroundColor = colorMap[sentimentType] || component.color;
+          if (backgroundColor) {
+            return { backgroundColor };
+          }
+        }
+
+        // Fallback: use index only if sentimentType/color not specified (backward compatibility)
         if (component.index === 0) {
           return { backgroundColor: "hsl(var(--chart-negative))" };
         }
