@@ -1,43 +1,9 @@
 import { useMemo } from "react";
 import { useSurveyData } from "./useSurveyData";
+import { resolveDataPath, resolveTemplate } from "@/services/dataResolver";
 
-/**
- * Resolve data path from nested object
- * @param {Object} data - Root data object
- * @param {string} path - Dot-separated path (e.g., "executiveReport.summary.aboutStudy")
- * @returns {*} - Resolved value or null
- */
-export function resolveDataPath(data, path) {
-  if (!data || !path) return null;
-
-  const keys = path.split(".");
-  let current = data;
-
-  for (const key of keys) {
-    if (current && typeof current === "object" && key in current) {
-      current = current[key];
-    } else {
-      return null;
-    }
-  }
-
-  return current;
-}
-
-/**
- * Resolve template strings with {{path}} syntax
- * @param {string} template - Template string with {{path}} placeholders
- * @param {Object} data - Root data object
- * @returns {string} - Resolved string
- */
-export function resolveTemplate(template, data) {
-  if (!template || typeof template !== "string") return template;
-
-  return template.replace(/\{\{([^}]+)\}\}/g, (match, path) => {
-    const value = resolveDataPath(data, path.trim());
-    return value !== null && value !== undefined ? String(value) : match;
-  });
-}
+// Re-export functions from dataResolver for convenience
+export { resolveDataPath, resolveTemplate };
 
 /**
  * Hook to access section data consistently

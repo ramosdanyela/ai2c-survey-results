@@ -17,7 +17,7 @@ export const COLOR_ORANGE_PRIMARY = "#ff9e2b";
 /** Dark blue for titles - #1982d8 */
 export const COLOR_BLUE_TITLE = "#1982d8";
 
-/** Custom blue - #0b18c8 */
+/** Custom blue - #1982d8 */
 export const COLOR_BLUE_CUSTOM = "#1982d8";
 
 /** Black - #000000 */

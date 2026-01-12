@@ -67,3 +67,27 @@ export function resolveText(path, data) {
   return value || path;
 }
 
+/**
+ * Resolve template strings with {{path}} syntax
+ * Supports uiTexts paths (uses resolveText) and regular data paths (uses resolveDataPath)
+ * @param {string} template - Template string with {{path}} placeholders
+ * @param {Object} data - Root data object (may contain sectionData)
+ * @returns {string} - Resolved string
+ */
+export function resolveTemplate(template, data) {
+  if (!template || typeof template !== "string") return template;
+
+  return template.replace(/\{\{([^}]+)\}\}/g, (match, path) => {
+    const trimmedPath = path.trim();
+
+    // Se for path de uiTexts, usa resolveText
+    if (trimmedPath.startsWith("uiTexts.")) {
+      const value = resolveText(trimmedPath, data);
+      return value !== null && value !== undefined ? String(value) : match;
+    }
+
+    // Caso contrário, usa resolveDataPath
+    const value = resolveDataPath(data, trimmedPath);
+    return value !== null && value !== undefined ? String(value) : match;
+  });
+}

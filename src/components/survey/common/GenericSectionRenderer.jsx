@@ -50,33 +50,11 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile";
 import { QuestionsList } from "./QuestionsList";
 import { enrichComponentWithStyles } from "@/services/styleResolver";
-import { resolveText, resolveDataPath } from "@/services/dataResolver";
-
-// resolveDataPath agora vem de @/services/dataResolver
-
-/**
- * Resolve template strings with {{path}} syntax
- * @param {string} template - Template string with {{path}} placeholders
- * @param {Object} data - Root data object (may contain sectionData)
- * @returns {string} - Resolved string
- */
-function resolveTemplate(template, data) {
-  if (!template || typeof template !== "string") return template;
-
-  return template.replace(/\{\{([^}]+)\}\}/g, (match, path) => {
-    const trimmedPath = path.trim();
-
-    // Se for path de uiTexts, usa resolveText
-    if (trimmedPath.startsWith("uiTexts.")) {
-      const value = resolveText(trimmedPath, data);
-      return value !== null && value !== undefined ? String(value) : match;
-    }
-
-    // Caso contrário, usa resolveDataPath
-    const value = resolveDataPath(data, trimmedPath);
-    return value !== null && value !== undefined ? String(value) : match;
-  });
-}
+import {
+  resolveText,
+  resolveDataPath,
+  resolveTemplate,
+} from "@/services/dataResolver";
 
 /**
  * Enriquece schema do JSON com estilos do código

@@ -19,6 +19,7 @@ import { useSurveyData } from "@/hooks/useSurveyData";
 import { forwardRef, useState, useMemo, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { resolveDataPath } from "@/services/dataResolver";
 import {
   RGBA_BLACK_SHADOW_20,
   RGBA_ORANGE_SHADOW_20,
@@ -46,23 +47,6 @@ const menuItems = sectionsConfig.sections.map((section) => ({
   ...section,
   icon: getIcon(section.icon),
 }));
-
-/**
- * Helper function to resolve data path from nested object
- */
-function resolveDataPath(data, path) {
-  if (!data || !path) return null;
-  const keys = path.split(".");
-  let current = data;
-  for (const key of keys) {
-    if (current && typeof current === "object" && key in current) {
-      current = current[key];
-    } else {
-      return null;
-    }
-  }
-  return current;
-}
 
 /**
  * Helper function to check if a section has subsections
