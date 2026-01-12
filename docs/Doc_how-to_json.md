@@ -5,18 +5,20 @@
 1. [Estrutura do JSON](#estrutura-do-json)
 2. [Criando uma Seção](#criando-uma-seção)
 3. [Criando uma Subseção](#criando-uma-subseção)
-4. [Componentes Disponíveis](#componentes-disponíveis)
-5. [Templates e Referências](#templates-e-referências)
-6. [Condições](#condições)
-7. [Estruturas de Dados](#estruturas-de-dados)
-8. [FAQ](#faq)
-9. [Exemplos](#exemplos)
+4. [Gerenciando Questões](#gerenciando-questões)
+5. [Traduções e Textos da Interface](#traduções-e-textos-da-interface)
+6. [Componentes Disponíveis](#componentes-disponíveis)
+7. [Templates e Referências](#templates-e-referências)
+8. [Condições](#condições)
+9. [Estruturas de Dados](#estruturas-de-dados)
+10. [FAQ](#faq)
+11. [Exemplos](#exemplos)
 
 ---
 
 ## 📐 Estrutura do JSON
 
-O arquivo `surveyData.json` tem a seguinte estrutura:
+O arquivo `surveyData.json` é o arquivo central que define toda a estrutura e conteúdo da pesquisa. Ele tem a seguinte estrutura principal:
 
 ```json
 {
@@ -27,6 +29,16 @@ O arquivo `surveyData.json` tem a seguinte estrutura:
   "surveyInfo": { ... }
 }
 ```
+
+### Visão Geral dos Campos Principais
+
+- **`metadata`**: Informações básicas sobre a pesquisa (versão, idioma, ID)
+- **`sectionsConfig`**: Define todas as seções, subseções e seus schemas de renderização
+- **`components`**: (Opcional) Documentação dos tipos de componentes disponíveis
+- **`uiTexts`**: Textos estáticos da interface que não mudam com os dados da pesquisa
+- **`surveyInfo`**: Informações gerais da pesquisa (título, empresa, período, NPS, etc.)
+
+---
 
 ### 1. `metadata`
 
@@ -40,6 +52,7 @@ Informações básicas da pesquisa.
     "surveyId": "survey-2024-01"
   }
 }
+}
 ```
 
 **Campos obrigatórios:**
@@ -52,7 +65,7 @@ Informações básicas da pesquisa.
 
 ### 2. `sectionsConfig`
 
-Define as seções da pesquisa.
+Define as seções da pesquisa. Cada seção pode ter subseções e um schema de renderização que define como os componentes são exibidos.
 
 ```json
 {
@@ -64,8 +77,18 @@ Define as seções da pesquisa.
         "name": "Relatório Executivo",
         "icon": "FileText",
         "hasSchema": true,
-        "subsections": [ ... ],
-        "data": { ... }
+        "subsections": [
+          {
+            "id": "executive-summary",
+            "index": 0,
+            "name": "Sumário Executivo",
+            "icon": "ClipboardList"
+          }
+        ],
+        "data": {
+          "renderSchema": { ... },
+          "summary": { ... }
+        }
       }
     ]
   }
@@ -77,12 +100,15 @@ Define as seções da pesquisa.
 - `id` (obrigatório): ID único, sem espaços (string)
 - `index` (obrigatório): Ordem de exibição, começa em 0 (number)
 - `name` (obrigatório): Nome exibido na interface (string)
-- `icon` (obrigatório): Nome do ícone (string)
+- `icon` (obrigatório): Nome do ícone do Lucide React (string)
 - `hasSchema` (obrigatório): Se tem schema de renderização (boolean)
 - `subsections` (opcional): Array de subseções
-- `data` (obrigatório se `hasSchema: true`): Dados e schema
+- `data` (obrigatório se `hasSchema: true`): Dados e schema de renderização
 - `isRoute` (opcional): Se é rota especial (boolean)
 - `hasSubsections` (opcional): Se tem subseções (boolean)
+- `defaultExpanded` (opcional): Se a seção inicia expandida no sidebar (boolean)
+
+**Importante:** O `name` das subseções pode ser definido tanto em `subsections` quanto em `renderSchema.subsections`. Como o código é programático, você pode colocar o `name` diretamente junto com os componentes no `renderSchema`, evitando duplicação.
 
 ---
 
@@ -120,26 +146,39 @@ Informações gerais da pesquisa.
 
 ### 4. `uiTexts`
 
-Todos os textos da interface.
+**Textos estáticos da interface que não mudam com os dados da pesquisa.**
+
+Esta seção contém todas as traduções e textos da interface que são fixos, independentemente dos dados específicos de cada pesquisa. Organize os textos por contexto/seção usando chaves descritivas em camelCase.
 
 ```json
 {
   "uiTexts": {
     "executiveReport": {
       "executiveSummary": "Sumário Executivo",
-      "aboutStudy": "Sobre o Estudo"
+      "aboutStudy": "Sobre o Estudo",
+      "mainFindings": "Principais Descobertas",
+      "conclusions": "Conclusões",
+      "recommendations": "Recomendações"
     },
     "severityLabels": {
       "critical": "Crítico",
       "high": "Alto",
       "medium": "Médio",
       "low": "Baixo"
+    },
+    "filterPanel": {
+      "all": "Todas",
+      "openField": "Campo Aberto",
+      "multipleChoice": "Múltipla Escolha",
+      "nps": "NPS"
     }
   }
 }
 ```
 
-Organize os textos por contexto/seção. Use chaves descritivas em camelCase.
+**Nota sobre traduções:** Além dos textos em `uiTexts` no JSON, existem também traduções hardcoded no código em `src/data/surveyData.js`. Para adicionar novos textos, prefira usar `uiTexts` no JSON, pois é mais fácil de manter e traduzir.
+
+**Textos específicos de seção:** Cada seção pode ter seus próprios `uiTexts` dentro de `data.uiTexts`. Estes textos têm precedência sobre os textos globais em `uiTexts`.
 
 ---
 
@@ -173,6 +212,8 @@ Organize os textos por contexto/seção. Use chaves descritivas em camelCase.
 
 ### Passo 2: Criar o schema de renderização
 
+O `renderSchema` define como os componentes são renderizados. **O `name` pode ser colocado diretamente aqui junto com os componentes**, evitando duplicação:
+
 ```json
 {
   "data": {
@@ -199,7 +240,11 @@ Organize os textos por contexto/seção. Use chaves descritivas em camelCase.
 }
 ```
 
+**Nota:** Como o código é programático, você não precisa duplicar o `name` em `subsections` e `renderSchema.subsections`. Coloque o `name` apenas no `renderSchema` se preferir.
+
 ### Passo 3: Adicionar os dados
+
+Os dados específicos da pesquisa ficam em `data`, separados do `renderSchema`:
 
 ```json
 {
@@ -231,43 +276,32 @@ Organize os textos por contexto/seção. Use chaves descritivas em camelCase.
 
 ## 📑 Criando uma Subseção
 
-### Subseção simples
-
-```json
-{
-  "subsections": [
-    {
-      "id": "subsecao-1",
-      "index": 0,
-      "name": "Subseção 1",
-      "icon": "FileText"
-    }
-  ]
-}
-```
-
 ### Subseção com componentes
 
+Como o código é programático, você pode definir o `name` diretamente no `renderSchema` junto com os componentes:
+
 ```json
 {
-  "renderSchema": {
-    "subsections": [
-      {
-        "id": "subsecao-1",
-        "index": 0,
-        "name": "Subseção 1",
-        "icon": "FileText",
-        "components": [
-          {
-            "type": "card",
-            "index": 0,
-            "title": "Título do Card",
-            "content": "Conteúdo do card",
-            "styleVariant": "default"
-          }
-        ]
-      }
-    ]
+  "data": {
+    "renderSchema": {
+      "subsections": [
+        {
+          "id": "subsecao-1",
+          "index": 0,
+          "name": "Subseção 1",
+          "icon": "FileText",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Título do Card",
+              "content": "Conteúdo do card",
+              "styleVariant": "default"
+            }
+          ]
+        }
+      ]
+    }
   }
 }
 ```
@@ -298,6 +332,274 @@ Organize os textos por contexto/seção. Use chaves descritivas em camelCase.
 
 ---
 
+## ❓ Gerenciando Questões
+
+### Onde ficam as questões?
+
+As questões ficam dentro da seção `responses` (ou qualquer seção que use `questionsList`), em `data.questions`:
+
+```json
+{
+  "sectionsConfig": {
+    "sections": [
+      {
+        "id": "responses",
+        "data": {
+          "questions": [
+            {
+              "id": 1,
+              "index": 1,
+              "question": "Qual é a probabilidade de você recomendar...",
+              "icon": "Percent",
+              "summary": "Com 51% dos entrevistados...",
+              "data": [ ... ],
+              "type": "nps"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+```
+
+### Adicionar uma questão
+
+Para adicionar uma nova questão, simplesmente adicione um objeto ao array `questions`:
+
+```json
+{
+  "questions": [
+    {
+      "id": 1,
+      "index": 1,
+      "question": "Pergunta existente",
+      "type": "nps"
+    },
+    {
+      "id": 7,
+      "index": 7,
+      "question": "Nova pergunta",
+      "icon": "HelpCircle",
+      "summary": "Resumo da nova pergunta",
+      "data": [
+        {
+          "option": "Opção 1",
+          "value": 100,
+          "percentage": 50
+        }
+      ],
+      "type": "closed"
+    }
+  ]
+}
+```
+
+**Campos obrigatórios de uma questão:**
+
+- `id`: ID único (number)
+- `index`: Ordem de exibição (number)
+- `question`: Texto da pergunta (string)
+- `type`: Tipo da questão - `"nps"`, `"closed"`, ou `"open"` (string)
+
+**Campos opcionais:**
+
+- `icon`: Nome do ícone (string)
+- `summary`: Resumo da questão (string)
+- `data`: Dados da questão (array) - estrutura varia conforme o tipo
+- `wordCloud`: Dados da nuvem de palavras (array) - para questões `"open"`
+- `sentimentData`: Dados de sentimento (array) - para questões `"open"`
+- `topCategories`: Categorias principais (array) - para questões `"open"`
+
+### Remover/Ocultar uma questão
+
+Para ocultar uma questão sem removê-la do JSON, use `config.questions.hiddenIds`:
+
+```json
+{
+  "data": {
+    "questions": [ ... ],
+    "config": {
+      "questions": {
+        "hiddenIds": [3, 5]
+      }
+    }
+  }
+}
+```
+
+As questões com IDs em `hiddenIds` não serão exibidas na interface, mas permanecem no JSON.
+
+**Para remover completamente:** Simplesmente remova o objeto do array `questions`.
+
+### Estrutura de uma questão por tipo
+
+#### Questão NPS (`type: "nps"`)
+
+```json
+{
+  "id": 1,
+  "index": 1,
+  "question": "Qual é a probabilidade de você recomendar...",
+  "icon": "Percent",
+  "summary": "Resumo...",
+  "data": [
+    {
+      "option": "Detrator",
+      "value": 636,
+      "percentage": 51
+    },
+    {
+      "option": "Promotor",
+      "value": 374,
+      "percentage": 30
+    },
+    {
+      "option": "Neutro",
+      "value": 237,
+      "percentage": 19
+    }
+  ],
+  "type": "nps"
+}
+```
+
+#### Questão Fechada (`type: "closed"`)
+
+```json
+{
+  "id": 2,
+  "index": 2,
+  "question": "Qual é o principal ponto que impacta sua satisfação?",
+  "icon": "HelpCircle",
+  "summary": "Resumo...",
+  "data": [
+    {
+      "option": "Opção 1",
+      "value": 168,
+      "percentage": 26
+    },
+    {
+      "option": "Opção 2",
+      "value": 150,
+      "percentage": 23
+    }
+  ],
+  "type": "closed"
+}
+```
+
+#### Questão Aberta (`type: "open"`)
+
+```json
+{
+  "id": 4,
+  "index": 4,
+  "question": "O que podemos melhorar?",
+  "icon": "TrendingUp",
+  "summary": "Resumo...",
+  "sentimentData": [
+    {
+      "category": "Suporte",
+      "positive": 15,
+      "neutral": 25,
+      "negative": 60
+    }
+  ],
+  "topCategories": [
+    {
+      "rank": 1,
+      "category": "Tempo de resposta do suporte",
+      "mentions": 412,
+      "percentage": 33,
+      "topics": [
+        "demora no atendimento",
+        {
+          "topic": "tempo de espera",
+          "sentiment": "negative"
+        }
+      ]
+    }
+  ],
+  "wordCloud": [
+    { "text": "suporte", "value": 412 },
+    { "text": "tempo", "value": 356 }
+  ],
+  "type": "open"
+}
+```
+
+---
+
+## 🌐 Traduções e Textos da Interface
+
+### Onde ficam as traduções?
+
+As traduções que **não mudam de acordo com a pesquisa** ficam em `uiTexts` no nível raiz do JSON:
+
+```json
+{
+  "uiTexts": {
+    "executiveReport": {
+      "executiveSummary": "Sumário Executivo",
+      "aboutStudy": "Sobre o Estudo"
+    },
+    "filterPanel": {
+      "all": "Todas",
+      "openField": "Campo Aberto",
+      "multipleChoice": "Múltipla Escolha"
+    },
+    "severityLabels": {
+      "critical": "Crítico",
+      "high": "Alto",
+      "medium": "Médio",
+      "low": "Baixo"
+    }
+  }
+}
+```
+
+### Textos específicos de seção
+
+Cada seção pode ter seus próprios textos em `data.uiTexts`. Estes textos têm precedência sobre os textos globais:
+
+```json
+{
+  "sectionsConfig": {
+    "sections": [
+      {
+        "id": "responses",
+        "data": {
+          "uiTexts": {
+            "summary": "Sumário:",
+            "wordCloud": "Nuvem de Palavras",
+            "top3Categories": "Top 3 Categorias"
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+### Como usar traduções nos componentes
+
+Use templates `{{uiTexts.caminho}}` para referenciar textos:
+
+```json
+{
+  "type": "card",
+  "title": "{{uiTexts.executiveReport.aboutStudy}}",
+  "content": "{{sectionData.summary.aboutStudy}}"
+}
+```
+
+### Traduções no código
+
+Além dos textos no JSON, existem traduções hardcoded em `src/data/surveyData.js` (export `uiTexts`). Para novos textos, prefira usar `uiTexts` no JSON, pois é mais fácil de manter e traduzir.
+
+---
+
 ## 🧩 Componentes Disponíveis
 
 ### Card
@@ -311,6 +613,7 @@ Exibe conteúdo com título e corpo.
   "title": "{{uiTexts.titulo}}",
   "content": "{{sectionData.conteudo}}",
   "styleVariant": "default",
+  "contentStyleVariant": "with-description",
   "components": [ ... ]
 }
 ```
@@ -321,8 +624,10 @@ Exibe conteúdo com título e corpo.
 - `index`: Ordem (number, opcional)
 - `title`: Título (string, suporta templates)
 - `content`: Conteúdo (string, suporta templates)
-- `styleVariant`: Estilo (string: "default", "highlight", "border-left", etc.)
-- `contentStyleVariant`: Estilo do conteúdo (string, opcional)
+- `styleVariant`: Estilo do card (string, opcional)
+  - Valores: `"default"`, `"highlight"`, `"border-left"`, `"overflow-hidden"`, `"flex-column"`
+- `contentStyleVariant`: Estilo do conteúdo interno (string, opcional)
+  - Valores: `"with-description"`, `"with-charts"`, `"with-tables"`
 - `useDescription`: Usar CardDescription (boolean, opcional)
 - `components`: Componentes filhos (array, opcional)
 - `condition`: Condição para renderizar (string, opcional)
@@ -348,15 +653,6 @@ Gráfico de barras horizontal.
 }
 ```
 
-**Estrutura de dados:**
-
-```json
-[
-  { "option": "Opção 1", "value": 100, "percentage": 50 },
-  { "option": "Opção 2", "value": 50, "percentage": 25 }
-]
-```
-
 ---
 
 ### SentimentDivergentChart
@@ -373,19 +669,6 @@ Gráfico divergente de sentimento.
     "showLegend": true
   }
 }
-```
-
-**Estrutura de dados:**
-
-```json
-[
-  {
-    "category": "Serviço de rede",
-    "positive": 10.5,
-    "neutral": 51.4,
-    "negative": 38.1
-  }
-]
 ```
 
 ---
@@ -406,19 +689,6 @@ Gráfico empilhado de sentimento.
 }
 ```
 
-**Estrutura de dados:**
-
-```json
-[
-  {
-    "segment": "Controle",
-    "positive": 24.3,
-    "neutral": 0.7,
-    "negative": 75
-  }
-]
-```
-
 ---
 
 ### NPSStackedChart
@@ -434,16 +704,6 @@ Gráfico empilhado NPS.
     "hideXAxis": true
   }
 }
-```
-
-**Estrutura de dados:**
-
-```json
-[
-  { "option": "Detrator", "value": 636, "percentage": 51 },
-  { "option": "Promotor", "value": 374, "percentage": 30 },
-  { "option": "Neutro", "value": 237, "percentage": 19 }
-]
 ```
 
 ---
@@ -479,15 +739,6 @@ Nuvem de palavras.
     "staticImagePath": "/nuvem.png"
   }
 }
-```
-
-**Estrutura de dados:**
-
-```json
-[
-  { "text": "confiabilidade", "value": 51 },
-  { "text": "rede", "value": 48 }
-]
 ```
 
 ---
@@ -554,7 +805,9 @@ Agrupa outros componentes.
 ```json
 {
   "wrapper": "div",
-  "wrapperProps": {},
+  "wrapperProps": {
+    "className": "grid grid-cols-2 gap-4"
+  },
   "index": 0,
   "components": [
     {
@@ -568,8 +821,8 @@ Agrupa outros componentes.
 
 **Propriedades:**
 
-- `wrapper`: Tag HTML (string, obrigatório)
-- `wrapperProps`: Props do wrapper (object, opcional)
+- `wrapper`: Tag HTML (string, obrigatório) - Exemplos: `"div"`, `"section"`, `"h3"`
+- `wrapperProps`: Props do wrapper (object, opcional) - Permite passar propriedades HTML/React
 - `components`: Componentes filhos (array, opcional)
 - `content`: Conteúdo de texto (string, suporta templates, opcional)
 - `index`: Ordem (number, opcional)
@@ -646,16 +899,6 @@ Use `{{path}}` para referenciar dados dinamicamente.
    "dataPath": "surveyInfo"
    ```
 
-### Exemplos
-
-```json
-{
-  "title": "{{uiTexts.executiveReport.aboutStudy}}",
-  "content": "{{sectionData.summary.aboutStudy}}",
-  "dataPath": "sectionData.recommendations"
-}
-```
-
 ---
 
 ## ⚙️ Condições
@@ -670,7 +913,7 @@ Use condições para renderizar componentes condicionalmente.
 }
 ```
 
-### Operadores
+### Operadores disponíveis
 
 - `===` (igualdade)
 - `!==` (desigualdade)
@@ -703,6 +946,8 @@ Valores truthy/falsy são avaliados automaticamente.
 ---
 
 ## 📊 Estruturas de Dados
+
+As estruturas de dados abaixo são **exemplos simplificados**. Os dados reais podem ser muito mais verbosos, então mantenha-os separados do `renderSchema` no JSON.
 
 ### Distribuição
 
@@ -793,27 +1038,7 @@ Valores truthy/falsy são avaliados automaticamente.
 
 ### Questões
 
-```json
-{
-  "questions": [
-    {
-      "id": 1,
-      "index": 1,
-      "question": "Qual é a probabilidade de você recomendar...",
-      "icon": "Percent",
-      "summary": "Com 51% dos entrevistados...",
-      "data": [
-        {
-          "option": "Detrator",
-          "value": 636,
-          "percentage": 51
-        }
-      ],
-      "type": "nps"
-    }
-  ]
-}
-```
+Ver seção [Gerenciando Questões](#gerenciando-questões) para exemplos completos.
 
 ### Word Cloud
 
@@ -847,6 +1072,8 @@ Valores truthy/falsy são avaliados automaticamente.
 }
 ```
 
+**Nota:** Mantenha os dados separados do `renderSchema` porque podem ser muito verbosos. O `renderSchema` deve conter apenas a estrutura de renderização, enquanto os dados ficam em propriedades separadas dentro de `data`.
+
 ---
 
 ## ❓ FAQ
@@ -867,12 +1094,12 @@ Valores truthy/falsy são avaliados automaticamente.
 ```
 
 2. Adicione o schema em `data.renderSchema`
-3. Adicione os dados em `data`
+3. Adicione os dados em `data` (separados do `renderSchema`)
 4. Adicione os textos em `uiTexts`
 
 ### Como criar uma subseção?
 
-1. Adicione em `subsections`:
+1. Adicione em `subsections` (ou apenas no `renderSchema`):
 
 ```json
 {
@@ -883,8 +1110,20 @@ Valores truthy/falsy são avaliados automaticamente.
 }
 ```
 
-2. Adicione o schema correspondente em `renderSchema.subsections`
-3. Adicione os dados necessários
+2. Adicione o schema correspondente em `renderSchema.subsections` com o `name` junto dos componentes
+3. Adicione os dados necessários em `data`
+
+### Como adicionar ou remover questões?
+
+- **Adicionar:** Adicione um objeto ao array `questions` em `data.questions`
+- **Remover:** Remova o objeto do array `questions`
+- **Ocultar:** Adicione o ID em `config.questions.hiddenIds`
+
+Veja a seção [Gerenciando Questões](#gerenciando-questões) para detalhes.
+
+### Onde ficam as traduções que não mudam?
+
+As traduções estáticas ficam em `uiTexts` no nível raiz do JSON. Cada seção também pode ter seus próprios textos em `data.uiTexts`. Veja a seção [Traduções e Textos da Interface](#traduções-e-textos-da-interface).
 
 ### Quais ícones posso usar?
 
@@ -904,15 +1143,8 @@ Use `dataPath` com o caminho completo:
 
 ### Como criar um gráfico?
 
-1. Prepare os dados:
-
-```json
-{
-  "dados": [{ "label": "A", "value": 100, "percentage": 50 }]
-}
-```
-
-2. Use o componente:
+1. Prepare os dados em `data` (separados do `renderSchema`)
+2. Use o componente com `dataPath`:
 
 ```json
 {
@@ -999,14 +1231,21 @@ Use `isRoute: true`:
 
 ### Quais são os styleVariants disponíveis?
 
-- `default`: Padrão
-- `highlight`: Destaque
-- `border-left`: Borda esquerda
-- `overflow-hidden`: Overflow oculto
-- `flex-column`: Layout em coluna
-- `with-description`: Com descrição
-- `with-charts`: Com gráficos
-- `with-tables`: Com tabelas
+#### `styleVariant` (estilo do card)
+
+- `default`: Estilo padrão do card
+- `highlight`: Card com destaque visual
+- `border-left`: Card com borda destacada à esquerda
+- `overflow-hidden`: Card com overflow oculto (útil para tabelas)
+- `flex-column`: Card com layout em coluna
+
+#### `contentStyleVariant` (estilo do conteúdo interno)
+
+- `with-description`: Layout otimizado para conteúdo descritivo
+- `with-charts`: Layout otimizado para exibir gráficos
+- `with-tables`: Layout otimizado para exibir tabelas
+
+**Nota:** `styleVariant` e `contentStyleVariant` são propriedades diferentes e podem ser usadas juntas.
 
 ---
 
@@ -1028,7 +1267,6 @@ Use `isRoute: true`:
           {
             "id": "exemplo-subsecao",
             "index": 0,
-            "name": "Subseção de Exemplo",
             "icon": "ClipboardList"
           }
         ],
@@ -1078,7 +1316,6 @@ Use `isRoute: true`:
     {
       "id": "grafico-subsecao",
       "index": 0,
-      "name": "Gráfico",
       "icon": "TrendingUp"
     }
   ],
@@ -1095,7 +1332,8 @@ Use `isRoute: true`:
               "type": "card",
               "index": 0,
               "title": "{{uiTexts.grafico.titulo}}",
-              "styleVariant": "with-charts",
+              "styleVariant": "flex-column",
+              "contentStyleVariant": "with-charts",
               "components": [
                 {
                   "type": "barChart",
@@ -1122,88 +1360,58 @@ Use `isRoute: true`:
 }
 ```
 
-### Exemplo 3: Seção com Múltiplos Componentes
+**Nota:** Os dados (`dados`) estão separados do `renderSchema` porque podem ser verbosos.
+
+### Exemplo 3: Seção com Questões
 
 ```json
 {
-  "id": "exemplo-multiplo",
-  "index": 2,
-  "name": "Exemplo Múltiplo",
-  "icon": "Layers",
+  "id": "responses",
+  "index": 3,
+  "name": "Análise por Questão",
+  "icon": "MessageSquare",
   "hasSchema": true,
-  "subsections": [
-    {
-      "id": "multiplo-subsecao",
-      "index": 0,
-      "name": "Múltiplos Componentes",
-      "icon": "FileText"
-    }
-  ],
   "data": {
     "renderSchema": {
       "subsections": [
         {
-          "id": "multiplo-subsecao",
+          "id": "questions-list",
           "index": 0,
-          "name": "Múltiplos Componentes",
+          "name": "Lista de Questões",
           "icon": "FileText",
           "components": [
             {
-              "type": "card",
+              "type": "questionsList",
               "index": 0,
-              "title": "Card 1",
-              "content": "Conteúdo do primeiro card",
-              "styleVariant": "default"
-            },
-            {
-              "wrapper": "div",
-              "wrapperProps": {},
-              "index": 1,
-              "components": [
-                {
-                  "type": "card",
-                  "index": 0,
-                  "title": "Card 2",
-                  "styleVariant": "highlight"
-                },
-                {
-                  "type": "card",
-                  "index": 1,
-                  "title": "Card 3",
-                  "styleVariant": "border-left"
-                }
-              ]
+              "dataPath": "sectionData"
             }
           ]
         }
       ]
-    }
-  }
-}
-```
-
-### Exemplo 4: Seção com Condições
-
-```json
-{
-  "components": [
-    {
-      "type": "card",
-      "index": 0,
-      "title": "Card Sempre Visível",
-      "content": "Este card sempre aparece"
     },
-    {
-      "type": "barChart",
-      "index": 1,
-      "dataPath": "sectionData.dados",
-      "condition": "sectionData.dados && sectionData.dados.length > 0",
-      "config": {
-        "dataKey": "value",
-        "yAxisDataKey": "label"
+    "questions": [
+      {
+        "id": 1,
+        "index": 1,
+        "question": "Qual é a probabilidade de você recomendar...",
+        "icon": "Percent",
+        "summary": "Resumo...",
+        "data": [
+          {
+            "option": "Detrator",
+            "value": 636,
+            "percentage": 51
+          }
+        ],
+        "type": "nps"
+      }
+    ],
+    "config": {
+      "questions": {
+        "hiddenIds": [3]
       }
     }
-  ]
+  }
 }
 ```
 
@@ -1218,6 +1426,14 @@ Os ícones são do Lucide React. Consulte a documentação para ver todos os íc
 ### Componentes Customizados
 
 Novos tipos de componentes devem ser criados no código, não no JSON.
+
+### Separação de Dados
+
+Mantenha os dados separados do `renderSchema` porque podem ser muito verbosos. O `renderSchema` deve conter apenas a estrutura de renderização.
+
+### Name nos Componentes
+
+Como o código é programático, você pode colocar o `name` diretamente no `renderSchema` junto com os componentes, evitando duplicação.
 
 ---
 

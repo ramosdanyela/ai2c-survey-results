@@ -3120,6 +3120,34 @@
       "medium": "Médio",
       "low": "Baixo"
     },
+    "common": {
+      "loading": {
+        "loadingQuestions": "Carregando questões..."
+      },
+      "errors": {
+        "dataNotFound": "Dados não encontrados.",
+        "notSpecified": "não especificado",
+        "availableKeys": "Chaves disponíveis:",
+        "questionsNotFound": "Questões não encontradas.",
+        "availableStructure": "Estrutura disponível:",
+        "none": "nenhuma",
+        "questionsExists": "responseDetails.questions existe?",
+        "yes": "sim",
+        "no": "não",
+        "isArray": "É array?"
+      },
+      "emptyState": {
+        "noQuestionsFound": "Nenhuma questão encontrada.",
+        "totalAvailableQuestions": "Total de questões disponíveis:",
+        "activeFilter": "Filtro ativo:",
+        "questionsInResponseDetails": "Questões no responseDetails:"
+      },
+      "section": {
+        "sectionNotFound": "Seção não encontrada",
+        "sectionNotFoundDescription": "A seção \"{{section}}\" não foi encontrada ou não possui schema de renderização.",
+        "sectionId": "Section ID:"
+      }
+    },
     "errors": {
       "sectionNotFound": "Seção não encontrada ou sem schema de renderização.",
       "subsectionNotFound": "Subseção não encontrada.",

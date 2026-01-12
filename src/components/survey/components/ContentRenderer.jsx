@@ -266,16 +266,29 @@ export function ContentRenderer({ activeSection }) {
       );
     } else {
       // Error state: section not found or missing schema
+      const commonTexts = data?.uiTexts?.common?.section || {};
+      const sectionNotFound =
+        commonTexts.sectionNotFound || "Section not found";
+      const sectionNotFoundDescription =
+        commonTexts.sectionNotFoundDescription ||
+        `The section "${normalizedSection}" was not found or does not have a rendering schema.`;
+      const sectionIdLabel = commonTexts.sectionId || "Section ID:";
+
+      // Replace {{section}} placeholder if present
+      const description = sectionNotFoundDescription.replace(
+        "{{section}}",
+        normalizedSection
+      );
+
       content = (
         <div className="space-y-8 animate-fade-in p-8 text-center">
           <div className="text-muted-foreground">
-            <p className="text-lg font-semibold mb-2">Seção não encontrada</p>
-            <p className="text-sm">
-              A seção "{normalizedSection}" não foi encontrada ou não possui
-              schema de renderização.
-            </p>
+            <p className="text-lg font-semibold mb-2">{sectionNotFound}</p>
+            <p className="text-sm">{description}</p>
             {finalSectionId && (
-              <p className="text-xs mt-2">Section ID: {finalSectionId}</p>
+              <p className="text-xs mt-2">
+                {sectionIdLabel} {finalSectionId}
+              </p>
             )}
           </div>
         </div>

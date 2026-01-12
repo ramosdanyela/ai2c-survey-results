@@ -251,7 +251,9 @@ export function QuestionsList({
 
   // Loading state - AFTER all hooks
   if (loading) {
-    return <div>Carregando questões...</div>;
+    const loadingText =
+      rootUiTexts?.common?.loading?.loadingQuestions || "Loading questions...";
+    return <div>{loadingText}</div>;
   }
 
   if (!responseDetails || !surveyInfo) {
@@ -261,15 +263,18 @@ export function QuestionsList({
       dataPath,
       responseDetailsKeys: responseDetails ? Object.keys(responseDetails) : [],
     });
+    const commonTexts = rootUiTexts?.common?.errors || {};
+    const dataNotFound = commonTexts.dataNotFound || "Data not found.";
+    const notSpecified = commonTexts.notSpecified || "not specified";
+    const availableKeys = commonTexts.availableKeys || "Available keys:";
+
     return (
       <div className="p-4 text-center text-muted-foreground">
-        <p>Dados não encontrados.</p>
-        <p className="text-sm mt-2">
-          dataPath: {dataPath || "não especificado"}
-        </p>
+        <p>{dataNotFound}</p>
+        <p className="text-sm mt-2">dataPath: {dataPath || notSpecified}</p>
         {responseDetails && (
           <p className="text-xs mt-1">
-            Chaves disponíveis: {Object.keys(responseDetails).join(", ")}
+            {availableKeys} {Object.keys(responseDetails).join(", ")}
           </p>
         )}
       </div>
@@ -318,20 +323,29 @@ export function QuestionsList({
 
   // Verificar se questions existe e é um array
   if (!responseDetails.questions || !Array.isArray(responseDetails.questions)) {
+    const commonTexts = rootUiTexts?.common?.errors || {};
+    const questionsNotFound =
+      commonTexts.questionsNotFound || "Questions not found.";
+    const availableStructure =
+      commonTexts.availableStructure || "Available structure:";
+    const none = commonTexts.none || "none";
+    const questionsExists =
+      commonTexts.questionsExists || "responseDetails.questions exists?";
+    const yes = commonTexts.yes || "yes";
+    const no = commonTexts.no || "no";
+    const isArray = commonTexts.isArray || "Is array?";
+
     return (
       <div className="p-4 text-center text-muted-foreground">
-        <p>Questões não encontradas.</p>
+        <p>{questionsNotFound}</p>
         <p className="text-sm mt-2">
-          Estrutura disponível:{" "}
-          {responseDetails
-            ? Object.keys(responseDetails).join(", ")
-            : "nenhuma"}
+          {availableStructure}{" "}
+          {responseDetails ? Object.keys(responseDetails).join(", ") : none}
         </p>
         {responseDetails && (
           <p className="text-xs mt-1">
-            responseDetails.questions existe?{" "}
-            {responseDetails.questions ? "sim" : "não"} | É array?{" "}
-            {Array.isArray(responseDetails.questions) ? "sim" : "não"}
+            {questionsExists} {responseDetails.questions ? yes : no} | {isArray}{" "}
+            {Array.isArray(responseDetails.questions) ? yes : no}
           </p>
         )}
       </div>
@@ -659,18 +673,39 @@ export function QuestionsList({
       <div className="grid grid-cols-1 gap-6">
         {allAvailableQuestions.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
-            <p>Nenhuma questão encontrada.</p>
-            <p className="text-sm mt-2">
-              Total de questões disponíveis:{" "}
-              {responseDetails?.questions?.length || 0}
-            </p>
-            <p className="text-xs mt-1">Filtro ativo: {questionFilter}</p>
-            <p className="text-xs mt-1">
-              Questões no responseDetails:{" "}
-              {responseDetails?.questions
-                ?.map((q) => `ID:${q.id}(type:${q.type})`)
-                .join(", ") || "nenhuma"}
-            </p>
+            {(() => {
+              const commonTexts = rootUiTexts?.common || {};
+              const emptyState = commonTexts.emptyState || {};
+              const noQuestionsFound =
+                emptyState.noQuestionsFound || "No questions found.";
+              const totalAvailableQuestions =
+                emptyState.totalAvailableQuestions ||
+                "Total available questions:";
+              const activeFilter = emptyState.activeFilter || "Active filter:";
+              const questionsInResponseDetails =
+                emptyState.questionsInResponseDetails ||
+                "Questions in responseDetails:";
+              const none = commonTexts.errors?.none || "none";
+
+              return (
+                <>
+                  <p>{noQuestionsFound}</p>
+                  <p className="text-sm mt-2">
+                    {totalAvailableQuestions}{" "}
+                    {responseDetails?.questions?.length || 0}
+                  </p>
+                  <p className="text-xs mt-1">
+                    {activeFilter} {questionFilter}
+                  </p>
+                  <p className="text-xs mt-1">
+                    {questionsInResponseDetails}{" "}
+                    {responseDetails?.questions
+                      ?.map((q) => `ID:${q.id}(type:${q.type})`)
+                      .join(", ") || none}
+                  </p>
+                </>
+              );
+            })()}
           </div>
         ) : (
           allAvailableQuestions.map((question, index) => {

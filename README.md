@@ -18,6 +18,8 @@ npm run build
 npm run preview
 ```
 
+> ⚠️ **IMPORTANTE**: Para fazer testes e experimentações, **sempre crie uma nova branch** e não commite diretamente na branch `main`. Use `git checkout -b nome-da-branch` antes de fazer alterações.
+
 ## ✨ Características Principais
 
 - 🎯 **100% Genérico** - Sistema totalmente baseado em JSON, sem código hardcoded
@@ -96,6 +98,7 @@ src/
 - **shadcn/ui** - Componentes UI
 - **Radix UI** - Primitivos acessíveis
 - **Recharts** - Gráficos e visualizações
+- **React Query** - Gerenciamento de estado e cache de dados
 - **React Router** - Roteamento
 - **Lucide React** - Ícones
 
@@ -103,8 +106,18 @@ src/
 
 Toda a documentação está na pasta [`docs/`](./docs/):
 
-- **[SURVEY_DATA_DOCUMENTATION.md](./docs/SURVEY_DATA_DOCUMENTATION.md)** - 📖 Documentação completa da estrutura do JSON, componentes disponíveis, templates e exemplos
-- **[QUICK_REFERENCE.md](./docs/QUICK_REFERENCE.md)** - ⚡ Guia rápido para criar seções e componentes
+### Documentação Principal
+
+- **[Doc_how-to_json.md](./docs/Doc_how-to_json.md)** - 📖 Documentação completa da estrutura do JSON, componentes disponíveis, templates, condições e exemplos detalhados
+- **[Doc_how-to_json_short.md](./docs/Doc_how-to_json_short.md)** - ⚡ Guia rápido de referência para criar seções, subseções e componentes
+
+### Integração e APIs
+
+- **[Replace_mock_to_api.md](./docs/Replace_mock_to_api.md)** - 🔌 Guia completo de integração com API real: substituir dados mockados por chamadas HTTP, configuração de variáveis de ambiente, autenticação e tratamento de erros
+
+### Estratégias Avançadas
+
+- **[PLUS_FILTER_BACKEND_STRATEGY.md](./docs/PLUS_FILTER_BACKEND_STRATEGY.md)** - 📊 Estratégia de implementação de filtros ativos com backend: arquitetura, estrutura de dados, endpoints e hooks para filtros dinâmicos
 
 ### Documentação Rápida
 
@@ -158,7 +171,7 @@ Exemplo mínimo:
 - **Filtros** - `type: "filterPills"` - Pills de filtro
 - **Word Cloud** - `type: "wordCloud"` - Nuvem de palavras
 
-Veja a [documentação completa](./docs/SURVEY_DATA_DOCUMENTATION.md) para todos os tipos.
+Veja a [documentação completa](./docs/Doc_how-to_json.md) para todos os tipos e detalhes de configuração.
 
 ## 📜 Scripts Disponíveis
 
@@ -184,7 +197,19 @@ npm run analyze:all   # Executa todas as análises
 
 O projeto suporta variáveis de ambiente para configuração:
 
+#### Modo de Desenvolvimento (Mock)
+
 - `VITE_API_DELAY` - Delay simulado para chamadas de API (padrão: 800ms)
+- `VITE_USE_MOCK_DATA` - Usar dados mockados localmente (padrão: `true` em desenvolvimento)
+
+#### Integração com API Real
+
+- `VITE_API_URL` - URL base da API (ex: `https://api.exemplo.com/v1`)
+- `VITE_SURVEY_DATA_ENDPOINT` - Endpoint para dados da pesquisa (padrão: `/survey/data`)
+- `VITE_API_TOKEN` - Token de autenticação Bearer (opcional)
+- `VITE_API_TIMEOUT` - Timeout para requisições em ms (padrão: 30000)
+
+**📖 Veja o guia completo:** [Replace_mock_to_api.md](./docs/Replace_mock_to_api.md)
 
 ### Personalização
 
@@ -212,18 +237,39 @@ Cada seção com `hasSchema: true` deve ter um `renderSchema` que define:
 - **Componentes** - Array de componentes a renderizar
 - **Configurações** - Configurações específicas de cada componente
 
+### Integração com API
+
+O sistema suporta dois modos de operação:
+
+1. **Modo Mock (Desenvolvimento)** - Carrega dados do `surveyData.json` local
+2. **Modo API (Produção)** - Faz chamadas HTTP para API real usando React Query
+
+O hook `useSurveyData()` gerencia automaticamente o carregamento, cache e estados de loading/error. Veja [Replace_mock_to_api.md](./docs/Replace_mock_to_api.md) para migrar para API real.
+
 ## 🤝 Contribuindo
+
+> ⚠️ **REGRAS DE DESENVOLVIMENTO**
+>
+> - **SEMPRE crie uma nova branch** para testes, experimentações e desenvolvimento
+> - **NUNCA commite diretamente na branch `main`**
+> - Use `git checkout -b nome-da-branch` antes de fazer alterações
+> - Faça merge via Pull Request após revisão e testes
+
+### Diretrizes
 
 1. Mantenha o sistema genérico - evite código hardcoded
 2. Documente novas funcionalidades
 3. Siga os padrões existentes de estrutura JSON
 4. Teste com diferentes estruturas de dados
+5. Use branches separadas para cada feature ou teste
 
 ## 📝 Notas
 
 - O sistema prioriza o JSON (`surveyData.json`) sobre código hardcoded
 - Componentes legacy existem mas não são mais usados no fluxo principal
 - O `GenericSectionRenderer` é o coração do sistema
+- O sistema usa **React Query** para gerenciamento de dados e cache
+- Suporte completo para integração com API real (veja documentação em `docs/`)
 
 ## 📄 Licença
 
