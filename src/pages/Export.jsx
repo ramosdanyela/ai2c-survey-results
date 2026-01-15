@@ -30,12 +30,9 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { COLOR_ORANGE_PRIMARY, RGBA_BLACK_SHADOW_20 } from "@/lib/colors";
-import {
-  responseDetails,
-  attributeDeepDive,
-  uiTexts,
-  sectionsConfig,
-} from "@/data/surveyData";
+import { uiTexts, sectionsConfig } from "@/data/surveyData";
+import { getAllSubsectionsForSection } from "@/utils/exportHelpers";
+import { useSurveyData } from "@/hooks/useSurveyData";
 import { cn } from "@/lib/utils";
 
 // Local texts for the Export component
@@ -74,6 +71,7 @@ SectionCheckbox.displayName = "SectionCheckbox";
 
 export default function Export() {
   const navigate = useNavigate();
+  const { data, loading } = useSurveyData();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(0);
   const [isDesktop, setIsDesktop] = useState(false);
@@ -96,52 +94,21 @@ export default function Export() {
   const hasSpecificSectionsSelected =
     !exportFullReport && selectedSections.size > 0;
 
-  // Build sections structure from sectionsConfig
+  // Build sections structure from sectionsConfig using helper function
   const sections = useMemo(() => {
-    return sectionsConfig.sections
+    // Get sectionsConfig from data if available, otherwise use imported one
+    const config = data?.sectionsConfig || sectionsConfig;
+
+    return config.sections
       .filter((section) => !section.isRoute) // Exclude export route
       .map((section) => {
-        let subsections = [];
+        // Use helper function to get subsections programmatically
+        const subsectionsData = getAllSubsectionsForSection(section.id, data);
 
-        // If section has fixed subsections (executive, support)
-        if (section.subsections) {
-          subsections = section.subsections.map((sub) => ({
-            id: sub.id,
-            label: sub.name,
-          }));
-        }
-        // If it's the "attributes" section, get from attributeDeepDive
-        else if (section.id === "attributes") {
-          const availableAttributes = attributeDeepDive.attributes
-            .filter((attr) =>
-              ["state", "education", "customerType"].includes(attr.id)
-            )
-            .sort((a, b) => (a.index || 0) - (b.index || 0));
-
-          subsections = availableAttributes.map((attr) => ({
-            id: `attributes-${attr.id}`,
-            label: attr.name,
-          }));
-        }
-        // If it's the "responses" section, get from responseDetails
-        else if (section.id === "responses") {
-          const allQuestions = (responseDetails.questions || [])
-            .filter((q) => q.id !== 3) // Exclude Q3
-            .sort((a, b) => (a.index || 0) - (b.index || 0));
-
-          subsections = allQuestions.map((q, index) => {
-            // Renumber questions: index + 1 (excluding Q3)
-            const displayNumber = index + 1;
-            return {
-              id: `responses-${q.id}`,
-              label: `${uiTexts.surveyHeader.question}${displayNumber}: ${
-                q.question.length > 60
-                  ? q.question.substring(0, 60) + "..."
-                  : q.question
-              }`,
-            };
-          });
-        }
+        const subsections = subsectionsData.map((sub) => ({
+          id: sub.subsectionId,
+          label: sub.label,
+        }));
 
         return {
           id: section.id,
@@ -149,7 +116,7 @@ export default function Export() {
           subsections,
         };
       });
-  }, []);
+  }, [data]);
 
   // Handlers
   const handleFullReportChange = (checked) => {
@@ -208,11 +175,21 @@ export default function Export() {
   };
 
   const handleExport = (format) => {
-    // Placeholder - export function will be implemented later
-    console.log(`Exporting in ${format}:`, {
-      fullReport: exportFullReport,
-      selectedSections: Array.from(selectedSections),
-    });
+    // Check if we have something to export
+    if (!exportFullReport && selectedSections.size === 0) {
+      return;
+    }
+
+    // Build URL parameters
+    const params = new URLSearchParams();
+    params.set("fullReport", exportFullReport.toString());
+
+    if (!exportFullReport && selectedSections.size > 0) {
+      params.set("sections", Array.from(selectedSections).join(","));
+    }
+
+    // Navigate to preview page
+    navigate(`/export/preview?${params.toString()}`);
   };
 
   useEffect(() => {

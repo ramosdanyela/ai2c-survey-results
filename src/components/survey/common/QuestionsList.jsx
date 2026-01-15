@@ -177,6 +177,20 @@ export function QuestionsList({
       .filter((q) => q.id !== 3) // Hide Q3
       .sort((a, b) => (a.index || 0) - (b.index || 0)); // Sort by index
 
+    // If questionId is provided and we're in export mode, show only that question
+    if (initialQuestionId && data?._exportMode) {
+      const singleQuestion = allQuestions.find((q) => q.id === initialQuestionId);
+      const result = singleQuestion ? [singleQuestion] : [];
+      console.log("🔍 DEBUG QuestionsList - Export mode filter:", {
+        initialQuestionId,
+        _exportMode: data?._exportMode,
+        allQuestionsCount: allQuestions.length,
+        resultCount: result.length,
+        result: result.map((q) => ({ id: q.id, question: q.question?.substring(0, 50) })),
+      });
+      return result;
+    }
+
     // Apply filter based on questionFilter
     let filtered;
     if (questionFilter === "all") {
@@ -196,7 +210,7 @@ export function QuestionsList({
     }
 
     return filtered;
-  }, [questionFilter, responseDetails]);
+  }, [questionFilter, responseDetails, initialQuestionId, data]);
 
   // Effect to scroll to specific question when questionId is provided - MUST be before early returns
   useEffect(() => {

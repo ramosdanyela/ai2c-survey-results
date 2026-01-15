@@ -1373,12 +1373,26 @@ export const sectionsConfig = {
       index: 3,
       name: uiTexts.surveySidebar.attributeDeepDive,
       icon: "Layers",
+      exportConfig: {
+        // Include only these attributes in export (if empty, includes all)
+        includedAttributeIds: ["state", "education", "customerType"],
+        // Exclude these attributes from export
+        excludedAttributeIds: [],
+      },
     },
     {
       id: "responses",
       index: 4,
       name: uiTexts.surveySidebar.questionAnalysis,
       icon: "MessageSquare",
+      exportConfig: {
+        // Include only these question IDs in export (if empty, includes all)
+        includedQuestionIds: null,
+        // Exclude these question IDs from export
+        excludedQuestionIds: [3], // Exclude Q3
+        // Label prefix for questions
+        questionLabelPrefix: uiTexts.surveyHeader.question || "Pergunta",
+      },
     },
     {
       id: "export",

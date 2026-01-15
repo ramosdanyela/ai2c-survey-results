@@ -56,6 +56,23 @@ import {
   resolveTemplate,
 } from "@/services/dataResolver";
 
+// Helper function to get questions from responseDetails
+function getQuestionsFromResponseDetails(responseDetails) {
+  if (!responseDetails) return [];
+  
+  // If questions exists, use it
+  if (responseDetails.questions && Array.isArray(responseDetails.questions)) {
+    return responseDetails.questions;
+  }
+  
+  // Otherwise, combine closedQuestions and openQuestions
+  const closed = responseDetails.closedQuestions || [];
+  const open = responseDetails.openQuestions || [];
+  
+  // Combine and sort by index
+  return [...closed, ...open].sort((a, b) => (a.index || 0) - (b.index || 0));
+}
+
 /**
  * Enriquece schema do JSON com estilos do código
  * Aplica variantes de estilo baseadas em styleVariant do JSON
@@ -1133,7 +1150,7 @@ function SchemaAccordion({ component, data }) {
  * Render a questions list component based on schema
  * This component handles all the complex logic for rendering questions with filters, accordions, etc.
  */
-function SchemaQuestionsList({ component, data, subSection }) {
+function SchemaQuestionsList({ component, data, subSection, isExport = false, exportWordCloud = true }) {
   // Extract questionId from subSection (e.g., "responses-1" -> 1)
   let questionId = null;
   if (subSection && subSection.startsWith("responses-")) {
@@ -1148,19 +1165,40 @@ function SchemaQuestionsList({ component, data, subSection }) {
     questionId = component.questionId;
   }
 
+  // Debug log
+  if (isExport) {
+    console.log("🔍 DEBUG SchemaQuestionsList:", {
+      subSection,
+      questionId,
+      isExport,
+      exportWordCloud,
+      hasExportMode: !!data?._exportMode,
+    });
+  }
+
   // Use sectionData if dataPath is not specified or is legacy
   const dataPath =
     component.dataPath || (data.sectionData ? "sectionData" : null);
   const config = component.config || {};
 
-  // Get filter state from filterPills if available
-  const filterState = data?._filterPillsState;
+  // Get filter state from filterPills if available, or use export state
+  let filterState = data?._filterPillsState;
+  
+  // In export mode, create filter state with wordCloud control
+  if (isExport) {
+    filterState = {
+      questionFilter: questionId ? null : "all", // If specific question, don't filter by type
+      setQuestionFilter: () => {},
+      showWordCloud: exportWordCloud,
+      setShowWordCloud: () => {},
+    };
+  }
 
   return (
     <QuestionsList
       questionId={questionId}
       dataPath={dataPath}
-      hideFilterPills={config.hideFilterPills || false}
+      hideFilterPills={config.hideFilterPills || isExport} // Hide pills in export mode
       externalFilterState={filterState}
       data={data} // Pass enhancedData (with sectionData injected)
     />
@@ -1188,7 +1226,7 @@ function checkCondition(condition, data) {
 /**
  * Render a component based on its type
  */
-function SchemaComponent({ component, data, subSection }) {
+function SchemaComponent({ component, data, subSection, isExport = false, exportWordCloud = true }) {
   // Check condition first
   if (component.condition && !checkCondition(component.condition, data)) {
     return null;
@@ -1205,30 +1243,6 @@ function SchemaComponent({ component, data, subSection }) {
     if (wrapperProps.className) {
       return wrapperProps.className;
     }
-
-    // Map wrapper types to default classNames (based on type from JSON)
-    const wrapperTypeMap = {
-      h3: "text-lg font-bold text-foreground mb-3",
-      h4: "text-base font-semibold text-foreground mb-3",
-      span: "",
-      div: "",
-    };
-
-    // Get base className from wrapper type
-    let baseClassName = wrapperTypeMap[wrapper] || "";
-
-    // Special case for h3 with "Respostas" content (can be overridden by className in wrapperProps)
-    if (wrapper === "h3" && !wrapperProps.className) {
-      const content = resolveTemplate(component.content || "", data);
-      if (
-        content &&
-        (content.includes("Respostas") || content.includes("responses"))
-      ) {
-        baseClassName = "text-lg font-bold text-foreground mb-4";
-      }
-    }
-
-    return baseClassName;
 
     // div wrappers - use layout property from JSON instead of checking component types
     if (wrapper === "div") {
@@ -1354,7 +1368,29 @@ function SchemaComponent({ component, data, subSection }) {
       }
     }
 
-    return "";
+    // Map wrapper types to default classNames (based on type from JSON)
+    const wrapperTypeMap = {
+      h3: "text-lg font-bold text-foreground mb-3",
+      h4: "text-base font-semibold text-foreground mb-3",
+      span: "",
+      div: "",
+    };
+
+    // Get base className from wrapper type
+    let baseClassName = wrapperTypeMap[wrapper] || "";
+
+    // Special case for h3 with "Respostas" content (can be overridden by className in wrapperProps)
+    if (wrapper === "h3" && !wrapperProps.className) {
+      const content = resolveTemplate(component.content || "", data);
+      if (
+        content &&
+        (content.includes("Respostas") || content.includes("responses"))
+      ) {
+        baseClassName = "text-lg font-bold text-foreground mb-4";
+      }
+    }
+
+    return baseClassName;
   }
 
   /**
@@ -1579,6 +1615,8 @@ function SchemaComponent({ component, data, subSection }) {
           component={component}
           data={data}
           subSection={subSection}
+          isExport={isExport}
+          exportWordCloud={exportWordCloud}
         />
       );
     case "npsStackedChart":
@@ -1610,9 +1648,21 @@ function SchemaComponent({ component, data, subSection }) {
  *
  * @param {string} sectionId - ID of the section (e.g., "nova-secao")
  * @param {string} subSection - ID of the subsection (e.g., "subsec-1")
+ * @param {boolean} isExport - If true, hides filter pills and shows only selected question
+ * @param {boolean} exportWordCloud - Controls word cloud visibility in export mode
  */
-export function GenericSectionRenderer({ sectionId, subSection }) {
+export function GenericSectionRenderer({ sectionId, subSection, isExport = false, exportWordCloud = true }) {
   const { data } = useSurveyData();
+  
+  // Debug log
+  if (isExport && sectionId === "responses") {
+    console.log("🔍 DEBUG GenericSectionRenderer - Rendering:", {
+      sectionId,
+      subSection,
+      isExport,
+      exportWordCloud,
+    });
+  }
 
   // Get section config from sectionsConfig (must be defined before sectionData)
   const sectionConfig = useMemo(() => {
@@ -1893,8 +1943,15 @@ export function GenericSectionRenderer({ sectionId, subSection }) {
         }
       }
     }
+
+    // Add export mode state to data for QuestionsList and FilterPills
+    if (isExport) {
+      enhanced._exportMode = true;
+      enhanced._exportWordCloud = exportWordCloud;
+    }
+
     return enhanced;
-  }, [data, sectionId, subSection, sectionConfig, sectionData]);
+  }, [data, sectionId, subSection, sectionConfig, sectionData, isExport, exportWordCloud]);
 
   // Check for errors AFTER all hooks are called
   if (!renderSchema) {
@@ -1906,8 +1963,16 @@ export function GenericSectionRenderer({ sectionId, subSection }) {
     );
   }
 
-  // If has subsections, require activeSubsection
-  if (hasSubsections && !activeSubsection) {
+  // Special handling for responses section with dynamic question subsections
+  // Even though hasSubsections is false, we may receive subSection like "responses-1"
+  // In this case, we should use the components directly and pass questionId to questionsList
+  const isResponsesWithQuestionId = sectionId === "responses" && 
+    subSection && 
+    subSection.startsWith("responses-") && 
+    !hasSubsections;
+
+  // If has subsections, require activeSubsection (unless it's responses with questionId)
+  if (hasSubsections && !activeSubsection && !isResponsesWithQuestionId) {
     return (
       <div className="space-y-8 animate-fade-in">
         <p>Subseção não encontrada.</p>
@@ -1927,9 +1992,23 @@ export function GenericSectionRenderer({ sectionId, subSection }) {
   if (hasSubsections) {
     // For subsections, check the subsection structure
     if (activeSubsection) {
-      // Attribute deep dive subsections use space-y-6
+      // Attribute deep dive subsections - check if there are wrapper components with two cards
       if (sectionId === "attributes") {
-        containerClassName = "space-y-6";
+        // Check if any component is a wrapper with two card children
+        const hasTwoCardWrapper = components.some(
+          (comp) =>
+            comp.wrapper === "div" &&
+            comp.components &&
+            comp.components.length === 2 &&
+            comp.components.every((c) => c.type === "card")
+        );
+        
+        if (hasTwoCardWrapper) {
+          // Use space-y-6 for the main container, but the wrapper will handle the grid layout
+          containerClassName = "space-y-6";
+        } else {
+          containerClassName = "space-y-6";
+        }
       } else {
         // Other subsections use grid gap-6
         containerClassName = "grid gap-6";
@@ -1945,31 +2024,61 @@ export function GenericSectionRenderer({ sectionId, subSection }) {
     }
   }
 
+  // For responses section with questionId, get question title
+  const questionTitle = useMemo(() => {
+    if (isResponsesWithQuestionId && subSection) {
+      const match = subSection.match(/responses-(\d+)/);
+      if (match) {
+        const questionId = parseInt(match[1], 10);
+        const responseDetails = data?.responseDetails;
+        const allQuestions = getQuestionsFromResponseDetails(responseDetails);
+        const question = allQuestions.find((q) => q.id === questionId);
+        if (question) {
+          return question.question;
+        }
+      }
+    }
+    return null;
+  }, [isResponsesWithQuestionId, subSection, data]);
+
   return (
     <div className="space-y-8 animate-fade-in">
       <section>
         <div className="space-y-6">
-          {/* Subsection Title - only show if has subsections */}
-          {hasSubsections && activeSubsection && (
+          {/* Subsection Title - show if has subsections OR if responses with questionId */}
+          {(hasSubsections && activeSubsection) || (isResponsesWithQuestionId && questionTitle) ? (
             <SubsectionTitle
-              title={activeSubsection.name || "Subseção"}
+              title={
+                (hasSubsections && activeSubsection?.name) ||
+                questionTitle ||
+                "Subseção"
+              }
               icon={SubsectionIcon}
             />
-          )}
+          ) : null}
 
           {/* Render components in order */}
           {components.length > 0 && (
             <div className={containerClassName}>
-              {components.map((component, idx) => (
-                <SchemaComponent
-                  key={`component-${
-                    component.index !== undefined ? component.index : idx
-                  }`}
-                  component={component}
-                  data={enhancedData}
-                  subSection={subSection}
-                />
-              ))}
+              {components.map((component, idx) => {
+                // In export mode, hide filterPills component
+                if (isExport && component.type === "filterPills") {
+                  return null;
+                }
+                
+                return (
+                  <SchemaComponent
+                    key={`component-${
+                      component.index !== undefined ? component.index : idx
+                    }`}
+                    component={component}
+                    data={enhancedData}
+                    subSection={subSection}
+                    isExport={isExport}
+                    exportWordCloud={exportWordCloud}
+                  />
+                );
+              })}
             </div>
           )}
 
