@@ -2,7 +2,7 @@
   "metadata": {
     "version": "1.0",
     "language": "pt-BR",
-    "surveyId": "survey-2024-01"
+    "surveyId": "stress-test-2025-01"
   },
   "sectionsConfig": {
     "sections": [
@@ -22,7 +22,7 @@
           {
             "id": "executive-recommendations",
             "index": 1,
-            "name": "Recomendações",
+            "name": "Recomendações Estratégicas",
             "icon": "AlertTriangle"
           }
         ],
@@ -68,7 +68,7 @@
               {
                 "id": "executive-recommendations",
                 "index": 1,
-                "name": "Recomendações",
+                "name": "Recomendações Estratégicas",
                 "icon": "AlertTriangle",
                 "components": [
                   {
@@ -91,204 +91,168 @@
             ]
           },
           "summary": {
-            "aboutStudy": "O objetivo do estudo é avaliar a satisfação do cliente com os serviços de telefonia móvel para identificar os fatores que impulsionam a lealdade e o cancelamento.\nPesquisa com 100 clientes móveis com 3 perguntas capturando experiência e intenções.",
-            "mainFindings": "O Net Promoter Score é negativo, com detratores superando promotores por 21 pontos.\nProblemas no serviço de rede apresentam o maior impacto negativo devido a preocupações com cobertura e estabilidade, seguidos por limitações na cobertura da rede; opiniões sobre suporte ao cliente e preços são mistas.\nA análise por segmento revela que clientes pós-pago e controle expressam maior insatisfação em relação à funcionalidade do aplicativo, conectividade e faturamento, enquanto o sentimento regional varia significativamente, com Ceará positivo e RJ, PR, SP negativos.",
-            "conclusions": "Foco urgente na infraestrutura de rede e monitoramento em tempo real é fundamental para reduzir a participação de detratores.\nO suporte ao cliente e a confiabilidade do aplicativo exigem melhorias personalizadas em segmentos e regiões.\nAbordar as frustrações relacionadas à rede e à cobrança ajudará a estabilizar a lealdade e limitar o churn.\nPriorizar essas áreas está alinhado com as capacidades operacionais e a competitividade do mercado."
+            "aboutStudy": "Esta pesquisa de satisfação de funcionários foi conduzida entre janeiro e março de 2025, envolvendo 850 colaboradores da InnovaTech Solutions.\nO objetivo principal é avaliar o nível de engajamento, satisfação e identificar áreas de melhoria no ambiente de trabalho, cultura organizacional e processos internos.",
+            "mainFindings": "O NPS organizacional é de 35 pontos, classificado como 'Bom', indicando uma base sólida de funcionários satisfeitos.\nPrincipais pontos positivos incluem: qualidade do trabalho em equipe (72% positivo), oportunidades de desenvolvimento (68% positivo) e flexibilidade de horários (65% positivo).\nÁreas que necessitam atenção: comunicação interna (45% negativo), carga de trabalho (52% negativo) e processos burocráticos (48% negativo).\nA análise por departamento revela que Engenharia e Marketing apresentam maior satisfação, enquanto Vendas e Operações demonstram maior insatisfação.",
+            "conclusions": "A empresa possui uma base sólida de funcionários engajados, mas há oportunidades significativas de melhoria.\nPriorizar melhorias na comunicação interna e redução de processos burocráticos pode aumentar significativamente a satisfação.\nProgramas de desenvolvimento profissional e reconhecimento devem ser expandidos, especialmente para departamentos com menor satisfação.\nA implementação de feedback contínuo e ações de melhoria baseadas nestes resultados é essencial para manter e melhorar o engajamento."
           },
           "recommendations": [
             {
               "id": 1,
-              "recommendation": "Atualize a Infraestrutura de Rede para Melhorar a Cobertura e Estabilidade",
+              "recommendation": "Implementar Sistema de Comunicação Interna Mais Eficiente",
               "severity": "high",
               "stakeholders": [
-                "Engenharia de Redes",
-                "Rede de Acesso Rádio (RAN)",
-                "Operações de Rede"
+                "Comunicação Corporativa",
+                "Tecnologia da Informação",
+                "Recursos Humanos"
               ],
               "tasks": [
                 {
-                  "task": "Realizar avaliação da infraestrutura de rede atual",
-                  "owner": "Engenharia de Redes"
+                  "task": "Avaliar ferramentas de comunicação interna disponíveis",
+                  "owner": "TI"
                 },
                 {
-                  "task": "Identificar lacunas de cobertura e estabilidade",
-                  "owner": "Engenharia de Redes"
+                  "task": "Definir estratégia de comunicação por departamento",
+                  "owner": "Comunicação Corporativa"
                 },
                 {
-                  "task": "Definir requisitos técnicos",
-                  "owner": "Engenharia de Redes"
+                  "task": "Implementar plataforma unificada de comunicação",
+                  "owner": "TI"
                 },
                 {
-                  "task": "Desenvolver plano de projeto detalhado",
-                  "owner": "Engenharia de Redes"
+                  "task": "Treinar equipes no uso da nova plataforma",
+                  "owner": "RH"
                 },
                 {
-                  "task": "Coordenar com RAN para alocação de recursos",
-                  "owner": "Rede de acesso via rádio (RAN)"
-                },
-                {
-                  "task": "Selecionar soluções de hardware e software",
-                  "owner": "Engenharia de Redes"
-                },
-                {
-                  "task": "Adquirir equipamentos e licenças",
-                  "owner": "Engenharia de Redes"
-                },
-                {
-                  "task": "Agendar janelas de instalação",
-                  "owner": "Operações de rede"
-                },
-                {
-                  "task": "Implementar atualizações",
-                  "owner": "Operações de rede"
-                },
-                {
-                  "task": "Testar componentes",
-                  "owner": "Operações de rede"
-                },
-                {
-                  "task": "Monitorar desempenho",
-                  "owner": "Operações de rede"
-                },
-                {
-                  "task": "Resolver problemas identificados durante testes e monitoramento",
-                  "owner": "Operações de rede"
-                },
-                {
-                  "task": "Fornecer treinamento sobre novos sistemas para equipe de Operações de rede",
-                  "owner": "Engenharia de Redes"
-                },
-                {
-                  "task": "Documentar alterações e atualizar registros de configuração de rede",
-                  "owner": "Engenharia de Redes"
+                  "task": "Monitorar adoção e ajustar conforme necessário",
+                  "owner": "Comunicação Corporativa"
                 }
               ]
             },
             {
               "id": 2,
-              "recommendation": "Implemente Monitoramento de Rede em Tempo Real e Resolução Rápida de Falhas",
+              "recommendation": "Reduzir Processos Burocráticos e Simplificar Workflows",
               "severity": "high",
               "stakeholders": [
-                "Centro de Operações de Rede (NOC)",
-                "Otimização de Rede",
-                "Tecnologia e TI"
+                "Operações",
+                "Processos e Qualidade",
+                "Liderança"
               ],
               "tasks": [
                 {
-                  "task": "Definir personas e jornadas de comunicação",
-                  "owner": "Marketing"
+                  "task": "Mapear processos atuais e identificar gargalos",
+                  "owner": "Processos e Qualidade"
                 },
                 {
-                  "task": "Criar templates de comunicação personalizados",
-                  "owner": "Conteúdo"
+                  "task": "Priorizar processos para simplificação",
+                  "owner": "Liderança"
                 },
                 {
-                  "task": "Configurar automações no CRM",
-                  "owner": "Marketing"
+                  "task": "Redesenhar workflows críticos",
+                  "owner": "Operações"
                 },
                 {
-                  "task": "Lançar piloto com segmento Entusiastas",
-                  "owner": "Customer Success"
+                  "task": "Implementar automações onde possível",
+                  "owner": "TI"
                 },
                 {
-                  "task": "Avaliar resultados e expandir",
-                  "owner": "Customer Success"
+                  "task": "Comunicar mudanças e treinar equipes",
+                  "owner": "RH"
                 }
               ]
             },
             {
               "id": 3,
-              "recommendation": "Lançar Contato Direcionado com Clientes para Abordar Preocupações sobre o Serviço de Rede",
+              "recommendation": "Expandir Programas de Desenvolvimento Profissional",
               "severity": "medium",
               "stakeholders": [
-                "Experiência do Cliente (CX)",
-                "Operações de Atendimento ao Cliente",
-                "Comunicação Corporativa"
+                "Recursos Humanos",
+                "Liderança",
+                "Desenvolvimento Organizacional"
               ],
               "tasks": [
                 {
-                  "task": "Mapear principais dúvidas e problemas",
-                  "owner": "Suporte"
+                  "task": "Avaliar necessidades de desenvolvimento por departamento",
+                  "owner": "RH"
                 },
                 {
-                  "task": "Desenvolver arquitetura do portal",
-                  "owner": "UX"
+                  "task": "Criar plano de desenvolvimento personalizado",
+                  "owner": "Desenvolvimento Organizacional"
                 },
                 {
-                  "task": "Criar conteúdo da base de conhecimento",
-                  "owner": "Conteúdo"
+                  "task": "Estabelecer parcerias com instituições de ensino",
+                  "owner": "RH"
                 },
                 {
-                  "task": "Desenvolver e testar portal",
-                  "owner": "TI"
+                  "task": "Implementar programa de mentoria",
+                  "owner": "Liderança"
                 },
                 {
-                  "task": "Lançamento e promoção",
-                  "owner": "Marketing"
+                  "task": "Acompanhar progresso e ajustar programas",
+                  "owner": "Desenvolvimento Organizacional"
                 }
               ]
             },
             {
               "id": 4,
-              "recommendation": "Melhore a Qualidade do Sinal por meio da Otimização Avançada da Rede de Acesso Rádio",
+              "recommendation": "Melhorar Gestão de Carga de Trabalho",
               "severity": "medium",
               "stakeholders": [
-                "Rede de Acesso Rádio (RAN)",
-                "Otimização de Rede",
-                "Engenharia de Rede"
+                "Liderança",
+                "Recursos Humanos",
+                "Operações"
               ],
               "tasks": [
                 {
-                  "task": "Benchmarking de programas de fidelidade",
-                  "owner": "Marketing"
+                  "task": "Realizar análise de carga de trabalho por equipe",
+                  "owner": "Liderança"
                 },
                 {
-                  "task": "Definir estrutura de benefícios",
-                  "owner": "Comercial"
+                  "task": "Identificar equipes sobrecarregadas",
+                  "owner": "RH"
                 },
                 {
-                  "task": "Aprovar orçamento e ROI",
-                  "owner": "Financeiro"
+                  "task": "Redistribuir tarefas e projetos",
+                  "owner": "Operações"
                 },
                 {
-                  "task": "Desenvolver sistema de pontos",
+                  "task": "Implementar ferramentas de gestão de tempo",
                   "owner": "TI"
                 },
                 {
-                  "task": "Lançar para clientes Entusiastas",
-                  "owner": "Marketing"
+                  "task": "Estabelecer limites de horas extras",
+                  "owner": "RH"
                 }
               ]
             },
             {
               "id": 5,
-              "recommendation": "Aprimorar o Treinamento de Suporte ao Cliente focado na Resolução de Problemas de Rede",
-              "severity": "medium",
+              "recommendation": "Criar Programa de Reconhecimento e Recompensas",
+              "severity": "low",
               "stakeholders": [
-                "Atendimento ao Cliente",
-                "Central de Atendimento",
-                "Recursos Humanos"
+                "Recursos Humanos",
+                "Liderança",
+                "Financeiro"
               ],
               "tasks": [
                 {
-                  "task": "Identificar gaps de competência",
+                  "task": "Definir critérios de reconhecimento",
                   "owner": "RH"
                 },
                 {
-                  "task": "Desenvolver grade de treinamentos",
+                  "task": "Criar sistema de pontos e recompensas",
                   "owner": "RH"
                 },
                 {
-                  "task": "Contratar facilitadores/parceiros",
+                  "task": "Aprovar orçamento para programa",
+                  "owner": "Financeiro"
+                },
+                {
+                  "task": "Lançar programa piloto",
                   "owner": "RH"
                 },
                 {
-                  "task": "Executar primeira rodada de treinamentos",
-                  "owner": "Comercial"
-                },
-                {
-                  "task": "Avaliar resultados e ajustar",
-                  "owner": "RH"
+                  "task": "Avaliar resultados e expandir",
+                  "owner": "Liderança"
                 }
               ]
             }
@@ -298,59 +262,44 @@
             "aboutStudy": "Sobre o Estudo",
             "mainFindings": "Principais Descobertas",
             "conclusions": "Conclusões",
-            "recommendations": "Recomendações",
-            "tableHeaders": {
-              "number": "#",
-              "recommendation": "Recomendação",
-              "severity": "Gravidade",
-              "stakeholders": "Stakeholders"
-            },
-            "tasks": {
-              "hideTasks": "Ocultar tarefas",
-              "showTasks": "Mostrar tarefas",
-              "hide": "Ocultar",
-              "show": "Mostrar",
-              "implementationTasks": "Tarefas de Implementação",
-              "task": "Tarefa",
-              "responsibleArea": "Área Responsável"
-            }
+            "recommendations": "Recomendações Estratégicas"
           }
         }
       },
       {
-        "id": "support",
+        "id": "engagement",
         "index": 1,
-        "name": "Análises de Suporte",
-        "icon": "BarChart3",
+        "name": "Análise de Engajamento",
+        "icon": "Heart",
         "hasSchema": true,
         "subsections": [
           {
-            "id": "support-sentiment",
+            "id": "engagement-sentiment",
             "index": 0,
-            "name": "Análise de Sentimento",
-            "icon": "Heart"
+            "name": "Sentimento Geral",
+            "icon": "Smile"
           },
           {
-            "id": "support-intent",
+            "id": "engagement-segmentation",
             "index": 1,
-            "name": "Intenção de Respondentes",
-            "icon": "Target"
+            "name": "Segmentação por Departamento",
+            "icon": "Users2"
           },
           {
-            "id": "support-segmentation",
+            "id": "engagement-intent",
             "index": 2,
-            "name": "Segmentação",
-            "icon": "Users2"
+            "name": "Intenção de Permanência",
+            "icon": "Target"
           }
         ],
         "data": {
           "renderSchema": {
             "subsections": [
               {
-                "id": "support-sentiment",
+                "id": "engagement-sentiment",
                 "index": 0,
-                "name": "Análise de Sentimento",
-                "icon": "Heart",
+                "name": "Sentimento Geral",
+                "icon": "Smile",
                 "components": [
                   {
                     "type": "card",
@@ -364,33 +313,9 @@
                         "type": "sentimentDivergentChart",
                         "index": 0,
                         "dataPath": "sectionData.sentimentAnalysis.data",
-                        "config": {}
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "support-intent",
-                "index": 1,
-                "name": "Intenção de Respondentes",
-                "icon": "Target",
-                "components": [
-                  {
-                    "type": "card",
-                    "index": 0,
-                    "content": "{{sectionData.respondentIntent.description}}",
-                    "styleVariant": "default",
-                    "components": [
-                      {
-                        "type": "barChart",
-                        "index": 0,
-                        "dataPath": "sectionData.respondentIntent.data",
                         "config": {
-                          "dataKey": "percentage",
-                          "yAxisDataKey": "intent",
-                          "sortData": true,
-                          "sortDirection": "desc"
+                          "yAxisDataKey": "category",
+                          "showLegend": true
                         }
                       }
                     ]
@@ -398,9 +323,9 @@
                 ]
               },
               {
-                "id": "support-segmentation",
-                "index": 2,
-                "name": "Segmentação",
+                "id": "engagement-segmentation",
+                "index": 1,
+                "name": "Segmentação por Departamento",
                 "icon": "Users2",
                 "components": [
                   {
@@ -418,184 +343,191 @@
                     ]
                   }
                 ]
+              },
+              {
+                "id": "engagement-intent",
+                "index": 2,
+                "name": "Intenção de Permanência",
+                "icon": "Target",
+                "components": [
+                  {
+                    "type": "card",
+                    "index": 0,
+                    "content": "{{sectionData.retentionIntent.description}}",
+                    "styleVariant": "default",
+                    "components": [
+                      {
+                        "type": "barChart",
+                        "index": 0,
+                        "dataPath": "sectionData.retentionIntent.data",
+                        "config": {
+                          "dataKey": "percentage",
+                          "yAxisDataKey": "intent",
+                          "sortData": true,
+                          "sortDirection": "desc"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           },
           "sentimentAnalysis": {
-            "description": "A análise de sentimento foi realizada utilizando processamento de linguagem natural nas respostas abertas dos participantes.\nForam analisadas 4.892 menções em 6 categorias principais.\nOs resultados mostram predominância de sentimentos positivos no atendimento e qualidade do produto.\nEnquanto suporte técnico e tempo de resposta apresentam maior proporção de sentimentos negativos.",
+            "description": "A análise de sentimento foi realizada com base nas respostas dos funcionários sobre diferentes aspectos do ambiente de trabalho.\nForam analisadas 2.450 menções em 7 categorias principais.\nOs resultados mostram predominância de sentimentos positivos em trabalho em equipe, desenvolvimento profissional e flexibilidade.\nEnquanto comunicação interna, carga de trabalho e processos burocráticos apresentam maior proporção de sentimentos negativos.",
             "data": [
               {
-                "category": "Serviço de rede",
-                "positive": 10.5,
-                "neutral": 51.4,
-                "negative": 38.1
+                "category": "Trabalho em Equipe",
+                "positive": 72.3,
+                "neutral": 18.5,
+                "negative": 9.2
               },
               {
-                "category": "Suporte ao cliente",
-                "positive": 6.4,
-                "neutral": 83.1,
-                "negative": 10.5
+                "category": "Desenvolvimento Profissional",
+                "positive": 68.1,
+                "neutral": 22.4,
+                "negative": 9.5
               },
               {
-                "category": "Cobertura de rede",
-                "positive": 1.8,
-                "neutral": 84.6,
-                "negative": 13.6
+                "category": "Flexibilidade",
+                "positive": 65.2,
+                "neutral": 25.8,
+                "negative": 9.0
               },
               {
-                "category": "Oferta e preços",
-                "positive": 3.3,
-                "neutral": 90.1,
-                "negative": 6.6
+                "category": "Liderança",
+                "positive": 58.7,
+                "neutral": 28.3,
+                "negative": 13.0
               },
               {
-                "category": "Outro",
-                "positive": 2.8,
-                "neutral": 90.8,
-                "negative": 6.4
-              }
-            ]
-          },
-          "respondentIntent": {
-            "description": "Há um risco significativo de perda de clientes, com 36% dos respondentes provavelmente parando de usar o serviço e mais 34% expressando preocupações, indicando necessidade urgente de estratégias de retenção direcionadas e melhoria da qualidade do serviço.\nApenas 27% são promotores fortes, apresentando oportunidade de melhorar experiências positivas do cliente e advocacy da marca.\nAlém disso, uma taxa de satisfação estável muito baixa de 2% sinaliza insatisfação subjacente, mesmo entre clientes menos vocais, necessitando engajamento proativo para prevenir problemas adicionais.",
-            "data": [
-              {
-                "intent": "Provavelmente parará de usar o produto/serviço",
-                "percentage": 36,
-                "count": 449
+                "category": "Comunicação Interna",
+                "positive": 32.5,
+                "neutral": 22.5,
+                "negative": 45.0
               },
               {
-                "intent": "Pretende ficar, mas expressa preocupações",
-                "percentage": 34,
-                "count": 424
+                "category": "Carga de Trabalho",
+                "positive": 18.2,
+                "neutral": 29.8,
+                "negative": 52.0
               },
               {
-                "intent": "Muito satisfeito e promoveria o produto/serviço",
-                "percentage": 27,
-                "count": 337
-              },
-              {
-                "intent": "Satisfeito e estável",
-                "percentage": 2,
-                "count": 25
+                "category": "Processos Burocráticos",
+                "positive": 15.5,
+                "neutral": 36.5,
+                "negative": 48.0
               }
             ]
           },
           "segmentation": [
             {
-              "cluster": "Campeão em Treinamento de IA",
-              "description": "Adotante entusiasmado que valoriza treinamento e desenvolvimento de capacidades em pesquisa de marketing orientada por IA dentro de TI.",
-              "percentage": 38.5,
+              "cluster": "Engajados e Satisfeitos",
+              "description": "Funcionários altamente engajados que valorizam o ambiente de trabalho, oportunidades de crescimento e reconhecimento.",
+              "percentage": 42.3,
               "id": 1,
               "characteristics": [
-                "Foco em treinamento e capacitação",
-                "Alto engajamento com IA",
-                "Pesquisa de marketing em TI"
+                "Alto engajamento",
+                "Satisfação com liderança",
+                "Valorizam desenvolvimento"
               ]
             },
             {
-              "cluster": "Detrator de TI Focado em Treinamento",
-              "description": "Cliente crítico em relação a eventos de dados e produtos de IA, enfatizando lacunas no treinamento e no desenvolvimento de capacidades.",
-              "percentage": 15.4,
+              "cluster": "Satisfeitos mas Buscando Crescimento",
+              "description": "Funcionários satisfeitos com a empresa, mas que buscam mais oportunidades de desenvolvimento e crescimento.",
+              "percentage": 28.5,
               "id": 2,
               "characteristics": [
-                "Crítico sobre eventos de dados",
-                "Foco em lacunas de treinamento",
-                "Produtos de IA"
+                "Satisfação moderada",
+                "Busca por crescimento",
+                "Necessita mais desafios"
               ]
             },
             {
-              "cluster": "Otimização do Construtor de Capacidade",
-              "description": "Satisfeito com as iniciativas de treinamento e capacitação em eventos de dados e IA para pesquisa de marketing em TI.",
-              "percentage": 15.4,
+              "cluster": "Neutros com Preocupações",
+              "description": "Funcionários neutros que expressam preocupações sobre comunicação, processos e carga de trabalho.",
+              "percentage": 18.2,
               "id": 3,
               "characteristics": [
-                "Satisfeito com treinamento",
-                "Eventos de dados e IA",
-                "Pesquisa de marketing em TI"
+                "Neutros",
+                "Preocupações com processos",
+                "Comunicação insuficiente"
               ]
             },
             {
-              "cluster": "Defensor de Marketing Focado em ROI",
-              "description": "Promotor aproveitando eventos de dados e IA para medir rigorosamente o ROI de marketing em pesquisa de marketing de TI.",
-              "percentage": 12.8,
+              "cluster": "Insatisfeitos Críticos",
+              "description": "Funcionários insatisfeitos com múltiplos aspectos: carga de trabalho, comunicação, processos e reconhecimento.",
+              "percentage": 8.5,
               "id": 4,
               "characteristics": [
-                "Foco em ROI de marketing",
-                "Medição rigorosa",
-                "Eventos de dados e IA"
-              ]
-            },
-            {
-              "cluster": "Cético em ROI no Marketing de TI",
-              "description": "Cliente insatisfeito com a medição do ROI de marketing usando Data Events e IA em pesquisa de marketing de TI.",
-              "percentage": 5.1,
-              "id": 5,
-              "characteristics": [
-                "Insatisfeito com medição de ROI",
-                "Data Events e IA",
-                "Pesquisa de marketing de TI"
-              ]
-            },
-            {
-              "cluster": "Estrategista de Dados de TI Neutro",
-              "description": "Cliente de TI passivamente envolvido avaliando eventos de dados e IA dentro de contextos de pesquisa de marketing.",
-              "percentage": 5.1,
-              "id": 6,
-              "characteristics": [
-                "Envolvimento passivo",
-                "Avaliação de eventos de dados",
-                "Contextos de pesquisa de marketing"
+                "Alta insatisfação",
+                "Sobrecarga de trabalho",
+                "Falta de reconhecimento"
               ]
             },
             {
               "cluster": "Outros",
-              "description": "Grupo de 3 pequenos segmentos que não formam clusters estatisticamente relevantes ou distintos por si só.",
-              "percentage": 7.8,
+              "description": "Grupo de pequenos segmentos que não formam clusters estatisticamente relevantes.",
+              "percentage": 2.5,
               "id": null,
               "characteristics": [
                 "Segmentos diversos",
-                "Baixa representatividade estatística",
+                "Baixa representatividade",
                 "Agrupamento residual"
               ]
             }
           ],
+          "retentionIntent": {
+            "description": "A análise de intenção de permanência revela que 58% dos funcionários pretendem permanecer na empresa nos próximos 2 anos, enquanto 22% estão considerando outras oportunidades e 20% estão indecisos.\nEste resultado indica uma base sólida de retenção, mas também sinaliza a necessidade de ações proativas para manter os talentos e engajar os funcionários indecisos.",
+            "data": [
+              {
+                "intent": "Pretende permanecer na empresa",
+                "percentage": 58,
+                "count": 493
+              },
+              {
+                "intent": "Indeciso sobre permanência",
+                "percentage": 20,
+                "count": 170
+              },
+              {
+                "intent": "Considerando outras oportunidades",
+                "percentage": 22,
+                "count": 187
+              }
+            ]
+          },
           "uiTexts": {
             "sentimentAnalysis": "Análise de Sentimento",
-            "respondentIntent": "Intenção de Respondentes",
             "segmentation": "Segmentação",
-            "clusterLabel": "Rótulo de Cluster",
-            "clusterDescription": "Descrição do Cluster",
-            "memberPercentage": "Porcentagem de Membros",
-            "clusterId": "ID do Cluster",
-            "responses": "Respostas"
+            "retentionIntent": "Intenção de Permanência"
           }
         }
       },
       {
         "id": "attributes",
         "index": 2,
-        "name": "Aprofundamento por Atributos",
+        "name": "Análise por Atributos",
         "icon": "Layers",
         "hasSchema": true,
         "subsections": [
           {
-            "id": "attributes-customerType",
+            "id": "attributes-department",
             "index": 0,
-            "name": "Tipo de Cliente",
+            "name": "Por Departamento",
             "icon": "Building"
           },
           {
-            "id": "attributes-state",
+            "id": "attributes-tenure",
             "index": 1,
-            "name": "Estado",
-            "icon": "MapPin"
+            "name": "Por Tempo de Empresa",
+            "icon": "Clock"
           },
           {
-            "id": "attributes-education",
+            "id": "attributes-role",
             "index": 2,
-            "name": "Escolaridade",
-            "icon": "GraduationCap"
+            "name": "Por Cargo",
+            "icon": "Briefcase"
           }
         ],
         "data": {
@@ -789,84 +721,15 @@
                             "content": "{{uiTexts.attributeDeepDive.sentimentAnalysis}}"
                           },
                           {
-                            "wrapper": "div",
-                            "wrapperProps": {},
-                            "index": 1,
-                            "components": [
-                              {
-                                "wrapper": "div",
-                                "wrapperProps": {},
-                                "index": 0,
-                                "components": [
-                                  {
-                                    "wrapper": "div",
-                                    "wrapperProps": {},
-                                    "index": 0,
-                                    "components": [
-                                      {
-                                        "wrapper": "div",
-                                        "wrapperProps": {}
-                                      },
-                                      {
-                                        "wrapper": "span",
-                                        "index": 1,
-                                        "content": "{{uiTexts.attributeDeepDive.negative}}"
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "wrapper": "div",
-                                    "wrapperProps": {},
-                                    "index": 1,
-                                    "components": [
-                                      {
-                                        "wrapper": "div",
-                                        "wrapperProps": {}
-                                      },
-                                      {
-                                        "wrapper": "span",
-                                        "index": 1,
-                                        "content": "{{uiTexts.attributeDeepDive.notApplicable}}"
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "wrapper": "div",
-                                    "wrapperProps": {},
-                                    "index": 2,
-                                    "components": [
-                                      {
-                                        "wrapper": "div",
-                                        "wrapperProps": {}
-                                      },
-                                      {
-                                        "wrapper": "span",
-                                        "index": 1,
-                                        "content": "{{uiTexts.attributeDeepDive.positive}}"
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          {
                             "type": "sentimentThreeColorChart",
-                            "index": 2,
+                            "index": 1,
                             "dataPath": "currentAttribute.satisfactionImpactSentiment",
                             "config": {}
                           },
                           {
-                            "wrapper": "div",
-                            "wrapperProps": {},
-                            "index": 3,
-                            "components": [
-                              {
-                                "type": "sentimentImpactTable",
-                                "index": 0,
-                                "dataPath": "currentAttribute.satisfactionImpactSentiment"
-                              }
-                            ]
+                            "type": "sentimentImpactTable",
+                            "index": 2,
+                            "dataPath": "currentAttribute.satisfactionImpactSentiment"
                           }
                         ]
                       },
@@ -914,428 +777,342 @@
           },
           "attributes": [
             {
-              "id": "customerType",
+              "id": "department",
               "index": 0,
-              "name": "Tipo de Cliente",
+              "name": "Por Departamento",
               "icon": "Building",
-              "summary": "O NPS negativo geral em todos os tipos de clientes sinaliza uma necessidade crítica de melhorar a qualidade do serviço para aumentar a defesa do cliente, com os segmentos pós-pago e controle exigindo atenção imediata devido aos seus níveis mais altos de insatisfação.\nOs principais pontos problemáticos variam por segmento: clientes pós-pago estão frustrados principalmente com a funcionalidade do aplicativo e problemas de conectividade 5G, enquanto usuários controle enfrentam problemas de faturamento e serviço 4G, e clientes pré-pago, embora relativamente mais satisfeitos, ainda levantam preocupações sobre concorrência e desempenho do aplicativo.\nMelhorias direcionadas focadas na confiabilidade do aplicativo, desempenho da rede e faturamento transparente, adaptadas aos problemas específicos de cada segmento, podem aumentar significativamente a satisfação do cliente e reduzir a rotatividade.",
+              "summary": "A análise por departamento revela diferenças significativas na satisfação dos funcionários.\nEngenharia e Marketing apresentam os maiores índices de satisfação, com NPS positivo de 42 e 38 respectivamente.\nVendas e Operações demonstram maior insatisfação, com NPS negativo de -15 e -22.\nEstas diferenças indicam a necessidade de abordagens personalizadas por departamento para melhorar o engajamento.",
               "distribution": [
                 {
-                  "segment": "Pré-pago",
-                  "count": 37,
-                  "percentage": 37
-                },
-                {
-                  "segment": "Controle",
-                  "count": 35,
+                  "segment": "Engenharia",
+                  "count": 298,
                   "percentage": 35
                 },
                 {
-                  "segment": "Pós-pago",
-                  "count": 28,
-                  "percentage": 28
-                }
-              ],
-              "sentiment": [
-                {
-                  "segment": "Controle",
-                  "positive": 24.3,
-                  "neutral": 0.7,
-                  "negative": 75
+                  "segment": "Vendas",
+                  "count": 213,
+                  "percentage": 25
                 },
                 {
-                  "segment": "Pré-pago",
-                  "positive": 35.8,
-                  "neutral": 0.8,
-                  "negative": 63.4
-                },
-                {
-                  "segment": "Pós-pago",
-                  "positive": 13.8,
-                  "neutral": 0.8,
-                  "negative": 85.4
-                }
-              ],
-              "npsSummary": "Os escores NPS para todos os tipos de clientes (controle, pré-pago, pós-pago) são negativos, indicando insatisfação geral e baixa probabilidade de recomendação da empresa.\nO segmento pré-pago apresenta um sentimento relativamente melhor, com menor proporção de detratores e um NPS menos negativo (-13.5), em comparação com clientes controle e pós-pago, que têm maiores percentuais de detratores e escores mais negativos (-22.8 e -28.6, respectivamente).\nHá uma necessidade urgente de melhorias direcionadas na qualidade do serviço e experiência do cliente, especialmente para usuários pós-pago e controle, para aumentar a defesa da marca e reduzir a rotatividade no competitivo mercado de telefonia móvel.",
-              "nps": [
-                {
-                  "segment": "Controle",
-                  "nps": -22.8
-                },
-                {
-                  "segment": "Pré-pago",
-                  "nps": -13.5
-                },
-                {
-                  "segment": "Pós-pago",
-                  "nps": -28.6
-                }
-              ],
-              "npsDistribution": [
-                {
-                  "segment": "Controle",
-                  "promotores": 28.6,
-                  "neutros": 20,
-                  "detratores": 51.4
-                },
-                {
-                  "segment": "Pré-pago",
-                  "promotores": 35.1,
-                  "neutros": 16.2,
-                  "detratores": 48.6
-                },
-                {
-                  "segment": "Pós-pago",
-                  "promotores": 25,
-                  "neutros": 21.4,
-                  "detratores": 53.6
-                }
-              ],
-              "positiveCategories": [
-                {
-                  "category": "Serviço de rede",
-                  "Controle": 27.8,
-                  "Pré-pago": 43.2,
-                  "Pós-pago": 70.6
-                },
-                {
-                  "category": "Suporte ao cliente",
-                  "Controle": 47.2,
-                  "Pré-pago": 18.2,
-                  "Pós-pago": 0
-                },
-                {
-                  "category": "Oferta e preços",
-                  "Controle": 16.7,
-                  "Pré-pago": 15.9,
-                  "Pós-pago": 0
-                }
-              ],
-              "negativeCategories": [
-                {
-                  "category": "Serviço de rede",
-                  "Controle": 46.8,
-                  "Pré-pago": 56.4,
-                  "Pós-pago": 50.5
-                },
-                {
-                  "category": "Cobertura de rede",
-                  "Controle": 22.5,
-                  "Pré-pago": 19.2,
-                  "Pós-pago": 12.4
-                },
-                {
-                  "category": "Suporte ao cliente",
-                  "Controle": 18,
-                  "Pré-pago": 6.4,
-                  "Pós-pago": 15.2
-                }
-              ],
-              "satisfactionImpactSummary": "Clientes pós-pagos apresentam o maior sentimento negativo (85,4%), principalmente devido a problemas relacionados ao aplicativo e à conectividade 5G que afetam sua satisfação.\nClientes pré-pagos têm um feedback relativamente mais positivo, valorizando a cobertura da rede e os sistemas de bônus, embora existam algumas preocupações sobre a concorrência e o desempenho do aplicativo.\nClientes controle apreciam o suporte ao cliente e os planos acessíveis, mas relatam problemas de faturamento e serviço 4G que impactam negativamente a satisfação.",
-              "satisfactionImpactSentiment": [
-                {
-                  "sentiment": "Negativo",
-                  "Controle": 75,
-                  "Pré-pago": 63.4,
-                  "Pós-pago": 85.4
-                },
-                {
-                  "sentiment": "Não aplicável",
-                  "Controle": 0.7,
-                  "Pré-pago": 0.8,
-                  "Pós-pago": 0.8
-                },
-                {
-                  "sentiment": "Positivo",
-                  "Controle": 24.3,
-                  "Pré-pago": 35.8,
-                  "Pós-pago": 13.8
-                }
-              ]
-            },
-            {
-              "id": "state",
-              "index": 1,
-              "name": "Estado",
-              "icon": "MapPin",
-              "summary": "A lealdade e satisfação do cliente variam significativamente entre os estados, com o Ceará (CE) demonstrando um forte sentimento positivo principalmente devido à excelente cobertura de rede, enquanto Rio de Janeiro (RJ), Paraná (PR) e São Paulo (SP) enfrentam desafios críticos refletidos em pontuações negativas de NPS e alta insatisfação relacionada ao suporte ao cliente deficiente e à usabilidade do aplicativo.\nPara aumentar a satisfação do cliente e reduzir o churn, a empresa deve priorizar melhorias direcionadas nos serviços de suporte ao cliente e na experiência digital do aplicativo em RJ, PR e SP, além de manter e promover as vantagens da cobertura de rede no CE.\nImplementar estratégias específicas para cada região que abordem esses pontos críticos será essencial para converter detratores em promotores e impulsionar um crescimento equilibrado em todos os estados.",
-              "distribution": [
-                {
-                  "segment": "RJ",
-                  "count": 14,
-                  "percentage": 14
-                },
-                {
-                  "segment": "PR",
-                  "count": 14,
-                  "percentage": 14
-                },
-                {
-                  "segment": "PE",
-                  "count": 13,
-                  "percentage": 13
-                },
-                {
-                  "segment": "SP",
-                  "count": 11,
-                  "percentage": 11
-                },
-                {
-                  "segment": "CE",
-                  "count": 11,
-                  "percentage": 11
-                },
-                {
-                  "segment": "DF",
-                  "count": 9,
-                  "percentage": 9
-                },
-                {
-                  "segment": "SC",
-                  "count": 9,
-                  "percentage": 9
-                },
-                {
-                  "segment": "BA",
-                  "count": 9,
-                  "percentage": 9
-                },
-                {
-                  "segment": "RS",
-                  "count": 5,
-                  "percentage": 5
-                },
-                {
-                  "segment": "MG",
-                  "count": 5,
-                  "percentage": 5
-                }
-              ],
-              "sentiment": [
-                {
-                  "segment": "São Paulo",
-                  "positive": 62,
-                  "neutral": 23,
-                  "negative": 15
-                },
-                {
-                  "segment": "Rio de Janeiro",
-                  "positive": 55,
-                  "neutral": 25,
-                  "negative": 20
-                },
-                {
-                  "segment": "Minas Gerais",
-                  "positive": 68,
-                  "neutral": 20,
-                  "negative": 12
-                },
-                {
-                  "segment": "Paraná",
-                  "positive": 72,
-                  "neutral": 18,
-                  "negative": 10
-                },
-                {
-                  "segment": "Rio Grande do Sul",
-                  "positive": 75,
-                  "neutral": 17,
-                  "negative": 8
-                },
-                {
-                  "segment": "Outros",
-                  "positive": 58,
-                  "neutral": 27,
-                  "negative": 15
-                }
-              ],
-              "npsSummary": "Os dados revelam uma disparidade clara na lealdade do cliente entre os estados, com o Ceará (CE) apresentando um NPS fortemente positivo de 9,1, impulsionado por uma alta proporção de promotores, enquanto todos os outros estados exibem escores NPS negativos, indicando insatisfação geral.\nOs piores escores estão no Rio de Janeiro (RJ) e no Paraná (PR), onde os detratores predominam, sugerindo problemas significativos com a qualidade do serviço ou o valor percebido nessas regiões.\nIntervenções direcionadas que abordem pontos problemáticos específicos de cada região, especialmente em RJ e PR, serão críticas para melhorar a satisfação do cliente e reduzir o churn.",
-              "nps": [
-                {
-                  "segment": "CE",
-                  "nps": 9.1
-                },
-                {
-                  "segment": "PE",
-                  "nps": -7.7
-                },
-                {
-                  "segment": "PR",
-                  "nps": -14.3
-                },
-                {
-                  "segment": "RJ",
-                  "nps": -28.6
-                },
-                {
-                  "segment": "SP",
-                  "nps": -18.2
-                }
-              ],
-              "npsDistribution": [
-                {
-                  "segment": "CE",
-                  "promotores": 45.5,
-                  "neutros": 18.2,
-                  "detratores": 36.4
-                },
-                {
-                  "segment": "PE",
-                  "promotores": 38.5,
-                  "neutros": 15.4,
-                  "detratores": 46.2
-                },
-                {
-                  "segment": "PR",
-                  "promotores": 35.7,
-                  "neutros": 14.3,
-                  "detratores": 50
-                },
-                {
-                  "segment": "RJ",
-                  "promotores": 21.4,
-                  "neutros": 28.6,
-                  "detratores": 50
-                },
-                {
-                  "segment": "SP",
-                  "promotores": 27.3,
-                  "neutros": 27.3,
-                  "detratores": 45.5
-                }
-              ],
-              "satisfactionImpactSummary": "A satisfação do cliente varia significativamente por região, com SP apresentando o maior sentimento negativo (94,6%), impulsionado principalmente por suporte ao cliente deficiente e problemas de usabilidade do aplicativo.\nO feedback positivo no CE está fortemente ligado à cobertura de rede, enquanto em PE e PR, o suporte ao cliente e os sistemas de bônus são os principais fatores de satisfação.\nAbordar as deficiências no suporte ao cliente e os problemas relacionados ao aplicativo em regiões com alta negatividade, especialmente SP e RJ, deve ser priorizado para melhorar a satisfação geral.",
-              "satisfactionImpactSentiment": [
-                {
-                  "sentiment": "Negativo",
-                  "CE": 77.4,
-                  "PE": 62.5,
-                  "PR": 58.3,
-                  "RJ": 71.7,
-                  "SP": 94.6
-                },
-                {
-                  "sentiment": "Não aplicável",
-                  "CE": 0,
-                  "PE": 0,
-                  "PR": 2.8,
-                  "RJ": 3.8,
-                  "SP": 0
-                },
-                {
-                  "sentiment": "Positivo",
-                  "CE": 22.6,
-                  "PE": 37.5,
-                  "PR": 38.9,
-                  "RJ": 24.5,
-                  "SP": 5.4
-                }
-              ],
-              "positiveCategories": [
-                {
-                  "category": "Serviço de rede",
-                  "CE": 14.3,
-                  "PE": 28.6,
-                  "PR": 21.4,
-                  "RJ": 76.9,
-                  "SP": 33.3
-                },
-                {
-                  "category": "Suporte ao cliente",
-                  "CE": 14.3,
-                  "PE": 23.8,
-                  "PR": 21.4,
-                  "RJ": 23.1,
-                  "SP": 33.3
-                },
-                {
-                  "category": "Oferta e preços",
-                  "CE": 0,
-                  "PE": 28.6,
-                  "PR": 42.9,
-                  "RJ": 0,
-                  "SP": 0
-                }
-              ],
-              "negativeCategories": [
-                {
-                  "category": "Serviço de rede",
-                  "CE": 58.3,
-                  "PE": 34.3,
-                  "PR": 66.7,
-                  "RJ": 28.9,
-                  "SP": 41.5
-                },
-                {
-                  "category": "Cobertura de rede",
-                  "CE": 41.7,
-                  "PE": 17.1,
-                  "PR": 0,
-                  "RJ": 28.9,
-                  "SP": 13.2
-                },
-                {
-                  "category": "Suporte ao cliente",
-                  "CE": 0,
-                  "PE": 11.4,
-                  "PR": 0,
-                  "RJ": 21.1,
-                  "SP": 28.3
-                }
-              ]
-            },
-            {
-              "id": "education",
-              "index": 2,
-              "name": "Escolaridade",
-              "icon": "GraduationCap",
-              "summary": "Clientes com pós-graduação representam a maior parcela (45%) e demonstram os maiores níveis de satisfação.\nHá oportunidade de melhorar a experiência para clientes com ensino médio, que apresentam maior proporção de sentimentos negativos.",
-              "distribution": [
-                {
-                  "segment": "Pós-graduação",
-                  "count": 561,
-                  "percentage": 45
-                },
-                {
-                  "segment": "Ensino Superior",
-                  "count": 437,
-                  "percentage": 35
-                },
-                {
-                  "segment": "Ensino Médio",
-                  "count": 187,
+                  "segment": "Marketing",
+                  "count": 128,
                   "percentage": 15
                 },
                 {
+                  "segment": "RH",
+                  "count": 85,
+                  "percentage": 10
+                },
+                {
+                  "segment": "Operações",
+                  "count": 85,
+                  "percentage": 10
+                },
+                {
                   "segment": "Outros",
-                  "count": 62,
+                  "count": 41,
                   "percentage": 5
                 }
               ],
               "sentiment": [
                 {
-                  "segment": "Pós-graduação",
-                  "positive": 72,
-                  "neutral": 18,
-                  "negative": 10
+                  "segment": "Engenharia",
+                  "positive": 75.2,
+                  "neutral": 15.8,
+                  "negative": 9.0
                 },
                 {
-                  "segment": "Ensino Superior",
-                  "positive": 65,
-                  "neutral": 22,
-                  "negative": 13
+                  "segment": "Marketing",
+                  "positive": 72.5,
+                  "neutral": 18.5,
+                  "negative": 9.0
                 },
                 {
-                  "segment": "Ensino Médio",
-                  "positive": 48,
-                  "neutral": 27,
-                  "negative": 25
+                  "segment": "RH",
+                  "positive": 65.0,
+                  "neutral": 25.0,
+                  "negative": 10.0
+                },
+                {
+                  "segment": "Vendas",
+                  "positive": 45.5,
+                  "neutral": 30.5,
+                  "negative": 24.0
+                },
+                {
+                  "segment": "Operações",
+                  "positive": 38.2,
+                  "neutral": 32.8,
+                  "negative": 29.0
                 },
                 {
                   "segment": "Outros",
-                  "positive": 52,
-                  "neutral": 30,
-                  "negative": 18
+                  "positive": 60.0,
+                  "neutral": 25.0,
+                  "negative": 15.0
+                }
+              ],
+              "npsSummary": "Os escores NPS variam significativamente entre departamentos.\nEngenharia e Marketing lideram com NPS positivo (42 e 38), indicando alta satisfação e lealdade.\nVendas e Operações apresentam NPS negativo (-15 e -22), sinalizando necessidade urgente de intervenção.\nRH e Outros departamentos apresentam NPS moderadamente positivo, indicando satisfação adequada.",
+              "nps": [
+                {
+                  "segment": "Engenharia",
+                  "nps": 42
+                },
+                {
+                  "segment": "Marketing",
+                  "nps": 38
+                },
+                {
+                  "segment": "RH",
+                  "nps": 12
+                },
+                {
+                  "segment": "Outros",
+                  "nps": 8
+                },
+                {
+                  "segment": "Vendas",
+                  "nps": -15
+                },
+                {
+                  "segment": "Operações",
+                  "nps": -22
+                }
+              ],
+              "npsDistribution": [
+                {
+                  "segment": "Engenharia",
+                  "promotores": 58.5,
+                  "neutros": 16.5,
+                  "detratores": 25.0
+                },
+                {
+                  "segment": "Marketing",
+                  "promotores": 55.0,
+                  "neutros": 17.0,
+                  "detratores": 28.0
+                },
+                {
+                  "segment": "RH",
+                  "promotores": 42.5,
+                  "neutros": 30.5,
+                  "detratores": 27.0
+                },
+                {
+                  "segment": "Vendas",
+                  "promotores": 32.0,
+                  "neutros": 28.0,
+                  "detratores": 40.0
+                },
+                {
+                  "segment": "Operações",
+                  "promotores": 28.5,
+                  "neutros": 28.5,
+                  "detratores": 43.0
+                },
+                {
+                  "segment": "Outros",
+                  "promotores": 40.0,
+                  "neutros": 32.0,
+                  "detratores": 28.0
+                }
+              ],
+              "satisfactionImpactSummary": "Engenharia e Marketing valorizam principalmente trabalho em equipe, desenvolvimento profissional e flexibilidade.\nVendas e Operações expressam maior insatisfação com carga de trabalho, processos burocráticos e comunicação interna.\nRH demonstra satisfação equilibrada, com preocupações moderadas sobre processos.",
+              "satisfactionImpactSentiment": [
+                {
+                  "sentiment": "Negativo",
+                  "Engenharia": 9.0,
+                  "Marketing": 9.0,
+                  "RH": 10.0,
+                  "Vendas": 24.0,
+                  "Operações": 29.0,
+                  "Outros": 15.0
+                },
+                {
+                  "sentiment": "Não aplicável",
+                  "Engenharia": 0,
+                  "Marketing": 0,
+                  "RH": 0,
+                  "Vendas": 0,
+                  "Operações": 0,
+                  "Outros": 0
+                },
+                {
+                  "sentiment": "Positivo",
+                  "Engenharia": 75.2,
+                  "Marketing": 72.5,
+                  "RH": 65.0,
+                  "Vendas": 45.5,
+                  "Operações": 38.2,
+                  "Outros": 60.0
+                }
+              ],
+              "positiveCategories": [
+                {
+                  "category": "Trabalho em Equipe",
+                  "Engenharia": 85.2,
+                  "Marketing": 78.5,
+                  "RH": 72.0,
+                  "Vendas": 55.0,
+                  "Operações": 48.0,
+                  "Outros": 70.0
+                },
+                {
+                  "category": "Desenvolvimento Profissional",
+                  "Engenharia": 82.5,
+                  "Marketing": 75.0,
+                  "RH": 68.0,
+                  "Vendas": 42.0,
+                  "Operações": 35.0,
+                  "Outros": 65.0
+                },
+                {
+                  "category": "Flexibilidade",
+                  "Engenharia": 78.0,
+                  "Marketing": 72.0,
+                  "RH": 65.0,
+                  "Vendas": 38.0,
+                  "Operações": 32.0,
+                  "Outros": 60.0
+                }
+              ],
+              "negativeCategories": [
+                {
+                  "category": "Carga de Trabalho",
+                  "Engenharia": 12.0,
+                  "Marketing": 15.0,
+                  "RH": 18.0,
+                  "Vendas": 58.0,
+                  "Operações": 65.0,
+                  "Outros": 20.0
+                },
+                {
+                  "category": "Processos Burocráticos",
+                  "Engenharia": 8.0,
+                  "Marketing": 12.0,
+                  "RH": 22.0,
+                  "Vendas": 52.0,
+                  "Operações": 58.0,
+                  "Outros": 18.0
+                },
+                {
+                  "category": "Comunicação Interna",
+                  "Engenharia": 10.0,
+                  "Marketing": 18.0,
+                  "RH": 25.0,
+                  "Vendas": 48.0,
+                  "Operações": 55.0,
+                  "Outros": 22.0
+                }
+              ]
+            },
+            {
+              "id": "tenure",
+              "index": 1,
+              "name": "Por Tempo de Empresa",
+              "icon": "Clock",
+              "summary": "Funcionários com mais tempo de empresa (3+ anos) demonstram maior satisfação e engajamento.\nFuncionários novos (menos de 1 ano) apresentam satisfação moderada, indicando necessidade de melhor onboarding.\nA análise revela que a satisfação aumenta com o tempo de empresa, sugerindo que programas de retenção são eficazes.",
+              "distribution": [
+                {
+                  "segment": "Menos de 1 ano",
+                  "count": 170,
+                  "percentage": 20
+                },
+                {
+                  "segment": "1-3 anos",
+                  "count": 298,
+                  "percentage": 35
+                },
+                {
+                  "segment": "3-5 anos",
+                  "count": 213,
+                  "percentage": 25
+                },
+                {
+                  "segment": "Mais de 5 anos",
+                  "count": 169,
+                  "percentage": 20
+                }
+              ],
+              "sentiment": [
+                {
+                  "segment": "Mais de 5 anos",
+                  "positive": 78.5,
+                  "neutral": 15.5,
+                  "negative": 6.0
+                },
+                {
+                  "segment": "3-5 anos",
+                  "positive": 72.0,
+                  "neutral": 20.0,
+                  "negative": 8.0
+                },
+                {
+                  "segment": "1-3 anos",
+                  "positive": 65.5,
+                  "neutral": 25.5,
+                  "negative": 9.0
+                },
+                {
+                  "segment": "Menos de 1 ano",
+                  "positive": 58.0,
+                  "neutral": 28.0,
+                  "negative": 14.0
+                }
+              ]
+            },
+            {
+              "id": "role",
+              "index": 2,
+              "name": "Por Cargo",
+              "icon": "Briefcase",
+              "summary": "Liderança e funcionários sênior apresentam maior satisfação, com NPS positivo.\nEstagiários e júnior demonstram satisfação moderada, com oportunidades de melhoria em desenvolvimento e mentoria.\nA análise sugere que programas de desenvolvimento são especialmente importantes para níveis iniciais.",
+              "distribution": [
+                {
+                  "segment": "Estagiário/Júnior",
+                  "count": 255,
+                  "percentage": 30
+                },
+                {
+                  "segment": "Pleno",
+                  "count": 340,
+                  "percentage": 40
+                },
+                {
+                  "segment": "Sênior",
+                  "count": 170,
+                  "percentage": 20
+                },
+                {
+                  "segment": "Liderança",
+                  "count": 85,
+                  "percentage": 10
+                }
+              ],
+              "sentiment": [
+                {
+                  "segment": "Liderança",
+                  "positive": 82.0,
+                  "neutral": 12.0,
+                  "negative": 6.0
+                },
+                {
+                  "segment": "Sênior",
+                  "positive": 75.5,
+                  "neutral": 18.5,
+                  "negative": 6.0
+                },
+                {
+                  "segment": "Pleno",
+                  "positive": 68.0,
+                  "neutral": 22.0,
+                  "negative": 10.0
+                },
+                {
+                  "segment": "Estagiário/Júnior",
+                  "positive": 58.5,
+                  "neutral": 28.5,
+                  "negative": 13.0
                 }
               ]
             }
@@ -1349,20 +1126,22 @@
             "sentimentAnalysis": "Análise de sentimento",
             "positive": "Positivo",
             "negative": "Negativo",
-            "npsQuestion": "Qual é a probabilidade de você recomendar nossa empresa a um amigo ou colega em escala de 0 a 10?",
+            "npsQuestion": "Qual é a probabilidade de você recomendar nossa empresa como um ótimo lugar para trabalhar?",
             "responses": "Respostas",
             "promotersNeutralsDetractors": "Promotores, Neutros, Detratores",
             "promoters": "Promotores",
             "neutrals": "Neutros",
             "detractors": "Detratores",
             "nps": "NPS",
-            "satisfactionImpactQuestion": "Quais são os principais pontos que impactam sua satisfação?",
+            "satisfactionImpactQuestion": "Quais são os principais fatores que impactam sua satisfação no trabalho?",
             "positiveCategories": "Categorias com sentimento positivo - Top 3",
             "negativeCategories": "Categorias com sentimento negativo - Top 3",
             "sentiment": "Sentimento",
             "notApplicable": "Não aplicável",
             "category": "Categoria",
-            "tooltip": {}
+            "tooltip": {
+              "respondents": "respondentes"
+            }
           },
           "config": {
             "defaultIcon": "Building"
@@ -1370,7 +1149,7 @@
         }
       },
       {
-        "id": "responses",
+        "id": "questions",
         "index": 3,
         "name": "Análise por Questão",
         "icon": "MessageSquare",
@@ -1465,412 +1244,232 @@
             {
               "id": 1,
               "index": 1,
-              "question": "Qual é a probabilidade de você recomendar nossa empresa a um amigo ou colega em uma escala de 0 a 10?",
+              "question": "Em uma escala de 0 a 10, qual a probabilidade de você recomendar nossa empresa como um ótimo lugar para trabalhar?",
               "icon": "Percent",
-              "summary": "Com 51% dos entrevistados classificados como detratores e apenas 30% como promotores, a empresa enfrenta um risco significativo de boca a boca negativo impactando a aquisição e retenção de clientes no competitivo mercado de telefonia móvel.",
+              "summary": "O NPS organizacional é de 35 pontos, indicando uma base sólida de promotores.\n58% dos funcionários são promotores, 20% são neutros e 22% são detratores.\nEste resultado positivo indica que a maioria dos funcionários está satisfeita e recomendaria a empresa.",
               "data": [
                 {
-                  "option": "Detrator",
-                  "value": 636,
-                  "percentage": 51
-                },
-                {
                   "option": "Promotor",
-                  "value": 374,
-                  "percentage": 30
+                  "value": 493,
+                  "percentage": 58
                 },
                 {
                   "option": "Neutro",
-                  "value": 237,
-                  "percentage": 19
+                  "value": 170,
+                  "percentage": 20
+                },
+                {
+                  "option": "Detrator",
+                  "value": 187,
+                  "percentage": 22
                 }
               ],
               "type": "nps"
             },
             {
-              "id": 3,
+              "id": 2,
               "index": 2,
-              "question": "Dentre as opções qual é o principal ponto que impacta sua satisfação?",
-              "icon": "HelpCircle",
-              "summary": "Problemas relacionados à internet, particularmente quedas e ausência de sinal, representam aproximadamente 26% da insatisfação dos clientes, indicando uma necessidade crítica de melhorar a estabilidade e a cobertura da rede para aumentar a satisfação nos serviços de telefonia móvel.",
+              "question": "Como você avalia o equilíbrio entre vida pessoal e profissional?",
+              "icon": "Scale",
+              "summary": "A maioria dos funcionários (52%) avalia o equilíbrio como bom ou muito bom.\n28% consideram regular, enquanto 20% avaliam como ruim ou muito ruim.\nEste resultado indica que há espaço para melhorias, especialmente em flexibilidade e gestão de carga de trabalho.",
               "data": [
                 {
-                  "option": "Queda / instabilidade na internet / internet trava / oscila",
-                  "value": 168,
-                  "percentage": 13.5
+                  "option": "Muito bom",
+                  "value": 221,
+                  "percentage": 26
                 },
                 {
-                  "option": "Falta de sinal de internet",
-                  "value": 156,
-                  "percentage": 12.5
+                  "option": "Bom",
+                  "value": 221,
+                  "percentage": 26
                 },
                 {
-                  "option": "Custo benefício do plano/oferta é ruim",
-                  "value": 117,
-                  "percentage": 9.4
+                  "option": "Regular",
+                  "value": 238,
+                  "percentage": 28
                 },
                 {
-                  "option": "Outro motivo",
-                  "value": 117,
-                  "percentage": 9.4
+                  "option": "Ruim",
+                  "value": 136,
+                  "percentage": 16
                 },
                 {
-                  "option": "Qualidade do sinal / Cobertura",
-                  "value": 91,
-                  "percentage": 7.3
-                },
-                {
-                  "option": "Qualidade do Sinal / Cobertura ruim",
-                  "value": 91,
-                  "percentage": 7.3
-                },
-                {
-                  "option": "Pacote de internet suficiente / dura o mês todo",
-                  "value": 77,
-                  "percentage": 6.2
-                },
-                {
-                  "option": "Estabilidade na internet / internet não trava / não oscila",
-                  "value": 65,
-                  "percentage": 5.2
-                },
-                {
-                  "option": "Custo benefício do plano/oferta é bom",
-                  "value": 52,
-                  "percentage": 4.2
-                },
-                {
-                  "option": "Velocidade da internet rápida / boa",
-                  "value": 52,
-                  "percentage": 4.2
-                },
-                {
-                  "option": "Qualidade do sinal / Cobertura boa",
-                  "value": 52,
-                  "percentage": 4.2
-                },
-                {
-                  "option": "Velocidade da internet",
-                  "value": 52,
-                  "percentage": 4.2
-                },
-                {
-                  "option": "Pacote de internet acaba rápido / não suficiente/ não dura o mês todo",
-                  "value": 39,
-                  "percentage": 3.1
-                },
-                {
-                  "option": "Estabilidade na internet",
-                  "value": 26,
-                  "percentage": 2.1
-                },
-                {
-                  "option": "Existência de sinal de internet",
-                  "value": 26,
-                  "percentage": 2.1
-                }
-              ],
-              "type": "closed"
-            },
-            {
-              "id": 4,
-              "index": 3,
-              "question": "Você recomendaria a TechCorp para um colega ou amigo?",
-              "icon": "Heart",
-              "summary": "O alto índice de recomendação (72%) valida o NPS positivo e indica potencial para crescimento orgânico através de indicações.",
-              "data": [
-                {
-                  "option": "Com certeza",
-                  "value": 524,
-                  "percentage": 42
-                },
-                {
-                  "option": "Provavelmente sim",
-                  "value": 374,
-                  "percentage": 30
-                },
-                {
-                  "option": "Talvez",
-                  "value": 212,
-                  "percentage": 17
-                },
-                {
-                  "option": "Provavelmente não",
-                  "value": 87,
-                  "percentage": 7
-                },
-                {
-                  "option": "Com certeza não",
-                  "value": 50,
+                  "option": "Muito ruim",
+                  "value": 34,
                   "percentage": 4
                 }
               ],
               "type": "closed"
             },
             {
-              "id": 2,
+              "id": 3,
+              "index": 3,
+              "question": "Com que frequência você recebe feedback sobre seu desempenho?",
+              "icon": "MessageCircle",
+              "summary": "42% dos funcionários recebem feedback mensalmente, enquanto 28% recebem trimestralmente.\n18% recebem feedback esporadicamente e 12% raramente ou nunca.\nHá oportunidade de melhorar a frequência e qualidade do feedback, especialmente feedback contínuo.",
+              "data": [
+                {
+                  "option": "Mensalmente",
+                  "value": 357,
+                  "percentage": 42
+                },
+                {
+                  "option": "Trimestralmente",
+                  "value": 238,
+                  "percentage": 28
+                },
+                {
+                  "option": "Esporadicamente",
+                  "value": 153,
+                  "percentage": 18
+                },
+                {
+                  "option": "Raramente",
+                  "value": 85,
+                  "percentage": 10
+                },
+                {
+                  "option": "Nunca",
+                  "value": 17,
+                  "percentage": 2
+                }
+              ],
+              "type": "closed"
+            },
+            {
+              "id": 4,
               "index": 4,
-              "question": "Quais são os principais pontos que impactam sua satisfação?",
-              "icon": "MessageSquare",
-              "summary": "A satisfação do cliente é impactada principalmente por problemas no serviço de rede, com 51 menções negativas focadas em cobertura, confiabilidade e estabilidade da rede superando 16 menções positivas sobre qualidade e velocidade do serviço, enquanto o suporte ao cliente apresenta um sentimento negativo menor, mas notável.",
+              "question": "O que você mais valoriza na empresa?",
+              "icon": "Heart",
+              "summary": "As respostas abertas destacam trabalho em equipe, oportunidades de desenvolvimento e flexibilidade como os principais valores.\nComunicação interna e processos burocráticos são mencionados como áreas de melhoria.",
               "sentimentData": [
                 {
-                  "category": "Serviço de rede",
-                  "positive": 10.5,
-                  "neutral": 51.4,
-                  "negative": 38.1
+                  "category": "Trabalho em Equipe",
+                  "positive": 72.3,
+                  "neutral": 18.5,
+                  "negative": 9.2
                 },
                 {
-                  "category": "Suporte ao cliente",
-                  "positive": 6.4,
-                  "neutral": 83.1,
-                  "negative": 10.5
+                  "category": "Desenvolvimento Profissional",
+                  "positive": 68.1,
+                  "neutral": 22.4,
+                  "negative": 9.5
                 },
                 {
-                  "category": "Cobertura de rede",
-                  "positive": 1.8,
-                  "neutral": 84.6,
-                  "negative": 13.6
+                  "category": "Flexibilidade",
+                  "positive": 65.2,
+                  "neutral": 25.8,
+                  "negative": 9.0
                 },
                 {
-                  "category": "Oferta e preços",
-                  "positive": 3.3,
-                  "neutral": 90.1,
-                  "negative": 6.6
-                },
-                {
-                  "category": "Outro",
-                  "positive": 2.8,
-                  "neutral": 90.8,
-                  "negative": 6.4
+                  "category": "Liderança",
+                  "positive": 58.7,
+                  "neutral": 28.3,
+                  "negative": 13.0
                 }
               ],
               "topCategories": [
                 {
                   "rank": 1,
-                  "category": "Serviço de rede",
-                  "mentions": 67,
+                  "category": "Trabalho em Equipe",
+                  "mentions": 425,
                   "percentage": 100,
                   "topics": [
                     {
-                      "topic": "agilidade no atendimento",
+                      "topic": "colaboração eficiente",
                       "sentiment": "positive"
                     },
                     {
-                      "topic": "qualidade dos resultados",
+                      "topic": "ambiente colaborativo",
                       "sentiment": "positive"
                     },
                     {
-                      "topic": "eficiência do serviço",
+                      "topic": "suporte entre colegas",
                       "sentiment": "positive"
-                    },
-                    {
-                      "topic": "confiabilidade do serviço",
-                      "sentiment": "negative"
-                    },
-                    {
-                      "topic": "confiabilidade da rede",
-                      "sentiment": "negative"
-                    },
-                    {
-                      "topic": "estabilidade da rede",
-                      "sentiment": "negative"
                     }
                   ]
                 },
                 {
                   "rank": 2,
-                  "category": "Suporte ao cliente",
-                  "mentions": 17,
-                  "percentage": 25,
+                  "category": "Desenvolvimento Profissional",
+                  "mentions": 312,
+                  "percentage": 73,
                   "topics": [
                     {
-                      "topic": "atenção ao cliente",
+                      "topic": "oportunidades de crescimento",
                       "sentiment": "positive"
                     },
                     {
-                      "topic": "tratamento respeitoso",
+                      "topic": "treinamentos relevantes",
                       "sentiment": "positive"
                     },
                     {
-                      "topic": "prontidão de resposta",
+                      "topic": "mentoria",
                       "sentiment": "positive"
-                    },
-                    {
-                      "topic": "preocupações com a retenção de clientes",
-                      "sentiment": "negative"
-                    },
-                    {
-                      "topic": "usabilidade do aplicativo",
-                      "sentiment": "negative"
-                    },
-                    {
-                      "topic": "intenção de cancelamento do cliente",
-                      "sentiment": "negative"
                     }
                   ]
                 },
                 {
                   "rank": 3,
-                  "category": "Cobertura de rede",
-                  "mentions": 15,
-                  "percentage": 22,
+                  "category": "Flexibilidade",
+                  "mentions": 285,
+                  "percentage": 67,
                   "topics": [
                     {
-                      "topic": "cobertura de rede",
+                      "topic": "horário flexível",
                       "sentiment": "positive"
                     },
                     {
-                      "topic": "qualidade do sinal",
+                      "topic": "trabalho remoto",
                       "sentiment": "positive"
                     },
                     {
-                      "topic": "disponibilidade do serviço",
-                      "sentiment": "negative"
+                      "topic": "autonomia",
+                      "sentiment": "positive"
                     }
                   ]
                 }
               ],
               "wordCloud": [
                 {
-                  "text": "confiabilidade",
-                  "value": 51
+                  "text": "equipe",
+                  "value": 425
                 },
                 {
-                  "text": "rede",
-                  "value": 48
+                  "text": "desenvolvimento",
+                  "value": 312
                 },
                 {
-                  "text": "qualidade",
-                  "value": 45
+                  "text": "flexibilidade",
+                  "value": 285
                 },
                 {
-                  "text": "estabilidade",
-                  "value": 42
+                  "text": "colaboração",
+                  "value": 198
                 },
                 {
-                  "text": "conectividade",
-                  "value": 38
+                  "text": "crescimento",
+                  "value": 156
                 },
                 {
-                  "text": "velocidade",
-                  "value": 35
+                  "text": "oportunidades",
+                  "value": 134
                 },
                 {
-                  "text": "cobertura",
-                  "value": 32
-                },
-                {
-                  "text": "sinal",
-                  "value": 28
-                },
-                {
-                  "text": "preço",
-                  "value": 25
-                },
-                {
-                  "text": "disponibilidade",
-                  "value": 22
-                },
-                {
-                  "text": "atendimento",
-                  "value": 20
-                },
-                {
-                  "text": "conexão",
-                  "value": 18
-                },
-                {
-                  "text": "intensidade",
-                  "value": 16
-                },
-                {
-                  "text": "internet",
-                  "value": 14
-                },
-                {
-                  "text": "resposta",
-                  "value": 12
-                },
-                {
-                  "text": "desempenho",
-                  "value": 10
-                },
-                {
-                  "text": "resolução",
-                  "value": 9
-                },
-                {
-                  "text": "problema",
-                  "value": 8
-                },
-                {
-                  "text": "eficiência",
-                  "value": 7
-                },
-                {
-                  "text": "agilidade",
-                  "value": 6
-                },
-                {
-                  "text": "resultado",
-                  "value": 5
-                },
-                {
-                  "text": "faturamento",
-                  "value": 4
+                  "text": "liderança",
+                  "value": 112
                 },
                 {
                   "text": "autonomia",
-                  "value": 3
+                  "value": 98
                 },
                 {
-                  "text": "serviço",
-                  "value": 3
+                  "text": "reconhecimento",
+                  "value": 87
                 },
                 {
-                  "text": "satisfação",
-                  "value": 2
-                },
-                {
-                  "text": "cancelamento",
-                  "value": 2
-                },
-                {
-                  "text": "retenção",
-                  "value": 2
-                },
-                {
-                  "text": "renovação",
-                  "value": 1
-                },
-                {
-                  "text": "telemarketing",
-                  "value": 1
-                },
-                {
-                  "text": "duração",
-                  "value": 1
-                },
-                {
-                  "text": "plano",
-                  "value": 1
-                },
-                {
-                  "text": "móvel",
-                  "value": 1
-                },
-                {
-                  "text": "comunicação",
-                  "value": 1
-                },
-                {
-                  "text": "mudança",
-                  "value": 1
-                },
-                {
-                  "text": "4G",
-                  "value": 1
+                  "text": "cultura",
+                  "value": 76
                 }
               ],
               "type": "open"
@@ -1878,122 +1477,86 @@
             {
               "id": 5,
               "index": 5,
-              "question": "O que você mais gosta na TechCorp?",
-              "icon": "Heart",
-              "summary": "As respostas abertas destacam principalmente a qualidade dos produtos e o atendimento personalizado como os maiores diferenciais percebidos pelos clientes.",
+              "question": "O que poderia ser melhorado na empresa?",
+              "icon": "TrendingUp",
+              "summary": "As principais áreas de melhoria mencionadas são comunicação interna, processos burocráticos e gestão de carga de trabalho.\nFuncionários também mencionam necessidade de mais reconhecimento e melhorias em ferramentas e tecnologia.",
               "sentimentData": [
                 {
-                  "category": "Qualidade",
-                  "positive": 78,
-                  "neutral": 15,
-                  "negative": 7
+                  "category": "Comunicação Interna",
+                  "positive": 32.5,
+                  "neutral": 22.5,
+                  "negative": 45.0
                 },
                 {
-                  "category": "Atendimento",
-                  "positive": 71,
-                  "neutral": 19,
-                  "negative": 10
+                  "category": "Carga de Trabalho",
+                  "positive": 18.2,
+                  "neutral": 29.8,
+                  "negative": 52.0
                 },
                 {
-                  "category": "Inovação",
-                  "positive": 62,
-                  "neutral": 28,
-                  "negative": 10
+                  "category": "Processos Burocráticos",
+                  "positive": 15.5,
+                  "neutral": 36.5,
+                  "negative": 48.0
                 }
               ],
               "topCategories": [
                 {
                   "rank": 1,
-                  "category": "Qualidade dos produtos",
-                  "mentions": 487,
-                  "percentage": 39,
+                  "category": "Comunicação Interna",
+                  "mentions": 387,
+                  "percentage": 100,
                   "topics": [
                     {
-                      "topic": "agilidade no atendimento",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "qualidade dos resultados",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "eficiência do serviço",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "confiabilidade do serviço",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "confiabilidade da rede",
+                      "topic": "falta de transparência",
                       "sentiment": "negative"
                     },
                     {
-                      "topic": "estabilidade da rede",
+                      "topic": "comunicação fragmentada",
+                      "sentiment": "negative"
+                    },
+                    {
+                      "topic": "necessidade de mais atualizações",
                       "sentiment": "negative"
                     }
                   ]
                 },
                 {
                   "rank": 2,
-                  "category": "Atendimento personalizado",
-                  "mentions": 356,
-                  "percentage": 29,
+                  "category": "Processos Burocráticos",
+                  "mentions": 298,
+                  "percentage": 77,
                   "topics": [
                     {
-                      "topic": "atenção ao cliente",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "tratamento respeitoso",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "prontidão de resposta",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "preocupações com a retenção de clientes",
+                      "topic": "processos lentos",
                       "sentiment": "negative"
                     },
                     {
-                      "topic": "usabilidade do aplicativo",
+                      "topic": "muitas aprovações",
                       "sentiment": "negative"
                     },
                     {
-                      "topic": "intenção de cancelamento do cliente",
+                      "topic": "necessidade de simplificação",
                       "sentiment": "negative"
                     }
                   ]
                 },
                 {
                   "rank": 3,
-                  "category": "Facilidade de uso",
-                  "mentions": 198,
-                  "percentage": 16,
+                  "category": "Carga de Trabalho",
+                  "mentions": 256,
+                  "percentage": 66,
                   "topics": [
                     {
-                      "topic": "cobertura de rede",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "qualidade do sinal",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "velocidade de conexão",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "disponibilidade do serviço",
+                      "topic": "sobrecarga",
                       "sentiment": "negative"
                     },
                     {
-                      "topic": "interrupções frequentes",
+                      "topic": "prazos apertados",
                       "sentiment": "negative"
                     },
                     {
-                      "topic": "latência alta",
+                      "topic": "necessidade de melhor distribuição",
                       "sentiment": "negative"
                     }
                   ]
@@ -2001,64 +1564,44 @@
               ],
               "wordCloud": [
                 {
-                  "text": "qualidade",
-                  "value": 487
+                  "text": "comunicação",
+                  "value": 387
                 },
                 {
-                  "text": "atendimento",
-                  "value": 356
+                  "text": "processos",
+                  "value": 298
                 },
                 {
-                  "text": "produto",
-                  "value": 312
+                  "text": "carga",
+                  "value": 256
                 },
                 {
-                  "text": "suporte",
-                  "value": 245
+                  "text": "trabalho",
+                  "value": 234
                 },
                 {
-                  "text": "equipe",
+                  "text": "burocráticos",
                   "value": 198
                 },
                 {
-                  "text": "facilidade",
-                  "value": 178
+                  "text": "melhorias",
+                  "value": 176
                 },
                 {
-                  "text": "inovação",
-                  "value": 156
+                  "text": "transparência",
+                  "value": 154
                 },
                 {
-                  "text": "confiança",
-                  "value": 145
+                  "text": "simplificação",
+                  "value": 132
                 },
                 {
-                  "text": "rapidez",
-                  "value": 134
+                  "text": "reconhecimento",
+                  "value": 118
                 },
                 {
-                  "text": "profissional",
-                  "value": 123
-                },
-                {
-                  "text": "solução",
-                  "value": 112
-                },
-                {
-                  "text": "tecnologia",
+                  "text": "ferramentas",
                   "value": 98
-                },
-                {
-                  "text": "parceria",
-                  "value": 87
-                },
-                {
-                  "text": "preço",
-                  "value": 76
-                },
-                {
-                  "text": "experiência",
-                  "value": 65
                 }
               ],
               "type": "open"
@@ -2066,135 +1609,131 @@
             {
               "id": 6,
               "index": 6,
-              "question": "O que podemos melhorar?",
-              "icon": "TrendingUp",
-              "summary": "O tempo de resposta do suporte técnico é a principal área de melhoria apontada pelos clientes.\nSeguida pela comunicação e transparência de preços.",
+              "question": "Como você descreveria a cultura organizacional?",
+              "icon": "Users",
+              "summary": "A maioria dos funcionários descreve a cultura como colaborativa e inovadora.\nAlguns mencionam necessidade de mais transparência e agilidade.\nA cultura é vista como um ponto forte, mas há oportunidades de melhoria em comunicação e processos.",
               "sentimentData": [
                 {
-                  "category": "Suporte",
-                  "positive": 15,
-                  "neutral": 25,
-                  "negative": 60
+                  "category": "Colaboração",
+                  "positive": 78.5,
+                  "neutral": 15.2,
+                  "negative": 6.3
                 },
                 {
-                  "category": "Comunicação",
-                  "positive": 22,
-                  "neutral": 33,
-                  "negative": 45
+                  "category": "Inovação",
+                  "positive": 72.3,
+                  "neutral": 20.5,
+                  "negative": 7.2
                 },
                 {
-                  "category": "Preço",
-                  "positive": 18,
-                  "neutral": 42,
-                  "negative": 40
+                  "category": "Transparência",
+                  "positive": 45.2,
+                  "neutral": 32.8,
+                  "negative": 22.0
                 }
               ],
               "topCategories": [
                 {
                   "rank": 1,
-                  "category": "Tempo de resposta do suporte",
+                  "category": "Colaborativa",
                   "mentions": 412,
-                  "percentage": 33,
+                  "percentage": 100,
                   "topics": [
-                    "demora no atendimento",
                     {
-                      "topic": "tempo de espera",
-                      "sentiment": "negative"
+                      "topic": "trabalho em equipe",
+                      "sentiment": "positive"
                     },
-                    "falta de agilidade",
-                    "necessidade de melhorias"
+                    {
+                      "topic": "apoio mútuo",
+                      "sentiment": "positive"
+                    },
+                    {
+                      "topic": "ambiente acolhedor",
+                      "sentiment": "positive"
+                    }
                   ]
                 },
                 {
                   "rank": 2,
-                  "category": "Comunicação proativa",
-                  "mentions": 287,
-                  "percentage": 23,
+                  "category": "Inovadora",
+                  "mentions": 298,
+                  "percentage": 72,
                   "topics": [
-                    "falta de atualizações",
                     {
-                      "topic": "comunicação insuficiente",
-                      "sentiment": "negative"
+                      "topic": "aberta a novas ideias",
+                      "sentiment": "positive"
                     },
-                    "necessidade de mais informações",
-                    "transparência"
+                    {
+                      "topic": "encoraja criatividade",
+                      "sentiment": "positive"
+                    },
+                    {
+                      "topic": "tecnologia moderna",
+                      "sentiment": "positive"
+                    }
                   ]
                 },
                 {
                   "rank": 3,
-                  "category": "Transparência de preços",
-                  "mentions": 198,
-                  "percentage": 16,
+                  "category": "Transparência",
+                  "mentions": 234,
+                  "percentage": 57,
                   "topics": [
-                    "clareza nos valores",
                     {
-                      "topic": "preços não transparentes",
+                      "topic": "comunicação clara",
+                      "sentiment": "positive"
+                    },
+                    {
+                      "topic": "falta de transparência em decisões",
                       "sentiment": "negative"
                     },
-                    "necessidade de mais detalhamento"
+                    {
+                      "topic": "necessidade de mais abertura",
+                      "sentiment": "negative"
+                    }
                   ]
                 }
               ],
               "wordCloud": [
                 {
-                  "text": "suporte",
+                  "text": "colaborativa",
                   "value": 412
                 },
                 {
-                  "text": "tempo",
-                  "value": 356
+                  "text": "inovadora",
+                  "value": 298
                 },
                 {
-                  "text": "resposta",
-                  "value": 312
+                  "text": "transparência",
+                  "value": 234
                 },
                 {
-                  "text": "demora",
-                  "value": 287
-                },
-                {
-                  "text": "comunicação",
-                  "value": 245
-                },
-                {
-                  "text": "preço",
+                  "text": "dinâmica",
                   "value": 198
                 },
                 {
-                  "text": "atendimento",
-                  "value": 178
+                  "text": "acolhedora",
+                  "value": 176
                 },
                 {
-                  "text": "melhoria",
-                  "value": 156
+                  "text": "criativa",
+                  "value": 154
                 },
                 {
-                  "text": "agilidade",
-                  "value": 145
+                  "text": "moderna",
+                  "value": 132
                 },
                 {
-                  "text": "resolver",
-                  "value": 134
+                  "text": "ágil",
+                  "value": 118
                 },
                 {
-                  "text": "problema",
-                  "value": 123
-                },
-                {
-                  "text": "espera",
-                  "value": 112
-                },
-                {
-                  "text": "retorno",
+                  "text": "inclusiva",
                   "value": 98
                 },
                 {
-                  "text": "clareza",
+                  "text": "flexível",
                   "value": 87
-                },
-                {
-                  "text": "processo",
-                  "value": 76
                 }
               ],
               "type": "open"
@@ -2226,12 +1765,8 @@
           },
           "config": {
             "questions": {
-              "hiddenIds": [
-                3
-              ],
-              "excludedFromChartIds": [
-                1
-              ]
+              "hiddenIds": [3],
+              "excludedFromChartIds": [1]
             },
             "npsCategories": {
               "detractor": "Detrator",
@@ -2250,775 +1785,258 @@
         }
       },
       {
-        "id": "export",
+        "id": "culture",
         "index": 4,
+        "name": "Análise de Cultura Organizacional",
+        "icon": "Users",
+        "hasSchema": true,
+        "subsections": [
+          {
+            "id": "culture-values",
+            "index": 0,
+            "name": "Valores Organizacionais",
+            "icon": "Star"
+          },
+          {
+            "id": "culture-communication",
+            "index": 1,
+            "name": "Comunicação Interna",
+            "icon": "MessageSquare"
+          },
+          {
+            "id": "culture-development",
+            "index": 2,
+            "name": "Desenvolvimento Profissional",
+            "icon": "TrendingUp"
+          }
+        ],
+        "data": {
+          "renderSchema": {
+            "subsections": [
+              {
+                "id": "culture-values",
+                "index": 0,
+                "name": "Valores Organizacionais",
+                "icon": "Star",
+                "components": [
+                  {
+                    "wrapper": "div",
+                    "wrapperProps": {
+                      "className": "grid grid-cols-1 md:grid-cols-2 gap-6"
+                    },
+                    "index": 0,
+                    "components": [
+                      {
+                        "type": "card",
+                        "index": 0,
+                        "title": "{{uiTexts.cultureAnalysis.values.title}}",
+                        "content": "{{sectionData.values.description}}",
+                        "styleVariant": "default"
+                      },
+                      {
+                        "type": "card",
+                        "index": 1,
+                        "title": "{{uiTexts.cultureAnalysis.values.distribution}}",
+                        "styleVariant": "flex-column",
+                        "contentStyleVariant": "with-charts",
+                        "components": [
+                          {
+                            "type": "sentimentStackedChart",
+                            "index": 0,
+                            "dataPath": "sectionData.values.sentiment",
+                            "config": {
+                              "yAxisDataKey": "value"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "culture-communication",
+                "index": 1,
+                "name": "Comunicação Interna",
+                "icon": "MessageSquare",
+                "components": [
+                  {
+                    "type": "card",
+                    "index": 0,
+                    "useDescription": true,
+                    "content": "{{sectionData.communication.description}}",
+                    "styleVariant": "default",
+                    "contentStyleVariant": "with-description",
+                    "components": [
+                      {
+                        "type": "sentimentDivergentChart",
+                        "index": 0,
+                        "dataPath": "sectionData.communication.data",
+                        "config": {
+                          "yAxisDataKey": "aspect",
+                          "showLegend": true
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "culture-development",
+                "index": 2,
+                "name": "Desenvolvimento Profissional",
+                "icon": "TrendingUp",
+                "components": [
+                  {
+                    "wrapper": "div",
+                    "wrapperProps": {},
+                    "index": 0,
+                    "components": [
+                      {
+                        "type": "card",
+                        "index": 0,
+                        "title": "{{uiTexts.cultureAnalysis.development.title}}",
+                        "content": "{{sectionData.development.description}}",
+                        "styleVariant": "border-left"
+                      },
+                      {
+                        "type": "card",
+                        "index": 1,
+                        "title": "{{uiTexts.cultureAnalysis.development.programs}}",
+                        "styleVariant": "flex-column",
+                        "contentStyleVariant": "with-charts",
+                        "components": [
+                          {
+                            "type": "barChart",
+                            "index": 0,
+                            "dataPath": "sectionData.development.programs",
+                            "config": {
+                              "dataKey": "satisfaction",
+                              "yAxisDataKey": "program",
+                              "sortData": true,
+                              "sortDirection": "desc"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "values": {
+            "description": "Os valores organizacionais mais reconhecidos pelos funcionários são colaboração, inovação e integridade.\nA maioria dos funcionários (78%) identifica colaboração como um valor forte da empresa.",
+            "sentiment": [
+              {
+                "value": "Colaboração",
+                "positive": 78.5,
+                "neutral": 15.2,
+                "negative": 6.3
+              },
+              {
+                "value": "Inovação",
+                "positive": 72.3,
+                "neutral": 20.5,
+                "negative": 7.2
+              },
+              {
+                "value": "Integridade",
+                "positive": 68.5,
+                "neutral": 25.0,
+                "negative": 6.5
+              },
+              {
+                "value": "Transparência",
+                "positive": 45.2,
+                "neutral": 32.8,
+                "negative": 22.0
+              }
+            ]
+          },
+          "communication": {
+            "description": "A comunicação interna é uma área que necessita melhorias significativas.\n45% dos funcionários expressam sentimentos negativos sobre a comunicação, enquanto apenas 32.5% são positivos.",
+            "data": [
+              {
+                "aspect": "Clareza das Mensagens",
+                "positive": 38.5,
+                "neutral": 25.0,
+                "negative": 36.5
+              },
+              {
+                "aspect": "Frequência de Comunicação",
+                "positive": 28.2,
+                "neutral": 22.8,
+                "negative": 49.0
+              },
+              {
+                "aspect": "Canais de Comunicação",
+                "positive": 42.5,
+                "neutral": 28.5,
+                "negative": 29.0
+              },
+              {
+                "aspect": "Transparência",
+                "positive": 32.5,
+                "neutral": 22.5,
+                "negative": 45.0
+              }
+            ]
+          },
+          "development": {
+            "description": "Os programas de desenvolvimento profissional são bem avaliados, com 68% de satisfação positiva.\nFuncionários valorizam especialmente treinamentos técnicos, mentoria e oportunidades de crescimento.",
+            "programs": [
+              {
+                "program": "Treinamentos Técnicos",
+                "satisfaction": 82.5,
+                "count": 701
+              },
+              {
+                "program": "Programa de Mentoria",
+                "satisfaction": 75.0,
+                "count": 638
+              },
+              {
+                "program": "Oportunidades de Crescimento",
+                "satisfaction": 68.5,
+                "count": 582
+              },
+              {
+                "program": "Desenvolvimento de Liderança",
+                "satisfaction": 62.0,
+                "count": 527
+              },
+              {
+                "program": "Certificações",
+                "satisfaction": 58.5,
+                "count": 497
+              }
+            ]
+          },
+          "uiTexts": {
+            "values": {
+              "title": "Valores Organizacionais",
+              "distribution": "Distribuição por Valor"
+            },
+            "communication": {
+              "title": "Comunicação Interna"
+            },
+            "development": {
+              "title": "Desenvolvimento Profissional",
+              "programs": "Satisfação com Programas"
+            }
+          }
+        }
+      },
+      {
+        "id": "export",
+        "index": 5,
         "name": "Export",
         "icon": "Download",
         "isRoute": true
       }
     ],
-    "components": {
-      "card": {
-        "description": "Card component para exibir conteúdo com título e corpo",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "card"
-          },
-          "index": {
-            "type": "number",
-            "required": false,
-            "description": "Ordem de renderização"
-          },
-          "title": {
-            "type": "string",
-            "required": false,
-            "description": "Título do card (suporta templates {{path}})"
-          },
-          "content": {
-            "type": "string",
-            "required": false,
-            "description": "Conteúdo do card (suporta templates {{path}})"
-          },
-          "useDescription": {
-            "type": "boolean",
-            "required": false,
-            "description": "Usar CardDescription em vez de div"
-          },
-          "components": {
-            "type": "array",
-            "required": false,
-            "description": "Componentes filhos aninhados"
-          },
-          "condition": {
-            "type": "string",
-            "required": false,
-            "description": "Condição para renderizar (ex: 'question.type === 'nps'')"
-          }
-        }
-      },
-      "barChart": {
-        "description": "Gráfico de barras simples",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "barChart"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "dataPath": {
-            "type": "string",
-            "required": true,
-            "description": "Caminho para os dados (ex: 'attributeDeepDive.attributes[0].distribution')"
-          },
-          "config": {
-            "type": "object",
-            "required": false,
-            "properties": {
-              "dataKey": {
-                "type": "string",
-                "default": "value"
-              },
-              "yAxisDataKey": {
-                "type": "string",
-                "default": "label"
-              },
-              "fillColor": {
-                "type": "string",
-                "required": false
-              },
-              "showLabels": {
-                "type": "boolean",
-                "default": true
-              },
-              "labelFormatter": {
-                "type": "string",
-                "required": false
-              },
-              "tooltipFormatter": {
-                "type": "string",
-                "required": false
-              },
-              "sortData": {
-                "type": "boolean",
-                "default": true
-              },
-              "sortDirection": {
-                "type": "string",
-                "values": [
-                  "asc",
-                  "desc"
-                ],
-                "default": "desc"
-              },
-              "hideXAxis": {
-                "type": "boolean",
-                "default": true
-              }
-            }
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "sentimentDivergentChart": {
-        "description": "Gráfico divergente de sentimento",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "sentimentDivergentChart"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "dataPath": {
-            "type": "string",
-            "required": true
-          },
-          "config": {
-            "type": "object",
-            "required": false,
-            "properties": {
-              "xAxisDomain": {
-                "type": "array",
-                "required": false
-              },
-              "yAxisDataKey": {
-                "type": "string",
-                "default": "category"
-              },
-              "showGrid": {
-                "type": "boolean",
-                "default": false
-              },
-              "showLegend": {
-                "type": "boolean",
-                "default": true
-              },
-              "axisLine": {
-                "type": "boolean",
-                "default": false
-              },
-              "tickLine": {
-                "type": "boolean",
-                "default": false
-              },
-              "barSize": {
-                "type": "number",
-                "required": false
-              },
-              "allowDataOverflow": {
-                "type": "boolean",
-                "required": false
-              },
-              "legendIconType": {
-                "type": "string",
-                "required": false
-              },
-              "labels": {
-                "type": "object",
-                "required": false
-              }
-            }
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "sentimentStackedChart": {
-        "description": "Gráfico empilhado de sentimento",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "sentimentStackedChart"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "dataPath": {
-            "type": "string",
-            "required": true
-          },
-          "config": {
-            "type": "object",
-            "required": false,
-            "properties": {
-              "yAxisDataKey": {
-                "type": "string",
-                "required": false
-              },
-              "showLabels": {
-                "type": "boolean",
-                "required": false
-              },
-              "showLegend": {
-                "type": "boolean",
-                "required": false
-              },
-              "hideXAxis": {
-                "type": "boolean",
-                "required": false
-              }
-            }
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "sentimentThreeColorChart": {
-        "description": "Gráfico de três cores para sentimento",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "sentimentThreeColorChart"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "dataPath": {
-            "type": "string",
-            "required": true
-          },
-          "config": {
-            "type": "object",
-            "required": false,
-            "properties": {
-              "yAxisDataKey": {
-                "type": "string",
-                "required": false
-              }
-            }
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "npsStackedChart": {
-        "description": "Gráfico empilhado NPS (Detratores, Neutros, Promotores)",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "npsStackedChart"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "dataPath": {
-            "type": "string",
-            "required": true
-          },
-          "config": {
-            "type": "object",
-            "required": false,
-            "properties": {
-              "hideXAxis": {
-                "type": "boolean",
-                "default": true
-              },
-              "showPercentagesInLegend": {
-                "type": "boolean",
-                "default": false
-              },
-              "chartName": {
-                "type": "string",
-                "default": "NPS"
-              },
-              "ranges": {
-                "type": "array",
-                "required": false
-              }
-            }
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "npsScoreCard": {
-        "description": "Card com score NPS, categoria e barra de progresso",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "npsScoreCard"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "dataPath": {
-            "type": "string",
-            "required": false,
-            "default": "surveyInfo"
-          },
-          "config": {
-            "type": "object",
-            "required": false,
-            "properties": {}
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "topCategoriesCards": {
-        "description": "Cards das top 3 categorias com tópicos",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "topCategoriesCards"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "dataPath": {
-            "type": "string",
-            "required": true
-          },
-          "config": {
-            "type": "object",
-            "required": false,
-            "properties": {}
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "filterPills": {
-        "description": "Pills de filtro para questões (all, open, closed, nps) com toggle de word cloud",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "filterPills"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "config": {
-            "type": "object",
-            "required": false,
-            "properties": {
-              "showWordCloudToggle": {
-                "type": "boolean",
-                "default": false
-              }
-            }
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "wordCloud": {
-        "description": "Nuvem de palavras",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "wordCloud"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "dataPath": {
-            "type": "string",
-            "required": true
-          },
-          "config": {
-            "type": "object",
-            "required": false,
-            "properties": {
-              "imagePath": {
-                "type": "string",
-                "required": false,
-                "description": "Caminho para imagem estática (alternativa ao WordCloud dinâmico)"
-              }
-            }
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "accordion": {
-        "description": "Accordion para agrupar componentes",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "accordion"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "value": {
-            "type": "string",
-            "required": false,
-            "description": "Valor do accordion aberto"
-          },
-          "defaultValue": {
-            "type": "string",
-            "required": false,
-            "description": "Valor padrão do accordion"
-          },
-          "onValueChange": {
-            "type": "string",
-            "required": false,
-            "description": "Handler de mudança (não usado no schema)"
-          },
-          "config": {
-            "type": "object",
-            "required": false,
-            "properties": {
-              "type": {
-                "type": "string",
-                "values": [
-                  "single",
-                  "multiple"
-                ],
-                "default": "single"
-              },
-              "collapsible": {
-                "type": "boolean",
-                "default": true
-              }
-            }
-          },
-          "items": {
-            "type": "array",
-            "required": true,
-            "description": "Itens do accordion",
-            "items": {
-              "type": "object",
-              "properties": {
-                "value": {
-                  "type": "string",
-                  "required": true
-                },
-                "trigger": {
-                  "type": "string",
-                  "required": true,
-                  "description": "Texto do trigger"
-                },
-                "components": {
-                  "type": "array",
-                  "required": true,
-                  "description": "Componentes dentro do item"
-                }
-              }
-            }
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "questionsList": {
-        "description": "Lista de questões com filtros e word cloud",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "questionsList"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "dataPath": {
-            "type": "string",
-            "required": true
-          },
-          "config": {
-            "type": "object",
-            "required": false,
-            "properties": {
-              "hideFilterPills": {
-                "type": "boolean",
-                "default": false
-              },
-              "hideWordCloudToggle": {
-                "type": "boolean",
-                "default": false
-              }
-            }
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "recommendationsTable": {
-        "description": "Tabela de recomendações com expansão e tarefas",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "recommendationsTable"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "dataPath": {
-            "type": "string",
-            "required": true
-          },
-          "severityLabelsPath": {
-            "type": "string",
-            "required": false,
-            "default": "uiTexts.severityLabels"
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "segmentationTable": {
-        "description": "Tabela de segmentação",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "segmentationTable"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "dataPath": {
-            "type": "string",
-            "required": true
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "distributionTable": {
-        "description": "Tabela de distribuição",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "distributionTable"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "dataPath": {
-            "type": "string",
-            "required": true
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "sentimentTable": {
-        "description": "Tabela de sentimento",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "sentimentTable"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "dataPath": {
-            "type": "string",
-            "required": true
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "npsDistributionTable": {
-        "description": "Tabela de distribuição NPS",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "npsDistributionTable"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "dataPath": {
-            "type": "string",
-            "required": true
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "npsTable": {
-        "description": "Tabela NPS",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "npsTable"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "dataPath": {
-            "type": "string",
-            "required": true
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "sentimentImpactTable": {
-        "description": "Tabela de impacto de sentimento",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "sentimentImpactTable"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "dataPath": {
-            "type": "string",
-            "required": true
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "positiveCategoriesTable": {
-        "description": "Tabela de categorias positivas",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "positiveCategoriesTable"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "dataPath": {
-            "type": "string",
-            "required": true
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "negativeCategoriesTable": {
-        "description": "Tabela de categorias negativas",
-        "properties": {
-          "type": {
-            "type": "string",
-            "required": true,
-            "value": "negativeCategoriesTable"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "dataPath": {
-            "type": "string",
-            "required": true
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      },
-      "wrapper": {
-        "description": "Componente wrapper genérico para agrupar outros componentes",
-        "properties": {
-          "wrapper": {
-            "type": "string",
-            "required": true,
-            "description": "Tag HTML ou componente (ex: 'div', 'section')"
-          },
-          "wrapperProps": {
-            "type": "object",
-            "required": false,
-            "description": "Props do wrapper (ex: { className: 'grid gap-6' })"
-          },
-          "components": {
-            "type": "array",
-            "required": false,
-            "description": "Componentes filhos"
-          },
-          "content": {
-            "type": "string",
-            "required": false,
-            "description": "Conteúdo de texto (suporta templates {{path}})"
-          },
-          "index": {
-            "type": "number",
-            "required": false
-          },
-          "condition": {
-            "type": "string",
-            "required": false
-          }
-        }
-      }
-    }
+    "components": {}
   },
   "uiTexts": {
     "executiveReport": {
@@ -3026,93 +2044,7 @@
       "aboutStudy": "Sobre o Estudo",
       "mainFindings": "Principais Descobertas",
       "conclusions": "Conclusões",
-      "recommendations": "Recomendações"
-    },
-    "attributeDeepDive": {
-      "summary": "Sumário",
-      "distribution": "Distribuição dos respondentes",
-      "sentimentAnalysis": "Análise de sentimento",
-      "npsQuestion": "Qual é a probabilidade de você recomendar nossa empresa a um amigo ou colega em escala de 0 a 10?",
-      "responses": "Respostas",
-      "promotersNeutralsDetractors": "Promotores, Neutros, Detratores",
-      "nps": "NPS",
-      "satisfactionImpactQuestion": "Quais são os principais pontos que impactam sua satisfação?",
-      "positive": "Positivo",
-      "negative": "Negativo",
-      "notApplicable": "Não aplicável",
-      "positiveCategories": "Categorias com sentimento positivo - Top 3",
-      "negativeCategories": "Categorias com sentimento negativo - Top 3"
-    },
-    "responseDetails": {
-      "summary": "Sumário:",
-      "top3Categories": "Top 3 Categorias",
-      "wordCloud": "Nuvem de Palavras"
-    },
-    "filterPanel": {
-      "all": "Todas",
-      "openField": "Campo Aberto",
-      "multipleChoice": "Múltipla Escolha",
-      "nps": "NPS",
-      "filterByQuestion": "Filtrar por questão:",
-      "selectQuestion": "Selecione uma questão",
-      "allQuestions": "Todas as questões",
-      "filters": "Filtros",
-      "selectFilterType": "Selecione um tipo de filtro",
-      "none": "Nenhum",
-      "state": "Estado",
-      "customerType": "Tipo de Cliente",
-      "education": "Escolaridade",
-      "clearAll": "Limpar todos",
-      "closeFilters": "Fechar filtros",
-      "openFilters": "Abrir filtros",
-      "activeFilters": "Filtros Ativos",
-      "selected": "selecionado",
-      "selectedPlural": "selecionados",
-      "selectValues": "Selecione os valores",
-      "clearAllFilters": "Limpar todos os filtros",
-      "ok": "OK",
-      "questionPrefix": "Q"
-    },
-    "surveyHeader": {
-      "results": "Resultados da Pesquisa",
-      "question": "Questão",
-      "executiveReport": "Relatório Executivo",
-      "executiveSummary": "Sumário Executivo",
-      "recommendations": "Recomendações",
-      "supportAnalysis": "Análises de Suporte",
-      "sentimentAnalysis": "Análise de Sentimento",
-      "respondentIntent": "Intenção de Respondentes",
-      "segmentation": "Segmentação",
-      "questionAnalysis": "Análise por Questão",
-      "attributeDeepDive": "Aprofundamento por Atributos",
-      "deepDive": "Aprofundamento"
-    },
-    "surveySidebar": {
-      "executiveReport": "Relatório Executivo",
-      "supportAnalysis": "Análises de Suporte",
-      "attributeDeepDive": "Aprofundamento por Atributos",
-      "questionAnalysis": "Análise por Questão",
-      "export": "Export",
-      "executiveSummary": "Sumário Executivo",
-      "recommendations": "Recomendações",
-      "sentimentAnalysis": "Análise de Sentimento",
-      "respondentIntent": "Intenção de Respondentes",
-      "segmentation": "Segmentação",
-      "respondents": "Respondentes",
-      "responseRate": "Taxa de Adesão",
-      "questions": "Perguntas"
-    },
-    "wordCloud": {
-      "mentions": "menções"
-    },
-    "export": {
-      "title": "Export de Dados",
-      "description": "Exporte os dados da pesquisa em diferentes formatos",
-      "exportFullReport": "Exportar Relatório Completo",
-      "selectSpecificSections": "Selecione seções específicas",
-      "exportAsPDF": "Exportar como PDF",
-      "exportAsPPT": "Exportar como PPT",
-      "selectAtLeastOneSection": "Selecione pelo menos uma seção ou o relatório completo para exportar"
+      "recommendations": "Recomendações Estratégicas"
     },
     "severityLabels": {
       "critical": "Crítico",
@@ -3120,49 +2052,67 @@
       "medium": "Médio",
       "low": "Baixo"
     },
+    "filterPanel": {
+      "all": "Todas",
+      "openField": "Campo Aberto",
+      "multipleChoice": "Múltipla Escolha",
+      "nps": "NPS"
+    },
+    "surveyHeader": {
+      "results": "Resultados da Pesquisa",
+      "executiveReport": "Relatório Executivo",
+      "engagementAnalysis": "Análise de Engajamento",
+      "attributeAnalysis": "Análise por Atributos",
+      "questionAnalysis": "Análise por Questão",
+      "cultureAnalysis": "Análise de Cultura Organizacional"
+    },
+    "surveySidebar": {
+      "executiveReport": "Relatório Executivo",
+      "engagementAnalysis": "Análise de Engajamento",
+      "attributeAnalysis": "Análise por Atributos",
+      "questionAnalysis": "Análise por Questão",
+      "cultureAnalysis": "Análise de Cultura Organizacional",
+      "export": "Export"
+    },
+    "responseDetails": {
+      "summary": "Sumário:",
+      "top3Categories": "Top 3 Categorias",
+      "wordCloud": "Nuvem de Palavras"
+    },
+    "cultureAnalysis": {
+      "values": {
+        "title": "Valores Organizacionais",
+        "distribution": "Distribuição por Valor"
+      },
+      "communication": {
+        "title": "Comunicação Interna"
+      },
+      "development": {
+        "title": "Desenvolvimento Profissional",
+        "programs": "Satisfação com Programas"
+      }
+    },
+    "export": {
+      "title": "Export de Dados",
+      "description": "Exporte os dados da pesquisa em diferentes formatos"
+    },
     "common": {
       "loading": {
         "loadingQuestions": "Carregando questões..."
       },
       "errors": {
-        "dataNotFound": "Dados não encontrados.",
-        "notSpecified": "não especificado",
-        "availableKeys": "Chaves disponíveis:",
-        "questionsNotFound": "Questões não encontradas.",
-        "availableStructure": "Estrutura disponível:",
-        "none": "nenhuma",
-        "questionsExists": "responseDetails.questions existe?",
-        "yes": "sim",
-        "no": "não",
-        "isArray": "É array?"
-      },
-      "emptyState": {
-        "noQuestionsFound": "Nenhuma questão encontrada.",
-        "totalAvailableQuestions": "Total de questões disponíveis:",
-        "activeFilter": "Filtro ativo:",
-        "questionsInResponseDetails": "Questões no responseDetails:"
-      },
-      "section": {
-        "sectionNotFound": "Seção não encontrada",
-        "sectionNotFoundDescription": "A seção \"{{section}}\" não foi encontrada ou não possui schema de renderização.",
-        "sectionId": "Section ID:"
+        "dataNotFound": "Dados não encontrados."
       }
-    },
-    "errors": {
-      "sectionNotFound": "Seção não encontrada ou sem schema de renderização.",
-      "subsectionNotFound": "Subseção não encontrada.",
-      "noComponents": "Nenhum componente definido para esta subseção.",
-      "subsectionFallback": "Subseção"
     }
   },
   "surveyInfo": {
-    "title": "Pesquisa de Satisfação do Cliente 2024",
-    "company": "TechCorp Brasil",
-    "period": "Outubro - Novembro 2024",
-    "totalRespondents": 1247,
-    "responseRate": 68.5,
-    "nps": -21,
-    "npsCategory": "Ruim",
+    "title": "Pesquisa de Satisfação de Funcionários 2025",
+    "company": "InnovaTech Solutions",
+    "period": "Janeiro - Março 2025",
+    "totalRespondents": 850,
+    "responseRate": 78.5,
+    "nps": 35,
+    "npsCategory": "Bom",
     "questions": 6
   }
 }

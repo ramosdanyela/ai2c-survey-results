@@ -1777,8 +1777,11 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
               (sub) => sub.id === fixedSub.id
             );
             // Merge: use fixedSub config but get components from renderSchema if available
-            return {
+            // Also merge name and icon from renderSchema if they exist (renderSchema takes precedence)
+            const mergedSub = {
               ...fixedSub,
+              ...(schemaSub?.name && { name: schemaSub.name }),
+              ...(schemaSub?.icon && { icon: schemaSub.icon }),
               ...(schemaSub?.components && {
                 components: schemaSub.components,
               }),
@@ -1787,15 +1790,46 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
                   schemaSub.componentsContainerClassName,
               }),
             };
+            
+            // CRITICAL: Ensure components are always available
+            // Priority: renderSchema.components > fixedSub.components
+            if (!mergedSub.components) {
+              if (schemaSub?.components) {
+                mergedSub.components = schemaSub.components;
+              } else if (fixedSub.components) {
+                mergedSub.components = fixedSub.components;
+              }
+            }
+            
+            return mergedSub;
           });
       }
 
       // Fallback: use fixed subsections as-is (no components from renderSchema)
-      return [...sectionConfig.subsections].sort((a, b) => {
-        const indexA = a.index !== undefined ? a.index : 999;
-        const indexB = b.index !== undefined ? b.index : 999;
-        return indexA - indexB;
-      });
+      // But try to get components from renderSchema if available
+      return sectionConfig.subsections
+        .sort((a, b) => {
+          const indexA = a.index !== undefined ? a.index : 999;
+          const indexB = b.index !== undefined ? b.index : 999;
+          return indexA - indexB;
+        })
+        .map((fixedSub) => {
+          // Even if renderSchema.subsections doesn't exist, try to find components in renderSchema
+          if (renderSchema?.subsections) {
+            const schemaSub = renderSchema.subsections.find(
+              (sub) => sub.id === fixedSub.id
+            );
+            if (schemaSub?.components) {
+              return {
+                ...fixedSub,
+                components: schemaSub.components,
+                ...(schemaSub?.name && { name: schemaSub.name }),
+                ...(schemaSub?.icon && { icon: schemaSub.icon }),
+              };
+            }
+          }
+          return fixedSub;
+        });
     }
 
     // Priority 2: Dynamic generation for attributes (if no fixed subsections)
@@ -1849,7 +1883,21 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
       if (baseSubsection) return baseSubsection;
     }
 
-    return subsections.find((sub) => sub.id === subSection) || null;
+    // Try exact match first
+    let found = subsections.find((sub) => sub.id === subSection);
+    
+    if (!found) {
+      // Debug: log what we're looking for
+      console.warn("GenericSectionRenderer: Subsection not found in subsections array", {
+        sectionId,
+        subSection,
+        subsectionsCount: subsections.length,
+        subsectionsIds: subsections.map((s) => s.id),
+        lookingFor: subSection,
+      });
+    }
+    
+    return found || null;
   }, [subsections, subSection, sectionId]);
 
   // Get components sorted by index and enriched with styles
@@ -1973,9 +2021,22 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
 
   // If has subsections, require activeSubsection (unless it's responses with questionId)
   if (hasSubsections && !activeSubsection && !isResponsesWithQuestionId) {
+    // Debug: log what we're looking for
+    console.warn("GenericSectionRenderer: Subsection not found", {
+      sectionId,
+      subSection,
+      hasSubsections,
+      subsectionsCount: subsections.length,
+      subsectionsIds: subsections.map((s) => s.id),
+      sectionConfigSubsections: sectionConfig?.subsections?.map((s) => s.id),
+      renderSchemaSubsections: renderSchema?.subsections?.map((s) => s.id),
+    });
     return (
       <div className="space-y-8 animate-fade-in">
-        <p>Subseção não encontrada.</p>
+        <p>Subseção não encontrada: {subSection || "nenhuma especificada"}</p>
+        <p className="text-sm text-muted-foreground">
+          Subseções disponíveis: {subsections.map((s) => s.id).join(", ") || "nenhuma"}
+        </p>
       </div>
     );
   }

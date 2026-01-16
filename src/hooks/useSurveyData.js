@@ -12,6 +12,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { fetchSurveyData } from "@/services/surveyDataService";
+import { getAttributesFromData, getQuestionsFromData } from "@/services/dataResolver";
 
 // Query key para cache do React Query
 export const SURVEY_DATA_QUERY_KEY = ["surveyData"];
@@ -61,8 +62,10 @@ export const useSurveyData = () => {
     surveyInfo: data?.surveyInfo,
     executiveReport: data?.executiveReport,
     supportAnalysis: data?.supportAnalysis,
-    responseDetails: data?.responseDetails,
-    attributeDeepDive: data?.attributeDeepDive,
+    // responseDetails helper - busca dinamicamente de sectionsConfig ou data.responseDetails (legacy)
+    responseDetails: data ? { questions: getQuestionsFromData(data) } : null,
+    // attributeDeepDive helper - busca dinamicamente de sectionsConfig ou data.attributeDeepDive (legacy)
+    attributeDeepDive: data ? { attributes: getAttributesFromData(data) } : null,
     uiTexts: data?.uiTexts,
     sectionsConfig: data?.sectionsConfig,
     severityLabels: data?.uiTexts?.severityLabels,

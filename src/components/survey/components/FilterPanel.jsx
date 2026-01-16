@@ -25,15 +25,9 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { attributeDeepDive, uiTexts } from "@/data/surveyData";
-
-const filterOptions = [
-  { value: "state", label: uiTexts.filterPanel.state },
-  { value: "customerType", label: uiTexts.filterPanel.customerType },
-  { value: "education", label: uiTexts.filterPanel.education },
-];
-
-const VALID_FILTER_TYPES = ["state", "customerType", "education", null];
+import { useSurveyData } from "@/hooks/useSurveyData";
+import { useMemo } from "react";
+import { getAttributesFromData } from "@/services/dataResolver";
 
 export function FilterPanel({
   onFiltersChange,
@@ -45,10 +39,33 @@ export function FilterPanel({
   hideQuestionFilters = false,
   initialFilters = [],
 }) {
+  const { data, uiTexts } = useSurveyData();
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState(initialFilters);
   const [selectedFilterType, setSelectedFilterType] = useState(null);
   const [openFilters, setOpenFilters] = useState(new Set());
+
+  // Get attributes dynamically from data
+  const attributes = useMemo(() => {
+    return getAttributesFromData(data) || [];
+  }, [data]);
+
+  // Build filter options dynamically from attributes
+  const filterOptions = useMemo(() => {
+    if (!attributes.length || !uiTexts?.filterPanel) return [];
+    
+    return attributes.map((attr) => ({
+      value: attr.id,
+      label: uiTexts.filterPanel[attr.id] || attr.name || attr.id,
+    }));
+  }, [attributes, uiTexts]);
+
+  // Build valid filter types dynamically
+  const VALID_FILTER_TYPES = useMemo(() => {
+    const types = attributes.map((attr) => attr.id);
+    types.push(null);
+    return types;
+  }, [attributes]);
 
   // Sync activeFilters with initialFilters when they change
   useEffect(() => {
@@ -57,11 +74,9 @@ export function FilterPanel({
 
   // Get available values for a filter type
   const getFilterValues = (filterType) => {
-    if (!filterType) return [];
-    const attribute = attributeDeepDive.attributes.find(
-      (attr) => attr.id === filterType
-    );
-    if (!attribute) return [];
+    if (!filterType || !attributes.length) return [];
+    const attribute = attributes.find((attr) => attr.id === filterType);
+    if (!attribute || !attribute.distribution) return [];
     return attribute.distribution.map((item) => item.segment);
   };
 

@@ -6,6 +6,80 @@
  * @param {string} path - Path (ex: "sectionData.summary.aboutStudy" ou "attributes[0].distribution")
  * @returns {*} Valor resolvido ou null
  */
+/**
+ * Get attributes from data dynamically
+ * Looks for attributes in sectionsConfig.sections[id="attributes"].data.attributes
+ * or in data.attributeDeepDive.attributes (legacy support)
+ * 
+ * @param {Object} data - The survey data object
+ * @returns {Array} Array of attributes or empty array
+ */
+export function getAttributesFromData(data) {
+  if (!data) return [];
+  
+  // Priority 1: Check sectionsConfig.sections[id="attributes"].data.attributes (new structure)
+  if (data?.sectionsConfig?.sections) {
+    const attributesSection = data.sectionsConfig.sections.find(
+      (section) => section.id === "attributes"
+    );
+    
+    if (attributesSection?.data?.attributes && Array.isArray(attributesSection.data.attributes)) {
+      return attributesSection.data.attributes;
+    }
+  }
+  
+  // Priority 2: Check data.attributeDeepDive.attributes (legacy support)
+  if (data?.attributeDeepDive?.attributes && Array.isArray(data.attributeDeepDive.attributes)) {
+    return data.attributeDeepDive.attributes;
+  }
+  
+  return [];
+}
+
+/**
+ * Get questions from responseDetails dynamically
+ * Looks for questions in sectionsConfig.sections[id="responses"].data.questions
+ * or in data.responseDetails.questions (legacy support)
+ * 
+ * @param {Object} data - The survey data object
+ * @returns {Array} Array of questions or empty array
+ */
+export function getQuestionsFromData(data) {
+  if (!data) return [];
+  
+  // Priority 1: Check sectionsConfig.sections[id="responses"].data.questions (new structure)
+  if (data?.sectionsConfig?.sections) {
+    const responsesSection = data.sectionsConfig.sections.find(
+      (section) => section.id === "responses"
+    );
+    
+    if (responsesSection?.data?.questions && Array.isArray(responsesSection.data.questions)) {
+      return responsesSection.data.questions;
+    }
+    
+    // Also check responseDetails inside section data
+    if (responsesSection?.data?.responseDetails?.questions && Array.isArray(responsesSection.data.responseDetails.questions)) {
+      return responsesSection.data.responseDetails.questions;
+    }
+  }
+  
+  // Priority 2: Check data.responseDetails.questions (legacy support)
+  if (data?.responseDetails?.questions && Array.isArray(data.responseDetails.questions)) {
+    return data.responseDetails.questions;
+  }
+  
+  // Priority 3: Try combining closedQuestions and openQuestions (legacy support)
+  if (data?.responseDetails) {
+    const closed = data.responseDetails.closedQuestions || [];
+    const open = data.responseDetails.openQuestions || [];
+    if (closed.length > 0 || open.length > 0) {
+      return [...closed, ...open].sort((a, b) => (a.index || 0) - (b.index || 0));
+    }
+  }
+  
+  return [];
+}
+
 export function resolveDataPath(obj, path) {
   if (!obj || !path) return null;
 

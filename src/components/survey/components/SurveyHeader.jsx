@@ -74,7 +74,8 @@ function getSectionIconFromConfig(sectionId, data) {
   // Check if it's an attribute subsection
   if (sectionId.startsWith("attributes-")) {
     const attributeId = sectionId.replace("attributes-", "");
-    const attribute = data?.attributeDeepDive?.attributes?.find(
+    const attributes = getAttributesFromData(data);
+    const attribute = attributes.find(
       (attr) => attr.id === attributeId
     );
     if (attribute && attribute.icon) {

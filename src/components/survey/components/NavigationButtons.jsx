@@ -6,6 +6,7 @@ import {
   RGBA_WHITE_20,
 } from "@/lib/colors";
 import { useSurveyData } from "@/hooks/useSurveyData";
+import { getAttributesFromData } from "@/services/dataResolver";
 
 /**
  * Get all questions for navigation (sorted by index, using config for hiddenIds)
@@ -293,7 +294,8 @@ function normalizeSection(currentSection, data) {
     !currentSection.includes("template")
   ) {
     const attributeId = currentSection.replace("attributes-", "");
-    const attribute = data?.attributeDeepDive?.attributes?.find(
+    const attributes = getAttributesFromData(data);
+    const attribute = attributes.find(
       (attr) => attr.id === attributeId
     );
     if (attribute) {
@@ -421,55 +423,82 @@ function getPreviousSection(currentSection, data) {
 
 /**
  * Get subsection title (programmatic)
+ * Priority: sectionConfig.subsections > renderSchema.subsections > uiTexts > ID
  */
 function getSubsectionTitle(sectionId, data, maxLength = 40) {
   if (!data) return sectionId;
 
-  const uiTexts = data.uiTexts?.surveyHeader || {};
+  // Extract base section ID (e.g., "executive-summary" -> "executive")
+  const baseSectionId = sectionId.split("-")[0];
+  
+  // Find the section config
+  const sectionConfig = data?.sectionsConfig?.sections?.find(
+    (s) => s.id === baseSectionId
+  );
 
-  // If it's a fixed subsection, try to get from section config
+  // Priority 1: Try to get from sectionConfig.subsections
+  if (sectionConfig?.subsections && Array.isArray(sectionConfig.subsections)) {
+    const subsection = sectionConfig.subsections.find((sub) => sub.id === sectionId);
+    if (subsection?.name) {
+      return subsection.name;
+    }
+  }
+
+  // Priority 2: Try to get from renderSchema.subsections
+  if (sectionConfig?.data?.renderSchema?.subsections) {
+    const subsection = sectionConfig.data.renderSchema.subsections.find(
+      (sub) => sub.id === sectionId
+    );
+    if (subsection?.name) {
+      return subsection.name;
+    }
+  }
+
+  // Priority 3: Try uiTexts.surveyHeader (legacy support)
+  const uiTexts = data.uiTexts?.surveyHeader || {};
   const sectionTitle = getSectionTitleFromData(sectionId, data);
   if (sectionTitle !== sectionId) {
     return sectionTitle;
   }
 
-  // If it's an attribute subsection (attributes-{id})
-  // IMPORTANT: Filter out template IDs
+  // Priority 4: If it's an attribute subsection (attributes-{id})
   if (sectionId.startsWith("attributes-") && !sectionId.includes("template")) {
     const attributeId = sectionId.replace("attributes-", "");
-    // Try new structure first (sectionsConfig)
     const attributesSection = data?.sectionsConfig?.sections?.find(
       (s) => s.id === "attributes"
     );
     const attribute = attributesSection?.data?.attributes?.find(
       (attr) => attr.id === attributeId
     );
-    if (attribute && attribute.name) {
+    if (attribute?.name) {
       return attribute.name;
     }
     // Fallback to legacy structure
     const legacyAttribute = data?.attributeDeepDive?.attributes?.find(
       (attr) => attr.id === attributeId
     );
-    if (legacyAttribute && legacyAttribute.name) {
+    if (legacyAttribute?.name) {
       return legacyAttribute.name;
     }
   }
 
-  // If it's a template (like "attribute-template"), return empty or handle gracefully
+  // Priority 5: If it's a template (like "attribute-template"), return empty
   if (sectionId.includes("template")) {
     return ""; // Don't show template names in navigation
   }
 
-  // If it's a question subsection (responses-{id})
+  // Priority 6: If it's a question subsection (responses-{id})
   if (sectionId.startsWith("responses-")) {
     const questionId = parseInt(sectionId.replace("responses-", ""), 10);
     const displayNumber = getDisplayNumber(questionId, data);
     return `${uiTexts.question || "Questão"} ${displayNumber}`;
   }
 
-  // Fallback: return formatted ID
-  return sectionId;
+  // Fallback: format ID nicely (e.g., "executive-summary" -> "Executive Summary")
+  return sectionId
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }
 
 /**

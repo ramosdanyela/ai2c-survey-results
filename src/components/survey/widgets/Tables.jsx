@@ -16,7 +16,51 @@ import {
   ChevronRight,
   User,
 } from "@/lib/icons";
-import { uiTexts } from "@/data/surveyData";
+import { useSurveyData } from "@/hooks/useSurveyData";
+
+// Helper function to get uiTexts with fallbacks
+function useTableTexts() {
+  const { uiTexts } = useSurveyData();
+  
+  return {
+    attributeDeepDive: {
+      segment: uiTexts?.attributeDeepDive?.segment || "Segmento",
+      quantity: uiTexts?.attributeDeepDive?.quantity || "Quantidade",
+      percentage: uiTexts?.attributeDeepDive?.percentage || "%",
+      positive: uiTexts?.attributeDeepDive?.positive || "Positivo",
+      negative: uiTexts?.attributeDeepDive?.negative || "Negativo",
+      promoters: uiTexts?.attributeDeepDive?.promoters || "Promotores",
+      neutrals: uiTexts?.attributeDeepDive?.neutrals || "Neutros",
+      detractors: uiTexts?.attributeDeepDive?.detractors || "Detratores",
+      nps: uiTexts?.attributeDeepDive?.nps || "NPS",
+      sentiment: uiTexts?.attributeDeepDive?.sentiment || "Sentimento",
+      category: uiTexts?.attributeDeepDive?.category || "Categoria",
+    },
+    executiveReport: {
+      tableHeaders: {
+        number: uiTexts?.executiveReport?.tableHeaders?.number || "#",
+        recommendation: uiTexts?.executiveReport?.tableHeaders?.recommendation || "Recomendação",
+        severity: uiTexts?.executiveReport?.tableHeaders?.severity || "Severidade",
+        stakeholders: uiTexts?.executiveReport?.tableHeaders?.stakeholders || "Stakeholders",
+      },
+      tasks: {
+        hideTasks: uiTexts?.executiveReport?.tasks?.hideTasks || "Ocultar tarefas",
+        showTasks: uiTexts?.executiveReport?.tasks?.showTasks || "Mostrar tarefas",
+        hide: uiTexts?.executiveReport?.tasks?.hide || "Ocultar",
+        show: uiTexts?.executiveReport?.tasks?.show || "Mostrar",
+        implementationTasks: uiTexts?.executiveReport?.tasks?.implementationTasks || "Tarefas de Implementação",
+        task: uiTexts?.executiveReport?.tasks?.task || "Tarefa",
+        responsibleArea: uiTexts?.executiveReport?.tasks?.responsibleArea || "Área Responsável",
+      },
+    },
+    supportAnalysis: {
+      clusterLabel: uiTexts?.supportAnalysis?.clusterLabel || "Cluster",
+      clusterDescription: uiTexts?.supportAnalysis?.clusterDescription || "Descrição",
+      memberPercentage: uiTexts?.supportAnalysis?.memberPercentage || "% Membros",
+      clusterId: uiTexts?.supportAnalysis?.clusterId || "ID",
+    },
+  };
+}
 
 // ============================================================
 // SURVEY TABLES - All table components used in the project
@@ -41,16 +85,17 @@ import { uiTexts } from "@/data/surveyData";
 // ============================================================
 // Used in: AttributeDeepDive - Distribution
 export function DistributionTable({ data, attributeName }) {
+  const texts = useTableTexts();
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>{uiTexts.attributeDeepDive.segment}</TableHead>
+          <TableHead>{texts.attributeDeepDive.segment}</TableHead>
           <TableHead className="text-right">
-            {uiTexts.attributeDeepDive.quantity}
+            {texts.attributeDeepDive.quantity}
           </TableHead>
           <TableHead className="text-right">
-            {uiTexts.attributeDeepDive.percentage}
+            {texts.attributeDeepDive.percentage}
           </TableHead>
         </TableRow>
       </TableHeader>
@@ -78,19 +123,20 @@ export function DistributionTable({ data, attributeName }) {
 // ============================================================
 // Used in: AttributeDeepDive - Sentiment by Segment
 export function SentimentTable({ data }) {
+  const texts = useTableTexts();
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>{uiTexts.attributeDeepDive.segment}</TableHead>
+          <TableHead>{texts.attributeDeepDive.segment}</TableHead>
           <TableHead
             className="text-right"
             style={{ color: "hsl(var(--chart-positive))" }}
           >
-            {uiTexts.attributeDeepDive.positive}
+            {texts.attributeDeepDive.positive}
           </TableHead>
           <TableHead className="text-right text-destructive">
-            {uiTexts.attributeDeepDive.negative}
+            {texts.attributeDeepDive.negative}
           </TableHead>
         </TableRow>
       </TableHeader>
@@ -119,19 +165,20 @@ export function SentimentTable({ data }) {
 // ============================================================
 // Used in: AttributeDeepDive - NPS Distribution
 export function NPSDistributionTable({ data, attributeName }) {
+  const texts = useTableTexts();
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead>{attributeName}</TableHead>
           <TableHead className="text-right">
-            {uiTexts.attributeDeepDive.promoters}
+            {texts.attributeDeepDive.promoters}
           </TableHead>
           <TableHead className="text-right">
-            {uiTexts.attributeDeepDive.neutrals}
+            {texts.attributeDeepDive.neutrals}
           </TableHead>
           <TableHead className="text-right">
-            {uiTexts.attributeDeepDive.detractors}
+            {texts.attributeDeepDive.detractors}
           </TableHead>
         </TableRow>
       </TableHeader>
@@ -154,13 +201,14 @@ export function NPSDistributionTable({ data, attributeName }) {
 // ============================================================
 // Used in: AttributeDeepDive - NPS
 export function NPSTable({ data, attributeName }) {
+  const texts = useTableTexts();
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead>{attributeName}</TableHead>
           <TableHead className="text-right">
-            {uiTexts.attributeDeepDive.nps}
+            {texts.attributeDeepDive.nps}
           </TableHead>
         </TableRow>
       </TableHeader>
@@ -192,6 +240,7 @@ export function NPSTable({ data, attributeName }) {
 // ============================================================
 // Used in: AttributeDeepDive - Satisfaction Impact Sentiment
 export function SentimentImpactTable({ data }) {
+  const texts = useTableTexts();
   if (!data || data.length === 0) return null;
 
   const segments = Object.keys(data[0]).filter((key) => key !== "sentiment");
@@ -200,7 +249,7 @@ export function SentimentImpactTable({ data }) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>{uiTexts.attributeDeepDive.sentiment}</TableHead>
+          <TableHead>{texts.attributeDeepDive.sentiment}</TableHead>
           {segments.map((segment) => (
             <TableHead key={segment} className="text-right">
               {segment}
@@ -218,9 +267,9 @@ export function SentimentImpactTable({ data }) {
                 className="text-right"
                 style={{
                   color:
-                    item.sentiment === uiTexts.attributeDeepDive.positive
+                    item.sentiment === texts.attributeDeepDive.positive
                       ? "hsl(var(--chart-positive))"
-                      : item.sentiment === uiTexts.attributeDeepDive.negative
+                      : item.sentiment === texts.attributeDeepDive.negative
                       ? "hsl(var(--chart-negative))"
                       : undefined,
                 }}
@@ -240,6 +289,7 @@ export function SentimentImpactTable({ data }) {
 // ============================================================
 // Used in: AttributeDeepDive - Positive Categories
 export function PositiveCategoriesTable({ data }) {
+  const texts = useTableTexts();
   if (!data || data.length === 0) return null;
 
   const segments = Object.keys(data[0]).filter((key) => key !== "category");
@@ -248,7 +298,7 @@ export function PositiveCategoriesTable({ data }) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>{uiTexts.attributeDeepDive.category}</TableHead>
+          <TableHead>{texts.attributeDeepDive.category}</TableHead>
           {segments.map((segment) => (
             <TableHead key={segment} className="text-right">
               {segment}
@@ -283,6 +333,7 @@ export function PositiveCategoriesTable({ data }) {
 // ============================================================
 // Used in: AttributeDeepDive - Negative Categories
 export function NegativeCategoriesTable({ data }) {
+  const texts = useTableTexts();
   if (!data || data.length === 0) return null;
 
   const segments = Object.keys(data[0]).filter((key) => key !== "category");
@@ -291,7 +342,7 @@ export function NegativeCategoriesTable({ data }) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>{uiTexts.attributeDeepDive.category}</TableHead>
+          <TableHead>{texts.attributeDeepDive.category}</TableHead>
           {segments.map((segment) => (
             <TableHead key={segment} className="text-right">
               {segment}
@@ -328,21 +379,23 @@ export function RecommendationsTable({
   getRecTasks,
   renderTasksTable,
 }) {
+  const texts = useTableTexts();
+  
   return (
     <Table className="table-auto">
       <TableHeader>
         <TableRow className="bg-muted/5">
           <TableHead className="w-12 text-muted-foreground">
-            {uiTexts.executiveReport.tableHeaders.number}
+            {texts.executiveReport.tableHeaders.number}
           </TableHead>
           <TableHead className="text-muted-foreground">
-            {uiTexts.executiveReport.tableHeaders.recommendation}
+            {texts.executiveReport.tableHeaders.recommendation}
           </TableHead>
           <TableHead className="w-32 text-center text-muted-foreground">
-            {uiTexts.executiveReport.tableHeaders.severity}
+            {texts.executiveReport.tableHeaders.severity}
           </TableHead>
           <TableHead className="w-64 p-0 text-muted-foreground">
-            {uiTexts.executiveReport.tableHeaders.stakeholders}
+            {texts.executiveReport.tableHeaders.stakeholders}
           </TableHead>
           <TableHead className="w-12 text-muted-foreground"></TableHead>
         </TableRow>
@@ -397,13 +450,13 @@ export function RecommendationsTable({
                       className="text-muted-foreground hover:text-primary transition-colors inline-block"
                       title={
                         isExpanded
-                          ? uiTexts.executiveReport.tasks.hideTasks
-                          : uiTexts.executiveReport.tasks.showTasks
+                          ? texts.executiveReport.tasks.hideTasks
+                          : texts.executiveReport.tasks.showTasks
                       }
                       aria-label={`${
                         isExpanded
-                          ? uiTexts.executiveReport.tasks.hide
-                          : uiTexts.executiveReport.tasks.show
+                          ? texts.executiveReport.tasks.hide
+                          : texts.executiveReport.tasks.show
                       } tasks for recommendation ${rec.id}`}
                     >
                       {isExpanded ? (
@@ -435,23 +488,24 @@ export function RecommendationsTable({
 // ============================================================
 // Used in: ExecutiveReport - Tasks (nested inside Recommendations)
 export function TasksTable({ tasks, recId, checkedTasks, onToggleTask }) {
+  const texts = useTableTexts();
   return (
     <div className="pl-8 pr-4 py-4">
       <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
         <ClipboardList className="w-4 h-4" />
-        {uiTexts.executiveReport.tasks.implementationTasks}
+        {texts.executiveReport.tasks.implementationTasks}
       </h3>
       <Table>
         <TableHeader>
           <TableRow className="bg-muted/10">
             <TableHead className="w-12 text-muted-foreground"></TableHead>
             <TableHead className="text-muted-foreground">
-              {uiTexts.executiveReport.tasks.task}
+              {texts.executiveReport.tasks.task}
             </TableHead>
             <TableHead className="w-40 text-muted-foreground">
               <div className="flex items-center gap-1">
                 <User className="w-4 h-4" />
-                {uiTexts.executiveReport.tasks.responsibleArea}
+                {texts.executiveReport.tasks.responsibleArea}
               </div>
             </TableHead>
           </TableRow>
@@ -497,19 +551,20 @@ export function TasksTable({ tasks, recId, checkedTasks, onToggleTask }) {
 // ============================================================
 // Used in: SupportAnalysis - Segmentation
 export function SegmentationTable({ data }) {
+  const texts = useTableTexts();
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead className="w-[200px]">
-            {uiTexts.supportAnalysis.clusterLabel}
+            {texts.supportAnalysis.clusterLabel}
           </TableHead>
-          <TableHead>{uiTexts.supportAnalysis.clusterDescription}</TableHead>
+          <TableHead>{texts.supportAnalysis.clusterDescription}</TableHead>
           <TableHead className="w-[150px] text-right">
-            {uiTexts.supportAnalysis.memberPercentage}
+            {texts.supportAnalysis.memberPercentage}
           </TableHead>
           <TableHead className="w-[100px] text-center">
-            {uiTexts.supportAnalysis.clusterId}
+            {texts.supportAnalysis.clusterId}
           </TableHead>
         </TableRow>
       </TableHeader>

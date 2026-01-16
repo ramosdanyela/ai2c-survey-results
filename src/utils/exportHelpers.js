@@ -1,4 +1,5 @@
 import { sectionsConfig } from "@/data/surveyData";
+import { getAttributesFromData } from "@/services/dataResolver";
 
 /**
  * Get all questions from responseDetails, combining closedQuestions and openQuestions
@@ -6,16 +7,16 @@ import { sectionsConfig } from "@/data/surveyData";
  */
 function getQuestionsFromResponseDetails(responseDetails) {
   if (!responseDetails) return [];
-  
+
   // If questions exists, use it
   if (responseDetails.questions && Array.isArray(responseDetails.questions)) {
     return responseDetails.questions;
   }
-  
+
   // Otherwise, combine closedQuestions and openQuestions
   const closed = responseDetails.closedQuestions || [];
   const open = responseDetails.openQuestions || [];
-  
+
   // Combine and sort by index
   return [...closed, ...open].sort((a, b) => (a.index || 0) - (b.index || 0));
 }
@@ -24,20 +25,22 @@ function getQuestionsFromResponseDetails(responseDetails) {
  * Get export configuration for a section (which attributes/questions to include/exclude)
  */
 function getExportConfig(sectionId, data) {
-  const section = data?.sectionsConfig?.sections?.find((s) => s.id === sectionId);
-  
+  const section = data?.sectionsConfig?.sections?.find(
+    (s) => s.id === sectionId
+  );
+
   // Check if section has export configuration
   const exportConfig = section?.exportConfig;
-  
+
   return {
     // For attributes: which attribute IDs to include (if empty, include all)
     includedAttributeIds: exportConfig?.includedAttributeIds || null,
     excludedAttributeIds: exportConfig?.excludedAttributeIds || [],
-    
+
     // For responses: which question IDs to include/exclude
     includedQuestionIds: exportConfig?.includedQuestionIds || null,
     excludedQuestionIds: exportConfig?.excludedQuestionIds || [],
-    
+
     // Question label prefix (e.g., "Pergunta" or "Question")
     questionLabelPrefix: exportConfig?.questionLabelPrefix || "Pergunta",
   };
@@ -63,28 +66,32 @@ export function getAllSubsectionsForSection(sectionId, data) {
 
   // If it's the "attributes" section, get from data
   if (sectionId === "attributes") {
-    // Access attributeDeepDive from data
-    const attributeDeepDive = data?.attributeDeepDive;
-    if (!attributeDeepDive?.attributes) return [];
-    
+    const availableAttributes = getAttributesFromData(data);
+    if (!availableAttributes || availableAttributes.length === 0) return [];
+
     const exportConfig = getExportConfig(sectionId, data);
-    let availableAttributes = attributeDeepDive.attributes;
-    
+    let filteredAttributes = availableAttributes;
+
     // Apply filters based on export configuration
-    if (exportConfig.includedAttributeIds && exportConfig.includedAttributeIds.length > 0) {
+    if (
+      exportConfig.includedAttributeIds &&
+      exportConfig.includedAttributeIds.length > 0
+    ) {
       availableAttributes = availableAttributes.filter((attr) =>
         exportConfig.includedAttributeIds.includes(attr.id)
       );
     }
-    
+
     if (exportConfig.excludedAttributeIds.length > 0) {
-      availableAttributes = availableAttributes.filter((attr) =>
-        !exportConfig.excludedAttributeIds.includes(attr.id)
+      availableAttributes = availableAttributes.filter(
+        (attr) => !exportConfig.excludedAttributeIds.includes(attr.id)
       );
     }
-    
+
     // Sort by index
-    availableAttributes = availableAttributes.sort((a, b) => (a.index || 0) - (b.index || 0));
+    availableAttributes = availableAttributes.sort(
+      (a, b) => (a.index || 0) - (b.index || 0)
+    );
 
     return availableAttributes.map((attr) => ({
       sectionId: "attributes",
@@ -97,58 +104,74 @@ export function getAllSubsectionsForSection(sectionId, data) {
   if (sectionId === "responses") {
     // Try multiple possible paths for questions
     let allQuestions = [];
-    
+
     // Priority 1: Try responseDetails from root level (surveyData.js structure)
     const responseDetails = data?.responseDetails;
     if (responseDetails) {
       allQuestions = getQuestionsFromResponseDetails(responseDetails);
     }
-    
+
     // Priority 2: Try sectionsConfig.sections[responses].data.questions (JSON structure)
     if (allQuestions.length === 0 && data?.sectionsConfig) {
-      const responsesSection = data.sectionsConfig.sections?.find((s) => s.id === "responses");
-      if (responsesSection?.data?.questions && Array.isArray(responsesSection.data.questions)) {
-        allQuestions = [...responsesSection.data.questions].sort((a, b) => (a.index || 0) - (b.index || 0));
+      const responsesSection = data.sectionsConfig.sections?.find(
+        (s) => s.id === "responses"
+      );
+      if (
+        responsesSection?.data?.questions &&
+        Array.isArray(responsesSection.data.questions)
+      ) {
+        allQuestions = [...responsesSection.data.questions].sort(
+          (a, b) => (a.index || 0) - (b.index || 0)
+        );
       }
     }
-    
+
     // Priority 3: Try responseDetails from sectionsConfig.data
     if (allQuestions.length === 0 && data?.sectionsConfig) {
-      const responsesSection = data.sectionsConfig.sections?.find((s) => s.id === "responses");
+      const responsesSection = data.sectionsConfig.sections?.find(
+        (s) => s.id === "responses"
+      );
       if (responsesSection?.data?.responseDetails) {
         const rd = responsesSection.data.responseDetails;
         allQuestions = getQuestionsFromResponseDetails(rd);
       }
     }
-    
+
     if (allQuestions.length === 0) {
       console.warn("Export: No questions found", {
         hasData: !!data,
         hasResponseDetails: !!data?.responseDetails,
         hasSectionsConfig: !!data?.sectionsConfig,
-        responsesSection: data?.sectionsConfig?.sections?.find((s) => s.id === "responses"),
+        responsesSection: data?.sectionsConfig?.sections?.find(
+          (s) => s.id === "responses"
+        ),
       });
       return [];
     }
-    
+
     const exportConfig = getExportConfig(sectionId, data);
     let filteredQuestions = allQuestions;
-    
+
     // Apply filters based on export configuration
-    if (exportConfig.includedQuestionIds && exportConfig.includedQuestionIds.length > 0) {
+    if (
+      exportConfig.includedQuestionIds &&
+      exportConfig.includedQuestionIds.length > 0
+    ) {
       filteredQuestions = filteredQuestions.filter((q) =>
         exportConfig.includedQuestionIds.includes(q.id)
       );
     }
-    
+
     if (exportConfig.excludedQuestionIds.length > 0) {
-      filteredQuestions = filteredQuestions.filter((q) =>
-        !exportConfig.excludedQuestionIds.includes(q.id)
+      filteredQuestions = filteredQuestions.filter(
+        (q) => !exportConfig.excludedQuestionIds.includes(q.id)
       );
     }
-    
+
     // Sort by index
-    filteredQuestions = filteredQuestions.sort((a, b) => (a.index || 0) - (b.index || 0));
+    filteredQuestions = filteredQuestions.sort(
+      (a, b) => (a.index || 0) - (b.index || 0)
+    );
 
     return filteredQuestions.map((q, index) => {
       const displayNumber = index + 1;
@@ -172,7 +195,7 @@ export function getAllSubsectionsForSection(sectionId, data) {
  */
 export function getAllSubsections(data) {
   const allSubsections = [];
-  
+
   // Get sectionsConfig from data if available, otherwise use imported one
   const config = data?.sectionsConfig || sectionsConfig;
 
@@ -190,7 +213,11 @@ export function getAllSubsections(data) {
  * Parse selected sections from URL params or array
  * Returns array of { sectionId, subsectionId } objects
  */
-export function parseSelectedSections(selectedSectionsArray, exportFullReport, data) {
+export function parseSelectedSections(
+  selectedSectionsArray,
+  exportFullReport,
+  data
+) {
   if (exportFullReport) {
     // Return all subsections
     return getAllSubsections(data);
@@ -198,7 +225,7 @@ export function parseSelectedSections(selectedSectionsArray, exportFullReport, d
 
   // Parse selected subsection IDs
   const parsed = [];
-  
+
   // Get sectionsConfig from data if available, otherwise use imported one
   const config = data?.sectionsConfig || sectionsConfig;
 
@@ -225,23 +252,26 @@ export function parseSelectedSections(selectedSectionsArray, exportFullReport, d
       const exists = parsed.some(
         (p) => p.sectionId === sectionId && p.subsectionId === subsectionId
       );
-      
+
       if (!exists) {
         // Get the label
         const allSubs = getAllSubsectionsForSection(sectionId, data);
         const found = allSubs.find((sub) => sub.subsectionId === subsectionId);
-        
+
         parsed.push({
           sectionId,
           subsectionId,
           label: found?.label || subsectionId,
         });
       } else {
-        console.warn("🔍 DEBUG parseSelectedSections - Duplicate found:", subsectionId);
+        console.warn(
+          "🔍 DEBUG parseSelectedSections - Duplicate found:",
+          subsectionId
+        );
       }
     }
   });
-  
+
   console.log("🔍 DEBUG parseSelectedSections - Parsed result:", parsed);
 
   // Sort by section order and subsection order
@@ -263,26 +293,26 @@ export function parseSelectedSections(selectedSectionsArray, exportFullReport, d
     const subsectionB = sectionB?.subsections?.find(
       (sub) => sub.id === b.subsectionId
     );
-    
+
     // For dynamic subsections (attributes, responses), extract from subsectionId
     let subOrderA = subsectionA?.index;
     let subOrderB = subsectionB?.index;
-    
+
     if (subOrderA === undefined && a.sectionId === "attributes") {
       // Extract attribute ID and find its index from data
       const attrId = a.subsectionId.replace("attributes-", "");
-      const attributeDeepDive = data?.attributeDeepDive;
-      const attr = attributeDeepDive?.attributes?.find((attr) => attr.id === attrId);
+      const attributes = getAttributesFromData(data);
+      const attr = attributes.find((attr) => attr.id === attrId);
       subOrderA = attr?.index || 999;
     }
-    
+
     if (subOrderB === undefined && b.sectionId === "attributes") {
       const attrId = b.subsectionId.replace("attributes-", "");
-      const attributeDeepDive = data?.attributeDeepDive;
-      const attr = attributeDeepDive?.attributes?.find((attr) => attr.id === attrId);
+      const attributes = getAttributesFromData(data);
+      const attr = attributes.find((attr) => attr.id === attrId);
       subOrderB = attr?.index || 999;
     }
-    
+
     if (subOrderA === undefined && a.sectionId === "responses") {
       // Extract question ID and find its index from data
       const questionId = parseInt(a.subsectionId.replace("responses-", ""), 10);
@@ -291,7 +321,7 @@ export function parseSelectedSections(selectedSectionsArray, exportFullReport, d
       const question = allQuestions.find((q) => q.id === questionId);
       subOrderA = question?.index || 999;
     }
-    
+
     if (subOrderB === undefined && b.sectionId === "responses") {
       const questionId = parseInt(b.subsectionId.replace("responses-", ""), 10);
       const responseDetails = data?.responseDetails;
@@ -303,4 +333,3 @@ export function parseSelectedSections(selectedSectionsArray, exportFullReport, d
     return (subOrderA || 999) - (subOrderB || 999);
   });
 }
-

@@ -188,8 +188,27 @@ npm run preview         # Preview do build
 npm run lint            # Executa ESLint
 npm run analyze:unused  # Analisa código não utilizado
 npm run analyze:deps    # Analisa dependências
-npm run analyze:all   # Executa todas as análises
+npm run analyze:all     # Executa todas as análises
+
+# Validação de JSON
+npm run validate:json   # Valida um arquivo JSON específico
+npm run validate:all    # Valida todos os arquivos JSON em src/data/
 ```
+
+**Exemplo de uso:**
+
+```bash
+# Validar um arquivo específico
+npm run validate:json src/data/surveyData.json
+
+# Validar todos os JSONs
+npm run validate:all
+```
+
+> 📖 **Documentação completa:**
+>
+> - [JSON_Validation_Strategy.md](./docs/JSON_Validation_Strategy.md) - Estratégia e implementação
+> - [data/validation/README.md](./data/validation/README.md) - Guia de uso da validação isolada
 
 ## 🔧 Configuração
 

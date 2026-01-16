@@ -10,12 +10,11 @@ import {
 import { cn } from "@/lib/utils";
 import {
   surveyInfo,
-  responseDetails,
-  attributeDeepDive,
   uiTexts,
   sectionsConfig,
 } from "@/data/surveyData";
 import { useSurveyData } from "@/hooks/useSurveyData";
+import { getAttributesFromData, getQuestionsFromData } from "@/services/dataResolver";
 import { forwardRef, useState, useMemo, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -73,13 +72,13 @@ function hasSubsections(item, data) {
   // Priority 3: Check dynamic subsections (attributes, responses) - even without dynamicSubsections flag
   // Check attributes (known dynamic section)
   if (item.id === "attributes") {
-    const attrs = data?.attributeDeepDive?.attributes || [];
+    const attrs = getAttributesFromData(data);
     return attrs.filter((a) => a.icon).length > 0;
   }
 
   // Check responses (known dynamic section)
   if (item.id === "responses") {
-    const questions = data?.responseDetails?.questions || [];
+    const questions = getQuestionsFromData(data);
     const responsesSection = data?.sectionsConfig?.sections?.find(
       (s) => s.id === "responses"
     );
@@ -107,7 +106,7 @@ function hasSubsections(item, data) {
 function getDynamicSubsections(section, data) {
   // Special handling for attributes (always works, even without dynamicSubsections flag)
   if (section.id === "attributes") {
-    const attrs = data?.attributeDeepDive?.attributes || [];
+    const attrs = getAttributesFromData(data);
     const filtered = attrs
       .filter((attr) => attr.icon)
       .sort((a, b) => (a.index || 0) - (b.index || 0));
@@ -121,10 +120,10 @@ function getDynamicSubsections(section, data) {
 
   // Special handling for responses (always works, even without dynamicSubsections flag)
   if (section.id === "responses") {
+    const questions = getQuestionsFromData(data);
     const responsesSection = data?.sectionsConfig?.sections?.find(
       (s) => s.id === "responses"
     );
-    const questions = responsesSection?.data?.questions || [];
     const hiddenIds =
       responsesSection?.data?.config?.questions?.hiddenIds || [];
     const filtered = questions
@@ -296,7 +295,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
       // Fallback for legacy behavior if helper returns null
       if (!result) {
         if (sectionId === "attributes") {
-          const allAttributes = attributeDeepDive.attributes
+          const allAttributes = getAttributesFromData(data)
             .filter((attr) => attr.icon)
             .sort((a, b) => (a.index || 0) - (b.index || 0));
           return allAttributes.length > 0
@@ -526,7 +525,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
 
               // Fallback for legacy attributes section (backward compatibility)
               if (item.id === "attributes" && dynamicSubs.length === 0) {
-                const allAttributes = attributeDeepDive.attributes
+                const allAttributes = getAttributesFromData(data)
                   .filter((attr) => attr.icon)
                   .sort((a, b) => (a.index || 0) - (b.index || 0));
                 return (
