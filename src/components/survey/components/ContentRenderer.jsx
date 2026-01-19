@@ -167,17 +167,23 @@ function extractSectionId(data, activeSection) {
     // Check dynamic subsections (attributes, responses)
     if (
       section.id === "attributes" &&
+      activeSection &&
       activeSection.startsWith("attributes-")
     ) {
       return section.id;
     }
-    if (section.id === "responses" && activeSection.startsWith("responses-")) {
+    if (
+      section.id === "responses" &&
+      activeSection &&
+      activeSection.startsWith("responses-")
+    ) {
       return section.id;
     }
   }
 
   // If no match, try to extract from pattern (e.g., "nova-secao-subsec" -> "nova-secao")
   // This is a fallback for sections with schema that might not be in sectionsConfig yet
+  if (!activeSection) return null;
   const parts = activeSection.split("-");
   if (parts.length >= 2) {
     // Try all possible combinations from longest to shortest
@@ -232,7 +238,11 @@ export function ContentRenderer({ activeSection }) {
 
   // If sectionId is null but normalizedSection matches a known pattern, try to extract it
   let finalSectionId = sectionId;
-  if (!finalSectionId && normalizedSection) {
+  if (
+    !finalSectionId &&
+    normalizedSection &&
+    typeof normalizedSection === "string"
+  ) {
     if (normalizedSection.startsWith("support-")) {
       finalSectionId = "support";
     } else if (normalizedSection.startsWith("attributes-")) {

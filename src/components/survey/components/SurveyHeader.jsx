@@ -16,10 +16,13 @@ import { getAttributesFromData } from "@/services/dataResolver";
  * This matches the logic in NavigationButtons for consistency
  */
 function getSectionTitleFromData(activeSection, data) {
-  if (!data) return activeSection;
+  if (!data || !activeSection) return activeSection || "";
 
   // Extract base section ID (e.g., "executive-summary" -> "executive")
-  const baseSectionId = activeSection.split("-")[0];
+  const baseSectionId =
+    activeSection && typeof activeSection === "string"
+      ? activeSection.split("-")[0]
+      : activeSection;
 
   // Priority 1: Try to get from sectionsConfig.sections (most reliable)
   if (data?.sectionsConfig?.sections) {
@@ -58,7 +61,7 @@ function getSectionTitleFromData(activeSection, data) {
  * Get icon for a section or subsection (programmatic)
  */
 function getSectionIconFromConfig(sectionId, data) {
-  if (!data?.sectionsConfig?.sections) return FileText;
+  if (!data?.sectionsConfig?.sections || !sectionId) return FileText;
 
   // First try to find exact match in sectionsConfig
   for (const section of data.sectionsConfig.sections) {
@@ -90,7 +93,11 @@ function getSectionIconFromConfig(sectionId, data) {
   }
 
   // Check if it's an attribute subsection
-  if (sectionId.startsWith("attributes-")) {
+  if (
+    sectionId &&
+    typeof sectionId === "string" &&
+    sectionId.startsWith("attributes-")
+  ) {
     const attributeId = sectionId.replace("attributes-", "");
     const attributes = getAttributesFromData(data);
     const attribute = attributes.find((attr) => attr.id === attributeId);
@@ -107,7 +114,11 @@ function getSectionIconFromConfig(sectionId, data) {
   }
 
   // Check if it's a question subsection
-  if (sectionId.startsWith("responses-")) {
+  if (
+    sectionId &&
+    typeof sectionId === "string" &&
+    sectionId.startsWith("responses-")
+  ) {
     const questionId = parseInt(sectionId.replace("responses-", ""), 10);
     const allQuestions = data?.responseDetails?.questions || [];
     const question = allQuestions.find((q) => q.id === questionId);

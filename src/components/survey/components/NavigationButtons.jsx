@@ -147,10 +147,11 @@ function buildOrderedSubsections(data) {
  * Priority: sectionsConfig.sections[].name > uiTexts.surveyHeader > sectionId
  */
 function getSectionTitleFromData(sectionId, data) {
-  if (!data) return sectionId;
+  if (!data || !sectionId) return sectionId;
 
   // Extract base section ID (e.g., "executive-summary" -> "executive")
-  const baseSectionId = sectionId.split("-")[0];
+  const baseSectionId =
+    typeof sectionId === "string" ? sectionId.split("-")[0] : sectionId;
 
   // Priority 1: Try to get from sectionsConfig.sections (most reliable)
   if (data?.sectionsConfig?.sections) {
@@ -208,7 +209,11 @@ function getSectionIconFromConfig(sectionId, data) {
   }
 
   // Check if it's an attribute subsection
-  if (sectionId.startsWith("attributes-")) {
+  if (
+    sectionId &&
+    typeof sectionId === "string" &&
+    sectionId.startsWith("attributes-")
+  ) {
     const attributeId = sectionId.replace("attributes-", "");
     const attributesSection = data?.sectionsConfig?.sections?.find(
       (s) => s.id === "attributes"
@@ -226,7 +231,11 @@ function getSectionIconFromConfig(sectionId, data) {
   }
 
   // Check if it's a question subsection
-  if (sectionId.startsWith("responses-")) {
+  if (
+    sectionId &&
+    typeof sectionId === "string" &&
+    sectionId.startsWith("responses-")
+  ) {
     const questionId = parseInt(sectionId.replace("responses-", ""), 10);
     const responsesSection = data?.sectionsConfig?.sections?.find(
       (s) => s.id === "responses"
@@ -308,6 +317,8 @@ function normalizeSection(currentSection, data) {
   // First check if it's a dynamic attribute subsection
   // IMPORTANT: Filter out template IDs
   if (
+    currentSection &&
+    typeof currentSection === "string" &&
     currentSection.startsWith("attributes-") &&
     !currentSection.includes("template")
   ) {
@@ -322,6 +333,8 @@ function normalizeSection(currentSection, data) {
   // If it's a template, normalize to first real attribute
   if (
     currentSection.includes("template") &&
+    currentSection &&
+    typeof currentSection === "string" &&
     currentSection.startsWith("attributes")
   ) {
     const firstSub = getFirstSubsectionHelper("attributes", data);
@@ -329,7 +342,11 @@ function normalizeSection(currentSection, data) {
   }
 
   // Check if it's a dynamic question subsection
-  if (currentSection.startsWith("responses-")) {
+  if (
+    currentSection &&
+    typeof currentSection === "string" &&
+    currentSection.startsWith("responses-")
+  ) {
     const questionId = parseInt(currentSection.replace("responses-", ""), 10);
     const question = data?.responseDetails?.questions?.find(
       (q) => q.id === questionId
@@ -442,10 +459,11 @@ function getPreviousSection(currentSection, data) {
  * Priority: sectionConfig.subsections > renderSchema.subsections > uiTexts > ID
  */
 function getSubsectionTitle(sectionId, data, maxLength = 40) {
-  if (!data) return sectionId;
+  if (!data || !sectionId) return sectionId;
 
   // Extract base section ID (e.g., "executive-summary" -> "executive")
-  const baseSectionId = sectionId.split("-")[0];
+  const baseSectionId =
+    typeof sectionId === "string" ? sectionId.split("-")[0] : sectionId;
 
   // Find the section config
   const sectionConfig = data?.sectionsConfig?.sections?.find(
@@ -480,7 +498,12 @@ function getSubsectionTitle(sectionId, data, maxLength = 40) {
   }
 
   // Priority 4: If it's an attribute subsection (attributes-{id})
-  if (sectionId.startsWith("attributes-") && !sectionId.includes("template")) {
+  if (
+    sectionId &&
+    typeof sectionId === "string" &&
+    sectionId.startsWith("attributes-") &&
+    !sectionId.includes("template")
+  ) {
     const attributeId = sectionId.replace("attributes-", "");
     const attributesSection = data?.sectionsConfig?.sections?.find(
       (s) => s.id === "attributes"
@@ -506,13 +529,18 @@ function getSubsectionTitle(sectionId, data, maxLength = 40) {
   }
 
   // Priority 6: If it's a question subsection (responses-{id})
-  if (sectionId.startsWith("responses-")) {
+  if (
+    sectionId &&
+    typeof sectionId === "string" &&
+    sectionId.startsWith("responses-")
+  ) {
     const questionId = parseInt(sectionId.replace("responses-", ""), 10);
     const displayNumber = getDisplayNumber(questionId, data);
     return `${uiTexts.question || "Questão"} ${displayNumber}`;
   }
 
   // Fallback: format ID nicely (e.g., "executive-summary" -> "Executive Summary")
+  if (!sectionId || typeof sectionId !== "string") return sectionId;
   return sectionId
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -528,7 +556,11 @@ function getSectionAndSubsection(sectionId, data, maxLength = 40) {
   }
 
   // IMPORTANT: If it's a template, try to normalize to real subsection first
-  if (sectionId.includes("template")) {
+  if (
+    sectionId &&
+    typeof sectionId === "string" &&
+    sectionId.includes("template")
+  ) {
     // For attribute-template, try to get first real attribute
     if (sectionId.startsWith("attributes")) {
       const firstAttr = getFirstSubsectionHelper("attributes", data);
@@ -545,7 +577,10 @@ function getSectionAndSubsection(sectionId, data, maxLength = 40) {
   }
 
   const uiTexts = data.uiTexts?.surveyHeader || {};
-  const baseSection = sectionId.split("-")[0];
+  const baseSection =
+    sectionId && typeof sectionId === "string"
+      ? sectionId.split("-")[0]
+      : sectionId;
   let sectionTitle = getSectionTitleFromData(baseSection, data);
   let subsectionTitle = getSubsectionTitle(sectionId, data, maxLength);
 
@@ -561,7 +596,12 @@ function getSectionAndSubsection(sectionId, data, maxLength = 40) {
   }
 
   // Special adjustment: for "Question Analysis", show question number as subtitle
-  if (baseSection === "responses" && sectionId.startsWith("responses-")) {
+  if (
+    baseSection === "responses" &&
+    sectionId &&
+    typeof sectionId === "string" &&
+    sectionId.startsWith("responses-")
+  ) {
     const questionId = parseInt(sectionId.replace("responses-", ""), 10);
     const displayNumber = getDisplayNumber(questionId, data);
     return {

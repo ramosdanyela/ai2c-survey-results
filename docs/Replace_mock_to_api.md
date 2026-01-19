@@ -596,6 +596,9 @@ export const fetchSurveyData = async () => {
 
 ```javascript
 // src/services/surveyDataService.js
+// ⚠️ IMPORTANTE: O código já está configurado para usar o hook useSurveyData()
+// em todos os componentes. Este exemplo mostra como adicionar fallback para mock.
+
 import surveyDataJson from "@/data/surveyData.json";
 
 export const fetchSurveyData = async () => {
@@ -630,6 +633,8 @@ export const fetchSurveyData = async () => {
   return response.json();
 };
 ```
+
+**Nota:** Todos os componentes do código já utilizam o hook `useSurveyData()` para acessar os dados. Não há mais imports diretos do JSON nos componentes - apenas no serviço `surveyDataService.js` que é usado pelo hook.
 
 ---
 

@@ -601,12 +601,20 @@ function SchemaFilterPills({ component, data }) {
   const [questionFilter, setQuestionFilter] = useState("all");
   const [showWordCloud, setShowWordCloud] = useState(true);
 
-  const uiTexts = resolveDataPath(data, "uiTexts");
+  // Get texts from sectionData.uiTexts (section-specific) or root uiTexts (global)
+  // Priority: sectionData.uiTexts > root uiTexts.responseDetails
+  const sectionUiTexts = data?.sectionData?.uiTexts || {};
+  const rootUiTexts = resolveDataPath(data, "uiTexts") || {};
 
-  if (!uiTexts) {
-    console.warn(`FilterPills: uiTexts not found`);
-    return null;
-  }
+  // For responses section, texts are directly in sectionData.uiTexts (all, openField, etc.)
+  // But also check root uiTexts.responseDetails for backward compatibility
+  const uiTexts = {
+    ...rootUiTexts,
+    responseDetails: {
+      ...rootUiTexts?.responseDetails,
+      ...sectionUiTexts, // sectionData.uiTexts has the texts directly (all, openField, nps, wordCloud, etc.)
+    },
+  };
 
   const config = component.config || {};
   const showWordCloudToggle = config.showWordCloudToggle !== false;
@@ -665,7 +673,7 @@ function SchemaFilterPills({ component, data }) {
         }`}
         onClick={() => setQuestionFilter("all")}
       >
-        {uiTexts.responseDetails?.all || "Todos"}
+        {sectionUiTexts?.all || rootUiTexts?.responseDetails?.all || "Todos"}
       </Badge>
       <Badge
         variant={questionFilter === "open" ? "default" : "outline"}
@@ -677,7 +685,9 @@ function SchemaFilterPills({ component, data }) {
         onClick={() => setQuestionFilter("open")}
       >
         <FileText className="w-3 h-3" />
-        {uiTexts.responseDetails?.openField || "Campo Aberto"}
+        {sectionUiTexts?.openField ||
+          rootUiTexts?.responseDetails?.openField ||
+          "Campo Aberto"}
       </Badge>
       <Badge
         variant={questionFilter === "closed" ? "default" : "outline"}
@@ -689,7 +699,9 @@ function SchemaFilterPills({ component, data }) {
         onClick={() => setQuestionFilter("closed")}
       >
         <CheckSquare className="w-3 h-3" />
-        {uiTexts.responseDetails?.multipleChoice || "Múltipla Escolha"}
+        {sectionUiTexts?.multipleChoice ||
+          rootUiTexts?.responseDetails?.multipleChoice ||
+          "Múltipla Escolha"}
       </Badge>
       <Badge
         variant={questionFilter === "nps" ? "default" : "outline"}
@@ -701,7 +713,7 @@ function SchemaFilterPills({ component, data }) {
         onClick={() => setQuestionFilter("nps")}
       >
         <TrendingUp className="w-3 h-3" />
-        {uiTexts.responseDetails?.nps || "NPS"}
+        {sectionUiTexts?.nps || rootUiTexts?.responseDetails?.nps || "NPS"}
       </Badge>
       {/* Word Cloud Toggle */}
       {showWordCloudToggle && (
@@ -710,7 +722,9 @@ function SchemaFilterPills({ component, data }) {
             htmlFor="word-cloud-toggle"
             className="text-xs text-muted-foreground cursor-pointer"
           >
-            {uiTexts.responseDetails?.wordCloud || "Nuvem de Palavras"}
+            {sectionUiTexts?.wordCloud ||
+              rootUiTexts?.responseDetails?.wordCloud ||
+              "Nuvem de Palavras"}
           </Label>
           <Switch
             id="word-cloud-toggle"

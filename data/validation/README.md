@@ -102,6 +102,7 @@ Para adicionar novas regras de validação:
 - A validação é **não-destrutiva** - não altera o JSON
 - A validação é **isolada** - não afeta o código de renderização
 - Em produção, o JSON virá via API, mas a validação pode ser aplicada antes de usar os dados
+- **Arquitetura do código:** Todos os componentes utilizam o hook `useSurveyData()` para acessar os dados. Não há imports diretos do JSON nos componentes - apenas no serviço `surveyDataService.js` que é usado pelo hook. Isso garante uma única fonte de verdade e facilita a migração para API real.
 
 ## 🐛 Solução de Problemas
 

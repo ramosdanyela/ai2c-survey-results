@@ -1,6 +1,11 @@
 /**
  * Regras customizadas de validação baseadas no código de renderização
  * Estas regras validam lógica de negócio que não pode ser expressa em JSON Schema
+ *
+ * NOTA: Este arquivo valida o JSON diretamente (não através do hook useSurveyData).
+ * Isso é o comportamento esperado, pois a validação ocorre antes dos dados serem
+ * utilizados no código. O código de renderização utiliza o hook useSurveyData()
+ * para acessar os dados, garantindo uma única fonte de verdade.
  */
 
 // Tipos de componentes válidos (baseado no switch case do GenericSectionRenderer)

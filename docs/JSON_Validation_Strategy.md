@@ -74,7 +74,9 @@ Criar um script que percorre o JSON e valida manualmente cada parte.
 
 **Implementação:**
 
-Adicionar validação no hook `useSurveyData` ou no serviço que carrega o JSON.
+Adicionar validação no hook `useSurveyData` ou no serviço `surveyDataService.js` que carrega o JSON.
+
+**Nota:** O código já utiliza o hook `useSurveyData()` em todos os componentes. A validação pode ser adicionada no serviço antes de retornar os dados, ou no hook após receber os dados da API.
 
 ---
 

@@ -8,11 +8,6 @@ import {
   getIcon,
 } from "@/lib/icons";
 import { cn } from "@/lib/utils";
-import {
-  surveyInfo,
-  uiTexts,
-  sectionsConfig,
-} from "@/data/surveyData";
 import { useSurveyData } from "@/hooks/useSurveyData";
 import { getAttributesFromData, getQuestionsFromData } from "@/services/dataResolver";
 import { forwardRef, useState, useMemo, useCallback, useEffect } from "react";
@@ -41,11 +36,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-// Get menu items from sectionsConfig with icon components
-const menuItems = sectionsConfig.sections.map((section) => ({
-  ...section,
-  icon: getIcon(section.icon),
-}));
+// Helper function to get menu items from sectionsConfig with icon components
+function getMenuItems(sectionsConfig) {
+  if (!sectionsConfig?.sections) return [];
+  return sectionsConfig.sections.map((section) => ({
+    ...section,
+    icon: getIcon(section.icon),
+  }));
+}
 
 /**
  * Helper function to check if a section has subsections
@@ -236,11 +234,17 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
   const location = useLocation();
   const { data } = useSurveyData();
 
-  // Get surveyInfo from data (JSON) or fallback to imported
-  const currentSurveyInfo = data?.surveyInfo || surveyInfo;
+  // Get surveyInfo from data (JSON) - must come from hook
+  const currentSurveyInfo = data?.surveyInfo;
   
-  // Get uiTexts from data (JSON) or fallback to imported
-  const currentUiTexts = data?.uiTexts || uiTexts;
+  // Get uiTexts from data (JSON) - must come from hook
+  const currentUiTexts = data?.uiTexts;
+  
+  // Get sectionsConfig from data (JSON) - must come from hook
+  const sectionsConfig = data?.sectionsConfig;
+  
+  // Get menu items from sectionsConfig
+  const menuItems = useMemo(() => getMenuItems(sectionsConfig), [sectionsConfig]);
 
   // State to control which sections are expanded - initialize dynamically
   const [expandedSections, setExpandedSections] = useState(() => {
@@ -377,21 +381,21 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
               {/* Survey Title */}
               <div className="mb-0.5">
                 <h2 className="text-sm sm:text-lg font-bold text-foreground leading-tight">
-                  {currentSurveyInfo.title}
+                  {currentSurveyInfo?.title || "Carregando..."}
                 </h2>
               </div>
 
               {/* Company */}
               <div className="mb-0.5">
                 <div className="text-[10px] sm:text-xs font-normal text-foreground">
-                  {currentSurveyInfo.company}
+                  {currentSurveyInfo?.company || ""}
                 </div>
               </div>
 
               {/* Period */}
               <div className="mb-2 sm:mb-3">
                 <div className="text-[9px] sm:text-[10px] font-normal text-foreground">
-                  {currentSurveyInfo.period}
+                  {currentSurveyInfo?.period || ""}
                 </div>
               </div>
 
@@ -421,12 +425,12 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         className="text-sm sm:text-lg font-bold mb-0.5 truncate"
                         style={{ color: COLOR_GRAY_DARK }}
                       >
-                        {currentSurveyInfo.totalRespondents.toLocaleString(
+                        {currentSurveyInfo?.totalRespondents?.toLocaleString(
                           "pt-BR"
-                        )}
+                        ) || "0"}
                       </div>
                       <div className="text-[9px] sm:text-[10px] font-normal text-foreground/70 truncate">
-                        {currentUiTexts.surveySidebar?.respondents || "Respondentes"}
+                        {currentUiTexts?.surveySidebar?.respondents || "Respondentes"}
                       </div>
                     </div>
                   </div>
@@ -456,10 +460,10 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         className="text-sm sm:text-lg font-bold mb-0.5 truncate"
                         style={{ color: COLOR_GRAY_DARK }}
                       >
-                        {Math.round(currentSurveyInfo.responseRate)}%
+                        {currentSurveyInfo?.responseRate ? Math.round(currentSurveyInfo.responseRate) : 0}%
                       </div>
                       <div className="text-[9px] sm:text-[10px] font-normal text-foreground/70 truncate">
-                        {currentUiTexts.surveySidebar?.responseRate || "Taxa de Adesão"}
+                        {currentUiTexts?.surveySidebar?.responseRate || "Taxa de Adesão"}
                       </div>
                     </div>
                   </div>
@@ -507,7 +511,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                           })()}
                       </div>
                       <div className="text-[9px] sm:text-[10px] font-normal text-foreground/70 truncate">
-                        {currentUiTexts.surveySidebar?.questions || "Perguntas"}
+                        {currentUiTexts?.surveySidebar?.questions || "Perguntas"}
                       </div>
                     </div>
                   </div>
@@ -517,10 +521,10 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
           </div>
         </div>
         <nav className="flex flex-col gap-1.5 sm:gap-2 items-start w-full flex-1 overflow-x-hidden">
-          {menuItems.map((item) => {
+          {menuItems && menuItems.length > 0 && currentSurveyInfo && currentUiTexts ? menuItems.map((item) => {
             const isActive =
               activeSection === item.id ||
-              activeSection.startsWith(item.id + "-");
+              (activeSection && typeof activeSection === "string" && activeSection.startsWith(item.id + "-"));
 
             // Check if section has subsections (dynamic detection)
             const itemHasSubsections = hasSubsections(item, data);
@@ -808,12 +812,9 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
               )
             ) {
               const isExpanded = expandedSections[item.id];
-              // Get subsections from data (dynamic) or fallback to static sectionsConfig
-              const sectionConfigFromData =
-                data?.sectionsConfig?.sections?.find((s) => s.id === item.id);
+              // Get subsections from data (dynamic) - must come from hook
               const sectionConfig =
-                sectionConfigFromData ||
-                sectionsConfig.sections.find((s) => s.id === item.id);
+                data?.sectionsConfig?.sections?.find((s) => s.id === item.id);
 
               // Try subsections from config first, then from renderSchema
               let subsections = sectionConfig?.subsections
@@ -956,7 +957,11 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                 </span>
               </button>
             );
-          })}
+          }) : (
+            <div className="text-sm text-muted-foreground p-4">
+              Carregando dados...
+            </div>
+          )}
         </nav>
       </div>
     </TooltipProvider>

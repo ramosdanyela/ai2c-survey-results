@@ -176,7 +176,7 @@ Esta seção contém todas as traduções e textos da interface que são fixos, 
 }
 ```
 
-**Nota sobre traduções:** Além dos textos em `uiTexts` no JSON, existem também traduções hardcoded no código em `src/data/surveyData.js`. Para adicionar novos textos, prefira usar `uiTexts` no JSON, pois é mais fácil de manter e traduzir.
+**Nota sobre traduções:** Todos os textos da interface devem estar em `uiTexts` no JSON. O código utiliza o hook `useSurveyData()` para acessar esses dados, garantindo uma única fonte de verdade. Para adicionar novos textos, adicione em `uiTexts` no JSON.
 
 **Textos específicos de seção:** Cada seção pode ter seus próprios `uiTexts` dentro de `data.uiTexts`. Estes textos têm precedência sobre os textos globais em `uiTexts`.
 

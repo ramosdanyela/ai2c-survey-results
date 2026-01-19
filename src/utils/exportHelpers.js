@@ -1,4 +1,3 @@
-import { sectionsConfig } from "@/data/surveyData";
 import { getAttributesFromData } from "@/services/dataResolver";
 
 /**
@@ -50,8 +49,9 @@ function getExportConfig(sectionId, data) {
  * Get all available subsections for a given section
  */
 export function getAllSubsectionsForSection(sectionId, data) {
-  // Get sectionsConfig from data if available, otherwise use imported one
-  const config = data?.sectionsConfig || sectionsConfig;
+  // Get sectionsConfig from data - must come from hook
+  const config = data?.sectionsConfig;
+  if (!config?.sections) return [];
   const section = config.sections.find((s) => s.id === sectionId);
   if (!section) return [];
 
@@ -196,8 +196,9 @@ export function getAllSubsectionsForSection(sectionId, data) {
 export function getAllSubsections(data) {
   const allSubsections = [];
 
-  // Get sectionsConfig from data if available, otherwise use imported one
-  const config = data?.sectionsConfig || sectionsConfig;
+  // Get sectionsConfig from data - must come from hook
+  const config = data?.sectionsConfig;
+  if (!config?.sections) return [];
 
   config.sections
     .filter((section) => !section.isRoute) // Exclude export route
@@ -226,8 +227,9 @@ export function parseSelectedSections(
   // Parse selected subsection IDs
   const parsed = [];
 
-  // Get sectionsConfig from data if available, otherwise use imported one
-  const config = data?.sectionsConfig || sectionsConfig;
+  // Get sectionsConfig from data - must come from hook
+  const config = data?.sectionsConfig;
+  if (!config?.sections) return [];
 
   selectedSectionsArray.forEach((subsectionId) => {
     // Determine sectionId from subsectionId

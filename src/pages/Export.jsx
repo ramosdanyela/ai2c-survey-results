@@ -29,7 +29,6 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { COLOR_ORANGE_PRIMARY, RGBA_BLACK_SHADOW_20 } from "@/lib/colors";
-import { uiTexts, sectionsConfig } from "@/data/surveyData";
 import { getAllSubsectionsForSection } from "@/utils/exportHelpers";
 import { useSurveyData } from "@/hooks/useSurveyData";
 import { cn } from "@/lib/utils";
@@ -65,8 +64,8 @@ export default function Export() {
   const [isDesktop, setIsDesktop] = useState(false);
   const sidebarRef = useRef(null);
 
-  // Get uiTexts from data (JSON) or fallback to imported
-  const currentUiTexts = data?.uiTexts || uiTexts;
+  // Get uiTexts from data (JSON) - must come from hook
+  const currentUiTexts = data?.uiTexts;
 
   // Local texts for the Export component
   const exportTexts = {
@@ -105,8 +104,9 @@ export default function Export() {
 
   // Build sections structure from sectionsConfig using helper function
   const sections = useMemo(() => {
-    // Get sectionsConfig from data if available, otherwise use imported one
-    const config = data?.sectionsConfig || sectionsConfig;
+    // Get sectionsConfig from data - must come from hook
+    const config = data?.sectionsConfig;
+    if (!config) return [];
 
     return config.sections
       .filter((section) => !section.isRoute) // Exclude export route
@@ -126,6 +126,23 @@ export default function Export() {
         };
       });
   }, [data]);
+
+  // Show loading state if data is not available
+  if (loading || !data || !currentUiTexts) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-4">
+          <div className="relative w-16 h-16">
+            <div className="absolute top-0 left-0 w-full h-full border-4 border-primary/20 rounded-full"></div>
+            <div className="absolute top-0 left-0 w-full h-full border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+          </div>
+          <p className="text-sm text-muted-foreground animate-pulse">
+            Carregando...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   // Handlers
   const handleFullReportChange = (checked) => {
