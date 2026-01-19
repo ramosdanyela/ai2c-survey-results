@@ -13,6 +13,7 @@
     "analyze:deps": "npx depcheck || true",
     "analyze:duplicates": "node scripts/check-duplicate-files.js",
     "analyze:all": "npm run analyze:unused && npm run analyze:deps && npm run analyze:duplicates",
+    "validate": "npm run validate:all",
     "validate:json": "node data/validation/scripts/validate-json.js",
     "validate:all": "node data/validation/scripts/validate-all-jsons.js"
   },

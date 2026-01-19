@@ -67,6 +67,7 @@ function normalizeSection(activeSection, data) {
     const fallbacks = {
       executive: "executive-summary",
       support: "support-sentiment",
+      engagement: "engagement-sentiment",
     };
     return fallbacks[activeSection] || activeSection;
   }
@@ -240,6 +241,8 @@ export function ContentRenderer({ activeSection }) {
       finalSectionId = "responses";
     } else if (normalizedSection.startsWith("executive-")) {
       finalSectionId = "executive";
+    } else if (normalizedSection.startsWith("engagement-")) {
+      finalSectionId = "engagement";
     }
   }
 

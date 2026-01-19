@@ -144,26 +144,42 @@ function buildOrderedSubsections(data) {
 
 /**
  * Get section title from data (programmatic)
+ * Priority: sectionsConfig.sections[].name > uiTexts.surveyHeader > sectionId
  */
 function getSectionTitleFromData(sectionId, data) {
-  if (!data?.uiTexts?.surveyHeader) return sectionId;
+  if (!data) return sectionId;
 
-  const uiTexts = data.uiTexts.surveyHeader;
+  // Extract base section ID (e.g., "executive-summary" -> "executive")
+  const baseSectionId = sectionId.split("-")[0];
 
-  // Map section IDs to title keys
-  const titleMap = {
-    executive: uiTexts.executiveReport || "Relatório Executivo",
-    "executive-summary": uiTexts.executiveSummary || "Sumário Executivo",
-    "executive-recommendations": uiTexts.recommendations || "Recomendações",
-    support: uiTexts.supportAnalysis || "Análises de Suporte",
-    "support-sentiment": uiTexts.sentimentAnalysis || "Análise de Sentimento",
-    "support-intent": uiTexts.respondentIntent || "Intenção de Respondentes",
-    "support-segmentation": uiTexts.segmentation || "Segmentação",
-    responses: uiTexts.questionAnalysis || "Análise por Questão",
-    attributes: uiTexts.attributeDeepDive || "Aprofundamento por Atributos",
-  };
+  // Priority 1: Try to get from sectionsConfig.sections (most reliable)
+  if (data?.sectionsConfig?.sections) {
+    const section = data.sectionsConfig.sections.find((s) => s.id === baseSectionId);
+    if (section?.name) {
+      return section.name;
+    }
+  }
 
-  return titleMap[sectionId] || sectionId;
+  // Priority 2: Try to get from uiTexts.surveyHeader (legacy support)
+  const uiTexts = data?.uiTexts?.surveyHeader;
+  if (uiTexts) {
+    // Map section IDs to title keys (for backward compatibility)
+    const titleMap = {
+      executive: uiTexts.executiveReport,
+      engagement: uiTexts.engagementAnalysis,
+      attributes: uiTexts.attributeAnalysis,
+      responses: uiTexts.questionAnalysis,
+      questions: uiTexts.questionAnalysis,
+      culture: uiTexts.cultureAnalysis,
+    };
+
+    if (titleMap[baseSectionId]) {
+      return titleMap[baseSectionId];
+    }
+  }
+
+  // Fallback: return formatted sectionId
+  return sectionId;
 }
 
 /**
@@ -532,10 +548,9 @@ function getSectionAndSubsection(sectionId, data, maxLength = 40) {
   let subsectionTitle = getSubsectionTitle(sectionId, data, maxLength);
 
   // Special adjustment: for "Attribute Deep Dive", show only "Deep Dive"
-  if (
-    sectionTitle ===
-    (uiTexts.attributeDeepDive || "Aprofundamento por Atributos")
-  ) {
+  // Check if sectionTitle matches attribute analysis title
+  const attributeAnalysisTitle = uiTexts.attributeAnalysis || "Análise por Atributos";
+  if (sectionTitle === attributeAnalysisTitle || sectionTitle.includes("Atributos")) {
     sectionTitle = uiTexts.deepDive || "Aprofundamento";
   }
 

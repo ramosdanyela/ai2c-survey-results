@@ -60,9 +60,18 @@ function getSectionIconFromConfig(sectionId, data) {
     if (section.id === sectionId) {
       return getIcon(section.icon);
     }
-    // Check subsections
+    // Check subsections from config
     if (section.subsections && Array.isArray(section.subsections)) {
       const subsection = section.subsections.find(
+        (sub) => sub.id === sectionId
+      );
+      if (subsection && subsection.icon) {
+        return getIcon(subsection.icon);
+      }
+    }
+    // Check subsections from renderSchema
+    if (section.data?.renderSchema?.subsections && Array.isArray(section.data.renderSchema.subsections)) {
+      const subsection = section.data.renderSchema.subsections.find(
         (sub) => sub.id === sectionId
       );
       if (subsection && subsection.icon) {
@@ -107,8 +116,27 @@ function getSectionIconFromConfig(sectionId, data) {
     }
   }
 
-  // Fallback
+  // Fallback - always return a valid icon component
   return FileText;
+}
+
+/**
+ * Helper function to get attributes from data (imported from dataResolver)
+ */
+function getAttributesFromData(data) {
+  if (!data) return [];
+  
+  if (data?.sectionsConfig?.sections) {
+    const attributesSection = data.sectionsConfig.sections.find(
+      (section) => section.id === "attributes"
+    );
+    
+    if (attributesSection?.data?.attributes && Array.isArray(attributesSection.data.attributes)) {
+      return attributesSection.data.attributes;
+    }
+  }
+  
+  return [];
 }
 
 export function SurveyHeader({
@@ -124,6 +152,7 @@ export function SurveyHeader({
   }, [activeSection, data]);
 
   const Icon = useMemo(() => {
+    // getSectionIconFromConfig always returns a valid icon (FileText as fallback)
     return getSectionIconFromConfig(activeSection, data);
   }, [activeSection, data]);
 

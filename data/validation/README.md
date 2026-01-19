@@ -96,7 +96,39 @@ Para adicionar novas regras de validação:
 - A validação é **isolada** - não afeta o código de renderização
 - Em produção, o JSON virá via API, mas a validação pode ser aplicada antes de usar os dados
 
-## 🐛 Reportar Problemas
+## 🐛 Solução de Problemas
+
+### Erro: "Cannot find package 'ajv'"
+
+Se você receber um erro como:
+```
+Error: Cannot find package '...node_modules\ajv\dist\ajv.js'
+```
+
+**Solução:**
+1. Certifique-se de que as dependências estão instaladas:
+   ```bash
+   npm install
+   ```
+
+2. Se o problema persistir, limpe e reinstale as dependências:
+   
+   **Windows:**
+   ```bash
+   rmdir /s /q node_modules
+   del package-lock.json
+   npm install
+   ```
+   
+   **Linux/Mac:**
+   ```bash
+   rm -rf node_modules package-lock.json
+   npm install
+   ```
+
+3. Verifique se o `ajv` está listado em `devDependencies` no `package.json`
+
+### Reportar Problemas
 
 Se encontrar um JSON válido que está sendo rejeitado, ou um JSON inválido que está passando:
 

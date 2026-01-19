@@ -29,19 +29,19 @@ export { FileText, Download, Presentation, ClipboardList } from "lucide-react";
 export { BarChart3, TrendingUp, Target, Heart } from "lucide-react";
 
 // Communication icons
-export { MessageSquare } from "lucide-react";
+export { MessageSquare, MessageCircle } from "lucide-react";
 
 // Organization and structure icons
 export { Layers, Filter } from "lucide-react";
 
 // Location and attribute icons
-export { MapPin, GraduationCap, Building } from "lucide-react";
+export { MapPin, GraduationCap, Building, Clock, Briefcase } from "lucide-react";
 
 // User and people icons
-export { Users, Users2, User } from "lucide-react";
+export { Users, Users2, User, Smile } from "lucide-react";
 
 // Metrics and data icons
-export { Percent, HelpCircle, CheckSquare } from "lucide-react";
+export { Percent, HelpCircle, CheckSquare, Scale } from "lucide-react";
 
 // Alert and notification icons
 export { AlertTriangle } from "lucide-react";
@@ -50,7 +50,7 @@ export { AlertTriangle } from "lucide-react";
 export { Moon, Sun } from "lucide-react";
 
 // Content icons
-export { Award, Cloud } from "lucide-react";
+export { Award, Cloud, Star } from "lucide-react";
 
 // Pagination icons
 export { MoreHorizontal } from "lucide-react";
@@ -68,6 +68,7 @@ export const iconMap = {
   ArrowRight: LucideIcons.ArrowRight,
   Award: LucideIcons.Award,
   BarChart3: LucideIcons.BarChart3,
+  Briefcase: LucideIcons.Briefcase,
   Building: LucideIcons.Building,
   Check: LucideIcons.Check,
   CheckSquare: LucideIcons.CheckSquare,
@@ -75,6 +76,7 @@ export const iconMap = {
   ChevronLeft: LucideIcons.ChevronLeft,
   ChevronRight: LucideIcons.ChevronRight,
   ChevronUp: LucideIcons.ChevronUp,
+  Clock: LucideIcons.Clock,
   Cloud: LucideIcons.Cloud,
   ClipboardList: LucideIcons.ClipboardList,
   Download: LucideIcons.Download,
@@ -86,11 +88,15 @@ export const iconMap = {
   Layers: LucideIcons.Layers,
   MapPin: LucideIcons.MapPin,
   Menu: LucideIcons.Menu,
+  MessageCircle: LucideIcons.MessageCircle,
   MessageSquare: LucideIcons.MessageSquare,
   Moon: LucideIcons.Moon,
   MoreHorizontal: LucideIcons.MoreHorizontal,
   Percent: LucideIcons.Percent,
   Presentation: LucideIcons.Presentation,
+  Scale: LucideIcons.Scale,
+  Smile: LucideIcons.Smile,
+  Star: LucideIcons.Star,
   Sun: LucideIcons.Sun,
   Target: LucideIcons.Target,
   TrendingUp: LucideIcons.TrendingUp,
@@ -103,11 +109,11 @@ export const iconMap = {
 /**
  * Get icon component by name
  * @param {string} iconName - Name of the icon (e.g., "FileText", "BarChart3")
- * @returns {React.Component} - Icon component or null if not found
+ * @returns {React.Component} - Icon component or FileText as fallback if not found
  */
 export function getIcon(iconName) {
-  if (!iconName) return null;
-  return iconMap[iconName] || null;
+  if (!iconName) return FileText;
+  return iconMap[iconName] || FileText;
 }
 
 /**
