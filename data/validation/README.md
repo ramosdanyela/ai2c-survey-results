@@ -19,6 +19,7 @@ data/validation/
 ## 🎯 Objetivo
 
 Validar JSONs antes de testá-los no browser, garantindo que:
+
 - ✅ A estrutura está correta
 - ✅ Todos os `dataPath` apontam para dados válidos
 - ✅ Todos os templates `{{path}}` referenciam caminhos existentes
@@ -51,34 +52,40 @@ node data/validation/scripts/validate-json.js caminho/do/arquivo.json
 ## 📋 O que é Validado
 
 ### 1. Estrutura Básica
+
 - Campos obrigatórios (`metadata`, `sectionsConfig`, `uiTexts`, `surveyInfo`)
 - Tipos de dados corretos
 - Formatos válidos (ex: `language` deve ser `pt-BR`, `en-US`, etc.)
 
 ### 2. Seções e Subseções
+
 - IDs únicos
 - Índices sequenciais (começando em 0)
 - Seções com `hasSchema: true` devem ter `data`
 - Subseções devem ter `id`, `index`, `name`, `icon`
 
 ### 3. Componentes
+
 - Tipos válidos (`card`, `barChart`, `sentimentStackedChart`, etc.)
 - `dataPath` deve apontar para dados que existem
 - Arrays esperados devem ser arrays
 - Estrutura de dados correta para cada tipo
 
 ### 4. Templates
+
 - Templates `{{path}}` devem referenciar caminhos válidos
 - Paths de `uiTexts` devem existir
 - Paths de dados devem existir
 
 ### 5. Questões
+
 - IDs únicos
 - Tipos válidos (`nps`, `closed`, `open`)
 - Questões `nps` devem ter opções corretas
 - Questões `open` devem ter `sentimentData` ou `wordCloud`
 
 ### 6. Dados Específicos
+
 - NPS deve estar entre -100 e 100
 - Percentuais devem somar ~100% (com tolerância)
 - Arrays não devem estar vazios quando esperados
@@ -101,26 +108,31 @@ Para adicionar novas regras de validação:
 ### Erro: "Cannot find package 'ajv'"
 
 Se você receber um erro como:
+
 ```
 Error: Cannot find package '...node_modules\ajv\dist\ajv.js'
 ```
 
 **Solução:**
+
 1. Certifique-se de que as dependências estão instaladas:
+
    ```bash
    npm install
    ```
 
 2. Se o problema persistir, limpe e reinstale as dependências:
-   
+
    **Windows:**
+
    ```bash
    rmdir /s /q node_modules
    del package-lock.json
    npm install
    ```
-   
+
    **Linux/Mac:**
+
    ```bash
    rm -rf node_modules package-lock.json
    npm install
@@ -136,4 +148,3 @@ Se encontrar um JSON válido que está sendo rejeitado, ou um JSON inválido que
 2. Consulte `schema/surveyData.schema.json` para entender a regra
 3. Consulte `rules/custom-rules.js` para validações customizadas
 4. Ajuste o schema ou as regras conforme necessário
-

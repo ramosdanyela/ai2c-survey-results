@@ -4,7 +4,6 @@ import {
   Download,
   Menu,
   FileText,
-  Presentation,
   ChevronDown,
   ChevronRight,
 } from "@/lib/icons";
@@ -34,17 +33,6 @@ import { uiTexts, sectionsConfig } from "@/data/surveyData";
 import { getAllSubsectionsForSection } from "@/utils/exportHelpers";
 import { useSurveyData } from "@/hooks/useSurveyData";
 import { cn } from "@/lib/utils";
-
-// Local texts for the Export component
-const exportTexts = {
-  title: uiTexts.export.title,
-  description: uiTexts.export.description,
-  exportFullReport: uiTexts.export.exportFullReport,
-  selectSpecificSections: uiTexts.export.selectSpecificSections,
-  exportAsPDF: uiTexts.export.exportAsPDF,
-  exportAsPPT: uiTexts.export.exportAsPPT,
-  selectAtLeastOneSection: uiTexts.export.selectAtLeastOneSection,
-};
 
 // Component for checkbox with indeterminate state
 const SectionCheckbox = React.forwardRef(
@@ -76,6 +64,27 @@ export default function Export() {
   const [sidebarWidth, setSidebarWidth] = useState(0);
   const [isDesktop, setIsDesktop] = useState(false);
   const sidebarRef = useRef(null);
+
+  // Get uiTexts from data (JSON) or fallback to imported
+  const currentUiTexts = data?.uiTexts || uiTexts;
+
+  // Local texts for the Export component
+  const exportTexts = {
+    title: currentUiTexts.export?.title || "Export  Data",
+    description:
+      currentUiTexts.export?.description ||
+      "Export the survey data in different formats",
+    exportFullReport:
+      currentUiTexts.export?.exportFullReport || "Export Full Report",
+    selectSpecificSections:
+      currentUiTexts.export?.selectSpecificSections ||
+      "Select Specific Sections",
+    exportAsPDF: currentUiTexts.export?.exportAsPDF || "Export as PDF",
+    exportAsPPT: currentUiTexts.export?.exportAsPPT || "Export as PPT",
+    selectAtLeastOneSection:
+      currentUiTexts.export?.selectAtLeastOneSection ||
+      "Select at least one section",
+  };
 
   // State for selection control
   const [exportFullReport, setExportFullReport] = useState(false);
@@ -497,20 +506,6 @@ export default function Export() {
                       >
                         <FileText className="w-5 h-5 mr-2" />
                         {exportTexts.exportAsPDF}
-                      </Button>
-                      <Button
-                        onClick={() => handleExport("PPT")}
-                        disabled={
-                          !exportFullReport && selectedSections.size === 0
-                        }
-                        className="flex-1 h-12 text-base font-semibold"
-                        style={{
-                          backgroundColor: COLOR_ORANGE_PRIMARY,
-                          color: "white",
-                        }}
-                      >
-                        <Presentation className="w-5 h-5 mr-2" />
-                        {exportTexts.exportAsPPT}
                       </Button>
                     </div>
 

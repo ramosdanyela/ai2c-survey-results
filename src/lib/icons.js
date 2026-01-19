@@ -35,7 +35,13 @@ export { MessageSquare, MessageCircle } from "lucide-react";
 export { Layers, Filter } from "lucide-react";
 
 // Location and attribute icons
-export { MapPin, GraduationCap, Building, Clock, Briefcase } from "lucide-react";
+export {
+  MapPin,
+  GraduationCap,
+  Building,
+  Clock,
+  Briefcase,
+} from "lucide-react";
 
 // User and people icons
 export { Users, Users2, User, Smile } from "lucide-react";

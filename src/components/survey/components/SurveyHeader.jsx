@@ -8,44 +8,50 @@ import {
 } from "@/lib/colors";
 import { useSurveyData } from "@/hooks/useSurveyData";
 import { NavigationButtons } from "@/components/survey/components/NavigationButtons";
+import { getAttributesFromData } from "@/services/dataResolver";
 
 /**
  * Get section title from data (programmatic)
+ * Priority: sectionsConfig.sections[].name > uiTexts.surveyHeader > sectionId
+ * This matches the logic in NavigationButtons for consistency
  */
 function getSectionTitleFromData(activeSection, data) {
-  if (!data?.uiTexts?.surveyHeader) {
-    return activeSection;
+  if (!data) return activeSection;
+
+  // Extract base section ID (e.g., "executive-summary" -> "executive")
+  const baseSectionId = activeSection.split("-")[0];
+
+  // Priority 1: Try to get from sectionsConfig.sections (most reliable)
+  if (data?.sectionsConfig?.sections) {
+    const section = data.sectionsConfig.sections.find(
+      (s) => s.id === baseSectionId
+    );
+    if (section?.name) {
+      return section.name;
+    }
   }
 
-  const uiTexts = data.uiTexts.surveyHeader;
+  // Priority 2: Try to get from uiTexts.surveyHeader (legacy support)
+  const uiTexts = data?.uiTexts?.surveyHeader;
+  if (uiTexts) {
+    // Map section IDs to title keys (for backward compatibility)
+    const titleMap = {
+      executive: uiTexts.executiveReport,
+      engagement: uiTexts.engagementAnalysis,
+      attributes: uiTexts.attributeAnalysis,
+      responses: uiTexts.questionAnalysis,
+      questions: uiTexts.questionAnalysis,
+      culture: uiTexts.cultureAnalysis,
+      support: uiTexts.supportAnalysis,
+    };
 
-  // Always return the main section title (before the hyphen)
-  const baseSection = activeSection.split("-")[0];
-
-  // Map section IDs to title keys
-  const titleMap = {
-    executive: uiTexts.executiveReport || "Relatório Executivo",
-    "executive-summary": uiTexts.executiveSummary || "Sumário Executivo",
-    "executive-recommendations": uiTexts.recommendations || "Recomendações",
-    support: uiTexts.supportAnalysis || "Análises de Suporte",
-    "support-sentiment": uiTexts.sentimentAnalysis || "Análise de Sentimento",
-    "support-intent": uiTexts.respondentIntent || "Intenção de Respondentes",
-    "support-segmentation": uiTexts.segmentation || "Segmentação",
-    responses: uiTexts.questionAnalysis || "Análise por Questão",
-    attributes: uiTexts.attributeDeepDive || "Aprofundamento por Atributos",
-  };
-
-  if (titleMap[baseSection]) {
-    return titleMap[baseSection];
+    if (titleMap[baseSectionId]) {
+      return titleMap[baseSectionId];
+    }
   }
 
-  // If not found, try to find exact title as fallback
-  if (titleMap[activeSection]) {
-    return titleMap[activeSection];
-  }
-
-  // Fallback
-  return uiTexts.results || "Resultados da Pesquisa";
+  // Fallback: return formatted sectionId
+  return activeSection;
 }
 
 /**
@@ -70,7 +76,10 @@ function getSectionIconFromConfig(sectionId, data) {
       }
     }
     // Check subsections from renderSchema
-    if (section.data?.renderSchema?.subsections && Array.isArray(section.data.renderSchema.subsections)) {
+    if (
+      section.data?.renderSchema?.subsections &&
+      Array.isArray(section.data.renderSchema.subsections)
+    ) {
       const subsection = section.data.renderSchema.subsections.find(
         (sub) => sub.id === sectionId
       );
@@ -84,9 +93,7 @@ function getSectionIconFromConfig(sectionId, data) {
   if (sectionId.startsWith("attributes-")) {
     const attributeId = sectionId.replace("attributes-", "");
     const attributes = getAttributesFromData(data);
-    const attribute = attributes.find(
-      (attr) => attr.id === attributeId
-    );
+    const attribute = attributes.find((attr) => attr.id === attributeId);
     if (attribute && attribute.icon) {
       return getIcon(attribute.icon);
     }
@@ -118,25 +125,6 @@ function getSectionIconFromConfig(sectionId, data) {
 
   // Fallback - always return a valid icon component
   return FileText;
-}
-
-/**
- * Helper function to get attributes from data (imported from dataResolver)
- */
-function getAttributesFromData(data) {
-  if (!data) return [];
-  
-  if (data?.sectionsConfig?.sections) {
-    const attributesSection = data.sectionsConfig.sections.find(
-      (section) => section.id === "attributes"
-    );
-    
-    if (attributesSection?.data?.attributes && Array.isArray(attributesSection.data.attributes)) {
-      return attributesSection.data.attributes;
-    }
-  }
-  
-  return [];
 }
 
 export function SurveyHeader({

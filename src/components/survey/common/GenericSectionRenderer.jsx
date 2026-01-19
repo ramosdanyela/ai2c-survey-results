@@ -1,12 +1,5 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import { SubsectionTitle } from "../widgets/SubsectionTitle";
-import {
-  SimpleBarChart,
-  SentimentDivergentChart,
-  SentimentStackedChart,
-  SentimentThreeColorChart,
-  NPSStackedChart,
-} from "../widgets/Charts";
 import { Progress } from "@/components/ui/progress";
 import { Award, CheckSquare, FileText, TrendingUp, Cloud } from "@/lib/icons";
 import {
@@ -26,6 +19,26 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { WordCloud } from "../widgets/WordCloud";
+import { KPICard } from "../widgets/KPICard";
+import { AnalyticalTable } from "../widgets/AnalyticalTable";
+import { SlopeGraph } from "../widgets/SlopeGraph";
+import { WaterfallChart } from "../widgets/WaterfallChart";
+import {
+  SchemaBarChart,
+  SchemaSentimentDivergentChart,
+  SchemaSentimentStackedChart,
+  SchemaSentimentThreeColorChart,
+  SchemaNPSStackedChart,
+  SchemaLineChart,
+  SchemaParetoChart,
+  SchemaScatterPlot,
+  SchemaHistogram,
+  SchemaQuadrantChart,
+  SchemaHeatmap,
+  SchemaSankeyDiagram,
+  SchemaStackedBarMECE,
+  SchemaEvolutionaryScorecard,
+} from "./ChartRenderers";
 import {
   Card,
   CardContent,
@@ -54,21 +67,22 @@ import {
   resolveText,
   resolveDataPath,
   resolveTemplate,
+  getQuestionsFromData,
 } from "@/services/dataResolver";
 
 // Helper function to get questions from responseDetails
 function getQuestionsFromResponseDetails(responseDetails) {
   if (!responseDetails) return [];
-  
+
   // If questions exists, use it
   if (responseDetails.questions && Array.isArray(responseDetails.questions)) {
     return responseDetails.questions;
   }
-  
+
   // Otherwise, combine closedQuestions and openQuestions
   const closed = responseDetails.closedQuestions || [];
   const open = responseDetails.openQuestions || [];
-  
+
   // Combine and sort by index
   return [...closed, ...open].sort((a, b) => (a.index || 0) - (b.index || 0));
 }
@@ -111,8 +125,39 @@ function enrichSchemaWithStyles(schema, data, sectionData) {
  * Usa styleVariant do JSON para aplicar estilos do código
  */
 function SchemaCard({ component, data, children }) {
+  // Debug: verify uiTexts is available and has attributeDeepDive
+  if (
+    component.title &&
+    component.title.includes("uiTexts.attributeDeepDive")
+  ) {
+    console.log("SchemaCard DEBUG:", {
+      title: component.title,
+      hasData: !!data,
+      hasUiTexts: !!data?.uiTexts,
+      hasAttributeDeepDive: !!data?.uiTexts?.attributeDeepDive,
+      attributeDeepDiveKeys: data?.uiTexts?.attributeDeepDive
+        ? Object.keys(data.uiTexts.attributeDeepDive)
+        : [],
+      uiTextsKeys: data?.uiTexts ? Object.keys(data.uiTexts) : [],
+      dataKeys: data ? Object.keys(data) : [],
+    });
+  }
+
   const title = resolveTemplate(component.title || "", data);
   const content = resolveTemplate(component.content || "", data);
+
+  // Debug: log if title was not resolved
+  if (
+    component.title &&
+    component.title.includes("uiTexts") &&
+    title === component.title
+  ) {
+    console.warn("SchemaCard: Title not resolved!", {
+      original: component.title,
+      resolved: title,
+      hasUiTexts: !!data?.uiTexts,
+    });
+  }
 
   // Usa className do componente enriquecido (resolvido de styleVariant)
   const styleClass = component.className || "card-elevated";
@@ -166,178 +211,6 @@ function SchemaCard({ component, data, children }) {
         {hasChildren && children}
       </CardContent>
     </Card>
-  );
-}
-
-/**
- * Get chart config defaults based on context
- * All styling/config is determined programmatically
- */
-function getBarChartConfig(component, data, isMobile) {
-  const config = component.config || {};
-  const preset = config.preset; // Use preset from JSON instead of checking dataPath
-
-  // Determine defaults based on preset (from JSON) or fallback to defaults
-  let height = config.height || 256;
-  let margin = config.margin || { top: 10, right: 80, left: 120, bottom: 10 };
-  let yAxisWidth = config.yAxisWidth || 110;
-
-  // Use preset to determine chart configuration
-  if (preset === "respondentIntent") {
-    height = isMobile ? 400 : 256;
-    margin = isMobile
-      ? { top: 10, right: 35, left: 4, bottom: 10 }
-      : { top: 10, right: 80, left: 250, bottom: 10 };
-    yAxisWidth = isMobile ? 130 : 240;
-  } else if (preset === "distribution") {
-    height = 400;
-    margin = { top: 10, right: 80, left: 120, bottom: 10 };
-    yAxisWidth = data.currentAttributeYAxisWidth || 110;
-  }
-
-  // Ensure tooltipFormatter is a function or undefined
-  let tooltipFormatter = config.tooltipFormatter;
-  if (tooltipFormatter && typeof tooltipFormatter !== "function") {
-    // If it's a string template, try to resolve it (though it should be a function)
-    console.warn(
-      `BarChart: tooltipFormatter must be a function, got ${typeof tooltipFormatter}. Using default.`
-    );
-    tooltipFormatter = undefined;
-  }
-
-  // Ensure labelFormatter is a function or undefined
-  let labelFormatter = config.labelFormatter;
-  if (labelFormatter && typeof labelFormatter !== "function") {
-    console.warn(
-      `BarChart: labelFormatter must be a function, got ${typeof labelFormatter}. Using default.`
-    );
-    labelFormatter = undefined;
-  }
-
-  return {
-    height,
-    margin,
-    yAxisWidth,
-    dataKey: config.dataKey || "value",
-    yAxisDataKey: config.yAxisDataKey || "label",
-    fillColor: config.fillColor,
-    showLabels: config.showLabels !== false,
-    labelFormatter: labelFormatter,
-    tooltipFormatter: tooltipFormatter,
-    sortData: config.sortData !== false,
-    sortDirection: config.sortDirection || "desc",
-    hideXAxis: config.hideXAxis !== false,
-  };
-}
-
-/**
- * Render a bar chart component based on schema
- */
-function SchemaBarChart({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath);
-  const isMobile = useIsMobile();
-
-  if (!chartData || !Array.isArray(chartData)) {
-    console.warn(`BarChart: Data not found at path "${component.dataPath}"`);
-    return null;
-  }
-
-  const chartConfig = getBarChartConfig(component, data, isMobile);
-
-  const chart = (
-    <SimpleBarChart
-      data={chartData}
-      dataKey={chartConfig.dataKey}
-      yAxisDataKey={chartConfig.yAxisDataKey}
-      height={chartConfig.height}
-      margin={chartConfig.margin}
-      yAxisWidth={chartConfig.yAxisWidth}
-      fillColor={chartConfig.fillColor}
-      showLabels={chartConfig.showLabels}
-      labelFormatter={chartConfig.labelFormatter}
-      tooltipFormatter={chartConfig.tooltipFormatter}
-      sortData={chartConfig.sortData}
-      sortDirection={chartConfig.sortDirection}
-      hideXAxis={chartConfig.hideXAxis}
-    />
-  );
-
-  // Use wrapperClassName from component config or preset-based wrapper
-  const wrapperClassName = component.wrapperClassName;
-  if (wrapperClassName || component.config?.preset === "distribution") {
-    const finalClassName = wrapperClassName || "flex-shrink-0 mb-4";
-    const wrapperStyle =
-      component.wrapperStyle ||
-      (component.config?.preset === "distribution"
-        ? { height: "400px" }
-        : undefined);
-    return (
-      <div className={finalClassName} style={wrapperStyle}>
-        {chart}
-      </div>
-    );
-  }
-
-  return chart;
-}
-
-/**
- * Get sentiment divergent chart config based on context
- */
-function getSentimentDivergentChartConfig(component, data) {
-  const config = component.config || {};
-
-  return {
-    height: 320,
-    margin: { top: 20, right: 30, left: 100, bottom: 20 },
-    xAxisDomain: config.xAxisDomain,
-    yAxisDataKey: config.yAxisDataKey || "category",
-    yAxisWidth: config.yAxisWidth || 90,
-    showGrid: false,
-    showLegend: config.showLegend !== false,
-    axisLine: false,
-    tickLine: false,
-    barSize: config.barSize,
-    allowDataOverflow: config.allowDataOverflow,
-    legendWrapperStyle: config.legendWrapperStyle,
-    legendIconType: config.legendIconType,
-    labels: config.labels,
-  };
-}
-
-/**
- * Render a sentiment divergent chart component based on schema
- */
-function SchemaSentimentDivergentChart({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath);
-
-  if (!chartData || !Array.isArray(chartData)) {
-    console.warn(
-      `SentimentDivergentChart: Data not found at path "${component.dataPath}"`
-    );
-    return null;
-  }
-
-  const chartConfig = getSentimentDivergentChartConfig(component, data);
-
-  return (
-    <SentimentDivergentChart
-      data={chartData}
-      height={chartConfig.height}
-      margin={chartConfig.margin}
-      xAxisDomain={chartConfig.xAxisDomain}
-      yAxisDataKey={chartConfig.yAxisDataKey}
-      yAxisWidth={chartConfig.yAxisWidth}
-      showGrid={chartConfig.showGrid}
-      showLegend={chartConfig.showLegend}
-      axisLine={chartConfig.axisLine}
-      tickLine={chartConfig.tickLine}
-      barSize={chartConfig.barSize}
-      allowDataOverflow={chartConfig.allowDataOverflow}
-      legendWrapperStyle={chartConfig.legendWrapperStyle}
-      legendIconType={chartConfig.legendIconType}
-      labels={chartConfig.labels}
-    />
   );
 }
 
@@ -421,133 +294,6 @@ function SchemaSegmentationTable({ component, data }) {
   }
 
   return <SegmentationTable data={tableData} />;
-}
-
-/**
- * Get sentiment stacked chart config based on context
- */
-function getSentimentStackedChartConfig(component, data) {
-  const config = component.config || {};
-  const preset = config.preset; // Use preset from JSON instead of checking dataPath
-
-  // Defaults - use config values or fallback to defaults
-  let height = config.height || 256;
-  let margin = config.margin || { top: 10, right: 30, left: 100, bottom: 10 };
-  let showGrid = config.showGrid !== undefined ? config.showGrid : true;
-  let axisLine = config.axisLine !== undefined ? config.axisLine : true;
-  let tickLine = config.tickLine !== undefined ? config.tickLine : true;
-
-  // Use preset to determine chart configuration
-  if (preset === "attributeSentiment") {
-    height = 400;
-    showGrid = false;
-  } else if (preset === "questionSentiment") {
-    height = 192;
-    showGrid = false;
-    axisLine = false;
-    tickLine = false;
-  }
-
-  return {
-    height,
-    margin: config.margin || margin,
-    yAxisDataKey: config.yAxisDataKey || "category",
-    yAxisWidth: config.yAxisWidth || 90,
-    showGrid: config.showGrid !== undefined ? config.showGrid : showGrid,
-    showLegend: config.showLegend !== false,
-    axisLine: config.axisLine !== undefined ? config.axisLine : axisLine,
-    tickLine: config.tickLine !== undefined ? config.tickLine : tickLine,
-  };
-}
-
-/**
- * Render a sentiment stacked chart component based on schema
- */
-function SchemaSentimentStackedChart({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath);
-
-  if (!chartData || !Array.isArray(chartData)) {
-    console.warn(
-      `SentimentStackedChart: Data not found at path "${component.dataPath}"`
-    );
-    return null;
-  }
-
-  const chartConfig = getSentimentStackedChartConfig(component, data);
-
-  const chart = (
-    <SentimentStackedChart
-      data={chartData}
-      height={chartConfig.height}
-      margin={chartConfig.margin}
-      yAxisDataKey={chartConfig.yAxisDataKey}
-      yAxisWidth={chartConfig.yAxisWidth}
-      showGrid={chartConfig.showGrid}
-      showLegend={chartConfig.showLegend}
-      axisLine={chartConfig.axisLine}
-      tickLine={chartConfig.tickLine}
-    />
-  );
-
-  // Use wrapperClassName from component config or preset-based wrapper
-  const wrapperClassName = component.wrapperClassName;
-  if (wrapperClassName || component.config?.preset === "attributeSentiment") {
-    const finalClassName = wrapperClassName || "flex-shrink-0 mb-4";
-    const wrapperStyle =
-      component.wrapperStyle ||
-      (component.config?.preset === "attributeSentiment"
-        ? { height: "400px" }
-        : undefined);
-    return (
-      <div className={finalClassName} style={wrapperStyle}>
-        {chart}
-      </div>
-    );
-  }
-
-  return chart;
-}
-
-/**
- * Get sentiment three color chart config based on context
- */
-function getSentimentThreeColorChartConfig(component, data) {
-  const config = component.config || {};
-
-  return {
-    height: 192,
-    margin: { top: 10, right: 30, left: 20, bottom: 10 },
-    showGrid: false,
-    showLegend: false,
-    axisLine: false,
-    tickLine: false,
-  };
-}
-
-/**
- * Render a sentiment three color chart component based on schema
- */
-function SchemaSentimentThreeColorChart({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath);
-
-  if (!chartData || !Array.isArray(chartData)) {
-    console.warn(
-      `SentimentThreeColorChart: Data not found at path "${component.dataPath}"`
-    );
-    return null;
-  }
-
-  const chartConfig = getSentimentThreeColorChartConfig(component, data);
-
-  return (
-    <SentimentThreeColorChart
-      data={chartData}
-      height={chartConfig.height}
-      margin={chartConfig.margin}
-      showGrid={chartConfig.showGrid}
-      showLegend={chartConfig.showLegend}
-    />
-  );
 }
 
 /**
@@ -663,68 +409,6 @@ function SchemaNegativeCategoriesTable({ component, data }) {
   }
 
   return <NegativeCategoriesTable data={tableData} />;
-}
-
-/**
- * Get NPS stacked chart config based on context
- */
-function getNPSStackedChartConfig(component, data) {
-  const config = component.config || {};
-
-  return {
-    height: 256,
-    margin: { top: 20, right: 30, left: 20, bottom: 20 },
-    showGrid: config.showGrid !== undefined ? config.showGrid : true,
-    showLegend: config.showLegend !== false,
-    hideXAxis: true,
-    showPercentagesInLegend: true,
-    chartName: config.chartName || "NPS",
-    ranges: config.ranges,
-  };
-}
-
-/**
- * Render an NPS stacked chart component based on schema
- */
-function SchemaNPSStackedChart({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath);
-
-  if (!chartData) {
-    console.warn(
-      `NPSStackedChart: Data not found at path "${component.dataPath}"`
-    );
-    return null;
-  }
-
-  const chartConfig = getNPSStackedChartConfig(component, data);
-
-  // Handle data format - can be object with Detratores/Neutros/Promotores or array
-  let npsData = chartData;
-  if (Array.isArray(chartData) && chartData.length > 0) {
-    // Convert array format to object format
-    const detrator = chartData.find((d) => d.option === "Detrator");
-    const promotor = chartData.find((d) => d.option === "Promotor");
-    const neutro = chartData.find((d) => d.option === "Neutro");
-    npsData = {
-      Detratores: detrator?.percentage || 0,
-      Neutros: neutro?.percentage || 0,
-      Promotores: promotor?.percentage || 0,
-    };
-  }
-
-  return (
-    <NPSStackedChart
-      data={npsData}
-      height={chartConfig.height}
-      margin={chartConfig.margin}
-      showGrid={chartConfig.showGrid}
-      showLegend={chartConfig.showLegend}
-      hideXAxis={chartConfig.hideXAxis}
-      showPercentagesInLegend={chartConfig.showPercentagesInLegend}
-      chartName={chartConfig.chartName}
-      ranges={chartConfig.ranges}
-    />
-  );
 }
 
 /**
@@ -927,17 +611,48 @@ function SchemaFilterPills({ component, data }) {
   const config = component.config || {};
   const showWordCloudToggle = config.showWordCloudToggle !== false;
 
-  const contextValue = {
-    questionFilter,
-    setQuestionFilter,
-    showWordCloud,
-    setShowWordCloud,
-  };
+  // Create wrapper functions that update both state and data._filterPillsState
+  const handleQuestionFilterChange = useCallback(
+    (value) => {
+      setQuestionFilter(value);
+      if (data && typeof data === "object" && !Array.isArray(data)) {
+        if (data._filterPillsState) {
+          data._filterPillsState.questionFilter = value;
+        }
+      }
+    },
+    [data]
+  );
 
-  // Store in data for QuestionsList to access
-  if (data && typeof data === "object" && !Array.isArray(data)) {
-    data._filterPillsState = contextValue;
-  }
+  const handleShowWordCloudChange = useCallback(
+    (value) => {
+      setShowWordCloud(value);
+      if (data && typeof data === "object" && !Array.isArray(data)) {
+        if (data._filterPillsState) {
+          data._filterPillsState.showWordCloud = value;
+        }
+      }
+    },
+    [data]
+  );
+
+  // Initialize and update data._filterPillsState whenever state changes
+  useEffect(() => {
+    if (data && typeof data === "object" && !Array.isArray(data)) {
+      data._filterPillsState = {
+        questionFilter,
+        setQuestionFilter: handleQuestionFilterChange,
+        showWordCloud,
+        setShowWordCloud: handleShowWordCloudChange,
+      };
+    }
+  }, [
+    questionFilter,
+    showWordCloud,
+    handleQuestionFilterChange,
+    handleShowWordCloudChange,
+    data,
+  ]);
 
   return (
     <div className="flex flex-wrap gap-2 items-center mb-6">
@@ -1046,10 +761,166 @@ function SchemaWordCloud({ component, data }) {
             style={{ maxHeight: "500px" }}
           />
         ) : (
-          <WordCloud words={wordCloudData} maxWords={config.maxWords || 15} />
+          <WordCloud
+            words={wordCloudData}
+            maxWords={config.maxWords || 15}
+            config={{
+              // Permite sobrescrever configurações do JSON, com defaults estilo imagem
+              colorScheme: config.colorScheme || "image-style",
+              minFontSize: config.minFontSize || 14,
+              maxFontSize: config.maxFontSize || 56,
+              enableShadows:
+                config.enableShadows !== undefined
+                  ? config.enableShadows
+                  : false,
+              fontWeight: config.fontWeight || "medium",
+              minOpacity: config.minOpacity || 0.8,
+              maxOpacity: config.maxOpacity || 1.0,
+              enableHover:
+                config.enableHover !== undefined ? config.enableHover : true,
+              enableAnimations:
+                config.enableAnimations !== undefined
+                  ? config.enableAnimations
+                  : true,
+              minRotation:
+                config.minRotation !== undefined ? config.minRotation : -20,
+              maxRotation:
+                config.maxRotation !== undefined ? config.maxRotation : 20,
+              enableRotation:
+                config.enableRotation !== undefined
+                  ? config.enableRotation
+                  : false, // Horizontal por padrão
+              spacing: config.spacing !== undefined ? config.spacing : 8,
+            }}
+          />
         )}
       </div>
     </div>
+  );
+}
+
+/**
+ * Render KPI Card component based on schema
+ */
+function SchemaKPICard({ component, data }) {
+  const kpiData = resolveDataPath(data, component.dataPath);
+  const config = component.config || {};
+
+  if (!kpiData) {
+    console.warn(`KPICard: Data not found at path "${component.dataPath}"`);
+    return null;
+  }
+
+  // Support both object and direct value
+  const value =
+    typeof kpiData === "object" ? kpiData[config.valueKey || "value"] : kpiData;
+  const label =
+    typeof kpiData === "object"
+      ? kpiData[config.labelKey || "label"]
+      : config.label || "KPI";
+  const delta =
+    typeof kpiData === "object"
+      ? kpiData[config.deltaKey || "delta"]
+      : config.delta;
+  const trend =
+    typeof kpiData === "object"
+      ? kpiData[config.trendKey || "trend"]
+      : config.trend;
+  const target =
+    typeof kpiData === "object"
+      ? kpiData[config.targetKey || "target"]
+      : config.target;
+
+  return (
+    <KPICard
+      value={value}
+      label={label}
+      delta={delta}
+      trend={trend}
+      target={target}
+      format={config.format}
+      className={config.className}
+    />
+  );
+}
+
+/**
+ * Render Analytical Table component based on schema
+ */
+function SchemaAnalyticalTable({ component, data }) {
+  const tableData = resolveDataPath(data, component.dataPath);
+  const config = component.config || {};
+
+  if (!tableData || !Array.isArray(tableData)) {
+    console.warn(
+      `AnalyticalTable: Data not found at path "${component.dataPath}"`
+    );
+    return null;
+  }
+
+  return (
+    <AnalyticalTable
+      data={tableData}
+      columns={config.columns || []}
+      showRanking={config.showRanking !== false}
+      defaultSort={config.defaultSort}
+      rankingKey={config.rankingKey}
+    />
+  );
+}
+
+/**
+ * Render Slope Graph component based on schema
+ */
+function SchemaSlopeGraph({ component, data }) {
+  const chartData = resolveDataPath(data, component.dataPath);
+  const config = component.config || {};
+
+  if (!chartData || !Array.isArray(chartData)) {
+    console.warn(`SlopeGraph: Data not found at path "${component.dataPath}"`);
+    return null;
+  }
+
+  return (
+    <SlopeGraph
+      data={chartData}
+      categoryKey={config.categoryKey || "category"}
+      beforeKey={config.beforeKey || "before"}
+      afterKey={config.afterKey || "after"}
+      height={config.height || 400}
+      margin={config.margin}
+      showLabels={config.showLabels !== false}
+      showDelta={config.showDelta !== false}
+      showGrid={config.showGrid !== false}
+    />
+  );
+}
+
+/**
+ * Render Waterfall Chart component based on schema
+ */
+function SchemaWaterfallChart({ component, data }) {
+  const chartData = resolveDataPath(data, component.dataPath);
+  const config = component.config || {};
+
+  if (!chartData || !Array.isArray(chartData)) {
+    console.warn(
+      `WaterfallChart: Data not found at path "${component.dataPath}"`
+    );
+    return null;
+  }
+
+  return (
+    <WaterfallChart
+      data={chartData}
+      labelKey={config.labelKey || "label"}
+      valueKey={config.valueKey || "value"}
+      typeKey={config.typeKey || "type"}
+      height={config.height || 400}
+      margin={config.margin}
+      showLabels={config.showLabels !== false}
+      showGrid={config.showGrid !== false}
+    />
   );
 }
 
@@ -1150,7 +1021,13 @@ function SchemaAccordion({ component, data }) {
  * Render a questions list component based on schema
  * This component handles all the complex logic for rendering questions with filters, accordions, etc.
  */
-function SchemaQuestionsList({ component, data, subSection, isExport = false, exportWordCloud = true }) {
+function SchemaQuestionsList({
+  component,
+  data,
+  subSection,
+  isExport = false,
+  exportWordCloud = true,
+}) {
   // Extract questionId from subSection (e.g., "responses-1" -> 1)
   let questionId = null;
   if (subSection && subSection.startsWith("responses-")) {
@@ -1182,16 +1059,78 @@ function SchemaQuestionsList({ component, data, subSection, isExport = false, ex
   const config = component.config || {};
 
   // Get filter state from filterPills if available, or use export state
-  let filterState = data?._filterPillsState;
-  
-  // In export mode, create filter state with wordCloud control
+  // Read directly from data._filterPillsState to get the latest values
+  let filterState = null;
   if (isExport) {
+    // In export mode, create filter state with wordCloud control
     filterState = {
       questionFilter: questionId ? null : "all", // If specific question, don't filter by type
       setQuestionFilter: () => {},
       showWordCloud: exportWordCloud,
       setShowWordCloud: () => {},
     };
+  } else {
+    // Use filter state from filterPills, reading the current values directly
+    // IMPORTANT: Always read from data._filterPillsState directly to get latest values
+    const pillsState = data?._filterPillsState;
+    if (pillsState) {
+      // Read current values directly from _filterPillsState (not from pillsState variable)
+      // This ensures we get the latest values even if the object was mutated
+      filterState = {
+        questionFilter: data._filterPillsState.questionFilter || "all", // Default to "all" if null
+        setQuestionFilter: data._filterPillsState.setQuestionFilter,
+        showWordCloud: data._filterPillsState.showWordCloud ?? true, // Default to true if undefined
+        setShowWordCloud: data._filterPillsState.setShowWordCloud,
+      };
+    } else {
+      // If filterPills hasn't been rendered yet, create a default state
+      // This ensures filters work even if filterPills component isn't in the schema
+      // Create handler functions first
+      const handleQuestionFilterChange = (value) => {
+        // Initialize _filterPillsState if it doesn't exist
+        if (data && typeof data === "object" && !Array.isArray(data)) {
+          if (!data._filterPillsState) {
+            data._filterPillsState = {
+              questionFilter: value,
+              setQuestionFilter: handleQuestionFilterChange,
+              showWordCloud: true,
+              setShowWordCloud: handleShowWordCloudChange,
+            };
+          } else {
+            data._filterPillsState.questionFilter = value;
+            if (data._filterPillsState.setQuestionFilter) {
+              data._filterPillsState.setQuestionFilter(value);
+            }
+          }
+        }
+      };
+
+      const handleShowWordCloudChange = (value) => {
+        // Initialize _filterPillsState if it doesn't exist
+        if (data && typeof data === "object" && !Array.isArray(data)) {
+          if (!data._filterPillsState) {
+            data._filterPillsState = {
+              questionFilter: "all",
+              setQuestionFilter: handleQuestionFilterChange,
+              showWordCloud: value,
+              setShowWordCloud: handleShowWordCloudChange,
+            };
+          } else {
+            data._filterPillsState.showWordCloud = value;
+            if (data._filterPillsState.setShowWordCloud) {
+              data._filterPillsState.setShowWordCloud(value);
+            }
+          }
+        }
+      };
+
+      filterState = {
+        questionFilter: "all",
+        setQuestionFilter: handleQuestionFilterChange,
+        showWordCloud: true,
+        setShowWordCloud: handleShowWordCloudChange,
+      };
+    }
   }
 
   return (
@@ -1226,7 +1165,13 @@ function checkCondition(condition, data) {
 /**
  * Render a component based on its type
  */
-function SchemaComponent({ component, data, subSection, isExport = false, exportWordCloud = true }) {
+function SchemaComponent({
+  component,
+  data,
+  subSection,
+  isExport = false,
+  exportWordCloud = true,
+}) {
   // Check condition first
   if (component.condition && !checkCondition(component.condition, data)) {
     return null;
@@ -1507,7 +1452,14 @@ function SchemaComponent({ component, data, subSection, isExport = false, export
           const childType = comp.type || "unknown";
           const uniqueKey = `nested-${parentKey}-${childKey}-${childType}-${idx}`;
           return (
-            <SchemaComponent key={uniqueKey} component={comp} data={data} />
+            <SchemaComponent
+              key={uniqueKey}
+              component={comp}
+              data={data}
+              subSection={subSection}
+              isExport={isExport}
+              exportWordCloud={exportWordCloud}
+            />
           );
         });
 
@@ -1631,6 +1583,32 @@ function SchemaComponent({ component, data, subSection, isExport = false, export
       return <SchemaWordCloud component={component} data={data} />;
     case "accordion":
       return <SchemaAccordion component={component} data={data} />;
+    case "kpiCard":
+      return <SchemaKPICard component={component} data={data} />;
+    case "lineChart":
+      return <SchemaLineChart component={component} data={data} />;
+    case "paretoChart":
+      return <SchemaParetoChart component={component} data={data} />;
+    case "analyticalTable":
+      return <SchemaAnalyticalTable component={component} data={data} />;
+    case "slopeGraph":
+      return <SchemaSlopeGraph component={component} data={data} />;
+    case "waterfallChart":
+      return <SchemaWaterfallChart component={component} data={data} />;
+    case "scatterPlot":
+      return <SchemaScatterPlot component={component} data={data} />;
+    case "histogram":
+      return <SchemaHistogram component={component} data={data} />;
+    case "quadrantChart":
+      return <SchemaQuadrantChart component={component} data={data} />;
+    case "heatmap":
+      return <SchemaHeatmap component={component} data={data} />;
+    case "sankeyDiagram":
+      return <SchemaSankeyDiagram component={component} data={data} />;
+    case "stackedBarMECE":
+      return <SchemaStackedBarMECE component={component} data={data} />;
+    case "evolutionaryScorecard":
+      return <SchemaEvolutionaryScorecard component={component} data={data} />;
     default:
       // If no type but has wrapper, it's a wrapper component
       if (component.wrapper) {
@@ -1651,9 +1629,14 @@ function SchemaComponent({ component, data, subSection, isExport = false, export
  * @param {boolean} isExport - If true, hides filter pills and shows only selected question
  * @param {boolean} exportWordCloud - Controls word cloud visibility in export mode
  */
-export function GenericSectionRenderer({ sectionId, subSection, isExport = false, exportWordCloud = true }) {
+export function GenericSectionRenderer({
+  sectionId,
+  subSection,
+  isExport = false,
+  exportWordCloud = true,
+}) {
   const { data } = useSurveyData();
-  
+
   // Debug log
   if (isExport && sectionId === "responses") {
     console.log("🔍 DEBUG GenericSectionRenderer - Rendering:", {
@@ -1710,7 +1693,19 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
   }, [sectionData, sectionConfig]);
 
   // Check if section has subsections
+  // Special case: responses section always has dynamic subsections (questions), even if hasSubsections is false
   const hasSubsections = useMemo(() => {
+    // Special handling for responses - always has dynamic subsections (questions)
+    if (sectionId === "responses") {
+      const questions = getQuestionsFromData(data);
+      const hiddenIds = sectionConfig?.data?.config?.questions?.hiddenIds || [];
+      const hasQuestions =
+        questions.filter((q) => !hiddenIds.includes(q.id)).length > 0;
+      if (hasQuestions) {
+        return true; // Always return true for responses if there are questions
+      }
+    }
+
     // Priority 1: Check sectionConfig first (fixed subsections)
     if (
       sectionConfig?.subsections &&
@@ -1733,15 +1728,11 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
       Array.isArray(renderSchema.subsections) &&
       renderSchema.subsections.length > 0
     );
-  }, [sectionConfig, renderSchema]);
+  }, [sectionConfig, renderSchema, sectionId, data]);
 
   // Get subsections sorted by index
   // Priority: sectionConfig.subsections (fixed) > dynamic generation > renderSchema.subsections
   const subsections = useMemo(() => {
-    if (!hasSubsections) {
-      return [];
-    }
-
     // Priority 1: Use fixed subsections from sectionConfig if available
     if (
       sectionConfig?.subsections &&
@@ -1790,7 +1781,7 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
                   schemaSub.componentsContainerClassName,
               }),
             };
-            
+
             // CRITICAL: Ensure components are always available
             // Priority: renderSchema.components > fixedSub.components
             if (!mergedSub.components) {
@@ -1800,7 +1791,7 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
                 mergedSub.components = fixedSub.components;
               }
             }
-            
+
             return mergedSub;
           });
       }
@@ -1832,7 +1823,30 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
         });
     }
 
-    // Priority 2: Dynamic generation for attributes (if no fixed subsections)
+    // Priority 2: Dynamic generation for responses (always works, even if hasSubsections is false)
+    // This matches the behavior in SurveySidebar.getDynamicSubsections
+    if (sectionId === "responses") {
+      const questions = getQuestionsFromData(data);
+      const hiddenIds = sectionConfig?.data?.config?.questions?.hiddenIds || [];
+      const filtered = questions
+        .filter((q) => !hiddenIds.includes(q.id))
+        .sort((a, b) => (a.index || 0) - (b.index || 0));
+
+      // Use components from renderSchema if available
+      const baseComponents = renderSchema?.components || [];
+
+      return filtered.map((question) => ({
+        id: `responses-${question.id}`,
+        name: question.question,
+        icon: question.icon,
+        index: question.index ?? 999,
+        question: question, // Keep full question object for special rendering
+        // Use components from renderSchema for each question subsection
+        components: baseComponents.length > 0 ? baseComponents : undefined,
+      }));
+    }
+
+    // Priority 3: Dynamic generation for attributes (if no fixed subsections)
     if (sectionId === "attributes") {
       const attributes =
         sectionData?.attributes || resolveDataPath(sectionData, "attributes");
@@ -1858,8 +1872,12 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
       }
     }
 
-    // Priority 3: Use renderSchema subsections (fallback)
-    if (renderSchema?.subsections && Array.isArray(renderSchema.subsections)) {
+    // Priority 4: Use renderSchema subsections (fallback) - only if hasSubsections is true
+    if (
+      hasSubsections &&
+      renderSchema?.subsections &&
+      Array.isArray(renderSchema.subsections)
+    ) {
       return [...renderSchema.subsections].sort((a, b) => {
         const indexA = a.index !== undefined ? a.index : 999;
         const indexB = b.index !== undefined ? b.index : 999;
@@ -1868,7 +1886,14 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
     }
 
     return [];
-  }, [renderSchema, sectionId, data, hasSubsections, sectionConfig]);
+  }, [
+    renderSchema,
+    sectionId,
+    data,
+    hasSubsections,
+    sectionConfig,
+    sectionData,
+  ]);
 
   // Find the active subsection
   const activeSubsection = useMemo(() => {
@@ -1877,26 +1902,23 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
       return subsections[0] || null;
     }
 
-    // For responses section, if subSection is like "responses-1", find the base "responses" subsection
-    if (sectionId === "responses" && subSection.startsWith("responses-")) {
-      const baseSubsection = subsections.find((sub) => sub.id === "responses");
-      if (baseSubsection) return baseSubsection;
-    }
-
-    // Try exact match first
+    // Try exact match first (this will work for dynamic subsections like "responses-1")
     let found = subsections.find((sub) => sub.id === subSection);
-    
+
     if (!found) {
       // Debug: log what we're looking for
-      console.warn("GenericSectionRenderer: Subsection not found in subsections array", {
-        sectionId,
-        subSection,
-        subsectionsCount: subsections.length,
-        subsectionsIds: subsections.map((s) => s.id),
-        lookingFor: subSection,
-      });
+      console.warn(
+        "GenericSectionRenderer: Subsection not found in subsections array",
+        {
+          sectionId,
+          subSection,
+          subsectionsCount: subsections.length,
+          subsectionsIds: subsections.map((s) => s.id),
+          lookingFor: subSection,
+        }
+      );
     }
-    
+
     return found || null;
   }, [subsections, subSection, sectionId]);
 
@@ -1938,7 +1960,54 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
   // For attributes section, resolve current attribute and add to data context
   // Also merge section-specific uiTexts into data context
   const enhancedData = useMemo(() => {
+    if (!data) {
+      console.error("GenericSectionRenderer: data is null/undefined");
+      return { uiTexts: {} };
+    }
+
+    // Debug: verify data.uiTexts has attributeDeepDive BEFORE any processing
+    if (
+      sectionId === "attributes" &&
+      data?.uiTexts &&
+      !data.uiTexts.attributeDeepDive
+    ) {
+      console.error(
+        "GenericSectionRenderer: data.uiTexts missing attributeDeepDive BEFORE processing!",
+        {
+          sectionId,
+          hasDataUiTexts: !!data.uiTexts,
+          dataUiTextsKeys: Object.keys(data.uiTexts),
+        }
+      );
+    }
+
+    // CRITICAL: Always preserve uiTexts from data
+    // Start with data spread, but ensure uiTexts is explicitly preserved
     let enhanced = { ...data };
+
+    // If data has uiTexts, use it; otherwise create empty object
+    // This ensures uiTexts is always an object (never undefined)
+    if (!enhanced.uiTexts) {
+      enhanced.uiTexts = data?.uiTexts || {};
+    }
+
+    // Debug: verify enhanced.uiTexts after initial setup
+    if (
+      sectionId === "attributes" &&
+      enhanced.uiTexts &&
+      !enhanced.uiTexts.attributeDeepDive
+    ) {
+      console.warn(
+        "GenericSectionRenderer: enhanced.uiTexts missing attributeDeepDive after initial setup!",
+        {
+          sectionId,
+          hasEnhancedUiTexts: !!enhanced.uiTexts,
+          enhancedUiTextsKeys: Object.keys(enhanced.uiTexts),
+          hasDataUiTexts: !!data?.uiTexts,
+          dataUiTextsKeys: data?.uiTexts ? Object.keys(data.uiTexts) : [],
+        }
+      );
+    }
 
     // Add sectionData to context for relative paths (sectionData.*)
     if (sectionData) {
@@ -1946,19 +2015,79 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
     }
 
     // Add section-specific uiTexts to data context
-    // Priority: sectionConfig.data.uiTexts (new structure) > root uiTexts
+    // CRITICAL FIX: Always use data.uiTexts directly as the base (not enhanced.uiTexts)
+    // This ensures ALL root properties like attributeDeepDive are preserved
+    const rootUiTexts = data?.uiTexts || {};
+
+    // Debug: verify rootUiTexts has attributeDeepDive
+    if (sectionId === "attributes" && !rootUiTexts.attributeDeepDive) {
+      console.error(
+        "GenericSectionRenderer: rootUiTexts missing attributeDeepDive!",
+        {
+          sectionId,
+          hasRootUiTexts: !!rootUiTexts,
+          rootUiTextsKeys: Object.keys(rootUiTexts),
+          hasDataUiTexts: !!data?.uiTexts,
+          dataUiTextsKeys: data?.uiTexts ? Object.keys(data.uiTexts) : [],
+        }
+      );
+    }
+
+    // ALWAYS start with a complete copy of rootUiTexts to preserve ALL properties
+    // This is the key fix - we must use data.uiTexts directly, not enhanced.uiTexts
+    enhanced.uiTexts = rootUiTexts ? { ...rootUiTexts } : {};
+
+    // If there are section-specific uiTexts, merge them on top
+    // But NEVER lose root properties like attributeDeepDive
     if (sectionConfig?.data?.uiTexts) {
       const sectionUiTexts = sectionConfig.data.uiTexts;
 
-      // Merge section uiTexts with root uiTexts
-      // Section uiTexts take precedence
-      enhanced = {
-        ...enhanced,
-        uiTexts: {
-          ...(data?.uiTexts || {}), // Root uiTexts (global ones)
-          ...sectionUiTexts, // Section-specific uiTexts (direct access)
-        },
-      };
+      // Merge section-specific uiTexts (deep merge for nested objects)
+      // This only ADDS or OVERRIDES, never removes root properties
+      Object.keys(sectionUiTexts).forEach((key) => {
+        if (
+          typeof sectionUiTexts[key] === "object" &&
+          !Array.isArray(sectionUiTexts[key]) &&
+          rootUiTexts[key] &&
+          typeof rootUiTexts[key] === "object"
+        ) {
+          // If both are objects, merge them deeply (section takes precedence for overlapping keys)
+          // But preserve all root properties
+          enhanced.uiTexts[key] = {
+            ...rootUiTexts[key],
+            ...sectionUiTexts[key],
+          };
+        } else {
+          // Section uiTexts override root for this key, but other root keys remain
+          enhanced.uiTexts[key] = sectionUiTexts[key];
+        }
+      });
+    }
+
+    // FINAL SAFETY CHECK: Ensure ALL root uiTexts properties are present
+    // This is critical - if any root property was lost, restore it
+    if (data?.uiTexts) {
+      Object.keys(data.uiTexts).forEach((key) => {
+        // Only add if it's missing (don't override section-specific overrides)
+        if (!(key in enhanced.uiTexts)) {
+          enhanced.uiTexts[key] = data.uiTexts[key];
+        } else if (
+          typeof data.uiTexts[key] === "object" &&
+          !Array.isArray(data.uiTexts[key])
+        ) {
+          // For objects, ensure all nested properties from root are present
+          if (
+            typeof enhanced.uiTexts[key] === "object" &&
+            !Array.isArray(enhanced.uiTexts[key])
+          ) {
+            Object.keys(data.uiTexts[key]).forEach((nestedKey) => {
+              if (!(nestedKey in enhanced.uiTexts[key])) {
+                enhanced.uiTexts[key][nestedKey] = data.uiTexts[key][nestedKey];
+              }
+            });
+          }
+        }
+      });
     }
 
     if (sectionId === "attributes" && subSection) {
@@ -1978,7 +2107,8 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
         if (currentAttribute) {
           // Add currentAttribute to data context for easier access in schema
           // Also add dynamic yAxisWidth based on attributeId
-          return {
+          // IMPORTANT: Preserve uiTexts from enhanced
+          enhanced = {
             ...enhanced,
             currentAttribute,
             // Also add index for array access
@@ -1998,8 +2128,40 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
       enhanced._exportWordCloud = exportWordCloud;
     }
 
+    // Debug: verify uiTexts is present in final enhancedData
+    if (!enhanced.uiTexts) {
+      console.error("GenericSectionRenderer: enhancedData missing uiTexts!", {
+        sectionId,
+        subSection,
+        hasData: !!data,
+        hasDataUiTexts: !!data?.uiTexts,
+        dataKeys: data ? Object.keys(data) : [],
+        enhancedKeys: Object.keys(enhanced),
+      });
+    } else if (
+      sectionId === "attributes" &&
+      !enhanced.uiTexts.attributeDeepDive
+    ) {
+      console.warn(
+        "GenericSectionRenderer: enhancedData.uiTexts missing attributeDeepDive",
+        {
+          sectionId,
+          subSection,
+          uiTextsKeys: Object.keys(enhanced.uiTexts),
+        }
+      );
+    }
+
     return enhanced;
-  }, [data, sectionId, subSection, sectionConfig, sectionData, isExport, exportWordCloud]);
+  }, [
+    data,
+    sectionId,
+    subSection,
+    sectionConfig,
+    sectionData,
+    isExport,
+    exportWordCloud,
+  ]);
 
   // Check for errors AFTER all hooks are called
   if (!renderSchema) {
@@ -2014,9 +2176,10 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
   // Special handling for responses section with dynamic question subsections
   // Even though hasSubsections is false, we may receive subSection like "responses-1"
   // In this case, we should use the components directly and pass questionId to questionsList
-  const isResponsesWithQuestionId = sectionId === "responses" && 
-    subSection && 
-    subSection.startsWith("responses-") && 
+  const isResponsesWithQuestionId =
+    sectionId === "responses" &&
+    subSection &&
+    subSection.startsWith("responses-") &&
     !hasSubsections;
 
   // If has subsections, require activeSubsection (unless it's responses with questionId)
@@ -2035,7 +2198,8 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
       <div className="space-y-8 animate-fade-in">
         <p>Subseção não encontrada: {subSection || "nenhuma especificada"}</p>
         <p className="text-sm text-muted-foreground">
-          Subseções disponíveis: {subsections.map((s) => s.id).join(", ") || "nenhuma"}
+          Subseções disponíveis:{" "}
+          {subsections.map((s) => s.id).join(", ") || "nenhuma"}
         </p>
       </div>
     );
@@ -2063,7 +2227,7 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
             comp.components.length === 2 &&
             comp.components.every((c) => c.type === "card")
         );
-        
+
         if (hasTwoCardWrapper) {
           // Use space-y-6 for the main container, but the wrapper will handle the grid layout
           containerClassName = "space-y-6";
@@ -2107,7 +2271,8 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
       <section>
         <div className="space-y-6">
           {/* Subsection Title - show if has subsections OR if responses with questionId */}
-          {(hasSubsections && activeSubsection) || (isResponsesWithQuestionId && questionTitle) ? (
+          {(hasSubsections && activeSubsection) ||
+          (isResponsesWithQuestionId && questionTitle) ? (
             <SubsectionTitle
               title={
                 (hasSubsections && activeSubsection?.name) ||
@@ -2126,7 +2291,7 @@ export function GenericSectionRenderer({ sectionId, subSection, isExport = false
                 if (isExport && component.type === "filterPills") {
                   return null;
                 }
-                
+
                 return (
                   <SchemaComponent
                     key={`component-${

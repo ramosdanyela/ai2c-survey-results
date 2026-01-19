@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import {
   Award,
   CheckSquare,
@@ -23,7 +23,8 @@ import {
   SentimentStackedChart,
   SimpleBarChart,
   NPSStackedChart,
-} from "../widgets/Charts";
+} from "../widgets/charts/Charts";
+import { WordCloud } from "../widgets/WordCloud";
 import {
   Accordion,
   AccordionContent,
@@ -62,14 +63,153 @@ export function QuestionsList({
   const [internalQuestionFilter, setInternalQuestionFilter] = useState("all");
   const [internalShowWordCloud, setInternalShowWordCloud] = useState(true);
 
-  const questionFilter =
-    externalFilterState?.questionFilter ?? internalQuestionFilter;
-  const setQuestionFilter =
-    externalFilterState?.setQuestionFilter ?? setInternalQuestionFilter;
+  // Always use internal state as the source of truth
+  // But if externalFilterState exists, also check _filterPillsState for real-time updates
+  // This ensures the component re-renders when state changes
+  const normalizedQuestionFilter = internalQuestionFilter || "all";
+
+  // For showWordCloud, always read from _filterPillsState if available (real-time updates)
+  // Otherwise use internal state
+  // CRITICAL: When externalFilterState exists, always read directly from _filterPillsState
+  // to get the latest value, even if it was mutated
   const showWordCloud =
-    externalFilterState?.showWordCloud ?? internalShowWordCloud;
-  const setShowWordCloud =
-    externalFilterState?.setShowWordCloud ?? setInternalShowWordCloud;
+    externalFilterState && data?._filterPillsState?.showWordCloud !== undefined
+      ? data._filterPillsState.showWordCloud
+      : internalShowWordCloud;
+
+  // Force re-render when _filterPillsState changes by polling (since mutations don't trigger re-renders)
+  const [syncCounter, setSyncCounter] = useState(0);
+  useEffect(() => {
+    if (externalFilterState && data?._filterPillsState) {
+      const interval = setInterval(() => {
+        const currentWordCloud = data._filterPillsState?.showWordCloud;
+        const currentFilter = data._filterPillsState?.questionFilter;
+
+        // Update internal state if _filterPillsState changed
+        if (
+          currentWordCloud !== undefined &&
+          currentWordCloud !== internalShowWordCloud
+        ) {
+          setInternalShowWordCloud(currentWordCloud);
+          setSyncCounter((prev) => prev + 1);
+        }
+        if (
+          currentFilter !== undefined &&
+          currentFilter !== internalQuestionFilter
+        ) {
+          setInternalQuestionFilter(currentFilter || "all");
+          setSyncCounter((prev) => prev + 1);
+        }
+      }, 50); // Check every 50ms for responsiveness
+
+      return () => clearInterval(interval);
+    }
+  }, [
+    externalFilterState,
+    data?._filterPillsState,
+    internalShowWordCloud,
+    internalQuestionFilter,
+    syncCounter,
+  ]);
+
+  // Sync internal state with external state on mount and when external state changes
+  useEffect(() => {
+    if (externalFilterState) {
+      const externalFilter = externalFilterState.questionFilter;
+      const externalWordCloud = externalFilterState.showWordCloud;
+
+      if (
+        externalFilter !== undefined &&
+        externalFilter !== internalQuestionFilter
+      ) {
+        setInternalQuestionFilter(externalFilter || "all");
+      }
+      if (
+        externalWordCloud !== undefined &&
+        externalWordCloud !== internalShowWordCloud
+      ) {
+        setInternalShowWordCloud(externalWordCloud);
+      }
+    }
+  }, [externalFilterState?.questionFilter, externalFilterState?.showWordCloud]);
+
+  // Also sync with _filterPillsState directly for real-time updates (when externalFilterState exists)
+  useEffect(() => {
+    if (externalFilterState && data?._filterPillsState) {
+      const pillsFilter = data._filterPillsState.questionFilter;
+      const pillsWordCloud = data._filterPillsState.showWordCloud;
+
+      if (pillsFilter !== undefined && pillsFilter !== internalQuestionFilter) {
+        console.log(
+          "🔍 QuestionsList: Syncing filter from _filterPillsState",
+          pillsFilter
+        );
+        setInternalQuestionFilter(pillsFilter || "all");
+      }
+      if (
+        pillsWordCloud !== undefined &&
+        pillsWordCloud !== internalShowWordCloud
+      ) {
+        console.log(
+          "🔍 QuestionsList: Syncing wordCloud from _filterPillsState",
+          pillsWordCloud
+        );
+        setInternalShowWordCloud(pillsWordCloud);
+      }
+    }
+  }, [
+    data?._filterPillsState?.questionFilter,
+    data?._filterPillsState?.showWordCloud,
+    externalFilterState,
+    internalQuestionFilter,
+    internalShowWordCloud,
+  ]);
+
+  // Simple handlers that ALWAYS update internal state (causes re-render)
+  // These handlers are defined as regular functions (not useCallback) to ensure they're always fresh
+  const setQuestionFilter = (value) => {
+    const filterValue = value || "all";
+
+    // CRITICAL: Always update internal state FIRST (this causes re-render)
+    setInternalQuestionFilter(filterValue);
+
+    // Then update external state if available
+    if (externalFilterState?.setQuestionFilter) {
+      try {
+        externalFilterState.setQuestionFilter(filterValue);
+      } catch (e) {
+        console.warn("Error updating external filter state:", e);
+      }
+    }
+
+    // Also update data._filterPillsState directly for real-time sync
+    if (data && typeof data === "object" && !Array.isArray(data)) {
+      if (data._filterPillsState) {
+        data._filterPillsState.questionFilter = filterValue;
+      }
+    }
+  };
+
+  const setShowWordCloud = (value) => {
+    // CRITICAL: Always update internal state FIRST (this causes re-render)
+    setInternalShowWordCloud(value);
+
+    // Then update external state if available
+    if (externalFilterState?.setShowWordCloud) {
+      try {
+        externalFilterState.setShowWordCloud(value);
+      } catch (e) {
+        console.warn("Error updating external wordCloud state:", e);
+      }
+    }
+
+    // Also update data._filterPillsState directly for real-time sync
+    if (data && typeof data === "object" && !Array.isArray(data)) {
+      if (data._filterPillsState) {
+        data._filterPillsState.showWordCloud = value;
+      }
+    }
+  };
 
   const [selectedQuestionId, setSelectedQuestionId] = useState(null);
   const [openAccordionValue, setOpenAccordionValue] = useState(undefined);
@@ -179,29 +319,34 @@ export function QuestionsList({
 
     // If questionId is provided and we're in export mode, show only that question
     if (initialQuestionId && data?._exportMode) {
-      const singleQuestion = allQuestions.find((q) => q.id === initialQuestionId);
+      const singleQuestion = allQuestions.find(
+        (q) => q.id === initialQuestionId
+      );
       const result = singleQuestion ? [singleQuestion] : [];
       console.log("🔍 DEBUG QuestionsList - Export mode filter:", {
         initialQuestionId,
         _exportMode: data?._exportMode,
         allQuestionsCount: allQuestions.length,
         resultCount: result.length,
-        result: result.map((q) => ({ id: q.id, question: q.question?.substring(0, 50) })),
+        result: result.map((q) => ({
+          id: q.id,
+          question: q.question?.substring(0, 50),
+        })),
       });
       return result;
     }
 
-    // Apply filter based on questionFilter
+    // Apply filter based on normalizedQuestionFilter
     let filtered;
-    if (questionFilter === "all") {
+    if (normalizedQuestionFilter === "all") {
       filtered = allQuestions;
-    } else if (questionFilter === "open") {
+    } else if (normalizedQuestionFilter === "open") {
       filtered = allQuestions.filter((q) => q.type === "open");
-    } else if (questionFilter === "closed") {
+    } else if (normalizedQuestionFilter === "closed") {
       filtered = allQuestions.filter(
         (q) => q.type === "closed" && !isNPSQuestion(q)
       );
-    } else if (questionFilter === "nps") {
+    } else if (normalizedQuestionFilter === "nps") {
       filtered = allQuestions.filter(
         (q) => isNPSQuestion(q) || q.type === "nps"
       );
@@ -210,7 +355,7 @@ export function QuestionsList({
     }
 
     return filtered;
-  }, [questionFilter, responseDetails, initialQuestionId, data]);
+  }, [normalizedQuestionFilter, responseDetails, initialQuestionId, data]);
 
   // Effect to scroll to specific question when questionId is provided - MUST be before early returns
   useEffect(() => {
@@ -621,48 +766,68 @@ export function QuestionsList({
       {!hideFilterPills && (
         <div className="flex flex-wrap gap-2 items-center mb-6">
           <Badge
-            variant={questionFilter === "all" ? "default" : "outline"}
+            variant={normalizedQuestionFilter === "all" ? "default" : "outline"}
             className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full ${
-              questionFilter === "all"
+              normalizedQuestionFilter === "all"
                 ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
                 : ""
             }`}
-            onClick={() => setQuestionFilter("all")}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setQuestionFilter("all");
+            }}
           >
             {safeUiTexts.responseDetails.all || "Todas"}
           </Badge>
           <Badge
-            variant={questionFilter === "open" ? "default" : "outline"}
+            variant={
+              normalizedQuestionFilter === "open" ? "default" : "outline"
+            }
             className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
-              questionFilter === "open"
+              normalizedQuestionFilter === "open"
                 ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
                 : ""
             }`}
-            onClick={() => setQuestionFilter("open")}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setQuestionFilter("open");
+            }}
           >
             <FileText className="w-3 h-3" />
             {safeUiTexts.responseDetails.openField || "Campo Aberto"}
           </Badge>
           <Badge
-            variant={questionFilter === "closed" ? "default" : "outline"}
+            variant={
+              normalizedQuestionFilter === "closed" ? "default" : "outline"
+            }
             className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
-              questionFilter === "closed"
+              normalizedQuestionFilter === "closed"
                 ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
                 : ""
             }`}
-            onClick={() => setQuestionFilter("closed")}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setQuestionFilter("closed");
+            }}
           >
             <CheckSquare className="w-3 h-3" />
             {safeUiTexts.responseDetails.multipleChoice || "Múltipla Escolha"}
           </Badge>
           <Badge
-            variant={questionFilter === "nps" ? "default" : "outline"}
+            variant={normalizedQuestionFilter === "nps" ? "default" : "outline"}
             className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
-              questionFilter === "nps"
+              normalizedQuestionFilter === "nps"
                 ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
                 : ""
             }`}
-            onClick={() => setQuestionFilter("nps")}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setQuestionFilter("nps");
+            }}
           >
             <TrendingUp className="w-3 h-3" />
             {safeUiTexts.responseDetails.nps || "NPS"}
@@ -709,7 +874,7 @@ export function QuestionsList({
                     {responseDetails?.questions?.length || 0}
                   </p>
                   <p className="text-xs mt-1">
-                    {activeFilter} {questionFilter}
+                    {activeFilter} {normalizedQuestionFilter}
                   </p>
                   <p className="text-xs mt-1">
                     {questionsInResponseDetails}{" "}
@@ -1231,14 +1396,33 @@ export function QuestionsList({
                                   {safeUiTexts.responseDetails.wordCloud ||
                                     "Nuvem de Palavras"}
                                 </h4>
-                                <div className="flex justify-center items-center p-6 bg-muted/30 rounded-lg min-h-[200px]">
-                                  <img
-                                    src="/nuvem.png"
-                                    alt="Word Cloud"
-                                    className="max-w-full h-auto"
-                                    style={{ maxHeight: "500px" }}
+                                {Array.isArray(question.wordCloud) &&
+                                question.wordCloud.length > 0 ? (
+                                  <WordCloud
+                                    words={question.wordCloud}
+                                    maxWords={15}
+                                    config={{
+                                      colorScheme: "image-style", // Estilo clássico como na imagem
+                                      minFontSize: 14,
+                                      maxFontSize: 56,
+                                      enableRotation: false, // Todas as palavras na horizontal
+                                      enableShadows: false, // Cores sólidas como na imagem
+                                      fontWeight: "medium",
+                                      minOpacity: 0.8,
+                                      maxOpacity: 1.0,
+                                      spacing: 8, // Grid size para detecção de colisão
+                                    }}
                                   />
-                                </div>
+                                ) : (
+                                  <div className="flex justify-center items-center p-6 bg-muted/30 rounded-lg min-h-[200px]">
+                                    <img
+                                      src="/nuvem.png"
+                                      alt="Word Cloud"
+                                      className="max-w-full h-auto"
+                                      style={{ maxHeight: "500px" }}
+                                    />
+                                  </div>
+                                )}
                               </div>
                             )}
                           </>

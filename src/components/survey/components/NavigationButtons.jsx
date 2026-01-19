@@ -16,7 +16,7 @@ function getAllQuestions(data) {
   const responsesSection = data?.sectionsConfig?.sections?.find(
     (s) => s.id === "responses"
   );
-  
+
   if (!responsesSection?.data?.questions) return [];
 
   const questions = responsesSection.data.questions;
@@ -39,7 +39,7 @@ function getDisplayNumber(questionId, data) {
   const responsesSection = data?.sectionsConfig?.sections?.find(
     (s) => s.id === "responses"
   );
-  
+
   if (!responsesSection?.data?.questions) return questionId;
 
   const allQuestions = responsesSection.data.questions
@@ -57,7 +57,7 @@ function getAllAttributes(data) {
   const attributesSection = data?.sectionsConfig?.sections?.find(
     (s) => s.id === "attributes"
   );
-  
+
   if (!attributesSection?.data?.attributes) return [];
 
   return attributesSection.data.attributes
@@ -154,7 +154,9 @@ function getSectionTitleFromData(sectionId, data) {
 
   // Priority 1: Try to get from sectionsConfig.sections (most reliable)
   if (data?.sectionsConfig?.sections) {
-    const section = data.sectionsConfig.sections.find((s) => s.id === baseSectionId);
+    const section = data.sectionsConfig.sections.find(
+      (s) => s.id === baseSectionId
+    );
     if (section?.name) {
       return section.name;
     }
@@ -311,9 +313,7 @@ function normalizeSection(currentSection, data) {
   ) {
     const attributeId = currentSection.replace("attributes-", "");
     const attributes = getAttributesFromData(data);
-    const attribute = attributes.find(
-      (attr) => attr.id === attributeId
-    );
+    const attribute = attributes.find((attr) => attr.id === attributeId);
     if (attribute) {
       return currentSection; // Already a valid attribute subsection
     }
@@ -370,7 +370,7 @@ function normalizeSection(currentSection, data) {
  */
 function getNextSection(currentSection, data) {
   if (!data) return null;
-  
+
   const allSubsections = buildOrderedSubsections(data);
   const normalizedSection = normalizeSection(currentSection, data);
 
@@ -406,7 +406,7 @@ function getNextSection(currentSection, data) {
  */
 function getPreviousSection(currentSection, data) {
   if (!data) return null;
-  
+
   const allSubsections = buildOrderedSubsections(data);
   const normalizedSection = normalizeSection(currentSection, data);
 
@@ -446,7 +446,7 @@ function getSubsectionTitle(sectionId, data, maxLength = 40) {
 
   // Extract base section ID (e.g., "executive-summary" -> "executive")
   const baseSectionId = sectionId.split("-")[0];
-  
+
   // Find the section config
   const sectionConfig = data?.sectionsConfig?.sections?.find(
     (s) => s.id === baseSectionId
@@ -454,7 +454,9 @@ function getSubsectionTitle(sectionId, data, maxLength = 40) {
 
   // Priority 1: Try to get from sectionConfig.subsections
   if (sectionConfig?.subsections && Array.isArray(sectionConfig.subsections)) {
-    const subsection = sectionConfig.subsections.find((sub) => sub.id === sectionId);
+    const subsection = sectionConfig.subsections.find(
+      (sub) => sub.id === sectionId
+    );
     if (subsection?.name) {
       return subsection.name;
     }
@@ -549,8 +551,12 @@ function getSectionAndSubsection(sectionId, data, maxLength = 40) {
 
   // Special adjustment: for "Attribute Deep Dive", show only "Deep Dive"
   // Check if sectionTitle matches attribute analysis title
-  const attributeAnalysisTitle = uiTexts.attributeAnalysis || "Análise por Atributos";
-  if (sectionTitle === attributeAnalysisTitle || sectionTitle.includes("Atributos")) {
+  const attributeAnalysisTitle =
+    uiTexts.attributeAnalysis || "Análise por Atributos";
+  if (
+    sectionTitle === attributeAnalysisTitle ||
+    sectionTitle.includes("Atributos")
+  ) {
     sectionTitle = uiTexts.deepDive || "Aprofundamento";
   }
 

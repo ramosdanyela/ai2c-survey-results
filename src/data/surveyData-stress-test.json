@@ -1149,7 +1149,7 @@
         }
       },
       {
-        "id": "responses",
+        "id": "questions",
         "index": 3,
         "name": "Análise por Questão",
         "icon": "MessageSquare",
@@ -2052,21 +2052,6 @@
       "medium": "Médio",
       "low": "Baixo"
     },
-    "attributeDeepDive": {
-      "summary": "Sumário",
-      "distribution": "Distribuição dos respondentes",
-      "sentimentAnalysis": "Análise de sentimento",
-      "npsQuestion": "Qual é a probabilidade de você recomendar nossa empresa a um amigo ou colega em uma escala de 0 a 10?",
-      "responses": "Respostas",
-      "promotersNeutralsDetractors": "Promotores, Neutros, Detratores",
-      "nps": "NPS",
-      "satisfactionImpactQuestion": "Quais são os principais fatores que impactam sua satisfação no trabalho?",
-      "positive": "Positivo",
-      "negative": "Negativo",
-      "notApplicable": "Não aplicável",
-      "positiveCategories": "Categorias com sentimento positivo - Top 3",
-      "negativeCategories": "Categorias com sentimento negativo - Top 3"
-    },
     "filterPanel": {
       "all": "Todas",
       "openField": "Campo Aberto",
@@ -2087,10 +2072,7 @@
       "attributeAnalysis": "Análise por Atributos",
       "questionAnalysis": "Análise por Questão",
       "cultureAnalysis": "Análise de Cultura Organizacional",
-      "export": "Export",
-      "respondents": "Respondentes",
-      "responseRate": "Taxa de Adesão",
-      "questions": "Perguntas"
+      "export": "Export"
     },
     "responseDetails": {
       "summary": "Sumário:",
@@ -2112,12 +2094,7 @@
     },
     "export": {
       "title": "Export de Dados",
-      "description": "Exporte os dados da pesquisa em diferentes formatos",
-      "exportFullReport": "Exportar Relatório Completo",
-      "selectSpecificSections": "Selecionar Seções Específicas",
-      "exportAsPDF": "Exportar como PDF",
-      "exportAsPPT": "Exportar como PPT",
-      "selectAtLeastOneSection": "Selecione pelo menos uma seção"
+      "description": "Exporte os dados da pesquisa em diferentes formatos"
     },
     "common": {
       "loading": {

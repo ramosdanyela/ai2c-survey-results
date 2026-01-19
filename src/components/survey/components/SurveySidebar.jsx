@@ -129,6 +129,16 @@ function getDynamicSubsections(section, data) {
     const filtered = questions
       .filter((q) => !hiddenIds.includes(q.id))
       .sort((a, b) => (a.index || 0) - (b.index || 0));
+    
+    // Debug log
+    if (filtered.length === 0) {
+      console.warn("SurveySidebar: No questions found for responses section", {
+        totalQuestions: questions.length,
+        hiddenIds,
+        questionsIds: questions.map(q => q.id),
+      });
+    }
+    
     return filtered.map((question) => ({
       id: `responses-${question.id}`,
       name: question.question,
@@ -228,6 +238,9 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
 
   // Get surveyInfo from data (JSON) or fallback to imported
   const currentSurveyInfo = data?.surveyInfo || surveyInfo;
+  
+  // Get uiTexts from data (JSON) or fallback to imported
+  const currentUiTexts = data?.uiTexts || uiTexts;
 
   // State to control which sections are expanded - initialize dynamically
   const [expandedSections, setExpandedSections] = useState(() => {
@@ -413,7 +426,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         )}
                       </div>
                       <div className="text-[9px] sm:text-[10px] font-normal text-foreground/70 truncate">
-                        {uiTexts.surveySidebar.respondents}
+                        {currentUiTexts.surveySidebar?.respondents || "Respondentes"}
                       </div>
                     </div>
                   </div>
@@ -446,7 +459,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         {Math.round(currentSurveyInfo.responseRate)}%
                       </div>
                       <div className="text-[9px] sm:text-[10px] font-normal text-foreground/70 truncate">
-                        {uiTexts.surveySidebar.responseRate}
+                        {currentUiTexts.surveySidebar?.responseRate || "Taxa de Adesão"}
                       </div>
                     </div>
                   </div>
@@ -494,7 +507,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                           })()}
                       </div>
                       <div className="text-[9px] sm:text-[10px] font-normal text-foreground/70 truncate">
-                        {uiTexts.surveySidebar.questions}
+                        {currentUiTexts.surveySidebar?.questions || "Perguntas"}
                       </div>
                     </div>
                   </div>
@@ -522,6 +535,15 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
               const isExpanded = expandedSections[item.id];
               // Get dynamic subsections using helper function
               const dynamicSubs = getDynamicSubsections(item, data);
+              
+              // Debug log for responses section
+              if (item.id === "responses") {
+                console.log("SurveySidebar: responses section debug", {
+                  dynamicSubsLength: dynamicSubs.length,
+                  dynamicSubs: dynamicSubs.map(s => ({ id: s.id, name: s.name?.substring(0, 30) })),
+                  itemHasSubsections,
+                });
+              }
 
               // Fallback for legacy attributes section (backward compatibility)
               if (item.id === "attributes" && dynamicSubs.length === 0) {
@@ -593,9 +615,10 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
               }
 
               // Generic rendering for dynamic subsections
-              if (dynamicSubs.length > 0) {
+              // For responses, always render even if no subsections (fallback to regular section)
+              if (dynamicSubs.length > 0 || item.id === "responses") {
                 // Special rendering for responses (questions with Q prefix)
-                if (item.id === "responses") {
+                if (item.id === "responses" && dynamicSubs.length > 0) {
                   return (
                     <Collapsible
                       key={item.id}
@@ -679,6 +702,29 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         </div>
                       </CollapsibleContent>
                     </Collapsible>
+                  );
+                }
+                
+                // Fallback for responses when no questions found - render as regular section
+                if (item.id === "responses" && dynamicSubs.length === 0) {
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={(e) => handleSectionClick(item.id, e)}
+                      className={cn(
+                        "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-left w-full",
+                        isActive
+                          ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_3px_12px_hsl(var(--custom-blue),0.4)]"
+                          : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20"
+                      )}
+                    >
+                      {item.icon && (
+                        <item.icon className="w-4 h-4 flex-shrink-0" />
+                      )}
+                      <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
+                        {item.name}
+                      </span>
+                    </button>
                   );
                 }
 

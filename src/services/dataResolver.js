@@ -129,7 +129,19 @@ export function resolveDataPath(obj, path) {
  * @returns {string} Texto resolvido ou path como fallback
  */
 export function resolveText(path, data) {
-  if (!path || !data) return path;
+  if (!path || !data) {
+    console.warn("resolveText: Missing path or data", { path, hasData: !!data });
+    return path;
+  }
+
+  if (!data.uiTexts) {
+    console.warn("resolveText: uiTexts not found in data", {
+      path,
+      dataKeys: Object.keys(data),
+      hasUiTexts: !!data.uiTexts,
+    });
+    return path;
+  }
 
   // Remove prefixo "uiTexts." se presente
   const cleanPath = path.replace(/^uiTexts\./, "");
@@ -138,6 +150,15 @@ export function resolveText(path, data) {
   const value = resolveDataPath(data.uiTexts, cleanPath);
 
   // Se não encontrar, retorna o path como fallback
+  if (!value) {
+    console.warn("resolveText: Path not found in uiTexts", {
+      path,
+      cleanPath,
+      uiTextsKeys: Object.keys(data.uiTexts),
+      sampleUiTexts: data.uiTexts.attributeDeepDive ? Object.keys(data.uiTexts.attributeDeepDive) : "not found",
+    });
+  }
+  
   return value || path;
 }
 
@@ -157,6 +178,19 @@ export function resolveTemplate(template, data) {
     // Se for path de uiTexts, usa resolveText
     if (trimmedPath.startsWith("uiTexts.")) {
       const value = resolveText(trimmedPath, data);
+      
+      // Debug: log if template is not resolved
+      if (value === trimmedPath || value === match) {
+        console.warn("resolveTemplate: Template not resolved", {
+          template,
+          path: trimmedPath,
+          hasData: !!data,
+          hasUiTexts: !!data?.uiTexts,
+          uiTextsKeys: data?.uiTexts ? Object.keys(data.uiTexts) : [],
+          value,
+        });
+      }
+      
       return value !== null && value !== undefined ? String(value) : match;
     }
 

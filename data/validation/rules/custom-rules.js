@@ -26,6 +26,20 @@ const VALID_COMPONENT_TYPES = [
   "filterPills",
   "wordCloud",
   "accordion",
+  // Novos gráficos
+  "kpiCard",
+  "lineChart",
+  "paretoChart",
+  "analyticalTable",
+  "slopeGraph",
+  "waterfallChart",
+  "scatterPlot",
+  "histogram",
+  "quadrantChart",
+  "heatmap",
+  "sankeyDiagram",
+  "stackedBarMECE",
+  "evolutionaryScorecard",
 ];
 
 // Tipos de questões válidos
@@ -45,7 +59,8 @@ function resolveDataPath(obj, path, sectionId = null, sectionData = null) {
   if (path.startsWith("currentAttribute.") && sectionId === "attributes") {
     const attributePath = path.replace("currentAttribute.", "");
     // Verifica se existe algum atributo no array attributes
-    const attributes = sectionData?.attributes || resolveDataPath(sectionData, "attributes");
+    const attributes =
+      sectionData?.attributes || resolveDataPath(sectionData, "attributes");
     if (attributes && Array.isArray(attributes) && attributes.length > 0) {
       // Usa o primeiro atributo como exemplo para validar a estrutura
       const firstAttribute = attributes[0];
@@ -59,7 +74,12 @@ function resolveDataPath(obj, path, sectionId = null, sectionData = null) {
   if (path.startsWith("sectionData.")) {
     const relativePath = path.replace("sectionData.", "");
     if (obj.sectionData) {
-      return resolveDataPath(obj.sectionData, relativePath, sectionId, sectionData);
+      return resolveDataPath(
+        obj.sectionData,
+        relativePath,
+        sectionId,
+        sectionData
+      );
     }
     return null;
   }
@@ -96,17 +116,30 @@ function resolveDataPath(obj, path, sectionId = null, sectionData = null) {
 /**
  * Valida se um dataPath aponta para dados válidos
  */
-function validateDataPath(dataPath, data, context = "", sectionId = null, sectionData = null) {
+function validateDataPath(
+  dataPath,
+  data,
+  context = "",
+  sectionId = null,
+  sectionData = null
+) {
   if (!dataPath) return null;
 
   // currentAttribute é contexto dinâmico - valida estrutura, não existência
   if (dataPath.startsWith("currentAttribute.") && sectionId === "attributes") {
     const attributePath = dataPath.replace("currentAttribute.", "");
-    const attributes = sectionData?.attributes || resolveDataPath(sectionData, "attributes", sectionId, sectionData);
+    const attributes =
+      sectionData?.attributes ||
+      resolveDataPath(sectionData, "attributes", sectionId, sectionData);
     if (attributes && Array.isArray(attributes) && attributes.length > 0) {
       // Valida se pelo menos um atributo tem essa propriedade
-      const hasProperty = attributes.some(attr => {
-        const value = resolveDataPath({ currentAttribute: attr }, dataPath, sectionId, sectionData);
+      const hasProperty = attributes.some((attr) => {
+        const value = resolveDataPath(
+          { currentAttribute: attr },
+          dataPath,
+          sectionId,
+          sectionData
+        );
         return value !== null && value !== undefined;
       });
       if (!hasProperty) {
@@ -140,7 +173,13 @@ function validateDataPath(dataPath, data, context = "", sectionId = null, sectio
 /**
  * Valida templates {{path}} em strings
  */
-function validateTemplates(template, data, context = "", sectionId = null, sectionData = null) {
+function validateTemplates(
+  template,
+  data,
+  context = "",
+  sectionId = null,
+  sectionData = null
+) {
   if (!template || typeof template !== "string") return [];
 
   const errors = [];
@@ -153,20 +192,35 @@ function validateTemplates(template, data, context = "", sectionId = null, secti
     // Se for path de uiTexts, valida em uiTexts
     if (path.startsWith("uiTexts.")) {
       const cleanPath = path.replace(/^uiTexts\./, "");
-      const value = resolveDataPath(data.uiTexts, cleanPath, sectionId, sectionData);
+      const value = resolveDataPath(
+        data.uiTexts,
+        cleanPath,
+        sectionId,
+        sectionData
+      );
       if (value === null || value === undefined) {
         errors.push({
           path: context,
           message: `Template "${match[0]}" referencia uiTexts.${cleanPath} que não existe`,
         });
       }
-    } else if (path.startsWith("currentAttribute.") && sectionId === "attributes") {
+    } else if (
+      path.startsWith("currentAttribute.") &&
+      sectionId === "attributes"
+    ) {
       // currentAttribute é contexto dinâmico - valida estrutura
       const attributePath = path.replace("currentAttribute.", "");
-      const attributes = sectionData?.attributes || resolveDataPath(sectionData, "attributes", sectionId, sectionData);
+      const attributes =
+        sectionData?.attributes ||
+        resolveDataPath(sectionData, "attributes", sectionId, sectionData);
       if (attributes && Array.isArray(attributes) && attributes.length > 0) {
-        const hasProperty = attributes.some(attr => {
-          const value = resolveDataPath({ currentAttribute: attr }, path, sectionId, sectionData);
+        const hasProperty = attributes.some((attr) => {
+          const value = resolveDataPath(
+            { currentAttribute: attr },
+            path,
+            sectionId,
+            sectionData
+          );
           return value !== null && value !== undefined;
         });
         if (!hasProperty) {
@@ -199,7 +253,13 @@ function validateTemplates(template, data, context = "", sectionId = null, secti
 /**
  * Valida estrutura de dados para cada tipo de componente
  */
-function validateComponentData(component, data, context = "", sectionId = null, sectionData = null) {
+function validateComponentData(
+  component,
+  data,
+  context = "",
+  sectionId = null,
+  sectionData = null
+) {
   const errors = [];
   const { type, dataPath } = component;
 
@@ -218,7 +278,9 @@ function validateComponentData(component, data, context = "", sectionId = null, 
   if (!VALID_COMPONENT_TYPES.includes(type)) {
     errors.push({
       path: context,
-      message: `Tipo de componente inválido: "${type}". Tipos válidos: ${VALID_COMPONENT_TYPES.join(", ")}`,
+      message: `Tipo de componente inválido: "${type}". Tipos válidos: ${VALID_COMPONENT_TYPES.join(
+        ", "
+      )}`,
     });
   }
 
@@ -240,6 +302,20 @@ function validateComponentData(component, data, context = "", sectionId = null, 
     "npsStackedChart",
     "topCategoriesCards",
     "wordCloud",
+    // Novos gráficos
+    "kpiCard",
+    "lineChart",
+    "paretoChart",
+    "analyticalTable",
+    "slopeGraph",
+    "waterfallChart",
+    "scatterPlot",
+    "histogram",
+    "quadrantChart",
+    "heatmap",
+    "sankeyDiagram",
+    "stackedBarMECE",
+    "evolutionaryScorecard",
   ];
 
   if (componentsRequiringDataPath.includes(type) && !dataPath) {
@@ -251,7 +327,13 @@ function validateComponentData(component, data, context = "", sectionId = null, 
 
   // Valida dataPath existe e é array quando necessário
   if (dataPath) {
-    const dataPathError = validateDataPath(dataPath, data, context, sectionId, sectionData);
+    const dataPathError = validateDataPath(
+      dataPath,
+      data,
+      context,
+      sectionId,
+      sectionData
+    );
     if (dataPathError) {
       errors.push(dataPathError);
     } else {
@@ -272,6 +354,17 @@ function validateComponentData(component, data, context = "", sectionId = null, 
         "negativeCategoriesTable",
         "topCategoriesCards",
         "wordCloud",
+        // Novos gráficos que requerem arrays
+        "lineChart",
+        "paretoChart",
+        "analyticalTable",
+        "slopeGraph",
+        "waterfallChart",
+        "scatterPlot",
+        "histogram",
+        "quadrantChart",
+        "heatmap",
+        "stackedBarMECE",
       ];
 
       if (arrayComponents.includes(type)) {
@@ -298,11 +391,15 @@ function validateComponentData(component, data, context = "", sectionId = null, 
       if (Array.isArray(resolved)) {
         // Array deve ter opções Detrator, Promotor, Neutro
         const options = resolved.map((d) => d.option);
-        const missing = VALID_NPS_OPTIONS.filter((opt) => !options.includes(opt));
+        const missing = VALID_NPS_OPTIONS.filter(
+          (opt) => !options.includes(opt)
+        );
         if (missing.length > 0) {
           errors.push({
             path: context,
-            message: `NPSStackedChart com array requer opções: ${VALID_NPS_OPTIONS.join(", ")}. Faltando: ${missing.join(", ")}`,
+            message: `NPSStackedChart com array requer opções: ${VALID_NPS_OPTIONS.join(
+              ", "
+            )}. Faltando: ${missing.join(", ")}`,
           });
         }
       }
@@ -311,10 +408,26 @@ function validateComponentData(component, data, context = "", sectionId = null, 
 
   // Valida templates em title e content
   if (component.title) {
-    errors.push(...validateTemplates(component.title, data, `${context}.title`, sectionId, sectionData));
+    errors.push(
+      ...validateTemplates(
+        component.title,
+        data,
+        `${context}.title`,
+        sectionId,
+        sectionData
+      )
+    );
   }
   if (component.content) {
-    errors.push(...validateTemplates(component.content, data, `${context}.content`, sectionId, sectionData));
+    errors.push(
+      ...validateTemplates(
+        component.content,
+        data,
+        `${context}.content`,
+        sectionId,
+        sectionData
+      )
+    );
   }
 
   return errors;
@@ -323,7 +436,13 @@ function validateComponentData(component, data, context = "", sectionId = null, 
 /**
  * Valida componentes recursivamente
  */
-function validateComponents(components, data, context = "", sectionId = null, sectionData = null) {
+function validateComponents(
+  components,
+  data,
+  context = "",
+  sectionId = null,
+  sectionData = null
+) {
   const errors = [];
 
   if (!Array.isArray(components)) {
@@ -337,7 +456,15 @@ function validateComponents(components, data, context = "", sectionId = null, se
 
   components.forEach((component, index) => {
     const componentContext = `${context}[${index}]`;
-    errors.push(...validateComponentData(component, data, componentContext, sectionId, sectionData));
+    errors.push(
+      ...validateComponentData(
+        component,
+        data,
+        componentContext,
+        sectionId,
+        sectionData
+      )
+    );
 
     // Valida componentes aninhados
     if (component.components && Array.isArray(component.components)) {
@@ -359,7 +486,13 @@ function validateComponents(components, data, context = "", sectionId = null, se
 /**
  * Valida renderSchema
  */
-function validateRenderSchema(renderSchema, data, sectionData, context = "", sectionId = null) {
+function validateRenderSchema(
+  renderSchema,
+  data,
+  sectionData,
+  context = "",
+  sectionId = null
+) {
   const errors = [];
 
   if (!renderSchema || typeof renderSchema !== "object") {
@@ -455,7 +588,9 @@ function validateQuestions(questions, context = "") {
     } else if (!VALID_QUESTION_TYPES.includes(question.type)) {
       errors.push({
         path: questionContext,
-        message: `Tipo de questão inválido: "${question.type}". Tipos válidos: ${VALID_QUESTION_TYPES.join(", ")}`,
+        message: `Tipo de questão inválido: "${
+          question.type
+        }". Tipos válidos: ${VALID_QUESTION_TYPES.join(", ")}`,
       });
     }
 
@@ -463,11 +598,15 @@ function validateQuestions(questions, context = "") {
     if (question.type === "nps") {
       if (question.data && Array.isArray(question.data)) {
         const options = question.data.map((d) => d.option);
-        const missing = VALID_NPS_OPTIONS.filter((opt) => !options.includes(opt));
+        const missing = VALID_NPS_OPTIONS.filter(
+          (opt) => !options.includes(opt)
+        );
         if (missing.length > 0) {
           errors.push({
             path: questionContext,
-            message: `Questão NPS deve ter opções: ${VALID_NPS_OPTIONS.join(", ")}. Faltando: ${missing.join(", ")}`,
+            message: `Questão NPS deve ter opções: ${VALID_NPS_OPTIONS.join(
+              ", "
+            )}. Faltando: ${missing.join(", ")}`,
           });
         }
       }
@@ -499,7 +638,9 @@ function validateQuestions(questions, context = "") {
   if (duplicateIds.length > 0) {
     errors.push({
       path: context,
-      message: `IDs de questões duplicados: ${[...new Set(duplicateIds)].join(", ")}`,
+      message: `IDs de questões duplicados: ${[...new Set(duplicateIds)].join(
+        ", "
+      )}`,
     });
   }
 
@@ -521,7 +662,9 @@ export function validateCustomRules(data) {
     if (duplicateSectionIds.length > 0) {
       errors.push({
         path: "/sectionsConfig/sections",
-        message: `IDs de seções duplicados: ${[...new Set(duplicateSectionIds)].join(", ")}`,
+        message: `IDs de seções duplicados: ${[
+          ...new Set(duplicateSectionIds),
+        ].join(", ")}`,
       });
     }
 
@@ -536,7 +679,9 @@ export function validateCustomRules(data) {
     if (JSON.stringify(sortedIndices) !== JSON.stringify(expectedIndices)) {
       errors.push({
         path: "/sectionsConfig/sections",
-        message: `Índices de seções devem começar em 0 e ser sequenciais. Encontrado: ${sectionIndices.join(", ")}`,
+        message: `Índices de seções devem começar em 0 e ser sequenciais. Encontrado: ${sectionIndices.join(
+          ", "
+        )}`,
       });
     }
 
@@ -548,7 +693,9 @@ export function validateCustomRules(data) {
       if (section.hasSchema && !section.isRoute && !section.data) {
         errors.push({
           path: sectionContext,
-          message: `Seção "${section.name || section.id}" tem hasSchema: true mas não possui propriedade "data"`,
+          message: `Seção "${
+            section.name || section.id
+          }" tem hasSchema: true mas não possui propriedade "data"`,
         });
       }
 
@@ -556,7 +703,9 @@ export function validateCustomRules(data) {
       if (!section.isRoute && section.hasSchema === undefined) {
         errors.push({
           path: sectionContext,
-          message: `Seção "${section.name || section.id}" deve ter "hasSchema" (ou "isRoute: true" se for rota especial)`,
+          message: `Seção "${
+            section.name || section.id
+          }" deve ter "hasSchema" (ou "isRoute: true" se for rota especial)`,
         });
       }
 
@@ -583,7 +732,9 @@ export function validateCustomRules(data) {
         if (duplicateSubsectionIds.length > 0) {
           errors.push({
             path: `${sectionContext}/subsections`,
-            message: `IDs de subseções duplicados na seção "${section.name}": ${[...new Set(duplicateSubsectionIds)].join(", ")}`,
+            message: `IDs de subseções duplicados na seção "${
+              section.name
+            }": ${[...new Set(duplicateSubsectionIds)].join(", ")}`,
           });
         }
 
@@ -601,7 +752,9 @@ export function validateCustomRules(data) {
         ) {
           errors.push({
             path: `${sectionContext}/subsections`,
-            message: `Índices de subseções devem começar em 0 e ser sequenciais. Encontrado: ${subsectionIndices.join(", ")}`,
+            message: `Índices de subseções devem começar em 0 e ser sequenciais. Encontrado: ${subsectionIndices.join(
+              ", "
+            )}`,
           });
         }
       }
@@ -633,4 +786,3 @@ export function validateCustomRules(data) {
 
   return errors;
 }
-

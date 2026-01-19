@@ -39,11 +39,17 @@ export function FilterPanel({
   hideQuestionFilters = false,
   initialFilters = [],
 }) {
-  const { data, uiTexts } = useSurveyData();
+  const { data } = useSurveyData();
+  const uiTexts = data?.uiTexts;
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState(initialFilters);
   const [selectedFilterType, setSelectedFilterType] = useState(null);
   const [openFilters, setOpenFilters] = useState(new Set());
+
+  // Helper function to get filterPanel text with fallback
+  const getFilterText = (key, fallback) => {
+    return uiTexts?.filterPanel?.[key] || fallback;
+  };
 
   // Get attributes dynamically from data
   const attributes = useMemo(() => {
@@ -53,10 +59,10 @@ export function FilterPanel({
   // Build filter options dynamically from attributes
   const filterOptions = useMemo(() => {
     if (!attributes.length || !uiTexts?.filterPanel) return [];
-    
+
     return attributes.map((attr) => ({
       value: attr.id,
-      label: uiTexts.filterPanel[attr.id] || attr.name || attr.id,
+      label: uiTexts?.filterPanel?.[attr.id] || attr.name || attr.id,
     }));
   }, [attributes, uiTexts]);
 
@@ -225,7 +231,7 @@ export function FilterPanel({
                 }`}
                 onClick={() => onQuestionFilterChange("all")}
               >
-                {uiTexts.filterPanel.all}
+                {getFilterText("all", "Todas")}
               </Badge>
               <Badge
                 variant={questionFilter === "open" ? "default" : "outline"}
@@ -237,7 +243,7 @@ export function FilterPanel({
                 onClick={() => onQuestionFilterChange("open")}
               >
                 <FileText className="w-3 h-3" />
-                {uiTexts.filterPanel.openField}
+                {getFilterText("openField", "Campo Aberto")}
               </Badge>
               <Badge
                 variant={questionFilter === "closed" ? "default" : "outline"}
@@ -249,7 +255,7 @@ export function FilterPanel({
                 onClick={() => onQuestionFilterChange("closed")}
               >
                 <CheckSquare className="w-3 h-3" />
-                {uiTexts.filterPanel.multipleChoice}
+                {getFilterText("multipleChoice", "Múltipla Escolha")}
               </Badge>
               <Badge
                 variant={questionFilter === "nps" ? "default" : "outline"}
@@ -261,7 +267,7 @@ export function FilterPanel({
                 onClick={() => onQuestionFilterChange("nps")}
               >
                 <TrendingUp className="w-3 h-3" />
-                {uiTexts.filterPanel.nps}
+                {getFilterText("nps", "NPS")}
               </Badge>
             </div>
           )}
@@ -272,7 +278,7 @@ export function FilterPanel({
           questions.length > 0 && (
             <div className="mb-4">
               <Label className="text-sm text-muted-foreground mb-2 block">
-                {uiTexts.filterPanel.filterByQuestion}
+                {getFilterText("filterByQuestion", "Filtrar por questão:")}
               </Label>
               <Select
                 value={selectedQuestionId?.toString() || "all"}
@@ -286,7 +292,10 @@ export function FilterPanel({
               >
                 <SelectTrigger className="w-full border-0 focus:ring-[hsl(var(--custom-blue))] bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80 text-white">
                   <SelectValue
-                    placeholder={uiTexts.filterPanel.selectQuestion}
+                    placeholder={getFilterText(
+                      "selectQuestion",
+                      "Selecione uma questão"
+                    )}
                   />
                 </SelectTrigger>
                 <SelectContent>
@@ -294,15 +303,15 @@ export function FilterPanel({
                     value="all"
                     className="focus:bg-[hsl(var(--custom-blue))]/20 focus:text-white"
                   >
-                    {uiTexts.filterPanel.allQuestions}
+                    {getFilterText("allQuestions", "Todas as questões")}
                   </SelectItem>
                   {questions.map((q, index) => {
                     const isNPS = q.type === "nps";
                     const questionType = isNPS
-                      ? uiTexts.filterPanel.nps
+                      ? getFilterText("nps", "NPS")
                       : q.type === "open"
-                      ? uiTexts.filterPanel.openField
-                      : uiTexts.filterPanel.multipleChoice;
+                      ? getFilterText("openField", "Campo Aberto")
+                      : getFilterText("multipleChoice", "Múltipla Escolha");
                     const truncatedQuestion =
                       q.question.length > 80
                         ? q.question.substring(0, 80) + "..."
@@ -317,7 +326,7 @@ export function FilterPanel({
                         className="focus:bg-[hsl(var(--custom-blue))]/20 focus:text-white"
                       >
                         <span className="font-semibold">
-                          {uiTexts.filterPanel.questionPrefix}
+                          {getFilterText("questionPrefix", "Q")}
                           {displayNumber}:
                         </span>{" "}
                         {truncatedQuestion} ({questionType})
@@ -334,7 +343,7 @@ export function FilterPanel({
           <div className="flex items-center gap-2">
             <Filter className="w-4 h-4 text-[hsl(var(--custom-blue))]" />
             <h3 className="font-semibold text-sm">
-              {uiTexts.filterPanel.filters}
+              {getFilterText("filters", "Filtros")}
             </h3>
           </div>
 
@@ -349,7 +358,10 @@ export function FilterPanel({
                 className="w-auto border-[hsl(var(--custom-blue))] focus:ring-[hsl(var(--custom-blue))]"
               >
                 <SelectValue
-                  placeholder={uiTexts.filterPanel.selectFilterType}
+                  placeholder={getFilterText(
+                    "selectFilterType",
+                    "Selecione um tipo de filtro"
+                  )}
                 />
               </SelectTrigger>
               <SelectContent>
@@ -357,7 +369,7 @@ export function FilterPanel({
                   value="none"
                   className="focus:bg-[hsl(var(--custom-blue))]/20 focus:text-white"
                 >
-                  {uiTexts.filterPanel.none}
+                  {getFilterText("none", "Nenhum")}
                 </SelectItem>
                 {filterOptions.map((option) => (
                   <SelectItem
@@ -385,7 +397,7 @@ export function FilterPanel({
               }}
               className="text-xs text-muted-foreground hover:text-foreground hover:underline transition-colors ml-auto"
             >
-              {uiTexts.filterPanel.clearAll}
+              {getFilterText("clearAll", "Limpar todos")}
             </button>
           )}
 
@@ -425,8 +437,8 @@ export function FilterPanel({
             className="text-muted-foreground hover:text-foreground transition-colors"
             aria-label={
               isPanelOpen
-                ? uiTexts.filterPanel.closeFilters
-                : uiTexts.filterPanel.openFilters
+                ? getFilterText("closeFilters", "Fechar filtros")
+                : getFilterText("openFilters", "Abrir filtros")
             }
           >
             {isPanelOpen ? (
@@ -445,7 +457,7 @@ export function FilterPanel({
             {activeFilters.length > 0 && (
               <div className="space-y-2 pt-4 border-t">
                 <Label className="text-sm text-muted-foreground">
-                  {uiTexts.filterPanel.activeFilters}
+                  {getFilterText("activeFilters", "Filtros Ativos")}
                 </Label>
                 <div className="space-y-2">
                   {activeFilters.map((filter) => {
@@ -475,8 +487,11 @@ export function FilterPanel({
                               <Badge variant="secondary" className="text-xs">
                                 {filter.values.length}{" "}
                                 {filter.values.length !== 1
-                                  ? uiTexts.filterPanel.selectedPlural
-                                  : uiTexts.filterPanel.selected}
+                                  ? getFilterText(
+                                      "selectedPlural",
+                                      "selecionados"
+                                    )
+                                  : getFilterText("selected", "selecionado")}
                               </Badge>
                             </div>
                             <button
@@ -494,7 +509,10 @@ export function FilterPanel({
                         <CollapsibleContent className="pt-2">
                           <div className="space-y-2 pl-7">
                             <Label className="text-xs text-muted-foreground">
-                              {uiTexts.filterPanel.selectValues}
+                              {getFilterText(
+                                "selectValues",
+                                "Selecione os valores"
+                              )}
                             </Label>
                             <div className="space-y-2 max-h-48 overflow-y-auto">
                               {filterValues.map((value) => (
@@ -569,7 +587,7 @@ export function FilterPanel({
                   }}
                   className="text-xs text-muted-foreground hover:text-foreground underline"
                 >
-                  {uiTexts.filterPanel.clearAllFilters}
+                  {getFilterText("clearAllFilters", "Limpar todos os filtros")}
                 </button>
               </div>
             )}
@@ -587,7 +605,7 @@ export function FilterPanel({
                         (opt) => opt.value === selectedFilterType
                       )?.label
                     }{" "}
-                    - {uiTexts.filterPanel.selectValues}
+                    - {getFilterText("selectValues", "Selecione os valores")}
                   </Label>
                   <div className="space-y-2 max-h-48 overflow-y-auto">
                     {availableValues.map((value) => (
@@ -622,7 +640,7 @@ export function FilterPanel({
                 onClick={() => setIsPanelOpen(false)}
                 className="min-w-20 bg-[hsl(var(--custom-blue))] text-white hover:bg-[hsl(var(--custom-blue))]/80"
               >
-                {uiTexts.filterPanel.ok}
+                {getFilterText("ok", "OK")}
               </Button>
             </div>
           </div>

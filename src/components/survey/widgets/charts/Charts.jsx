@@ -79,7 +79,8 @@ export function SentimentDivergentChart({
   // Transform data: negative values become negative for divergent display
   // Only plot positive and negative, ignore neutral completely
   const transformedData = data.map((item) => {
-    const categoryValue = item.category || item.segment || "";
+    // Try to get the category value from various possible keys
+    const categoryValue = item[yAxisDataKey] || item.category || item.segment || item.value || "";
     return {
       [yAxisDataKey]: categoryValue,
       positive: item.positive,
