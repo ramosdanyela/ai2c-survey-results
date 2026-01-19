@@ -9,8 +9,8 @@ import WordCloudLib from "wordcloud";
  * @param {Array} props.words - Array of {text: string, value: number}
  * @param {number} props.maxWords - Maximum number of words to display (default: 15)
  * @param {Object} props.config - Configuration object
- * @param {number} props.config.minFontSize - Minimum font size in px (default: 14)
- * @param {number} props.config.maxFontSize - Maximum font size in px (default: 56)
+ * @param {number} props.config.minFontSize - Minimum font size in px (default: 24)
+ * @param {number} props.config.maxFontSize - Maximum font size in px (default: 120)
  * @param {number} props.config.minRotation - Minimum rotation in degrees (default: -20)
  * @param {number} props.config.maxRotation - Maximum rotation in degrees (default: 20)
  * @param {boolean} props.config.enableRotation - Enable word rotation (default: true)
@@ -56,8 +56,8 @@ const COLOR_PALETTES = {
 
 export function WordCloud({ words, maxWords = 15, config = {} }) {
   const {
-    minFontSize = 14,
-    maxFontSize = 56,
+    minFontSize = 24,
+    maxFontSize = 120,
     minRotation = -20,
     maxRotation = 20,
     enableRotation = true,
@@ -93,8 +93,8 @@ export function WordCloud({ words, maxWords = 15, config = {} }) {
     const container = containerRef.current;
     if (!container) return;
 
-    const width = container.offsetWidth || 800;
-    const height = container.offsetHeight || 400;
+    const width = container.offsetWidth || 400;
+    const height = container.offsetHeight || 200;
 
     // Set canvas size
     const canvas = canvasRef.current;
@@ -103,14 +103,27 @@ export function WordCloud({ words, maxWords = 15, config = {} }) {
     canvas.width = width;
     canvas.height = height;
 
+    // Calculate dynamic font sizes based on container dimensions
+    const containerArea = width * height;
+    const baseSize = Math.sqrt(containerArea) * 0.15; // Base size proportional to container
+    const dynamicMinFont = Math.max(minFontSize, baseSize * 0.3);
+    const dynamicMaxFont = Math.max(maxFontSize, baseSize * 1.2);
+
+    // Recalculate word sizes with dynamic font sizes
+    const dynamicWordList = sorted.map((word) => {
+      const normalizedValue = (word.value - min) / range;
+      const size = dynamicMinFont + normalizedValue * (dynamicMaxFont - dynamicMinFont);
+      return [word.text, size];
+    });
+
     // Get color palette
     const colors = COLOR_PALETTES[colorScheme] || COLOR_PALETTES["image-style"];
 
     // Configure wordcloud
     const options = {
-      list: wordList,
+      list: dynamicWordList,
       gridSize: spacing, // Lower = more precise collision detection (8 is good balance)
-      weightFactor: 1, // Size multiplier (already calculated above)
+      weightFactor: 1.5, // Size multiplier - increased to make words larger
       fontFamily: "system-ui, -apple-system, sans-serif",
       color: function (word, weight, fontSize, distance, theta) {
         // Distribute colors based on word index and value
@@ -175,8 +188,8 @@ export function WordCloud({ words, maxWords = 15, config = {} }) {
         const canvas = canvasRef.current;
         if (!container || !canvas) return;
 
-        const width = container.offsetWidth || 800;
-        const height = container.offsetHeight || 400;
+        const width = container.offsetWidth || 600;
+        const height = container.offsetHeight || 300;
 
         canvas.width = width;
         canvas.height = height;
@@ -192,10 +205,15 @@ export function WordCloud({ words, maxWords = 15, config = {} }) {
         const min = Math.min(...sorted.map((w) => w.value));
         const range = max - min || 1;
 
-        const wordList = sorted.map((word) => {
+        // Calculate dynamic font sizes based on container dimensions
+        const containerArea = width * height;
+        const baseSize = Math.sqrt(containerArea) * 0.15; // Base size proportional to container
+        const dynamicMinFont = Math.max(minFontSize, baseSize * 0.3);
+        const dynamicMaxFont = Math.max(maxFontSize, baseSize * 1.2);
+
+        const dynamicWordList = sorted.map((word) => {
           const normalizedValue = (word.value - min) / range;
-          const size =
-            minFontSize + normalizedValue * (maxFontSize - minFontSize);
+          const size = dynamicMinFont + normalizedValue * (dynamicMaxFont - dynamicMinFont);
           return [word.text, size];
         });
 
@@ -203,9 +221,9 @@ export function WordCloud({ words, maxWords = 15, config = {} }) {
           COLOR_PALETTES[colorScheme] || COLOR_PALETTES["image-style"];
 
         const options = {
-          list: wordList,
+          list: dynamicWordList,
           gridSize: spacing,
-          weightFactor: 1,
+          weightFactor: 1.5,
           fontFamily: "system-ui, -apple-system, sans-serif",
           color: function (word, weight, fontSize, distance, theta) {
             const index = sorted.findIndex((w) => w.text === word);
@@ -256,7 +274,7 @@ export function WordCloud({ words, maxWords = 15, config = {} }) {
     return (
       <div
         ref={containerRef}
-        className="relative p-6 bg-muted/30 rounded-lg min-h-[200px] w-full flex items-center justify-center"
+        className="relative p-4 bg-muted/30 rounded-lg min-h-[150px] w-full flex items-center justify-center"
       >
         <p className="text-muted-foreground">Nenhuma palavra para exibir</p>
       </div>
@@ -266,7 +284,7 @@ export function WordCloud({ words, maxWords = 15, config = {} }) {
   return (
     <div
       ref={containerRef}
-      className="relative p-6 bg-muted/30 rounded-lg min-h-[200px] w-full"
+      className="relative p-4 bg-muted/30 rounded-lg min-h-[150px] w-full"
       style={{ position: "relative" }}
     >
       <canvas
@@ -275,7 +293,7 @@ export function WordCloud({ words, maxWords = 15, config = {} }) {
         style={{
           width: "100%",
           height: "100%",
-          minHeight: "200px",
+          minHeight: "150px",
         }}
       />
     </div>

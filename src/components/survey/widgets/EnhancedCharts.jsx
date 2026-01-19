@@ -14,9 +14,9 @@ import { TrendingUp, TrendingDown, Minus, Target } from "lucide-react";
 
 /**
  * Stacked Bar MECE Chart (Generic)
- * 
+ *
  * Generic stacked bar chart that supports multiple series with flexible color configuration.
- * 
+ *
  * @param {Object} props
  * @param {Array} props.data - Array of data objects
  * @param {string} props.categoryKey - Key for category name
@@ -58,7 +58,11 @@ export function StackedBarMECE({
   }
 
   return (
-    <div style={{ height }} role="img" aria-label="Gráfico de barras empilhadas MECE">
+    <div
+      style={{ height }}
+      role="img"
+      aria-label="Gráfico de barras empilhadas MECE"
+    >
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={margin} layout="vertical">
           {showGrid && (
@@ -98,9 +102,7 @@ export function StackedBarMECE({
               stackId="a"
               fill={serie.color || CHART_COLORS.primary}
               name={serie.name}
-              radius={
-                index === series.length - 1 ? [4, 4, 4, 4] : [0, 0, 0, 0]
-              }
+              radius={index === series.length - 1 ? [4, 4, 4, 4] : [0, 0, 0, 0]}
             >
               <LabelList
                 dataKey={serie.dataKey}
@@ -121,9 +123,9 @@ export function StackedBarMECE({
 
 /**
  * Evolutionary Scorecard Component
- * 
+ *
  * Enhanced scorecard showing value, target, delta, and trend.
- * 
+ *
  * @param {Object} props
  * @param {number} props.value - Current value
  * @param {number} [props.target] - Target value
@@ -146,7 +148,8 @@ export function EvolutionaryScorecard({
   const getTrendDisplay = () => {
     if (!trend && delta === undefined) return null;
 
-    const actualTrend = trend || (delta > 0 ? "up" : delta < 0 ? "down" : "neutral");
+    const actualTrend =
+      trend || (delta > 0 ? "up" : delta < 0 ? "down" : "neutral");
     const deltaValue = delta !== undefined ? Math.abs(delta) : null;
 
     let Icon, color, bgColor;
@@ -168,7 +171,9 @@ export function EvolutionaryScorecard({
     }
 
     return (
-      <div className={`flex items-center gap-1 px-2 py-1 rounded-md ${bgColor}`}>
+      <div
+        className={`flex items-center gap-1 px-2 py-1 rounded-md ${bgColor}`}
+      >
         <Icon className={`w-4 h-4 ${color}`} />
         {deltaValue !== null && (
           <span className={`text-sm font-semibold ${color}`}>
@@ -188,7 +193,8 @@ export function EvolutionaryScorecard({
   };
 
   const targetProgress = getTargetProgress();
-  const isAboveTarget = target !== undefined && target !== null && value >= target;
+  const isAboveTarget =
+    target !== undefined && target !== null && value >= target;
 
   return (
     <div
@@ -277,4 +283,3 @@ export function EvolutionaryScorecard({
     </div>
   );
 }
-

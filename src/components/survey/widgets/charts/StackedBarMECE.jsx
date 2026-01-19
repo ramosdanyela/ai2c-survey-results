@@ -13,9 +13,9 @@ import { CHART_COLORS } from "@/lib/colors";
 
 /**
  * Stacked Bar MECE Chart (Generic)
- * 
+ *
  * Generic stacked bar chart that supports multiple series with flexible color configuration.
- * 
+ *
  * @param {Object} props
  * @param {Array} props.data - Array of data objects
  * @param {string} props.categoryKey - Key for category name
@@ -57,7 +57,11 @@ export function StackedBarMECE({
   }
 
   return (
-    <div style={{ height }} role="img" aria-label="Gráfico de barras empilhadas MECE">
+    <div
+      style={{ height }}
+      role="img"
+      aria-label="Gráfico de barras empilhadas MECE"
+    >
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={margin} layout="vertical">
           {showGrid && (
@@ -97,9 +101,7 @@ export function StackedBarMECE({
               stackId="a"
               fill={serie.color || CHART_COLORS.primary}
               name={serie.name}
-              radius={
-                index === series.length - 1 ? [4, 4, 4, 4] : [0, 0, 0, 0]
-              }
+              radius={index === series.length - 1 ? [4, 4, 4, 4] : [0, 0, 0, 0]}
             >
               <LabelList
                 dataKey={serie.dataKey}
@@ -117,4 +119,3 @@ export function StackedBarMECE({
     </div>
   );
 }
-

@@ -2249,36 +2249,14 @@ export function GenericSectionRenderer({
     }
   }
 
-  // For responses section with questionId, get question title
-  const questionTitle = useMemo(() => {
-    if (isResponsesWithQuestionId && subSection) {
-      const match = subSection.match(/responses-(\d+)/);
-      if (match) {
-        const questionId = parseInt(match[1], 10);
-        const responseDetails = data?.responseDetails;
-        const allQuestions = getQuestionsFromResponseDetails(responseDetails);
-        const question = allQuestions.find((q) => q.id === questionId);
-        if (question) {
-          return question.question;
-        }
-      }
-    }
-    return null;
-  }, [isResponsesWithQuestionId, subSection, data]);
-
   return (
     <div className="space-y-8 animate-fade-in">
       <section>
         <div className="space-y-6">
-          {/* Subsection Title - show if has subsections OR if responses with questionId */}
-          {(hasSubsections && activeSubsection) ||
-          (isResponsesWithQuestionId && questionTitle) ? (
+          {/* Subsection Title - show only if has subsections */}
+          {hasSubsections && activeSubsection ? (
             <SubsectionTitle
-              title={
-                (hasSubsections && activeSubsection?.name) ||
-                questionTitle ||
-                "Subseção"
-              }
+              title={activeSubsection?.name || "Subseção"}
               icon={SubsectionIcon}
             />
           ) : null}
