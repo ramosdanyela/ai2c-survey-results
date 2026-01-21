@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect, useCallback } from "react";
 import { SubsectionTitle } from "../widgets/SubsectionTitle";
 import { Progress } from "@/components/ui/progress";
-import { Award, CheckSquare, FileText, TrendingUp, Cloud } from "@/lib/icons";
+import { Award, CheckSquare, CircleDot, FileText, TrendingUp, Cloud } from "@/lib/icons";
 import {
   COLOR_ORANGE_PRIMARY,
   RGBA_ORANGE_SHADOW_15,
@@ -18,6 +18,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { WordCloud } from "../widgets/WordCloud";
 import { KPICard } from "../widgets/KPICard";
 import { AnalyticalTable } from "../widgets/AnalyticalTable";
@@ -87,6 +92,109 @@ function getQuestionsFromResponseDetails(responseDetails) {
   return [...closed, ...open].sort((a, b) => (a.index || 0) - (b.index || 0));
 }
 
+/** Trunca string para tooltip, preservando templates {{ }} */
+function truncateForTooltip(s, max = 70) {
+  if (!s || typeof s !== "string") return "";
+  if (s.length <= max) return s;
+  return s.slice(0, max) + "…";
+}
+
+/** Extrai os paths {{ path }} de um template (ex: "{{currentAttribute.summary}}" → ["currentAttribute.summary"]). */
+function extractTemplatePaths(s) {
+  if (!s || typeof s !== "string") return [];
+  const re = /\{\{\s*([^}]+)\s*\}\}/g;
+  const out = [];
+  let m;
+  while ((m = re.exec(s)) !== null) out.push(m[1].trim());
+  return [...new Set(out)];
+}
+
+/**
+ * Monta o conteúdo do tooltip que mostra a origem dos dados no JSON/schema.
+ * Exibe: tipo do componente, dataPath, templates (title/text) e o data path do texto quando usa {{ }}.
+ */
+function getDataSourceTooltipContent(component) {
+  if (!component) return null;
+  const lines = [];
+  const type = component.type || (component.wrapper ? `wrapper:${component.wrapper}` : null);
+  if (type) lines.push({ label: "Tipo", value: type });
+  if (component.dataPath) lines.push({ label: "dataPath", value: component.dataPath });
+  if (component.styleVariant) lines.push({ label: "styleVariant", value: component.styleVariant });
+  if (component.textStyleVariant) lines.push({ label: "textStyleVariant", value: component.textStyleVariant });
+  if (component.titleStyleVariant) lines.push({ label: "titleStyleVariant", value: component.titleStyleVariant });
+  if (component.type === "grid-container" && component.className) lines.push({ label: "className", value: component.className });
+  if (component.attributeName && typeof component.attributeName === "string") {
+    const an = component.attributeName;
+    lines.push({ label: "attributeName", value: truncateForTooltip(an, 50) });
+    const anPaths = extractTemplatePaths(an);
+    if (anPaths.length) lines.push({ label: "attributeName (path)", value: anPaths.join(", ") });
+  }
+  if (component.title != null && component.title !== "") {
+    const titleStr = String(component.title);
+    lines.push({ label: "title", value: truncateForTooltip(titleStr, 60) });
+    const titlePaths = extractTemplatePaths(titleStr);
+    if (titlePaths.length) lines.push({ label: "title (path)", value: titlePaths.join(", ") });
+  }
+  // Mostra text só se for template {{ }} ou string curta
+  if (component.text != null && component.text !== "") {
+    const c = String(component.text);
+    if (c.includes("{{") || c.length <= 80)
+      lines.push({ label: "text", value: truncateForTooltip(c, 80) });
+    else
+      lines.push({ label: "text", value: `(texto fixo, ${c.length} caracteres)` });
+    const textPaths = extractTemplatePaths(c);
+    if (textPaths.length) lines.push({ label: "text (path)", value: textPaths.join(", ") });
+  }
+  if (component.config?.nodesPath) lines.push({ label: "nodesPath", value: component.config.nodesPath });
+  if (component.config?.linksPath) lines.push({ label: "linksPath", value: component.config.linksPath });
+  if (component.severityLabelsPath) lines.push({ label: "severityLabelsPath", value: component.severityLabelsPath });
+  if (lines.length === 0) return null;
+  return lines;
+}
+
+/**
+ * Envolve o elemento em um tooltip que mostra a origem dos dados (dataPath, tipo, etc.)
+ * Não renderiza tooltip em modo export.
+ */
+function DataSourceTooltip({ component, isExport, children }) {
+  if (isExport || !children) return children;
+  const items = getDataSourceTooltipContent(component);
+  if (!items || items.length === 0) return children;
+  // Wrapper necessário: TooltipTrigger (asChild) passa ref ao filho. SchemaCard e outros
+  // Schema* são function components sem forwardRef; um div DOM aceita ref. O div não altera
+  // o layout pois se ajusta ao conteúdo (card, gráfico, etc.).
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <div>{children}</div>
+      </TooltipTrigger>
+      <TooltipContent
+        side="top"
+        align="start"
+        sideOffset={6}
+        className="max-w-md font-mono text-xs bg-popover border-popover-border"
+      >
+        <div className="font-sans font-semibold text-[11px] uppercase tracking-wider text-muted-foreground mb-1.5">
+          Fonte no JSON / schema
+        </div>
+        <dl className="space-y-0.5">
+          {items.map(({ label, value }) => (
+            <div key={label} className="flex gap-2">
+              <dt className="text-muted-foreground shrink-0">{label}:</dt>
+              <dd className="text-foreground break-all">{value}</dd>
+            </div>
+          ))}
+        </dl>
+      </TooltipContent>
+    </Tooltip>
+  );
+}
+
+function wrapWithTooltip(comp, isExport, el) {
+  if (isExport || !el) return el;
+  return <DataSourceTooltip component={comp} isExport={isExport}>{el}</DataSourceTooltip>;
+}
+
 /** Chaves NPS tratadas em conjunto: mostrar se qualquer uma existir. */
 const NPS_ATTR_KEYS = ["npsSummary", "npsDistribution", "nps"];
 
@@ -105,7 +213,7 @@ function buildAttributeComponents(attr) {
       type: "card",
       index: idx++,
       title: "Sumário",
-      content: "{{currentAttribute.summary}}",
+      text: "{{currentAttribute.summary}}",
       styleVariant: "default",
     });
   }
@@ -120,7 +228,7 @@ function buildAttributeComponents(attr) {
         index: 0,
         title: "Distribuição dos respondentes",
         styleVariant: "flex-column",
-        contentStyleVariant: "with-charts",
+        textStyleVariant: "with-charts",
         components: [
           {
             type: "barChart",
@@ -138,7 +246,7 @@ function buildAttributeComponents(attr) {
         index: 1,
         title: "Análise de sentimento",
         styleVariant: "flex-column",
-        contentStyleVariant: "with-charts",
+        textStyleVariant: "with-charts",
         components: [
           { type: "sentimentStackedChart", index: 0, dataPath: "currentAttribute.sentiment", config: { yAxisDataKey: "segment" } },
           { type: "sentimentTable", index: 1, dataPath: "currentAttribute.sentiment" },
@@ -161,8 +269,8 @@ function buildAttributeComponents(attr) {
         wrapper: "div",
         index: 0,
         components: [
-          { wrapper: "h3", wrapperProps: {}, index: 0, content: "Sumário" },
-          { wrapper: "div", wrapperProps: {}, index: 1, content: "{{currentAttribute.npsSummary}}" },
+          { wrapper: "h3", wrapperProps: {}, index: 0, text: "Sumário" },
+          { wrapper: "div", wrapperProps: {}, index: 1, text: "{{currentAttribute.npsSummary}}" },
         ],
       });
     }
@@ -172,7 +280,7 @@ function buildAttributeComponents(attr) {
         wrapper: "div",
         index: 1,
         components: [
-          { wrapper: "h3", wrapperProps: {}, index: 0, content: "Respostas" },
+          { wrapper: "h3", wrapperProps: {}, index: 0, text: "Respostas" },
           {
             wrapper: "div",
             wrapperProps: {},
@@ -182,7 +290,7 @@ function buildAttributeComponents(attr) {
                 wrapper: "div",
                 index: 0,
                 components: [
-                  { wrapper: "h4", wrapperProps: {}, index: 0, content: "Promotores, Neutros, Detratores" },
+                  { wrapper: "h4", wrapperProps: {}, index: 0, text: "Promotores, Neutros, Detratores" },
                   { type: "npsDistributionTable", index: 1, dataPath: "currentAttribute.npsDistribution", attributeName: "{{currentAttribute.name}}" },
                 ],
               },
@@ -190,7 +298,7 @@ function buildAttributeComponents(attr) {
                 wrapper: "div",
                 index: 1,
                 components: [
-                  { wrapper: "h4", wrapperProps: {}, index: 0, content: "NPS" },
+                  { wrapper: "h4", wrapperProps: {}, index: 0, text: "NPS" },
                   { type: "npsTable", index: 1, dataPath: "currentAttribute.nps", attributeName: "{{currentAttribute.name}}" },
                 ],
               },
@@ -205,7 +313,7 @@ function buildAttributeComponents(attr) {
         index: idx++,
         title: "Qual é a probabilidade de você recomendar nossa empresa como um ótimo lugar para trabalhar?",
         styleVariant: "default",
-        contentStyleVariant: "with-tables",
+        textStyleVariant: "with-tables",
         components: npsBlocks,
       });
     }
@@ -217,8 +325,8 @@ function buildAttributeComponents(attr) {
         wrapper: "div",
         index: 0,
         components: [
-          { wrapper: "h3", wrapperProps: {}, index: 0, content: "Sumário" },
-          { wrapper: "div", wrapperProps: {}, index: 1, content: "{{currentAttribute.satisfactionImpactSummary}}" },
+          { wrapper: "h3", wrapperProps: {}, index: 0, text: "Sumário" },
+          { wrapper: "div", wrapperProps: {}, index: 1, text: "{{currentAttribute.satisfactionImpactSummary}}" },
         ],
       },
     ];
@@ -227,7 +335,7 @@ function buildAttributeComponents(attr) {
         wrapper: "div",
         index: 1,
         components: [
-          { wrapper: "h3", wrapperProps: {}, index: 0, content: "Análise de sentimento" },
+          { wrapper: "h3", wrapperProps: {}, index: 0, text: "Análise de sentimento" },
           { type: "sentimentThreeColorChart", index: 1, dataPath: "currentAttribute.satisfactionImpactSentiment", config: {} },
           { type: "sentimentImpactTable", index: 2, dataPath: "currentAttribute.satisfactionImpactSentiment" },
         ],
@@ -248,7 +356,7 @@ function buildAttributeComponents(attr) {
         wrapper: "div",
         index: satBlocks.length,
         components: [
-          { wrapper: "h3", wrapperProps: {}, index: 0, content: "Categorias com sentimento negativo - Top 3" },
+          { wrapper: "h3", wrapperProps: {}, index: 0, text: "Categorias com sentimento negativo - Top 3" },
           { type: "negativeCategoriesTable", index: 1, dataPath: "currentAttribute.negativeCategories" },
         ],
       });
@@ -258,7 +366,7 @@ function buildAttributeComponents(attr) {
       index: idx++,
       title: "Quais são os principais fatores que impactam sua satisfação no trabalho?",
       styleVariant: "default",
-      contentStyleVariant: "with-tables",
+      textStyleVariant: "with-tables",
       components: satBlocks,
     });
   }
@@ -323,7 +431,7 @@ function SchemaCard({ component, data, children }) {
   }
 
   const title = resolveTemplate(component.title || "", data);
-  const content = resolveTemplate(component.content || "", data);
+  const text = resolveTemplate(component.text || "", data);
 
   // Debug: log if title was not resolved
   if (
@@ -352,18 +460,18 @@ function SchemaCard({ component, data, children }) {
 
   const useDescription = component.useDescription === true;
   const ContentWrapper = useDescription ? CardDescription : "div";
-  const contentClassName = useDescription
+  const textBaseClassName = useDescription
     ? "text-base leading-relaxed space-y-3"
     : "text-muted-foreground font-normal leading-relaxed space-y-3";
 
-  // If children are provided, render them instead of content
+  // If children are provided, render them instead of text
   const hasChildren = children && React.Children.count(children) > 0;
-  const hasContent = content && content.trim() !== "";
+  const hasText = text && text.trim() !== "";
 
   // Usa className do componente enriquecido ou fallback
   const titleClassName =
     component.titleClassName || "text-xl font-bold text-card-foreground";
-  const finalContentClassName = component.contentClassName || "";
+  const finalTextClassName = component.textClassName || "";
 
   return (
     <Card
@@ -375,11 +483,11 @@ function SchemaCard({ component, data, children }) {
           <CardTitle className={titleClassName}>{title}</CardTitle>
         </CardHeader>
       )}
-      <CardContent className={finalContentClassName}>
-        {/* Render content first if it exists */}
-        {hasContent && (
-          <ContentWrapper className={contentClassName}>
-            {content.split("\n").map((line, index) => (
+      <CardContent className={finalTextClassName}>
+        {/* Render text first if it exists */}
+        {hasText && (
+          <ContentWrapper className={textBaseClassName}>
+            {text.split("\n").map((line, index) => (
               <p key={index} className={line.trim() ? "" : "h-3"}>
                 {line}
               </p>
@@ -784,13 +892,13 @@ function SchemaFilterPills({ component, data }) {
   const sectionUiTexts = data?.sectionData?.uiTexts || {};
   const rootUiTexts = resolveDataPath(data, "uiTexts") || {};
 
-  // For responses section, texts are directly in sectionData.uiTexts (all, openField, etc.)
+  // For responses section, texts are directly in sectionData.uiTexts (all, open-ended, etc.)
   // But also check root uiTexts.responseDetails for backward compatibility
   const uiTexts = {
     ...rootUiTexts,
     responseDetails: {
       ...rootUiTexts?.responseDetails,
-      ...sectionUiTexts, // sectionData.uiTexts has the texts directly (all, openField, nps, wordCloud, etc.)
+      ...sectionUiTexts, // sectionData.uiTexts has the texts directly (all, open-ended, nps, wordCloud, etc.)
     },
   };
 
@@ -854,32 +962,46 @@ function SchemaFilterPills({ component, data }) {
         {sectionUiTexts?.all || rootUiTexts?.responseDetails?.all || "Todos"}
       </Badge>
       <Badge
-        variant={questionFilter === "open" ? "default" : "outline"}
+        variant={questionFilter === "open-ended" ? "default" : "outline"}
         className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
-          questionFilter === "open"
+          questionFilter === "open-ended"
             ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
             : ""
         }`}
-        onClick={() => setQuestionFilter("open")}
+        onClick={() => setQuestionFilter("open-ended")}
       >
         <FileText className="w-3 h-3" />
-        {sectionUiTexts?.openField ||
-          rootUiTexts?.responseDetails?.openField ||
+        {sectionUiTexts?.["open-ended"] ||
+          rootUiTexts?.responseDetails?.["open-ended"] ||
           "Campo Aberto"}
       </Badge>
       <Badge
-        variant={questionFilter === "closed" ? "default" : "outline"}
+        variant={questionFilter === "multiple-choice" ? "default" : "outline"}
         className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
-          questionFilter === "closed"
+          questionFilter === "multiple-choice"
             ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
             : ""
         }`}
-        onClick={() => setQuestionFilter("closed")}
+        onClick={() => setQuestionFilter("multiple-choice")}
       >
         <CheckSquare className="w-3 h-3" />
-        {sectionUiTexts?.multipleChoice ||
-          rootUiTexts?.responseDetails?.multipleChoice ||
+        {sectionUiTexts?.["multiple-choice"] ||
+          rootUiTexts?.responseDetails?.["multiple-choice"] ||
           "Múltipla Escolha"}
+      </Badge>
+      <Badge
+        variant={questionFilter === "single-choice" ? "default" : "outline"}
+        className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
+          questionFilter === "single-choice"
+            ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
+            : ""
+        }`}
+        onClick={() => setQuestionFilter("single-choice")}
+      >
+        <CircleDot className="w-3 h-3" />
+        {sectionUiTexts?.["single-choice"] ||
+          rootUiTexts?.responseDetails?.["single-choice"] ||
+          "Escolha única"}
       </Badge>
       <Badge
         variant={questionFilter === "nps" ? "default" : "outline"}
@@ -1184,12 +1306,12 @@ function SchemaAccordion({ component, data }) {
             </AccordionTrigger>
             <AccordionContent
               className={
-                item.contentClassName || config.contentClassName || "px-6 pb-6"
+                item.textClassName || config.textClassName || "px-6 pb-6"
               }
             >
               {nestedComponents.length > 0
                 ? nestedComponents
-                : item.content || null}
+                : item.text || null}
             </AccordionContent>
           </AccordionItem>
         );
@@ -1326,13 +1448,13 @@ function SchemaQuestionsList({
 }
 
 /**
- * Extrai currentAttribute.KEY do componente (content {{}} ou dataPath) ou de descendentes.
+ * Extrai currentAttribute.KEY do componente (text {{}} ou dataPath) ou de descendentes.
  * Usado para decidir visibilidade em attributes; a lógica fica no código, não no JSON.
  */
 function getCurrentAttributeKey(comp) {
   if (!comp) return null;
-  if (comp.content && typeof comp.content === "string") {
-    const m = comp.content.match(/\{\{currentAttribute\.([a-zA-Z]+)\}\}/);
+  if (comp.text && typeof comp.text === "string") {
+    const m = comp.text.match(/\{\{currentAttribute\.([a-zA-Z]+)\}\}/);
     if (m) return m[1];
   }
   if (comp.dataPath && typeof comp.dataPath === "string" && comp.dataPath.startsWith("currentAttribute.")) {
@@ -1350,7 +1472,7 @@ function getCurrentAttributeKey(comp) {
 
 /**
  * Decide se o componente deve ser exibido. Lógica no código (não em condition no JSON).
- * - attributes: exibe se currentAttribute.KEY (inferido de dataPath/content) for truthy.
+ * - attributes: exibe se currentAttribute.KEY (inferido de dataPath/text) for truthy.
  * - responses: por tipo (npsScoreCard, npsStackedChart, barChart, etc.) e dados (question.data, sentimentData, topCategories, wordCloud, showWordCloud).
  */
 function shouldShowComponent(component, data) {
@@ -1554,12 +1676,12 @@ function SchemaComponent({
     // Get base className from wrapper type
     let baseClassName = wrapperTypeMap[wrapper] || "";
 
-    // Special case for h3 with "Respostas" content (can be overridden by className in wrapperProps)
+    // Special case for h3 with "Respostas" text (can be overridden by className in wrapperProps)
     if (wrapper === "h3" && !wrapperProps.className) {
-      const content = resolveTemplate(component.content || "", data);
+      const resolvedText = resolveTemplate(component.text || "", data);
       if (
-        content &&
-        (content.includes("Respostas") || content.includes("responses"))
+        resolvedText &&
+        (resolvedText.includes("Respostas") || resolvedText.includes("responses"))
       ) {
         baseClassName = "text-lg font-bold text-foreground mb-4";
       }
@@ -1693,38 +1815,85 @@ function SchemaComponent({
           );
         });
 
-      return (
+      return wrapWithTooltip(component, isExport, (
         <ComponentWrapper {...finalWrapperProps}>
           {nestedComponents}
         </ComponentWrapper>
-      );
+      ));
     }
 
-    // If wrapper has content (text), render it
-    if (component.content) {
-      const content = resolveTemplate(component.content, data);
-      // Handle multi-line content like summary
-      if (content.includes("\n")) {
-        return (
+    // If wrapper has text, render it
+    if (component.text) {
+      const resolvedText = resolveTemplate(component.text, data);
+      // Handle multi-line text like summary
+      if (resolvedText.includes("\n")) {
+        return wrapWithTooltip(component, isExport, (
           <ComponentWrapper {...finalWrapperProps}>
-            {content.split("\n").map((line, index) => (
+            {resolvedText.split("\n").map((line, index) => (
               <p key={index} className={line.trim() ? "" : "h-3"}>
                 {line}
               </p>
             ))}
           </ComponentWrapper>
-        );
+        ));
       }
-      return (
-        <ComponentWrapper {...finalWrapperProps}>{content}</ComponentWrapper>
-      );
+      return wrapWithTooltip(component, isExport, (
+        <ComponentWrapper {...finalWrapperProps}>{resolvedText}</ComponentWrapper>
+      ));
     }
 
     // Empty wrapper
-    return <ComponentWrapper {...finalWrapperProps} />;
+    return wrapWithTooltip(component, isExport, <ComponentWrapper {...finalWrapperProps} />);
   }
 
   switch (component.type) {
+    case "grid-container": {
+      // div com layout em grid explícito (className). Equivalente ao antigo wrapper: "div" + wrapperProps.className com grid.
+      const className = component.className || "grid gap-6 md:grid-cols-2";
+      const nested = (component.components || [])
+        .sort((a, b) => (a.index ?? 999) - (b.index ?? 999))
+        .map((comp, idx) => {
+          const parentKey = component.index !== undefined ? component.index : "grid";
+          const childKey = comp.index !== undefined ? comp.index : idx;
+          const childType = comp.type || "unknown";
+          return (
+            <SchemaComponent
+              key={`nested-${parentKey}-${childKey}-${childType}-${idx}`}
+              component={comp}
+              data={data}
+              subSection={subSection}
+              isExport={isExport}
+              exportWordCloud={exportWordCloud}
+            />
+          );
+        });
+      return wrapWithTooltip(component, isExport, <div className={className}>{nested}</div>);
+    }
+    case "container": {
+      // div sem grid explícito; o layout é inferido pelos filhos (ex.: 2 cards → grid 2 colunas). Equivalente ao antigo wrapper: "div" + wrapperProps: {}.
+      const wrapperClassName = getWrapperClassName({ ...component, wrapper: "div" }, data);
+      const wrapperStyle = getWrapperStyle({ ...component, wrapper: "div" }, data);
+      const nested = (component.components || [])
+        .sort((a, b) => (a.index ?? 999) - (b.index ?? 999))
+        .map((comp, idx) => {
+          const parentKey = component.index !== undefined ? component.index : "container";
+          const childKey = comp.index !== undefined ? comp.index : idx;
+          const childType = comp.type || "unknown";
+          return (
+            <SchemaComponent
+              key={`nested-${parentKey}-${childKey}-${childType}-${idx}`}
+              component={comp}
+              data={data}
+              subSection={subSection}
+              isExport={isExport}
+              exportWordCloud={exportWordCloud}
+            />
+          );
+        });
+      return wrapWithTooltip(component, isExport, (
+        <div className={wrapperClassName || ""} style={wrapperStyle || undefined}>{nested}</div>
+      ));
+    }
     case "card":
       // If card has nested components, render them as children
       if (component.components && Array.isArray(component.components)) {
@@ -1747,52 +1916,46 @@ function SchemaComponent({
                 component={comp}
                 data={data}
                 subSection={subSection}
+                isExport={isExport}
+                exportWordCloud={exportWordCloud}
               />
             );
           });
-        return (
+        return wrapWithTooltip(component, isExport, (
           <SchemaCard component={component} data={data}>
             {nestedComponents}
           </SchemaCard>
-        );
+        ));
       }
-      return <SchemaCard component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaCard component={component} data={data} />);
     case "barChart":
-      return <SchemaBarChart component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaBarChart component={component} data={data} />);
     case "sentimentDivergentChart":
-      return (
-        <SchemaSentimentDivergentChart component={component} data={data} />
-      );
+      return wrapWithTooltip(component, isExport, <SchemaSentimentDivergentChart component={component} data={data} />);
     case "sentimentStackedChart":
-      return <SchemaSentimentStackedChart component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaSentimentStackedChart component={component} data={data} />);
     case "sentimentThreeColorChart":
-      return (
-        <SchemaSentimentThreeColorChart component={component} data={data} />
-      );
+      return wrapWithTooltip(component, isExport, <SchemaSentimentThreeColorChart component={component} data={data} />);
     case "recommendationsTable":
-      return <SchemaRecommendationsTable component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaRecommendationsTable component={component} data={data} />);
     case "segmentationTable":
-      return <SchemaSegmentationTable component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaSegmentationTable component={component} data={data} />);
     case "distributionTable":
-      return <SchemaDistributionTable component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaDistributionTable component={component} data={data} />);
     case "sentimentTable":
-      return <SchemaSentimentTable component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaSentimentTable component={component} data={data} />);
     case "npsDistributionTable":
-      return <SchemaNPSDistributionTable component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaNPSDistributionTable component={component} data={data} />);
     case "npsTable":
-      return <SchemaNPSTable component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaNPSTable component={component} data={data} />);
     case "sentimentImpactTable":
-      return <SchemaSentimentImpactTable component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaSentimentImpactTable component={component} data={data} />);
     case "positiveCategoriesTable":
-      return (
-        <SchemaPositiveCategoriesTable component={component} data={data} />
-      );
+      return wrapWithTooltip(component, isExport, <SchemaPositiveCategoriesTable component={component} data={data} />);
     case "negativeCategoriesTable":
-      return (
-        <SchemaNegativeCategoriesTable component={component} data={data} />
-      );
+      return wrapWithTooltip(component, isExport, <SchemaNegativeCategoriesTable component={component} data={data} />);
     case "questionsList":
-      return (
+      return wrapWithTooltip(component, isExport, (
         <SchemaQuestionsList
           component={component}
           data={data}
@@ -1800,51 +1963,51 @@ function SchemaComponent({
           isExport={isExport}
           exportWordCloud={exportWordCloud}
         />
-      );
+      ));
     case "npsStackedChart":
-      return <SchemaNPSStackedChart component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaNPSStackedChart component={component} data={data} />);
     case "npsScoreCard":
-      return <SchemaNPSScoreCard component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaNPSScoreCard component={component} data={data} />);
     case "topCategoriesCards":
-      return <SchemaTopCategoriesCards component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaTopCategoriesCards component={component} data={data} />);
     case "filterPills":
-      return <SchemaFilterPills component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaFilterPills component={component} data={data} />);
     case "wordCloud":
-      return <SchemaWordCloud component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaWordCloud component={component} data={data} />);
     case "accordion":
-      return <SchemaAccordion component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaAccordion component={component} data={data} />);
     case "kpiCard":
-      return <SchemaKPICard component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaKPICard component={component} data={data} />);
     case "lineChart":
-      return <SchemaLineChart component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaLineChart component={component} data={data} />);
     case "paretoChart":
-      return <SchemaParetoChart component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaParetoChart component={component} data={data} />);
     case "analyticalTable":
-      return <SchemaAnalyticalTable component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaAnalyticalTable component={component} data={data} />);
     case "slopeGraph":
-      return <SchemaSlopeGraph component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaSlopeGraph component={component} data={data} />);
     case "waterfallChart":
-      return <SchemaWaterfallChart component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaWaterfallChart component={component} data={data} />);
     case "scatterPlot":
-      return <SchemaScatterPlot component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaScatterPlot component={component} data={data} />);
     case "histogram":
-      return <SchemaHistogram component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaHistogram component={component} data={data} />);
     case "quadrantChart":
-      return <SchemaQuadrantChart component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaQuadrantChart component={component} data={data} />);
     case "heatmap":
-      return <SchemaHeatmap component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaHeatmap component={component} data={data} />);
     case "sankeyDiagram":
-      return <SchemaSankeyDiagram component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaSankeyDiagram component={component} data={data} />);
     case "stackedBarMECE":
-      return <SchemaStackedBarMECE component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaStackedBarMECE component={component} data={data} />);
     case "evolutionaryScorecard":
-      return <SchemaEvolutionaryScorecard component={component} data={data} />;
+      return wrapWithTooltip(component, isExport, <SchemaEvolutionaryScorecard component={component} data={data} />);
     default:
       // If no type but has wrapper, it's a wrapper component
       if (component.wrapper) {
         const ComponentWrapper = component.wrapper || "div";
         const wrapperProps = component.wrapperProps || {};
-        return <ComponentWrapper {...wrapperProps} />;
+        return wrapWithTooltip(component, isExport, <ComponentWrapper {...wrapperProps} />);
       }
       console.warn(`Unknown component type: ${component.type || "none"}`);
       return null;

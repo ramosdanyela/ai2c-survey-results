@@ -146,7 +146,7 @@ Exemplo mínimo:
                 "type": "card",
                 "index": 0,
                 "title": "Título",
-                "content": "Conteúdo",
+                "text": "Conteúdo",
                 "styleVariant": "default"
               }
             ]

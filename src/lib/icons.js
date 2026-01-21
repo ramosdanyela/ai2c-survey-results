@@ -47,7 +47,7 @@ export {
 export { Users, Users2, User, Smile } from "lucide-react";
 
 // Metrics and data icons
-export { Percent, HelpCircle, CheckSquare, Scale } from "lucide-react";
+export { Percent, HelpCircle, CheckSquare, Scale, CircleDot } from "lucide-react";
 
 // Alert and notification icons
 export { AlertTriangle } from "lucide-react";
@@ -79,6 +79,7 @@ export const iconMap = {
   Check: LucideIcons.Check,
   CheckSquare: LucideIcons.CheckSquare,
   ChevronDown: LucideIcons.ChevronDown,
+  CircleDot: LucideIcons.CircleDot,
   ChevronLeft: LucideIcons.ChevronLeft,
   ChevronRight: LucideIcons.ChevronRight,
   ChevronUp: LucideIcons.ChevronUp,
@@ -163,6 +164,7 @@ export const allIcons = [
   "Check",
   "CheckSquare",
   "ChevronDown",
+  "CircleDot",
   "ChevronLeft",
   "ChevronRight",
   "ChevronUp",

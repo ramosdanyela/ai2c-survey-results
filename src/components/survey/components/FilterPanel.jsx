@@ -6,6 +6,7 @@ import {
   ChevronRight,
   FileText,
   CheckSquare,
+  CircleDot,
   TrendingUp,
 } from "@/lib/icons";
 import { Card, CardContent } from "@/components/ui/card";
@@ -234,28 +235,40 @@ export function FilterPanel({
                 {getFilterText("all", "Todas")}
               </Badge>
               <Badge
-                variant={questionFilter === "open" ? "default" : "outline"}
+                variant={questionFilter === "open-ended" ? "default" : "outline"}
                 className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
-                  questionFilter === "open"
+                  questionFilter === "open-ended"
                     ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
                     : ""
                 }`}
-                onClick={() => onQuestionFilterChange("open")}
+                onClick={() => onQuestionFilterChange("open-ended")}
               >
                 <FileText className="w-3 h-3" />
-                {getFilterText("openField", "Campo Aberto")}
+                {getFilterText("open-ended", "Campo Aberto")}
               </Badge>
               <Badge
-                variant={questionFilter === "closed" ? "default" : "outline"}
+                variant={questionFilter === "multiple-choice" ? "default" : "outline"}
                 className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
-                  questionFilter === "closed"
+                  questionFilter === "multiple-choice"
                     ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
                     : ""
                 }`}
-                onClick={() => onQuestionFilterChange("closed")}
+                onClick={() => onQuestionFilterChange("multiple-choice")}
               >
                 <CheckSquare className="w-3 h-3" />
-                {getFilterText("multipleChoice", "Múltipla Escolha")}
+                {getFilterText("multiple-choice", "Múltipla Escolha")}
+              </Badge>
+              <Badge
+                variant={questionFilter === "single-choice" ? "default" : "outline"}
+                className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
+                  questionFilter === "single-choice"
+                    ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
+                    : ""
+                }`}
+                onClick={() => onQuestionFilterChange("single-choice")}
+              >
+                <CircleDot className="w-3 h-3" />
+                {getFilterText("single-choice", "Escolha única")}
               </Badge>
               <Badge
                 variant={questionFilter === "nps" ? "default" : "outline"}
@@ -309,9 +322,11 @@ export function FilterPanel({
                     const isNPS = q.type === "nps";
                     const questionType = isNPS
                       ? getFilterText("nps", "NPS")
-                      : q.type === "open"
-                      ? getFilterText("openField", "Campo Aberto")
-                      : getFilterText("multipleChoice", "Múltipla Escolha");
+                      : q.type === "open-ended"
+                      ? getFilterText("open-ended", "Campo Aberto")
+                      : q.type === "single-choice"
+                      ? getFilterText("single-choice", "Escolha única")
+                      : getFilterText("multiple-choice", "Múltipla Escolha");
                     const truncatedQuestion =
                       q.question.length > 80
                         ? q.question.substring(0, 80) + "..."

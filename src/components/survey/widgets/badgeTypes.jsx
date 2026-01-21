@@ -53,8 +53,9 @@ export const SEVERITY_TYPES = {
 // Mapeamento de tipos de questão para configuração de badge
 // Os tipos são definidos nas questões do JSON:
 // - "nps": Questão de Net Promoter Score
-// - "open": Questão de campo aberto
-// - "closed": Questão de múltipla escolha
+// - "open-ended": Questão de campo aberto
+// - "multiple-choice": Questão de múltipla escolha
+// - "single-choice": Questão de escolha única
 
 export const questionBadgeTypes = {
   nps: {
@@ -62,21 +63,26 @@ export const questionBadgeTypes = {
     label: "NPS",
     icon: "TrendingUp",
   },
-  open: {
+  "open-ended": {
     variant: "secondary",
     label: "Campo Aberto",
     icon: "FileText",
   },
-  closed: {
+  "multiple-choice": {
     variant: "outline",
     label: "Múltipla Escolha",
     icon: "CheckSquare",
+  },
+  "single-choice": {
+    variant: "outline",
+    label: "Escolha única",
+    icon: "CircleDot",
   },
 };
 
 /**
  * Obtém a configuração de badge para um tipo de questão
- * @param {string} questionType - Tipo da questão ("nps", "open", "closed")
+ * @param {string} questionType - Tipo da questão ("nps", "open-ended", "multiple-choice", "single-choice")
  * @returns {Object|null} Configuração do badge ou null se tipo inválido
  */
 export const getBadgeConfig = (questionType) => {

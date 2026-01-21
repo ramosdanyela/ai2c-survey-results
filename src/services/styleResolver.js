@@ -31,10 +31,10 @@ export function enrichComponentWithStyles(component) {
   if (component.type === "card") {
     enriched.className = resolveStyleVariant(component, "card");
     
-    // Resolve contentClassName se especificado
-    if (component.contentStyleVariant) {
-      enriched.contentClassName = resolveStyleVariant(
-        { styleVariant: component.contentStyleVariant },
+    // Resolve textClassName se especificado
+    if (component.textStyleVariant) {
+      enriched.textClassName = resolveStyleVariant(
+        { styleVariant: component.textStyleVariant },
         "cardContent"
       );
     }

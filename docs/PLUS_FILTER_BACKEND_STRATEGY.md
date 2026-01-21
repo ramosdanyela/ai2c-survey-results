@@ -134,30 +134,30 @@ Os dados brutos ficam armazenados no backend (banco de dados ou storage). Cada l
         },
         "question2": {
           "questionId": 2,
-          "type": "closed",
+          "type": "multiple-choice",
           "option": "Excelente",
           "value": 1
         },
         "question3": {
           "questionId": 3,
-          "type": "closed",
+          "type": "multiple-choice",
           "option": "Bom",
           "value": 1
         },
         "question4": {
           "questionId": 4,
-          "type": "open",
+          "type": "open-ended",
           "text": "O atendimento foi excelente, mas poderia melhorar a velocidade da rede."
         },
         "question5": {
           "questionId": 5,
-          "type": "closed",
+          "type": "multiple-choice",
           "option": "Regular",
           "value": 1
         },
         "question6": {
           "questionId": 6,
-          "type": "open",
+          "type": "open-ended",
           "text": "Melhorar o tempo de resposta do suporte técnico."
         }
       },
@@ -183,30 +183,30 @@ Os dados brutos ficam armazenados no backend (banco de dados ou storage). Cada l
         },
         "question2": {
           "questionId": 2,
-          "type": "closed",
+          "type": "multiple-choice",
           "option": "Ruim",
           "value": 1
         },
         "question3": {
           "questionId": 3,
-          "type": "closed",
+          "type": "multiple-choice",
           "option": "Péssimo",
           "value": 1
         },
         "question4": {
           "questionId": 4,
-          "type": "open",
+          "type": "open-ended",
           "text": "A cobertura da rede é muito ruim na minha região."
         },
         "question5": {
           "questionId": 5,
-          "type": "closed",
+          "type": "multiple-choice",
           "option": "Ruim",
           "value": 1
         },
         "question6": {
           "questionId": 6,
-          "type": "open",
+          "type": "open-ended",
           "text": "Investir mais em infraestrutura de rede."
         }
       },
@@ -282,7 +282,7 @@ GET /api/survey/questions/filtered?filters=[{"filterType":"state","values":["SP"
     },
     {
       "id": 4,
-      "type": "open",
+      "type": "open-ended",
       "sentimentData": [
         /* dados filtrados */
       ],
@@ -586,7 +586,7 @@ Esta estrutura mantém dados agregados para combinações comuns de filtros, red
         "id": 4,
         "index": 4,
         "question": "O que mais gosta em nosso serviço?",
-        "type": "open",
+        "type": "open-ended",
         "icon": "FileText",
         "summary": "Resumo geral...",
         // Dados sem filtro
@@ -786,7 +786,7 @@ def get_filtered_questions(filters, question_ids=None):
     },
     {
       "id": 4,
-      "type": "open",
+      "type": "open-ended",
       "question": "O que mais gosta em nosso serviço?",
       "sentimentData": [
         {

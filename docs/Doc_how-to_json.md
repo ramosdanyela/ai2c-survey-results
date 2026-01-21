@@ -165,8 +165,9 @@ Esta seção contém todas as traduções e textos da interface que são fixos, 
     },
     "filterPanel": {
       "all": "Todas",
-      "openField": "Campo Aberto",
-      "multipleChoice": "Múltipla Escolha",
+      "open-ended": "Campo Aberto",
+      "multiple-choice": "Múltipla Escolha",
+      "single-choice": "Escolha única",
       "nps": "NPS"
     }
   }
@@ -225,7 +226,7 @@ O `renderSchema` define como os componentes são renderizados. **O `name` pode s
               "type": "card",
               "index": 0,
               "title": "{{uiTexts.minhaSecao.titulo}}",
-              "content": "{{sectionData.descricao}}",
+              "text": "{{sectionData.descricao}}",
               "styleVariant": "default"
             }
           ]
@@ -291,7 +292,7 @@ Como o código é programático, você pode definir o `name` diretamente no `ren
               "type": "card",
               "index": 0,
               "title": "Título do Card",
-              "content": "Conteúdo do card",
+              "text": "Conteúdo do card",
               "styleVariant": "default"
             }
           ]
@@ -311,7 +312,7 @@ Como o código é programático, você pode definir o `name` diretamente no `ren
       "type": "card",
       "index": 0,
       "title": "Card 1",
-      "content": "Conteúdo 1"
+      "text": "Conteúdo 1"
     },
     {
       "type": "barChart",
@@ -385,7 +386,7 @@ Para adicionar uma nova questão, simplesmente adicione um objeto ao array `ques
           "percentage": 50
         }
       ],
-      "type": "closed"
+      "type": "multiple-choice"
     }
   ]
 }
@@ -396,16 +397,16 @@ Para adicionar uma nova questão, simplesmente adicione um objeto ao array `ques
 - `id`: ID único (number)
 - `index`: Ordem de exibição (number)
 - `question`: Texto da pergunta (string)
-- `type`: Tipo da questão - `"nps"`, `"closed"`, ou `"open"` (string)
+- `type`: Tipo da questão - `"nps"`, `"open-ended"`, `"multiple-choice"` ou `"single-choice"` (string)
 
 **Campos opcionais:**
 
 - `icon`: Nome do ícone (string)
 - `summary`: Resumo da questão (string)
 - `data`: Dados da questão (array) - estrutura varia conforme o tipo
-- `wordCloud`: Dados da nuvem de palavras (array) - para questões `"open"`
-- `sentimentData`: Dados de sentimento (array) - para questões `"open"`
-- `topCategories`: Categorias principais (array) - para questões `"open"`
+- `wordCloud`: Dados da nuvem de palavras (array) - para questões `"open-ended"`
+- `sentimentData`: Dados de sentimento (array) - para questões `"open-ended"`
+- `topCategories`: Categorias principais (array) - para questões `"open-ended"`
 
 ### Remover uma questão
 
@@ -443,7 +444,7 @@ Para adicionar uma nova questão, simplesmente adicione um objeto ao array `ques
 }
 ```
 
-#### Questão Fechada (`type: "closed"`)
+#### Questão Múltipla Escolha (`type: "multiple-choice"`)
 
 ```json
 {
@@ -464,11 +465,11 @@ Para adicionar uma nova questão, simplesmente adicione um objeto ao array `ques
       "percentage": 23
     }
   ],
-  "type": "closed"
+  "type": "multiple-choice"
 }
 ```
 
-#### Questão Aberta (`type: "open"`)
+#### Questão Aberta / Campo Livre (`type: "open-ended"`)
 
 ```json
 {
@@ -504,7 +505,7 @@ Para adicionar uma nova questão, simplesmente adicione um objeto ao array `ques
     { "text": "suporte", "value": 412 },
     { "text": "tempo", "value": 356 }
   ],
-  "type": "open"
+  "type": "open-ended"
 }
 ```
 
@@ -525,8 +526,10 @@ As traduções que **não mudam de acordo com a pesquisa** ficam em `uiTexts` no
     },
     "filterPanel": {
       "all": "Todas",
-      "openField": "Campo Aberto",
-      "multipleChoice": "Múltipla Escolha"
+      "open-ended": "Campo Aberto",
+      "multiple-choice": "Múltipla Escolha",
+      "single-choice": "Escolha única",
+      "nps": "NPS"
     },
     "severityLabels": {
       "critical": "Crítico",
@@ -569,7 +572,7 @@ Use templates `{{uiTexts.caminho}}` para referenciar textos:
 {
   "type": "card",
   "title": "{{uiTexts.executiveReport.aboutStudy}}",
-  "content": "{{sectionData.summary.aboutStudy}}"
+  "text": "{{sectionData.summary.aboutStudy}}"
 }
 ```
 
@@ -590,9 +593,9 @@ Exibe conteúdo com título e corpo.
   "type": "card",
   "index": 0,
   "title": "{{uiTexts.titulo}}",
-  "content": "{{sectionData.conteudo}}",
+  "text": "{{sectionData.conteudo}}",
   "styleVariant": "default",
-  "contentStyleVariant": "with-description",
+  "textStyleVariant": "with-description",
   "components": [ ... ]
 }
 ```
@@ -602,10 +605,10 @@ Exibe conteúdo com título e corpo.
 - `type`: `"card"` (obrigatório)
 - `index`: Ordem (number, opcional)
 - `title`: Título (string, suporta templates)
-- `content`: Conteúdo (string, suporta templates)
+- `text`: Texto (string, suporta templates)
 - `styleVariant`: Estilo do card (string, opcional)
   - Valores: `"default"`, `"highlight"`, `"border-left"`, `"overflow-hidden"`, `"flex-column"`
-- `contentStyleVariant`: Estilo do conteúdo interno (string, opcional)
+- `textStyleVariant`: Estilo do texto/conteúdo interno (string, opcional)
   - Valores: `"with-description"`, `"with-charts"`, `"with-tables"`
 - `useDescription`: Usar CardDescription (boolean, opcional)
 - `components`: Componentes filhos (array, opcional)
@@ -801,7 +804,7 @@ Agrupa outros componentes.
 - `wrapper`: Tag HTML (string, obrigatório) - Exemplos: `"div"`, `"section"`, `"h3"`
 - `wrapperProps`: Props do wrapper (object, opcional) - Permite passar propriedades HTML/React
 - `components`: Componentes filhos (array, opcional)
-- `content`: Conteúdo de texto (string, suporta templates, opcional)
+- `text`: Texto (string, suporta templates, opcional)
 - `index`: Ordem (number, opcional)
 - `condition`: Condição (string, opcional)
 
@@ -856,7 +859,7 @@ Use `{{path}}` para referenciar dados dinamicamente.
 2. **`sectionData`**: Dados da seção atual
 
    ```json
-   "content": "{{sectionData.summary.aboutStudy}}"
+   "text": "{{sectionData.summary.aboutStudy}}"
    ```
 
 3. **`currentAttribute`**: Atributo atual (em seções de atributos)
@@ -908,7 +911,7 @@ Use condições para renderizar componentes condicionalmente.
 
 ```json
 {
-  "condition": "question.type === 'open' && question.wordCloud && showWordCloud"
+  "condition": "question.type === 'open-ended' && question.wordCloud && showWordCloud"
 }
 ```
 
@@ -1147,7 +1150,7 @@ Combine operadores:
 
 ```json
 {
-  "condition": "question.type === 'open' && question.wordCloud && showWordCloud"
+  "condition": "question.type === 'open-ended' && question.wordCloud && showWordCloud"
 }
 ```
 
@@ -1217,13 +1220,13 @@ O **Export não fica em `sectionsConfig.sections`**. Só é preciso ter **`uiTex
 - `overflow-hidden`: Card com overflow oculto (útil para tabelas)
 - `flex-column`: Card com layout em coluna
 
-#### `contentStyleVariant` (estilo do conteúdo interno)
+#### `textStyleVariant` (estilo do conteúdo interno)
 
 - `with-description`: Layout otimizado para conteúdo descritivo
 - `with-charts`: Layout otimizado para exibir gráficos
 - `with-tables`: Layout otimizado para exibir tabelas
 
-**Nota:** `styleVariant` e `contentStyleVariant` são propriedades diferentes e podem ser usadas juntas.
+**Nota:** `styleVariant` e `textStyleVariant` são propriedades diferentes e podem ser usadas juntas.
 
 ---
 
@@ -1260,7 +1263,7 @@ O **Export não fica em `sectionsConfig.sections`**. Só é preciso ter **`uiTex
                     "type": "card",
                     "index": 0,
                     "title": "{{uiTexts.exemplo.titulo}}",
-                    "content": "{{sectionData.descricao}}",
+                    "text": "{{sectionData.descricao}}",
                     "styleVariant": "default"
                   }
                 ]
@@ -1309,7 +1312,7 @@ O **Export não fica em `sectionsConfig.sections`**. Só é preciso ter **`uiTex
               "index": 0,
               "title": "{{uiTexts.grafico.titulo}}",
               "styleVariant": "flex-column",
-              "contentStyleVariant": "with-charts",
+              "textStyleVariant": "with-charts",
               "components": [
                 {
                   "type": "barChart",

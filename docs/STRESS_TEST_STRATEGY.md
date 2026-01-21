@@ -46,7 +46,21 @@ Criar um JSON completo (`surveyData-stress-test.json`) que teste diferentes aspe
 - **Subseção 3.3:** Por Cargo
   - Estrutura completa com todas as tabelas
 
-### Seção 4: Análise por Questão (Question Analysis)
+### Seção 4: Análise de Cultura Organizacional (Culture Analysis)
+**Objetivo:** Testar combinações complexas de componentes
+- **Subseção 4.1:** Valores Organizacionais
+  - Cards aninhados
+  - Wrappers com diferentes props
+  - Gráficos empilhados
+- **Subseção 4.2:** Comunicação Interna
+  - SentimentDivergentChart
+  - Tabelas customizadas
+  - Condições complexas
+- **Subseção 4.3:** Desenvolvimento Profissional
+  - Múltiplos gráficos em grid
+  - Cards com textStyleVariant variados
+
+### Seção 5: Análise por Questão (Question Analysis)
 **Objetivo:** Testar lista de questões com diferentes tipos
 - **Estrutura:** hasSubsections: false
 - **Componentes:**
@@ -54,24 +68,11 @@ Criar um JSON completo (`surveyData-stress-test.json`) que teste diferentes aspe
   - QuestionsList
 - **Questões:**
   - 1 questão NPS (com npsScoreCard e npsStackedChart)
-  - 2 questões fechadas (closed) com barChart
-  - 3 questões abertas (open) com:
+  - 2 questões de múltipla escolha (multiple-choice) com barChart
+  - 3 questões abertas (open-ended) com:
     - sentimentStackedChart
     - topCategoriesCards
     - wordCloud (só dados nativos; imagens não usadas)
-### Seção 5: Análise de Cultura Organizacional (Culture Analysis)
-**Objetivo:** Testar combinações complexas de componentes
-- **Subseção 5.1:** Valores Organizacionais
-  - Cards aninhados
-  - Wrappers com diferentes props
-  - Gráficos empilhados
-- **Subseção 5.2:** Comunicação Interna
-  - SentimentDivergentChart
-  - Tabelas customizadas
-  - Condições complexas
-- **Subseção 5.3:** Desenvolvimento Profissional
-  - Múltiplos gráficos em grid
-  - Cards com contentStyleVariant variados
 
 ### Seção 6: Export (Route)
 **Objetivo:** Testar item Export (página do app, sempre disponível)
@@ -194,8 +195,8 @@ Criar um JSON completo (`surveyData-stress-test.json`) que teste diferentes aspe
       { "id": "executive", ... },
       { "id": "engagement", ... },
       { "id": "attributes", ... },
-      { "id": "questions", ... },
       { "id": "culture", ... },
+      { "id": "questions", ... },
       { "id": "export", ... }
     ],
     "components": { ... }

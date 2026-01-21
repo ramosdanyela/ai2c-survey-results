@@ -14,20 +14,20 @@ import { COLOR_ORANGE_PRIMARY } from "@/lib/colors";
  *
  * @param {Object} props
  * @param {string} props.title - Card title
- * @param {string} props.content - Card content (supports \n for line breaks)
+ * @param {string} props.text - Card text (supports \n for line breaks)
  * @param {string} props.style - Card style: "elevated" | "default"
  * @param {string} props.className - Additional CSS classes
- * @param {string} props.contentClassName - CSS classes for content wrapper
+ * @param {string} props.textClassName - CSS classes for text wrapper
  * @param {string|Object} props.borderLeftColor - Border left color ("orange" or color value)
  * @param {boolean} props.useDescription - Use CardDescription instead of div
- * @param {React.ReactNode} props.children - Custom content (overrides content prop)
+ * @param {React.ReactNode} props.children - Custom content (overrides text prop)
  */
 export function GenericCard({
   title,
-  content,
+  text,
   style = "default",
   className = "",
-  contentClassName = "",
+  textClassName = "",
   borderLeftColor,
   useDescription = false,
   children,
@@ -47,13 +47,13 @@ export function GenericCard({
   }
 
   const ContentWrapper = useDescription ? CardDescription : "div";
-  const contentClassNameFinal = useDescription
+  const textClassNameFinal = useDescription
     ? "text-base leading-relaxed space-y-3"
     : "text-muted-foreground font-normal leading-relaxed space-y-3";
 
-  // If children are provided, render them instead of content
+  // If children are provided, render them instead of text
   const hasChildren = children && React.Children.count(children) > 0;
-  const hasContent = content && content.trim() !== "";
+  const hasText = text && text.trim() !== "";
 
   return (
     <Card
@@ -67,10 +67,10 @@ export function GenericCard({
           </CardTitle>
         </CardHeader>
       )}
-      <CardContent className={contentClassName}>
-        {hasContent && (
-          <ContentWrapper className={contentClassNameFinal}>
-            {content.split("\n").map((line, index) => (
+      <CardContent className={textClassName}>
+        {hasText && (
+          <ContentWrapper className={textClassNameFinal}>
+            {text.split("\n").map((line, index) => (
               <p key={index} className={line.trim() ? "" : "h-3"}>
                 {line}
               </p>

@@ -35,26 +35,25 @@
                     "type": "card",
                     "index": 0,
                     "title": "Sobre o Estudo",
-                    "content": "Esta pesquisa de satisfação de funcionários foi conduzida entre janeiro e março de 2025, envolvendo 850 colaboradores da InnovaTech Solutions.\nO objetivo principal é avaliar o nível de engajamento, satisfação e identificar áreas de melhoria no ambiente de trabalho, cultura organizacional e processos internos.",
+                    "text": "Esta pesquisa de satisfação de funcionários foi conduzida entre janeiro e março de 2025, envolvendo 850 colaboradores da InnovaTech Solutions.\nO objetivo principal é avaliar o nível de engajamento, satisfação e identificar áreas de melhoria no ambiente de trabalho, cultura organizacional e processos internos.",
                     "styleVariant": "default"
                   },
                   {
-                    "wrapper": "div",
-                    "wrapperProps": {},
+                    "type": "container",
                     "index": 1,
                     "components": [
                       {
                         "type": "card",
                         "index": 0,
                         "title": "Principais Descobertas",
-                        "content": "O NPS organizacional é de 35 pontos, classificado como 'Bom', indicando uma base sólida de funcionários satisfeitos.\nPrincipais pontos positivos incluem: qualidade do trabalho em equipe (72% positivo), oportunidades de desenvolvimento (68% positivo) e flexibilidade de horários (65% positivo).\nÁreas que necessitam atenção: comunicação interna (45% negativo), carga de trabalho (52% negativo) e processos burocráticos (48% negativo).\nA análise por departamento revela que Engenharia e Marketing apresentam maior satisfação, enquanto Vendas e Operações demonstram maior insatisfação.",
+                        "text": "O NPS organizacional é de 35 pontos, classificado como 'Bom', indicando uma base sólida de funcionários satisfeitos.\nPrincipais pontos positivos incluem: qualidade do trabalho em equipe (72% positivo), oportunidades de desenvolvimento (68% positivo) e flexibilidade de horários (65% positivo).\nÁreas que necessitam atenção: comunicação interna (45% negativo), carga de trabalho (52% negativo) e processos burocráticos (48% negativo).\nA análise por departamento revela que Engenharia e Marketing apresentam maior satisfação, enquanto Vendas e Operações demonstram maior insatisfação.",
                         "styleVariant": "highlight"
                       },
                       {
                         "type": "card",
                         "index": 1,
                         "title": "Conclusões",
-                        "content": "A empresa possui uma base sólida de funcionários engajados, mas há oportunidades significativas de melhoria.\nPriorizar melhorias na comunicação interna e redução de processos burocráticos pode aumentar significativamente a satisfação.\nProgramas de desenvolvimento profissional e reconhecimento devem ser expandidos, especialmente para departamentos com menor satisfação.\nA implementação de feedback contínuo e ações de melhoria baseadas nestes resultados é essencial para manter e melhorar o engajamento.",
+                        "text": "A empresa possui uma base sólida de funcionários engajados, mas há oportunidades significativas de melhoria.\nPriorizar melhorias na comunicação interna e redução de processos burocráticos pode aumentar significativamente a satisfação.\nProgramas de desenvolvimento profissional e reconhecimento devem ser expandidos, especialmente para departamentos com menor satisfação.\nA implementação de feedback contínuo e ações de melhoria baseadas nestes resultados é essencial para manter e melhorar o engajamento.",
                         "styleVariant": "border-left"
                       }
                     ]
@@ -68,7 +67,7 @@
                     "type": "card",
                     "index": 0,
                     "title": "",
-                    "content": "",
+                    "text": "",
                     "styleVariant": "overflow-hidden",
                     "components": [
                       {
@@ -287,9 +286,9 @@
                     "type": "card",
                     "index": 0,
                     "useDescription": true,
-                    "content": "A análise de sentimento foi realizada com base nas respostas dos funcionários sobre diferentes aspectos do ambiente de trabalho.\nForam analisadas 2.450 menções em 7 categorias principais.\nOs resultados mostram predominância de sentimentos positivos em trabalho em equipe, desenvolvimento profissional e flexibilidade.\nEnquanto comunicação interna, carga de trabalho e processos burocráticos apresentam maior proporção de sentimentos negativos.",
+                    "text": "A análise de sentimento foi realizada com base nas respostas dos funcionários sobre diferentes aspectos do ambiente de trabalho.\nForam analisadas 2.450 menções em 7 categorias principais.\nOs resultados mostram predominância de sentimentos positivos em trabalho em equipe, desenvolvimento profissional e flexibilidade.\nEnquanto comunicação interna, carga de trabalho e processos burocráticos apresentam maior proporção de sentimentos negativos.",
                     "styleVariant": "default",
-                    "contentStyleVariant": "with-description",
+                    "textStyleVariant": "with-description",
                     "components": [
                       {
                         "type": "sentimentDivergentChart",
@@ -311,7 +310,7 @@
                     "type": "card",
                     "index": 0,
                     "title": "",
-                    "content": "",
+                    "text": "",
                     "styleVariant": "overflow-hidden",
                     "components": [
                       {
@@ -329,7 +328,7 @@
                   {
                     "type": "card",
                     "index": 0,
-                    "content": "A análise de intenção de permanência revela que 58% dos funcionários pretendem permanecer na empresa nos próximos 2 anos, enquanto 22% estão considerando outras oportunidades e 20% estão indecisos.\nEste resultado indica uma base sólida de retenção, mas também sinaliza a necessidade de ações proativas para manter os talentos e engajar os funcionários indecisos.",
+                    "text": "A análise de intenção de permanência revela que 58% dos funcionários pretendem permanecer na empresa nos próximos 2 anos, enquanto 22% estão considerando outras oportunidades e 20% estão indecisos.\nEste resultado indica uma base sólida de retenção, mas também sinaliza a necessidade de ações proativas para manter os talentos e engajar os funcionários indecisos.",
                     "styleVariant": "default",
                     "components": [
                       {
@@ -828,7 +827,7 @@
       },
       {
         "id": "responses",
-        "index": 3,
+        "index": 4,
         "name": "Análise por Questão",
         "icon": "MessageSquare",
         "hasSubsections": false,
@@ -868,7 +867,7 @@
                   }
                 ]
               },
-              "closed": {
+              "multiple-choice": {
                 "components": [
                   {
                     "type": "barChart",
@@ -881,7 +880,20 @@
                   }
                 ]
               },
-              "open": {
+              "single-choice": {
+                "components": [
+                  {
+                    "type": "barChart",
+                    "index": 0,
+                    "dataPath": "question.data",
+                    "config": {
+                      "dataKey": "percentage",
+                      "yAxisDataKey": "option"
+                    }
+                  }
+                ]
+              },
+              "open-ended": {
                 "components": [
                   {
                     "type": "sentimentStackedChart",
@@ -968,7 +980,7 @@
                   "percentage": 4
                 }
               ],
-              "type": "closed"
+              "type": "multiple-choice"
             },
             {
               "id": 3,
@@ -1003,7 +1015,7 @@
                   "percentage": 2
                 }
               ],
-              "type": "closed"
+              "type": "multiple-choice"
             },
             {
               "id": 4,
@@ -1141,7 +1153,7 @@
                   "value": 76
                 }
               ],
-              "type": "open"
+              "type": "open-ended"
             },
             {
               "id": 5,
@@ -1273,7 +1285,7 @@
                   "value": 98
                 }
               ],
-              "type": "open"
+              "type": "open-ended"
             },
             {
               "id": 6,
@@ -1405,7 +1417,7 @@
                   "value": 87
                 }
               ],
-              "type": "open"
+              "type": "open-ended"
             }
           ],
           "config": {
@@ -1424,7 +1436,7 @@
       },
       {
         "id": "culture",
-        "index": 4,
+        "index": 3,
         "name": "Análise de Cultura Organizacional",
         "icon": "Users",
         "subsections": [
@@ -1454,17 +1466,15 @@
                 "id": "culture-values",
                 "components": [
                   {
-                    "wrapper": "div",
-                    "wrapperProps": {
-                      "className": "grid grid-cols-1 md:grid-cols-2 gap-6"
-                    },
+                    "type": "grid-container",
+                    "className": "grid grid-cols-1 md:grid-cols-2 gap-6",
                     "index": 0,
                     "components": [
                       {
                         "type": "card",
                         "index": 0,
                         "title": "Valores Organizacionais",
-                        "content": "Os valores organizacionais mais reconhecidos pelos funcionários são colaboração, inovação e integridade.\nA maioria dos funcionários (78%) identifica colaboração como um valor forte da empresa.",
+                        "text": "Os valores organizacionais mais reconhecidos pelos funcionários são colaboração, inovação e integridade.\nA maioria dos funcionários (78%) identifica colaboração como um valor forte da empresa.",
                         "styleVariant": "default"
                       },
                       {
@@ -1472,7 +1482,7 @@
                         "index": 1,
                         "title": "Distribuição por Valor",
                         "styleVariant": "flex-column",
-                        "contentStyleVariant": "with-charts",
+                        "textStyleVariant": "with-charts",
                         "components": [
                           {
                             "type": "sentimentStackedChart",
@@ -1495,9 +1505,9 @@
                     "type": "card",
                     "index": 0,
                     "useDescription": true,
-                    "content": "A comunicação interna é uma área que necessita melhorias significativas.\n45% dos funcionários expressam sentimentos negativos sobre a comunicação, enquanto apenas 32.5% são positivos.",
+                    "text": "A comunicação interna é uma área que necessita melhorias significativas.\n45% dos funcionários expressam sentimentos negativos sobre a comunicação, enquanto apenas 32.5% são positivos.",
                     "styleVariant": "default",
-                    "contentStyleVariant": "with-description",
+                    "textStyleVariant": "with-description",
                     "components": [
                       {
                         "type": "sentimentDivergentChart",
@@ -1516,15 +1526,14 @@
                 "id": "culture-development",
                 "components": [
                   {
-                    "wrapper": "div",
-                    "wrapperProps": {},
+                    "type": "container",
                     "index": 0,
                     "components": [
                       {
                         "type": "card",
                         "index": 0,
                         "title": "Desenvolvimento Profissional",
-                        "content": "Os programas de desenvolvimento profissional são bem avaliados, com 68% de satisfação positiva.\nFuncionários valorizam especialmente treinamentos técnicos, mentoria e oportunidades de crescimento.",
+                        "text": "Os programas de desenvolvimento profissional são bem avaliados, com 68% de satisfação positiva.\nFuncionários valorizam especialmente treinamentos técnicos, mentoria e oportunidades de crescimento.",
                         "styleVariant": "border-left"
                       },
                       {
@@ -1532,7 +1541,7 @@
                         "index": 1,
                         "title": "Satisfação com Programas",
                         "styleVariant": "flex-column",
-                        "contentStyleVariant": "with-charts",
+                        "textStyleVariant": "with-charts",
                         "components": [
                           {
                             "type": "barChart",
@@ -1646,8 +1655,9 @@
   "uiTexts": {
     "filterPanel": {
       "all": "Todas",
-      "openField": "Campo Aberto",
-      "multipleChoice": "Múltipla Escolha",
+      "open-ended": "Campo Aberto",
+      "multiple-choice": "Múltipla Escolha",
+      "single-choice": "Escolha única",
       "nps": "NPS"
     },
     "export": {

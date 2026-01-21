@@ -375,8 +375,8 @@ Além da validação de estrutura, considere validar:
 ### 4. Tipos de Questão
 
 - Questões do tipo `nps` devem ter `data` com opções "Detrator", "Promotor", "Neutro"
-- Questões do tipo `open` devem ter `sentimentData` ou `wordCloud`
-- Questões do tipo `closed` devem ter `data` com opções
+- Questões do tipo `open-ended` devem ter `sentimentData` ou `wordCloud`
+- Questões do tipo `multiple-choice` ou `single-choice` devem ter `data` com opções
 
 ### 5. Estrutura de Dados
 

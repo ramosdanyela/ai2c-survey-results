@@ -28,7 +28,7 @@
               "type": "card",
               "index": 0,
               "title": "{{uiTexts.minhaSecao.titulo}}",
-              "content": "{{sectionData.descricao}}",
+              "text": "{{sectionData.descricao}}",
               "styleVariant": "default"
             }
           ]
@@ -74,8 +74,9 @@ Adicione ao array `data.questions`:
 ### Tipos de Questão
 
 - `"nps"` - Questão NPS
-- `"closed"` - Questão fechada (múltipla escolha)
-- `"open"` - Questão aberta (campo livre)
+- `"open-ended"` - Questão aberta (campo livre)
+- `"multiple-choice"` - Questão de múltipla escolha
+- `"single-choice"` - Questão de escolha única
 
 ---
 
@@ -92,7 +93,10 @@ As traduções que **não mudam com a pesquisa** ficam em `uiTexts` no nível ra
     },
     "filterPanel": {
       "all": "Todas",
-      "openField": "Campo Aberto"
+      "open-ended": "Campo Aberto",
+      "multiple-choice": "Múltipla Escolha",
+      "single-choice": "Escolha única",
+      "nps": "NPS"
     }
   }
 }
@@ -110,7 +114,7 @@ As traduções que **não mudam com a pesquisa** ficam em `uiTexts` no nível ra
 {
   "type": "card",
   "title": "{{uiTexts.titulo}}",
-  "content": "{{sectionData.conteudo}}",
+  "text": "{{sectionData.conteudo}}",
   "styleVariant": "default"
 }
 ```
@@ -222,7 +226,7 @@ As traduções que **não mudam com a pesquisa** ficam em `uiTexts` no nível ra
   "id": 4,
   "index": 4,
   "question": "O que podemos melhorar?",
-  "type": "open",
+  "type": "open-ended",
   "wordCloud": [
     { "text": "suporte", "value": 412 }
   ],
@@ -245,7 +249,7 @@ As traduções que **não mudam com a pesquisa** ficam em `uiTexts` no nível ra
 - `overflow-hidden` - Overflow oculto
 - `flex-column` - Coluna
 
-### `contentStyleVariant` (estilo do conteúdo)
+### `textStyleVariant` (estilo do conteúdo)
 
 - `with-description` - Com descrição
 - `with-charts` - Com gráficos
@@ -276,7 +280,7 @@ As traduções que **não mudam com a pesquisa** ficam em `uiTexts` no nível ra
 - [ ] Adicionar objeto ao array `data.questions`
 - [ ] Definir `id`, `index`, `question`, `type`
 - [ ] Adicionar `data` (estrutura varia conforme tipo)
-- [ ] Para questões `open`: adicionar `wordCloud`, `topCategories`, `sentimentData`
+- [ ] Para questões `open-ended`: adicionar `wordCloud`, `topCategories`, `sentimentData`
 - [ ] Adicionar textos relacionados em `uiTexts` (se necessário)
 
 ---

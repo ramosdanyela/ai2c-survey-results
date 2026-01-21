@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import {
   Award,
   CheckSquare,
+  CircleDot,
   Cloud,
   FileText,
   TrendingUp,
@@ -340,12 +341,14 @@ export function QuestionsList({
     let filtered;
     if (normalizedQuestionFilter === "all") {
       filtered = allQuestions;
-    } else if (normalizedQuestionFilter === "open") {
-      filtered = allQuestions.filter((q) => q.type === "open");
-    } else if (normalizedQuestionFilter === "closed") {
+    } else if (normalizedQuestionFilter === "open-ended") {
+      filtered = allQuestions.filter((q) => q.type === "open-ended");
+    } else if (normalizedQuestionFilter === "multiple-choice") {
       filtered = allQuestions.filter(
-        (q) => q.type === "closed" && !isNPSQuestion(q)
+        (q) => q.type === "multiple-choice" && !isNPSQuestion(q)
       );
+    } else if (normalizedQuestionFilter === "single-choice") {
+      filtered = allQuestions.filter((q) => q.type === "single-choice");
     } else if (normalizedQuestionFilter === "nps") {
       filtered = allQuestions.filter(
         (q) => isNPSQuestion(q) || q.type === "nps"
@@ -448,8 +451,9 @@ export function QuestionsList({
     // Merge responseDetails specifically
     responseDetails: {
       all: "Todas",
-      openField: "Campo Aberto",
-      multipleChoice: "Múltipla Escolha",
+      "open-ended": "Campo Aberto",
+      "multiple-choice": "Múltipla Escolha",
+      "single-choice": "Escolha única",
       nps: "NPS",
       wordCloud: "Nuvem de Palavras",
       summary: "Sumário:",
@@ -545,24 +549,26 @@ export function QuestionsList({
     },
   ];
 
-  // Map question types to labels using type from JSON
+  // Map question types to labels using type from JSON (types: nps, open-ended, multiple-choice, single-choice)
   const questionTypeMap = {
     nps: safeUiTexts.responseDetails.nps || "NPS",
-    open: safeUiTexts.responseDetails.openField || "Campo Aberto",
-    closed: safeUiTexts.responseDetails.multipleChoice || "Múltipla Escolha",
+    "open-ended": safeUiTexts.responseDetails["open-ended"] || "Campo Aberto",
+    "multiple-choice": safeUiTexts.responseDetails["multiple-choice"] || "Múltipla Escolha",
+    "single-choice": safeUiTexts.responseDetails["single-choice"] || "Escolha única",
   };
 
   const getQuestionType = (question) => {
     const questionType = question.type;
     // Use type directly from JSON
-    return questionTypeMap[questionType] || questionTypeMap.closed;
+    return questionTypeMap[questionType] || questionTypeMap["multiple-choice"];
   };
 
-  // Map question types to icons using type from JSON
+  // Map question types to icons using type from JSON (types: nps, open-ended, multiple-choice, single-choice)
   const questionIconMap = {
     nps: TrendingUp,
-    open: FileText,
-    closed: CheckSquare,
+    "open-ended": FileText,
+    "multiple-choice": CheckSquare,
+    "single-choice": CircleDot,
   };
 
   const getQuestionIcon = (question) => {
@@ -572,7 +578,7 @@ export function QuestionsList({
       if (IconComponent) return IconComponent;
     }
     // Use type from JSON to get icon
-    const questionType = question.type || "closed";
+    const questionType = question.type || "multiple-choice";
     return questionIconMap[questionType] || CheckSquare;
   };
 
@@ -581,14 +587,14 @@ export function QuestionsList({
     // Use type from JSON to determine response calculation
     // For closed and NPS questions, sum all values
     if (
-      (questionType === "closed" || questionType === "nps") &&
+      (questionType === "multiple-choice" || questionType === "nps" || questionType === "single-choice") &&
       "data" in question &&
       question.data
     ) {
       return question.data.reduce((sum, item) => sum + (item.value || 0), 0);
     }
     // For open questions, use total survey respondents
-    if (questionType === "open") {
+    if (questionType === "open-ended") {
       return surveyInfo.totalRespondents;
     }
     return 0;
@@ -618,13 +624,7 @@ export function QuestionsList({
   };
 
   const QuestionTypePill = ({ question }) => {
-    const questionType =
-      question.type ||
-      (isNPSQuestion(question)
-        ? "nps"
-        : question.type === "open"
-        ? "open"
-        : "closed");
+    const questionType = question.type || "multiple-choice";
 
     const badgeConfig = getBadgeConfig(questionType);
     const badgeVariant = badgeConfig?.variant || "outline";
@@ -782,39 +782,57 @@ export function QuestionsList({
           </Badge>
           <Badge
             variant={
-              normalizedQuestionFilter === "open" ? "default" : "outline"
+              normalizedQuestionFilter === "open-ended" ? "default" : "outline"
             }
             className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
-              normalizedQuestionFilter === "open"
+              normalizedQuestionFilter === "open-ended"
                 ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
                 : ""
             }`}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              setQuestionFilter("open");
+              setQuestionFilter("open-ended");
             }}
           >
             <FileText className="w-3 h-3" />
-            {safeUiTexts.responseDetails.openField || "Campo Aberto"}
+            {safeUiTexts.responseDetails["open-ended"] || "Campo Aberto"}
           </Badge>
           <Badge
             variant={
-              normalizedQuestionFilter === "closed" ? "default" : "outline"
+              normalizedQuestionFilter === "multiple-choice" ? "default" : "outline"
             }
             className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
-              normalizedQuestionFilter === "closed"
+              normalizedQuestionFilter === "multiple-choice"
                 ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
                 : ""
             }`}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              setQuestionFilter("closed");
+              setQuestionFilter("multiple-choice");
             }}
           >
             <CheckSquare className="w-3 h-3" />
-            {safeUiTexts.responseDetails.multipleChoice || "Múltipla Escolha"}
+            {safeUiTexts.responseDetails["multiple-choice"] || "Múltipla Escolha"}
+          </Badge>
+          <Badge
+            variant={
+              normalizedQuestionFilter === "single-choice" ? "default" : "outline"
+            }
+            className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
+              normalizedQuestionFilter === "single-choice"
+                ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
+                : ""
+            }`}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setQuestionFilter("single-choice");
+            }}
+          >
+            <CircleDot className="w-3 h-3" />
+            {safeUiTexts.responseDetails["single-choice"] || "Escolha única"}
           </Badge>
           <Badge
             variant={normalizedQuestionFilter === "nps" ? "default" : "outline"}
@@ -1165,7 +1183,7 @@ export function QuestionsList({
 
                       {/* Render closed question chart for other questions */}
                       {question.id !== 1 &&
-                        question.type === "closed" &&
+                        (question.type === "multiple-choice" || question.type === "single-choice") &&
                         "data" in question &&
                         question.data &&
                         (() => {
@@ -1210,7 +1228,7 @@ export function QuestionsList({
                         })()}
 
                       {/* Render open question content */}
-                      {question.type === "open" &&
+                      {question.type === "open-ended" &&
                         "sentimentData" in question &&
                         question.sentimentData && (
                           <>

@@ -48,7 +48,7 @@ const VALID_COMPONENT_TYPES = [
 ];
 
 // Tipos de questões válidos
-const VALID_QUESTION_TYPES = ["nps", "closed", "open"];
+const VALID_QUESTION_TYPES = ["nps", "open-ended", "multiple-choice", "single-choice"];
 
 // Opções válidas para questões NPS
 const VALID_NPS_OPTIONS = ["Detrator", "Promotor", "Neutro"];
@@ -419,7 +419,7 @@ function validateComponentData(
     }
   }
 
-  // Valida templates em title e content
+  // Valida templates em title e text
   if (component.title) {
     errors.push(
       ...validateTemplates(
@@ -431,12 +431,12 @@ function validateComponentData(
       )
     );
   }
-  if (component.content) {
+  if (component.text) {
     errors.push(
       ...validateTemplates(
-        component.content,
+        component.text,
         data,
-        `${context}.content`,
+        `${context}.text`,
         sectionId,
         sectionData
       )
@@ -561,10 +561,10 @@ function validateRenderSchema(
     );
   }
 
-  // questionTypeSchemas (responses): nps, closed, open — cada um com components
+  // questionTypeSchemas (responses): nps, open-ended, multiple-choice, single-choice — cada um com components
   if (renderSchema.questionTypeSchemas && typeof renderSchema.questionTypeSchemas === "object") {
     const qts = renderSchema.questionTypeSchemas;
-    for (const key of ["nps", "closed", "open"]) {
+    for (const key of ["nps", "open-ended", "multiple-choice", "single-choice"]) {
       if (qts[key] && qts[key].components) {
         errors.push(
           ...validateComponents(
@@ -643,20 +643,20 @@ function validateQuestions(questions, context = "") {
       }
     }
 
-    if (question.type === "open") {
+    if (question.type === "open-ended") {
       if (!question.sentimentData && !question.wordCloud) {
         errors.push({
           path: questionContext,
-          message: "Questão aberta deve ter 'sentimentData' ou 'wordCloud'",
+          message: "Questão open-ended deve ter 'sentimentData' ou 'wordCloud'",
         });
       }
     }
 
-    if (question.type === "closed") {
+    if (question.type === "multiple-choice" || question.type === "single-choice") {
       if (!question.data || !Array.isArray(question.data)) {
         errors.push({
           path: questionContext,
-          message: "Questão fechada deve ter 'data' como array",
+          message: "Questão multiple-choice/single-choice deve ter 'data' como array",
         });
       }
     }

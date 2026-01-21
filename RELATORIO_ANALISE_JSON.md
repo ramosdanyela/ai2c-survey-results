@@ -72,10 +72,10 @@ Hoje um nó tem **ou** `wrapper` **ou** `type`; a ordem no código é: primeiro 
 |-----------|-----------|------|---------|
 | **A. Unificar sob `type` com `"container"`** | Novo tipo `type: "container"` com `as: "div"` (opcional, default `"div"`) e `wrapperProps`/`components`/`content`. Troca `{ "wrapper": "div", "components": [...] }` por `{ "type": "container", "as": "div", "components": [...] }`. | Um único campo `type`; `as` deixa explícito o elemento HTML. | Novo valor reservado; `as`/`element` passa a existir; migração em todos os JSONs. |
 | **B. Usar `type` com elementos HTML como valores** | `type: "div"`, `type: "h3"`, `type: "h4"`, `type: "span"` = container nativo. O renderer: se `type` for `div`, `h3`, `h4` ou `span` → wrapper; senão → switch de componentes. | Um único campo; sem `wrapper`. | Mistura “elemento” e “componente” no mesmo espaço de nomes; `type: "div"` não é um “tipo” no mesmo sentido de `type: "card"`. |
-| **C. Inferir `wrapper: "div"` quando omitido** | Se há `components` ou `content` e **não** há `type` nem `wrapper` → tratar como `wrapper: "div"`. Ex.: `{ "components": [...] }` em vez de `{ "wrapper": "div", "wrapperProps": {}, "components": [...] }`. Manter `wrapper` só para `h3`, `h4`, `span`. | Reduz verbosidade no caso mais comum (agrupador em `div`); mantém `wrapper` para exceções. | Dois conceitos continuam; só simplifica o padrão `div`. |
+| **C. Inferir `wrapper: "div"` quando omitido** | Se há `components` ou `text` e **não** há `type` nem `wrapper` → tratar como `wrapper: "div"`. Ex.: `{ "components": [...] }` em vez de `{ "wrapper": "div", "wrapperProps": {}, "components": [...] }`. Manter `wrapper` só para `h3`, `h4`, `span`. | Reduz verbosidade no caso mais comum (agrupador em `div`); mantém `wrapper` para exceções. | Dois conceitos continuam; só simplifica o padrão `div`. |
 | **D. Manter `type` e `wrapper` como estão** | Nenhuma alteração. | Código e JSON atuais já funcionam; sem migração. | Dois campos para “o que renderizar”; `wrapper: "div"` com `wrapperProps: {}` é verboso. |
 
-**Recomendação:** Para **simplificar sem grande refatoração**, a **opção C** é a mais leve: aceitar `{ "components": [...] }` ou `{ "content": "..." }` sem `type` nem `wrapper` como container `div` implícito, e usar `wrapper` só quando o elemento for `h3`, `h4`, `span` ou quando houver `wrapperProps` não vazios. Para **unificar de fato** em um único campo, a **opção A** (`type: "container"`, `as` opcional) é a mais clara semanticamente, à custa de migração e de um novo tipo.
+**Recomendação:** Para **simplificar sem grande refatoração**, a **opção C** é a mais leve: aceitar `{ "components": [...] }` ou `{ "text": "..." }` sem `type` nem `wrapper` como container `div` implícito, e usar `wrapper` só quando o elemento for `h3`, `h4`, `span` ou quando houver `wrapperProps` não vazios. Para **unificar de fato** em um único campo, a **opção A** (`type: "container"`, `as` opcional) é a mais clara semanticamente, à custa de migração e de um novo tipo.
 
 ---
 
@@ -134,16 +134,17 @@ Ou seja, para `responses` o valor `false` é ignorado; o flag é redundante e en
 ```json
 "questionTypeSchemas": {
   "nps": { "components": [ { "type": "npsScoreCard", ... }, { "type": "npsStackedChart", ... } ] },
-  "closed": { "components": [ { "type": "barChart", ... } ] },
-  "open": { "components": [ { "type": "sentimentStackedChart", ... }, { "type": "topCategoriesCards", ... }, { "type": "wordCloud", ... } ] }
+  "multiple-choice": { "components": [ { "type": "barChart", ... } ] },
+  "single-choice": { "components": [ { "type": "barChart", ... } ] },
+  "open-ended": { "components": [ { "type": "sentimentStackedChart", ... }, { "type": "topCategoriesCards", ... }, { "type": "wordCloud", ... } ] }
 }
 ```
 
 **Problema:** O `QuestionsList` lê `sectionData?.renderSchema?.questionTypeSchemas`, mas **não usa** esse objeto na renderização. A lógica é toda hardcoded:
 
 - `question.type === "nps"` → NPS score (usando `surveyInfo.nps`, `surveyInfo.npsCategory`) + `NPSStackedChart`
-- `question.type === "closed"` → `SimpleBarChart`
-- `question.type === "open"` → `SentimentStackedChart` + top categories + `WordCloud`
+- `question.type === "multiple-choice"` ou `"single-choice"` → `SimpleBarChart`
+- `question.type === "open-ended"` → `SentimentStackedChart` + top categories + `WordCloud`
 
 Ou seja, `questionTypeSchemas` está **morto** no JSON.
 
@@ -191,7 +192,7 @@ Ou seja, `questionTypeSchemas` está **morto** no JSON.
 
 **Estrutura no JSON:**  
 - `renderSchema.components`: `filterPills`, `questionsList`.  
-- `renderSchema.questionTypeSchemas`: `nps`, `closed`, `open` com listas de componentes.
+- `renderSchema.questionTypeSchemas`: `nps`, `open-ended`, `multiple-choice`, `single-choice` com listas de componentes.
 
 **Comportamento:**  
 - Os componentes de seção (`filterPills`, `questionsList`) vêm do `renderSchema`.  
@@ -210,7 +211,7 @@ Ou seja, `questionTypeSchemas` está **morto** no JSON.
 
 Uso misto:
 
-- **Templates `{{ }}`:** ex. `"content": "{{sectionData.summary.aboutStudy}}"`, `"{{currentAttribute.summary}}"`.
+- **Templates `{{ }}`:** ex. `"text": "{{sectionData.summary.aboutStudy}}"`, `"{{currentAttribute.summary}}"`.
 - **`dataPath`:** ex. `"dataPath": "sectionData.sentimentAnalysis.data"`, `"dataPath": "currentAttribute.distribution"`.
 
 **Recomendação:**  
