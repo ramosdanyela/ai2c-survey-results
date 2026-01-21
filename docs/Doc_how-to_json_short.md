@@ -8,7 +8,6 @@
   "index": 0,
   "name": "Minha Seção",
   "icon": "FileText",
-  "hasSchema": true,
   "subsections": [
     {
       "id": "minha-subsecao",
@@ -68,23 +67,9 @@ Adicione ao array `data.questions`:
 }
 ```
 
-### Remover/Ocultar Questão
+### Remover Questão
 
-**Remover:** Delete o objeto do array `questions`
-
-**Ocultar:** Adicione o ID em `config.questions.hiddenIds`:
-
-```json
-{
-  "data": {
-    "config": {
-      "questions": {
-        "hiddenIds": [3, 5]
-      }
-    }
-  }
-}
-```
+**Remover:** Delete o objeto do array `questions`. (O filtro `hiddenIds` foi descontinuado.)
 
 ### Tipos de Questão
 
@@ -278,8 +263,8 @@ As traduções que **não mudam com a pesquisa** ficam em `uiTexts` no nível ra
 
 - [ ] Adicionar em `sectionsConfig.sections`
 - [ ] Definir `id`, `index`, `name`, `icon`
-- [ ] Definir `hasSchema: true`
 - [ ] Criar `subsections` (se necessário)
+- [ ] Incluir `data.renderSchema` (a existência define seção com schema)
 - [ ] Criar `renderSchema` em `data` (com `name` junto dos componentes)
 - [ ] Adicionar dados em `data` (separados do `renderSchema`)
 - [ ] Adicionar textos em `uiTexts` (traduções estáticas)

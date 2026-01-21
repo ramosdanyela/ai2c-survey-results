@@ -9,7 +9,7 @@ import { useSurveyData } from "@/hooks/useSurveyData";
 import { getAttributesFromData } from "@/services/dataResolver";
 
 /**
- * Get all questions for navigation (sorted by index, using config for hiddenIds)
+ * Get all questions for navigation (sorted by index)
  * Programmatically built from data
  */
 function getAllQuestions(data) {
@@ -19,11 +19,7 @@ function getAllQuestions(data) {
 
   if (!responsesSection?.data?.questions) return [];
 
-  const questions = responsesSection.data.questions;
-  const hiddenIds = responsesSection?.data?.config?.questions?.hiddenIds || [];
-
-  const allQuestions = questions
-    .filter((q) => !hiddenIds.includes(q.id))
+  const allQuestions = responsesSection.data.questions
     .sort((a, b) => (a.index || 0) - (b.index || 0));
 
   return allQuestions.map((q) => ({
@@ -33,7 +29,7 @@ function getAllQuestions(data) {
 }
 
 /**
- * Get display number based on real questionId (renumbering excluding Q3)
+ * Get display number based on real questionId (1-based index in sorted list)
  */
 function getDisplayNumber(questionId, data) {
   const responsesSection = data?.sectionsConfig?.sections?.find(
@@ -43,7 +39,6 @@ function getDisplayNumber(questionId, data) {
   if (!responsesSection?.data?.questions) return questionId;
 
   const allQuestions = responsesSection.data.questions
-    .filter((q) => q.id !== 3) // Hide Q3
     .sort((a, b) => (a.index || 0) - (b.index || 0));
 
   const index = allQuestions.findIndex((q) => q.id === questionId);
@@ -80,7 +75,7 @@ function buildOrderedSubsections(data) {
 
   // Process sections in order
   data.sectionsConfig.sections
-    .filter((section) => !section.isRoute) // Exclude routes like "export"
+    .filter((section) => section.id !== "export") // Export é página do app; usa sections/subsections e uiTexts, não é seção de conteúdo
     .sort((a, b) => (a.index || 0) - (b.index || 0))
     .forEach((section) => {
       // CRITICAL: Special handling for dynamic sections (attributes, responses)
@@ -120,15 +115,16 @@ function buildOrderedSubsections(data) {
         return; // Skip renderSchema if we have fixed subsections
       }
 
-      // Priority 2: Subsections from renderSchema (for non-dynamic sections only)
+      // Priority 2: Subsections from renderSchema (fallback only - should not happen if section.subsections exists)
       // IMPORTANT: Filter out template subsections (like "attribute-template")
+      // Note: renderSchema.subsections no longer has index/name/icon - only components
+      // This fallback should rarely be used since section.subsections should always exist
       if (
         section.data?.renderSchema?.subsections &&
         Array.isArray(section.data.renderSchema.subsections)
       ) {
         section.data.renderSchema.subsections
           .filter((sub) => !sub.id?.includes("template")) // Filter out templates
-          .sort((a, b) => (a.index || 0) - (b.index || 0))
           .forEach((subsection) => {
             subsections.push(subsection.id);
           });
@@ -144,7 +140,7 @@ function buildOrderedSubsections(data) {
 
 /**
  * Get section title from data (programmatic)
- * Priority: sectionsConfig.sections[].name > uiTexts.surveyHeader > sectionId
+ * Priority: sectionsConfig.sections[].name > sectionId
  */
 function getSectionTitleFromData(sectionId, data) {
   if (!data || !sectionId) return sectionId;
@@ -160,24 +156,6 @@ function getSectionTitleFromData(sectionId, data) {
     );
     if (section?.name) {
       return section.name;
-    }
-  }
-
-  // Priority 2: Try to get from uiTexts.surveyHeader (legacy support)
-  const uiTexts = data?.uiTexts?.surveyHeader;
-  if (uiTexts) {
-    // Map section IDs to title keys (for backward compatibility)
-    const titleMap = {
-      executive: uiTexts.executiveReport,
-      engagement: uiTexts.engagementAnalysis,
-      attributes: uiTexts.attributeAnalysis,
-      responses: uiTexts.questionAnalysis,
-      questions: uiTexts.questionAnalysis,
-      culture: uiTexts.cultureAnalysis,
-    };
-
-    if (titleMap[baseSectionId]) {
-      return titleMap[baseSectionId];
     }
   }
 
@@ -289,11 +267,11 @@ function getFirstSubsectionHelper(sectionId, data) {
     return sorted[0].id;
   }
 
-  // Priority 3: RenderSchema subsections (for non-dynamic sections)
+  // Priority 3: RenderSchema subsections (fallback - should use section.subsections instead)
+  // Note: renderSchema.subsections no longer has index - order should come from section.subsections
   if (section.data?.renderSchema?.subsections?.length > 0) {
-    const sorted = [...section.data.renderSchema.subsections].sort(
-      (a, b) => (a.index ?? 999) - (b.index ?? 999)
-    );
+    // No sorting since index was removed - use as-is
+    const sorted = [...section.data.renderSchema.subsections];
     return sorted[0].id;
   }
 
@@ -304,6 +282,8 @@ function getFirstSubsectionHelper(sectionId, data) {
  * Normalize section to specific subsection (programmatic - generic)
  */
 function normalizeSection(currentSection, data) {
+  if (!currentSection) return currentSection;
+  
   if (!data?.sectionsConfig?.sections) {
     // Fallback for known sections (backward compatibility)
     const fallbacks = {
@@ -332,9 +312,9 @@ function normalizeSection(currentSection, data) {
 
   // If it's a template, normalize to first real attribute
   if (
-    currentSection.includes("template") &&
     currentSection &&
     typeof currentSection === "string" &&
+    currentSection.includes("template") &&
     currentSection.startsWith("attributes")
   ) {
     const firstSub = getFirstSubsectionHelper("attributes", data);
@@ -456,7 +436,8 @@ function getPreviousSection(currentSection, data) {
 
 /**
  * Get subsection title (programmatic)
- * Priority: sectionConfig.subsections > renderSchema.subsections > uiTexts > ID
+ * Priority: sectionConfig.subsections > uiTexts > attributes > ID
+ * (renderSchema.subsections tem apenas id e components; name vem de section.subsections)
  */
 function getSubsectionTitle(sectionId, data, maxLength = 40) {
   if (!data || !sectionId) return sectionId;
@@ -480,24 +461,14 @@ function getSubsectionTitle(sectionId, data, maxLength = 40) {
     }
   }
 
-  // Priority 2: Try to get from renderSchema.subsections
-  if (sectionConfig?.data?.renderSchema?.subsections) {
-    const subsection = sectionConfig.data.renderSchema.subsections.find(
-      (sub) => sub.id === sectionId
-    );
-    if (subsection?.name) {
-      return subsection.name;
-    }
-  }
-
-  // Priority 3: Try uiTexts.surveyHeader (legacy support)
-  const uiTexts = data.uiTexts?.surveyHeader || {};
+  // Priority 2: Try to get section title from data
+  // (renderSchema.subsections contém apenas id e components; name vem de section.subsections)
   const sectionTitle = getSectionTitleFromData(sectionId, data);
   if (sectionTitle !== sectionId) {
     return sectionTitle;
   }
 
-  // Priority 4: If it's an attribute subsection (attributes-{id})
+  // Priority 3: If it's an attribute subsection (attributes-{id})
   if (
     sectionId &&
     typeof sectionId === "string" &&
@@ -524,7 +495,7 @@ function getSubsectionTitle(sectionId, data, maxLength = 40) {
   }
 
   // Priority 5: If it's a template (like "attribute-template"), return empty
-  if (sectionId.includes("template")) {
+  if (sectionId && typeof sectionId === "string" && sectionId.includes("template")) {
     return ""; // Don't show template names in navigation
   }
 
@@ -590,7 +561,7 @@ function getSectionAndSubsection(sectionId, data, maxLength = 40) {
     uiTexts.attributeAnalysis || "Análise por Atributos";
   if (
     sectionTitle === attributeAnalysisTitle ||
-    sectionTitle.includes("Atributos")
+    (sectionTitle && typeof sectionTitle === "string" && sectionTitle.includes("Atributos"))
   ) {
     sectionTitle = uiTexts.deepDive || "Aprofundamento";
   }

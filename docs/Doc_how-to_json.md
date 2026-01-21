@@ -76,7 +76,6 @@ Define as seções da pesquisa. Cada seção pode ter subseções e um schema de
         "index": 0,
         "name": "Relatório Executivo",
         "icon": "FileText",
-        "hasSchema": true,
         "subsections": [
           {
             "id": "executive-summary",
@@ -101,10 +100,8 @@ Define as seções da pesquisa. Cada seção pode ter subseções e um schema de
 - `index` (obrigatório): Ordem de exibição, começa em 0 (number)
 - `name` (obrigatório): Nome exibido na interface (string)
 - `icon` (obrigatório): Nome do ícone do Lucide React (string)
-- `hasSchema` (obrigatório): Se tem schema de renderização (boolean)
 - `subsections` (opcional): Array de subseções
-- `data` (obrigatório se `hasSchema: true`): Dados e schema de renderização
-- `isRoute` (opcional): Se é rota especial (boolean)
+- `data` (obrigatório para seções de conteúdo): Dados e `renderSchema` de renderização; a existência de `data.renderSchema` define se a seção usa o renderizador genérico. O **Export** não fica em `sections`; só em `uiTexts.export`; o app injeta o item no menu.
 - `hasSubsections` (opcional): Se tem subseções (boolean)
 - `defaultExpanded` (opcional): Se a seção inicia expandida no sidebar (boolean)
 
@@ -195,7 +192,6 @@ Esta seção contém todas as traduções e textos da interface que são fixos, 
         "index": 0,
         "name": "Minha Seção",
         "icon": "BarChart3",
-        "hasSchema": true,
         "subsections": [
           {
             "id": "minha-subsecao",
@@ -411,26 +407,9 @@ Para adicionar uma nova questão, simplesmente adicione um objeto ao array `ques
 - `sentimentData`: Dados de sentimento (array) - para questões `"open"`
 - `topCategories`: Categorias principais (array) - para questões `"open"`
 
-### Remover/Ocultar uma questão
+### Remover uma questão
 
-Para ocultar uma questão sem removê-la do JSON, use `config.questions.hiddenIds`:
-
-```json
-{
-  "data": {
-    "questions": [ ... ],
-    "config": {
-      "questions": {
-        "hiddenIds": [3, 5]
-      }
-    }
-  }
-}
-```
-
-As questões com IDs em `hiddenIds` não serão exibidas na interface, mas permanecem no JSON.
-
-**Para remover completamente:** Simplesmente remova o objeto do array `questions`.
+**Para remover:** Remova o objeto do array `questions`. O filtro `config.questions.hiddenIds` foi descontinuado.
 
 ### Estrutura de uma questão por tipo
 
@@ -726,7 +705,7 @@ Usa dados de `surveyInfo` automaticamente.
 
 ### WordCloud
 
-Nuvem de palavras.
+Nuvem de palavras. Usa a estrutura de dados nativa `[{text, value}]` em `dataPath`. Imagens não são usadas.
 
 ```json
 {
@@ -734,9 +713,7 @@ Nuvem de palavras.
   "index": 0,
   "dataPath": "question.wordCloud",
   "config": {
-    "title": "{{uiTexts.responseDetails.wordCloud}}",
-    "useStaticImage": true,
-    "staticImagePath": "/nuvem.png"
+    "title": "{{uiTexts.responseDetails.wordCloud}}"
   }
 }
 ```
@@ -1088,7 +1065,6 @@ Ver seção [Gerenciando Questões](#gerenciando-questões) para exemplos comple
   "index": 5,
   "name": "Nova Seção",
   "icon": "BarChart3",
-  "hasSchema": true,
   "subsections": [ ... ]
 }
 ```
@@ -1117,7 +1093,6 @@ Ver seção [Gerenciando Questões](#gerenciando-questões) para exemplos comple
 
 - **Adicionar:** Adicione um objeto ao array `questions` em `data.questions`
 - **Remover:** Remova o objeto do array `questions`
-- **Ocultar:** Adicione o ID em `config.questions.hiddenIds`
 
 Veja a seção [Gerenciando Questões](#gerenciando-questões) para detalhes.
 
@@ -1200,7 +1175,6 @@ Use `hasSubsections: false` e `components` diretamente:
 ```json
 {
   "id": "secao-simples",
-  "hasSchema": true,
   "hasSubsections": false,
   "data": {
     "renderSchema": {
@@ -1215,17 +1189,21 @@ Use `hasSubsections: false` e `components` diretamente:
 }
 ```
 
-### Como criar uma seção de rota especial?
+### E o item Export?
 
-Use `isRoute: true`:
+O **Export não fica em `sectionsConfig.sections`**. Só é preciso ter **`uiTexts.export`** com os textos (ex.: `title`, `description`, `exportFullReport`, etc.). O app injeta o item no fim do menu usando `uiTexts.export.title` e ícone "Download". A página de Export usa as seções de `sectionsConfig.sections` para montar as opções. A rota /export é sempre oferecida pelo app.
 
 ```json
-{
-  "id": "export",
-  "index": 4,
-  "name": "Export",
-  "icon": "Download",
-  "isRoute": true
+"uiTexts": {
+  "export": {
+    "title": "Export de Dados",
+    "description": "Exporte os dados da pesquisa em diferentes formatos",
+    "exportFullReport": "Exportar Relatório Completo",
+    "selectSpecificSections": "Selecionar Seções Específicas",
+    "exportAsPDF": "Exportar como PDF",
+    "exportAsPPT": "Exportar como PPT",
+    "selectAtLeastOneSection": "Selecione pelo menos uma seção"
+  }
 }
 ```
 
@@ -1262,7 +1240,6 @@ Use `isRoute: true`:
         "index": 0,
         "name": "Exemplo Simples",
         "icon": "FileText",
-        "hasSchema": true,
         "subsections": [
           {
             "id": "exemplo-subsecao",
@@ -1311,7 +1288,6 @@ Use `isRoute: true`:
   "index": 1,
   "name": "Exemplo com Gráfico",
   "icon": "BarChart3",
-  "hasSchema": true,
   "subsections": [
     {
       "id": "grafico-subsecao",
@@ -1370,7 +1346,6 @@ Use `isRoute: true`:
   "index": 3,
   "name": "Análise por Questão",
   "icon": "MessageSquare",
-  "hasSchema": true,
   "data": {
     "renderSchema": {
       "subsections": [
@@ -1405,12 +1380,7 @@ Use `isRoute: true`:
         ],
         "type": "nps"
       }
-    ],
-    "config": {
-      "questions": {
-        "hiddenIds": [3]
-      }
-    }
+    ]
   }
 }
 ```

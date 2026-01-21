@@ -6,15 +6,26 @@ import { execSync } from "child_process";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Buscar JSONs em src/data/
-const dataDir = path.join(__dirname, "../../../src/data");
+const projectRoot = path.resolve(__dirname, "../../..");
+const dataDir = path.join(projectRoot, "src", "data");
+const validateScript = path.join(projectRoot, "data", "validation", "scripts", "validate-json.js");
+
+if (!fs.existsSync(dataDir)) {
+  console.log("📁 Pasta src/data não encontrada");
+  process.exit(0);
+}
+if (!fs.existsSync(validateScript)) {
+  console.error("❌ Script não encontrado:", validateScript);
+  process.exit(1);
+}
+
 const files = fs
   .readdirSync(dataDir)
-  .filter((file) => file.endsWith(".json") && file.startsWith("surveyData"))
-  .map((file) => path.join(dataDir, file));
+  .filter((f) => f.endsWith(".json") && f.startsWith("surveyData"))
+  .map((f) => path.join(dataDir, f));
 
 if (files.length === 0) {
-  console.log("📁 Nenhum arquivo JSON encontrado em src/data/");
+  console.log("📁 Nenhum arquivo surveyData*.json em src/data/");
   process.exit(0);
 }
 
@@ -25,13 +36,10 @@ const results = [];
 
 files.forEach((file) => {
   try {
-    execSync(
-      `node data/validation/scripts/validate-json.js "${file}"`,
-      {
-        stdio: "inherit",
-        cwd: path.join(__dirname, "../../../"),
-      }
-    );
+    execSync(`node "${validateScript}" "${file}"`, {
+      stdio: "inherit",
+      cwd: projectRoot,
+    });
     results.push({ file, valid: true });
   } catch (error) {
     allValid = false;
@@ -57,4 +65,5 @@ if (!allValid) {
 
 console.log("\n✅ Todos os arquivos JSON são válidos!\n");
 process.exit(0);
+
 

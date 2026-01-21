@@ -60,7 +60,11 @@ const VALID_NPS_OPTIONS = ["Detrator", "Promotor", "Neutro"];
 function resolveDataPath(obj, path, sectionId = null, sectionData = null) {
   if (!obj || !path) return null;
 
-  // Handle currentAttribute (contexto dinâmico para seção "attributes")
+  // question.* é contexto dinâmico por questão (responses) — não validar
+  if (path.startsWith("question.") && sectionId === "responses") {
+    return { _isDynamic: true, _path: path };
+  }
+  // currentAttribute (contexto dinâmico para seção "attributes")
   if (path.startsWith("currentAttribute.") && sectionId === "attributes") {
     const attributePath = path.replace("currentAttribute.", "");
     // Verifica se existe algum atributo no array attributes
@@ -130,7 +134,11 @@ function validateDataPath(
 ) {
   if (!dataPath) return null;
 
-  // currentAttribute é contexto dinâmico - valida estrutura, não existência
+  // question.* é contexto dinâmico por questão (responses)
+  if (dataPath.startsWith("question.") && sectionId === "responses") {
+    return null;
+  }
+  // currentAttribute é contexto dinâmico (attributes)
   if (dataPath.startsWith("currentAttribute.") && sectionId === "attributes") {
     const attributePath = dataPath.replace("currentAttribute.", "");
     const attributes =
@@ -553,6 +561,24 @@ function validateRenderSchema(
     );
   }
 
+  // questionTypeSchemas (responses): nps, closed, open — cada um com components
+  if (renderSchema.questionTypeSchemas && typeof renderSchema.questionTypeSchemas === "object") {
+    const qts = renderSchema.questionTypeSchemas;
+    for (const key of ["nps", "closed", "open"]) {
+      if (qts[key] && qts[key].components) {
+        errors.push(
+          ...validateComponents(
+            qts[key].components,
+            enhancedData,
+            `${context}.questionTypeSchemas.${key}.components`,
+            sectionId,
+            sectionData
+          )
+        );
+      }
+    }
+  }
+
   return errors;
 }
 
@@ -694,27 +720,25 @@ export function validateCustomRules(data) {
     data.sectionsConfig.sections.forEach((section, index) => {
       const sectionContext = `/sectionsConfig/sections[${index}]`;
 
-      // Validar que seções com hasSchema: true têm data (mas não se for isRoute: true)
-      if (section.hasSchema && !section.isRoute && !section.data) {
+      // attributes: deve ter data.attributes (array). Não usa renderSchema.
+      if (section.id === "attributes") {
+        if (!section.data?.attributes || !Array.isArray(section.data.attributes)) {
+          errors.push({
+            path: sectionContext,
+            message: `Seção "attributes" deve ter "data.attributes" (array)`,
+          });
+        }
+      } else if (!section.data?.renderSchema) {
+        // Demais seções de conteúdo: data.renderSchema
         errors.push({
           path: sectionContext,
           message: `Seção "${
             section.name || section.id
-          }" tem hasSchema: true mas não possui propriedade "data"`,
+          }" deve ter "data.renderSchema"`,
         });
       }
 
-      // Validar que seções sem isRoute: true devem ter hasSchema
-      if (!section.isRoute && section.hasSchema === undefined) {
-        errors.push({
-          path: sectionContext,
-          message: `Seção "${
-            section.name || section.id
-          }" deve ter "hasSchema" (ou "isRoute: true" se for rota especial)`,
-        });
-      }
-
-      // Validar renderSchema se existir
+      // Validar renderSchema se existir (attributes não tem)
       if (section.data?.renderSchema) {
         const sectionData = section.data;
         errors.push(
@@ -766,17 +790,18 @@ export function validateCustomRules(data) {
     });
   }
 
-  // Validar questões (se existirem)
+  // Validar questões (data.questions ou data.responseDetails.questions)
   const responsesSection = data.sectionsConfig?.sections?.find(
     (s) => s.id === "responses"
   );
-  if (responsesSection?.data?.questions) {
-    errors.push(
-      ...validateQuestions(
-        responsesSection.data.questions,
-        `/sectionsConfig/sections[responses]/data/questions`
-      )
-    );
+  const questions =
+    responsesSection?.data?.questions ||
+    responsesSection?.data?.responseDetails?.questions;
+  if (questions && Array.isArray(questions)) {
+    const qPath = responsesSection?.data?.questions
+      ? "/sectionsConfig/sections[responses]/data/questions"
+      : "/sectionsConfig/sections[responses]/data/responseDetails/questions";
+    errors.push(...validateQuestions(questions, qPath));
   }
 
   // Validar NPS range

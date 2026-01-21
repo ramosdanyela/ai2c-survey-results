@@ -11,7 +11,6 @@
         "index": 0,
         "name": "Relatório Executivo",
         "icon": "FileText",
-        "hasSchema": true,
         "subsections": [
           {
             "id": "executive-summary",
@@ -271,7 +270,6 @@
         "index": 1,
         "name": "Análise de Engajamento",
         "icon": "Heart",
-        "hasSchema": true,
         "subsections": [
           {
             "id": "engagement-sentiment",
@@ -392,31 +390,31 @@
                 "category": "Flexibilidade",
                 "positive": 65.2,
                 "neutral": 25.8,
-                "negative": 9.0
+                "negative": 9
               },
               {
                 "category": "Liderança",
                 "positive": 58.7,
                 "neutral": 28.3,
-                "negative": 13.0
+                "negative": 13
               },
               {
                 "category": "Comunicação Interna",
                 "positive": 32.5,
                 "neutral": 22.5,
-                "negative": 45.0
+                "negative": 45
               },
               {
                 "category": "Carga de Trabalho",
                 "positive": 18.2,
                 "neutral": 29.8,
-                "negative": 52.0
+                "negative": 52
               },
               {
                 "category": "Processos Burocráticos",
                 "positive": 15.5,
                 "neutral": 36.5,
-                "negative": 48.0
+                "negative": 48
               }
             ]
           },
@@ -509,272 +507,7 @@
         "index": 2,
         "name": "Análise por Atributos",
         "icon": "Layers",
-        "hasSchema": true,
-        "subsections": [
-          {
-            "id": "attributes-department",
-            "index": 0,
-            "name": "Por Departamento",
-            "icon": "Building"
-          },
-          {
-            "id": "attributes-tenure",
-            "index": 1,
-            "name": "Por Tempo de Empresa",
-            "icon": "Clock"
-          },
-          {
-            "id": "attributes-role",
-            "index": 2,
-            "name": "Por Cargo",
-            "icon": "Briefcase"
-          }
-        ],
         "data": {
-          "renderSchema": {
-            "subsections": [
-              {
-                "id": "attribute-template",
-                "index": 0,
-                "name": "{{currentAttribute.name}}",
-                "icon": "{{currentAttribute.icon}}",
-                "components": [
-                  {
-                    "type": "card",
-                    "index": 0,
-                    "title": "{{uiTexts.attributeDeepDive.summary}}",
-                    "content": "{{currentAttribute.summary}}",
-                    "styleVariant": "default"
-                  },
-                  {
-                    "wrapper": "div",
-                    "wrapperProps": {},
-                    "index": 1,
-                    "components": [
-                      {
-                        "type": "card",
-                        "index": 0,
-                        "title": "{{uiTexts.attributeDeepDive.distribution}}",
-                        "styleVariant": "flex-column",
-                        "contentStyleVariant": "with-charts",
-                        "components": [
-                          {
-                            "type": "barChart",
-                            "index": 0,
-                            "dataPath": "currentAttribute.distribution",
-                            "config": {
-                              "dataKey": "percentage",
-                              "yAxisDataKey": "segment",
-                              "tooltipFormatter": "uiTexts.attributeDeepDive.tooltip.respondents"
-                            }
-                          },
-                          {
-                            "type": "distributionTable",
-                            "index": 1,
-                            "dataPath": "currentAttribute.distribution",
-                            "attributeName": "{{currentAttribute.name}}"
-                          }
-                        ]
-                      },
-                      {
-                        "type": "card",
-                        "index": 1,
-                        "title": "{{uiTexts.attributeDeepDive.sentimentAnalysis}}",
-                        "styleVariant": "flex-column",
-                        "contentStyleVariant": "with-charts",
-                        "components": [
-                          {
-                            "type": "sentimentStackedChart",
-                            "index": 0,
-                            "dataPath": "currentAttribute.sentiment",
-                            "config": {
-                              "yAxisDataKey": "segment"
-                            }
-                          },
-                          {
-                            "type": "sentimentTable",
-                            "index": 1,
-                            "dataPath": "currentAttribute.sentiment"
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "card",
-                    "index": 2,
-                    "condition": "currentAttribute.npsSummary",
-                    "title": "{{uiTexts.attributeDeepDive.npsQuestion}}",
-                    "styleVariant": "default",
-                    "contentStyleVariant": "with-tables",
-                    "components": [
-                      {
-                        "wrapper": "div",
-                        "index": 0,
-                        "components": [
-                          {
-                            "wrapper": "h3",
-                            "wrapperProps": {},
-                            "index": 0,
-                            "content": "{{uiTexts.attributeDeepDive.summary}}"
-                          },
-                          {
-                            "wrapper": "div",
-                            "wrapperProps": {},
-                            "index": 1,
-                            "content": "{{currentAttribute.npsSummary}}"
-                          }
-                        ]
-                      },
-                      {
-                        "wrapper": "div",
-                        "index": 1,
-                        "components": [
-                          {
-                            "wrapper": "h3",
-                            "wrapperProps": {},
-                            "index": 0,
-                            "content": "{{uiTexts.attributeDeepDive.responses}}"
-                          },
-                          {
-                            "wrapper": "div",
-                            "wrapperProps": {},
-                            "index": 1,
-                            "components": [
-                              {
-                                "wrapper": "div",
-                                "index": 0,
-                                "components": [
-                                  {
-                                    "wrapper": "h4",
-                                    "wrapperProps": {},
-                                    "index": 0,
-                                    "content": "{{uiTexts.attributeDeepDive.promotersNeutralsDetractors}}"
-                                  },
-                                  {
-                                    "type": "npsDistributionTable",
-                                    "index": 1,
-                                    "dataPath": "currentAttribute.npsDistribution",
-                                    "attributeName": "{{currentAttribute.name}}"
-                                  }
-                                ]
-                              },
-                              {
-                                "wrapper": "div",
-                                "index": 1,
-                                "components": [
-                                  {
-                                    "wrapper": "h4",
-                                    "wrapperProps": {},
-                                    "index": 0,
-                                    "content": "{{uiTexts.attributeDeepDive.nps}}"
-                                  },
-                                  {
-                                    "type": "npsTable",
-                                    "index": 1,
-                                    "dataPath": "currentAttribute.nps",
-                                    "attributeName": "{{currentAttribute.name}}"
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "card",
-                    "index": 3,
-                    "condition": "currentAttribute.satisfactionImpactSummary",
-                    "title": "{{uiTexts.attributeDeepDive.satisfactionImpactQuestion}}",
-                    "styleVariant": "default",
-                    "contentStyleVariant": "with-tables",
-                    "components": [
-                      {
-                        "wrapper": "div",
-                        "index": 0,
-                        "components": [
-                          {
-                            "wrapper": "h3",
-                            "wrapperProps": {},
-                            "index": 0,
-                            "content": "{{uiTexts.attributeDeepDive.summary}}"
-                          },
-                          {
-                            "wrapper": "div",
-                            "wrapperProps": {},
-                            "index": 1,
-                            "content": "{{currentAttribute.satisfactionImpactSummary}}"
-                          }
-                        ]
-                      },
-                      {
-                        "wrapper": "div",
-                        "condition": "currentAttribute.satisfactionImpactSentiment",
-                        "index": 1,
-                        "components": [
-                          {
-                            "wrapper": "h3",
-                            "wrapperProps": {},
-                            "index": 0,
-                            "content": "{{uiTexts.attributeDeepDive.sentimentAnalysis}}"
-                          },
-                          {
-                            "type": "sentimentThreeColorChart",
-                            "index": 1,
-                            "dataPath": "currentAttribute.satisfactionImpactSentiment",
-                            "config": {}
-                          },
-                          {
-                            "type": "sentimentImpactTable",
-                            "index": 2,
-                            "dataPath": "currentAttribute.satisfactionImpactSentiment"
-                          }
-                        ]
-                      },
-                      {
-                        "wrapper": "div",
-                        "condition": "currentAttribute.positiveCategories",
-                        "index": 2,
-                        "components": [
-                          {
-                            "wrapper": "h3",
-                            "wrapperProps": {},
-                            "index": 0,
-                            "content": "{{uiTexts.attributeDeepDive.positiveCategories}}"
-                          },
-                          {
-                            "type": "positiveCategoriesTable",
-                            "index": 1,
-                            "dataPath": "currentAttribute.positiveCategories"
-                          }
-                        ]
-                      },
-                      {
-                        "wrapper": "div",
-                        "condition": "currentAttribute.negativeCategories",
-                        "index": 3,
-                        "components": [
-                          {
-                            "wrapper": "h3",
-                            "wrapperProps": {},
-                            "index": 0,
-                            "content": "{{uiTexts.attributeDeepDive.negativeCategories}}"
-                          },
-                          {
-                            "type": "negativeCategoriesTable",
-                            "index": 1,
-                            "dataPath": "currentAttribute.negativeCategories"
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
           "attributes": [
             {
               "id": "department",
@@ -819,37 +552,37 @@
                   "segment": "Engenharia",
                   "positive": 75.2,
                   "neutral": 15.8,
-                  "negative": 9.0
+                  "negative": 9
                 },
                 {
                   "segment": "Marketing",
                   "positive": 72.5,
                   "neutral": 18.5,
-                  "negative": 9.0
+                  "negative": 9
                 },
                 {
                   "segment": "RH",
-                  "positive": 65.0,
-                  "neutral": 25.0,
-                  "negative": 10.0
+                  "positive": 65,
+                  "neutral": 25,
+                  "negative": 10
                 },
                 {
                   "segment": "Vendas",
                   "positive": 45.5,
                   "neutral": 30.5,
-                  "negative": 24.0
+                  "negative": 24
                 },
                 {
                   "segment": "Operações",
                   "positive": 38.2,
                   "neutral": 32.8,
-                  "negative": 29.0
+                  "negative": 29
                 },
                 {
                   "segment": "Outros",
-                  "positive": 60.0,
-                  "neutral": 25.0,
-                  "negative": 15.0
+                  "positive": 60,
+                  "neutral": 25,
+                  "negative": 15
                 }
               ],
               "npsSummary": "Os escores NPS variam significativamente entre departamentos.\nEngenharia e Marketing lideram com NPS positivo (42 e 38), indicando alta satisfação e lealdade.\nVendas e Operações apresentam NPS negativo (-15 e -22), sinalizando necessidade urgente de intervenção.\nRH e Outros departamentos apresentam NPS moderadamente positivo, indicando satisfação adequada.",
@@ -884,49 +617,49 @@
                   "segment": "Engenharia",
                   "promotores": 58.5,
                   "neutros": 16.5,
-                  "detratores": 25.0
+                  "detratores": 25
                 },
                 {
                   "segment": "Marketing",
-                  "promotores": 55.0,
-                  "neutros": 17.0,
-                  "detratores": 28.0
+                  "promotores": 55,
+                  "neutros": 17,
+                  "detratores": 28
                 },
                 {
                   "segment": "RH",
                   "promotores": 42.5,
                   "neutros": 30.5,
-                  "detratores": 27.0
+                  "detratores": 27
                 },
                 {
                   "segment": "Vendas",
-                  "promotores": 32.0,
-                  "neutros": 28.0,
-                  "detratores": 40.0
+                  "promotores": 32,
+                  "neutros": 28,
+                  "detratores": 40
                 },
                 {
                   "segment": "Operações",
                   "promotores": 28.5,
                   "neutros": 28.5,
-                  "detratores": 43.0
+                  "detratores": 43
                 },
                 {
                   "segment": "Outros",
-                  "promotores": 40.0,
-                  "neutros": 32.0,
-                  "detratores": 28.0
+                  "promotores": 40,
+                  "neutros": 32,
+                  "detratores": 28
                 }
               ],
               "satisfactionImpactSummary": "Engenharia e Marketing valorizam principalmente trabalho em equipe, desenvolvimento profissional e flexibilidade.\nVendas e Operações expressam maior insatisfação com carga de trabalho, processos burocráticos e comunicação interna.\nRH demonstra satisfação equilibrada, com preocupações moderadas sobre processos.",
               "satisfactionImpactSentiment": [
                 {
                   "sentiment": "Negativo",
-                  "Engenharia": 9.0,
-                  "Marketing": 9.0,
-                  "RH": 10.0,
-                  "Vendas": 24.0,
-                  "Operações": 29.0,
-                  "Outros": 15.0
+                  "Engenharia": 9,
+                  "Marketing": 9,
+                  "RH": 10,
+                  "Vendas": 24,
+                  "Operações": 29,
+                  "Outros": 15
                 },
                 {
                   "sentiment": "Não aplicável",
@@ -941,10 +674,10 @@
                   "sentiment": "Positivo",
                   "Engenharia": 75.2,
                   "Marketing": 72.5,
-                  "RH": 65.0,
+                  "RH": 65,
                   "Vendas": 45.5,
                   "Operações": 38.2,
-                  "Outros": 60.0
+                  "Outros": 60
                 }
               ],
               "positiveCategories": [
@@ -952,57 +685,57 @@
                   "category": "Trabalho em Equipe",
                   "Engenharia": 85.2,
                   "Marketing": 78.5,
-                  "RH": 72.0,
-                  "Vendas": 55.0,
-                  "Operações": 48.0,
-                  "Outros": 70.0
+                  "RH": 72,
+                  "Vendas": 55,
+                  "Operações": 48,
+                  "Outros": 70
                 },
                 {
                   "category": "Desenvolvimento Profissional",
                   "Engenharia": 82.5,
-                  "Marketing": 75.0,
-                  "RH": 68.0,
-                  "Vendas": 42.0,
-                  "Operações": 35.0,
-                  "Outros": 65.0
+                  "Marketing": 75,
+                  "RH": 68,
+                  "Vendas": 42,
+                  "Operações": 35,
+                  "Outros": 65
                 },
                 {
                   "category": "Flexibilidade",
-                  "Engenharia": 78.0,
-                  "Marketing": 72.0,
-                  "RH": 65.0,
-                  "Vendas": 38.0,
-                  "Operações": 32.0,
-                  "Outros": 60.0
+                  "Engenharia": 78,
+                  "Marketing": 72,
+                  "RH": 65,
+                  "Vendas": 38,
+                  "Operações": 32,
+                  "Outros": 60
                 }
               ],
               "negativeCategories": [
                 {
                   "category": "Carga de Trabalho",
-                  "Engenharia": 12.0,
-                  "Marketing": 15.0,
-                  "RH": 18.0,
-                  "Vendas": 58.0,
-                  "Operações": 65.0,
-                  "Outros": 20.0
+                  "Engenharia": 12,
+                  "Marketing": 15,
+                  "RH": 18,
+                  "Vendas": 58,
+                  "Operações": 65,
+                  "Outros": 20
                 },
                 {
                   "category": "Processos Burocráticos",
-                  "Engenharia": 8.0,
-                  "Marketing": 12.0,
-                  "RH": 22.0,
-                  "Vendas": 52.0,
-                  "Operações": 58.0,
-                  "Outros": 18.0
+                  "Engenharia": 8,
+                  "Marketing": 12,
+                  "RH": 22,
+                  "Vendas": 52,
+                  "Operações": 58,
+                  "Outros": 18
                 },
                 {
                   "category": "Comunicação Interna",
-                  "Engenharia": 10.0,
-                  "Marketing": 18.0,
-                  "RH": 25.0,
-                  "Vendas": 48.0,
-                  "Operações": 55.0,
-                  "Outros": 22.0
+                  "Engenharia": 10,
+                  "Marketing": 18,
+                  "RH": 25,
+                  "Vendas": 48,
+                  "Operações": 55,
+                  "Outros": 22
                 }
               ]
             },
@@ -1039,25 +772,25 @@
                   "segment": "Mais de 5 anos",
                   "positive": 78.5,
                   "neutral": 15.5,
-                  "negative": 6.0
+                  "negative": 6
                 },
                 {
                   "segment": "3-5 anos",
-                  "positive": 72.0,
-                  "neutral": 20.0,
-                  "negative": 8.0
+                  "positive": 72,
+                  "neutral": 20,
+                  "negative": 8
                 },
                 {
                   "segment": "1-3 anos",
                   "positive": 65.5,
                   "neutral": 25.5,
-                  "negative": 9.0
+                  "negative": 9
                 },
                 {
                   "segment": "Menos de 1 ano",
-                  "positive": 58.0,
-                  "neutral": 28.0,
-                  "negative": 14.0
+                  "positive": 58,
+                  "neutral": 28,
+                  "negative": 14
                 }
               ]
             },
@@ -1092,27 +825,27 @@
               "sentiment": [
                 {
                   "segment": "Liderança",
-                  "positive": 82.0,
-                  "neutral": 12.0,
-                  "negative": 6.0
+                  "positive": 82,
+                  "neutral": 12,
+                  "negative": 6
                 },
                 {
                   "segment": "Sênior",
                   "positive": 75.5,
                   "neutral": 18.5,
-                  "negative": 6.0
+                  "negative": 6
                 },
                 {
                   "segment": "Pleno",
-                  "positive": 68.0,
-                  "neutral": 22.0,
-                  "negative": 10.0
+                  "positive": 68,
+                  "neutral": 22,
+                  "negative": 10
                 },
                 {
                   "segment": "Estagiário/Júnior",
                   "positive": 58.5,
                   "neutral": 28.5,
-                  "negative": 13.0
+                  "negative": 13
                 }
               ]
             }
@@ -1153,7 +886,6 @@
         "index": 3,
         "name": "Análise por Questão",
         "icon": "MessageSquare",
-        "hasSchema": true,
         "hasSubsections": false,
         "data": {
           "renderSchema": {
@@ -1180,14 +912,12 @@
                   {
                     "type": "npsScoreCard",
                     "index": 0,
-                    "condition": "question.type === 'nps'",
                     "dataPath": "surveyInfo",
                     "config": {}
                   },
                   {
                     "type": "npsStackedChart",
                     "index": 1,
-                    "condition": "question.type === 'nps' && question.data",
                     "dataPath": "question.data",
                     "config": {}
                   }
@@ -1198,7 +928,6 @@
                   {
                     "type": "barChart",
                     "index": 0,
-                    "condition": "question.id !== 1 && question.type === 'closed' && question.data",
                     "dataPath": "question.data",
                     "config": {
                       "dataKey": "percentage",
@@ -1212,14 +941,12 @@
                   {
                     "type": "sentimentStackedChart",
                     "index": 0,
-                    "condition": "question.type === 'open' && question.sentimentData",
                     "dataPath": "question.sentimentData",
                     "config": {}
                   },
                   {
                     "type": "topCategoriesCards",
                     "index": 1,
-                    "condition": "question.type === 'open' && question.topCategories",
                     "dataPath": "question.topCategories",
                     "config": {
                       "title": "{{uiTexts.responseDetails.top3Categories}}"
@@ -1228,12 +955,9 @@
                   {
                     "type": "wordCloud",
                     "index": 2,
-                    "condition": "question.type === 'open' && question.wordCloud && showWordCloud",
                     "dataPath": "question.wordCloud",
                     "config": {
-                      "title": "{{uiTexts.responseDetails.wordCloud}}",
-                      "useStaticImage": true,
-                      "staticImagePath": "/nuvem.png"
+                      "title": "{{uiTexts.responseDetails.wordCloud}}"
                     }
                   }
                 ]
@@ -1359,13 +1083,13 @@
                   "category": "Flexibilidade",
                   "positive": 65.2,
                   "neutral": 25.8,
-                  "negative": 9.0
+                  "negative": 9
                 },
                 {
                   "category": "Liderança",
                   "positive": 58.7,
                   "neutral": 28.3,
-                  "negative": 13.0
+                  "negative": 13
                 }
               ],
               "topCategories": [
@@ -1485,19 +1209,19 @@
                   "category": "Comunicação Interna",
                   "positive": 32.5,
                   "neutral": 22.5,
-                  "negative": 45.0
+                  "negative": 45
                 },
                 {
                   "category": "Carga de Trabalho",
                   "positive": 18.2,
                   "neutral": 29.8,
-                  "negative": 52.0
+                  "negative": 52
                 },
                 {
                   "category": "Processos Burocráticos",
                   "positive": 15.5,
                   "neutral": 36.5,
-                  "negative": 48.0
+                  "negative": 48
                 }
               ],
               "topCategories": [
@@ -1629,7 +1353,7 @@
                   "category": "Transparência",
                   "positive": 45.2,
                   "neutral": 32.8,
-                  "negative": 22.0
+                  "negative": 22
                 }
               ],
               "topCategories": [
@@ -1764,10 +1488,6 @@
             "questionPrefix": "Q"
           },
           "config": {
-            "questions": {
-              "hiddenIds": [3],
-              "excludedFromChartIds": [1]
-            },
             "npsCategories": {
               "detractor": "Detrator",
               "promoter": "Promotor",
@@ -1777,9 +1497,6 @@
                 "neutrals": "Neutros",
                 "promoters": "Promotores"
               }
-            },
-            "wordCloud": {
-              "imagePath": "/nuvem.png"
             }
           }
         }
@@ -1789,7 +1506,6 @@
         "index": 4,
         "name": "Análise de Cultura Organizacional",
         "icon": "Users",
-        "hasSchema": true,
         "subsections": [
           {
             "id": "culture-values",
@@ -1943,14 +1659,14 @@
               {
                 "value": "Integridade",
                 "positive": 68.5,
-                "neutral": 25.0,
+                "neutral": 25,
                 "negative": 6.5
               },
               {
                 "value": "Transparência",
                 "positive": 45.2,
                 "neutral": 32.8,
-                "negative": 22.0
+                "negative": 22
               }
             ]
           },
@@ -1960,26 +1676,26 @@
               {
                 "aspect": "Clareza das Mensagens",
                 "positive": 38.5,
-                "neutral": 25.0,
+                "neutral": 25,
                 "negative": 36.5
               },
               {
                 "aspect": "Frequência de Comunicação",
                 "positive": 28.2,
                 "neutral": 22.8,
-                "negative": 49.0
+                "negative": 49
               },
               {
                 "aspect": "Canais de Comunicação",
                 "positive": 42.5,
                 "neutral": 28.5,
-                "negative": 29.0
+                "negative": 29
               },
               {
                 "aspect": "Transparência",
                 "positive": 32.5,
                 "neutral": 22.5,
-                "negative": 45.0
+                "negative": 45
               }
             ]
           },
@@ -1993,7 +1709,7 @@
               },
               {
                 "program": "Programa de Mentoria",
-                "satisfaction": 75.0,
+                "satisfaction": 75,
                 "count": 638
               },
               {
@@ -2003,7 +1719,7 @@
               },
               {
                 "program": "Desenvolvimento de Liderança",
-                "satisfaction": 62.0,
+                "satisfaction": 62,
                 "count": 527
               },
               {
@@ -2027,13 +1743,6 @@
             }
           }
         }
-      },
-      {
-        "id": "export",
-        "index": 5,
-        "name": "Export",
-        "icon": "Download",
-        "isRoute": true
       }
     ],
     "components": {}

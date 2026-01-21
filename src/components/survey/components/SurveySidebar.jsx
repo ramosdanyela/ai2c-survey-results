@@ -36,13 +36,19 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-// Helper function to get menu items from sectionsConfig with icon components
-function getMenuItems(sectionsConfig) {
-  if (!sectionsConfig?.sections) return [];
-  return sectionsConfig.sections.map((section) => ({
+// Helper: monta itens do menu a partir de sectionsConfig e injeta Export (nome/ícone de uiTexts; sempre no fim)
+function getMenuItems(sectionsConfig, uiTexts) {
+  const sections = sectionsConfig?.sections ?? [];
+  const items = sections.map((section) => ({
     ...section,
     icon: getIcon(section.icon),
   }));
+  items.push({
+    id: "export",
+    name: uiTexts?.export?.title ?? "Export",
+    icon: getIcon("Download"),
+  });
+  return items;
 }
 
 /**
@@ -77,12 +83,7 @@ function hasSubsections(item, data) {
   // Check responses (known dynamic section)
   if (item.id === "responses") {
     const questions = getQuestionsFromData(data);
-    const responsesSection = data?.sectionsConfig?.sections?.find(
-      (s) => s.id === "responses"
-    );
-    const hiddenIds =
-      responsesSection?.data?.config?.questions?.hiddenIds || [];
-    return questions.filter((q) => !hiddenIds.includes(q.id)).length > 0;
+    return questions.length > 0;
   }
 
   // Priority 4: Check if has dynamicSubsections flag with config
@@ -118,26 +119,9 @@ function getDynamicSubsections(section, data) {
 
   // Special handling for responses (always works, even without dynamicSubsections flag)
   if (section.id === "responses") {
-    const questions = getQuestionsFromData(data);
-    const responsesSection = data?.sectionsConfig?.sections?.find(
-      (s) => s.id === "responses"
-    );
-    const hiddenIds =
-      responsesSection?.data?.config?.questions?.hiddenIds || [];
-    const filtered = questions
-      .filter((q) => !hiddenIds.includes(q.id))
+    const questions = getQuestionsFromData(data)
       .sort((a, b) => (a.index || 0) - (b.index || 0));
-    
-    // Debug log
-    if (filtered.length === 0) {
-      console.warn("SurveySidebar: No questions found for responses section", {
-        totalQuestions: questions.length,
-        hiddenIds,
-        questionsIds: questions.map(q => q.id),
-      });
-    }
-    
-    return filtered.map((question) => ({
+    return questions.map((question) => ({
       id: `responses-${question.id}`,
       name: question.question,
       icon: question.icon,
@@ -203,6 +187,12 @@ function getFirstSubsectionHelper(sectionId, data) {
   const section = data.sectionsConfig.sections.find((s) => s.id === sectionId);
   if (!section) return null;
 
+  // attributes: sempre dinâmico a partir de data
+  if (sectionId === "attributes") {
+    const subs = getDynamicSubsections(section, data);
+    if (subs.length > 0) return subs[0].id;
+  }
+
   // Priority 1: Subsections from config
   if (section.subsections?.length > 0) {
     const sorted = [...section.subsections].sort(
@@ -211,11 +201,11 @@ function getFirstSubsectionHelper(sectionId, data) {
     return sorted[0].id;
   }
 
-  // Priority 2: RenderSchema subsections
+  // Priority 2: RenderSchema subsections (fallback - should use section.subsections instead)
+  // Note: renderSchema.subsections no longer has index - order should come from section.subsections
   if (section.data?.renderSchema?.subsections?.length > 0) {
-    const sorted = [...section.data.renderSchema.subsections].sort(
-      (a, b) => (a.index ?? 999) - (b.index ?? 999)
-    );
+    // No sorting since index was removed - use as-is
+    const sorted = [...section.data.renderSchema.subsections];
     return sorted[0].id;
   }
 
@@ -243,8 +233,11 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
   // Get sectionsConfig from data (JSON) - must come from hook
   const sectionsConfig = data?.sectionsConfig;
   
-  // Get menu items from sectionsConfig
-  const menuItems = useMemo(() => getMenuItems(sectionsConfig), [sectionsConfig]);
+  // Get menu items from sectionsConfig + Export (injetado; nome em uiTexts.export.title)
+  const menuItems = useMemo(
+    () => getMenuItems(sectionsConfig, currentUiTexts),
+    [sectionsConfig, currentUiTexts]
+  );
 
   // State to control which sections are expanded - initialize dynamically
   const [expandedSections, setExpandedSections] = useState(() => {
@@ -281,18 +274,13 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
     }
   }, [data?.sectionsConfig?.sections]);
 
-  // Get all questions for "responses" section (sorted by index, using config for hiddenIds)
+  // Get all questions for "responses" section (sorted by index)
   const allQuestions = useMemo(() => {
     const responsesSection = data?.sectionsConfig?.sections?.find(
       (s) => s.id === "responses"
     );
     const questions = responsesSection?.data?.questions || [];
-    const hiddenIds =
-      responsesSection?.data?.config?.questions?.hiddenIds || [];
-
-    return questions
-      .filter((q) => !hiddenIds.includes(q.id))
-      .sort((a, b) => (a.index || 0) - (b.index || 0));
+    return questions.sort((a, b) => (a.index || 0) - (b.index || 0));
   }, [data]);
 
   // Simplified function: sets state directly based on value received from Collapsible
@@ -495,19 +483,13 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                       >
                         {currentSurveyInfo?.questions ||
                           (() => {
-                            // Fallback: calcula a partir das perguntas no JSON
                             const responsesSection =
                               data?.sectionsConfig?.sections?.find(
                                 (s) => s.id === "responses"
                               );
                             const questions =
                               responsesSection?.data?.questions || [];
-                            const hiddenIds =
-                              responsesSection?.data?.config?.questions
-                                ?.hiddenIds || [];
-                            return questions.filter(
-                              (q) => !hiddenIds.includes(q.id)
-                            ).length;
+                            return questions.length;
                           })()}
                       </div>
                       <div className="text-[9px] sm:text-[10px] font-normal text-foreground/70 truncate">
@@ -824,15 +806,15 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                   }))
                 : [];
 
-              // If no subsections in config, try renderSchema
+              // If no subsections in config, try renderSchema (apenas id e components; ordem e display vêm de section.subsections)
               if (
                 subsections.length === 0 &&
                 sectionConfig?.data?.renderSchema?.subsections
               ) {
                 subsections = sectionConfig.data.renderSchema.subsections
-                  .sort((a, b) => (a.index ?? 999) - (b.index ?? 999))
                   .map((sub) => ({
-                    ...sub,
+                    id: sub.id,
+                    name: sub.name ?? sub.id,
                     icon: getIcon(sub.icon),
                   }));
               }
@@ -902,8 +884,8 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
               );
             }
 
-            // If it's the Export item, use route navigation
-            if (item.isRoute) {
+            // Export: página do app (sempre disponível); navega para /export; nome/ícone e uiTexts vêm do JSON
+            if (item.id === "export") {
               const isExportActive = location.pathname === "/export";
               return (
                 <button

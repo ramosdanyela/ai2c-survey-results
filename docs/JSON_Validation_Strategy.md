@@ -137,13 +137,12 @@ Criar `data/validation/schema/surveyData.schema.json` com a estrutura esperada:
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["id", "index", "name", "icon", "hasSchema"],
+            "required": ["id", "index", "name", "icon"],
             "properties": {
               "id": { "type": "string" },
               "index": { "type": "number" },
               "name": { "type": "string" },
               "icon": { "type": "string" },
-              "hasSchema": { "type": "boolean" },
               "subsections": {
                 "type": "array",
                 "items": {
@@ -267,12 +266,12 @@ function validateCustomRules(data) {
     }
   }
 
-  // Validar que seções com hasSchema: true têm data
+  // Validar que seções têm data.renderSchema (export não está em sections)
   data.sectionsConfig?.sections?.forEach((section, index) => {
-    if (section.hasSchema && !section.data) {
+    if (!section.data?.renderSchema) {
       errors.push({
         path: `/sectionsConfig/sections[${index}]`,
-        message: `Seção "${section.name}" tem hasSchema: true mas não possui propriedade "data"`,
+        message: `Seção "${section.name}" deve ter "data.renderSchema"`,
       });
     }
   });

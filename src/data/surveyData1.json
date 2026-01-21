@@ -11,7 +11,6 @@
         "index": 0,
         "name": "Relatório Executivo",
         "icon": "FileText",
-        "hasSchema": true,
         "subsections": [
           {
             "id": "executive-summary",
@@ -322,7 +321,6 @@
         "index": 1,
         "name": "Análises de Suporte",
         "icon": "BarChart3",
-        "hasSchema": true,
         "subsections": [
           {
             "id": "support-sentiment",
@@ -577,341 +575,7 @@
         "index": 2,
         "name": "Aprofundamento por Atributos",
         "icon": "Layers",
-        "hasSchema": true,
-        "subsections": [
-          {
-            "id": "attributes-customerType",
-            "index": 0,
-            "name": "Tipo de Cliente",
-            "icon": "Building"
-          },
-          {
-            "id": "attributes-state",
-            "index": 1,
-            "name": "Estado",
-            "icon": "MapPin"
-          },
-          {
-            "id": "attributes-education",
-            "index": 2,
-            "name": "Escolaridade",
-            "icon": "GraduationCap"
-          }
-        ],
         "data": {
-          "renderSchema": {
-            "subsections": [
-              {
-                "id": "attribute-template",
-                "index": 0,
-                "name": "{{currentAttribute.name}}",
-                "icon": "{{currentAttribute.icon}}",
-                "components": [
-                  {
-                    "type": "card",
-                    "index": 0,
-                    "title": "{{uiTexts.attributeDeepDive.summary}}",
-                    "content": "{{currentAttribute.summary}}",
-                    "styleVariant": "default"
-                  },
-                  {
-                    "wrapper": "div",
-                    "wrapperProps": {},
-                    "index": 1,
-                    "components": [
-                      {
-                        "type": "card",
-                        "index": 0,
-                        "title": "{{uiTexts.attributeDeepDive.distribution}}",
-                        "styleVariant": "flex-column",
-                        "contentStyleVariant": "with-charts",
-                        "components": [
-                          {
-                            "type": "barChart",
-                            "index": 0,
-                            "dataPath": "currentAttribute.distribution",
-                            "config": {
-                              "dataKey": "percentage",
-                              "yAxisDataKey": "segment",
-                              "tooltipFormatter": "uiTexts.attributeDeepDive.tooltip.respondents"
-                            }
-                          },
-                          {
-                            "type": "distributionTable",
-                            "index": 1,
-                            "dataPath": "currentAttribute.distribution",
-                            "attributeName": "{{currentAttribute.name}}"
-                          }
-                        ]
-                      },
-                      {
-                        "type": "card",
-                        "index": 1,
-                        "title": "{{uiTexts.attributeDeepDive.sentimentAnalysis}}",
-                        "styleVariant": "flex-column",
-                        "contentStyleVariant": "with-charts",
-                        "components": [
-                          {
-                            "type": "sentimentStackedChart",
-                            "index": 0,
-                            "dataPath": "currentAttribute.sentiment",
-                            "config": {
-                              "yAxisDataKey": "segment"
-                            }
-                          },
-                          {
-                            "type": "sentimentTable",
-                            "index": 1,
-                            "dataPath": "currentAttribute.sentiment"
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "card",
-                    "index": 2,
-                    "condition": "currentAttribute.npsSummary",
-                    "title": "{{uiTexts.attributeDeepDive.npsQuestion}}",
-                    "styleVariant": "default",
-                    "contentStyleVariant": "with-tables",
-                    "components": [
-                      {
-                        "wrapper": "div",
-                        "index": 0,
-                        "components": [
-                          {
-                            "wrapper": "h3",
-                            "wrapperProps": {},
-                            "index": 0,
-                            "content": "{{uiTexts.attributeDeepDive.summary}}"
-                          },
-                          {
-                            "wrapper": "div",
-                            "wrapperProps": {},
-                            "index": 1,
-                            "content": "{{currentAttribute.npsSummary}}"
-                          }
-                        ]
-                      },
-                      {
-                        "wrapper": "div",
-                        "index": 1,
-                        "components": [
-                          {
-                            "wrapper": "h3",
-                            "wrapperProps": {},
-                            "index": 0,
-                            "content": "{{uiTexts.attributeDeepDive.responses}}"
-                          },
-                          {
-                            "wrapper": "div",
-                            "wrapperProps": {},
-                            "index": 1,
-                            "components": [
-                              {
-                                "wrapper": "div",
-                                "index": 0,
-                                "components": [
-                                  {
-                                    "wrapper": "h4",
-                                    "wrapperProps": {},
-                                    "index": 0,
-                                    "content": "{{uiTexts.attributeDeepDive.promotersNeutralsDetractors}}"
-                                  },
-                                  {
-                                    "type": "npsDistributionTable",
-                                    "index": 1,
-                                    "dataPath": "currentAttribute.npsDistribution",
-                                    "attributeName": "{{currentAttribute.name}}"
-                                  }
-                                ]
-                              },
-                              {
-                                "wrapper": "div",
-                                "index": 1,
-                                "components": [
-                                  {
-                                    "wrapper": "h4",
-                                    "wrapperProps": {},
-                                    "index": 0,
-                                    "content": "{{uiTexts.attributeDeepDive.nps}}"
-                                  },
-                                  {
-                                    "type": "npsTable",
-                                    "index": 1,
-                                    "dataPath": "currentAttribute.nps",
-                                    "attributeName": "{{currentAttribute.name}}"
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "card",
-                    "index": 3,
-                    "condition": "currentAttribute.satisfactionImpactSummary",
-                    "title": "{{uiTexts.attributeDeepDive.satisfactionImpactQuestion}}",
-                    "styleVariant": "default",
-                    "contentStyleVariant": "with-tables",
-                    "components": [
-                      {
-                        "wrapper": "div",
-                        "index": 0,
-                        "components": [
-                          {
-                            "wrapper": "h3",
-                            "wrapperProps": {},
-                            "index": 0,
-                            "content": "{{uiTexts.attributeDeepDive.summary}}"
-                          },
-                          {
-                            "wrapper": "div",
-                            "wrapperProps": {},
-                            "index": 1,
-                            "content": "{{currentAttribute.satisfactionImpactSummary}}"
-                          }
-                        ]
-                      },
-                      {
-                        "wrapper": "div",
-                        "condition": "currentAttribute.satisfactionImpactSentiment",
-                        "index": 1,
-                        "components": [
-                          {
-                            "wrapper": "h3",
-                            "wrapperProps": {},
-                            "index": 0,
-                            "content": "{{uiTexts.attributeDeepDive.sentimentAnalysis}}"
-                          },
-                          {
-                            "wrapper": "div",
-                            "wrapperProps": {},
-                            "index": 1,
-                            "components": [
-                              {
-                                "wrapper": "div",
-                                "wrapperProps": {},
-                                "index": 0,
-                                "components": [
-                                  {
-                                    "wrapper": "div",
-                                    "wrapperProps": {},
-                                    "index": 0,
-                                    "components": [
-                                      {
-                                        "wrapper": "div",
-                                        "wrapperProps": {}
-                                      },
-                                      {
-                                        "wrapper": "span",
-                                        "index": 1,
-                                        "content": "{{uiTexts.attributeDeepDive.negative}}"
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "wrapper": "div",
-                                    "wrapperProps": {},
-                                    "index": 1,
-                                    "components": [
-                                      {
-                                        "wrapper": "div",
-                                        "wrapperProps": {}
-                                      },
-                                      {
-                                        "wrapper": "span",
-                                        "index": 1,
-                                        "content": "{{uiTexts.attributeDeepDive.notApplicable}}"
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "wrapper": "div",
-                                    "wrapperProps": {},
-                                    "index": 2,
-                                    "components": [
-                                      {
-                                        "wrapper": "div",
-                                        "wrapperProps": {}
-                                      },
-                                      {
-                                        "wrapper": "span",
-                                        "index": 1,
-                                        "content": "{{uiTexts.attributeDeepDive.positive}}"
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "type": "sentimentThreeColorChart",
-                            "index": 2,
-                            "dataPath": "currentAttribute.satisfactionImpactSentiment",
-                            "config": {}
-                          },
-                          {
-                            "wrapper": "div",
-                            "wrapperProps": {},
-                            "index": 3,
-                            "components": [
-                              {
-                                "type": "sentimentImpactTable",
-                                "index": 0,
-                                "dataPath": "currentAttribute.satisfactionImpactSentiment"
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "wrapper": "div",
-                        "condition": "currentAttribute.positiveCategories",
-                        "index": 2,
-                        "components": [
-                          {
-                            "wrapper": "h3",
-                            "wrapperProps": {},
-                            "index": 0,
-                            "content": "{{uiTexts.attributeDeepDive.positiveCategories}}"
-                          },
-                          {
-                            "type": "positiveCategoriesTable",
-                            "index": 1,
-                            "dataPath": "currentAttribute.positiveCategories"
-                          }
-                        ]
-                      },
-                      {
-                        "wrapper": "div",
-                        "condition": "currentAttribute.negativeCategories",
-                        "index": 3,
-                        "components": [
-                          {
-                            "wrapper": "h3",
-                            "wrapperProps": {},
-                            "index": 0,
-                            "content": "{{uiTexts.attributeDeepDive.negativeCategories}}"
-                          },
-                          {
-                            "type": "negativeCategoriesTable",
-                            "index": 1,
-                            "dataPath": "currentAttribute.negativeCategories"
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
           "attributes": [
             {
               "id": "customerType",
@@ -1374,7 +1038,6 @@
         "index": 3,
         "name": "Análise por Questão",
         "icon": "MessageSquare",
-        "hasSchema": true,
         "hasSubsections": false,
         "data": {
           "renderSchema": {
@@ -1401,14 +1064,12 @@
                   {
                     "type": "npsScoreCard",
                     "index": 0,
-                    "condition": "question.type === 'nps'",
                     "dataPath": "surveyInfo",
                     "config": {}
                   },
                   {
                     "type": "npsStackedChart",
                     "index": 1,
-                    "condition": "question.type === 'nps' && question.data",
                     "dataPath": "question.data",
                     "config": {}
                   }
@@ -1419,7 +1080,6 @@
                   {
                     "type": "barChart",
                     "index": 0,
-                    "condition": "question.id !== 1 && question.type === 'closed' && question.data",
                     "dataPath": "question.data",
                     "config": {
                       "dataKey": "percentage",
@@ -1433,14 +1093,12 @@
                   {
                     "type": "sentimentStackedChart",
                     "index": 0,
-                    "condition": "question.type === 'open' && question.sentimentData",
                     "dataPath": "question.sentimentData",
                     "config": {}
                   },
                   {
                     "type": "topCategoriesCards",
                     "index": 1,
-                    "condition": "question.type === 'open' && question.topCategories",
                     "dataPath": "question.topCategories",
                     "config": {
                       "title": "{{uiTexts.responseDetails.top3Categories}}"
@@ -1449,12 +1107,9 @@
                   {
                     "type": "wordCloud",
                     "index": 2,
-                    "condition": "question.type === 'open' && question.wordCloud && showWordCloud",
                     "dataPath": "question.wordCloud",
                     "config": {
-                      "title": "{{uiTexts.responseDetails.wordCloud}}",
-                      "useStaticImage": true,
-                      "staticImagePath": "/nuvem.png"
+                      "title": "{{uiTexts.responseDetails.wordCloud}}"
                     }
                   }
                 ]
@@ -2225,14 +1880,6 @@
             "questionPrefix": "Q"
           },
           "config": {
-            "questions": {
-              "hiddenIds": [
-                3
-              ],
-              "excludedFromChartIds": [
-                1
-              ]
-            },
             "npsCategories": {
               "detractor": "Detrator",
               "promoter": "Promotor",
@@ -2242,19 +1889,9 @@
                 "neutrals": "Neutros",
                 "promoters": "Promotores"
               }
-            },
-            "wordCloud": {
-              "imagePath": "/nuvem.png"
             }
           }
         }
-      },
-      {
-        "id": "export",
-        "index": 4,
-        "name": "Export",
-        "icon": "Download",
-        "isRoute": true
       }
     ],
     "components": {
@@ -2658,10 +2295,9 @@
             "type": "object",
             "required": false,
             "properties": {
-              "imagePath": {
+              "title": {
                 "type": "string",
-                "required": false,
-                "description": "Caminho para imagem estática (alternativa ao WordCloud dinâmico)"
+                "required": false
               }
             }
           },

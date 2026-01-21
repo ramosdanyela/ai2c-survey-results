@@ -39,7 +39,6 @@
               },
               "name": { "type": "string" },
               "icon": { "type": "string" },
-              "hasSchema": { "type": "boolean" },
               "subsections": {
                 "type": "array",
                 "items": {
@@ -55,33 +54,10 @@
               },
               "data": {
                 "type": "object",
-                "description": "Dados e schema de renderização (obrigatório se hasSchema: true)"
+                "description": "Dados da seção. Com conteúdo: data.renderSchema (exceto 'attributes', que é 100% dinâmico e usa data.attributes)."
               },
-              "isRoute": { "type": "boolean" },
               "hasSubsections": { "type": "boolean" }
             },
-            "anyOf": [
-              {
-                "description": "Seção normal com hasSchema",
-                "properties": {
-                  "isRoute": { "const": false }
-                },
-                "required": ["hasSchema"]
-              },
-              {
-                "description": "Seção com isRoute: true não precisa de hasSchema",
-                "properties": {
-                  "isRoute": { "const": true }
-                }
-              },
-              {
-                "description": "Seção sem isRoute definido precisa de hasSchema",
-                "not": {
-                  "required": ["isRoute"]
-                },
-                "required": ["hasSchema"]
-              }
-            ]
           }
         },
         "components": {

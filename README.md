@@ -124,8 +124,8 @@ Toda a documentação está na pasta [`docs/`](./docs/):
 #### Criar uma Nova Seção
 
 1. Adicione a seção em `sectionsConfig.sections` no JSON
-2. Defina `hasSchema: true`
-3. Crie o `renderSchema` com componentes
+2. Inclua `data.renderSchema` com componentes (a existência de `renderSchema` define seção com schema)
+3. Crie o `renderSchema` com os componentes
 4. A seção será renderizada automaticamente!
 
 Exemplo mínimo:
@@ -139,7 +139,6 @@ Exemplo mínimo:
         "index": 0,
         "name": "Minha Seção",
         "icon": "FileText",
-        "hasSchema": true,
         "data": {
           "renderSchema": {
             "components": [
@@ -250,7 +249,7 @@ O sistema foi projetado para ser **100% programático**. Isso significa:
 
 ### Render Schema
 
-Cada seção com `hasSchema: true` deve ter um `renderSchema` que define:
+Cada seção de conteúdo deve ter `data.renderSchema`, que define:
 
 - **Subseções** (opcional) - Se a seção tem subseções
 - **Componentes** - Array de componentes a renderizar

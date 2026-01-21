@@ -1,6 +1,10 @@
 import { GenericSectionRenderer } from "@/components/survey/common/GenericSectionRenderer";
 import { useSurveyData } from "@/hooks/useSurveyData";
 import { useMemo } from "react";
+import {
+  getAttributesFromData,
+  getQuestionsFromData,
+} from "@/services/dataResolver";
 
 /**
  * Helper function to get first subsection (shared with SurveySidebar logic)
@@ -26,33 +30,29 @@ function getFirstSubsectionHelper(sectionId, data) {
     return sorted[0].id;
   }
 
-  // Priority 2: RenderSchema subsections
+  // Priority 2: RenderSchema subsections (fallback - should use section.subsections instead)
+  // Note: renderSchema.subsections no longer has index - order should come from section.subsections
   if (section.data?.renderSchema?.subsections?.length > 0) {
-    const sorted = [...section.data.renderSchema.subsections].sort(
-      (a, b) => (a.index ?? 999) - (b.index ?? 999)
-    );
-    return sorted[0].id;
+    // Return first subsection by ID (no ordering since index was removed)
+    return section.data.renderSchema.subsections[0].id;
   }
 
-  // Priority 3: Dynamic subsections (attributes, responses)
-  if (section.dynamicSubsections) {
-    if (section.id === "attributes") {
-      const sectionData = section.data || {};
-      const attrs = sectionData?.attributes || [];
-      const filtered = attrs
-        .filter((a) => a.icon)
-        .sort((a, b) => (a.index ?? 999) - (b.index ?? 999));
-      return filtered.length > 0 ? `attributes-${filtered[0].id}` : null;
-    }
-    if (section.id === "responses") {
-      const sectionData = section.data || {};
-      const questions = sectionData?.questions || [];
-      const hiddenIds = sectionData?.config?.questions?.hiddenIds || [];
-      const filtered = questions
-        .filter((q) => !hiddenIds.includes(q.id))
-        .sort((a, b) => (a.index ?? 999) - (b.index ?? 999));
-      return filtered.length > 0 ? `responses-${filtered[0].id}` : null;
-    }
+  // Priority 3: Análise por Atributos (sectionsConfig.sections[id=attributes].data.attributes)
+  // Funciona mesmo sem dynamicSubsections; usa dataResolver para suportar estrutura atual e legado
+  if (section.id === "attributes") {
+    const attrs = getAttributesFromData(data);
+    const filtered = attrs
+      .filter((a) => a.icon)
+      .sort((a, b) => (a.index ?? 999) - (b.index ?? 999));
+    return filtered.length > 0 ? `attributes-${filtered[0].id}` : null;
+  }
+
+  // Priority 4: Respostas (questões em sectionsConfig ou responseDetails)
+  if (section.id === "responses") {
+    const questions = getQuestionsFromData(data).sort(
+      (a, b) => (a.index ?? 999) - (b.index ?? 999)
+    );
+    return questions.length > 0 ? `responses-${questions[0].id}` : null;
   }
 
   return null;
@@ -84,6 +84,19 @@ function normalizeSection(activeSection, data) {
     ) {
       return activeSection;
     }
+    // Subseções dinâmicas: attributes-* e responses-*
+    if (
+      section.id === "attributes" &&
+      activeSection?.startsWith("attributes-")
+    ) {
+      return activeSection;
+    }
+    if (
+      section.id === "responses" &&
+      activeSection?.startsWith("responses-")
+    ) {
+      return activeSection;
+    }
   }
 
   // If it's a section ID, normalize to first subsection
@@ -99,29 +112,34 @@ function normalizeSection(activeSection, data) {
 }
 
 /**
- * Check if a section has a renderSchema (generic rendering)
+ * Indica se a seção usa GenericSectionRenderer.
+ * Inclui: (1) seções com renderSchema no JSON; (2) attributes e responses,
+ * que são renderizadas por lógica própria em GenericSectionRenderer (dados em
+ * sectionsConfig.sections[].data.attributes ou .data.questions).
  */
 function hasRenderSchema(data, sectionId) {
   if (!data || !sectionId) return false;
 
-  // First check in sectionsConfig for hasSchema flag
   const sectionConfig = data.sectionsConfig?.sections?.find(
     (s) => s.id === sectionId
   );
-  if (sectionConfig?.hasSchema) {
-    return true;
+  if (!sectionConfig) return false;
+
+  // attributes: sectionsConfig.sections[id=attributes].data.attributes
+  if (sectionId === "attributes") {
+    const attrs = getAttributesFromData(data);
+    return attrs.length > 0;
   }
 
-  // Check sectionConfig.data.renderSchema (new structure)
-  if (sectionConfig?.data?.renderSchema) {
-    return true;
+  // responses: aceita se existir seção e dados de questões (lógica em GenericSectionRenderer)
+  if (sectionId === "responses") {
+    return getQuestionsFromData(data).length > 0;
   }
 
-  // Then try to find section data with renderSchema
+  // Demais: exigir renderSchema em sectionConfig.data ou em data[sectionId]
+  if (sectionConfig?.data?.renderSchema) return true;
   const sectionData = data[sectionId];
-  if (sectionData && sectionData.renderSchema) {
-    return true;
-  }
+  if (sectionData && sectionData.renderSchema) return true;
 
   return false;
 }

@@ -201,7 +201,7 @@ export function getAllSubsections(data) {
   if (!config?.sections) return [];
 
   config.sections
-    .filter((section) => !section.isRoute) // Exclude export route
+    .filter((section) => section.id !== "export") // Export é página do app, não seção de conteúdo
     .forEach((section) => {
       const subsections = getAllSubsectionsForSection(section.id, data);
       allSubsections.push(...subsections);

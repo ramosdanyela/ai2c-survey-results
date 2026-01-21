@@ -15,9 +15,20 @@ async function loadDependencies() {
     const customRulesModule = await import("../rules/custom-rules.js");
     const validateCustomRules = customRulesModule.validateCustomRules;
 
-    // Carregar schema
-    const schemaPath = path.join(__dirname, "../schema/surveyData.schema.json");
-    const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
+    // Carregar schema (caminho relativo ao script)
+    const schemaPath = path.join(__dirname, "..", "schema", "surveyData.schema.json");
+    if (!fs.existsSync(schemaPath)) {
+      console.error("❌ Schema não encontrado:", schemaPath);
+      process.exit(1);
+    }
+    let schema;
+    try {
+      schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
+    } catch (e) {
+      console.error("❌ Erro ao parsear schema:", schemaPath);
+      console.error("   ", e.message);
+      process.exit(1);
+    }
 
     // Criar validador
     const ajv = new Ajv({

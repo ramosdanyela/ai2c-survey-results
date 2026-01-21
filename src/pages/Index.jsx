@@ -41,12 +41,9 @@ function getFirstSubsectionHelper(sectionId, data) {
     }
     if (section.id === "responses") {
       const sectionData = section.data || {};
-      const questions = sectionData?.questions || [];
-      const hiddenIds = sectionData?.config?.questions?.hiddenIds || [];
-      const filtered = questions
-        .filter((q) => !hiddenIds.includes(q.id))
+      const questions = (sectionData?.questions || [])
         .sort((a, b) => (a.index ?? 999) - (b.index ?? 999));
-      return filtered.length > 0 ? `responses-${filtered[0].id}` : null;
+      return questions.length > 0 ? `responses-${questions[0].id}` : null;
     }
   }
 

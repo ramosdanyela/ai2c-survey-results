@@ -12,7 +12,7 @@ import { getAttributesFromData } from "@/services/dataResolver";
 
 /**
  * Get section title from data (programmatic)
- * Priority: sectionsConfig.sections[].name > uiTexts.surveyHeader > sectionId
+ * Priority: sectionsConfig.sections[].name > sectionId
  * This matches the logic in NavigationButtons for consistency
  */
 function getSectionTitleFromData(activeSection, data) {
@@ -31,25 +31,6 @@ function getSectionTitleFromData(activeSection, data) {
     );
     if (section?.name) {
       return section.name;
-    }
-  }
-
-  // Priority 2: Try to get from uiTexts.surveyHeader (legacy support)
-  const uiTexts = data?.uiTexts?.surveyHeader;
-  if (uiTexts) {
-    // Map section IDs to title keys (for backward compatibility)
-    const titleMap = {
-      executive: uiTexts.executiveReport,
-      engagement: uiTexts.engagementAnalysis,
-      attributes: uiTexts.attributeAnalysis,
-      responses: uiTexts.questionAnalysis,
-      questions: uiTexts.questionAnalysis,
-      culture: uiTexts.cultureAnalysis,
-      support: uiTexts.supportAnalysis,
-    };
-
-    if (titleMap[baseSectionId]) {
-      return titleMap[baseSectionId];
     }
   }
 
@@ -72,18 +53,6 @@ function getSectionIconFromConfig(sectionId, data) {
     // Check subsections from config
     if (section.subsections && Array.isArray(section.subsections)) {
       const subsection = section.subsections.find(
-        (sub) => sub.id === sectionId
-      );
-      if (subsection && subsection.icon) {
-        return getIcon(subsection.icon);
-      }
-    }
-    // Check subsections from renderSchema
-    if (
-      section.data?.renderSchema?.subsections &&
-      Array.isArray(section.data.renderSchema.subsections)
-    ) {
-      const subsection = section.data.renderSchema.subsections.find(
         (sub) => sub.id === sectionId
       );
       if (subsection && subsection.icon) {

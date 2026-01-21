@@ -61,7 +61,7 @@ node data/validation/scripts/validate-json.js caminho/do/arquivo.json
 
 - IDs únicos
 - Índices sequenciais (começando em 0)
-- Seções com `hasSchema: true` devem ter `data`
+- Seções em `sectionsConfig.sections` devem ter `data.renderSchema` (Export não fica em sections; vem de uiTexts)
 - Subseções devem ter `id`, `index`, `name`, `icon`
 
 ### 3. Componentes

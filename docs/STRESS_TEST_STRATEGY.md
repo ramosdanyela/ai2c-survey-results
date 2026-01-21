@@ -58,9 +58,7 @@ Criar um JSON completo (`surveyData-stress-test.json`) que teste diferentes aspe
   - 3 questões abertas (open) com:
     - sentimentStackedChart
     - topCategoriesCards
-    - wordCloud (com imagem estática)
-- **Config:** hiddenIds para testar ocultação
-
+    - wordCloud (só dados nativos; imagens não usadas)
 ### Seção 5: Análise de Cultura Organizacional (Culture Analysis)
 **Objetivo:** Testar combinações complexas de componentes
 - **Subseção 5.1:** Valores Organizacionais
@@ -76,9 +74,9 @@ Criar um JSON completo (`surveyData-stress-test.json`) que teste diferentes aspe
   - Cards com contentStyleVariant variados
 
 ### Seção 6: Export (Route)
-**Objetivo:** Testar seção de rota
-- isRoute: true
-- Sem schema de renderização
+**Objetivo:** Testar item Export (página do app, sempre disponível)
+- Export não está em sections; textos em uiTexts.export; app injeta o item no menu
+- Navegação para /export definida no app
 
 ## Componentes a Testar
 
@@ -129,10 +127,9 @@ Criar um JSON completo (`surveyData-stress-test.json`) que teste diferentes aspe
 - Dados com valores muito grandes/pequenos
 
 ### 4. Configurações
-- hiddenIds em questões
-- excludedFromChartIds
 - Diferentes presets de gráficos
 - Configurações de ordenação (asc/desc)
+- (hiddenIds e excludedFromChartIds foram removidos)
 
 ### 5. Wrappers
 - Wrappers com className
@@ -214,4 +211,5 @@ Criar um JSON completo (`surveyData-stress-test.json`) que teste diferentes aspe
 2. Validar contra o schema
 3. Testar renderização no sistema
 4. Documentar casos edge encontrados
+
 

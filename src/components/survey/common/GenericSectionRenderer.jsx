@@ -87,6 +87,185 @@ function getQuestionsFromResponseDetails(responseDetails) {
   return [...closed, ...open].sort((a, b) => (a.index || 0) - (b.index || 0));
 }
 
+/** Chaves NPS tratadas em conjunto: mostrar se qualquer uma existir. */
+const NPS_ATTR_KEYS = ["npsSummary", "npsDistribution", "nps"];
+
+/**
+ * Monta a árvore de componentes da subseção de um atributo a partir dos dados do attr.
+ * Nada é pre-setado no JSON: a estrutura é 100% derivada do que existe em attr.
+ * Regras: summary → card Sumário; distribution/sentiment → cards Distribuição e Sentimento;
+ * npsSummary|npsDistribution|nps → card NPS; satisfactionImpactSummary → card Satisfação (e blocos internos se houver dados).
+ */
+function buildAttributeComponents(attr) {
+  const out = [];
+  let idx = 0;
+
+  if (attr.summary) {
+    out.push({
+      type: "card",
+      index: idx++,
+      title: "Sumário",
+      content: "{{currentAttribute.summary}}",
+      styleVariant: "default",
+    });
+  }
+
+  const hasDist = attr.distribution && attr.distribution.length > 0;
+  const hasSent = attr.sentiment && attr.sentiment.length > 0;
+  if (hasDist || hasSent) {
+    const cards = [];
+    if (hasDist) {
+      cards.push({
+        type: "card",
+        index: 0,
+        title: "Distribuição dos respondentes",
+        styleVariant: "flex-column",
+        contentStyleVariant: "with-charts",
+        components: [
+          {
+            type: "barChart",
+            index: 0,
+            dataPath: "currentAttribute.distribution",
+            config: { dataKey: "percentage", yAxisDataKey: "segment", tooltipFormatter: "respondentes" },
+          },
+          { type: "distributionTable", index: 1, dataPath: "currentAttribute.distribution", attributeName: "{{currentAttribute.name}}" },
+        ],
+      });
+    }
+    if (hasSent) {
+      cards.push({
+        type: "card",
+        index: 1,
+        title: "Análise de sentimento",
+        styleVariant: "flex-column",
+        contentStyleVariant: "with-charts",
+        components: [
+          { type: "sentimentStackedChart", index: 0, dataPath: "currentAttribute.sentiment", config: { yAxisDataKey: "segment" } },
+          { type: "sentimentTable", index: 1, dataPath: "currentAttribute.sentiment" },
+        ],
+      });
+    }
+    out.push({
+      wrapper: "div",
+      wrapperProps: {},
+      index: idx++,
+      components: cards,
+    });
+  }
+
+  const hasNps = attr.npsSummary || (attr.npsDistribution && attr.npsDistribution.length > 0) || (attr.nps != null);
+  if (hasNps) {
+    const npsBlocks = [];
+    if (attr.npsSummary) {
+      npsBlocks.push({
+        wrapper: "div",
+        index: 0,
+        components: [
+          { wrapper: "h3", wrapperProps: {}, index: 0, content: "Sumário" },
+          { wrapper: "div", wrapperProps: {}, index: 1, content: "{{currentAttribute.npsSummary}}" },
+        ],
+      });
+    }
+    const hasNpsTables = (attr.npsDistribution && attr.npsDistribution.length > 0) || (attr.nps != null);
+    if (hasNpsTables) {
+      npsBlocks.push({
+        wrapper: "div",
+        index: 1,
+        components: [
+          { wrapper: "h3", wrapperProps: {}, index: 0, content: "Respostas" },
+          {
+            wrapper: "div",
+            wrapperProps: {},
+            index: 1,
+            components: [
+              {
+                wrapper: "div",
+                index: 0,
+                components: [
+                  { wrapper: "h4", wrapperProps: {}, index: 0, content: "Promotores, Neutros, Detratores" },
+                  { type: "npsDistributionTable", index: 1, dataPath: "currentAttribute.npsDistribution", attributeName: "{{currentAttribute.name}}" },
+                ],
+              },
+              {
+                wrapper: "div",
+                index: 1,
+                components: [
+                  { wrapper: "h4", wrapperProps: {}, index: 0, content: "NPS" },
+                  { type: "npsTable", index: 1, dataPath: "currentAttribute.nps", attributeName: "{{currentAttribute.name}}" },
+                ],
+              },
+            ],
+          },
+        ],
+      });
+    }
+    if (npsBlocks.length > 0) {
+      out.push({
+        type: "card",
+        index: idx++,
+        title: "Qual é a probabilidade de você recomendar nossa empresa como um ótimo lugar para trabalhar?",
+        styleVariant: "default",
+        contentStyleVariant: "with-tables",
+        components: npsBlocks,
+      });
+    }
+  }
+
+  if (attr.satisfactionImpactSummary) {
+    const satBlocks = [
+      {
+        wrapper: "div",
+        index: 0,
+        components: [
+          { wrapper: "h3", wrapperProps: {}, index: 0, content: "Sumário" },
+          { wrapper: "div", wrapperProps: {}, index: 1, content: "{{currentAttribute.satisfactionImpactSummary}}" },
+        ],
+      },
+    ];
+    if (attr.satisfactionImpactSentiment && (Array.isArray(attr.satisfactionImpactSentiment) ? attr.satisfactionImpactSentiment.length > 0 : attr.satisfactionImpactSentiment)) {
+      satBlocks.push({
+        wrapper: "div",
+        index: 1,
+        components: [
+          { wrapper: "h3", wrapperProps: {}, index: 0, content: "Análise de sentimento" },
+          { type: "sentimentThreeColorChart", index: 1, dataPath: "currentAttribute.satisfactionImpactSentiment", config: {} },
+          { type: "sentimentImpactTable", index: 2, dataPath: "currentAttribute.satisfactionImpactSentiment" },
+        ],
+      });
+    }
+    if (attr.positiveCategories && (Array.isArray(attr.positiveCategories) ? attr.positiveCategories.length > 0 : attr.positiveCategories)) {
+      satBlocks.push({
+        wrapper: "div",
+        index: satBlocks.length,
+        components: [
+          { wrapper: "h3", wrapperProps: {}, index: 0, content: "Categorias com sentimento positivo - Top 3" },
+          { type: "positiveCategoriesTable", index: 1, dataPath: "currentAttribute.positiveCategories" },
+        ],
+      });
+    }
+    if (attr.negativeCategories && (Array.isArray(attr.negativeCategories) ? attr.negativeCategories.length > 0 : attr.negativeCategories)) {
+      satBlocks.push({
+        wrapper: "div",
+        index: satBlocks.length,
+        components: [
+          { wrapper: "h3", wrapperProps: {}, index: 0, content: "Categorias com sentimento negativo - Top 3" },
+          { type: "negativeCategoriesTable", index: 1, dataPath: "currentAttribute.negativeCategories" },
+        ],
+      });
+    }
+    out.push({
+      type: "card",
+      index: idx++,
+      title: "Quais são os principais fatores que impactam sua satisfação no trabalho?",
+      styleVariant: "default",
+      contentStyleVariant: "with-tables",
+      components: satBlocks,
+    });
+  }
+
+  return out;
+}
+
 /**
  * Enriquece schema do JSON com estilos do código
  * Aplica variantes de estilo baseadas em styleVariant do JSON
@@ -220,10 +399,9 @@ function SchemaCard({ component, data, children }) {
  */
 function SchemaRecommendationsTable({ component, data }) {
   const recommendations = resolveDataPath(data, component.dataPath);
-  const severityLabels = resolveDataPath(
-    data,
-    component.severityLabelsPath || "uiTexts.severityLabels"
-  );
+  const severityLabels =
+    component.severityLabels ??
+    resolveDataPath(data, component.severityLabelsPath || "uiTexts.severityLabels");
 
   if (!recommendations || !Array.isArray(recommendations)) {
     console.warn(
@@ -755,8 +933,6 @@ function SchemaWordCloud({ component, data }) {
     config.title || "{{uiTexts.responseDetails.wordCloud}}",
     data
   );
-  const useStaticImage = config.useStaticImage !== false;
-  const staticImagePath = config.staticImagePath || "/nuvem.png";
 
   return (
     <div>
@@ -767,15 +943,7 @@ function SchemaWordCloud({ component, data }) {
         </h4>
       )}
       <div className="flex justify-center items-center p-6 bg-muted/30 rounded-lg min-h-[200px]">
-        {useStaticImage && wordCloudData.length === 0 ? (
-          <img
-            src={staticImagePath}
-            alt={uiTexts?.responseDetails?.wordCloud || "Word Cloud"}
-            className="max-w-full h-auto"
-            style={{ maxHeight: "500px" }}
-          />
-        ) : (
-          <WordCloud
+        <WordCloud
             words={wordCloudData}
             maxWords={config.maxWords || 15}
             config={{
@@ -807,7 +975,6 @@ function SchemaWordCloud({ component, data }) {
               spacing: config.spacing !== undefined ? config.spacing : 8,
             }}
           />
-        )}
       </div>
     </div>
   );
@@ -1159,21 +1326,71 @@ function SchemaQuestionsList({
 }
 
 /**
- * Check if a component condition is met
+ * Extrai currentAttribute.KEY do componente (content {{}} ou dataPath) ou de descendentes.
+ * Usado para decidir visibilidade em attributes; a lógica fica no código, não no JSON.
  */
-function checkCondition(condition, data) {
-  if (!condition) return true;
+function getCurrentAttributeKey(comp) {
+  if (!comp) return null;
+  if (comp.content && typeof comp.content === "string") {
+    const m = comp.content.match(/\{\{currentAttribute\.([a-zA-Z]+)\}\}/);
+    if (m) return m[1];
+  }
+  if (comp.dataPath && typeof comp.dataPath === "string" && comp.dataPath.startsWith("currentAttribute.")) {
+    const key = comp.dataPath.replace("currentAttribute.", "").split(".")[0];
+    if (key) return key;
+  }
+  if (comp.components && Array.isArray(comp.components)) {
+    for (const c of comp.components) {
+      const k = getCurrentAttributeKey(c);
+      if (k) return k;
+    }
+  }
+  return null;
+}
 
-  // Resolve condition path
-  const conditionValue = resolveDataPath(data, condition);
-
-  // Check if condition is truthy
-  return (
-    conditionValue !== null &&
-    conditionValue !== undefined &&
-    conditionValue !== false &&
-    conditionValue !== ""
-  );
+/**
+ * Decide se o componente deve ser exibido. Lógica no código (não em condition no JSON).
+ * - attributes: exibe se currentAttribute.KEY (inferido de dataPath/content) for truthy.
+ * - responses: por tipo (npsScoreCard, npsStackedChart, barChart, etc.) e dados (question.data, sentimentData, topCategories, wordCloud, showWordCloud).
+ */
+function shouldShowComponent(component, data) {
+  // attributes: visibilidade por currentAttribute.KEY (grupo NPS: qualquer uma)
+  if (data?.currentAttribute) {
+    const key = getCurrentAttributeKey(component);
+    if (key) {
+      if (NPS_ATTR_KEYS.includes(key)) {
+        return !!(
+          data.currentAttribute.npsSummary ||
+          (data.currentAttribute.npsDistribution && (Array.isArray(data.currentAttribute.npsDistribution) ? data.currentAttribute.npsDistribution.length > 0 : true)) ||
+          data.currentAttribute.nps != null
+        );
+      }
+      const v = resolveDataPath(data, `currentAttribute.${key}`);
+      return v != null && v !== false && v !== "";
+    }
+    return true;
+  }
+  // responses: visibilidade por tipo de componente e dados da questão
+  if (data?.question) {
+    const q = data.question;
+    switch (component.type) {
+      case "npsScoreCard":
+        return true;
+      case "npsStackedChart":
+        return !!(q.data);
+      case "barChart":
+        return q.id !== 1 && !!q.data;
+      case "sentimentStackedChart":
+        return !!q.sentimentData;
+      case "topCategoriesCards":
+        return !!q.topCategories;
+      case "wordCloud":
+        return !!(q.wordCloud && data.showWordCloud !== false);
+      default:
+        return true;
+    }
+  }
+  return true;
 }
 
 /**
@@ -1186,8 +1403,7 @@ function SchemaComponent({
   isExport = false,
   exportWordCloud = true,
 }) {
-  // Check condition first
-  if (component.condition && !checkCondition(component.condition, data)) {
+  if (!shouldShowComponent(component, data)) {
     return null;
   }
 
@@ -1707,17 +1923,16 @@ export function GenericSectionRenderer({
   }, [sectionData, sectionConfig]);
 
   // Check if section has subsections
-  // Special case: responses section always has dynamic subsections (questions), even if hasSubsections is false
   const hasSubsections = useMemo(() => {
-    // Special handling for responses - always has dynamic subsections (questions)
+    // attributes: sempre dinâmico a partir de sectionData.attributes
+    if (sectionId === "attributes") {
+      const attrs = sectionData?.attributes || resolveDataPath(sectionData, "attributes");
+      return !!(attrs && Array.isArray(attrs) && attrs.length > 0);
+    }
+    // responses: sempre dinâmico (questions)
     if (sectionId === "responses") {
       const questions = getQuestionsFromData(data);
-      const hiddenIds = sectionConfig?.data?.config?.questions?.hiddenIds || [];
-      const hasQuestions =
-        questions.filter((q) => !hiddenIds.includes(q.id)).length > 0;
-      if (hasQuestions) {
-        return true; // Always return true for responses if there are questions
-      }
+      if (questions.length > 0) return true;
     }
 
     // Priority 1: Check sectionConfig first (fixed subsections)
@@ -1745,30 +1960,31 @@ export function GenericSectionRenderer({
   }, [sectionConfig, renderSchema, sectionId, data]);
 
   // Get subsections sorted by index
-  // Priority: sectionConfig.subsections (fixed) > dynamic generation > renderSchema.subsections
+  // attributes: 100% dinâmico a partir de sectionData.attributes; componentes montados em buildAttributeComponents
   const subsections = useMemo(() => {
-    // Priority 1: Use fixed subsections from sectionConfig if available
+    if (sectionId === "attributes") {
+      const attrs =
+        sectionData?.attributes || resolveDataPath(sectionData, "attributes");
+      if (attrs && Array.isArray(attrs) && attrs.length > 0) {
+        return attrs
+          .filter((a) => a.icon)
+          .sort((a, b) => (a.index ?? 999) - (b.index ?? 999))
+          .map((attr) => ({
+            id: `attributes-${attr.id}`,
+            index: attr.index ?? 999,
+            name: attr.name,
+            icon: attr.icon,
+            components: buildAttributeComponents(attr),
+          }));
+      }
+      return [];
+    }
+
+    // Priority 1: Use fixed subsections from sectionConfig if available (não usado por attributes)
     if (
       sectionConfig?.subsections &&
       Array.isArray(sectionConfig.subsections)
     ) {
-      // For attributes section, merge fixed subsections with template components
-      if (sectionId === "attributes" && renderSchema?.subsections) {
-        const template = renderSchema.subsections.find(
-          (sub) =>
-            sub.id === "attribute-template" || sub.id?.includes("template")
-        );
-        if (template) {
-          // Merge fixed subsection config with template components
-          return sectionConfig.subsections
-            .sort((a, b) => (a.index || 0) - (b.index || 0))
-            .map((fixedSub) => ({
-              ...fixedSub,
-              components: template.components, // Use template components
-            }));
-        }
-      }
-
       // For other sections (like executive), merge fixed subsections with renderSchema components
       if (
         renderSchema?.subsections &&
@@ -1781,12 +1997,10 @@ export function GenericSectionRenderer({
             const schemaSub = renderSchema.subsections.find(
               (sub) => sub.id === fixedSub.id
             );
-            // Merge: use fixedSub config but get components from renderSchema if available
-            // Also merge name and icon from renderSchema if they exist (renderSchema takes precedence)
+            // Merge: use fixedSub config (id, index, name, icon) and get components from renderSchema
+            // Metadados (name, icon, index) vêm apenas de section.subsections, não de renderSchema
             const mergedSub = {
-              ...fixedSub,
-              ...(schemaSub?.name && { name: schemaSub.name }),
-              ...(schemaSub?.icon && { icon: schemaSub.icon }),
+              ...fixedSub, // Use all metadata from section.subsections (id, index, name, icon)
               ...(schemaSub?.components && {
                 components: schemaSub.components,
               }),
@@ -1820,16 +2034,15 @@ export function GenericSectionRenderer({
         })
         .map((fixedSub) => {
           // Even if renderSchema.subsections doesn't exist, try to find components in renderSchema
+          // Metadados (name, icon, index) vêm apenas de section.subsections
           if (renderSchema?.subsections) {
             const schemaSub = renderSchema.subsections.find(
               (sub) => sub.id === fixedSub.id
             );
             if (schemaSub?.components) {
               return {
-                ...fixedSub,
+                ...fixedSub, // Use all metadata from section.subsections
                 components: schemaSub.components,
-                ...(schemaSub?.name && { name: schemaSub.name }),
-                ...(schemaSub?.icon && { icon: schemaSub.icon }),
               };
             }
           }
@@ -1840,16 +2053,13 @@ export function GenericSectionRenderer({
     // Priority 2: Dynamic generation for responses (always works, even if hasSubsections is false)
     // This matches the behavior in SurveySidebar.getDynamicSubsections
     if (sectionId === "responses") {
-      const questions = getQuestionsFromData(data);
-      const hiddenIds = sectionConfig?.data?.config?.questions?.hiddenIds || [];
-      const filtered = questions
-        .filter((q) => !hiddenIds.includes(q.id))
+      const questions = getQuestionsFromData(data)
         .sort((a, b) => (a.index || 0) - (b.index || 0));
 
       // Use components from renderSchema if available
       const baseComponents = renderSchema?.components || [];
 
-      return filtered.map((question) => ({
+      return questions.map((question) => ({
         id: `responses-${question.id}`,
         name: question.question,
         icon: question.icon,
@@ -1860,43 +2070,16 @@ export function GenericSectionRenderer({
       }));
     }
 
-    // Priority 3: Dynamic generation for attributes (if no fixed subsections)
-    if (sectionId === "attributes") {
-      const attributes =
-        sectionData?.attributes || resolveDataPath(sectionData, "attributes");
-      if (attributes && Array.isArray(attributes) && attributes.length > 0) {
-        // Find template subsection
-        const template = renderSchema?.subsections?.find(
-          (sub) =>
-            sub.id === "attribute-template" || sub.id?.includes("template")
-        );
-        if (template) {
-          // Generate one subsection per attribute
-          return attributes
-            .filter((attr) => attr.icon) // Only attributes with icons
-            .sort((a, b) => (a.index || 0) - (b.index || 0))
-            .map((attr) => ({
-              ...template,
-              id: `attributes-${attr.id}`,
-              index: attr.index || 0,
-              name: attr.name,
-              icon: attr.icon,
-            }));
-        }
-      }
-    }
-
-    // Priority 4: Use renderSchema subsections (fallback) - only if hasSubsections is true
+    // Priority 3: Use renderSchema subsections (fallback) - only if hasSubsections is true
     if (
       hasSubsections &&
       renderSchema?.subsections &&
       Array.isArray(renderSchema.subsections)
     ) {
-      return [...renderSchema.subsections].sort((a, b) => {
-        const indexA = a.index !== undefined ? a.index : 999;
-        const indexB = b.index !== undefined ? b.index : 999;
-        return indexA - indexB;
-      });
+      // Fallback: renderSchema.subsections no longer has index
+      // This should rarely be used since section.subsections should always exist
+      // Return as-is without sorting (order should come from section.subsections)
+      return [...renderSchema.subsections];
     }
 
     return [];
@@ -2177,8 +2360,9 @@ export function GenericSectionRenderer({
     exportWordCloud,
   ]);
 
-  // Check for errors AFTER all hooks are called
-  if (!renderSchema) {
+  // attributes (e responses) montam componentes dinamicamente; não exigem renderSchema no JSON
+  const canRenderWithoutSchema = sectionId === "attributes" || sectionId === "responses";
+  if (!renderSchema && !canRenderWithoutSchema) {
     console.warn(`No renderSchema found for section: ${sectionId}`);
     return (
       <div className="space-y-8 animate-fade-in">

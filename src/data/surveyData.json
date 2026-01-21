@@ -11,7 +11,6 @@
         "index": 0,
         "name": "Relatório Executivo",
         "icon": "FileText",
-        "hasSchema": true,
         "subsections": [
           {
             "id": "executive-summary",
@@ -31,15 +30,12 @@
             "subsections": [
               {
                 "id": "executive-summary",
-                "index": 0,
-                "name": "Sumário Executivo",
-                "icon": "ClipboardList",
                 "components": [
                   {
                     "type": "card",
                     "index": 0,
-                    "title": "{{uiTexts.executiveReport.aboutStudy}}",
-                    "content": "{{sectionData.summary.aboutStudy}}",
+                    "title": "Sobre o Estudo",
+                    "content": "Esta pesquisa de satisfação de funcionários foi conduzida entre janeiro e março de 2025, envolvendo 850 colaboradores da InnovaTech Solutions.\nO objetivo principal é avaliar o nível de engajamento, satisfação e identificar áreas de melhoria no ambiente de trabalho, cultura organizacional e processos internos.",
                     "styleVariant": "default"
                   },
                   {
@@ -50,15 +46,15 @@
                       {
                         "type": "card",
                         "index": 0,
-                        "title": "{{uiTexts.executiveReport.mainFindings}}",
-                        "content": "{{sectionData.summary.mainFindings}}",
+                        "title": "Principais Descobertas",
+                        "content": "O NPS organizacional é de 35 pontos, classificado como 'Bom', indicando uma base sólida de funcionários satisfeitos.\nPrincipais pontos positivos incluem: qualidade do trabalho em equipe (72% positivo), oportunidades de desenvolvimento (68% positivo) e flexibilidade de horários (65% positivo).\nÁreas que necessitam atenção: comunicação interna (45% negativo), carga de trabalho (52% negativo) e processos burocráticos (48% negativo).\nA análise por departamento revela que Engenharia e Marketing apresentam maior satisfação, enquanto Vendas e Operações demonstram maior insatisfação.",
                         "styleVariant": "highlight"
                       },
                       {
                         "type": "card",
                         "index": 1,
-                        "title": "{{uiTexts.executiveReport.conclusions}}",
-                        "content": "{{sectionData.summary.conclusions}}",
+                        "title": "Conclusões",
+                        "content": "A empresa possui uma base sólida de funcionários engajados, mas há oportunidades significativas de melhoria.\nPriorizar melhorias na comunicação interna e redução de processos burocráticos pode aumentar significativamente a satisfação.\nProgramas de desenvolvimento profissional e reconhecimento devem ser expandidos, especialmente para departamentos com menor satisfação.\nA implementação de feedback contínuo e ações de melhoria baseadas nestes resultados é essencial para manter e melhorar o engajamento.",
                         "styleVariant": "border-left"
                       }
                     ]
@@ -67,9 +63,6 @@
               },
               {
                 "id": "executive-recommendations",
-                "index": 1,
-                "name": "Recomendações Estratégicas",
-                "icon": "AlertTriangle",
                 "components": [
                   {
                     "type": "card",
@@ -82,18 +75,18 @@
                         "type": "recommendationsTable",
                         "index": 0,
                         "dataPath": "sectionData.recommendations",
-                        "severityLabelsPath": "uiTexts.severityLabels"
+                        "severityLabels": {
+                          "critical": "Crítico",
+                          "high": "Alto",
+                          "medium": "Médio",
+                          "low": "Baixo"
+                        }
                       }
                     ]
                   }
                 ]
               }
             ]
-          },
-          "summary": {
-            "aboutStudy": "Esta pesquisa de satisfação de funcionários foi conduzida entre janeiro e março de 2025, envolvendo 850 colaboradores da InnovaTech Solutions.\nO objetivo principal é avaliar o nível de engajamento, satisfação e identificar áreas de melhoria no ambiente de trabalho, cultura organizacional e processos internos.",
-            "mainFindings": "O NPS organizacional é de 35 pontos, classificado como 'Bom', indicando uma base sólida de funcionários satisfeitos.\nPrincipais pontos positivos incluem: qualidade do trabalho em equipe (72% positivo), oportunidades de desenvolvimento (68% positivo) e flexibilidade de horários (65% positivo).\nÁreas que necessitam atenção: comunicação interna (45% negativo), carga de trabalho (52% negativo) e processos burocráticos (48% negativo).\nA análise por departamento revela que Engenharia e Marketing apresentam maior satisfação, enquanto Vendas e Operações demonstram maior insatisfação.",
-            "conclusions": "A empresa possui uma base sólida de funcionários engajados, mas há oportunidades significativas de melhoria.\nPriorizar melhorias na comunicação interna e redução de processos burocráticos pode aumentar significativamente a satisfação.\nProgramas de desenvolvimento profissional e reconhecimento devem ser expandidos, especialmente para departamentos com menor satisfação.\nA implementação de feedback contínuo e ações de melhoria baseadas nestes resultados é essencial para manter e melhorar o engajamento."
           },
           "recommendations": [
             {
@@ -256,14 +249,7 @@
                 }
               ]
             }
-          ],
-          "uiTexts": {
-            "executiveSummary": "Sumário Executivo",
-            "aboutStudy": "Sobre o Estudo",
-            "mainFindings": "Principais Descobertas",
-            "conclusions": "Conclusões",
-            "recommendations": "Recomendações Estratégicas"
-          }
+          ]
         }
       },
       {
@@ -271,7 +257,6 @@
         "index": 1,
         "name": "Análise de Engajamento",
         "icon": "Heart",
-        "hasSchema": true,
         "subsections": [
           {
             "id": "engagement-sentiment",
@@ -297,15 +282,12 @@
             "subsections": [
               {
                 "id": "engagement-sentiment",
-                "index": 0,
-                "name": "Sentimento Geral",
-                "icon": "Smile",
                 "components": [
                   {
                     "type": "card",
                     "index": 0,
                     "useDescription": true,
-                    "content": "{{sectionData.sentimentAnalysis.description}}",
+                    "content": "A análise de sentimento foi realizada com base nas respostas dos funcionários sobre diferentes aspectos do ambiente de trabalho.\nForam analisadas 2.450 menções em 7 categorias principais.\nOs resultados mostram predominância de sentimentos positivos em trabalho em equipe, desenvolvimento profissional e flexibilidade.\nEnquanto comunicação interna, carga de trabalho e processos burocráticos apresentam maior proporção de sentimentos negativos.",
                     "styleVariant": "default",
                     "contentStyleVariant": "with-description",
                     "components": [
@@ -324,9 +306,6 @@
               },
               {
                 "id": "engagement-segmentation",
-                "index": 1,
-                "name": "Segmentação por Departamento",
-                "icon": "Users2",
                 "components": [
                   {
                     "type": "card",
@@ -346,14 +325,11 @@
               },
               {
                 "id": "engagement-intent",
-                "index": 2,
-                "name": "Intenção de Permanência",
-                "icon": "Target",
                 "components": [
                   {
                     "type": "card",
                     "index": 0,
-                    "content": "{{sectionData.retentionIntent.description}}",
+                    "content": "A análise de intenção de permanência revela que 58% dos funcionários pretendem permanecer na empresa nos próximos 2 anos, enquanto 22% estão considerando outras oportunidades e 20% estão indecisos.\nEste resultado indica uma base sólida de retenção, mas também sinaliza a necessidade de ações proativas para manter os talentos e engajar os funcionários indecisos.",
                     "styleVariant": "default",
                     "components": [
                       {
@@ -374,7 +350,6 @@
             ]
           },
           "sentimentAnalysis": {
-            "description": "A análise de sentimento foi realizada com base nas respostas dos funcionários sobre diferentes aspectos do ambiente de trabalho.\nForam analisadas 2.450 menções em 7 categorias principais.\nOs resultados mostram predominância de sentimentos positivos em trabalho em equipe, desenvolvimento profissional e flexibilidade.\nEnquanto comunicação interna, carga de trabalho e processos burocráticos apresentam maior proporção de sentimentos negativos.",
             "data": [
               {
                 "category": "Trabalho em Equipe",
@@ -478,7 +453,6 @@
             }
           ],
           "retentionIntent": {
-            "description": "A análise de intenção de permanência revela que 58% dos funcionários pretendem permanecer na empresa nos próximos 2 anos, enquanto 22% estão considerando outras oportunidades e 20% estão indecisos.\nEste resultado indica uma base sólida de retenção, mas também sinaliza a necessidade de ações proativas para manter os talentos e engajar os funcionários indecisos.",
             "data": [
               {
                 "intent": "Pretende permanecer na empresa",
@@ -496,11 +470,6 @@
                 "count": 187
               }
             ]
-          },
-          "uiTexts": {
-            "sentimentAnalysis": "Análise de Sentimento",
-            "segmentation": "Segmentação",
-            "retentionIntent": "Intenção de Permanência"
           }
         }
       },
@@ -509,272 +478,7 @@
         "index": 2,
         "name": "Análise por Atributos",
         "icon": "Layers",
-        "hasSchema": true,
-        "subsections": [
-          {
-            "id": "attributes-department",
-            "index": 0,
-            "name": "Por Departamento",
-            "icon": "Building"
-          },
-          {
-            "id": "attributes-tenure",
-            "index": 1,
-            "name": "Por Tempo de Empresa",
-            "icon": "Clock"
-          },
-          {
-            "id": "attributes-role",
-            "index": 2,
-            "name": "Por Cargo",
-            "icon": "Briefcase"
-          }
-        ],
         "data": {
-          "renderSchema": {
-            "subsections": [
-              {
-                "id": "attribute-template",
-                "index": 0,
-                "name": "{{currentAttribute.name}}",
-                "icon": "{{currentAttribute.icon}}",
-                "components": [
-                  {
-                    "type": "card",
-                    "index": 0,
-                    "title": "{{uiTexts.attributeDeepDive.summary}}",
-                    "content": "{{currentAttribute.summary}}",
-                    "styleVariant": "default"
-                  },
-                  {
-                    "wrapper": "div",
-                    "wrapperProps": {},
-                    "index": 1,
-                    "components": [
-                      {
-                        "type": "card",
-                        "index": 0,
-                        "title": "{{uiTexts.attributeDeepDive.distribution}}",
-                        "styleVariant": "flex-column",
-                        "contentStyleVariant": "with-charts",
-                        "components": [
-                          {
-                            "type": "barChart",
-                            "index": 0,
-                            "dataPath": "currentAttribute.distribution",
-                            "config": {
-                              "dataKey": "percentage",
-                              "yAxisDataKey": "segment",
-                              "tooltipFormatter": "uiTexts.attributeDeepDive.tooltip.respondents"
-                            }
-                          },
-                          {
-                            "type": "distributionTable",
-                            "index": 1,
-                            "dataPath": "currentAttribute.distribution",
-                            "attributeName": "{{currentAttribute.name}}"
-                          }
-                        ]
-                      },
-                      {
-                        "type": "card",
-                        "index": 1,
-                        "title": "{{uiTexts.attributeDeepDive.sentimentAnalysis}}",
-                        "styleVariant": "flex-column",
-                        "contentStyleVariant": "with-charts",
-                        "components": [
-                          {
-                            "type": "sentimentStackedChart",
-                            "index": 0,
-                            "dataPath": "currentAttribute.sentiment",
-                            "config": {
-                              "yAxisDataKey": "segment"
-                            }
-                          },
-                          {
-                            "type": "sentimentTable",
-                            "index": 1,
-                            "dataPath": "currentAttribute.sentiment"
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "card",
-                    "index": 2,
-                    "condition": "currentAttribute.npsSummary",
-                    "title": "{{uiTexts.attributeDeepDive.npsQuestion}}",
-                    "styleVariant": "default",
-                    "contentStyleVariant": "with-tables",
-                    "components": [
-                      {
-                        "wrapper": "div",
-                        "index": 0,
-                        "components": [
-                          {
-                            "wrapper": "h3",
-                            "wrapperProps": {},
-                            "index": 0,
-                            "content": "{{uiTexts.attributeDeepDive.summary}}"
-                          },
-                          {
-                            "wrapper": "div",
-                            "wrapperProps": {},
-                            "index": 1,
-                            "content": "{{currentAttribute.npsSummary}}"
-                          }
-                        ]
-                      },
-                      {
-                        "wrapper": "div",
-                        "index": 1,
-                        "components": [
-                          {
-                            "wrapper": "h3",
-                            "wrapperProps": {},
-                            "index": 0,
-                            "content": "{{uiTexts.attributeDeepDive.responses}}"
-                          },
-                          {
-                            "wrapper": "div",
-                            "wrapperProps": {},
-                            "index": 1,
-                            "components": [
-                              {
-                                "wrapper": "div",
-                                "index": 0,
-                                "components": [
-                                  {
-                                    "wrapper": "h4",
-                                    "wrapperProps": {},
-                                    "index": 0,
-                                    "content": "{{uiTexts.attributeDeepDive.promotersNeutralsDetractors}}"
-                                  },
-                                  {
-                                    "type": "npsDistributionTable",
-                                    "index": 1,
-                                    "dataPath": "currentAttribute.npsDistribution",
-                                    "attributeName": "{{currentAttribute.name}}"
-                                  }
-                                ]
-                              },
-                              {
-                                "wrapper": "div",
-                                "index": 1,
-                                "components": [
-                                  {
-                                    "wrapper": "h4",
-                                    "wrapperProps": {},
-                                    "index": 0,
-                                    "content": "{{uiTexts.attributeDeepDive.nps}}"
-                                  },
-                                  {
-                                    "type": "npsTable",
-                                    "index": 1,
-                                    "dataPath": "currentAttribute.nps",
-                                    "attributeName": "{{currentAttribute.name}}"
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "card",
-                    "index": 3,
-                    "condition": "currentAttribute.satisfactionImpactSummary",
-                    "title": "{{uiTexts.attributeDeepDive.satisfactionImpactQuestion}}",
-                    "styleVariant": "default",
-                    "contentStyleVariant": "with-tables",
-                    "components": [
-                      {
-                        "wrapper": "div",
-                        "index": 0,
-                        "components": [
-                          {
-                            "wrapper": "h3",
-                            "wrapperProps": {},
-                            "index": 0,
-                            "content": "{{uiTexts.attributeDeepDive.summary}}"
-                          },
-                          {
-                            "wrapper": "div",
-                            "wrapperProps": {},
-                            "index": 1,
-                            "content": "{{currentAttribute.satisfactionImpactSummary}}"
-                          }
-                        ]
-                      },
-                      {
-                        "wrapper": "div",
-                        "condition": "currentAttribute.satisfactionImpactSentiment",
-                        "index": 1,
-                        "components": [
-                          {
-                            "wrapper": "h3",
-                            "wrapperProps": {},
-                            "index": 0,
-                            "content": "{{uiTexts.attributeDeepDive.sentimentAnalysis}}"
-                          },
-                          {
-                            "type": "sentimentThreeColorChart",
-                            "index": 1,
-                            "dataPath": "currentAttribute.satisfactionImpactSentiment",
-                            "config": {}
-                          },
-                          {
-                            "type": "sentimentImpactTable",
-                            "index": 2,
-                            "dataPath": "currentAttribute.satisfactionImpactSentiment"
-                          }
-                        ]
-                      },
-                      {
-                        "wrapper": "div",
-                        "condition": "currentAttribute.positiveCategories",
-                        "index": 2,
-                        "components": [
-                          {
-                            "wrapper": "h3",
-                            "wrapperProps": {},
-                            "index": 0,
-                            "content": "{{uiTexts.attributeDeepDive.positiveCategories}}"
-                          },
-                          {
-                            "type": "positiveCategoriesTable",
-                            "index": 1,
-                            "dataPath": "currentAttribute.positiveCategories"
-                          }
-                        ]
-                      },
-                      {
-                        "wrapper": "div",
-                        "condition": "currentAttribute.negativeCategories",
-                        "index": 3,
-                        "components": [
-                          {
-                            "wrapper": "h3",
-                            "wrapperProps": {},
-                            "index": 0,
-                            "content": "{{uiTexts.attributeDeepDive.negativeCategories}}"
-                          },
-                          {
-                            "type": "negativeCategoriesTable",
-                            "index": 1,
-                            "dataPath": "currentAttribute.negativeCategories"
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
           "attributes": [
             {
               "id": "department",
@@ -1117,32 +821,6 @@
               ]
             }
           ],
-          "uiTexts": {
-            "summary": "Sumário",
-            "distribution": "Distribuição dos respondentes",
-            "segment": "Segmento",
-            "quantity": "Quantidade",
-            "percentage": "%",
-            "sentimentAnalysis": "Análise de sentimento",
-            "positive": "Positivo",
-            "negative": "Negativo",
-            "npsQuestion": "Qual é a probabilidade de você recomendar nossa empresa como um ótimo lugar para trabalhar?",
-            "responses": "Respostas",
-            "promotersNeutralsDetractors": "Promotores, Neutros, Detratores",
-            "promoters": "Promotores",
-            "neutrals": "Neutros",
-            "detractors": "Detratores",
-            "nps": "NPS",
-            "satisfactionImpactQuestion": "Quais são os principais fatores que impactam sua satisfação no trabalho?",
-            "positiveCategories": "Categorias com sentimento positivo - Top 3",
-            "negativeCategories": "Categorias com sentimento negativo - Top 3",
-            "sentiment": "Sentimento",
-            "notApplicable": "Não aplicável",
-            "category": "Categoria",
-            "tooltip": {
-              "respondents": "respondentes"
-            }
-          },
           "config": {
             "defaultIcon": "Building"
           }
@@ -1153,7 +831,6 @@
         "index": 3,
         "name": "Análise por Questão",
         "icon": "MessageSquare",
-        "hasSchema": true,
         "hasSubsections": false,
         "data": {
           "renderSchema": {
@@ -1180,14 +857,12 @@
                   {
                     "type": "npsScoreCard",
                     "index": 0,
-                    "condition": "question.type === 'nps'",
                     "dataPath": "surveyInfo",
                     "config": {}
                   },
                   {
                     "type": "npsStackedChart",
                     "index": 1,
-                    "condition": "question.type === 'nps' && question.data",
                     "dataPath": "question.data",
                     "config": {}
                   }
@@ -1198,7 +873,6 @@
                   {
                     "type": "barChart",
                     "index": 0,
-                    "condition": "question.id !== 1 && question.type === 'closed' && question.data",
                     "dataPath": "question.data",
                     "config": {
                       "dataKey": "percentage",
@@ -1212,28 +886,23 @@
                   {
                     "type": "sentimentStackedChart",
                     "index": 0,
-                    "condition": "question.type === 'open' && question.sentimentData",
                     "dataPath": "question.sentimentData",
                     "config": {}
                   },
                   {
                     "type": "topCategoriesCards",
                     "index": 1,
-                    "condition": "question.type === 'open' && question.topCategories",
                     "dataPath": "question.topCategories",
                     "config": {
-                      "title": "{{uiTexts.responseDetails.top3Categories}}"
+                      "title": "Top 3 Categorias"
                     }
                   },
                   {
                     "type": "wordCloud",
                     "index": 2,
-                    "condition": "question.type === 'open' && question.wordCloud && showWordCloud",
                     "dataPath": "question.wordCloud",
                     "config": {
-                      "title": "{{uiTexts.responseDetails.wordCloud}}",
-                      "useStaticImage": true,
-                      "staticImagePath": "/nuvem.png"
+                      "title": "Nuvem de Palavras"
                     }
                   }
                 ]
@@ -1739,35 +1408,7 @@
               "type": "open"
             }
           ],
-          "uiTexts": {
-            "all": "Todas",
-            "openField": "Campo Aberto",
-            "multipleChoice": "Múltipla Escolha",
-            "nps": "NPS",
-            "wordCloud": "Nuvem de Palavras",
-            "summary": "Sumário:",
-            "responses": "Respostas:",
-            "npsScore": "NPS Score",
-            "top3CategoriesTopics": "Top 3 categorias e principais tópicos",
-            "top3Categories": "Top 3 Categorias",
-            "mentions": "menções",
-            "positive": "Positivos",
-            "negative": "Negativos",
-            "noPositiveTopics": "Nenhum tópico positivo",
-            "noNegativeTopics": "Nenhum tópico negativo",
-            "filterQuestion": "Filtrar questão",
-            "downloadQuestion": "Download questão",
-            "png": "PNG",
-            "pdf": "PDF",
-            "removeFilter": "Remover filtro",
-            "responsesCount": "respostas",
-            "questionPrefix": "Q"
-          },
           "config": {
-            "questions": {
-              "hiddenIds": [3],
-              "excludedFromChartIds": [1]
-            },
             "npsCategories": {
               "detractor": "Detrator",
               "promoter": "Promotor",
@@ -1777,9 +1418,6 @@
                 "neutrals": "Neutros",
                 "promoters": "Promotores"
               }
-            },
-            "wordCloud": {
-              "imagePath": "/nuvem.png"
             }
           }
         }
@@ -1789,7 +1427,6 @@
         "index": 4,
         "name": "Análise de Cultura Organizacional",
         "icon": "Users",
-        "hasSchema": true,
         "subsections": [
           {
             "id": "culture-values",
@@ -1815,9 +1452,6 @@
             "subsections": [
               {
                 "id": "culture-values",
-                "index": 0,
-                "name": "Valores Organizacionais",
-                "icon": "Star",
                 "components": [
                   {
                     "wrapper": "div",
@@ -1829,14 +1463,14 @@
                       {
                         "type": "card",
                         "index": 0,
-                        "title": "{{uiTexts.cultureAnalysis.values.title}}",
-                        "content": "{{sectionData.values.description}}",
+                        "title": "Valores Organizacionais",
+                        "content": "Os valores organizacionais mais reconhecidos pelos funcionários são colaboração, inovação e integridade.\nA maioria dos funcionários (78%) identifica colaboração como um valor forte da empresa.",
                         "styleVariant": "default"
                       },
                       {
                         "type": "card",
                         "index": 1,
-                        "title": "{{uiTexts.cultureAnalysis.values.distribution}}",
+                        "title": "Distribuição por Valor",
                         "styleVariant": "flex-column",
                         "contentStyleVariant": "with-charts",
                         "components": [
@@ -1856,15 +1490,12 @@
               },
               {
                 "id": "culture-communication",
-                "index": 1,
-                "name": "Comunicação Interna",
-                "icon": "MessageSquare",
                 "components": [
                   {
                     "type": "card",
                     "index": 0,
                     "useDescription": true,
-                    "content": "{{sectionData.communication.description}}",
+                    "content": "A comunicação interna é uma área que necessita melhorias significativas.\n45% dos funcionários expressam sentimentos negativos sobre a comunicação, enquanto apenas 32.5% são positivos.",
                     "styleVariant": "default",
                     "contentStyleVariant": "with-description",
                     "components": [
@@ -1883,9 +1514,6 @@
               },
               {
                 "id": "culture-development",
-                "index": 2,
-                "name": "Desenvolvimento Profissional",
-                "icon": "TrendingUp",
                 "components": [
                   {
                     "wrapper": "div",
@@ -1895,14 +1523,14 @@
                       {
                         "type": "card",
                         "index": 0,
-                        "title": "{{uiTexts.cultureAnalysis.development.title}}",
-                        "content": "{{sectionData.development.description}}",
+                        "title": "Desenvolvimento Profissional",
+                        "content": "Os programas de desenvolvimento profissional são bem avaliados, com 68% de satisfação positiva.\nFuncionários valorizam especialmente treinamentos técnicos, mentoria e oportunidades de crescimento.",
                         "styleVariant": "border-left"
                       },
                       {
                         "type": "card",
                         "index": 1,
-                        "title": "{{uiTexts.cultureAnalysis.development.programs}}",
+                        "title": "Satisfação com Programas",
                         "styleVariant": "flex-column",
                         "contentStyleVariant": "with-charts",
                         "components": [
@@ -1926,7 +1554,6 @@
             ]
           },
           "values": {
-            "description": "Os valores organizacionais mais reconhecidos pelos funcionários são colaboração, inovação e integridade.\nA maioria dos funcionários (78%) identifica colaboração como um valor forte da empresa.",
             "sentiment": [
               {
                 "value": "Colaboração",
@@ -1955,7 +1582,6 @@
             ]
           },
           "communication": {
-            "description": "A comunicação interna é uma área que necessita melhorias significativas.\n45% dos funcionários expressam sentimentos negativos sobre a comunicação, enquanto apenas 32.5% são positivos.",
             "data": [
               {
                 "aspect": "Clareza das Mensagens",
@@ -1984,7 +1610,6 @@
             ]
           },
           "development": {
-            "description": "Os programas de desenvolvimento profissional são bem avaliados, com 68% de satisfação positiva.\nFuncionários valorizam especialmente treinamentos técnicos, mentoria e oportunidades de crescimento.",
             "programs": [
               {
                 "program": "Treinamentos Técnicos",
@@ -2012,103 +1637,18 @@
                 "count": 497
               }
             ]
-          },
-          "uiTexts": {
-            "values": {
-              "title": "Valores Organizacionais",
-              "distribution": "Distribuição por Valor"
-            },
-            "communication": {
-              "title": "Comunicação Interna"
-            },
-            "development": {
-              "title": "Desenvolvimento Profissional",
-              "programs": "Satisfação com Programas"
-            }
           }
         }
-      },
-      {
-        "id": "export",
-        "index": 5,
-        "name": "Export",
-        "icon": "Download",
-        "isRoute": true
       }
     ],
     "components": {}
   },
   "uiTexts": {
-    "executiveReport": {
-      "executiveSummary": "Sumário Executivo",
-      "aboutStudy": "Sobre o Estudo",
-      "mainFindings": "Principais Descobertas",
-      "conclusions": "Conclusões",
-      "recommendations": "Recomendações Estratégicas"
-    },
-    "severityLabels": {
-      "critical": "Crítico",
-      "high": "Alto",
-      "medium": "Médio",
-      "low": "Baixo"
-    },
-    "attributeDeepDive": {
-      "summary": "Sumário",
-      "distribution": "Distribuição dos respondentes",
-      "sentimentAnalysis": "Análise de sentimento",
-      "npsQuestion": "Qual é a probabilidade de você recomendar nossa empresa a um amigo ou colega em uma escala de 0 a 10?",
-      "responses": "Respostas",
-      "promotersNeutralsDetractors": "Promotores, Neutros, Detratores",
-      "nps": "NPS",
-      "satisfactionImpactQuestion": "Quais são os principais fatores que impactam sua satisfação no trabalho?",
-      "positive": "Positivo",
-      "negative": "Negativo",
-      "notApplicable": "Não aplicável",
-      "positiveCategories": "Categorias com sentimento positivo - Top 3",
-      "negativeCategories": "Categorias com sentimento negativo - Top 3"
-    },
     "filterPanel": {
       "all": "Todas",
       "openField": "Campo Aberto",
       "multipleChoice": "Múltipla Escolha",
       "nps": "NPS"
-    },
-    "surveyHeader": {
-      "results": "Resultados da Pesquisa",
-      "executiveReport": "Relatório Executivo",
-      "engagementAnalysis": "Análise de Engajamento",
-      "attributeAnalysis": "Análise por Atributos",
-      "questionAnalysis": "Análise por Questão",
-      "cultureAnalysis": "Análise de Cultura Organizacional"
-    },
-    "surveySidebar": {
-      "executiveReport": "Relatório Executivo",
-      "engagementAnalysis": "Análise de Engajamento",
-      "attributeAnalysis": "Análise por Atributos",
-      "questionAnalysis": "Análise por Questão",
-      "cultureAnalysis": "Análise de Cultura Organizacional",
-      "export": "Export",
-      "respondents": "Respondentes",
-      "responseRate": "Taxa de Adesão",
-      "questions": "Perguntas"
-    },
-    "responseDetails": {
-      "summary": "Sumário:",
-      "top3Categories": "Top 3 Categorias",
-      "wordCloud": "Nuvem de Palavras"
-    },
-    "cultureAnalysis": {
-      "values": {
-        "title": "Valores Organizacionais",
-        "distribution": "Distribuição por Valor"
-      },
-      "communication": {
-        "title": "Comunicação Interna"
-      },
-      "development": {
-        "title": "Desenvolvimento Profissional",
-        "programs": "Satisfação com Programas"
-      }
     },
     "export": {
       "title": "Export de Dados",
@@ -2134,8 +1674,6 @@
     "period": "Janeiro - Março 2025",
     "totalRespondents": 850,
     "responseRate": 78.5,
-    "nps": 35,
-    "npsCategory": "Bom",
     "questions": 6
   }
 }
