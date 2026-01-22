@@ -69,19 +69,19 @@ export default function Export() {
 
   // Local texts for the Export component
   const exportTexts = {
-    title: currentUiTexts.export?.title || "Export  Data",
+    title: currentUiTexts?.export?.title || "Export  Data",
     description:
-      currentUiTexts.export?.description ||
+      currentUiTexts?.export?.description ||
       "Export the survey data in different formats",
     exportFullReport:
-      currentUiTexts.export?.exportFullReport || "Export Full Report",
+      currentUiTexts?.export?.exportFullReport || "Export Full Report",
     selectSpecificSections:
-      currentUiTexts.export?.selectSpecificSections ||
+      currentUiTexts?.export?.selectSpecificSections ||
       "Select Specific Sections",
-    exportAsPDF: currentUiTexts.export?.exportAsPDF || "Export as PDF",
-    exportAsPPT: currentUiTexts.export?.exportAsPPT || "Export as PPT",
+    exportAsPDF: currentUiTexts?.export?.exportAsPDF || "Export as PDF",
+    exportAsPPT: currentUiTexts?.export?.exportAsPPT || "Export as PPT",
     selectAtLeastOneSection:
-      currentUiTexts.export?.selectAtLeastOneSection ||
+      currentUiTexts?.export?.selectAtLeastOneSection ||
       "Select at least one section",
   };
 
