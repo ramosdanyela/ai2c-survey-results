@@ -332,9 +332,9 @@ function normalizeSection(currentSection, data) {
 
   // If it's a template, normalize to first real attribute
   if (
-    currentSection.includes("template") &&
     currentSection &&
     typeof currentSection === "string" &&
+    currentSection.includes("template") &&
     currentSection.startsWith("attributes")
   ) {
     const firstSub = getFirstSubsectionHelper("attributes", data);
@@ -406,7 +406,7 @@ function getNextSection(currentSection, data) {
 
   // Get next subsection and filter out any templates
   const nextSub = allSubsections[currentIndex + 1];
-  if (nextSub && nextSub.includes("template")) {
+  if (nextSub && typeof nextSub === "string" && nextSub.includes("template")) {
     // If next is a template, skip to the one after (if exists)
     if (currentIndex + 2 < allSubsections.length) {
       return allSubsections[currentIndex + 2];
@@ -442,7 +442,7 @@ function getPreviousSection(currentSection, data) {
 
   // Get previous subsection and filter out any templates
   const prevSub = allSubsections[currentIndex - 1];
-  if (prevSub && prevSub.includes("template")) {
+  if (prevSub && typeof prevSub === "string" && prevSub.includes("template")) {
     // If previous is a template, skip to the one before (if exists)
     if (currentIndex - 2 >= 0) {
       return allSubsections[currentIndex - 2];
@@ -524,7 +524,7 @@ function getSubsectionTitle(sectionId, data, maxLength = 40) {
   }
 
   // Priority 5: If it's a template (like "attribute-template"), return empty
-  if (sectionId.includes("template")) {
+  if (sectionId && typeof sectionId === "string" && sectionId.includes("template")) {
     return ""; // Don't show template names in navigation
   }
 
@@ -590,7 +590,7 @@ function getSectionAndSubsection(sectionId, data, maxLength = 40) {
     uiTexts.attributeAnalysis || "Análise por Atributos";
   if (
     sectionTitle === attributeAnalysisTitle ||
-    sectionTitle.includes("Atributos")
+    (sectionTitle && typeof sectionTitle === "string" && sectionTitle.includes("Atributos"))
   ) {
     sectionTitle = uiTexts.deepDive || "Aprofundamento";
   }

@@ -741,7 +741,7 @@ function SchemaFilterPills({ component, data }) {
  * Render word cloud component based on schema
  * All styling is hardcoded - only data path and title from config
  */
-function SchemaWordCloud({ component, data }) {
+function SchemaWordCloud({ component, data, isExport = false }) {
   const wordCloudData = resolveDataPath(data, component.dataPath);
   const uiTexts = resolveDataPath(data, "uiTexts");
 
@@ -758,6 +758,17 @@ function SchemaWordCloud({ component, data }) {
   const useStaticImage = config.useStaticImage !== false;
   const staticImagePath = config.staticImagePath || "/nuvem.png";
 
+  // In export mode, reduce size to 25% and center vertically
+  const exportStyles = isExport
+    ? {
+        width: "25%",
+        margin: "0 auto",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }
+    : {};
+
   return (
     <div>
       {title && (
@@ -766,13 +777,16 @@ function SchemaWordCloud({ component, data }) {
           {title}
         </h4>
       )}
-      <div className="flex justify-center items-center p-6 bg-muted/30 rounded-lg min-h-[200px]">
+      <div
+        className="flex justify-center items-center p-6 bg-muted/30 rounded-lg min-h-[200px]"
+        style={exportStyles}
+      >
         {useStaticImage && wordCloudData.length === 0 ? (
           <img
             src={staticImagePath}
             alt={uiTexts?.responseDetails?.wordCloud || "Word Cloud"}
             className="max-w-full h-auto"
-            style={{ maxHeight: "500px" }}
+            style={{ maxHeight: isExport ? "125px" : "500px" }}
           />
         ) : (
           <WordCloud
@@ -1594,7 +1608,7 @@ function SchemaComponent({
     case "filterPills":
       return <SchemaFilterPills component={component} data={data} />;
     case "wordCloud":
-      return <SchemaWordCloud component={component} data={data} />;
+      return <SchemaWordCloud component={component} data={data} isExport={isExport} />;
     case "accordion":
       return <SchemaAccordion component={component} data={data} />;
     case "kpiCard":

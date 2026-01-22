@@ -392,31 +392,31 @@
                 "category": "Flexibilidade",
                 "positive": 65.2,
                 "neutral": 25.8,
-                "negative": 9.0
+                "negative": 9
               },
               {
                 "category": "Liderança",
                 "positive": 58.7,
                 "neutral": 28.3,
-                "negative": 13.0
+                "negative": 13
               },
               {
                 "category": "Comunicação Interna",
                 "positive": 32.5,
                 "neutral": 22.5,
-                "negative": 45.0
+                "negative": 45
               },
               {
                 "category": "Carga de Trabalho",
                 "positive": 18.2,
                 "neutral": 29.8,
-                "negative": 52.0
+                "negative": 52
               },
               {
                 "category": "Processos Burocráticos",
                 "positive": 15.5,
                 "neutral": 36.5,
-                "negative": 48.0
+                "negative": 48
               }
             ]
           },
@@ -819,37 +819,37 @@
                   "segment": "Engenharia",
                   "positive": 75.2,
                   "neutral": 15.8,
-                  "negative": 9.0
+                  "negative": 9
                 },
                 {
                   "segment": "Marketing",
                   "positive": 72.5,
                   "neutral": 18.5,
-                  "negative": 9.0
+                  "negative": 9
                 },
                 {
                   "segment": "RH",
-                  "positive": 65.0,
-                  "neutral": 25.0,
-                  "negative": 10.0
+                  "positive": 65,
+                  "neutral": 25,
+                  "negative": 10
                 },
                 {
                   "segment": "Vendas",
                   "positive": 45.5,
                   "neutral": 30.5,
-                  "negative": 24.0
+                  "negative": 24
                 },
                 {
                   "segment": "Operações",
                   "positive": 38.2,
                   "neutral": 32.8,
-                  "negative": 29.0
+                  "negative": 29
                 },
                 {
                   "segment": "Outros",
-                  "positive": 60.0,
-                  "neutral": 25.0,
-                  "negative": 15.0
+                  "positive": 60,
+                  "neutral": 25,
+                  "negative": 15
                 }
               ],
               "npsSummary": "Os escores NPS variam significativamente entre departamentos.\nEngenharia e Marketing lideram com NPS positivo (42 e 38), indicando alta satisfação e lealdade.\nVendas e Operações apresentam NPS negativo (-15 e -22), sinalizando necessidade urgente de intervenção.\nRH e Outros departamentos apresentam NPS moderadamente positivo, indicando satisfação adequada.",
@@ -884,49 +884,49 @@
                   "segment": "Engenharia",
                   "promotores": 58.5,
                   "neutros": 16.5,
-                  "detratores": 25.0
+                  "detratores": 25
                 },
                 {
                   "segment": "Marketing",
-                  "promotores": 55.0,
-                  "neutros": 17.0,
-                  "detratores": 28.0
+                  "promotores": 55,
+                  "neutros": 17,
+                  "detratores": 28
                 },
                 {
                   "segment": "RH",
                   "promotores": 42.5,
                   "neutros": 30.5,
-                  "detratores": 27.0
+                  "detratores": 27
                 },
                 {
                   "segment": "Vendas",
-                  "promotores": 32.0,
-                  "neutros": 28.0,
-                  "detratores": 40.0
+                  "promotores": 32,
+                  "neutros": 28,
+                  "detratores": 40
                 },
                 {
                   "segment": "Operações",
                   "promotores": 28.5,
                   "neutros": 28.5,
-                  "detratores": 43.0
+                  "detratores": 43
                 },
                 {
                   "segment": "Outros",
-                  "promotores": 40.0,
-                  "neutros": 32.0,
-                  "detratores": 28.0
+                  "promotores": 40,
+                  "neutros": 32,
+                  "detratores": 28
                 }
               ],
               "satisfactionImpactSummary": "Engenharia e Marketing valorizam principalmente trabalho em equipe, desenvolvimento profissional e flexibilidade.\nVendas e Operações expressam maior insatisfação com carga de trabalho, processos burocráticos e comunicação interna.\nRH demonstra satisfação equilibrada, com preocupações moderadas sobre processos.",
               "satisfactionImpactSentiment": [
                 {
                   "sentiment": "Negativo",
-                  "Engenharia": 9.0,
-                  "Marketing": 9.0,
-                  "RH": 10.0,
-                  "Vendas": 24.0,
-                  "Operações": 29.0,
-                  "Outros": 15.0
+                  "Engenharia": 9,
+                  "Marketing": 9,
+                  "RH": 10,
+                  "Vendas": 24,
+                  "Operações": 29,
+                  "Outros": 15
                 },
                 {
                   "sentiment": "Não aplicável",
@@ -941,10 +941,10 @@
                   "sentiment": "Positivo",
                   "Engenharia": 75.2,
                   "Marketing": 72.5,
-                  "RH": 65.0,
+                  "RH": 65,
                   "Vendas": 45.5,
                   "Operações": 38.2,
-                  "Outros": 60.0
+                  "Outros": 60
                 }
               ],
               "positiveCategories": [
@@ -952,57 +952,57 @@
                   "category": "Trabalho em Equipe",
                   "Engenharia": 85.2,
                   "Marketing": 78.5,
-                  "RH": 72.0,
-                  "Vendas": 55.0,
-                  "Operações": 48.0,
-                  "Outros": 70.0
+                  "RH": 72,
+                  "Vendas": 55,
+                  "Operações": 48,
+                  "Outros": 70
                 },
                 {
                   "category": "Desenvolvimento Profissional",
                   "Engenharia": 82.5,
-                  "Marketing": 75.0,
-                  "RH": 68.0,
-                  "Vendas": 42.0,
-                  "Operações": 35.0,
-                  "Outros": 65.0
+                  "Marketing": 75,
+                  "RH": 68,
+                  "Vendas": 42,
+                  "Operações": 35,
+                  "Outros": 65
                 },
                 {
                   "category": "Flexibilidade",
-                  "Engenharia": 78.0,
-                  "Marketing": 72.0,
-                  "RH": 65.0,
-                  "Vendas": 38.0,
-                  "Operações": 32.0,
-                  "Outros": 60.0
+                  "Engenharia": 78,
+                  "Marketing": 72,
+                  "RH": 65,
+                  "Vendas": 38,
+                  "Operações": 32,
+                  "Outros": 60
                 }
               ],
               "negativeCategories": [
                 {
                   "category": "Carga de Trabalho",
-                  "Engenharia": 12.0,
-                  "Marketing": 15.0,
-                  "RH": 18.0,
-                  "Vendas": 58.0,
-                  "Operações": 65.0,
-                  "Outros": 20.0
+                  "Engenharia": 12,
+                  "Marketing": 15,
+                  "RH": 18,
+                  "Vendas": 58,
+                  "Operações": 65,
+                  "Outros": 20
                 },
                 {
                   "category": "Processos Burocráticos",
-                  "Engenharia": 8.0,
-                  "Marketing": 12.0,
-                  "RH": 22.0,
-                  "Vendas": 52.0,
-                  "Operações": 58.0,
-                  "Outros": 18.0
+                  "Engenharia": 8,
+                  "Marketing": 12,
+                  "RH": 22,
+                  "Vendas": 52,
+                  "Operações": 58,
+                  "Outros": 18
                 },
                 {
                   "category": "Comunicação Interna",
-                  "Engenharia": 10.0,
-                  "Marketing": 18.0,
-                  "RH": 25.0,
-                  "Vendas": 48.0,
-                  "Operações": 55.0,
-                  "Outros": 22.0
+                  "Engenharia": 10,
+                  "Marketing": 18,
+                  "RH": 25,
+                  "Vendas": 48,
+                  "Operações": 55,
+                  "Outros": 22
                 }
               ]
             },
@@ -1039,25 +1039,25 @@
                   "segment": "Mais de 5 anos",
                   "positive": 78.5,
                   "neutral": 15.5,
-                  "negative": 6.0
+                  "negative": 6
                 },
                 {
                   "segment": "3-5 anos",
-                  "positive": 72.0,
-                  "neutral": 20.0,
-                  "negative": 8.0
+                  "positive": 72,
+                  "neutral": 20,
+                  "negative": 8
                 },
                 {
                   "segment": "1-3 anos",
                   "positive": 65.5,
                   "neutral": 25.5,
-                  "negative": 9.0
+                  "negative": 9
                 },
                 {
                   "segment": "Menos de 1 ano",
-                  "positive": 58.0,
-                  "neutral": 28.0,
-                  "negative": 14.0
+                  "positive": 58,
+                  "neutral": 28,
+                  "negative": 14
                 }
               ]
             },
@@ -1092,27 +1092,27 @@
               "sentiment": [
                 {
                   "segment": "Liderança",
-                  "positive": 82.0,
-                  "neutral": 12.0,
-                  "negative": 6.0
+                  "positive": 82,
+                  "neutral": 12,
+                  "negative": 6
                 },
                 {
                   "segment": "Sênior",
                   "positive": 75.5,
                   "neutral": 18.5,
-                  "negative": 6.0
+                  "negative": 6
                 },
                 {
                   "segment": "Pleno",
-                  "positive": 68.0,
-                  "neutral": 22.0,
-                  "negative": 10.0
+                  "positive": 68,
+                  "neutral": 22,
+                  "negative": 10
                 },
                 {
                   "segment": "Estagiário/Júnior",
                   "positive": 58.5,
                   "neutral": 28.5,
-                  "negative": 13.0
+                  "negative": 13
                 }
               ]
             }
@@ -1149,8 +1149,252 @@
         }
       },
       {
-        "id": "responses",
+        "id": "culture",
         "index": 3,
+        "name": "Análise de Cultura Organizacional",
+        "icon": "Users",
+        "hasSchema": true,
+        "subsections": [
+          {
+            "id": "culture-values",
+            "index": 0,
+            "name": "Valores Organizacionais",
+            "icon": "Star"
+          },
+          {
+            "id": "culture-communication",
+            "index": 1,
+            "name": "Comunicação Interna",
+            "icon": "MessageSquare"
+          },
+          {
+            "id": "culture-development",
+            "index": 2,
+            "name": "Desenvolvimento Profissional",
+            "icon": "TrendingUp"
+          }
+        ],
+        "data": {
+          "renderSchema": {
+            "subsections": [
+              {
+                "id": "culture-values",
+                "index": 0,
+                "name": "Valores Organizacionais",
+                "icon": "Star",
+                "components": [
+                  {
+                    "wrapper": "div",
+                    "wrapperProps": {
+                      "className": "grid grid-cols-1 md:grid-cols-2 gap-6"
+                    },
+                    "index": 0,
+                    "components": [
+                      {
+                        "type": "card",
+                        "index": 0,
+                        "title": "{{uiTexts.cultureAnalysis.values.title}}",
+                        "content": "{{sectionData.values.description}}",
+                        "styleVariant": "default"
+                      },
+                      {
+                        "type": "card",
+                        "index": 1,
+                        "title": "{{uiTexts.cultureAnalysis.values.distribution}}",
+                        "styleVariant": "flex-column",
+                        "contentStyleVariant": "with-charts",
+                        "components": [
+                          {
+                            "type": "sentimentStackedChart",
+                            "index": 0,
+                            "dataPath": "sectionData.values.sentiment",
+                            "config": {
+                              "yAxisDataKey": "value"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "culture-communication",
+                "index": 1,
+                "name": "Comunicação Interna",
+                "icon": "MessageSquare",
+                "components": [
+                  {
+                    "type": "card",
+                    "index": 0,
+                    "useDescription": true,
+                    "content": "{{sectionData.communication.description}}",
+                    "styleVariant": "default",
+                    "contentStyleVariant": "with-description",
+                    "components": [
+                      {
+                        "type": "sentimentDivergentChart",
+                        "index": 0,
+                        "dataPath": "sectionData.communication.data",
+                        "config": {
+                          "yAxisDataKey": "aspect",
+                          "showLegend": true
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "culture-development",
+                "index": 2,
+                "name": "Desenvolvimento Profissional",
+                "icon": "TrendingUp",
+                "components": [
+                  {
+                    "wrapper": "div",
+                    "wrapperProps": {},
+                    "index": 0,
+                    "components": [
+                      {
+                        "type": "card",
+                        "index": 0,
+                        "title": "{{uiTexts.cultureAnalysis.development.title}}",
+                        "content": "{{sectionData.development.description}}",
+                        "styleVariant": "border-left"
+                      },
+                      {
+                        "type": "card",
+                        "index": 1,
+                        "title": "{{uiTexts.cultureAnalysis.development.programs}}",
+                        "styleVariant": "flex-column",
+                        "contentStyleVariant": "with-charts",
+                        "components": [
+                          {
+                            "type": "barChart",
+                            "index": 0,
+                            "dataPath": "sectionData.development.programs",
+                            "config": {
+                              "dataKey": "satisfaction",
+                              "yAxisDataKey": "program",
+                              "sortData": true,
+                              "sortDirection": "desc"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "values": {
+            "description": "Os valores organizacionais mais reconhecidos pelos funcionários são colaboração, inovação e integridade.\nA maioria dos funcionários (78%) identifica colaboração como um valor forte da empresa.",
+            "sentiment": [
+              {
+                "value": "Colaboração",
+                "positive": 78.5,
+                "neutral": 15.2,
+                "negative": 6.3
+              },
+              {
+                "value": "Inovação",
+                "positive": 72.3,
+                "neutral": 20.5,
+                "negative": 7.2
+              },
+              {
+                "value": "Integridade",
+                "positive": 68.5,
+                "neutral": 25,
+                "negative": 6.5
+              },
+              {
+                "value": "Transparência",
+                "positive": 45.2,
+                "neutral": 32.8,
+                "negative": 22
+              }
+            ]
+          },
+          "communication": {
+            "description": "A comunicação interna é uma área que necessita melhorias significativas.\n45% dos funcionários expressam sentimentos negativos sobre a comunicação, enquanto apenas 32.5% são positivos.",
+            "data": [
+              {
+                "aspect": "Clareza das Mensagens",
+                "positive": 38.5,
+                "neutral": 25,
+                "negative": 36.5
+              },
+              {
+                "aspect": "Frequência de Comunicação",
+                "positive": 28.2,
+                "neutral": 22.8,
+                "negative": 49
+              },
+              {
+                "aspect": "Canais de Comunicação",
+                "positive": 42.5,
+                "neutral": 28.5,
+                "negative": 29
+              },
+              {
+                "aspect": "Transparência",
+                "positive": 32.5,
+                "neutral": 22.5,
+                "negative": 45
+              }
+            ]
+          },
+          "development": {
+            "description": "Os programas de desenvolvimento profissional são bem avaliados, com 68% de satisfação positiva.\nFuncionários valorizam especialmente treinamentos técnicos, mentoria e oportunidades de crescimento.",
+            "programs": [
+              {
+                "program": "Treinamentos Técnicos",
+                "satisfaction": 82.5,
+                "count": 701
+              },
+              {
+                "program": "Programa de Mentoria",
+                "satisfaction": 75,
+                "count": 638
+              },
+              {
+                "program": "Oportunidades de Crescimento",
+                "satisfaction": 68.5,
+                "count": 582
+              },
+              {
+                "program": "Desenvolvimento de Liderança",
+                "satisfaction": 62,
+                "count": 527
+              },
+              {
+                "program": "Certificações",
+                "satisfaction": 58.5,
+                "count": 497
+              }
+            ]
+          },
+          "uiTexts": {
+            "values": {
+              "title": "Valores Organizacionais",
+              "distribution": "Distribuição por Valor"
+            },
+            "communication": {
+              "title": "Comunicação Interna"
+            },
+            "development": {
+              "title": "Desenvolvimento Profissional",
+              "programs": "Satisfação com Programas"
+            }
+          }
+        }
+      },
+      {
+        "id": "responses",
+        "index": 4,
         "name": "Análise por Questão",
         "icon": "MessageSquare",
         "hasSchema": true,
@@ -1359,13 +1603,13 @@
                   "category": "Flexibilidade",
                   "positive": 65.2,
                   "neutral": 25.8,
-                  "negative": 9.0
+                  "negative": 9
                 },
                 {
                   "category": "Liderança",
                   "positive": 58.7,
                   "neutral": 28.3,
-                  "negative": 13.0
+                  "negative": 13
                 }
               ],
               "topCategories": [
@@ -1485,19 +1729,19 @@
                   "category": "Comunicação Interna",
                   "positive": 32.5,
                   "neutral": 22.5,
-                  "negative": 45.0
+                  "negative": 45
                 },
                 {
                   "category": "Carga de Trabalho",
                   "positive": 18.2,
                   "neutral": 29.8,
-                  "negative": 52.0
+                  "negative": 52
                 },
                 {
                   "category": "Processos Burocráticos",
                   "positive": 15.5,
                   "neutral": 36.5,
-                  "negative": 48.0
+                  "negative": 48
                 }
               ],
               "topCategories": [
@@ -1629,7 +1873,7 @@
                   "category": "Transparência",
                   "positive": 45.2,
                   "neutral": 32.8,
-                  "negative": 22.0
+                  "negative": 22
                 }
               ],
               "topCategories": [
@@ -1765,8 +2009,12 @@
           },
           "config": {
             "questions": {
-              "hiddenIds": [3],
-              "excludedFromChartIds": [1]
+              "hiddenIds": [
+                3
+              ],
+              "excludedFromChartIds": [
+                1
+              ]
             },
             "npsCategories": {
               "detractor": "Detrator",
@@ -1780,250 +2028,6 @@
             },
             "wordCloud": {
               "imagePath": "/nuvem.png"
-            }
-          }
-        }
-      },
-      {
-        "id": "culture",
-        "index": 4,
-        "name": "Análise de Cultura Organizacional",
-        "icon": "Users",
-        "hasSchema": true,
-        "subsections": [
-          {
-            "id": "culture-values",
-            "index": 0,
-            "name": "Valores Organizacionais",
-            "icon": "Star"
-          },
-          {
-            "id": "culture-communication",
-            "index": 1,
-            "name": "Comunicação Interna",
-            "icon": "MessageSquare"
-          },
-          {
-            "id": "culture-development",
-            "index": 2,
-            "name": "Desenvolvimento Profissional",
-            "icon": "TrendingUp"
-          }
-        ],
-        "data": {
-          "renderSchema": {
-            "subsections": [
-              {
-                "id": "culture-values",
-                "index": 0,
-                "name": "Valores Organizacionais",
-                "icon": "Star",
-                "components": [
-                  {
-                    "wrapper": "div",
-                    "wrapperProps": {
-                      "className": "grid grid-cols-1 md:grid-cols-2 gap-6"
-                    },
-                    "index": 0,
-                    "components": [
-                      {
-                        "type": "card",
-                        "index": 0,
-                        "title": "{{uiTexts.cultureAnalysis.values.title}}",
-                        "content": "{{sectionData.values.description}}",
-                        "styleVariant": "default"
-                      },
-                      {
-                        "type": "card",
-                        "index": 1,
-                        "title": "{{uiTexts.cultureAnalysis.values.distribution}}",
-                        "styleVariant": "flex-column",
-                        "contentStyleVariant": "with-charts",
-                        "components": [
-                          {
-                            "type": "sentimentStackedChart",
-                            "index": 0,
-                            "dataPath": "sectionData.values.sentiment",
-                            "config": {
-                              "yAxisDataKey": "value"
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "culture-communication",
-                "index": 1,
-                "name": "Comunicação Interna",
-                "icon": "MessageSquare",
-                "components": [
-                  {
-                    "type": "card",
-                    "index": 0,
-                    "useDescription": true,
-                    "content": "{{sectionData.communication.description}}",
-                    "styleVariant": "default",
-                    "contentStyleVariant": "with-description",
-                    "components": [
-                      {
-                        "type": "sentimentDivergentChart",
-                        "index": 0,
-                        "dataPath": "sectionData.communication.data",
-                        "config": {
-                          "yAxisDataKey": "aspect",
-                          "showLegend": true
-                        }
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "culture-development",
-                "index": 2,
-                "name": "Desenvolvimento Profissional",
-                "icon": "TrendingUp",
-                "components": [
-                  {
-                    "wrapper": "div",
-                    "wrapperProps": {},
-                    "index": 0,
-                    "components": [
-                      {
-                        "type": "card",
-                        "index": 0,
-                        "title": "{{uiTexts.cultureAnalysis.development.title}}",
-                        "content": "{{sectionData.development.description}}",
-                        "styleVariant": "border-left"
-                      },
-                      {
-                        "type": "card",
-                        "index": 1,
-                        "title": "{{uiTexts.cultureAnalysis.development.programs}}",
-                        "styleVariant": "flex-column",
-                        "contentStyleVariant": "with-charts",
-                        "components": [
-                          {
-                            "type": "barChart",
-                            "index": 0,
-                            "dataPath": "sectionData.development.programs",
-                            "config": {
-                              "dataKey": "satisfaction",
-                              "yAxisDataKey": "program",
-                              "sortData": true,
-                              "sortDirection": "desc"
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          "values": {
-            "description": "Os valores organizacionais mais reconhecidos pelos funcionários são colaboração, inovação e integridade.\nA maioria dos funcionários (78%) identifica colaboração como um valor forte da empresa.",
-            "sentiment": [
-              {
-                "value": "Colaboração",
-                "positive": 78.5,
-                "neutral": 15.2,
-                "negative": 6.3
-              },
-              {
-                "value": "Inovação",
-                "positive": 72.3,
-                "neutral": 20.5,
-                "negative": 7.2
-              },
-              {
-                "value": "Integridade",
-                "positive": 68.5,
-                "neutral": 25.0,
-                "negative": 6.5
-              },
-              {
-                "value": "Transparência",
-                "positive": 45.2,
-                "neutral": 32.8,
-                "negative": 22.0
-              }
-            ]
-          },
-          "communication": {
-            "description": "A comunicação interna é uma área que necessita melhorias significativas.\n45% dos funcionários expressam sentimentos negativos sobre a comunicação, enquanto apenas 32.5% são positivos.",
-            "data": [
-              {
-                "aspect": "Clareza das Mensagens",
-                "positive": 38.5,
-                "neutral": 25.0,
-                "negative": 36.5
-              },
-              {
-                "aspect": "Frequência de Comunicação",
-                "positive": 28.2,
-                "neutral": 22.8,
-                "negative": 49.0
-              },
-              {
-                "aspect": "Canais de Comunicação",
-                "positive": 42.5,
-                "neutral": 28.5,
-                "negative": 29.0
-              },
-              {
-                "aspect": "Transparência",
-                "positive": 32.5,
-                "neutral": 22.5,
-                "negative": 45.0
-              }
-            ]
-          },
-          "development": {
-            "description": "Os programas de desenvolvimento profissional são bem avaliados, com 68% de satisfação positiva.\nFuncionários valorizam especialmente treinamentos técnicos, mentoria e oportunidades de crescimento.",
-            "programs": [
-              {
-                "program": "Treinamentos Técnicos",
-                "satisfaction": 82.5,
-                "count": 701
-              },
-              {
-                "program": "Programa de Mentoria",
-                "satisfaction": 75.0,
-                "count": 638
-              },
-              {
-                "program": "Oportunidades de Crescimento",
-                "satisfaction": 68.5,
-                "count": 582
-              },
-              {
-                "program": "Desenvolvimento de Liderança",
-                "satisfaction": 62.0,
-                "count": 527
-              },
-              {
-                "program": "Certificações",
-                "satisfaction": 58.5,
-                "count": 497
-              }
-            ]
-          },
-          "uiTexts": {
-            "values": {
-              "title": "Valores Organizacionais",
-              "distribution": "Distribuição por Valor"
-            },
-            "communication": {
-              "title": "Comunicação Interna"
-            },
-            "development": {
-              "title": "Desenvolvimento Profissional",
-              "programs": "Satisfação com Programas"
             }
           }
         }
@@ -2136,6 +2140,6 @@
     "responseRate": 78.5,
     "nps": 35,
     "npsCategory": "Bom",
-    "questions": 6
+    "questions": 5
   }
 }
