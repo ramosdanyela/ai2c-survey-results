@@ -8,7 +8,8 @@
 // - Badge variant constants
 // - Severity type constants
 // - Question badge configurations
-// - Severity colors and class names
+//
+// Note: For severity colors and class names, import directly from @/lib/colors
 //
 // ============================================================
 
@@ -94,11 +95,3 @@ export const getBadgeConfig = (questionType) => {
  */
 export const VALID_QUESTION_TYPES = Object.keys(questionBadgeTypes);
 
-// ============================================================================
-// Severity Badge Colors
-// ============================================================================
-//
-// Re-export severity colors and class names from colors.js
-// These are now centralized in src/lib/colors.js
-
-export { severityColors, severityClassNames } from "@/lib/colors";

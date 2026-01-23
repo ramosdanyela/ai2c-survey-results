@@ -11,9 +11,11 @@
     "preview": "vite preview",
     "analyze:unused": "node scripts/analyze-unused-code.js",
     "analyze:unused-fields": "node scripts/analyze-unused-fields.js",
+    "analyze:unused-imports": "node scripts/analyze-unused-imports.js",
+    "analyze:duplicates": "node scripts/analyze-duplicates.js",
+    "analyze:json-conditions": "node scripts/analyze-json-conditions.js",
     "analyze:deps": "npx depcheck || true",
-    "analyze:duplicates": "node scripts/check-duplicate-files.js",
-    "analyze:all": "npm run analyze:unused && npm run analyze:deps && npm run analyze:duplicates",
+    "analyze:all": "node scripts/analyze-all.js",
     "validate": "npm run validate:all",
     "validate:json": "node docs/docs_json_tutorial/validation_scripts/scripts/validate-json.js",
     "validate:all": "node docs/docs_json_tutorial/validation_scripts/scripts/validate-all-jsons.js"

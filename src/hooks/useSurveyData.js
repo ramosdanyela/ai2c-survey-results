@@ -1,40 +1,10 @@
-// ============================================================
-// USE SURVEY DATA HOOK - Hook com React Query (100% Dinâmico)
-// ============================================================
-//
-// ⚠️ ARQUIVO ISOLADO PARA SIMULAÇÃO
-// Para remover a simulação e voltar aos imports diretos:
-// 1. Delete este arquivo
-// 2. Volte a usar: import { surveyInfo, ... } from "@/data/surveyData"
-// 3. Remova os estados de loading/error dos componentes
-//
-// ============================================================
-// 📝 EXEMPLO DE USO - TOTALMENTE DINÂMICO
-// ============================================================
-//
-// Este hook é 100% dinâmico e funciona com QUALQUER estrutura de JSON:
-//
-// // ✅ Acessar dados diretamente (qualquer estrutura)
-// const { data } = useSurveyData();
-// console.log(data.relatorioExecutivo); // funciona com qualquer nome
-// console.log(data.minhaSecaoCustomizada);
-//
-// // ✅ Resolver caminhos dinâmicos
-// const { resolvePath } = useSurveyData();
-// const summary = resolvePath("relatorioExecutivo.summary.aboutStudy");
-// const nested = resolvePath("secao.subsecao.dados[0].valor");
-//
-// // ✅ Buscar seção por ID no sectionsConfig
-// const { getSectionById } = useSurveyData();
-// const minhaSecao = getSectionById("minhaSecaoCustomizada");
-// const sectionData = minhaSecao?.data;
-//
-// // ✅ Acessar sections diretamente
-// const { data } = useSurveyData();
-// const sections = data?.sections || [];
-// const minhaSecao = sections.find(s => s.id === "minhaSecao");
-//
-// ============================================================
+/**
+ * ⚠️ ARQUIVO ISOLADO PARA SIMULAÇÃO
+ * Para remover a simulação e voltar aos imports diretos:
+ * 1. Delete este arquivo
+ * 2. Volte a usar: import { surveyInfo, ... } from "@/data/surveyData"
+ * 3. Remova os estados de loading/error dos componentes
+ */
 
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";

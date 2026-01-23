@@ -33,7 +33,6 @@ export default function ExportPreview() {
       exportFullReport,
       data
     );
-    console.log("🔍 DEBUG ExportPreview - sectionsToRender:", parsed);
     return parsed;
   }, [data, selectedSectionsArray, exportFullReport]);
 
@@ -62,14 +61,8 @@ export default function ExportPreview() {
       );
       if (!exists) {
         groups[item.sectionId].push(item);
-      } else {
-        console.warn(
-          "🔍 DEBUG - Duplicate subsection found:",
-          item.subsectionId
-        );
       }
     });
-    console.log("🔍 DEBUG ExportPreview - groupedSections:", groups);
     return groups;
   }, [sectionsToRender]);
 

@@ -1,9 +1,7 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import {
-  Award,
   CheckSquare,
   CircleDot,
-  Cloud,
   FileText,
   TrendingUp,
   Filter,
@@ -11,21 +9,8 @@ import {
   Download,
   getIcon,
 } from "@/lib/icons";
-import { Progress } from "@/components/ui/progress";
 import { useSurveyData } from "@/hooks/useSurveyData";
 import { getBadgeConfig } from "../widgets/badgeTypes";
-import {
-  COLOR_ORANGE_PRIMARY,
-  RGBA_ORANGE_SHADOW_15,
-  RGBA_ORANGE_SHADOW_20,
-  RGBA_BLACK_SHADOW_30,
-} from "@/lib/colors";
-import {
-  SentimentStackedChart,
-  SimpleBarChart,
-  NPSStackedChart,
-} from "../widgets/charts/Charts";
-import { WordCloud } from "../widgets/WordCloud";
 import {
   Accordion,
   AccordionContent,
@@ -33,8 +18,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import { FilterPanel } from "../components/FilterPanel";
 import {
   Popover,
@@ -195,7 +178,7 @@ export function QuestionsList({
 
       if (pillsFilter !== undefined && pillsFilter !== internalQuestionFilter) {
         console.log(
-          "🔍 QuestionsList: Syncing filter from _filterPillsState",
+          "QuestionsList: Syncing filter from _filterPillsState",
           pillsFilter
         );
         setInternalQuestionFilter(pillsFilter || "all");
@@ -205,7 +188,7 @@ export function QuestionsList({
         pillsWordCloud !== internalShowWordCloud
       ) {
         console.log(
-          "🔍 QuestionsList: Syncing wordCloud from _filterPillsState",
+          "QuestionsList: Syncing wordCloud from _filterPillsState",
           pillsWordCloud
         );
         setInternalShowWordCloud(pillsWordCloud);
@@ -232,7 +215,7 @@ export function QuestionsList({
       try {
         externalFilterState.setQuestionFilter(filterValue);
       } catch (e) {
-        console.warn("Error updating external filter state:", e);
+        // Error updating external filter state - silently handle
       }
     }
 
@@ -253,7 +236,7 @@ export function QuestionsList({
       try {
         externalFilterState.setShowWordCloud(value);
       } catch (e) {
-        console.warn("Error updating external wordCloud state:", e);
+        // Error updating external wordCloud state - silently handle
       }
     }
 
@@ -318,20 +301,13 @@ export function QuestionsList({
   // Resolve data path
   const responseDetails = useMemo(() => {
     if (!data || !dataPath) {
-      console.warn("QuestionsList: Missing data or dataPath", {
-        data: !!data,
-        dataPath,
-      });
+      // Missing data is expected in some cases - silently return null
       return null;
     }
     const resolved = resolveDataPath(data, dataPath);
     if (!resolved) {
-      console.warn("QuestionsList: Could not resolve dataPath", {
-        dataPath,
-        availableKeys: data ? Object.keys(data) : [],
-        hasSectionData: !!(data && data.sectionData),
-        sectionDataKeys: data?.sectionData ? Object.keys(data.sectionData) : [],
-      });
+      // Could not resolve dataPath - expected in some cases - silently return null
+      return null;
     }
     return resolved;
   }, [data, dataPath]);
@@ -420,7 +396,7 @@ export function QuestionsList({
     // Obtém o template para o tipo da questão
     const template = getQuestionTemplate(question.questionType);
     if (!template || !Array.isArray(template) || template.length === 0) {
-      console.warn(`No template found for question type: ${question.questionType}`);
+      // No template found - expected for unsupported question types
       return null;
     }
 
@@ -483,16 +459,6 @@ export function QuestionsList({
         (q) => q.id === initialQuestionId
       );
       const result = singleQuestion ? [singleQuestion] : [];
-      console.log("🔍 DEBUG QuestionsList - Export mode filter:", {
-        initialQuestionId,
-        _exportMode: data?._exportMode,
-        allQuestionsCount: allQuestions.length,
-        resultCount: result.length,
-        result: result.map((q) => ({
-          id: q.id,
-          question: q.question?.substring(0, 50),
-        })),
-      });
       return result;
     }
 
@@ -575,10 +541,7 @@ export function QuestionsList({
         }, 150);
       } else {
         // Question not found - this shouldn't happen, but log for debugging
-        console.warn("QuestionsList: Question not found", {
-          initialQuestionId,
-          availableQuestionIds: allQuestions.map((q) => q.id),
-        });
+        // Question not found - expected in some cases
       }
     } else if (!initialQuestionId) {
       // If no initialQuestionId, close all accordions
@@ -633,30 +596,8 @@ export function QuestionsList({
   const questionsFromDetails = getQuestionsFromResponseDetails(responseDetails);
   
   if ((!responseDetails || questionsFromDetails.length === 0) && !surveyInfo) {
-    console.warn("QuestionsList: Missing required data", {
-      hasResponseDetails: !!responseDetails,
-      hasSurveyInfo: !!surveyInfo,
-      dataPath,
-      responseDetailsKeys: responseDetails ? Object.keys(responseDetails) : [],
-      questionsCount: questionsFromDetails.length,
-      isArray: Array.isArray(responseDetails),
-    });
-    const commonTexts = rootUiTexts?.common?.errors || {};
-    const dataNotFound = commonTexts.dataNotFound || "Data not found.";
-    const notSpecified = commonTexts.notSpecified || "not specified";
-    const availableKeys = commonTexts.availableKeys || "Available keys:";
-
-    return (
-      <div className="p-4 text-center text-muted-foreground">
-        <p>{dataNotFound}</p>
-        <p className="text-sm mt-2">dataPath: {dataPath || notSpecified}</p>
-        {responseDetails && (
-          <p className="text-xs mt-1">
-            {availableKeys} {Array.isArray(responseDetails) ? "Array of questions" : Object.keys(responseDetails).join(", ")}
-          </p>
-        )}
-      </div>
-    );
+    // Missing required data - expected in some cases (e.g., loading state)
+    return null;
   }
 
   // Verificar se temos questões (suporta tanto responseDetails.questions quanto array direto)

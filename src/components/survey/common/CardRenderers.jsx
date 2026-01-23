@@ -43,14 +43,7 @@ export function SchemaCard({ component, data, children }) {
   
   const text = resolveTemplate(component.text || component.content || "", data);
 
-  // Debug: log if text exists but is empty after resolution
-  if (component.text && component.text.trim() !== "" && (!text || text.trim() === "")) {
-    console.warn("SchemaCard: Text was lost during resolution!", {
-      original: component.text,
-      resolved: text,
-      hasData: !!data,
-    });
-  }
+  // Text resolution - silently handle empty text (expected in some cases)
 
   // Debug: log text resolution for flat cards
   if (component.cardStyleVariant === "flat" && component.text) {
@@ -72,11 +65,7 @@ export function SchemaCard({ component, data, children }) {
     component.title.includes("uiTexts") &&
     title === component.title
   ) {
-    console.warn("SchemaCard: Title not resolved!", {
-      original: component.title,
-      resolved: title,
-      hasUiTexts: !!data?.uiTexts,
-    });
+    // Title not resolved - silently use original (expected in some cases)
   }
 
   // Usa className do componente enriquecido (resolvido de cardStyleVariant)
@@ -113,15 +102,7 @@ export function SchemaCard({ component, data, children }) {
   const hasChildren = children && React.Children.count(children) > 0;
   const hasText = text && text.trim() !== "";
 
-  // Debug: log text resolution
-  if (component.text && !hasText) {
-    console.warn("SchemaCard: Text not rendering!", {
-      original: component.text,
-      resolved: text,
-      hasText,
-      component: component,
-    });
-  }
+  // Text resolution - silently handle missing text (expected in some cases)
 
   // Usa className do componente enriquecido ou fallback
   const titleClassName =
@@ -175,12 +156,6 @@ export function SchemaNPSScoreCard({ component, data }) {
   const npsCategory = npsData?.npsCategory;
 
   if (npsScore === undefined || !uiTexts) {
-    console.warn(
-      `NPSScoreCard: Data not found at path "${
-        component.dataPath || "surveyInfo"
-      }" or npsScore/nps is missing`,
-      { npsData, hasNpsScore: !!npsData?.npsScore, hasNps: !!npsData?.nps }
-    );
     return null;
   }
 
@@ -217,39 +192,10 @@ export function SchemaNPSScoreCard({ component, data }) {
  * All styling is hardcoded - no config needed
  */
 export function SchemaTopCategoriesCards({ component, data }) {
-  // Debug: Log antes de tentar resolver
-  console.log("SchemaTopCategoriesCards: Starting render", {
-    dataPath: component.dataPath,
-    hasData: !!data,
-    hasQuestion: !!data?.question,
-    questionId: data?.question?.id,
-    questionType: data?.question?.questionType,
-    questionDataKeys: data?.question?.data ? Object.keys(data.question.data) : [],
-    hasTopCategories: !!data?.question?.data?.topCategoriesCards,
-  });
-
   const categoriesData = resolveDataPath(data, component.dataPath);
   const uiTexts = resolveDataPath(data, "uiTexts");
 
-  console.log("SchemaTopCategoriesCards: After resolveDataPath", {
-    dataPath: component.dataPath,
-    categoriesData: categoriesData ? (Array.isArray(categoriesData) ? `Array(${categoriesData.length})` : typeof categoriesData) : null,
-    isArray: Array.isArray(categoriesData),
-  });
-
   if (!categoriesData || !Array.isArray(categoriesData)) {
-    console.warn(
-      `TopCategoriesCards: Data not found at path "${component.dataPath}"`,
-      {
-        dataPath: component.dataPath,
-        hasData: !!data,
-        hasQuestion: !!data?.question,
-        questionDataKeys: data?.question?.data ? Object.keys(data.question.data) : [],
-        resolvedValue: categoriesData,
-        resolvedType: typeof categoriesData,
-        isArray: Array.isArray(categoriesData),
-      }
-    );
     return null;
   }
 
@@ -383,7 +329,6 @@ export function SchemaKPICard({ component, data }) {
   const config = component.config || {};
 
   if (!kpiData) {
-    console.warn(`KPICard: Data not found at path "${component.dataPath}"`);
     return null;
   }
 

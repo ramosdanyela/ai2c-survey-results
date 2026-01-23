@@ -1,4 +1,5 @@
 import React from "react";
+import { logger } from "@/utils/logger";
 import {
   Tooltip,
   TooltipContent,
@@ -142,14 +143,14 @@ export function wrapWithTooltip(comp, isExport, el) {
       return el;
     }
     // Se é um objeto JavaScript mas não é um elemento React válido, retorna null
-    console.warn("wrapWithTooltip: Tentando renderizar objeto inválido:", el, "Tipo:", typeof el);
+    logger.warnCritical("wrapWithTooltip: Tentando renderizar objeto inválido:", el, "Tipo:", typeof el);
     return null;
   }
   
   // Garante que el é um elemento React válido antes de envolver com tooltip
   if (!el || !React.isValidElement(el)) {
     if (el && typeof el === 'object') {
-      console.warn("wrapWithTooltip: Elemento não é válido (objeto):", el);
+      logger.warnCritical("wrapWithTooltip: Elemento não é válido (objeto):", el);
     }
     return null;
   }

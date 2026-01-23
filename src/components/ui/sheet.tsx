@@ -4,7 +4,6 @@ import { X } from "@/lib/icons";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { COLOR_ORANGE_PRIMARY } from "@/lib/colors";
 
 const Sheet = SheetPrimitive.Root;
 

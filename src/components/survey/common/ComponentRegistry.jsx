@@ -13,6 +13,7 @@
  */
 
 import React from "react";
+import { logger } from "@/utils/logger";
 import {
   SchemaBarChart,
   SchemaSentimentDivergentChart,
@@ -118,7 +119,7 @@ export const renderComponent = (component, data, props = {}) => {
   const Component = componentRegistry[component.type];
 
   if (!Component) {
-    console.warn(`Unknown component type: ${component.type || "none"}`);
+    logger.warnCritical(`Unknown component type: ${component.type || "none"}`);
     return null;
   }
 
@@ -147,7 +148,7 @@ export const renderComponent = (component, data, props = {}) => {
   if (component.type === "accordion") {
     // Accordion precisa de renderSchemaComponent para renderizar componentes aninhados
     const renderSchemaComponent = props.renderSchemaComponent || ((comp, idx) => {
-      console.warn("Accordion: renderSchemaComponent not provided");
+      logger.warnCritical("Accordion: renderSchemaComponent not provided");
       return null;
     });
     
@@ -164,29 +165,18 @@ export const renderComponent = (component, data, props = {}) => {
 
   // Renderização padrão para a maioria dos componentes
   try {
-    // Debug específico para tabelas
-    const isTable = component.type?.endsWith("Table");
-    if (isTable) {
-      console.log(`🔍 Renderizando tabela ${component.type}:`, {
-        dataPath: component.dataPath,
-        hasData: !!data,
-        dataKeys: data ? Object.keys(data).slice(0, 5) : [],
-      });
-    }
 
     const rendered = <Component {...componentProps} />;
     
     // Garante que o resultado é um elemento React válido
     if (rendered === null || rendered === undefined) {
-      if (isTable) {
-        console.warn(`⚠️ Tabela ${component.type} retornou null/undefined. Verifique se os dados existem em: ${component.dataPath}`);
-      }
+      // Tabelas podem retornar null quando não há dados - comportamento esperado
       return null;
     }
     
     // CRÍTICO: Verifica se é um objeto vazio (não válido como React child)
     if (typeof rendered === 'object' && !React.isValidElement(rendered)) {
-      console.error(`❌ Componente ${component.type} retornou objeto inválido (não é elemento React):`, rendered);
+      logger.error(`Componente ${component.type} retornou objeto inválido (não é elemento React):`, rendered);
       return null;
     }
     
@@ -194,19 +184,16 @@ export const renderComponent = (component, data, props = {}) => {
       const wrapped = wrapWithTooltip(component, isExport, rendered);
       // Garante que o wrapped também é válido
       if (wrapped === null || wrapped === undefined || React.isValidElement(wrapped)) {
-        if (isTable) {
-          console.log(`✅ Tabela ${component.type} renderizada com sucesso`);
-        }
         return wrapped;
       }
-      console.warn(`⚠️ wrapWithTooltip retornou valor inválido para ${component.type}:`, wrapped);
+      logger.warnCritical(`wrapWithTooltip retornou valor inválido para ${component.type}:`, wrapped);
       return null;
     }
     
-    console.warn(`⚠️ Componente ${component.type} retornou elemento inválido:`, rendered, typeof rendered);
+    logger.warnCritical(`Componente ${component.type} retornou elemento inválido:`, rendered, typeof rendered);
     return null;
   } catch (error) {
-    console.error(`❌ Erro ao renderizar componente ${component.type}:`, error, {
+    logger.error(`Erro ao renderizar componente ${component.type}:`, error, {
       component,
       dataPath: component.dataPath,
       errorStack: error.stack,

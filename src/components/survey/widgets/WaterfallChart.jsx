@@ -8,7 +8,6 @@ import {
   ResponsiveContainer,
   LabelList,
   Cell,
-  Rectangle,
 } from "recharts";
 import { CHART_COLORS, COLOR_BLUE_CUSTOM } from "@/lib/colors";
 

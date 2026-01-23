@@ -82,9 +82,7 @@ function buildOrderedSubsections(data) {
     .filter((section) => section.id !== "export") // Export é página do app; usa sections/subsections e uiTexts, não é seção de conteúdo
     .sort((a, b) => (a.index || 0) - (b.index || 0))
     .forEach((section) => {
-      // CRITICAL: Special handling for dynamic sections (attributes, responses)
-      // These should ALWAYS use dynamic data, NEVER renderSchema subsections
-      // This check MUST come before any renderSchema checks
+      // Special handling for dynamic sections (attributes, responses)
       if (section.id === "attributes") {
         // Dynamic attributes section - use actual attributes from data
         const attributes = getAllAttributes(data);
@@ -93,7 +91,6 @@ function buildOrderedSubsections(data) {
             subsections.push(attr.id);
           });
         }
-        // Don't process renderSchema subsections for attributes - they are templates only
         return; // Skip to next section
       }
 
@@ -105,35 +102,20 @@ function buildOrderedSubsections(data) {
             subsections.push(question.id);
           });
         }
-        // Don't process renderSchema subsections for responses
         return; // Skip to next section
       }
 
-      // Priority 1: Fixed subsections from config
+      // Fixed subsections from config
       if (section.subsections && Array.isArray(section.subsections)) {
         section.subsections
           .sort((a, b) => (a.index || 0) - (b.index || 0))
           .forEach((subsection) => {
             subsections.push(subsection.id);
           });
-        return; // Skip renderSchema if we have fixed subsections
+        return;
       }
 
-      // Priority 2: Subsections from renderSchema (fallback only - should not happen if section.subsections exists)
-      // IMPORTANT: Filter out template subsections (like "attribute-template")
-      // Note: renderSchema.subsections no longer has index/name/icon - only components
-      // This fallback should rarely be used since section.subsections should always exist
-      if (
-        section.data?.renderSchema?.subsections &&
-        Array.isArray(section.data.renderSchema.subsections)
-      ) {
-        section.data.renderSchema.subsections
-          .filter((sub) => !sub.id?.includes("template")) // Filter out templates
-          .forEach((subsection) => {
-            subsections.push(subsection.id);
-          });
-      }
-      // Priority 3: Generic dynamic subsections
+      // Priority 2: Generic dynamic subsections
       else if (section.dynamicSubsections) {
         // This would need getDynamicSubsections helper, but for now we handle known cases above
       }
@@ -279,14 +261,6 @@ function getFirstSubsectionHelper(sectionId, data) {
     return sorted[0].id;
   }
 
-  // Priority 3: RenderSchema subsections (fallback - should use section.subsections instead)
-  // Note: renderSchema.subsections no longer has index - order should come from section.subsections
-  if (section.data?.renderSchema?.subsections?.length > 0) {
-    // No sorting since index was removed - use as-is
-    const sorted = [...section.data.renderSchema.subsections];
-    return sorted[0].id;
-  }
-
   return null;
 }
 
@@ -351,13 +325,6 @@ function normalizeSection(currentSection, data) {
   // Check if already a valid fixed subsection
   for (const section of data.sections) {
     if (section.subsections?.some((sub) => sub.id === currentSection)) {
-      return currentSection;
-    }
-    if (
-      section.data?.renderSchema?.subsections?.some(
-        (sub) => sub.id === currentSection
-      )
-    ) {
       return currentSection;
     }
   }
@@ -449,7 +416,6 @@ function getPreviousSection(currentSection, data) {
 /**
  * Get subsection title (programmatic)
  * Priority: sectionConfig.subsections > uiTexts > attributes > ID
- * (renderSchema.subsections tem apenas id e components; name vem de section.subsections)
  */
 function getSubsectionTitle(sectionId, data, maxLength = 40) {
   if (!data || !sectionId) return sectionId;
@@ -474,7 +440,6 @@ function getSubsectionTitle(sectionId, data, maxLength = 40) {
   }
 
   // Priority 2: Try to get section title from data
-  // (renderSchema.subsections contém apenas id e components; name vem de section.subsections)
   const sectionTitle = getSectionTitleFromData(sectionId, data);
   if (sectionTitle !== sectionId) {
     return sectionTitle;

@@ -95,7 +95,7 @@ export function FilterPanel({
     }
     // Validate that the value is a valid FilterType
     if (!VALID_FILTER_TYPES.includes(value)) {
-      console.warn(`Invalid filterType: ${value}`);
+      // Invalid filterType - ignore silently (invalid input from user)
       return;
     }
     const filterType = value;

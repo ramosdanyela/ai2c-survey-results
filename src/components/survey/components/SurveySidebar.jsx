@@ -68,14 +68,6 @@ function hasSubsections(item, data) {
     return true;
   }
 
-  // Priority 2: Check if has renderSchema with subsections
-  if (
-    item.data?.renderSchema?.subsections &&
-    Array.isArray(item.data.renderSchema.subsections) &&
-    item.data.renderSchema.subsections.length > 0
-  ) {
-    return true;
-  }
 
   // Priority 3: Check dynamic subsections (attributes, responses) - even without dynamicSubsections flag
   // Check attributes (known dynamic section)
@@ -200,15 +192,7 @@ function getFirstSubsectionHelper(sectionId, data) {
     return sorted[0].id;
   }
 
-  // Priority 2: RenderSchema subsections (fallback - should use section.subsections instead)
-  // Note: renderSchema.subsections no longer has index - order should come from section.subsections
-  if (section.data?.renderSchema?.subsections?.length > 0) {
-    // No sorting since index was removed - use as-is
-    const sorted = [...section.data.renderSchema.subsections];
-    return sorted[0].id;
-  }
-
-  // Priority 3: Dynamic subsections
+  // Priority 2: Dynamic subsections
   if (section.dynamicSubsections) {
     const dynamicSubs = getDynamicSubsections(section, data);
     if (dynamicSubs.length > 0) return dynamicSubs[0].id;
@@ -531,78 +515,8 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                 });
               }
 
-              // Fallback for legacy attributes section (backward compatibility)
-              if (item.id === "attributes" && dynamicSubs.length === 0) {
-                const allAttributes = getAttributesFromData(data)
-                  .filter((attr) => attr.icon)
-                  .sort((a, b) => (a.index || 0) - (b.index || 0));
-                return (
-                  <Collapsible
-                    key={item.id}
-                    open={isExpanded}
-                    onOpenChange={(open) => handleSectionToggle(item.id, open)}
-                    className="w-full"
-                  >
-                    <CollapsibleTrigger asChild>
-                      <button
-                        onClick={(e) => handleSectionClick(item.id, e)}
-                        className={cn(
-                          "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-left w-full",
-                          isActive
-                            ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_3px_12px_hsl(var(--custom-blue),0.4)]"
-                            : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20"
-                        )}
-                      >
-                        {item.icon && (
-                          <item.icon className="w-4 h-4 flex-shrink-0" />
-                        )}
-                        <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
-                          {item.name}
-                        </span>
-                        {isExpanded ? (
-                          <ChevronDown className="w-4 h-4 flex-shrink-0" />
-                        ) : (
-                          <ChevronRight className="w-4 h-4 flex-shrink-0" />
-                        )}
-                      </button>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="w-full mt-1">
-                      <div className="flex flex-col gap-1 ml-4 pl-4 border-l-2 border-[hsl(var(--custom-blue))]/30">
-                        {allAttributes.map((attr) => {
-                          const attributeSectionId = `attributes-${attr.id}`;
-                          const isAttributeActive =
-                            activeSection === attributeSectionId;
-                          const Icon = getIcon(attr.icon);
-                          return (
-                            <button
-                              key={attr.id}
-                              onClick={() => {
-                                onSectionChange(attributeSectionId);
-                                if (onItemClick) {
-                                  onItemClick();
-                                }
-                              }}
-                              className={cn(
-                                "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-left w-full text-xs sm:text-sm",
-                                isAttributeActive
-                                  ? "bg-[hsl(var(--custom-blue))]/30 text-sidebar-foreground border border-[hsl(var(--custom-blue))]/30"
-                                  : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/30"
-                              )}
-                            >
-                              {Icon && <Icon className="w-4 h-4 shrink-0" />}
-                              <span className="flex-1">{attr.name}</span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </CollapsibleContent>
-                  </Collapsible>
-                );
-              }
-
               // Generic rendering for dynamic subsections
-              // For responses, always render even if no subsections (fallback to regular section)
-              if (dynamicSubs.length > 0 || item.id === "responses") {
+              if (dynamicSubs.length > 0) {
                 // Special rendering for responses (questions with Q prefix)
                 if (item.id === "responses" && dynamicSubs.length > 0) {
                   return (
@@ -690,31 +604,8 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                     </Collapsible>
                   );
                 }
-                
-                // Fallback for responses when no questions found - render as regular section
-                if (item.id === "responses" && dynamicSubs.length === 0) {
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={(e) => handleSectionClick(item.id, e)}
-                      className={cn(
-                        "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-left w-full",
-                        isActive
-                          ? "bg-[hsl(var(--custom-blue))] text-white shadow-[0_3px_12px_hsl(var(--custom-blue),0.4)]"
-                          : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20"
-                      )}
-                    >
-                      {item.icon && (
-                        <item.icon className="w-4 h-4 flex-shrink-0" />
-                      )}
-                      <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
-                        {item.name}
-                      </span>
-                    </button>
-                  );
-                }
 
-                // Generic rendering for other dynamic subsections (attributes, etc)
+                // Generic rendering for other dynamic subsections
                 return (
                   <Collapsible
                     key={item.id}
@@ -780,10 +671,6 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
               }
             }
 
-            // Note: responses section is now handled by dynamicSubsections above
-            // This block is kept for backward compatibility but should not be reached
-            // if dynamicSubsections is properly configured
-
             // For other sections with subsections (executive, support, or any new section)
             if (
               itemHasSubsections &&
@@ -798,7 +685,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
               const sectionConfig =
                 data?.sections?.find((s) => s.id === item.id);
 
-              // Try subsections from config first, then from renderSchema
+              // Get subsections from config
               let subsections = sectionConfig?.subsections
                 ? sectionConfig.subsections.map((sub) => ({
                     ...sub,
@@ -806,18 +693,6 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                   }))
                 : [];
 
-              // If no subsections in config, try renderSchema (apenas id e components; ordem e display vêm de section.subsections)
-              if (
-                subsections.length === 0 &&
-                sectionConfig?.data?.renderSchema?.subsections
-              ) {
-                subsections = sectionConfig.data.renderSchema.subsections
-                  .map((sub) => ({
-                    id: sub.id,
-                    name: sub.name ?? sub.id,
-                    icon: getIcon(sub.icon),
-                  }));
-              }
 
               return (
                 <Collapsible

@@ -1,5 +1,4 @@
 import { TrendingUp, TrendingDown, Minus, Target } from "lucide-react";
-import { CHART_COLORS } from "@/lib/colors";
 
 /**
  * KPI Card Component

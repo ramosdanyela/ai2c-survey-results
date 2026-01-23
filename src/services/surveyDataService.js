@@ -34,14 +34,3 @@ export const fetchSurveyData = async () => {
     throw new Error("Falha ao carregar dados da pesquisa");
   }
 };
-
-/**
- * Simula uma chamada de API com erro (para testes)
- *
- * @returns {Promise<Object>}
- * @throws {Error}
- */
-export const fetchSurveyDataWithError = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  throw new Error("Erro simulado ao buscar dados");
-};

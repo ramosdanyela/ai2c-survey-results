@@ -14,6 +14,7 @@ import {
 } from "../widgets/Tables";
 import { AnalyticalTable } from "../widgets/AnalyticalTable";
 import { severityColors } from "@/lib/colors";
+import { logger } from "@/utils/logger";
 
 /**
  * Render a recommendations table component based on schema
@@ -28,9 +29,6 @@ export function SchemaRecommendationsTable({ component, data }) {
     const recommendationsData = resolveDataPath(data, component.dataPath);
 
     if (!recommendationsData) {
-      console.warn(
-        `RecommendationsTable: Data not found at path "${component.dataPath}"`
-      );
       return (
         <div className="p-4 text-center text-muted-foreground">
           <p>Nenhuma recomendação encontrada.</p>
@@ -49,9 +47,7 @@ export function SchemaRecommendationsTable({ component, data }) {
       recommendations = recommendationsData.items;
       severityLabels = recommendationsData.config?.severityLabels || null;
     } else {
-      console.warn(
-        `RecommendationsTable: Invalid data structure at path "${component.dataPath}"`
-      );
+      // Invalid data structure - return empty state silently
       return (
         <div className="p-4 text-center text-muted-foreground">
           <p>Nenhuma recomendação encontrada.</p>
@@ -103,7 +99,7 @@ export function SchemaRecommendationsTable({ component, data }) {
       />
     );
   } catch (error) {
-    console.error(`Erro ao renderizar RecommendationsTable:`, error, {
+    logger.error(`Erro ao renderizar RecommendationsTable:`, error, {
       component,
       dataPath: component.dataPath,
     });
@@ -128,9 +124,6 @@ export function SchemaSegmentationTable({ component, data }) {
     const tableData = resolveDataPath(data, component.dataPath);
 
     if (!tableData || !Array.isArray(tableData)) {
-      console.warn(
-        `SegmentationTable: Data not found at path "${component.dataPath}"`
-      );
       return (
         <div className="p-4 text-center text-muted-foreground">
           <p>Nenhum dado de segmentação encontrado.</p>
@@ -140,7 +133,7 @@ export function SchemaSegmentationTable({ component, data }) {
 
     return <SegmentationTable data={tableData} />;
   } catch (error) {
-    console.error(`Erro ao renderizar SegmentationTable:`, error, {
+    logger.error(`Erro ao renderizar SegmentationTable:`, error, {
       component,
       dataPath: component.dataPath,
     });
@@ -165,9 +158,6 @@ export function SchemaDistributionTable({ component, data }) {
     const tableData = resolveDataPath(data, component.dataPath);
 
     if (!tableData || !Array.isArray(tableData)) {
-      console.warn(
-        `DistributionTable: Data not found at path "${component.dataPath}"`
-      );
       return (
         <div className="p-4 text-center text-muted-foreground">
           <p>Nenhum dado de distribuição encontrado.</p>
@@ -177,7 +167,7 @@ export function SchemaDistributionTable({ component, data }) {
 
     return <DistributionTable data={tableData} />;
   } catch (error) {
-    console.error(`Erro ao renderizar DistributionTable:`, error, {
+    logger.error(`Erro ao renderizar DistributionTable:`, error, {
       component,
       dataPath: component.dataPath,
     });
@@ -202,9 +192,6 @@ export function SchemaSentimentTable({ component, data }) {
     const tableData = resolveDataPath(data, component.dataPath);
 
     if (!tableData || !Array.isArray(tableData)) {
-      console.warn(
-        `SentimentTable: Data not found at path "${component.dataPath}"`
-      );
       return (
         <div className="p-4 text-center text-muted-foreground">
           <p>Nenhum dado de sentimento encontrado.</p>
@@ -214,7 +201,7 @@ export function SchemaSentimentTable({ component, data }) {
 
     return <SentimentTable data={tableData} />;
   } catch (error) {
-    console.error(`Erro ao renderizar SentimentTable:`, error, {
+    logger.error(`Erro ao renderizar SentimentTable:`, error, {
       component,
       dataPath: component.dataPath,
     });
@@ -240,9 +227,6 @@ export function SchemaNPSDistributionTable({ component, data }) {
     const categoryName = resolveTemplate(component.categoryName || "", data);
 
     if (!tableData || !Array.isArray(tableData)) {
-      console.warn(
-        `NPSDistributionTable: Data not found at path "${component.dataPath}"`
-      );
       return (
         <div className="p-4 text-center text-muted-foreground">
           <p>Nenhum dado de distribuição NPS encontrado.</p>
@@ -254,7 +238,7 @@ export function SchemaNPSDistributionTable({ component, data }) {
       <NPSDistributionTable data={tableData} categoryName={categoryName} />
     );
   } catch (error) {
-    console.error(`Erro ao renderizar NPSDistributionTable:`, error, {
+    logger.error(`Erro ao renderizar NPSDistributionTable:`, error, {
       component,
       dataPath: component.dataPath,
     });
@@ -280,7 +264,6 @@ export function SchemaNPSTable({ component, data }) {
     const categoryName = resolveTemplate(component.categoryName || "", data);
 
     if (!tableData || !Array.isArray(tableData)) {
-      console.warn(`NPSTable: Data not found at path "${component.dataPath}"`);
       return (
         <div className="p-4 text-center text-muted-foreground">
           <p>Nenhum dado NPS encontrado.</p>
@@ -290,7 +273,7 @@ export function SchemaNPSTable({ component, data }) {
 
     return <NPSTable data={tableData} categoryName={categoryName} />;
   } catch (error) {
-    console.error(`Erro ao renderizar NPSTable:`, error, {
+    logger.error(`Erro ao renderizar NPSTable:`, error, {
       component,
       dataPath: component.dataPath,
     });
@@ -315,9 +298,6 @@ export function SchemaSentimentImpactTable({ component, data }) {
     const tableData = resolveDataPath(data, component.dataPath);
 
     if (!tableData || !Array.isArray(tableData)) {
-      console.warn(
-        `SentimentImpactTable: Data not found at path "${component.dataPath}"`
-      );
       return (
         <div className="p-4 text-center text-muted-foreground">
           <p>Nenhum dado de impacto de sentimento encontrado.</p>
@@ -327,7 +307,7 @@ export function SchemaSentimentImpactTable({ component, data }) {
 
     return <SentimentImpactTable data={tableData} />;
   } catch (error) {
-    console.error(`Erro ao renderizar SentimentImpactTable:`, error, {
+    logger.error(`Erro ao renderizar SentimentImpactTable:`, error, {
       component,
       dataPath: component.dataPath,
     });
@@ -352,9 +332,6 @@ export function SchemaPositiveCategoriesTable({ component, data }) {
     const tableData = resolveDataPath(data, component.dataPath);
 
     if (!tableData || !Array.isArray(tableData)) {
-      console.warn(
-        `PositiveCategoriesTable: Data not found at path "${component.dataPath}"`
-      );
       return (
         <div className="p-4 text-center text-muted-foreground">
           <p>Nenhuma categoria positiva encontrada.</p>
@@ -364,7 +341,7 @@ export function SchemaPositiveCategoriesTable({ component, data }) {
 
     return <PositiveCategoriesTable data={tableData} />;
   } catch (error) {
-    console.error(`Erro ao renderizar PositiveCategoriesTable:`, error, {
+    logger.error(`Erro ao renderizar PositiveCategoriesTable:`, error, {
       component,
       dataPath: component.dataPath,
     });
@@ -389,9 +366,6 @@ export function SchemaNegativeCategoriesTable({ component, data }) {
     const tableData = resolveDataPath(data, component.dataPath);
 
     if (!tableData || !Array.isArray(tableData)) {
-      console.warn(
-        `NegativeCategoriesTable: Data not found at path "${component.dataPath}"`
-      );
       return (
         <div className="p-4 text-center text-muted-foreground">
           <p>Nenhuma categoria negativa encontrada.</p>
@@ -401,7 +375,7 @@ export function SchemaNegativeCategoriesTable({ component, data }) {
 
     return <NegativeCategoriesTable data={tableData} />;
   } catch (error) {
-    console.error(`Erro ao renderizar NegativeCategoriesTable:`, error, {
+    logger.error(`Erro ao renderizar NegativeCategoriesTable:`, error, {
       component,
       dataPath: component.dataPath,
     });
@@ -427,9 +401,6 @@ export function SchemaAnalyticalTable({ component, data }) {
     const config = component.config || {};
 
     if (!tableData || !Array.isArray(tableData)) {
-      console.warn(
-        `AnalyticalTable: Data not found at path "${component.dataPath}"`
-      );
       return (
         <div className="p-4 text-center text-muted-foreground">
           <p>Nenhum dado analítico encontrado.</p>
@@ -447,7 +418,7 @@ export function SchemaAnalyticalTable({ component, data }) {
       />
     );
   } catch (error) {
-    console.error(`Erro ao renderizar AnalyticalTable:`, error, {
+    logger.error(`Erro ao renderizar AnalyticalTable:`, error, {
       component,
       dataPath: component.dataPath,
     });

@@ -264,16 +264,9 @@ export function parseSelectedSections(
           subsectionId,
           label: found?.label || subsectionId,
         });
-      } else {
-        console.warn(
-          "🔍 DEBUG parseSelectedSections - Duplicate found:",
-          subsectionId
-        );
       }
     }
   });
-
-  console.log("🔍 DEBUG parseSelectedSections - Parsed result:", parsed);
 
   // Sort by section order and subsection order
   return parsed.sort((a, b) => {

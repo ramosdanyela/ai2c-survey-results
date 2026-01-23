@@ -29,14 +29,7 @@ function getFirstSubsectionHelper(sectionId, data) {
     return sorted[0].id;
   }
 
-  // Priority 2: RenderSchema subsections (fallback - should use section.subsections instead)
-  // Note: renderSchema.subsections no longer has index - order should come from section.subsections
-  if (section.data?.renderSchema?.subsections?.length > 0) {
-    // Return first subsection by ID (no ordering since index was removed)
-    return section.data.renderSchema.subsections[0].id;
-  }
-
-  // Priority 3: Respostas (questões em sections ou responseDetails)
+  // Priority 2: Respostas (questões em sections ou responseDetails)
   if (section.id === "responses") {
     const questions = getQuestionsFromData(data).sort(
       (a, b) => (a.index ?? 999) - (b.index ?? 999)
@@ -64,13 +57,6 @@ function normalizeSection(activeSection, data) {
   // Check if already a valid subsection
   for (const section of data.sections) {
     if (section.subsections?.some((sub) => sub.id === activeSection)) {
-      return activeSection;
-    }
-    if (
-      section.data?.renderSchema?.subsections?.some(
-        (sub) => sub.id === activeSection
-      )
-    ) {
       return activeSection;
     }
     // Subseções dinâmicas: responses-*
@@ -163,15 +149,6 @@ function extractSectionId(data, activeSection) {
         return section.id;
       }
     }
-    // Check subsections from renderSchema
-    if (section.data?.renderSchema?.subsections) {
-      const subsection = section.data.renderSchema.subsections.find(
-        (sub) => sub.id === activeSection
-      );
-      if (subsection) {
-        return section.id;
-      }
-    }
     // Check dynamic subsections (responses)
     if (
       section.id === "responses" &&
@@ -208,13 +185,6 @@ function extractSectionId(data, activeSection) {
         }
         // Check if activeSection matches a subsection of this section
         if (section.subsections?.some((sub) => sub.id === activeSection)) {
-          return section.id;
-        }
-        if (
-          section.data?.renderSchema?.subsections?.some(
-            (sub) => sub.id === activeSection
-          )
-        ) {
           return section.id;
         }
         // If section has dynamicSubsections, check if pattern matches

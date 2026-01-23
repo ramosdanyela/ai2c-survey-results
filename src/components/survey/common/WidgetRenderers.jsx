@@ -276,7 +276,6 @@ export function SchemaWordCloud({ component, data, exportWordCloud = true }) {
   const uiTexts = resolveDataPath(data, "uiTexts");
 
   if (!wordCloudData || !Array.isArray(wordCloudData)) {
-    console.warn(`WordCloud: Data not found at path "${component.dataPath}"`);
     return null;
   }
 
@@ -352,7 +351,7 @@ export function SchemaAccordion({ component, data, renderSchemaComponent }) {
     (component.value ? [{ value: component.value, ...component }] : []);
 
   if (items.length === 0 && !component.components) {
-    console.warn("Accordion: No items or components provided");
+    // No items or components - expected in some cases
     return null;
   }
 
@@ -453,16 +452,6 @@ export function SchemaQuestionsList({
     questionId = component.questionId;
   }
 
-  // Debug log
-  if (isExport) {
-    console.log("🔍 DEBUG SchemaQuestionsList:", {
-      subSection,
-      questionId,
-      isExport,
-      exportWordCloud,
-      hasExportMode: !!data?._exportMode,
-    });
-  }
 
   // Use sectionData if dataPath is not specified or is legacy
   const dataPath =

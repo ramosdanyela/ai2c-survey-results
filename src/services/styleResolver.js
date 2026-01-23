@@ -56,6 +56,3 @@ export function enrichComponentWithStyles(component) {
   return enriched;
 }
 
-
-
-

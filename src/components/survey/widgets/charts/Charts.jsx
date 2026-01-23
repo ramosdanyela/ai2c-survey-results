@@ -207,12 +207,25 @@ export function SentimentDivergentChart({
 // ============================================================
 // 2. SENTIMENT STACKED CHART (COMPATIBILITY WRAPPER)
 // ============================================================
-// Stacked sentiment chart (0-100%)
-// Used in: AttributeDeepDive - Sentiment by Segment
-//           ResponseDetails - Sentiment Analysis
-// NOTE: Wrapper that maintains compatibility with existing code
-//       Uses SentimentDivergentChart internally with different default values
-
+/**
+ * Stacked sentiment chart (0-100%)
+ * 
+ * Used in: AttributeDeepDive - Sentiment by Segment
+ *          ResponseDetails - Sentiment Analysis
+ * 
+ * @note Wrapper that maintains compatibility with existing code.
+ *       Uses SentimentDivergentChart internally with different default values.
+ * 
+ * @param {Array} data - Chart data
+ * @param {number} [height=256] - Chart height
+ * @param {Object} [margin] - Chart margins
+ * @param {string} [yAxisDataKey="category"] - Key for Y axis labels
+ * @param {number} [yAxisWidth=90] - Y axis width
+ * @param {boolean} [showGrid=true] - Show grid
+ * @param {boolean} [showLegend=true] - Show legend
+ * @param {boolean} [axisLine=true] - Show axis line
+ * @param {boolean} [tickLine=true] - Show tick lines
+ */
 export function SentimentStackedChart({
   data,
   height = 256,
@@ -429,8 +442,25 @@ export function NPSStackedChart({
 // Used in: AttributeDeepDive - Distribution
 //           ResponseDetails - Closed questions
 //           SupportAnalysis - Other Intentions
-// NOTE: Always uses fixed scale of 0-100% to show real proportions
-
+/**
+ * Simple Bar Chart
+ * 
+ * @note Always uses fixed scale of 0-100% to show real proportions
+ * 
+ * @param {Array} data - Chart data
+ * @param {string} dataKey - Key for data values
+ * @param {string} yAxisDataKey - Key for Y axis labels
+ * @param {number} [height=256] - Chart height
+ * @param {Object} [margin] - Chart margins
+ * @param {number} [yAxisWidth=110] - Y axis width
+ * @param {string} [fillColor] - Bar fill color
+ * @param {boolean} [showLabels=true] - Show value labels
+ * @param {Function} [labelFormatter] - Label formatter function
+ * @param {Function} [tooltipFormatter] - Tooltip formatter function
+ * @param {boolean} [sortData=true] - Sort data
+ * @param {string} [sortDirection="desc"] - Sort direction
+ * @param {boolean} [hideXAxis=true] - Hide X axis
+ */
 export function SimpleBarChart({
   data,
   dataKey,
@@ -492,7 +522,7 @@ export function SimpleBarChart({
                       // If it's a string or number, wrap it in an array
                       return [result, name || ""];
                     } catch (error) {
-                      console.warn("Tooltip formatter error:", error);
+                      // Tooltip formatter error - use fallback silently
                       return [`${value}%`, name || ""];
                     }
                   }

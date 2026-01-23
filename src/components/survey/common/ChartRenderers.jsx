@@ -48,19 +48,14 @@ export function getBarChartConfig(component, isMobile) {
   // Ensure tooltipFormatter is a function or undefined
   let tooltipFormatter = config.tooltipFormatter;
   if (tooltipFormatter && typeof tooltipFormatter !== "function") {
-    // If it's a string template, try to resolve it (though it should be a function)
-    console.warn(
-      `BarChart: tooltipFormatter must be a function, got ${typeof tooltipFormatter}. Using default.`
-    );
+    // If it's not a function, use default (silently)
     tooltipFormatter = undefined;
   }
 
   // Ensure labelFormatter is a function or undefined
   let labelFormatter = config.labelFormatter;
   if (labelFormatter && typeof labelFormatter !== "function") {
-    console.warn(
-      `BarChart: labelFormatter must be a function, got ${typeof labelFormatter}. Using default.`
-    );
+    // If it's not a function, use default (silently)
     labelFormatter = undefined;
   }
 
@@ -88,7 +83,6 @@ export function SchemaBarChart({ component, data }) {
   const isMobile = useIsMobile();
 
   if (!chartData || !Array.isArray(chartData)) {
-    console.warn(`BarChart: Data not found at path "${component.dataPath}"`);
     return null;
   }
 
@@ -162,9 +156,6 @@ export function SchemaSentimentDivergentChart({ component, data }) {
   const chartData = resolveDataPath(data, component.dataPath);
 
   if (!chartData || !Array.isArray(chartData)) {
-    console.warn(
-      `SentimentDivergentChart: Data not found at path "${component.dataPath}"`
-    );
     return null;
   }
 
@@ -232,9 +223,6 @@ export function SchemaSentimentStackedChart({ component, data }) {
   const chartData = resolveDataPath(data, component.dataPath);
 
   if (!chartData || !Array.isArray(chartData)) {
-    console.warn(
-      `SentimentStackedChart: Data not found at path "${component.dataPath}"`
-    );
     return null;
   }
 
@@ -292,9 +280,6 @@ export function SchemaSentimentThreeColorChart({ component, data }) {
   const chartData = resolveDataPath(data, component.dataPath);
 
   if (!chartData || !Array.isArray(chartData)) {
-    console.warn(
-      `SentimentThreeColorChart: Data not found at path "${component.dataPath}"`
-    );
     return null;
   }
 
@@ -336,9 +321,6 @@ export function SchemaNPSStackedChart({ component, data }) {
   const chartData = resolveDataPath(data, component.dataPath);
 
   if (!chartData) {
-    console.warn(
-      `NPSStackedChart: Data not found at path "${component.dataPath}"`
-    );
     return null;
   }
 
@@ -381,7 +363,6 @@ export function SchemaLineChart({ component, data }) {
   const config = component.config || {};
 
   if (!chartData || !Array.isArray(chartData)) {
-    console.warn(`LineChart: Data not found at path "${component.dataPath}"`);
     return null;
   }
 
@@ -410,7 +391,6 @@ export function SchemaParetoChart({ component, data }) {
   const config = component.config || {};
 
   if (!chartData || !Array.isArray(chartData)) {
-    console.warn(`ParetoChart: Data not found at path "${component.dataPath}"`);
     return null;
   }
 
@@ -437,7 +417,6 @@ export function SchemaScatterPlot({ component, data }) {
   const config = component.config || {};
 
   if (!chartData || !Array.isArray(chartData)) {
-    console.warn(`ScatterPlot: Data not found at path "${component.dataPath}"`);
     return null;
   }
 
@@ -467,7 +446,6 @@ export function SchemaHistogram({ component, data }) {
   const config = component.config || {};
 
   if (!chartData) {
-    console.warn(`Histogram: Data not found at path "${component.dataPath}"`);
     return null;
   }
 
@@ -493,9 +471,6 @@ export function SchemaQuadrantChart({ component, data }) {
   const config = component.config || {};
 
   if (!chartData || !Array.isArray(chartData)) {
-    console.warn(
-      `QuadrantChart: Data not found at path "${component.dataPath}"`
-    );
     return null;
   }
 
@@ -523,7 +498,6 @@ export function SchemaHeatmap({ component, data }) {
   const config = component.config || {};
 
   if (!chartData || !Array.isArray(chartData)) {
-    console.warn(`Heatmap: Data not found at path "${component.dataPath}"`);
     return null;
   }
 
@@ -551,9 +525,6 @@ export function SchemaSankeyDiagram({ component, data }) {
   const config = component.config || {};
 
   if (!sankeyData) {
-    console.warn(
-      `SankeyDiagram: Data not found at path "${component.dataPath}"`
-    );
     return null;
   }
 
@@ -564,12 +535,12 @@ export function SchemaSankeyDiagram({ component, data }) {
     sankeyData.links || resolveDataPath(data, config.linksPath) || [];
 
   if (!nodes || !Array.isArray(nodes) || nodes.length === 0) {
-    console.warn(`SankeyDiagram: No nodes found`);
+    // No nodes found - expected in some cases
     return null;
   }
 
   if (!links || !Array.isArray(links) || links.length === 0) {
-    console.warn(`SankeyDiagram: No links found`);
+    // No links found - expected in some cases
     return null;
   }
 
@@ -598,9 +569,6 @@ export function SchemaStackedBarMECE({ component, data }) {
   const config = component.config || {};
 
   if (!chartData || !Array.isArray(chartData)) {
-    console.warn(
-      `StackedBarMECE: Data not found at path "${component.dataPath}"`
-    );
     return null;
   }
 
@@ -625,9 +593,6 @@ export function SchemaEvolutionaryScorecard({ component, data }) {
   const config = component.config || {};
 
   if (!scorecardData) {
-    console.warn(
-      `EvolutionaryScorecard: Data not found at path "${component.dataPath}"`
-    );
     return null;
   }
 
@@ -674,7 +639,6 @@ export function SchemaSlopeGraph({ component, data }) {
   const config = component.config || {};
 
   if (!chartData || !Array.isArray(chartData)) {
-    console.warn(`SlopeGraph: Data not found at path "${component.dataPath}"`);
     return null;
   }
 
@@ -701,9 +665,6 @@ export function SchemaWaterfallChart({ component, data }) {
   const config = component.config || {};
 
   if (!chartData || !Array.isArray(chartData)) {
-    console.warn(
-      `WaterfallChart: Data not found at path "${component.dataPath}"`
-    );
     return null;
   }
 

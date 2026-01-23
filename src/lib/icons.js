@@ -125,72 +125,7 @@ export function getIcon(iconName) {
 }
 
 /**
- * Icon mapping by category (for reference)
- */
-export const iconCategories = {
-  navigation: [
-    "ChevronDown",
-    "ChevronUp",
-    "ChevronLeft",
-    "ChevronRight",
-    "ArrowLeft",
-    "ArrowRight",
-    "Menu",
-    "X",
-    "Check",
-  ],
-  documents: ["FileText", "Download", "Presentation", "ClipboardList"],
-  charts: ["BarChart3", "TrendingUp", "Target", "Heart"],
-  communication: ["MessageSquare"],
-  organization: ["Layers", "Filter"],
-  location: ["MapPin", "GraduationCap", "Building"],
-  users: ["Users", "Users2", "User"],
-  metrics: ["Percent", "HelpCircle", "CheckSquare", "Check"],
-  alerts: ["AlertTriangle"],
-  theme: ["Moon", "Sun"],
-  content: ["Award", "Cloud"],
-  pagination: ["MoreHorizontal"],
-};
-
-/**
  * Complete list of all icons used (in alphabetical order)
+ * Generated automatically from iconMap to avoid duplication
  */
-export const allIcons = [
-  "AlertTriangle",
-  "ArrowLeft",
-  "ArrowRight",
-  "Award",
-  "BarChart3",
-  "Building",
-  "Check",
-  "CheckSquare",
-  "ChevronDown",
-  "CircleDot",
-  "ChevronLeft",
-  "ChevronRight",
-  "ChevronUp",
-  "Cloud",
-  "ClipboardList",
-  "Download",
-  "FileText",
-  "Filter",
-  "GraduationCap",
-  "Heart",
-  "HelpCircle",
-  "Layers",
-  "MapPin",
-  "Table",
-  "Menu",
-  "MessageSquare",
-  "Moon",
-  "MoreHorizontal",
-  "Percent",
-  "Presentation",
-  "Sun",
-  "Target",
-  "TrendingUp",
-  "User",
-  "Users",
-  "Users2",
-  "X",
-];
+export const allIcons = Object.keys(iconMap).sort();

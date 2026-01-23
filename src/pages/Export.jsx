@@ -31,7 +31,6 @@ import {
 import { COLOR_ORANGE_PRIMARY, RGBA_BLACK_SHADOW_20 } from "@/lib/colors";
 import { getAllSubsectionsForSection } from "@/utils/exportHelpers";
 import { useSurveyData } from "@/hooks/useSurveyData";
-import { cn } from "@/lib/utils";
 
 // Component for checkbox with indeterminate state
 const SectionCheckbox = React.forwardRef(

@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { logger } from "@/utils/logger";
 import { SubsectionTitle } from "../widgets/SubsectionTitle";
 import { wrapWithTooltip } from "./tooltipHelpers";
 import { SchemaCard } from "./CardRenderers";
@@ -11,7 +12,6 @@ import {
   resolveTemplate,
   getQuestionsFromData,
 } from "@/services/dataResolver";
-import { getQuestionTemplate } from "@/config/questionTemplates";
 
 /**
  * Decide se o componente deve ser exibido. Lógica no código (não em condition no JSON).
@@ -233,10 +233,10 @@ function SchemaComponent({
             if (rendered && React.isValidElement(rendered)) {
               return rendered;
             }
-            console.warn(`SchemaComponent retornou valor inválido para ${comp.type} no heading:`, rendered);
+            logger.warnCritical(`SchemaComponent retornou valor inválido para ${comp.type} no heading:`, rendered);
             return null;
           } catch (err) {
-            console.error(`Erro ao renderizar componente ${comp.type} no heading:`, err);
+            logger.error(`Erro ao renderizar componente ${comp.type} no heading:`, err);
             return null;
           }
         })
@@ -247,12 +247,7 @@ function SchemaComponent({
           if (React.isValidElement(item)) return true;
           // Permite valores primitivos (string, number, boolean)
           if (typeof item !== 'object') return true;
-          // Se for um objeto que não é um elemento React válido, remove e loga
-          console.warn("Removendo objeto inválido do array nestedComponents no heading:", {
-            type: typeof item,
-            item,
-            componentType: component.type,
-          });
+          // Se for um objeto que não é um elemento React válido, remove silenciosamente
           return false;
         });
 
@@ -313,10 +308,10 @@ function SchemaComponent({
           if (rendered && React.isValidElement(rendered)) {
             return rendered;
           }
-          console.warn(`SchemaComponent retornou valor inválido para ${comp.type}:`, rendered);
+          logger.warnCritical(`SchemaComponent retornou valor inválido para ${comp.type}:`, rendered);
           return null;
         } catch (err) {
-          console.error(`Erro ao renderizar componente ${comp.type} no grid-container:`, err);
+          logger.error(`Erro ao renderizar componente ${comp.type} no grid-container:`, err);
           return null;
         }
       })
@@ -328,11 +323,7 @@ function SchemaComponent({
         // Permite valores primitivos (string, number, boolean)
         if (typeof item !== 'object') return true;
         // Se for um objeto que não é um elemento React válido, remove e loga
-        console.warn("Removendo objeto inválido do array nested no grid-container:", {
-          type: typeof item,
-          item,
-          componentType: component.type,
-        });
+        // Removendo objeto inválido do array - comportamento esperado
         return false;
       });
     return wrapWithTooltip(component, isExport, <div className={className}>{nested}</div>);
@@ -378,10 +369,10 @@ function SchemaComponent({
           if (rendered && React.isValidElement(rendered)) {
             return rendered;
           }
-          console.warn(`SchemaComponent retornou valor inválido para ${comp.type}:`, rendered);
+          logger.warnCritical(`SchemaComponent retornou valor inválido para ${comp.type}:`, rendered);
           return null;
         } catch (err) {
-          console.error(`Erro ao renderizar componente ${comp.type} no container:`, err);
+          logger.error(`Erro ao renderizar componente ${comp.type} no container:`, err);
           return null;
         }
       })
@@ -393,11 +384,7 @@ function SchemaComponent({
         // Permite valores primitivos (string, number, boolean)
         if (typeof item !== 'object') return true;
         // Se for um objeto que não é um elemento React válido, remove e loga
-        console.warn("Removendo objeto inválido do array nested no container:", {
-          type: typeof item,
-          item,
-          componentType: component.type,
-        });
+        // Removendo objeto inválido do array - comportamento esperado
         return false;
       });
     return wrapWithTooltip(component, isExport, (
@@ -466,13 +453,13 @@ function SchemaComponent({
       }
       // Se não for um elemento válido mas não for null, loga o problema
       if (rendered !== null && rendered !== undefined) {
-        console.warn(`Component ${component.type} retornou valor inválido:`, rendered);
+        logger.warnCritical(`Component ${component.type} retornou valor inválido:`, rendered);
       }
       // Retorna null se não houver dados (comportamento esperado para tabelas sem dados)
       return null;
     }
   } catch (error) {
-    console.error(`Erro ao renderizar componente ${component.type}:`, error, {
+    logger.error(`Erro ao renderizar componente ${component.type}:`, error, {
       component,
       dataPath: component.dataPath,
       hasData: !!data,
@@ -491,7 +478,7 @@ function SchemaComponent({
   }
 
   // Se chegou aqui, o tipo não foi encontrado
-  console.warn(`Unknown component type: ${component.type || "none"}`);
+  logger.warnCritical(`Unknown component type: ${component.type || "none"}`);
   return null;
 }
 
@@ -511,15 +498,6 @@ export function GenericSectionRenderer({
 }) {
   const { data } = useSurveyData();
 
-  // Debug log
-  if (isExport && sectionId === "responses") {
-    console.log("🔍 DEBUG GenericSectionRenderer - Rendering:", {
-      sectionId,
-      subSection,
-      isExport,
-      exportWordCloud,
-    });
-  }
 
   // Get section config from sections (must be defined before sectionData)
   const sectionConfig = useMemo(() => {
@@ -641,28 +619,23 @@ export function GenericSectionRenderer({
     if (renderSchema?.hasSubsections !== undefined) {
       return renderSchema.hasSubsections;
     }
-    // Priority 4: Default: check if renderSchema subsections array exists and has items
-    return (
-      renderSchema?.subsections &&
-      Array.isArray(renderSchema.subsections) &&
-      renderSchema.subsections.length > 0
-    );
+    // Default: no subsections
+    return false;
   }, [sectionConfig, renderSchema, sectionId, data]);
 
   // Get subsections sorted by index
-  // NEW STRUCTURE: Components directly in subsections[].components (preferred)
-  // OLD STRUCTURE: Components in data.renderSchema.subsections[].components (fallback for compatibility)
+  // Components directly in subsections[].components
   const subsections = useMemo(() => {
     // Priority 1: Use fixed subsections from sectionConfig if available
     if (
       sectionConfig?.subsections &&
       Array.isArray(sectionConfig.subsections)
     ) {
-      // Process subsections with new priority: direct components > renderSchema components
+      // Process subsections with components directly in subsection
       const processedSubsections = sectionConfig.subsections
         .sort((a, b) => (a.index || 0) - (b.index || 0))
         .map((subsection) => {
-          // NEW STRUCTURE: Priority 1 - Components directly in subsection
+          // Components directly in subsection
           if (subsection.components && Array.isArray(subsection.components)) {
             // Return subsection with components preserved
             return {
@@ -671,53 +644,9 @@ export function GenericSectionRenderer({
             };
           }
 
-          // OLD STRUCTURE: Priority 2 - Fallback to renderSchema for compatibility
-          if (renderSchema?.subsections && Array.isArray(renderSchema.subsections)) {
-            const schemaSub = renderSchema.subsections.find(
-              (sub) => sub.id === subsection.id
-            );
-            
-            if (schemaSub?.components) {
-              return {
-                ...subsection, // Use metadata from section.subsections (id, index, name, icon)
-                components: schemaSub.components,
-                ...(schemaSub.componentsContainerClassName && {
-                  componentsContainerClassName:
-                    schemaSub.componentsContainerClassName,
-                }),
-              };
-            }
-          }
-
           // No components found - return subsection as-is (navigation only)
           return subsection;
         });
-
-      // Also include subsections that exist only in renderSchema (old structure compatibility)
-      if (renderSchema?.subsections && Array.isArray(renderSchema.subsections)) {
-        const sectionConfigIds = new Set(
-          sectionConfig.subsections.map((sub) => sub.id)
-        );
-        const renderSchemaOnlySubsections = renderSchema.subsections
-          .filter((schemaSub) => !sectionConfigIds.has(schemaSub.id))
-          .map((schemaSub) => ({
-            // Use metadata from renderSchema if available, otherwise use defaults
-            id: schemaSub.id,
-            index: schemaSub.index ?? 999,
-            name: schemaSub.name || schemaSub.id,
-            icon: schemaSub.icon || null,
-            components: schemaSub.components,
-            ...(schemaSub.componentsContainerClassName && {
-              componentsContainerClassName:
-                schemaSub.componentsContainerClassName,
-            }),
-          }));
-
-        // Combine both: processed subsections + subsections only in renderSchema
-        return [...processedSubsections, ...renderSchemaOnlySubsections].sort(
-          (a, b) => (a.index || 999) - (b.index || 999)
-        );
-      }
 
       return processedSubsections;
     }
@@ -741,17 +670,6 @@ export function GenericSectionRenderer({
       }));
     }
 
-    // Priority 3: Use renderSchema subsections (fallback) - only if hasSubsections is true
-    if (
-      hasSubsections &&
-      renderSchema?.subsections &&
-      Array.isArray(renderSchema.subsections)
-    ) {
-      // Fallback: renderSchema.subsections no longer has index
-      // This should rarely be used since section.subsections should always exist
-      // Return as-is without sorting (order should come from section.subsections)
-      return [...renderSchema.subsections];
-    }
 
     return [];
   }, [
@@ -778,19 +696,7 @@ export function GenericSectionRenderer({
     // Try exact match first (this will work for dynamic subsections like "responses-1")
     let found = subsections.find((sub) => sub.id === subSection);
 
-    if (!found) {
-      // Debug: log what we're looking for
-      console.warn(
-        "GenericSectionRenderer: Subsection not found in subsections array",
-        {
-          sectionId,
-          subSection,
-          subsectionsCount: subsections.length,
-          subsectionsIds: subsections.map((s) => s.id),
-          lookingFor: subSection,
-        }
-      );
-    }
+    // Subsection not found - expected in some cases
 
     return found || null;
   }, [subsections, subSection, sectionId]);
@@ -893,7 +799,7 @@ export function GenericSectionRenderer({
   // Merge section-specific uiTexts into data context
   const enhancedData = useMemo(() => {
     if (!data) {
-      console.error("GenericSectionRenderer: data is null/undefined");
+      logger.error("GenericSectionRenderer: data is null/undefined");
       return { uiTexts: {} };
     }
 
@@ -987,7 +893,7 @@ export function GenericSectionRenderer({
 
     // Debug: verify uiTexts is present in final enhancedData
     if (!enhanced.uiTexts) {
-      console.error("GenericSectionRenderer: enhancedData missing uiTexts!", {
+      logger.error("GenericSectionRenderer: enhancedData missing uiTexts!", {
         sectionId,
         subSection,
         hasData: !!data,
@@ -1018,7 +924,7 @@ export function GenericSectionRenderer({
   
   // Only warn if we truly can't render (no components anywhere)
   if (!renderSchema && !canRenderWithoutSchema && !sectionConfig) {
-    console.warn(`No renderSchema and no components found for section: ${sectionId}`);
+    logger.warnCritical(`No renderSchema and no components found for section: ${sectionId}`);
     return (
       <div className="space-y-8 animate-fade-in">
         <p>Seção não encontrada ou sem schema de renderização.</p>
@@ -1083,16 +989,7 @@ export function GenericSectionRenderer({
   const isResponsesWithoutSubSection = sectionId === "responses" && !subSection;
   
   if (hasSubsections && !activeSubsection && !isResponsesWithQuestionId && !isResponsesWithoutSubSection) {
-    // Debug: log what we're looking for
-    console.warn("GenericSectionRenderer: Subsection not found", {
-      sectionId,
-      subSection,
-      hasSubsections,
-      subsectionsCount: subsections.length,
-      subsectionsIds: subsections.map((s) => s.id),
-      sectionConfigSubsections: sectionConfig?.subsections?.map((s) => s.id),
-      renderSchemaSubsections: renderSchema?.subsections?.map((s) => s.id),
-    });
+    // Subsection not found - expected in some cases (e.g., loading state)
     return (
       <div className="space-y-8 animate-fade-in">
         <p>Subseção não encontrada: {subSection || "nenhuma especificada"}</p>

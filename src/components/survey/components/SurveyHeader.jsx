@@ -40,15 +40,6 @@ function extractSectionId(data, activeSection) {
         return section.id;
       }
     }
-    // Check subsections from renderSchema
-    if (section.data?.renderSchema?.subsections) {
-      const subsection = section.data.renderSchema.subsections.find(
-        (sub) => sub.id === activeSection
-      );
-      if (subsection) {
-        return section.id;
-      }
-    }
     // Check dynamic subsections (responses)
     if (
       section.id === "responses" &&
@@ -85,13 +76,6 @@ function extractSectionId(data, activeSection) {
         }
         // Check if activeSection matches a subsection of this section
         if (section.subsections?.some((sub) => sub.id === activeSection)) {
-          return section.id;
-        }
-        if (
-          section.data?.renderSchema?.subsections?.some(
-            (sub) => sub.id === activeSection
-          )
-        ) {
           return section.id;
         }
         // If section has dynamicSubsections, check if pattern matches

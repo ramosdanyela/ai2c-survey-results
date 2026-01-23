@@ -21,15 +21,7 @@ function getFirstSubsectionHelper(sectionId, data) {
     return sorted[0].id;
   }
 
-  // Priority 2: RenderSchema subsections
-  if (section.data?.renderSchema?.subsections?.length > 0) {
-    const sorted = [...section.data.renderSchema.subsections].sort(
-      (a, b) => (a.index ?? 999) - (b.index ?? 999)
-    );
-    return sorted[0].id;
-  }
-
-  // Priority 3: Dynamic subsections (attributes, responses)
+  // Priority 2: Dynamic subsections (attributes, responses)
   if (section.dynamicSubsections) {
     if (section.id === "attributes") {
       const sectionData = section.data || {};
