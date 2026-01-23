@@ -11,7 +11,7 @@ import {
   SentimentImpactTable,
   PositiveCategoriesTable,
   NegativeCategoriesTable,
-} from "../widgets/Tables";
+} from "../widgets/tables/Tables";
 import { AnalyticalTable } from "../widgets/AnalyticalTable";
 import { severityColors } from "@/lib/colors";
 import { logger } from "@/utils/logger";
