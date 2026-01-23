@@ -4,8 +4,7 @@
     "language": "pt-BR",
     "surveyId": "stress-test-2025-01"
   },
-  "sectionsConfig": {
-    "sections": [
+  "sections": [
       {
         "id": "executive",
         "index": 0,
@@ -16,82 +15,66 @@
             "id": "executive-summary",
             "index": 0,
             "name": "Sumário Executivo",
-            "icon": "ClipboardList"
-          },
-          {
-            "id": "executive-recommendations",
-            "index": 1,
-            "name": "Recomendações Estratégicas",
-            "icon": "AlertTriangle"
-          }
-        ],
-        "data": {
-          "renderSchema": {
-            "subsections": [
+            "icon": "ClipboardList",
+            "components": [
               {
-                "id": "executive-summary",
-                "components": [
-                  {
-                    "type": "card",
-                    "index": 0,
-                    "title": "Sobre o Estudo",
-                    "text": "Esta pesquisa de satisfação de funcionários foi conduzida entre janeiro e março de 2025, envolvendo 850 colaboradores da InnovaTech Solutions.\nO objetivo principal é avaliar o nível de engajamento, satisfação e identificar áreas de melhoria no ambiente de trabalho, cultura organizacional e processos internos.",
-                    "styleVariant": "default"
-                  },
-                  {
-                    "type": "container",
-                    "index": 1,
-                    "components": [
-                      {
-                        "type": "card",
-                        "index": 0,
-                        "title": "Principais Descobertas",
-                        "text": "O NPS organizacional é de 35 pontos, classificado como 'Bom', indicando uma base sólida de funcionários satisfeitos.\nPrincipais pontos positivos incluem: qualidade do trabalho em equipe (72% positivo), oportunidades de desenvolvimento (68% positivo) e flexibilidade de horários (65% positivo).\nÁreas que necessitam atenção: comunicação interna (45% negativo), carga de trabalho (52% negativo) e processos burocráticos (48% negativo).\nA análise por departamento revela que Engenharia e Marketing apresentam maior satisfação, enquanto Vendas e Operações demonstram maior insatisfação.",
-                        "styleVariant": "highlight"
-                      },
-                      {
-                        "type": "card",
-                        "index": 1,
-                        "title": "Conclusões",
-                        "text": "A empresa possui uma base sólida de funcionários engajados, mas há oportunidades significativas de melhoria.\nPriorizar melhorias na comunicação interna e redução de processos burocráticos pode aumentar significativamente a satisfação.\nProgramas de desenvolvimento profissional e reconhecimento devem ser expandidos, especialmente para departamentos com menor satisfação.\nA implementação de feedback contínuo e ações de melhoria baseadas nestes resultados é essencial para manter e melhorar o engajamento.",
-                        "styleVariant": "border-left"
-                      }
-                    ]
-                  }
-                ]
+                "type": "card",
+                "index": 0,
+                "title": "Sobre o Estudo",
+                "text": "Esta pesquisa de satisfação de funcionários foi conduzida entre janeiro e março de 2025, envolvendo 850 colaboradores da InnovaTech Solutions.\nO objetivo principal é avaliar o nível de engajamento, satisfação e identificar áreas de melhoria no ambiente de trabalho, cultura organizacional e processos internos.",
+                "cardStyleVariant": "default"
               },
               {
-                "id": "executive-recommendations",
+                "type": "grid-container",
+                "index": 1,
                 "components": [
                   {
                     "type": "card",
                     "index": 0,
-                    "title": "",
-                    "text": "",
-                    "styleVariant": "overflow-hidden",
-                    "components": [
-                      {
-                        "type": "recommendationsTable",
-                        "index": 0,
-                        "dataPath": "sectionData.recommendations",
-                        "severityLabels": {
-                          "critical": "Crítico",
-                          "high": "Alto",
-                          "medium": "Médio",
-                          "low": "Baixo"
-                        }
-                      }
-                    ]
+                    "title": "Principais Descobertas",
+                    "text": "O NPS organizacional é de 35 pontos, classificado como 'Bom', indicando uma base sólida de funcionários satisfeitos.\nPrincipais pontos positivos incluem: qualidade do trabalho em equipe (72% positivo), oportunidades de desenvolvimento (68% positivo) e flexibilidade de horários (65% positivo).\nÁreas que necessitam atenção: comunicação interna (45% negativo), carga de trabalho (52% negativo) e processos burocráticos (48% negativo).\nA análise por departamento revela que Engenharia e Marketing apresentam maior satisfação, enquanto Vendas e Operações demonstram maior insatisfação.",
+                    "cardStyleVariant": "border-left"
+                  },
+                  {
+                    "type": "card",
+                    "index": 1,
+                    "title": "Conclusões",
+                    "text": "A empresa possui uma base sólida de funcionários engajados, mas há oportunidades significativas de melhoria.\nPriorizar melhorias na comunicação interna e redução de processos burocráticos pode aumentar significativamente a satisfação.\nProgramas de desenvolvimento profissional e reconhecimento devem ser expandidos, especialmente para departamentos com menor satisfação.\nA implementação de feedback contínuo e ações de melhoria baseadas nestes resultados é essencial para manter e melhorar o engajamento.",
+                    "cardStyleVariant": "border-left"
                   }
                 ]
               }
             ]
           },
-          "recommendations": [
+          {
+            "id": "executive-recommendations",
+            "index": 1,
+            "name": "Recomendações Estratégicas",
+            "icon": "AlertTriangle",
+            "components": [
+              {
+                "type": "card",
+                "index": 0,
+                "title": "",
+                "text": "",
+                "cardStyleVariant": "overflow-hidden",
+                "components": [
+                  {
+                    "type": "recommendationsTable",
+                    "index": 0,
+                    "dataPath": "sectionData.recommendationsTable"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "data": {
+          "recommendationsTable": [
             {
               "id": 1,
               "recommendation": "Implementar Sistema de Comunicação Interna Mais Eficiente",
-              "severity": "high",
+              "severity": "Alto",
               "stakeholders": [
                 "Comunicação Corporativa",
                 "Tecnologia da Informação",
@@ -123,7 +106,7 @@
             {
               "id": 2,
               "recommendation": "Reduzir Processos Burocráticos e Simplificar Workflows",
-              "severity": "high",
+              "severity": "Alto",
               "stakeholders": [
                 "Operações",
                 "Processos e Qualidade",
@@ -155,7 +138,7 @@
             {
               "id": 3,
               "recommendation": "Expandir Programas de Desenvolvimento Profissional",
-              "severity": "medium",
+              "severity": "Médio",
               "stakeholders": [
                 "Recursos Humanos",
                 "Liderança",
@@ -187,7 +170,7 @@
             {
               "id": 4,
               "recommendation": "Melhorar Gestão de Carga de Trabalho",
-              "severity": "medium",
+              "severity": "Médio",
               "stakeholders": [
                 "Liderança",
                 "Recursos Humanos",
@@ -219,7 +202,7 @@
             {
               "id": 5,
               "recommendation": "Criar Programa de Reconhecimento e Recompensas",
-              "severity": "low",
+              "severity": "Baixo",
               "stakeholders": [
                 "Recursos Humanos",
                 "Liderança",
@@ -261,140 +244,122 @@
             "id": "engagement-sentiment",
             "index": 0,
             "name": "Sentimento Geral",
-            "icon": "Smile"
+            "icon": "Smile",
+            "components": [
+              {
+                "type": "card",
+                "index": 0,
+                "useDescription": true,
+                "text": "A análise de sentimento foi realizada com base nas respostas dos funcionários sobre diferentes aspectos do ambiente de trabalho.\nForam analisadas 2.450 menções em 7 categorias principais.\nOs resultados mostram predominância de sentimentos positivos em trabalho em equipe, desenvolvimento profissional e flexibilidade.\nEnquanto comunicação interna, carga de trabalho e processos burocráticos apresentam maior proporção de sentimentos negativos.",
+                "cardStyleVariant": "default",
+                "cardContentVariant": "with-description",
+                "components": [
+                  {
+                    "type": "sentimentDivergentChart",
+                    "index": 0,
+                    "dataPath": "sectionData.sentimentDivergentChart",
+                    "config": {
+                      "yAxisDataKey": "category"
+                    }
+                  }
+                ]
+              }
+            ]
           },
           {
             "id": "engagement-segmentation",
             "index": 1,
             "name": "Segmentação por Departamento",
-            "icon": "Users2"
+            "icon": "Users2",
+            "components": [
+              {
+                "type": "card",
+                "index": 0,
+                "title": "",
+                "text": "",
+                "cardStyleVariant": "overflow-hidden",
+                "components": [
+                  {
+                    "type": "segmentationTable",
+                    "index": 0,
+                    "dataPath": "sectionData.segmentationTable"
+                  }
+                ]
+              }
+            ]
           },
           {
             "id": "engagement-intent",
             "index": 2,
             "name": "Intenção de Permanência",
-            "icon": "Target"
+            "icon": "Target",
+            "components": [
+              {
+                "type": "card",
+                "index": 0,
+                "text": "A análise de intenção de permanência revela que 58% dos funcionários pretendem permanecer na empresa nos próximos 2 anos, enquanto 22% estão considerando outras oportunidades e 20% estão indecisos.\nEste resultado indica uma base sólida de retenção, mas também sinaliza a necessidade de ações proativas para manter os talentos e engajar os funcionários indecisos.",
+                "cardStyleVariant": "default",
+                "components": [
+                  {
+                    "type": "barChart",
+                    "index": 0,
+                    "dataPath": "sectionData.retentionIntent",
+                    "config": {
+                      "dataKey": "percentage",
+                      "yAxisDataKey": "intent"
+                    }
+                  }
+                ]
+              }
+            ]
           }
         ],
         "data": {
-          "renderSchema": {
-            "subsections": [
-              {
-                "id": "engagement-sentiment",
-                "components": [
-                  {
-                    "type": "card",
-                    "index": 0,
-                    "useDescription": true,
-                    "text": "A análise de sentimento foi realizada com base nas respostas dos funcionários sobre diferentes aspectos do ambiente de trabalho.\nForam analisadas 2.450 menções em 7 categorias principais.\nOs resultados mostram predominância de sentimentos positivos em trabalho em equipe, desenvolvimento profissional e flexibilidade.\nEnquanto comunicação interna, carga de trabalho e processos burocráticos apresentam maior proporção de sentimentos negativos.",
-                    "styleVariant": "default",
-                    "textStyleVariant": "with-description",
-                    "components": [
-                      {
-                        "type": "sentimentDivergentChart",
-                        "index": 0,
-                        "dataPath": "sectionData.sentimentAnalysis.data",
-                        "config": {
-                          "yAxisDataKey": "category",
-                          "showLegend": true
-                        }
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "engagement-segmentation",
-                "components": [
-                  {
-                    "type": "card",
-                    "index": 0,
-                    "title": "",
-                    "text": "",
-                    "styleVariant": "overflow-hidden",
-                    "components": [
-                      {
-                        "type": "segmentationTable",
-                        "index": 0,
-                        "dataPath": "sectionData.segmentation"
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "engagement-intent",
-                "components": [
-                  {
-                    "type": "card",
-                    "index": 0,
-                    "text": "A análise de intenção de permanência revela que 58% dos funcionários pretendem permanecer na empresa nos próximos 2 anos, enquanto 22% estão considerando outras oportunidades e 20% estão indecisos.\nEste resultado indica uma base sólida de retenção, mas também sinaliza a necessidade de ações proativas para manter os talentos e engajar os funcionários indecisos.",
-                    "styleVariant": "default",
-                    "components": [
-                      {
-                        "type": "barChart",
-                        "index": 0,
-                        "dataPath": "sectionData.retentionIntent.data",
-                        "config": {
-                          "dataKey": "percentage",
-                          "yAxisDataKey": "intent",
-                          "sortData": true,
-                          "sortDirection": "desc"
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          "sentimentAnalysis": {
-            "data": [
-              {
-                "category": "Trabalho em Equipe",
-                "positive": 72.3,
-                "neutral": 18.5,
-                "negative": 9.2
-              },
-              {
-                "category": "Desenvolvimento Profissional",
-                "positive": 68.1,
-                "neutral": 22.4,
-                "negative": 9.5
-              },
-              {
-                "category": "Flexibilidade",
-                "positive": 65.2,
-                "neutral": 25.8,
-                "negative": 9.0
-              },
-              {
-                "category": "Liderança",
-                "positive": 58.7,
-                "neutral": 28.3,
-                "negative": 13.0
-              },
-              {
-                "category": "Comunicação Interna",
-                "positive": 32.5,
-                "neutral": 22.5,
-                "negative": 45.0
-              },
-              {
-                "category": "Carga de Trabalho",
-                "positive": 18.2,
-                "neutral": 29.8,
-                "negative": 52.0
-              },
-              {
-                "category": "Processos Burocráticos",
-                "positive": 15.5,
-                "neutral": 36.5,
-                "negative": 48.0
-              }
-            ]
-          },
-          "segmentation": [
+          "sentimentDivergentChart": [
+            {
+              "category": "Trabalho em Equipe",
+              "positive": 72.3,
+              "neutral": 18.5,
+              "negative": 9.2
+            },
+            {
+              "category": "Desenvolvimento Profissional",
+              "positive": 68.1,
+              "neutral": 22.4,
+              "negative": 9.5
+            },
+            {
+              "category": "Flexibilidade",
+              "positive": 65.2,
+              "neutral": 25.8,
+              "negative": 9
+            },
+            {
+              "category": "Liderança",
+              "positive": 58.7,
+              "neutral": 28.3,
+              "negative": 13
+            },
+            {
+              "category": "Comunicação Interna",
+              "positive": 32.5,
+              "neutral": 22.5,
+              "negative": 45
+            },
+            {
+              "category": "Carga de Trabalho",
+              "positive": 18.2,
+              "neutral": 29.8,
+              "negative": 52
+            },
+            {
+              "category": "Processos Burocráticos",
+              "positive": 15.5,
+              "neutral": 36.5,
+              "negative": 48
+            }
+          ],
+          "segmentationTable": [
             {
               "cluster": "Engajados e Satisfeitos",
               "description": "Funcionários altamente engajados que valorizam o ambiente de trabalho, oportunidades de crescimento e reconhecimento.",
@@ -451,25 +416,23 @@
               ]
             }
           ],
-          "retentionIntent": {
-            "data": [
-              {
-                "intent": "Pretende permanecer na empresa",
-                "percentage": 58,
-                "count": 493
-              },
-              {
-                "intent": "Indeciso sobre permanência",
-                "percentage": 20,
-                "count": 170
-              },
-              {
-                "intent": "Considerando outras oportunidades",
-                "percentage": 22,
-                "count": 187
-              }
-            ]
-          }
+          "retentionIntent": [
+            {
+              "intent": "Pretende permanecer na empresa",
+              "percentage": 58,
+              "count": 493
+            },
+            {
+              "intent": "Indeciso sobre permanência",
+              "percentage": 20,
+              "count": 170
+            },
+            {
+              "intent": "Considerando outras oportunidades",
+              "percentage": 22,
+              "count": 187
+            }
+          ]
         }
       },
       {
@@ -522,41 +485,41 @@
                   "segment": "Engenharia",
                   "positive": 75.2,
                   "neutral": 15.8,
-                  "negative": 9.0
+                  "negative": 9
                 },
                 {
                   "segment": "Marketing",
                   "positive": 72.5,
                   "neutral": 18.5,
-                  "negative": 9.0
+                  "negative": 9
                 },
                 {
                   "segment": "RH",
-                  "positive": 65.0,
-                  "neutral": 25.0,
-                  "negative": 10.0
+                  "positive": 65,
+                  "neutral": 25,
+                  "negative": 10
                 },
                 {
                   "segment": "Vendas",
                   "positive": 45.5,
                   "neutral": 30.5,
-                  "negative": 24.0
+                  "negative": 24
                 },
                 {
                   "segment": "Operações",
                   "positive": 38.2,
                   "neutral": 32.8,
-                  "negative": 29.0
+                  "negative": 29
                 },
                 {
                   "segment": "Outros",
-                  "positive": 60.0,
-                  "neutral": 25.0,
-                  "negative": 15.0
+                  "positive": 60,
+                  "neutral": 25,
+                  "negative": 15
                 }
               ],
               "npsSummary": "Os escores NPS variam significativamente entre departamentos.\nEngenharia e Marketing lideram com NPS positivo (42 e 38), indicando alta satisfação e lealdade.\nVendas e Operações apresentam NPS negativo (-15 e -22), sinalizando necessidade urgente de intervenção.\nRH e Outros departamentos apresentam NPS moderadamente positivo, indicando satisfação adequada.",
-              "nps": [
+              "npsTable": [
                 {
                   "segment": "Engenharia",
                   "nps": 42
@@ -582,54 +545,54 @@
                   "nps": -22
                 }
               ],
-              "npsDistribution": [
+              "npsDistributionTable": [
                 {
                   "segment": "Engenharia",
                   "promotores": 58.5,
                   "neutros": 16.5,
-                  "detratores": 25.0
+                  "detratores": 25
                 },
                 {
                   "segment": "Marketing",
-                  "promotores": 55.0,
-                  "neutros": 17.0,
-                  "detratores": 28.0
+                  "promotores": 55,
+                  "neutros": 17,
+                  "detratores": 28
                 },
                 {
                   "segment": "RH",
                   "promotores": 42.5,
                   "neutros": 30.5,
-                  "detratores": 27.0
+                  "detratores": 27
                 },
                 {
                   "segment": "Vendas",
-                  "promotores": 32.0,
-                  "neutros": 28.0,
-                  "detratores": 40.0
+                  "promotores": 32,
+                  "neutros": 28,
+                  "detratores": 40
                 },
                 {
                   "segment": "Operações",
                   "promotores": 28.5,
                   "neutros": 28.5,
-                  "detratores": 43.0
+                  "detratores": 43
                 },
                 {
                   "segment": "Outros",
-                  "promotores": 40.0,
-                  "neutros": 32.0,
-                  "detratores": 28.0
+                  "promotores": 40,
+                  "neutros": 32,
+                  "detratores": 28
                 }
               ],
               "satisfactionImpactSummary": "Engenharia e Marketing valorizam principalmente trabalho em equipe, desenvolvimento profissional e flexibilidade.\nVendas e Operações expressam maior insatisfação com carga de trabalho, processos burocráticos e comunicação interna.\nRH demonstra satisfação equilibrada, com preocupações moderadas sobre processos.",
               "satisfactionImpactSentiment": [
                 {
                   "sentiment": "Negativo",
-                  "Engenharia": 9.0,
-                  "Marketing": 9.0,
-                  "RH": 10.0,
-                  "Vendas": 24.0,
-                  "Operações": 29.0,
-                  "Outros": 15.0
+                  "Engenharia": 9,
+                  "Marketing": 9,
+                  "RH": 10,
+                  "Vendas": 24,
+                  "Operações": 29,
+                  "Outros": 15
                 },
                 {
                   "sentiment": "Não aplicável",
@@ -644,68 +607,68 @@
                   "sentiment": "Positivo",
                   "Engenharia": 75.2,
                   "Marketing": 72.5,
-                  "RH": 65.0,
+                  "RH": 65,
                   "Vendas": 45.5,
                   "Operações": 38.2,
-                  "Outros": 60.0
+                  "Outros": 60
                 }
               ],
-              "positiveCategories": [
+              "positiveCategoriesTable": [
                 {
                   "category": "Trabalho em Equipe",
                   "Engenharia": 85.2,
                   "Marketing": 78.5,
-                  "RH": 72.0,
-                  "Vendas": 55.0,
-                  "Operações": 48.0,
-                  "Outros": 70.0
+                  "RH": 72,
+                  "Vendas": 55,
+                  "Operações": 48,
+                  "Outros": 70
                 },
                 {
                   "category": "Desenvolvimento Profissional",
                   "Engenharia": 82.5,
-                  "Marketing": 75.0,
-                  "RH": 68.0,
-                  "Vendas": 42.0,
-                  "Operações": 35.0,
-                  "Outros": 65.0
+                  "Marketing": 75,
+                  "RH": 68,
+                  "Vendas": 42,
+                  "Operações": 35,
+                  "Outros": 65
                 },
                 {
                   "category": "Flexibilidade",
-                  "Engenharia": 78.0,
-                  "Marketing": 72.0,
-                  "RH": 65.0,
-                  "Vendas": 38.0,
-                  "Operações": 32.0,
-                  "Outros": 60.0
+                  "Engenharia": 78,
+                  "Marketing": 72,
+                  "RH": 65,
+                  "Vendas": 38,
+                  "Operações": 32,
+                  "Outros": 60
                 }
               ],
-              "negativeCategories": [
+              "negativeCategoriesTable": [
                 {
                   "category": "Carga de Trabalho",
-                  "Engenharia": 12.0,
-                  "Marketing": 15.0,
-                  "RH": 18.0,
-                  "Vendas": 58.0,
-                  "Operações": 65.0,
-                  "Outros": 20.0
+                  "Engenharia": 12,
+                  "Marketing": 15,
+                  "RH": 18,
+                  "Vendas": 58,
+                  "Operações": 65,
+                  "Outros": 20
                 },
                 {
                   "category": "Processos Burocráticos",
-                  "Engenharia": 8.0,
-                  "Marketing": 12.0,
-                  "RH": 22.0,
-                  "Vendas": 52.0,
-                  "Operações": 58.0,
-                  "Outros": 18.0
+                  "Engenharia": 8,
+                  "Marketing": 12,
+                  "RH": 22,
+                  "Vendas": 52,
+                  "Operações": 58,
+                  "Outros": 18
                 },
                 {
                   "category": "Comunicação Interna",
-                  "Engenharia": 10.0,
-                  "Marketing": 18.0,
-                  "RH": 25.0,
-                  "Vendas": 48.0,
-                  "Operações": 55.0,
-                  "Outros": 22.0
+                  "Engenharia": 10,
+                  "Marketing": 18,
+                  "RH": 25,
+                  "Vendas": 48,
+                  "Operações": 55,
+                  "Outros": 22
                 }
               ]
             },
@@ -742,25 +705,25 @@
                   "segment": "Mais de 5 anos",
                   "positive": 78.5,
                   "neutral": 15.5,
-                  "negative": 6.0
+                  "negative": 6
                 },
                 {
                   "segment": "3-5 anos",
-                  "positive": 72.0,
-                  "neutral": 20.0,
-                  "negative": 8.0
+                  "positive": 72,
+                  "neutral": 20,
+                  "negative": 8
                 },
                 {
                   "segment": "1-3 anos",
                   "positive": 65.5,
                   "neutral": 25.5,
-                  "negative": 9.0
+                  "negative": 9
                 },
                 {
                   "segment": "Menos de 1 ano",
-                  "positive": 58.0,
-                  "neutral": 28.0,
-                  "negative": 14.0
+                  "positive": 58,
+                  "neutral": 28,
+                  "negative": 14
                 }
               ]
             },
@@ -795,35 +758,730 @@
               "sentiment": [
                 {
                   "segment": "Liderança",
-                  "positive": 82.0,
-                  "neutral": 12.0,
-                  "negative": 6.0
+                  "positive": 82,
+                  "neutral": 12,
+                  "negative": 6
                 },
                 {
                   "segment": "Sênior",
                   "positive": 75.5,
                   "neutral": 18.5,
-                  "negative": 6.0
+                  "negative": 6
                 },
                 {
                   "segment": "Pleno",
-                  "positive": 68.0,
-                  "neutral": 22.0,
-                  "negative": 10.0
+                  "positive": 68,
+                  "neutral": 22,
+                  "negative": 10
                 },
                 {
                   "segment": "Estagiário/Júnior",
                   "positive": 58.5,
                   "neutral": 28.5,
-                  "negative": 13.0
+                  "negative": 13
                 }
               ]
             }
           ],
           "config": {
             "defaultIcon": "Building"
+          },
+          "department": {
+            "id": "department",
+            "index": 0,
+            "name": "Por Departamento",
+            "icon": "Building",
+            "summary": "A análise por departamento revela diferenças significativas na satisfação dos funcionários.\nEngenharia e Marketing apresentam os maiores índices de satisfação, com NPS positivo de 42 e 38 respectivamente.\nVendas e Operações demonstram maior insatisfação, com NPS negativo de -15 e -22.\nEstas diferenças indicam a necessidade de abordagens personalizadas por departamento para melhorar o engajamento.",
+            "distribution": [
+              {
+                "segment": "Engenharia",
+                "count": 298,
+                "percentage": 35
+              },
+              {
+                "segment": "Vendas",
+                "count": 213,
+                "percentage": 25
+              },
+              {
+                "segment": "Marketing",
+                "count": 128,
+                "percentage": 15
+              },
+              {
+                "segment": "RH",
+                "count": 85,
+                "percentage": 10
+              },
+              {
+                "segment": "Operações",
+                "count": 85,
+                "percentage": 10
+              },
+              {
+                "segment": "Outros",
+                "count": 41,
+                "percentage": 5
+              }
+            ],
+            "sentiment": [
+              {
+                "segment": "Engenharia",
+                "positive": 75.2,
+                "neutral": 15.8,
+                "negative": 9
+              },
+              {
+                "segment": "Marketing",
+                "positive": 72.5,
+                "neutral": 18.5,
+                "negative": 9
+              },
+              {
+                "segment": "RH",
+                "positive": 65,
+                "neutral": 25,
+                "negative": 10
+              },
+              {
+                "segment": "Vendas",
+                "positive": 45.5,
+                "neutral": 30.5,
+                "negative": 24
+              },
+              {
+                "segment": "Operações",
+                "positive": 38.2,
+                "neutral": 32.8,
+                "negative": 29
+              },
+              {
+                "segment": "Outros",
+                "positive": 60,
+                "neutral": 25,
+                "negative": 15
+              }
+            ],
+            "npsSummary": "Os escores NPS variam significativamente entre departamentos.\nEngenharia e Marketing lideram com NPS positivo (42 e 38), indicando alta satisfação e lealdade.\nVendas e Operações apresentam NPS negativo (-15 e -22), sinalizando necessidade urgente de intervenção.\nRH e Outros departamentos apresentam NPS moderadamente positivo, indicando satisfação adequada.",
+            "npsTable": [
+              {
+                "segment": "Engenharia",
+                "nps": 42
+              },
+              {
+                "segment": "Marketing",
+                "nps": 38
+              },
+              {
+                "segment": "RH",
+                "nps": 12
+              },
+              {
+                "segment": "Outros",
+                "nps": 8
+              },
+              {
+                "segment": "Vendas",
+                "nps": -15
+              },
+              {
+                "segment": "Operações",
+                "nps": -22
+              }
+            ],
+            "npsDistribution": [
+              {
+                "segment": "Engenharia",
+                "promotores": 58.5,
+                "neutros": 16.5,
+                "detratores": 25
+              },
+              {
+                "segment": "Marketing",
+                "promotores": 55,
+                "neutros": 17,
+                "detratores": 28
+              },
+              {
+                "segment": "RH",
+                "promotores": 42.5,
+                "neutros": 30.5,
+                "detratores": 27
+              },
+              {
+                "segment": "Vendas",
+                "promotores": 32,
+                "neutros": 28,
+                "detratores": 40
+              },
+              {
+                "segment": "Operações",
+                "promotores": 28.5,
+                "neutros": 28.5,
+                "detratores": 43
+              },
+              {
+                "segment": "Outros",
+                "promotores": 40,
+                "neutros": 32,
+                "detratores": 28
+              }
+            ],
+            "satisfactionImpactSummary": "Engenharia e Marketing valorizam principalmente trabalho em equipe, desenvolvimento profissional e flexibilidade.\nVendas e Operações expressam maior insatisfação com carga de trabalho, processos burocráticos e comunicação interna.\nRH demonstra satisfação equilibrada, com preocupações moderadas sobre processos.",
+            "satisfactionImpactSentiment": [
+              {
+                "sentiment": "Negativo",
+                "Engenharia": 9,
+                "Marketing": 9,
+                "RH": 10,
+                "Vendas": 24,
+                "Operações": 29,
+                "Outros": 15
+              },
+              {
+                "sentiment": "Não aplicável",
+                "Engenharia": 0,
+                "Marketing": 0,
+                "RH": 0,
+                "Vendas": 0,
+                "Operações": 0,
+                "Outros": 0
+              },
+              {
+                "sentiment": "Positivo",
+                "Engenharia": 75.2,
+                "Marketing": 72.5,
+                "RH": 65,
+                "Vendas": 45.5,
+                "Operações": 38.2,
+                "Outros": 60
+              }
+            ],
+            "positiveCategoriesTable": [
+              {
+                "category": "Trabalho em Equipe",
+                "Engenharia": 85.2,
+                "Marketing": 78.5,
+                "RH": 72,
+                "Vendas": 55,
+                "Operações": 48,
+                "Outros": 70
+              },
+              {
+                "category": "Desenvolvimento Profissional",
+                "Engenharia": 82.5,
+                "Marketing": 75,
+                "RH": 68,
+                "Vendas": 42,
+                "Operações": 35,
+                "Outros": 65
+              },
+              {
+                "category": "Flexibilidade",
+                "Engenharia": 78,
+                "Marketing": 72,
+                "RH": 65,
+                "Vendas": 38,
+                "Operações": 32,
+                "Outros": 60
+              }
+            ],
+            "negativeCategoriesTable": [
+              {
+                "category": "Carga de Trabalho",
+                "Engenharia": 12,
+                "Marketing": 15,
+                "RH": 18,
+                "Vendas": 58,
+                "Operações": 65,
+                "Outros": 20
+              },
+              {
+                "category": "Processos Burocráticos",
+                "Engenharia": 8,
+                "Marketing": 12,
+                "RH": 22,
+                "Vendas": 52,
+                "Operações": 58,
+                "Outros": 18
+              },
+              {
+                "category": "Comunicação Interna",
+                "Engenharia": 10,
+                "Marketing": 18,
+                "RH": 25,
+                "Vendas": 48,
+                "Operações": 55,
+                "Outros": 22
+              }
+            ]
+          },
+          "tenure": {
+            "id": "tenure",
+            "index": 1,
+            "name": "Por Tempo de Empresa",
+            "icon": "Clock",
+            "summary": "Funcionários com mais tempo de empresa (3+ anos) demonstram maior satisfação e engajamento.\nFuncionários novos (menos de 1 ano) apresentam satisfação moderada, indicando necessidade de melhor onboarding.\nA análise revela que a satisfação aumenta com o tempo de empresa, sugerindo que programas de retenção são eficazes.",
+            "distribution": [
+              {
+                "segment": "Menos de 1 ano",
+                "count": 170,
+                "percentage": 20
+              },
+              {
+                "segment": "1-3 anos",
+                "count": 298,
+                "percentage": 35
+              },
+              {
+                "segment": "3-5 anos",
+                "count": 213,
+                "percentage": 25
+              },
+              {
+                "segment": "Mais de 5 anos",
+                "count": 169,
+                "percentage": 20
+              }
+            ],
+            "sentiment": [
+              {
+                "segment": "Mais de 5 anos",
+                "positive": 78.5,
+                "neutral": 15.5,
+                "negative": 6
+              },
+              {
+                "segment": "3-5 anos",
+                "positive": 72,
+                "neutral": 20,
+                "negative": 8
+              },
+              {
+                "segment": "1-3 anos",
+                "positive": 65.5,
+                "neutral": 25.5,
+                "negative": 9
+              },
+              {
+                "segment": "Menos de 1 ano",
+                "positive": 58,
+                "neutral": 28,
+                "negative": 14
+              }
+            ]
+          },
+          "role": {
+            "id": "role",
+            "index": 2,
+            "name": "Por Cargo",
+            "icon": "Briefcase",
+            "summary": "Liderança e funcionários sênior apresentam maior satisfação, com NPS positivo.\nEstagiários e júnior demonstram satisfação moderada, com oportunidades de melhoria em desenvolvimento e mentoria.\nA análise sugere que programas de desenvolvimento são especialmente importantes para níveis iniciais.",
+            "distribution": [
+              {
+                "segment": "Estagiário/Júnior",
+                "count": 255,
+                "percentage": 30
+              },
+              {
+                "segment": "Pleno",
+                "count": 340,
+                "percentage": 40
+              },
+              {
+                "segment": "Sênior",
+                "count": 170,
+                "percentage": 20
+              },
+              {
+                "segment": "Liderança",
+                "count": 85,
+                "percentage": 10
+              }
+            ],
+            "sentiment": [
+              {
+                "segment": "Liderança",
+                "positive": 82,
+                "neutral": 12,
+                "negative": 6
+              },
+              {
+                "segment": "Sênior",
+                "positive": 75.5,
+                "neutral": 18.5,
+                "negative": 6
+              },
+              {
+                "segment": "Pleno",
+                "positive": 68,
+                "neutral": 22,
+                "negative": 10
+              },
+              {
+                "segment": "Estagiário/Júnior",
+                "positive": 58.5,
+                "neutral": 28.5,
+                "negative": 13
+              }
+            ]
           }
-        }
+        },
+        "subsections": [
+          {
+            "id": "attributes-department",
+            "index": 0,
+            "name": "Por Departamento",
+            "icon": "Building",
+            "components": [
+              {
+                "type": "card",
+                "index": 0,
+                "title": "Sumário",
+                "text": "A análise por departamento revela diferenças significativas na satisfação dos funcionários.\nEngenharia e Marketing apresentam os maiores índices de satisfação, com NPS positivo de 42 e 38 respectivamente.\nVendas e Operações demonstram maior insatisfação, com NPS negativo de -15 e -22.\nEstas diferenças indicam a necessidade de abordagens personalizadas por departamento para melhorar o engajamento.",
+                "cardStyleVariant": "default"
+              },
+              {
+                "type": "grid-container",
+                "index": 1,
+                "components": [
+                  {
+                    "type": "card",
+                    "index": 0,
+                    "title": "Distribuição dos respondentes",
+                    "cardStyleVariant": "flex-column",
+                    "cardContentVariant": "with-charts",
+                    "components": [
+                      {
+                        "type": "barChart",
+                        "index": 0,
+                        "dataPath": "sectionData.department.distribution",
+                        "config": {
+                          "dataKey": "percentage",
+                          "yAxisDataKey": "segment"
+                        }
+                      },
+                      {
+                        "type": "distributionTable",
+                        "index": 1,
+                        "dataPath": "sectionData.department.distribution"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "card",
+                    "index": 1,
+                    "title": "Análise de sentimento",
+                    "cardStyleVariant": "flex-column",
+                    "cardContentVariant": "with-charts",
+                    "components": [
+                      {
+                        "type": "sentimentStackedChart",
+                        "index": 0,
+                        "dataPath": "sectionData.department.sentiment",
+                        "config": {
+                          "yAxisDataKey": "segment"
+                        }
+                      },
+                      {
+                        "type": "sentimentTable",
+                        "index": 1,
+                        "dataPath": "sectionData.department.sentiment"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "card",
+                "index": 2,
+                "title": "Qual é a probabilidade de você recomendar nossa empresa como um ótimo lugar para trabalhar?",
+                "cardStyleVariant": "default",
+                "cardContentVariant": "with-tables",
+                "components": [
+                  {
+                    "type": "container",
+                    "index": 0,
+                    "components": [
+                      {
+                        "type": "h3",
+                        "index": 0,
+                        "text": "Sumário"
+                      },
+                      {
+                        "type": "container",
+                        "index": 1,
+                        "text": "Os escores NPS variam significativamente entre departamentos.\nEngenharia e Marketing lideram com NPS positivo (42 e 38), indicando alta satisfação e lealdade.\nVendas e Operações apresentam NPS negativo (-15 e -22), sinalizando necessidade urgente de intervenção.\nRH e Outros departamentos apresentam NPS moderadamente positivo, indicando satisfação adequada."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "container",
+                    "index": 1,
+                    "components": [
+                      {
+                        "type": "h3",
+                        "index": 0,
+                        "text": "Respostas"
+                      },
+                      {
+                        "type": "container",
+                        "index": 1,
+                        "components": [
+                          {
+                            "type": "container",
+                            "index": 0,
+                            "components": [
+                              {
+                                "type": "h4",
+                                "index": 0,
+                                "text": "Promotores, Neutros, Detratores"
+                              },
+                              {
+                                "type": "npsDistributionTable",
+                                "index": 1,
+                                "dataPath": "sectionData.department.npsDistributionTable",
+                                "categoryName": "Por Departamento"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "container",
+                            "index": 1,
+                            "components": [
+                              {
+                                "type": "h4",
+                                "index": 0,
+                                "text": "NPS"
+                              },
+                              {
+                                "type": "npsTable",
+                                "index": 1,
+                                "dataPath": "sectionData.department.npsTable",
+                                "categoryName": "Por Departamento"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "card",
+                    "index": 3,
+                    "title": "Quais são os principais fatores que impactam sua satisfação no trabalho?",
+                    "cardStyleVariant": "default",
+                    "cardContentVariant": "with-tables",
+                    "components": [
+                      {
+                        "type": "container",
+                        "index": 0,
+                        "components": [
+                          {
+                            "type": "h3",
+                            "index": 0,
+                            "text": "Sumário"
+                          },
+                          {
+                            "type": "container",
+                            "index": 1,
+                            "text": "Engenharia e Marketing valorizam principalmente trabalho em equipe, desenvolvimento profissional e flexibilidade.\nVendas e Operações expressam maior insatisfação com carga de trabalho, processos burocráticos e comunicação interna.\nRH demonstra satisfação equilibrada, com preocupações moderadas sobre processos."
+                          }
+                        ]
+                      },
+                      {
+                        "type": "container",
+                        "index": 1,
+                        "components": [
+                          {
+                            "type": "h3",
+                            "index": 0,
+                            "text": "Análise de sentimento"
+                          },
+                          {
+                            "type": "sentimentThreeColorChart",
+                            "index": 1,
+                            "dataPath": "sectionData.department.satisfactionImpactSentiment",
+                            "config": {}
+                          },
+                          {
+                            "type": "sentimentImpactTable",
+                            "index": 2,
+                            "dataPath": "sectionData.department.satisfactionImpactSentiment"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "container",
+                        "index": 2,
+                        "components": [
+                          {
+                            "type": "h3",
+                            "index": 0,
+                            "content": "Categorias com sentimento positivo - Top 3"
+                          },
+                          {
+                            "type": "positiveCategoriesTable",
+                            "index": 1,
+                            "dataPath": "sectionData.department.positiveCategoriesTable"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "container",
+                        "index": 3,
+                        "components": [
+                          {
+                            "type": "h3",
+                            "index": 0,
+                            "text": "Categorias com sentimento negativo - Top 3"
+                          },
+                          {
+                            "type": "negativeCategoriesTable",
+                            "index": 1,
+                            "dataPath": "sectionData.department.negativeCategoriesTable"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "attributes-tenure",
+            "index": 1,
+            "name": "Por Tempo de Empresa",
+            "icon": "Clock",
+            "components": [
+              {
+                "type": "card",
+                "index": 0,
+                "title": "Sumário",
+                "text": "Funcionários com mais tempo de empresa (3+ anos) demonstram maior satisfação e engajamento.\nFuncionários novos (menos de 1 ano) apresentam satisfação moderada, indicando necessidade de melhor onboarding.\nA análise revela que a satisfação aumenta com o tempo de empresa, sugerindo que programas de retenção são eficazes.",
+                "cardStyleVariant": "default"
+              },
+              {
+                "type": "grid-container",
+                "index": 1,
+                "components": [
+                  {
+                    "type": "card",
+                    "index": 0,
+                    "title": "Distribuição dos respondentes",
+                    "cardStyleVariant": "flex-column",
+                    "cardContentVariant": "with-charts",
+                    "components": [
+                      {
+                        "type": "barChart",
+                        "index": 0,
+                        "dataPath": "sectionData.tenure.distribution",
+                        "config": {
+                          "dataKey": "percentage",
+                          "yAxisDataKey": "segment"
+                        }
+                      },
+                      {
+                        "type": "distributionTable",
+                        "index": 1,
+                        "dataPath": "sectionData.tenure.distribution"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "card",
+                    "index": 1,
+                    "title": "Análise de sentimento",
+                    "cardStyleVariant": "flex-column",
+                    "cardContentVariant": "with-charts",
+                    "components": [
+                      {
+                        "type": "sentimentStackedChart",
+                        "index": 0,
+                        "dataPath": "sectionData.tenure.sentiment",
+                        "config": {
+                          "yAxisDataKey": "segment"
+                        }
+                      },
+                      {
+                        "type": "sentimentTable",
+                        "index": 1,
+                        "dataPath": "sectionData.tenure.sentiment"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "attributes-role",
+            "index": 2,
+            "name": "Por Cargo",
+            "icon": "Briefcase",
+            "components": [
+              {
+                "type": "card",
+                "index": 0,
+                "title": "Sumário",
+                "text": "Liderança e funcionários sênior apresentam maior satisfação, com NPS positivo.\nEstagiários e júnior demonstram satisfação moderada, com oportunidades de melhoria em desenvolvimento e mentoria.\nA análise sugere que programas de desenvolvimento são especialmente importantes para níveis iniciais.",
+                "cardStyleVariant": "default"
+              },
+              {
+                "type": "grid-container",
+                "index": 1,
+                "components": [
+                  {
+                    "type": "card",
+                    "index": 0,
+                    "title": "Distribuição dos respondentes",
+                    "cardStyleVariant": "flex-column",
+                    "cardContentVariant": "with-charts",
+                    "components": [
+                      {
+                        "type": "barChart",
+                        "index": 0,
+                        "dataPath": "sectionData.role.distribution",
+                        "config": {
+                          "dataKey": "percentage",
+                          "yAxisDataKey": "segment"
+                        }
+                      },
+                      {
+                        "type": "distributionTable",
+                        "index": 1,
+                        "dataPath": "sectionData.role.distribution"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "card",
+                    "index": 1,
+                    "title": "Análise de sentimento",
+                    "cardStyleVariant": "flex-column",
+                    "cardContentVariant": "with-charts",
+                    "components": [
+                      {
+                        "type": "sentimentStackedChart",
+                        "index": 0,
+                        "dataPath": "sectionData.role.sentiment",
+                        "config": {
+                          "yAxisDataKey": "segment"
+                        }
+                      },
+                      {
+                        "type": "sentimentTable",
+                        "index": 1,
+                        "dataPath": "sectionData.role.sentiment"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       {
         "id": "responses",
@@ -831,96 +1489,20 @@
         "name": "Análise por Questão",
         "icon": "MessageSquare",
         "hasSubsections": false,
-        "data": {
-          "renderSchema": {
-            "components": [
-              {
-                "type": "filterPills",
-                "index": 0,
-                "config": {
-                  "showWordCloudToggle": true
-                }
-              },
-              {
-                "type": "questionsList",
-                "index": 1,
-                "dataPath": "sectionData",
-                "config": {
-                  "hideFilterPills": true
-                }
-              }
-            ],
-            "questionTypeSchemas": {
-              "nps": {
-                "components": [
-                  {
-                    "type": "npsScoreCard",
-                    "index": 0,
-                    "dataPath": "surveyInfo",
-                    "config": {}
-                  },
-                  {
-                    "type": "npsStackedChart",
-                    "index": 1,
-                    "dataPath": "question.data",
-                    "config": {}
-                  }
-                ]
-              },
-              "multiple-choice": {
-                "components": [
-                  {
-                    "type": "barChart",
-                    "index": 0,
-                    "dataPath": "question.data",
-                    "config": {
-                      "dataKey": "percentage",
-                      "yAxisDataKey": "option"
-                    }
-                  }
-                ]
-              },
-              "single-choice": {
-                "components": [
-                  {
-                    "type": "barChart",
-                    "index": 0,
-                    "dataPath": "question.data",
-                    "config": {
-                      "dataKey": "percentage",
-                      "yAxisDataKey": "option"
-                    }
-                  }
-                ]
-              },
-              "open-ended": {
-                "components": [
-                  {
-                    "type": "sentimentStackedChart",
-                    "index": 0,
-                    "dataPath": "question.sentimentData",
-                    "config": {}
-                  },
-                  {
-                    "type": "topCategoriesCards",
-                    "index": 1,
-                    "dataPath": "question.topCategories",
-                    "config": {
-                      "title": "Top 3 Categorias"
-                    }
-                  },
-                  {
-                    "type": "wordCloud",
-                    "index": 2,
-                    "dataPath": "question.wordCloud",
-                    "config": {
-                      "title": "Nuvem de Palavras"
-                    }
-                  }
-                ]
-              }
-            }
+        "components": [
+          {
+            "type": "filterPills",
+            "index": 0,
+            "config": {}
           },
+          {
+            "type": "questionsList",
+            "index": 1,
+            "dataPath": "sectionData",
+            "config": {}
+          }
+        ],
+        "data": {
           "questions": [
             {
               "id": 1,
@@ -1023,136 +1605,138 @@
               "question": "O que você mais valoriza na empresa?",
               "icon": "Heart",
               "summary": "As respostas abertas destacam trabalho em equipe, oportunidades de desenvolvimento e flexibilidade como os principais valores.\nComunicação interna e processos burocráticos são mencionados como áreas de melhoria.",
-              "sentimentData": [
-                {
-                  "category": "Trabalho em Equipe",
-                  "positive": 72.3,
-                  "neutral": 18.5,
-                  "negative": 9.2
-                },
-                {
-                  "category": "Desenvolvimento Profissional",
-                  "positive": 68.1,
-                  "neutral": 22.4,
-                  "negative": 9.5
-                },
-                {
-                  "category": "Flexibilidade",
-                  "positive": 65.2,
-                  "neutral": 25.8,
-                  "negative": 9.0
-                },
-                {
-                  "category": "Liderança",
-                  "positive": 58.7,
-                  "neutral": 28.3,
-                  "negative": 13.0
-                }
-              ],
-              "topCategories": [
-                {
-                  "rank": 1,
-                  "category": "Trabalho em Equipe",
-                  "mentions": 425,
-                  "percentage": 100,
-                  "topics": [
-                    {
-                      "topic": "colaboração eficiente",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "ambiente colaborativo",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "suporte entre colegas",
-                      "sentiment": "positive"
-                    }
-                  ]
-                },
-                {
-                  "rank": 2,
-                  "category": "Desenvolvimento Profissional",
-                  "mentions": 312,
-                  "percentage": 73,
-                  "topics": [
-                    {
-                      "topic": "oportunidades de crescimento",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "treinamentos relevantes",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "mentoria",
-                      "sentiment": "positive"
-                    }
-                  ]
-                },
-                {
-                  "rank": 3,
-                  "category": "Flexibilidade",
-                  "mentions": 285,
-                  "percentage": 67,
-                  "topics": [
-                    {
-                      "topic": "horário flexível",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "trabalho remoto",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "autonomia",
-                      "sentiment": "positive"
-                    }
-                  ]
-                }
-              ],
-              "wordCloud": [
-                {
-                  "text": "equipe",
-                  "value": 425
-                },
-                {
-                  "text": "desenvolvimento",
-                  "value": 312
-                },
-                {
-                  "text": "flexibilidade",
-                  "value": 285
-                },
-                {
-                  "text": "colaboração",
-                  "value": 198
-                },
-                {
-                  "text": "crescimento",
-                  "value": 156
-                },
-                {
-                  "text": "oportunidades",
-                  "value": 134
-                },
-                {
-                  "text": "liderança",
-                  "value": 112
-                },
-                {
-                  "text": "autonomia",
-                  "value": 98
-                },
-                {
-                  "text": "reconhecimento",
-                  "value": 87
-                },
-                {
-                  "text": "cultura",
-                  "value": 76
-                }
-              ],
+              "data": {
+                "sentimentData": [
+                  {
+                    "category": "Trabalho em Equipe",
+                    "positive": 72.3,
+                    "neutral": 18.5,
+                    "negative": 9.2
+                  },
+                  {
+                    "category": "Desenvolvimento Profissional",
+                    "positive": 68.1,
+                    "neutral": 22.4,
+                    "negative": 9.5
+                  },
+                  {
+                    "category": "Flexibilidade",
+                    "positive": 65.2,
+                    "neutral": 25.8,
+                    "negative": 9
+                  },
+                  {
+                    "category": "Liderança",
+                    "positive": 58.7,
+                    "neutral": 28.3,
+                    "negative": 13
+                  }
+                ],
+                "topCategories": [
+                  {
+                    "rank": 1,
+                    "category": "Trabalho em Equipe",
+                    "mentions": 425,
+                    "percentage": 100,
+                    "topics": [
+                      {
+                        "topic": "colaboração eficiente",
+                        "sentiment": "positive"
+                      },
+                      {
+                        "topic": "ambiente colaborativo",
+                        "sentiment": "positive"
+                      },
+                      {
+                        "topic": "suporte entre colegas",
+                        "sentiment": "positive"
+                      }
+                    ]
+                  },
+                  {
+                    "rank": 2,
+                    "category": "Desenvolvimento Profissional",
+                    "mentions": 312,
+                    "percentage": 73,
+                    "topics": [
+                      {
+                        "topic": "oportunidades de crescimento",
+                        "sentiment": "positive"
+                      },
+                      {
+                        "topic": "treinamentos relevantes",
+                        "sentiment": "positive"
+                      },
+                      {
+                        "topic": "mentoria",
+                        "sentiment": "positive"
+                      }
+                    ]
+                  },
+                  {
+                    "rank": 3,
+                    "category": "Flexibilidade",
+                    "mentions": 285,
+                    "percentage": 67,
+                    "topics": [
+                      {
+                        "topic": "horário flexível",
+                        "sentiment": "positive"
+                      },
+                      {
+                        "topic": "trabalho remoto",
+                        "sentiment": "positive"
+                      },
+                      {
+                        "topic": "autonomia",
+                        "sentiment": "positive"
+                      }
+                    ]
+                  }
+                ],
+                "wordCloud": [
+                  {
+                    "text": "equipe",
+                    "value": 425
+                  },
+                  {
+                    "text": "desenvolvimento",
+                    "value": 312
+                  },
+                  {
+                    "text": "flexibilidade",
+                    "value": 285
+                  },
+                  {
+                    "text": "colaboração",
+                    "value": 198
+                  },
+                  {
+                    "text": "crescimento",
+                    "value": 156
+                  },
+                  {
+                    "text": "oportunidades",
+                    "value": 134
+                  },
+                  {
+                    "text": "liderança",
+                    "value": 112
+                  },
+                  {
+                    "text": "autonomia",
+                    "value": 98
+                  },
+                  {
+                    "text": "reconhecimento",
+                    "value": 87
+                  },
+                  {
+                    "text": "cultura",
+                    "value": 76
+                  }
+                ]
+              },
               "type": "open-ended"
             },
             {
@@ -1161,130 +1745,132 @@
               "question": "O que poderia ser melhorado na empresa?",
               "icon": "TrendingUp",
               "summary": "As principais áreas de melhoria mencionadas são comunicação interna, processos burocráticos e gestão de carga de trabalho.\nFuncionários também mencionam necessidade de mais reconhecimento e melhorias em ferramentas e tecnologia.",
-              "sentimentData": [
-                {
-                  "category": "Comunicação Interna",
-                  "positive": 32.5,
-                  "neutral": 22.5,
-                  "negative": 45.0
-                },
-                {
-                  "category": "Carga de Trabalho",
-                  "positive": 18.2,
-                  "neutral": 29.8,
-                  "negative": 52.0
-                },
-                {
-                  "category": "Processos Burocráticos",
-                  "positive": 15.5,
-                  "neutral": 36.5,
-                  "negative": 48.0
-                }
-              ],
-              "topCategories": [
-                {
-                  "rank": 1,
-                  "category": "Comunicação Interna",
-                  "mentions": 387,
-                  "percentage": 100,
-                  "topics": [
-                    {
-                      "topic": "falta de transparência",
-                      "sentiment": "negative"
-                    },
-                    {
-                      "topic": "comunicação fragmentada",
-                      "sentiment": "negative"
-                    },
-                    {
-                      "topic": "necessidade de mais atualizações",
-                      "sentiment": "negative"
-                    }
-                  ]
-                },
-                {
-                  "rank": 2,
-                  "category": "Processos Burocráticos",
-                  "mentions": 298,
-                  "percentage": 77,
-                  "topics": [
-                    {
-                      "topic": "processos lentos",
-                      "sentiment": "negative"
-                    },
-                    {
-                      "topic": "muitas aprovações",
-                      "sentiment": "negative"
-                    },
-                    {
-                      "topic": "necessidade de simplificação",
-                      "sentiment": "negative"
-                    }
-                  ]
-                },
-                {
-                  "rank": 3,
-                  "category": "Carga de Trabalho",
-                  "mentions": 256,
-                  "percentage": 66,
-                  "topics": [
-                    {
-                      "topic": "sobrecarga",
-                      "sentiment": "negative"
-                    },
-                    {
-                      "topic": "prazos apertados",
-                      "sentiment": "negative"
-                    },
-                    {
-                      "topic": "necessidade de melhor distribuição",
-                      "sentiment": "negative"
-                    }
-                  ]
-                }
-              ],
-              "wordCloud": [
-                {
-                  "text": "comunicação",
-                  "value": 387
-                },
-                {
-                  "text": "processos",
-                  "value": 298
-                },
-                {
-                  "text": "carga",
-                  "value": 256
-                },
-                {
-                  "text": "trabalho",
-                  "value": 234
-                },
-                {
-                  "text": "burocráticos",
-                  "value": 198
-                },
-                {
-                  "text": "melhorias",
-                  "value": 176
-                },
-                {
-                  "text": "transparência",
-                  "value": 154
-                },
-                {
-                  "text": "simplificação",
-                  "value": 132
-                },
-                {
-                  "text": "reconhecimento",
-                  "value": 118
-                },
-                {
-                  "text": "ferramentas",
-                  "value": 98
-                }
-              ],
+              "data": {
+                "sentimentData": [
+                  {
+                    "category": "Comunicação Interna",
+                    "positive": 32.5,
+                    "neutral": 22.5,
+                    "negative": 45
+                  },
+                  {
+                    "category": "Carga de Trabalho",
+                    "positive": 18.2,
+                    "neutral": 29.8,
+                    "negative": 52
+                  },
+                  {
+                    "category": "Processos Burocráticos",
+                    "positive": 15.5,
+                    "neutral": 36.5,
+                    "negative": 48
+                  }
+                ],
+                "topCategories": [
+                  {
+                    "rank": 1,
+                    "category": "Comunicação Interna",
+                    "mentions": 387,
+                    "percentage": 100,
+                    "topics": [
+                      {
+                        "topic": "falta de transparência",
+                        "sentiment": "negative"
+                      },
+                      {
+                        "topic": "comunicação fragmentada",
+                        "sentiment": "negative"
+                      },
+                      {
+                        "topic": "necessidade de mais atualizações",
+                        "sentiment": "negative"
+                      }
+                    ]
+                  },
+                  {
+                    "rank": 2,
+                    "category": "Processos Burocráticos",
+                    "mentions": 298,
+                    "percentage": 77,
+                    "topics": [
+                      {
+                        "topic": "processos lentos",
+                        "sentiment": "negative"
+                      },
+                      {
+                        "topic": "muitas aprovações",
+                        "sentiment": "negative"
+                      },
+                      {
+                        "topic": "necessidade de simplificação",
+                        "sentiment": "negative"
+                      }
+                    ]
+                  },
+                  {
+                    "rank": 3,
+                    "category": "Carga de Trabalho",
+                    "mentions": 256,
+                    "percentage": 66,
+                    "topics": [
+                      {
+                        "topic": "sobrecarga",
+                        "sentiment": "negative"
+                      },
+                      {
+                        "topic": "prazos apertados",
+                        "sentiment": "negative"
+                      },
+                      {
+                        "topic": "necessidade de melhor distribuição",
+                        "sentiment": "negative"
+                      }
+                    ]
+                  }
+                ],
+                "wordCloud": [
+                  {
+                    "text": "comunicação",
+                    "value": 387
+                  },
+                  {
+                    "text": "processos",
+                    "value": 298
+                  },
+                  {
+                    "text": "carga",
+                    "value": 256
+                  },
+                  {
+                    "text": "trabalho",
+                    "value": 234
+                  },
+                  {
+                    "text": "burocráticos",
+                    "value": 198
+                  },
+                  {
+                    "text": "melhorias",
+                    "value": 176
+                  },
+                  {
+                    "text": "transparência",
+                    "value": 154
+                  },
+                  {
+                    "text": "simplificação",
+                    "value": 132
+                  },
+                  {
+                    "text": "reconhecimento",
+                    "value": 118
+                  },
+                  {
+                    "text": "ferramentas",
+                    "value": 98
+                  }
+                ]
+              },
               "type": "open-ended"
             },
             {
@@ -1293,130 +1879,132 @@
               "question": "Como você descreveria a cultura organizacional?",
               "icon": "Users",
               "summary": "A maioria dos funcionários descreve a cultura como colaborativa e inovadora.\nAlguns mencionam necessidade de mais transparência e agilidade.\nA cultura é vista como um ponto forte, mas há oportunidades de melhoria em comunicação e processos.",
-              "sentimentData": [
-                {
-                  "category": "Colaboração",
-                  "positive": 78.5,
-                  "neutral": 15.2,
-                  "negative": 6.3
-                },
-                {
-                  "category": "Inovação",
-                  "positive": 72.3,
-                  "neutral": 20.5,
-                  "negative": 7.2
-                },
-                {
-                  "category": "Transparência",
-                  "positive": 45.2,
-                  "neutral": 32.8,
-                  "negative": 22.0
-                }
-              ],
-              "topCategories": [
-                {
-                  "rank": 1,
-                  "category": "Colaborativa",
-                  "mentions": 412,
-                  "percentage": 100,
-                  "topics": [
-                    {
-                      "topic": "trabalho em equipe",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "apoio mútuo",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "ambiente acolhedor",
-                      "sentiment": "positive"
-                    }
-                  ]
-                },
-                {
-                  "rank": 2,
-                  "category": "Inovadora",
-                  "mentions": 298,
-                  "percentage": 72,
-                  "topics": [
-                    {
-                      "topic": "aberta a novas ideias",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "encoraja criatividade",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "tecnologia moderna",
-                      "sentiment": "positive"
-                    }
-                  ]
-                },
-                {
-                  "rank": 3,
-                  "category": "Transparência",
-                  "mentions": 234,
-                  "percentage": 57,
-                  "topics": [
-                    {
-                      "topic": "comunicação clara",
-                      "sentiment": "positive"
-                    },
-                    {
-                      "topic": "falta de transparência em decisões",
-                      "sentiment": "negative"
-                    },
-                    {
-                      "topic": "necessidade de mais abertura",
-                      "sentiment": "negative"
-                    }
-                  ]
-                }
-              ],
-              "wordCloud": [
-                {
-                  "text": "colaborativa",
-                  "value": 412
-                },
-                {
-                  "text": "inovadora",
-                  "value": 298
-                },
-                {
-                  "text": "transparência",
-                  "value": 234
-                },
-                {
-                  "text": "dinâmica",
-                  "value": 198
-                },
-                {
-                  "text": "acolhedora",
-                  "value": 176
-                },
-                {
-                  "text": "criativa",
-                  "value": 154
-                },
-                {
-                  "text": "moderna",
-                  "value": 132
-                },
-                {
-                  "text": "ágil",
-                  "value": 118
-                },
-                {
-                  "text": "inclusiva",
-                  "value": 98
-                },
-                {
-                  "text": "flexível",
-                  "value": 87
-                }
-              ],
+              "data": {
+                "sentimentData": [
+                  {
+                    "category": "Colaboração",
+                    "positive": 78.5,
+                    "neutral": 15.2,
+                    "negative": 6.3
+                  },
+                  {
+                    "category": "Inovação",
+                    "positive": 72.3,
+                    "neutral": 20.5,
+                    "negative": 7.2
+                  },
+                  {
+                    "category": "Transparência",
+                    "positive": 45.2,
+                    "neutral": 32.8,
+                    "negative": 22
+                  }
+                ],
+                "topCategories": [
+                  {
+                    "rank": 1,
+                    "category": "Colaborativa",
+                    "mentions": 412,
+                    "percentage": 100,
+                    "topics": [
+                      {
+                        "topic": "trabalho em equipe",
+                        "sentiment": "positive"
+                      },
+                      {
+                        "topic": "apoio mútuo",
+                        "sentiment": "positive"
+                      },
+                      {
+                        "topic": "ambiente acolhedor",
+                        "sentiment": "positive"
+                      }
+                    ]
+                  },
+                  {
+                    "rank": 2,
+                    "category": "Inovadora",
+                    "mentions": 298,
+                    "percentage": 72,
+                    "topics": [
+                      {
+                        "topic": "aberta a novas ideias",
+                        "sentiment": "positive"
+                      },
+                      {
+                        "topic": "encoraja criatividade",
+                        "sentiment": "positive"
+                      },
+                      {
+                        "topic": "tecnologia moderna",
+                        "sentiment": "positive"
+                      }
+                    ]
+                  },
+                  {
+                    "rank": 3,
+                    "category": "Transparência",
+                    "mentions": 234,
+                    "percentage": 57,
+                    "topics": [
+                      {
+                        "topic": "comunicação clara",
+                        "sentiment": "positive"
+                      },
+                      {
+                        "topic": "falta de transparência em decisões",
+                        "sentiment": "negative"
+                      },
+                      {
+                        "topic": "necessidade de mais abertura",
+                        "sentiment": "negative"
+                      }
+                    ]
+                  }
+                ],
+                "wordCloud": [
+                  {
+                    "text": "colaborativa",
+                    "value": 412
+                  },
+                  {
+                    "text": "inovadora",
+                    "value": 298
+                  },
+                  {
+                    "text": "transparência",
+                    "value": 234
+                  },
+                  {
+                    "text": "dinâmica",
+                    "value": 198
+                  },
+                  {
+                    "text": "acolhedora",
+                    "value": 176
+                  },
+                  {
+                    "text": "criativa",
+                    "value": 154
+                  },
+                  {
+                    "text": "moderna",
+                    "value": 132
+                  },
+                  {
+                    "text": "ágil",
+                    "value": 118
+                  },
+                  {
+                    "text": "inclusiva",
+                    "value": 98
+                  },
+                  {
+                    "text": "flexível",
+                    "value": 87
+                  }
+                ]
+              },
               "type": "open-ended"
             }
           ],
@@ -1444,180 +2032,160 @@
             "id": "culture-values",
             "index": 0,
             "name": "Valores Organizacionais",
-            "icon": "Star"
-          },
-          {
-            "id": "culture-communication",
-            "index": 1,
-            "name": "Comunicação Interna",
-            "icon": "MessageSquare"
-          },
-          {
-            "id": "culture-development",
-            "index": 2,
-            "name": "Desenvolvimento Profissional",
-            "icon": "TrendingUp"
-          }
-        ],
-        "data": {
-          "renderSchema": {
-            "subsections": [
+            "icon": "Star",
+            "components": [
               {
-                "id": "culture-values",
-                "components": [
-                  {
-                    "type": "grid-container",
-                    "className": "grid grid-cols-1 md:grid-cols-2 gap-6",
-                    "index": 0,
-                    "components": [
-                      {
-                        "type": "card",
-                        "index": 0,
-                        "title": "Valores Organizacionais",
-                        "text": "Os valores organizacionais mais reconhecidos pelos funcionários são colaboração, inovação e integridade.\nA maioria dos funcionários (78%) identifica colaboração como um valor forte da empresa.",
-                        "styleVariant": "default"
-                      },
-                      {
-                        "type": "card",
-                        "index": 1,
-                        "title": "Distribuição por Valor",
-                        "styleVariant": "flex-column",
-                        "textStyleVariant": "with-charts",
-                        "components": [
-                          {
-                            "type": "sentimentStackedChart",
-                            "index": 0,
-                            "dataPath": "sectionData.values.sentiment",
-                            "config": {
-                              "yAxisDataKey": "value"
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "culture-communication",
+                "type": "grid-container",
+                "className": "grid grid-cols-1 md:grid-cols-2 gap-6",
+                "index": 0,
                 "components": [
                   {
                     "type": "card",
                     "index": 0,
-                    "useDescription": true,
-                    "text": "A comunicação interna é uma área que necessita melhorias significativas.\n45% dos funcionários expressam sentimentos negativos sobre a comunicação, enquanto apenas 32.5% são positivos.",
-                    "styleVariant": "default",
-                    "textStyleVariant": "with-description",
+                    "title": "Valores Organizacionais",
+                    "text": "Os valores organizacionais mais reconhecidos pelos funcionários são colaboração, inovação e integridade.\nA maioria dos funcionários (78%) identifica colaboração como um valor forte da empresa.",
+                    "cardStyleVariant": "default"
+                  },
+                  {
+                    "type": "card",
+                    "index": 1,
+                    "title": "Distribuição por Valor",
+                    "cardStyleVariant": "flex-column",
+                    "cardContentVariant": "with-charts",
                     "components": [
                       {
-                        "type": "sentimentDivergentChart",
+                        "type": "sentimentStackedChart",
                         "index": 0,
-                        "dataPath": "sectionData.communication.data",
+                        "dataPath": "sectionData.sentimentStackedChart",
                         "config": {
-                          "yAxisDataKey": "aspect",
-                          "showLegend": true
+                          "yAxisDataKey": "value"
                         }
                       }
                     ]
                   }
                 ]
-              },
+              }
+            ]
+          },
+          {
+            "id": "culture-communication",
+            "index": 1,
+            "name": "Comunicação Interna",
+            "icon": "MessageSquare",
+            "components": [
               {
-                "id": "culture-development",
+                "type": "card",
+                "index": 0,
+                "useDescription": true,
+                "text": "A comunicação interna é uma área que necessita melhorias significativas.\n45% dos funcionários expressam sentimentos negativos sobre a comunicação, enquanto apenas 32.5% são positivos.",
+                "cardStyleVariant": "default",
+                "cardContentVariant": "with-description",
                 "components": [
                   {
-                    "type": "container",
+                    "type": "sentimentDivergentChart",
                     "index": 0,
+                    "dataPath": "sectionData.sentimentDivergentChartCommunication",
+                    "config": {
+                      "yAxisDataKey": "aspect"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "culture-development",
+            "index": 2,
+            "name": "Desenvolvimento Profissional",
+            "icon": "TrendingUp",
+            "components": [
+              {
+                "type": "grid-container",
+                "index": 0,
+                "components": [
+                  {
+                    "type": "card",
+                    "index": 0,
+                    "title": "Desenvolvimento Profissional",
+                    "text": "Os programas de desenvolvimento profissional são bem avaliados, com 68% de satisfação positiva.\nFuncionários valorizam especialmente treinamentos técnicos, mentoria e oportunidades de crescimento.",
+                    "cardStyleVariant": "border-left"
+                  },
+                  {
+                    "type": "card",
+                    "index": 1,
+                    "title": "Satisfação com Programas",
+                    "cardStyleVariant": "flex-column",
+                    "cardContentVariant": "with-charts",
                     "components": [
                       {
-                        "type": "card",
+                        "type": "barChart",
                         "index": 0,
-                        "title": "Desenvolvimento Profissional",
-                        "text": "Os programas de desenvolvimento profissional são bem avaliados, com 68% de satisfação positiva.\nFuncionários valorizam especialmente treinamentos técnicos, mentoria e oportunidades de crescimento.",
-                        "styleVariant": "border-left"
-                      },
-                      {
-                        "type": "card",
-                        "index": 1,
-                        "title": "Satisfação com Programas",
-                        "styleVariant": "flex-column",
-                        "textStyleVariant": "with-charts",
-                        "components": [
-                          {
-                            "type": "barChart",
-                            "index": 0,
-                            "dataPath": "sectionData.development.programs",
-                            "config": {
-                              "dataKey": "satisfaction",
-                              "yAxisDataKey": "program",
-                              "sortData": true,
-                              "sortDirection": "desc"
-                            }
-                          }
-                        ]
+                        "dataPath": "sectionData.development.programs",
+                        "config": {
+                          "dataKey": "satisfaction",
+                          "yAxisDataKey": "program"
+                        }
                       }
                     ]
                   }
                 ]
               }
             ]
-          },
-          "values": {
-            "sentiment": [
-              {
-                "value": "Colaboração",
-                "positive": 78.5,
-                "neutral": 15.2,
-                "negative": 6.3
-              },
-              {
-                "value": "Inovação",
-                "positive": 72.3,
-                "neutral": 20.5,
-                "negative": 7.2
-              },
-              {
-                "value": "Integridade",
-                "positive": 68.5,
-                "neutral": 25.0,
-                "negative": 6.5
-              },
-              {
-                "value": "Transparência",
-                "positive": 45.2,
-                "neutral": 32.8,
-                "negative": 22.0
-              }
-            ]
-          },
-          "communication": {
-            "data": [
-              {
-                "aspect": "Clareza das Mensagens",
-                "positive": 38.5,
-                "neutral": 25.0,
-                "negative": 36.5
-              },
-              {
-                "aspect": "Frequência de Comunicação",
-                "positive": 28.2,
-                "neutral": 22.8,
-                "negative": 49.0
-              },
-              {
-                "aspect": "Canais de Comunicação",
-                "positive": 42.5,
-                "neutral": 28.5,
-                "negative": 29.0
-              },
-              {
-                "aspect": "Transparência",
-                "positive": 32.5,
-                "neutral": 22.5,
-                "negative": 45.0
-              }
-            ]
-          },
+          }
+        ],
+        "data": {
+          "sentimentStackedChart": [
+            {
+              "value": "Colaboração",
+              "positive": 78.5,
+              "neutral": 15.2,
+              "negative": 6.3
+            },
+            {
+              "value": "Inovação",
+              "positive": 72.3,
+              "neutral": 20.5,
+              "negative": 7.2
+            },
+            {
+              "value": "Integridade",
+              "positive": 68.5,
+              "neutral": 25,
+              "negative": 6.5
+            },
+            {
+              "value": "Transparência",
+              "positive": 45.2,
+              "neutral": 32.8,
+              "negative": 22
+            }
+          ],
+          "sentimentDivergentChartCommunication": [
+            {
+              "aspect": "Clareza das Mensagens",
+              "positive": 38.5,
+              "neutral": 25,
+              "negative": 36.5
+            },
+            {
+              "aspect": "Frequência de Comunicação",
+              "positive": 28.2,
+              "neutral": 22.8,
+              "negative": 49
+            },
+            {
+              "aspect": "Canais de Comunicação",
+              "positive": 42.5,
+              "neutral": 28.5,
+              "negative": 29
+            },
+            {
+              "aspect": "Transparência",
+              "positive": 32.5,
+              "neutral": 22.5,
+              "negative": 45
+            }
+          ],
           "development": {
             "programs": [
               {
@@ -1627,7 +2195,7 @@
               },
               {
                 "program": "Programa de Mentoria",
-                "satisfaction": 75.0,
+                "satisfaction": 75,
                 "count": 638
               },
               {
@@ -1637,7 +2205,7 @@
               },
               {
                 "program": "Desenvolvimento de Liderança",
-                "satisfaction": 62.0,
+                "satisfaction": 62,
                 "count": 527
               },
               {
@@ -1650,8 +2218,6 @@
         }
       }
     ],
-    "components": {}
-  },
   "uiTexts": {
     "filterPanel": {
       "all": "Todas",
@@ -1666,7 +2232,6 @@
       "exportFullReport": "Exportar Relatório Completo",
       "selectSpecificSections": "Selecionar Seções Específicas",
       "exportAsPDF": "Exportar como PDF",
-      "exportAsPPT": "Exportar como PPT",
       "selectAtLeastOneSection": "Selecione pelo menos uma seção"
     },
     "common": {

@@ -13,7 +13,7 @@ import { getAttributesFromData } from "@/services/dataResolver";
  * Programmatically built from data
  */
 function getAllQuestions(data) {
-  const responsesSection = data?.sectionsConfig?.sections?.find(
+  const responsesSection = data?.sections?.find(
     (s) => s.id === "responses"
   );
 
@@ -32,7 +32,7 @@ function getAllQuestions(data) {
  * Get display number based on real questionId (1-based index in sorted list)
  */
 function getDisplayNumber(questionId, data) {
-  const responsesSection = data?.sectionsConfig?.sections?.find(
+  const responsesSection = data?.sections?.find(
     (s) => s.id === "responses"
   );
 
@@ -49,7 +49,7 @@ function getDisplayNumber(questionId, data) {
  * Get all attribute subsections for navigation (sorted by index)
  */
 function getAllAttributes(data) {
-  const attributesSection = data?.sectionsConfig?.sections?.find(
+  const attributesSection = data?.sections?.find(
     (s) => s.id === "attributes"
   );
 
@@ -69,12 +69,12 @@ function getAllAttributes(data) {
  * All logic is programmatic - no hardcoded values
  */
 function buildOrderedSubsections(data) {
-  if (!data?.sectionsConfig?.sections) return [];
+  if (!data?.sections) return [];
 
   const subsections = [];
 
   // Process sections in order
-  data.sectionsConfig.sections
+  data.sections
     .filter((section) => section.id !== "export") // Export é página do app; usa sections/subsections e uiTexts, não é seção de conteúdo
     .sort((a, b) => (a.index || 0) - (b.index || 0))
     .forEach((section) => {
@@ -149,9 +149,9 @@ function getSectionTitleFromData(sectionId, data) {
   const baseSectionId =
     typeof sectionId === "string" ? sectionId.split("-")[0] : sectionId;
 
-  // Priority 1: Try to get from sectionsConfig.sections (most reliable)
-  if (data?.sectionsConfig?.sections) {
-    const section = data.sectionsConfig.sections.find(
+  // Priority 1: Try to get from sections (most reliable)
+  if (data?.sections) {
+    const section = data.sections.find(
       (s) => s.id === baseSectionId
     );
     if (section?.name) {
@@ -167,10 +167,10 @@ function getSectionTitleFromData(sectionId, data) {
  * Get icon for a section or subsection (programmatic)
  */
 function getSectionIconFromConfig(sectionId, data) {
-  if (!data?.sectionsConfig?.sections) return FileText;
+  if (!data?.sections) return FileText;
 
   // First try to find exact match in sectionsConfig
-  for (const section of data.sectionsConfig.sections) {
+  for (const section of data.sections) {
     // Check if it's the main section
     if (section.id === sectionId) {
       return getIcon(section.icon);
@@ -193,7 +193,7 @@ function getSectionIconFromConfig(sectionId, data) {
     sectionId.startsWith("attributes-")
   ) {
     const attributeId = sectionId.replace("attributes-", "");
-    const attributesSection = data?.sectionsConfig?.sections?.find(
+    const attributesSection = data?.sections?.find(
       (s) => s.id === "attributes"
     );
     const attribute = attributesSection?.data?.attributes?.find(
@@ -215,7 +215,7 @@ function getSectionIconFromConfig(sectionId, data) {
     sectionId.startsWith("responses-")
   ) {
     const questionId = parseInt(sectionId.replace("responses-", ""), 10);
-    const responsesSection = data?.sectionsConfig?.sections?.find(
+    const responsesSection = data?.sections?.find(
       (s) => s.id === "responses"
     );
     const allQuestions = responsesSection?.data?.questions || [];
@@ -237,7 +237,7 @@ function getSectionIconFromConfig(sectionId, data) {
  * Helper function to get first subsection (shared logic)
  */
 function getFirstSubsectionHelper(sectionId, data) {
-  if (!data?.sectionsConfig?.sections) {
+  if (!data?.sections) {
     // Fallback for known sections (backward compatibility)
     const fallbacks = {
       executive: "executive-summary",
@@ -246,7 +246,7 @@ function getFirstSubsectionHelper(sectionId, data) {
     return fallbacks[sectionId] || null;
   }
 
-  const section = data.sectionsConfig.sections.find((s) => s.id === sectionId);
+  const section = data.sections.find((s) => s.id === sectionId);
   if (!section) return null;
 
   // Priority 1: Dynamic subsections (attributes, responses) - these should always come first
@@ -284,7 +284,7 @@ function getFirstSubsectionHelper(sectionId, data) {
 function normalizeSection(currentSection, data) {
   if (!currentSection) return currentSection;
   
-  if (!data?.sectionsConfig?.sections) {
+  if (!data?.sections) {
     // Fallback for known sections (backward compatibility)
     const fallbacks = {
       executive: "executive-summary",
@@ -337,7 +337,7 @@ function normalizeSection(currentSection, data) {
   }
 
   // Check if already a valid fixed subsection
-  for (const section of data.sectionsConfig.sections) {
+  for (const section of data.sections) {
     if (section.subsections?.some((sub) => sub.id === currentSection)) {
       return currentSection;
     }
@@ -351,7 +351,7 @@ function normalizeSection(currentSection, data) {
   }
 
   // If it's a section ID, normalize to first subsection
-  const section = data.sectionsConfig.sections.find(
+  const section = data.sections.find(
     (s) => s.id === currentSection
   );
   if (section) {
@@ -447,7 +447,7 @@ function getSubsectionTitle(sectionId, data, maxLength = 40) {
     typeof sectionId === "string" ? sectionId.split("-")[0] : sectionId;
 
   // Find the section config
-  const sectionConfig = data?.sectionsConfig?.sections?.find(
+  const sectionConfig = data?.sections?.find(
     (s) => s.id === baseSectionId
   );
 
@@ -476,7 +476,7 @@ function getSubsectionTitle(sectionId, data, maxLength = 40) {
     !sectionId.includes("template")
   ) {
     const attributeId = sectionId.replace("attributes-", "");
-    const attributesSection = data?.sectionsConfig?.sections?.find(
+    const attributesSection = data?.sections?.find(
       (s) => s.id === "attributes"
     );
     const attribute = attributesSection?.data?.attributes?.find(

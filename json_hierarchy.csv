@@ -670,7 +670,7 @@ sectionsConfig.sections[2].data.config,config,object,,5
 sectionsConfig.sections[2].data.config.defaultIcon,defaultIcon,string,Building,6
 sectionsConfig.sections[3],sections[3],object,,3
 sectionsConfig.sections[3].id,id,string,responses,4
-sectionsConfig.sections[3].index,index,number,3,4
+sectionsConfig.sections[3].index,index,number,4,4
 sectionsConfig.sections[3].name,name,string,Análise por Questão,4
 sectionsConfig.sections[3].icon,icon,string,MessageSquare,4
 sectionsConfig.sections[3].hasSubsections,hasSubsections,boolean,false,4
@@ -1141,7 +1141,7 @@ sectionsConfig.sections[3].data.config.npsCategories.labels.neutrals,neutrals,st
 sectionsConfig.sections[3].data.config.npsCategories.labels.promoters,promoters,string,Promotores,8
 sectionsConfig.sections[4],sections[4],object,,3
 sectionsConfig.sections[4].id,id,string,culture,4
-sectionsConfig.sections[4].index,index,number,4,4
+sectionsConfig.sections[4].index,index,number,3,4
 sectionsConfig.sections[4].name,name,string,Análise de Cultura Organizacional,4
 sectionsConfig.sections[4].icon,icon,string,Users,4
 sectionsConfig.sections[4].subsections,subsections,array,,4

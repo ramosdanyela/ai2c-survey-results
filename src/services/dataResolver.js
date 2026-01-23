@@ -8,7 +8,7 @@
  */
 /**
  * Get attributes from data dynamically
- * Looks for attributes in sectionsConfig.sections[id="attributes"].data.attributes
+ * Looks for attributes in sections[id="attributes"].data.attributes
  * or in data.attributeDeepDive.attributes (legacy support)
  * 
  * @param {Object} data - The survey data object
@@ -17,9 +17,9 @@
 export function getAttributesFromData(data) {
   if (!data) return [];
   
-  // Priority 1: Check sectionsConfig.sections[id="attributes"].data.attributes (new structure)
-  if (data?.sectionsConfig?.sections) {
-    const attributesSection = data.sectionsConfig.sections.find(
+  // Priority 1: Check sections[id="attributes"].data.attributes (new structure)
+  if (data?.sections) {
+    const attributesSection = data.sections.find(
       (section) => section.id === "attributes"
     );
     
@@ -38,7 +38,7 @@ export function getAttributesFromData(data) {
 
 /**
  * Get questions from responseDetails dynamically
- * Looks for questions in sectionsConfig.sections[id="responses"].data.questions
+ * Looks for questions in sections[id="responses"].data.questions
  * or in data.responseDetails.questions (legacy support)
  * 
  * @param {Object} data - The survey data object
@@ -47,9 +47,9 @@ export function getAttributesFromData(data) {
 export function getQuestionsFromData(data) {
   if (!data) return [];
   
-  // Priority 1: Check sectionsConfig.sections[id="responses"].data.questions (new structure)
-  if (data?.sectionsConfig?.sections) {
-    const responsesSection = data.sectionsConfig.sections.find(
+  // Priority 1: Check sections[id="responses"].data.questions (new structure)
+  if (data?.sections) {
+    const responsesSection = data.sections.find(
       (section) => section.id === "responses"
     );
     
@@ -172,7 +172,10 @@ export function resolveText(path, data) {
 export function resolveTemplate(template, data) {
   if (!template || typeof template !== "string") return template;
 
-  return template.replace(/\{\{([^}]+)\}\}/g, (match, path) => {
+  // Check if the entire template is just a single template (e.g., "{{sectionData.department.summary}}")
+  const isPureTemplate = template.trim().match(/^\{\{[^}]+\}\}$/);
+  
+  const resolved = template.replace(/\{\{([^}]+)\}\}/g, (match, path) => {
     const trimmedPath = path.trim();
 
     // Se for path de uiTexts, usa resolveText
@@ -198,4 +201,12 @@ export function resolveTemplate(template, data) {
     const value = resolveDataPath(data, trimmedPath);
     return value !== null && value !== undefined ? String(value) : match;
   });
+
+  // If the template was a pure template (only {{...}}) and it wasn't resolved (still contains {{}}),
+  // return empty string instead of the template literal
+  if (isPureTemplate && resolved.includes("{{")) {
+    return "";
+  }
+
+  return resolved;
 }

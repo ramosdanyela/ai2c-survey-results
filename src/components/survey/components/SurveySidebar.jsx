@@ -36,10 +36,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-// Helper: monta itens do menu a partir de sectionsConfig e injeta Export (nome/ícone de uiTexts; sempre no fim)
-function getMenuItems(sectionsConfig, uiTexts) {
-  const sections = sectionsConfig?.sections ?? [];
-  const items = sections.map((section) => ({
+// Helper: monta itens do menu a partir de sections e injeta Export (nome/ícone de uiTexts; sempre no fim)
+function getMenuItems(sections, uiTexts) {
+  const sectionsList = sections ?? [];
+  // Ordena seções por index antes de mapear
+  const sortedSections = [...sectionsList].sort(
+    (a, b) => (a.index ?? 999) - (b.index ?? 999)
+  );
+  const items = sortedSections.map((section) => ({
     ...section,
     icon: getIcon(section.icon),
   }));
@@ -149,11 +153,7 @@ function getDynamicSubsections(section, data) {
     filtered = items.filter((item) => item[filterKey]);
   }
 
-  // Apply additional filters (ex: hiddenIds for questions)
-  if (config.hiddenIdsPath) {
-    const hiddenIds = resolveDataPath(data, config.hiddenIdsPath) || [];
-    filtered = filtered.filter((item) => !hiddenIds.includes(item.id));
-  }
+  // Não aplicar filtros que ocultam questões - todas as questões devem ser exibidas
 
   // Sort
   filtered.sort((a, b) => {
@@ -175,7 +175,7 @@ function getDynamicSubsections(section, data) {
  * Helper function to get the first subsection of a section
  */
 function getFirstSubsectionHelper(sectionId, data) {
-  if (!data?.sectionsConfig?.sections) {
+  if (!data?.sections) {
     // Fallback for known sections (backward compatibility)
     const fallbacks = {
       executive: "executive-summary",
@@ -184,7 +184,7 @@ function getFirstSubsectionHelper(sectionId, data) {
     return fallbacks[sectionId] || null;
   }
 
-  const section = data.sectionsConfig.sections.find((s) => s.id === sectionId);
+  const section = data.sections.find((s) => s.id === sectionId);
   if (!section) return null;
 
   // attributes: sempre dinâmico a partir de data
@@ -230,18 +230,18 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
   // Get uiTexts from data (JSON) - must come from hook
   const currentUiTexts = data?.uiTexts;
   
-  // Get sectionsConfig from data (JSON) - must come from hook
-  const sectionsConfig = data?.sectionsConfig;
+  // Get sections from data (JSON) - must come from hook
+  const sections = data?.sections;
   
-  // Get menu items from sectionsConfig + Export (injetado; nome em uiTexts.export.title)
+  // Get menu items from sections + Export (injetado; nome em uiTexts.export.title)
   const menuItems = useMemo(
-    () => getMenuItems(sectionsConfig, currentUiTexts),
-    [sectionsConfig, currentUiTexts]
+    () => getMenuItems(sections, currentUiTexts),
+    [sections, currentUiTexts]
   );
 
   // State to control which sections are expanded - initialize dynamically
   const [expandedSections, setExpandedSections] = useState(() => {
-    if (!data?.sectionsConfig?.sections) {
+    if (!data?.sections) {
       // Fallback for known sections (backward compatibility)
       return {
         executive: true,
@@ -252,7 +252,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
     }
 
     const initialState = {};
-    data.sectionsConfig.sections.forEach((section) => {
+    data.sections.forEach((section) => {
       initialState[section.id] = section.defaultExpanded ?? true;
     });
 
@@ -261,10 +261,10 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
 
   // Update expanded sections when data changes (for new sections added dynamically)
   useEffect(() => {
-    if (data?.sectionsConfig?.sections) {
+    if (data?.sections) {
       setExpandedSections((prev) => {
         const updated = { ...prev };
-        data.sectionsConfig.sections.forEach((section) => {
+        data.sections.forEach((section) => {
           if (!(section.id in updated)) {
             updated[section.id] = section.defaultExpanded ?? true;
           }
@@ -272,11 +272,11 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
         return updated;
       });
     }
-  }, [data?.sectionsConfig?.sections]);
+  }, [data?.sections]);
 
   // Get all questions for "responses" section (sorted by index)
   const allQuestions = useMemo(() => {
-    const responsesSection = data?.sectionsConfig?.sections?.find(
+    const responsesSection = data?.sections?.find(
       (s) => s.id === "responses"
     );
     const questions = responsesSection?.data?.questions || [];
@@ -484,7 +484,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         {currentSurveyInfo?.questions ||
                           (() => {
                             const responsesSection =
-                              data?.sectionsConfig?.sections?.find(
+                              data?.sections?.find(
                                 (s) => s.id === "responses"
                               );
                             const questions =
@@ -796,7 +796,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
               const isExpanded = expandedSections[item.id];
               // Get subsections from data (dynamic) - must come from hook
               const sectionConfig =
-                data?.sectionsConfig?.sections?.find((s) => s.id === item.id);
+                data?.sections?.find((s) => s.id === item.id);
 
               // Try subsections from config first, then from renderSchema
               let subsections = sectionConfig?.subsections

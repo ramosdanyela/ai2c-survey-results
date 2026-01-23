@@ -29,9 +29,9 @@
 // const minhaSecao = getSectionById("minhaSecaoCustomizada");
 // const sectionData = minhaSecao?.data;
 //
-// // ✅ Acessar sectionsConfig diretamente
+// // ✅ Acessar sections diretamente
 // const { data } = useSurveyData();
-// const sections = data?.sectionsConfig?.sections || [];
+// const sections = data?.sections || [];
 // const minhaSecao = sections.find(s => s.id === "minhaSecao");
 //
 // ============================================================
@@ -60,7 +60,7 @@ export const SURVEY_DATA_QUERY_KEY = ["surveyData"];
  * @property {Error|null} error - Objeto de erro (se houver)
  * @property {boolean} isSuccess - Se carregou com sucesso
  * @property {Function} refetch - Função para refetch manual
- * @property {Function} getSectionById - Busca seção por ID no sectionsConfig (genérico)
+ * @property {Function} getSectionById - Busca seção por ID no sections (genérico)
  * @property {Function} resolvePath - Resolve caminho de dados dinamicamente (genérico)
  *
  * @example
@@ -76,7 +76,7 @@ export const SURVEY_DATA_QUERY_KEY = ["surveyData"];
  * const question = resolvePath("responseDetails.questions[0]");
  *
  * @example
- * // Exemplo 3: Buscar seção no sectionsConfig
+ * // Exemplo 3: Buscar seção no sections
  * const { getSectionById } = useSurveyData();
  * const secao = getSectionById("executive");
  * const sectionData = secao?.data;
@@ -92,13 +92,13 @@ export const useSurveyData = () => {
       retryDelay: 1000, // 1 segundo entre tentativas
     });
 
-  // Função genérica para buscar seção por ID no sectionsConfig
+  // Função genérica para buscar seção por ID no sections
   // Funciona com qualquer ID, não assume nomes específicos
   const getSectionById = useMemo(() => {
     return (sectionId) => {
-      if (!data?.sectionsConfig?.sections || !sectionId) return null;
+      if (!data?.sections || !sectionId) return null;
       return (
-        data.sectionsConfig.sections.find(
+        data.sections.find(
           (section) => section.id === sectionId
         ) || null
       );
@@ -126,7 +126,7 @@ export const useSurveyData = () => {
     // Função para refetch manual
     refetch,
     // Funções genéricas - funcionam com qualquer estrutura
-    getSectionById, // Busca seção por ID no sectionsConfig
+    getSectionById, // Busca seção por ID no sections
     resolvePath, // Resolve caminhos dinâmicos (ex: "secao.subsecao.dados[0]")
   };
 };

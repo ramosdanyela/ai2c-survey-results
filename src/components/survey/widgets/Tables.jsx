@@ -84,7 +84,7 @@ function useTableTexts() {
 // 1. DISTRIBUTION TABLE
 // ============================================================
 // Used in: AttributeDeepDive - Distribution
-export function DistributionTable({ data, attributeName }) {
+export function DistributionTable({ data }) {
   const texts = useTableTexts();
   return (
     <Table>
@@ -164,13 +164,13 @@ export function SentimentTable({ data }) {
 // 3. NPS DISTRIBUTION TABLE
 // ============================================================
 // Used in: AttributeDeepDive - NPS Distribution
-export function NPSDistributionTable({ data, attributeName }) {
+export function NPSDistributionTable({ data, categoryName }) {
   const texts = useTableTexts();
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>{attributeName}</TableHead>
+          <TableHead>{categoryName}</TableHead>
           <TableHead className="text-right">
             {texts.attributeDeepDive.promoters}
           </TableHead>
@@ -200,13 +200,13 @@ export function NPSDistributionTable({ data, attributeName }) {
 // 4. NPS TABLE
 // ============================================================
 // Used in: AttributeDeepDive - NPS
-export function NPSTable({ data, attributeName }) {
+export function NPSTable({ data, categoryName }) {
   const texts = useTableTexts();
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>{attributeName}</TableHead>
+          <TableHead>{categoryName}</TableHead>
           <TableHead className="text-right">
             {texts.attributeDeepDive.nps}
           </TableHead>
@@ -372,7 +372,6 @@ export function NegativeCategoriesTable({ data }) {
 // Used in: ExecutiveReport - Recommendations
 export function RecommendationsTable({
   recommendations,
-  severityLabels,
   severityColors,
   expandedRecs,
   onToggleRec,
@@ -422,8 +421,8 @@ export function RecommendationsTable({
                   {rec.recommendation}
                 </TableCell>
                 <TableCell className="text-center py-2">
-                  <Badge className={severityColors[rec.severity]}>
-                    {severityLabels[rec.severity]}
+                  <Badge className={severityColors[rec.severity] || severityColors.medium}>
+                    {rec.severity}
                   </Badge>
                 </TableCell>
                 <TableCell className="p-0 py-2">

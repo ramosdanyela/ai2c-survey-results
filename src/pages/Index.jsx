@@ -6,11 +6,11 @@ import { useSurveyData } from "@/hooks/useSurveyData";
  * Helper function to get first subsection of a section
  */
 function getFirstSubsectionHelper(sectionId, data) {
-  if (!data?.sectionsConfig?.sections) {
+  if (!data?.sections) {
     return null;
   }
 
-  const section = data.sectionsConfig.sections.find((s) => s.id === sectionId);
+  const section = data.sections.find((s) => s.id === sectionId);
   if (!section) return null;
 
   // Priority 1: Subsections from config
@@ -55,14 +55,14 @@ function getFirstSubsectionHelper(sectionId, data) {
  */
 function getInitialSection(data) {
   if (
-    !data?.sectionsConfig?.sections ||
-    data.sectionsConfig.sections.length === 0
+    !data?.sections ||
+    data.sections.length === 0
   ) {
     return null;
   }
 
   // Get first section (sorted by index)
-  const sortedSections = [...data.sectionsConfig.sections].sort(
+  const sortedSections = [...data.sections].sort(
     (a, b) => (a.index ?? 999) - (b.index ?? 999)
   );
   const firstSection = sortedSections[0];

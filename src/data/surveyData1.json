@@ -39,7 +39,7 @@
                     "index": 0,
                     "title": "{{uiTexts.executiveReport.aboutStudy}}",
                     "text": "{{sectionData.summary.aboutStudy}}",
-                    "styleVariant": "default"
+                    "cardStyleVariant": "default"
                   },
                   {
                     "type": "container",
@@ -50,14 +50,14 @@
                         "index": 0,
                         "title": "{{uiTexts.executiveReport.mainFindings}}",
                         "text": "{{sectionData.summary.mainFindings}}",
-                        "styleVariant": "highlight"
+                        "cardStyleVariant": "highlight"
                       },
                       {
                         "type": "card",
                         "index": 1,
                         "title": "{{uiTexts.executiveReport.conclusions}}",
                         "text": "{{sectionData.summary.conclusions}}",
-                        "styleVariant": "border-left"
+                        "cardStyleVariant": "border-left"
                       }
                     ]
                   }
@@ -74,7 +74,7 @@
                     "index": 0,
                     "title": "",
                     "text": "",
-                    "styleVariant": "overflow-hidden",
+                    "cardStyleVariant": "overflow-hidden",
                     "components": [
                       {
                         "type": "recommendationsTable",
@@ -354,8 +354,8 @@
                     "index": 0,
                     "useDescription": true,
                     "text": "{{sectionData.sentimentAnalysis.description}}",
-                    "styleVariant": "default",
-                    "textStyleVariant": "with-description",
+                    "cardStyleVariant": "default",
+                    "cardContentVariant": "with-description",
                     "components": [
                       {
                         "type": "sentimentDivergentChart",
@@ -377,7 +377,7 @@
                     "type": "card",
                     "index": 0,
                     "text": "{{sectionData.respondentIntent.description}}",
-                    "styleVariant": "default",
+                    "cardStyleVariant": "default",
                     "components": [
                       {
                         "type": "barChart",
@@ -405,7 +405,7 @@
                     "index": 0,
                     "title": "",
                     "text": "",
-                    "styleVariant": "overflow-hidden",
+                    "cardStyleVariant": "overflow-hidden",
                     "components": [
                       {
                         "type": "segmentationTable",

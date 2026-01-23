@@ -32,7 +32,7 @@ export { BarChart3, TrendingUp, Target, Heart } from "lucide-react";
 export { MessageSquare, MessageCircle } from "lucide-react";
 
 // Organization and structure icons
-export { Layers, Filter } from "lucide-react";
+export { Layers, Filter, Table } from "lucide-react";
 
 // Location and attribute icons
 export {
@@ -94,6 +94,7 @@ export const iconMap = {
   HelpCircle: LucideIcons.HelpCircle,
   Layers: LucideIcons.Layers,
   MapPin: LucideIcons.MapPin,
+  Table: LucideIcons.Table,
   Menu: LucideIcons.Menu,
   MessageCircle: LucideIcons.MessageCircle,
   MessageSquare: LucideIcons.MessageSquare,
@@ -178,6 +179,7 @@ export const allIcons = [
   "HelpCircle",
   "Layers",
   "MapPin",
+  "Table",
   "Menu",
   "MessageSquare",
   "Moon",

@@ -73,9 +73,9 @@ export default function ExportPreview() {
     return groups;
   }, [sectionsToRender]);
 
-  // Get section name from sectionsConfig
+  // Get section name from sections
   const getSectionName = (sectionId) => {
-    const section = data?.sectionsConfig?.sections?.find(
+    const section = data?.sections?.find(
       (s) => s.id === sectionId
     );
     return section?.name || sectionId;

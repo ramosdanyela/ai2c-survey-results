@@ -14,6 +14,8 @@ import { Heatmap } from "../widgets/charts/Heatmap";
 import { SankeyDiagram } from "../widgets/charts/SankeyDiagram";
 import { StackedBarMECE } from "../widgets/charts/StackedBarMECE";
 import { EvolutionaryScorecard } from "../widgets/charts/EvolutionaryScorecard";
+import { SlopeGraph } from "../widgets/SlopeGraph";
+import { WaterfallChart } from "../widgets/WaterfallChart";
 import { resolveDataPath } from "@/services/dataResolver";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -21,7 +23,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
  * Get bar chart config defaults based on context
  * All styling/config is determined programmatically
  */
-export function getBarChartConfig(component, data, isMobile) {
+export function getBarChartConfig(component, isMobile) {
   const config = component.config || {};
   const preset = config.preset; // Use preset from JSON instead of checking dataPath
 
@@ -40,7 +42,7 @@ export function getBarChartConfig(component, data, isMobile) {
   } else if (preset === "distribution") {
     height = 400;
     margin = { top: 10, right: 80, left: 120, bottom: 10 };
-    yAxisWidth = data.currentAttributeYAxisWidth || 110;
+    yAxisWidth = config.yAxisWidth || 110;
   }
 
   // Ensure tooltipFormatter is a function or undefined
@@ -90,7 +92,7 @@ export function SchemaBarChart({ component, data }) {
     return null;
   }
 
-  const chartConfig = getBarChartConfig(component, data, isMobile);
+  const chartConfig = getBarChartConfig(component, isMobile);
 
   const chart = (
     <SimpleBarChart
@@ -132,7 +134,7 @@ export function SchemaBarChart({ component, data }) {
 /**
  * Get sentiment divergent chart config based on context
  */
-export function getSentimentDivergentChartConfig(component, data) {
+export function getSentimentDivergentChartConfig(component) {
   const config = component.config || {};
 
   return {
@@ -166,7 +168,7 @@ export function SchemaSentimentDivergentChart({ component, data }) {
     return null;
   }
 
-  const chartConfig = getSentimentDivergentChartConfig(component, data);
+  const chartConfig = getSentimentDivergentChartConfig(component);
 
   return (
     <SentimentDivergentChart
@@ -192,7 +194,7 @@ export function SchemaSentimentDivergentChart({ component, data }) {
 /**
  * Get sentiment stacked chart config based on context
  */
-export function getSentimentStackedChartConfig(component, data) {
+export function getSentimentStackedChartConfig(component) {
   const config = component.config || {};
   const preset = config.preset; // Use preset from JSON instead of checking dataPath
 
@@ -204,10 +206,7 @@ export function getSentimentStackedChartConfig(component, data) {
   let tickLine = config.tickLine !== undefined ? config.tickLine : true;
 
   // Use preset to determine chart configuration
-  if (preset === "attributeSentiment") {
-    height = 400;
-    showGrid = false;
-  } else if (preset === "questionSentiment") {
+  if (preset === "questionSentiment") {
     height = 192;
     showGrid = false;
     axisLine = false;
@@ -239,7 +238,7 @@ export function SchemaSentimentStackedChart({ component, data }) {
     return null;
   }
 
-  const chartConfig = getSentimentStackedChartConfig(component, data);
+  const chartConfig = getSentimentStackedChartConfig(component);
 
   const chart = (
     <SentimentStackedChart
@@ -255,15 +254,11 @@ export function SchemaSentimentStackedChart({ component, data }) {
     />
   );
 
-  // Use wrapperClassName from component config or preset-based wrapper
+  // Use wrapperClassName from component config
   const wrapperClassName = component.wrapperClassName;
-  if (wrapperClassName || component.config?.preset === "attributeSentiment") {
-    const finalClassName = wrapperClassName || "flex-shrink-0 mb-4";
-    const wrapperStyle =
-      component.wrapperStyle ||
-      (component.config?.preset === "attributeSentiment"
-        ? { height: "400px" }
-        : undefined);
+  if (wrapperClassName) {
+    const finalClassName = wrapperClassName;
+    const wrapperStyle = component.wrapperStyle;
     return (
       <div className={finalClassName} style={wrapperStyle}>
         {chart}
@@ -277,7 +272,7 @@ export function SchemaSentimentStackedChart({ component, data }) {
 /**
  * Get sentiment three color chart config based on context
  */
-export function getSentimentThreeColorChartConfig(component, data) {
+export function getSentimentThreeColorChartConfig(component) {
   const config = component.config || {};
 
   return {
@@ -303,7 +298,7 @@ export function SchemaSentimentThreeColorChart({ component, data }) {
     return null;
   }
 
-  const chartConfig = getSentimentThreeColorChartConfig(component, data);
+  const chartConfig = getSentimentThreeColorChartConfig(component);
 
   return (
     <SentimentThreeColorChart
@@ -319,7 +314,7 @@ export function SchemaSentimentThreeColorChart({ component, data }) {
 /**
  * Get NPS stacked chart config based on context
  */
-export function getNPSStackedChartConfig(component, data) {
+export function getNPSStackedChartConfig(component) {
   const config = component.config || {};
 
   return {
@@ -347,7 +342,7 @@ export function SchemaNPSStackedChart({ component, data }) {
     return null;
   }
 
-  const chartConfig = getNPSStackedChartConfig(component, data);
+  const chartConfig = getNPSStackedChartConfig(component);
 
   // Handle data format - can be object with Detratores/Neutros/Promotores or array
   let npsData = chartData;
@@ -667,6 +662,61 @@ export function SchemaEvolutionaryScorecard({ component, data }) {
       label={label}
       format={config.format}
       className={config.className}
+    />
+  );
+}
+
+/**
+ * Render Slope Graph component based on schema
+ */
+export function SchemaSlopeGraph({ component, data }) {
+  const chartData = resolveDataPath(data, component.dataPath);
+  const config = component.config || {};
+
+  if (!chartData || !Array.isArray(chartData)) {
+    console.warn(`SlopeGraph: Data not found at path "${component.dataPath}"`);
+    return null;
+  }
+
+  return (
+    <SlopeGraph
+      data={chartData}
+      categoryKey={config.categoryKey || "category"}
+      beforeKey={config.beforeKey || "before"}
+      afterKey={config.afterKey || "after"}
+      height={config.height || 400}
+      margin={config.margin}
+      showLabels={config.showLabels !== false}
+      showDelta={config.showDelta !== false}
+      showGrid={config.showGrid !== false}
+    />
+  );
+}
+
+/**
+ * Render Waterfall Chart component based on schema
+ */
+export function SchemaWaterfallChart({ component, data }) {
+  const chartData = resolveDataPath(data, component.dataPath);
+  const config = component.config || {};
+
+  if (!chartData || !Array.isArray(chartData)) {
+    console.warn(
+      `WaterfallChart: Data not found at path "${component.dataPath}"`
+    );
+    return null;
+  }
+
+  return (
+    <WaterfallChart
+      data={chartData}
+      labelKey={config.labelKey || "label"}
+      valueKey={config.valueKey || "value"}
+      typeKey={config.typeKey || "type"}
+      height={config.height || 400}
+      margin={config.margin}
+      showLabels={config.showLabels !== false}
+      showGrid={config.showGrid !== false}
     />
   );
 }

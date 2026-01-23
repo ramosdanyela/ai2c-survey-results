@@ -41,6 +41,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { getQuestionTemplate } from "@/config/questionTemplates";
+import { renderComponent } from "./ComponentRegistry";
+import { resolveDataPath } from "@/services/dataResolver";
 
 /**
  * QuestionsList Component - Renders list of questions with filters, accordions, etc.
@@ -283,27 +286,116 @@ export function QuestionsList({
     return resolved;
   }, [data, dataPath]);
 
-  // Get questionTypeSchemas from renderSchema
-  const questionTypeSchemas = useMemo(() => {
-    if (!data || !dataPath) return null;
-    const sectionData = resolveDataPath(data, dataPath);
-    return sectionData?.renderSchema?.questionTypeSchemas || null;
-  }, [data, dataPath]);
+  // Question templates are now in code (questionTemplates.js), not in JSON
 
   const surveyInfo = data?.surveyInfo;
   const rootUiTexts = data?.uiTexts || {};
 
   // Get section-specific uiTexts from sectionsConfig
   const sectionUiTexts = useMemo(() => {
-    if (!data?.sectionsConfig?.sections) return {};
-    const responsesSection = data.sectionsConfig.sections.find(
+    if (!data?.sections) return {};
+    const responsesSection = data.sections.find(
       (s) => s.id === "responses"
     );
     return responsesSection?.data?.uiTexts || {};
   }, [data]);
 
+  // Merge uiTexts from root and section (must be before renderQuestionComponents)
+  const mergedUiTexts = useMemo(() => {
+    return {
+      responseDetails: {
+        all: "Todas",
+        nps: "NPS",
+        "open-ended": "Campo Aberto",
+        "multiple-choice": "Múltipla Escolha",
+        "single-choice": "Escolha única",
+        summary: "Sumário",
+        responses: "Respostas",
+        npsScore: "NPS Score",
+        top3Categories: "Top 3 Categorias",
+        top3CategoriesTopics: "Top 3 categorias e principais tópicos",
+        wordCloud: "Nuvem de Palavras",
+        mentions: "menções",
+        positive: "Positivo",
+        negative: "Negativo",
+        noPositiveTopics: "Nenhum tópico positivo",
+        noNegativeTopics: "Nenhum tópico negativo",
+        filterQuestion: "Filtrar questão",
+        downloadQuestion: "Baixar questão",
+        png: "PNG",
+        pdf: "PDF",
+        removeFilter: "Remover filtro",
+        responsesCount: "respostas",
+        questionPrefix: "Q",
+        ...(rootUiTexts?.responseDetails || {}),
+        ...(sectionUiTexts?.responseDetails || {}),
+      },
+      filterPanel: {
+        ...(rootUiTexts?.filterPanel || {}),
+        ...(sectionUiTexts?.filterPanel || {}),
+      },
+    };
+  }, [rootUiTexts, sectionUiTexts]);
+
+  // Ensure uiTexts has required nested objects with safe defaults
+  const safeUiTexts = useMemo(() => {
+    return {
+      responseDetails: mergedUiTexts.responseDetails,
+      filterPanel: mergedUiTexts.filterPanel || rootUiTexts?.filterPanel || {},
+    };
+  }, [mergedUiTexts, rootUiTexts]);
+
   // Helper functions - MUST be defined before useMemo that uses them
   const isNPSQuestion = (question) => question?.type === "nps";
+
+  /**
+   * Renderiza os componentes de uma questão baseado no template do tipo
+   * @param {Object} question - Objeto da questão
+   * @returns {React.ReactElement[]|null} Array de componentes renderizados ou null
+   */
+  const renderQuestionComponents = useCallback((question) => {
+    if (!question || !question.type) return null;
+
+    // Obtém o template para o tipo da questão
+    const template = getQuestionTemplate(question.type);
+    if (!template || !Array.isArray(template) || template.length === 0) {
+      console.warn(`No template found for question type: ${question.type}`);
+      return null;
+    }
+
+    // Prepara o contexto de dados para os componentes
+    // Os componentes esperam que o data tenha question, surveyInfo, etc. no contexto
+    const componentData = {
+      ...data,
+      question, // Adiciona a questão no contexto
+      surveyInfo, // Adiciona surveyInfo no contexto
+      showWordCloud, // Adiciona showWordCloud no contexto
+      uiTexts: safeUiTexts, // Adiciona uiTexts no contexto
+    };
+
+    // Renderiza cada componente do template
+    return template.map((componentConfig, index) => {
+      // Renderiza o componente usando o ComponentRegistry
+      // O ComponentRegistry vai usar resolveDataPath para acessar os dados
+      return (
+        <div key={`question-${question.id}-component-${componentConfig.index !== undefined ? componentConfig.index : index}`}>
+          {renderComponent(
+            {
+              ...componentConfig,
+              // Garante que o index está definido
+              index: componentConfig.index !== undefined ? componentConfig.index : index,
+            },
+            componentData,
+            {
+              subSection: `responses-${question.id}`,
+              isExport: false,
+              exportWordCloud: showWordCloud,
+            }
+          )}
+        </div>
+      );
+    });
+  }, [data, surveyInfo, showWordCloud, safeUiTexts]);
 
   // Get all available questions filtered by selected type - MUST be before early returns
   const allAvailableQuestions = useMemo(() => {
@@ -314,9 +406,9 @@ export function QuestionsList({
       return [];
     }
 
+    // Ordenar questões pelo index do JSON (sem gaps, sequencial)
     const allQuestions = responseDetails.questions
-      .filter((q) => q.id !== 3) // Hide Q3
-      .sort((a, b) => (a.index || 0) - (b.index || 0)); // Sort by index
+      .sort((a, b) => (a.index || 0) - (b.index || 0));
 
     // If questionId is provided and we're in export mode, show only that question
     if (initialQuestionId && data?._exportMode) {
@@ -365,7 +457,7 @@ export function QuestionsList({
     if (initialQuestionId && responseDetails?.questions) {
       setSelectedQuestionId(null);
 
-      const allQuestions = responseDetails.questions.filter((q) => q.id !== 3);
+      const allQuestions = responseDetails.questions.sort((a, b) => (a.index || 0) - (b.index || 0));
 
       const question = allQuestions.find((q) => q.id === initialQuestionId);
 
@@ -443,46 +535,6 @@ export function QuestionsList({
     );
   }
 
-  // Merge root uiTexts with section-specific uiTexts
-  // Section uiTexts take precedence
-  const mergedUiTexts = {
-    ...rootUiTexts,
-    ...sectionUiTexts,
-    // Merge responseDetails specifically
-    responseDetails: {
-      all: "Todas",
-      "open-ended": "Campo Aberto",
-      "multiple-choice": "Múltipla Escolha",
-      "single-choice": "Escolha única",
-      nps: "NPS",
-      wordCloud: "Nuvem de Palavras",
-      summary: "Sumário:",
-      responses: "Respostas:",
-      npsScore: "NPS Score",
-      top3CategoriesTopics: "Top 3 categorias e principais tópicos",
-      top3Categories: "Top 3 Categorias",
-      mentions: "menções",
-      positive: "Positivos",
-      negative: "Negativos",
-      noPositiveTopics: "Nenhum tópico positivo",
-      noNegativeTopics: "Nenhum tópico negativo",
-      filterQuestion: "Filtrar questão",
-      downloadQuestion: "Download questão",
-      png: "PNG",
-      pdf: "PDF",
-      removeFilter: "Remover filtro",
-      responsesCount: "respostas",
-      questionPrefix: "Q",
-      ...(rootUiTexts?.responseDetails || {}),
-      ...(sectionUiTexts?.responseDetails || {}),
-    },
-  };
-
-  // Ensure uiTexts has required nested objects with safe defaults
-  const safeUiTexts = {
-    responseDetails: mergedUiTexts.responseDetails,
-    filterPanel: mergedUiTexts.filterPanel || rootUiTexts?.filterPanel || {},
-  };
 
   // Verificar se questions existe e é um array
   if (!responseDetails.questions || !Array.isArray(responseDetails.questions)) {
@@ -565,7 +617,7 @@ export function QuestionsList({
 
   // Map question types to icons using type from JSON (types: nps, open-ended, multiple-choice, single-choice)
   const questionIconMap = {
-    nps: TrendingUp,
+    "nps": TrendingUp,
     "open-ended": FileText,
     "multiple-choice": CheckSquare,
     "single-choice": CircleDot,
@@ -704,7 +756,7 @@ export function QuestionsList({
     if (initialQuestionId && responseDetails?.questions) {
       setSelectedQuestionId(null);
 
-      const allQuestions = responseDetails.questions.filter((q) => q.id !== 3);
+      const allQuestions = responseDetails.questions.sort((a, b) => (a.index || 0) - (b.index || 0));
 
       const question = allQuestions.find((q) => q.id === initialQuestionId);
 
@@ -762,111 +814,6 @@ export function QuestionsList({
 
   return (
     <div className="space-y-8 animate-fade-in">
-      {/* Question Type Filter Pills - Only render if not hidden */}
-      {!hideFilterPills && (
-        <div className="flex flex-wrap gap-2 items-center mb-6">
-          <Badge
-            variant={normalizedQuestionFilter === "all" ? "default" : "outline"}
-            className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full ${
-              normalizedQuestionFilter === "all"
-                ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
-                : ""
-            }`}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setQuestionFilter("all");
-            }}
-          >
-            {safeUiTexts.responseDetails.all || "Todas"}
-          </Badge>
-          <Badge
-            variant={
-              normalizedQuestionFilter === "open-ended" ? "default" : "outline"
-            }
-            className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
-              normalizedQuestionFilter === "open-ended"
-                ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
-                : ""
-            }`}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setQuestionFilter("open-ended");
-            }}
-          >
-            <FileText className="w-3 h-3" />
-            {safeUiTexts.responseDetails["open-ended"] || "Campo Aberto"}
-          </Badge>
-          <Badge
-            variant={
-              normalizedQuestionFilter === "multiple-choice" ? "default" : "outline"
-            }
-            className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
-              normalizedQuestionFilter === "multiple-choice"
-                ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
-                : ""
-            }`}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setQuestionFilter("multiple-choice");
-            }}
-          >
-            <CheckSquare className="w-3 h-3" />
-            {safeUiTexts.responseDetails["multiple-choice"] || "Múltipla Escolha"}
-          </Badge>
-          <Badge
-            variant={
-              normalizedQuestionFilter === "single-choice" ? "default" : "outline"
-            }
-            className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
-              normalizedQuestionFilter === "single-choice"
-                ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
-                : ""
-            }`}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setQuestionFilter("single-choice");
-            }}
-          >
-            <CircleDot className="w-3 h-3" />
-            {safeUiTexts.responseDetails["single-choice"] || "Escolha única"}
-          </Badge>
-          <Badge
-            variant={normalizedQuestionFilter === "nps" ? "default" : "outline"}
-            className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
-              normalizedQuestionFilter === "nps"
-                ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
-                : ""
-            }`}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setQuestionFilter("nps");
-            }}
-          >
-            <TrendingUp className="w-3 h-3" />
-            {safeUiTexts.responseDetails.nps || "NPS"}
-          </Badge>
-          {/* Word Cloud Toggle */}
-          <div className="flex items-center gap-2 ml-auto">
-            <Label
-              htmlFor="word-cloud-toggle"
-              className="text-xs text-muted-foreground cursor-pointer"
-            >
-              {safeUiTexts.responseDetails.wordCloud}
-            </Label>
-            <Switch
-              id="word-cloud-toggle"
-              checked={showWordCloud}
-              onCheckedChange={setShowWordCloud}
-            />
-          </div>
-        </div>
-      )}
-
       <div className="grid grid-cols-1 gap-6">
         {allAvailableQuestions.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
@@ -1119,332 +1066,18 @@ export function QuestionsList({
                         </>
                       )}
 
-                      {/* Show NPS score when it's an NPS question */}
-                      {question.type === "nps" && (
-                        <div className="mb-6 flex justify-center">
-                          <div
-                            className="p-4 rounded-2xl highlight-container-light border-0 w-full max-w-md"
-                            style={{
-                              boxShadow: `0 4px 16px ${RGBA_ORANGE_SHADOW_15}`,
-                            }}
-                          >
-                            <div className="text-center mb-4">
-                              <div className="text-5xl font-bold text-foreground mb-2">
-                                {surveyInfo.nps}
-                              </div>
-                              <div className="text-base font-semibold text-foreground mb-3">
-                                {safeUiTexts.responseDetails.npsScore}
-                              </div>
-                              <Progress
-                                value={(surveyInfo.nps + 100) / 2}
-                                className="h-3 mb-2"
-                              />
-                              <div className="inline-block px-3 py-1 rounded-full highlight-container text-base font-semibold">
-                                {surveyInfo.npsCategory}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Render NPS chart for NPS questions */}
-                      {question.type === "nps" &&
-                        "data" in question &&
-                        question.data &&
-                        (() => {
-                          const detrator = question.data.find(
-                            (d) => d.option === "Detrator"
-                          );
-                          const promotor = question.data.find(
-                            (d) => d.option === "Promotor"
-                          );
-                          const neutro = question.data.find(
-                            (d) => d.option === "Neutro"
-                          );
-
+                      {/* Render question components based on template */}
+                      {(() => {
+                        const components = renderQuestionComponents(question);
+                        if (components) {
                           return (
-                            <>
-                              <h3 className="text-lg font-bold text-foreground mb-3">
-                                {safeUiTexts.responseDetails.responses}
-                              </h3>
-                              <NPSStackedChart
-                                data={{
-                                  Detratores: detrator?.percentage || 0,
-                                  Neutros: neutro?.percentage || 0,
-                                  Promotores: promotor?.percentage || 0,
-                                }}
-                                height={256}
-                                hideXAxis={true}
-                                showPercentagesInLegend={true}
-                              />
-                            </>
-                          );
-                        })()}
-
-                      {/* Render closed question chart for other questions */}
-                      {question.id !== 1 &&
-                        (question.type === "multiple-choice" || question.type === "single-choice") &&
-                        "data" in question &&
-                        question.data &&
-                        (() => {
-                          const maxTextLength = Math.max(
-                            ...question.data.map((item) => item.option.length)
-                          );
-                          const calculatedWidth = Math.min(
-                            Math.max(maxTextLength * 8, 120),
-                            400
-                          );
-                          const calculatedMargin = Math.max(
-                            calculatedWidth + 20,
-                            140
-                          );
-                          const rightMargin = question.id === 3 ? 50 : 80;
-
-                          return (
-                            <>
-                              <h3 className="text-lg font-bold text-foreground mb-3">
-                                {safeUiTexts.responseDetails.responses}
-                              </h3>
-                              <SimpleBarChart
-                                data={question.data}
-                                dataKey="percentage"
-                                yAxisDataKey="option"
-                                height={256}
-                                margin={{
-                                  top: 10,
-                                  right: rightMargin,
-                                  left: calculatedMargin,
-                                  bottom: 10,
-                                }}
-                                yAxisWidth={calculatedWidth}
-                                hideXAxis={true}
-                                tooltipFormatter={(value, name, props) => [
-                                  `${props.payload.value} (${value}%)`,
-                                  safeUiTexts.responseDetails.responses,
-                                ]}
-                              />
-                            </>
-                          );
-                        })()}
-
-                      {/* Render open question content */}
-                      {question.type === "open-ended" &&
-                        "sentimentData" in question &&
-                        question.sentimentData && (
-                          <>
-                            {/* Sentiment Chart */}
-                            <div className="mb-6">
-                              <h4 className="text-base font-bold text-foreground mb-3">
-                                {safeUiTexts.responseDetails
-                                  .top3CategoriesTopics ||
-                                  "Top 3 categorias e principais tópicos"}
-                              </h4>
-                              <SentimentStackedChart
-                                data={question.sentimentData}
-                                height={192}
-                                showGrid={false}
-                                axisLine={false}
-                                tickLine={false}
-                              />
+                            <div className="space-y-6">
+                              {components}
                             </div>
-
-                            {/* Top Categories */}
-                            {question.topCategories && (
-                              <div className="mb-6">
-                                <h4 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-                                  <Award
-                                    className="w-4 h-4"
-                                    style={{ color: COLOR_ORANGE_PRIMARY }}
-                                  />
-                                  {safeUiTexts.responseDetails.top3Categories ||
-                                    "Top 3 Categorias"}
-                                </h4>
-                                <div className="grid md:grid-cols-3 gap-4">
-                                  {question.topCategories.map((cat) => (
-                                    <div
-                                      key={cat.rank}
-                                      className="p-4 rounded-lg bg-muted/10 border-0 transition-all duration-300"
-                                      style={{
-                                        boxShadow: `0 4px 16px ${RGBA_BLACK_SHADOW_30}`,
-                                      }}
-                                      onMouseEnter={(e) =>
-                                        (e.currentTarget.style.boxShadow = `0 8px 32px ${RGBA_ORANGE_SHADOW_20}`)
-                                      }
-                                      onMouseLeave={(e) =>
-                                        (e.currentTarget.style.boxShadow = `0 4px 16px ${RGBA_BLACK_SHADOW_30}`)
-                                      }
-                                    >
-                                      <div className="flex items-center gap-2 mb-3">
-                                        <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold bg-primary text-primary-foreground">
-                                          {cat.rank}
-                                        </span>
-                                        <span className="font-bold text-sm">
-                                          {cat.category}
-                                        </span>
-                                      </div>
-                                      <div className="text-sm text-muted-foreground mb-3">
-                                        {cat.mentions}{" "}
-                                        {safeUiTexts.responseDetails.mentions} (
-                                        {cat.percentage}%)
-                                      </div>
-                                      {cat.topics &&
-                                        (() => {
-                                          const positiveTopics = cat.topics
-                                            .map((topicItem) => {
-                                              const topic =
-                                                typeof topicItem === "string"
-                                                  ? topicItem
-                                                  : topicItem.topic;
-                                              const sentiment =
-                                                typeof topicItem === "string"
-                                                  ? null
-                                                  : topicItem.sentiment;
-                                              return { topic, sentiment };
-                                            })
-                                            .filter(
-                                              (item) =>
-                                                item.sentiment === "positive"
-                                            );
-
-                                          const negativeTopics = cat.topics
-                                            .map((topicItem) => {
-                                              const topic =
-                                                typeof topicItem === "string"
-                                                  ? topicItem
-                                                  : topicItem.topic;
-                                              const sentiment =
-                                                typeof topicItem === "string"
-                                                  ? null
-                                                  : topicItem.sentiment;
-                                              return { topic, sentiment };
-                                            })
-                                            .filter(
-                                              (item) =>
-                                                item.sentiment === "negative"
-                                            );
-
-                                          return (
-                                            <div className="grid grid-cols-2 gap-4">
-                                              {/* Positive Column */}
-                                              <div className="space-y-1.5">
-                                                <div className="text-xs font-semibold text-blue-600 dark:text-blue-400 mb-2">
-                                                  {
-                                                    safeUiTexts.responseDetails
-                                                      .positive
-                                                  }
-                                                </div>
-                                                {positiveTopics.length > 0 ? (
-                                                  positiveTopics.map(
-                                                    (item, index) => (
-                                                      <div
-                                                        key={index}
-                                                        className="text-sm flex items-start gap-1.5"
-                                                      >
-                                                        <span className="text-blue-600 dark:text-blue-400 mt-0.5">
-                                                          •
-                                                        </span>
-                                                        <span className="text-foreground">
-                                                          {item.topic}
-                                                        </span>
-                                                      </div>
-                                                    )
-                                                  )
-                                                ) : (
-                                                  <div className="text-xs text-muted-foreground italic">
-                                                    {
-                                                      safeUiTexts
-                                                        .responseDetails
-                                                        .noPositiveTopics
-                                                    }
-                                                  </div>
-                                                )}
-                                              </div>
-
-                                              {/* Negative Column */}
-                                              <div className="space-y-1.5">
-                                                <div className="text-xs font-semibold text-red-600 dark:text-red-400 mb-2">
-                                                  {
-                                                    safeUiTexts.responseDetails
-                                                      .negative
-                                                  }
-                                                </div>
-                                                {negativeTopics.length > 0 ? (
-                                                  negativeTopics.map(
-                                                    (item, index) => (
-                                                      <div
-                                                        key={index}
-                                                        className="text-sm flex items-start gap-1.5"
-                                                      >
-                                                        <span className="text-red-600 dark:text-red-400 mt-0.5">
-                                                          •
-                                                        </span>
-                                                        <span className="text-foreground">
-                                                          {item.topic}
-                                                        </span>
-                                                      </div>
-                                                    )
-                                                  )
-                                                ) : (
-                                                  <div className="text-xs text-muted-foreground italic">
-                                                    {
-                                                      safeUiTexts
-                                                        .responseDetails
-                                                        .noNegativeTopics
-                                                    }
-                                                  </div>
-                                                )}
-                                              </div>
-                                            </div>
-                                          );
-                                        })()}
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-
-                            {/* Word Cloud */}
-                            {question.wordCloud && showWordCloud && (
-                              <div>
-                                <h4 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                                  <Cloud
-                                    className="w-4 h-4"
-                                    style={{ color: COLOR_ORANGE_PRIMARY }}
-                                  />
-                                  {safeUiTexts.responseDetails.wordCloud ||
-                                    "Nuvem de Palavras"}
-                                </h4>
-                                {Array.isArray(question.wordCloud) &&
-                                question.wordCloud.length > 0 ? (
-                                  <WordCloud
-                                    words={question.wordCloud}
-                                    maxWords={15}
-                                    config={{
-                                      colorScheme: "image-style", // Estilo clássico como na imagem
-                                      minFontSize: 14,
-                                      maxFontSize: 56,
-                                      enableRotation: false, // Todas as palavras na horizontal
-                                      enableShadows: false, // Cores sólidas como na imagem
-                                      fontWeight: "medium",
-                                      minOpacity: 0.8,
-                                      maxOpacity: 1.0,
-                                      spacing: 8, // Grid size para detecção de colisão
-                                    }}
-                                  />
-                                ) : (
-                                  <div className="flex justify-center items-center p-6 bg-muted/30 rounded-lg min-h-[200px]">
-                                    <img
-                                      src="/nuvem.png"
-                                      alt="Word Cloud"
-                                      className="max-w-full h-auto"
-                                      style={{ maxHeight: "500px" }}
-                                    />
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                          </>
-                        )}
+                          );
+                        }
+                        return null;
+                      })()}
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>

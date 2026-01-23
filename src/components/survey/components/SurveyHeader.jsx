@@ -12,7 +12,7 @@ import { getAttributesFromData } from "@/services/dataResolver";
 
 /**
  * Get section title from data (programmatic)
- * Priority: sectionsConfig.sections[].name > sectionId
+ * Priority: sections[].name > sectionId
  * This matches the logic in NavigationButtons for consistency
  */
 function getSectionTitleFromData(activeSection, data) {
@@ -24,9 +24,9 @@ function getSectionTitleFromData(activeSection, data) {
       ? activeSection.split("-")[0]
       : activeSection;
 
-  // Priority 1: Try to get from sectionsConfig.sections (most reliable)
-  if (data?.sectionsConfig?.sections) {
-    const section = data.sectionsConfig.sections.find(
+  // Priority 1: Try to get from sections (most reliable)
+  if (data?.sections) {
+    const section = data.sections.find(
       (s) => s.id === baseSectionId
     );
     if (section?.name) {
@@ -42,10 +42,10 @@ function getSectionTitleFromData(activeSection, data) {
  * Get icon for a section or subsection (programmatic)
  */
 function getSectionIconFromConfig(sectionId, data) {
-  if (!data?.sectionsConfig?.sections || !sectionId) return FileText;
+  if (!data?.sections || !sectionId) return FileText;
 
-  // First try to find exact match in sectionsConfig
-  for (const section of data.sectionsConfig.sections) {
+  // First try to find exact match in sections
+  for (const section of data.sections) {
     // Check if it's the main section
     if (section.id === sectionId) {
       return getIcon(section.icon);
@@ -74,7 +74,7 @@ function getSectionIconFromConfig(sectionId, data) {
       return getIcon(attribute.icon);
     }
     // Fallback to section icon
-    const attributesSection = data.sectionsConfig.sections.find(
+    const attributesSection = data.sections.find(
       (s) => s.id === "attributes"
     );
     if (attributesSection && attributesSection.icon) {
@@ -95,7 +95,7 @@ function getSectionIconFromConfig(sectionId, data) {
       return getIcon(question.icon);
     }
     // Fallback to section icon
-    const responsesSection = data.sectionsConfig.sections.find(
+    const responsesSection = data.sections.find(
       (s) => s.id === "responses"
     );
     if (responsesSection && responsesSection.icon) {

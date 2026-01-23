@@ -24,7 +24,7 @@ function getQuestionsFromResponseDetails(responseDetails) {
  * Get export configuration for a section (which attributes/questions to include/exclude)
  */
 function getExportConfig(sectionId, data) {
-  const section = data?.sectionsConfig?.sections?.find(
+  const section = data?.sections?.find(
     (s) => s.id === sectionId
   );
 
@@ -49,10 +49,9 @@ function getExportConfig(sectionId, data) {
  * Get all available subsections for a given section
  */
 export function getAllSubsectionsForSection(sectionId, data) {
-  // Get sectionsConfig from data - must come from hook
-  const config = data?.sectionsConfig;
-  if (!config?.sections) return [];
-  const section = config.sections.find((s) => s.id === sectionId);
+  // Get sections from data - must come from hook
+  if (!data?.sections) return [];
+  const section = data.sections.find((s) => s.id === sectionId);
   if (!section) return [];
 
   // If section has fixed subsections (executive, support)
@@ -111,9 +110,9 @@ export function getAllSubsectionsForSection(sectionId, data) {
       allQuestions = getQuestionsFromResponseDetails(responseDetails);
     }
 
-    // Priority 2: Try sectionsConfig.sections[responses].data.questions (JSON structure)
-    if (allQuestions.length === 0 && data?.sectionsConfig) {
-      const responsesSection = data.sectionsConfig.sections?.find(
+    // Priority 2: Try sections[responses].data.questions (JSON structure)
+    if (allQuestions.length === 0 && data?.sections) {
+      const responsesSection = data.sections?.find(
         (s) => s.id === "responses"
       );
       if (
@@ -126,9 +125,9 @@ export function getAllSubsectionsForSection(sectionId, data) {
       }
     }
 
-    // Priority 3: Try responseDetails from sectionsConfig.data
-    if (allQuestions.length === 0 && data?.sectionsConfig) {
-      const responsesSection = data.sectionsConfig.sections?.find(
+    // Priority 3: Try responseDetails from sections.data
+    if (allQuestions.length === 0 && data?.sections) {
+      const responsesSection = data.sections?.find(
         (s) => s.id === "responses"
       );
       if (responsesSection?.data?.responseDetails) {
@@ -141,35 +140,17 @@ export function getAllSubsectionsForSection(sectionId, data) {
       console.warn("Export: No questions found", {
         hasData: !!data,
         hasResponseDetails: !!data?.responseDetails,
-        hasSectionsConfig: !!data?.sectionsConfig,
-        responsesSection: data?.sectionsConfig?.sections?.find(
+        hasSections: !!data?.sections,
+        responsesSection: data?.sections?.find(
           (s) => s.id === "responses"
         ),
       });
       return [];
     }
 
-    const exportConfig = getExportConfig(sectionId, data);
-    let filteredQuestions = allQuestions;
-
-    // Apply filters based on export configuration
-    if (
-      exportConfig.includedQuestionIds &&
-      exportConfig.includedQuestionIds.length > 0
-    ) {
-      filteredQuestions = filteredQuestions.filter((q) =>
-        exportConfig.includedQuestionIds.includes(q.id)
-      );
-    }
-
-    if (exportConfig.excludedQuestionIds.length > 0) {
-      filteredQuestions = filteredQuestions.filter(
-        (q) => !exportConfig.excludedQuestionIds.includes(q.id)
-      );
-    }
-
-    // Sort by index
-    filteredQuestions = filteredQuestions.sort(
+    // Não aplicar filtros que ocultam questões - todas as questões devem ser exportadas
+    // Ordenar questões pelo index do JSON
+    const filteredQuestions = allQuestions.sort(
       (a, b) => (a.index || 0) - (b.index || 0)
     );
 
@@ -196,11 +177,10 @@ export function getAllSubsectionsForSection(sectionId, data) {
 export function getAllSubsections(data) {
   const allSubsections = [];
 
-  // Get sectionsConfig from data - must come from hook
-  const config = data?.sectionsConfig;
-  if (!config?.sections) return [];
+  // Get sections from data - must come from hook
+  if (!data?.sections) return [];
 
-  config.sections
+  data.sections
     .filter((section) => section.id !== "export") // Export é página do app, não seção de conteúdo
     .forEach((section) => {
       const subsections = getAllSubsectionsForSection(section.id, data);
@@ -227,9 +207,8 @@ export function parseSelectedSections(
   // Parse selected subsection IDs
   const parsed = [];
 
-  // Get sectionsConfig from data - must come from hook
-  const config = data?.sectionsConfig;
-  if (!config?.sections) return [];
+  // Get sections from data - must come from hook
+  if (!data?.sections) return [];
 
   selectedSectionsArray.forEach((subsectionId) => {
     // Determine sectionId from subsectionId
@@ -241,7 +220,7 @@ export function parseSelectedSections(
       sectionId = "responses";
     } else {
       // For executive and support, find the section that contains this subsection
-      const section = config.sections.find((s) =>
+      const section = data.sections.find((s) =>
         s.subsections?.some((sub) => sub.id === subsectionId)
       );
       if (section) {
@@ -278,8 +257,8 @@ export function parseSelectedSections(
 
   // Sort by section order and subsection order
   return parsed.sort((a, b) => {
-    const sectionA = config.sections.find((s) => s.id === a.sectionId);
-    const sectionB = config.sections.find((s) => s.id === b.sectionId);
+    const sectionA = data.sections.find((s) => s.id === a.sectionId);
+    const sectionB = data.sections.find((s) => s.id === b.sectionId);
     const sectionOrderA = sectionA?.index || 999;
     const sectionOrderB = sectionB?.index || 999;
 

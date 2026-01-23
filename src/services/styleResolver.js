@@ -16,7 +16,7 @@ export function resolveStyleVariant(component, variantType = "card") {
   const variants = variantMap[variantType];
   if (!variants) return "";
 
-  const variant = component.styleVariant || "default";
+  const variant = component.cardStyleVariant || "default";
   return variants[variant] || variants.default || "";
 }
 
@@ -32,9 +32,9 @@ export function enrichComponentWithStyles(component) {
     enriched.className = resolveStyleVariant(component, "card");
     
     // Resolve textClassName se especificado
-    if (component.textStyleVariant) {
+    if (component.cardContentVariant) {
       enriched.textClassName = resolveStyleVariant(
-        { styleVariant: component.textStyleVariant },
+        { cardStyleVariant: component.cardContentVariant },
         "cardContent"
       );
     }
@@ -42,7 +42,7 @@ export function enrichComponentWithStyles(component) {
     // Resolve titleClassName se especificado
     if (component.titleStyleVariant) {
       enriched.titleClassName = resolveStyleVariant(
-        { styleVariant: component.titleStyleVariant },
+        { cardStyleVariant: component.titleStyleVariant },
         "cardTitle"
       );
     }

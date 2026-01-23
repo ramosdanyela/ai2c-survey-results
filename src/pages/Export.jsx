@@ -102,13 +102,13 @@ export default function Export() {
   const hasSpecificSectionsSelected =
     !exportFullReport && selectedSections.size > 0;
 
-  // Build sections structure from sectionsConfig using helper function
+  // Build sections structure from sections using helper function
   const sections = useMemo(() => {
-    // Get sectionsConfig from data - must come from hook
-    const config = data?.sectionsConfig;
-    if (!config) return [];
+    // Get sections from data - must come from hook
+    const sectionsList = data?.sections;
+    if (!sectionsList) return [];
 
-    return config.sections
+    return sectionsList
       .filter((section) => section.id !== "export") // Export é página do app, não seção exportável
       .map((section) => {
         // Use helper function to get subsections programmatically
