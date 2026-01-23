@@ -354,12 +354,12 @@ export function QuestionsList({
    * @returns {React.ReactElement[]|null} Array de componentes renderizados ou null
    */
   const renderQuestionComponents = useCallback((question) => {
-    if (!question || !question.type) return null;
+    if (!question || !question.questionType) return null;
 
     // Obtém o template para o tipo da questão
-    const template = getQuestionTemplate(question.type);
+    const template = getQuestionTemplate(question.questionType);
     if (!template || !Array.isArray(template) || template.length === 0) {
-      console.warn(`No template found for question type: ${question.type}`);
+      console.warn(`No template found for question type: ${question.questionType}`);
       return null;
     }
 
@@ -399,15 +399,21 @@ export function QuestionsList({
 
   // Get all available questions filtered by selected type - MUST be before early returns
   const allAvailableQuestions = useMemo(() => {
-    if (
-      !responseDetails?.questions ||
-      !Array.isArray(responseDetails.questions)
-    ) {
+    // Support both responseDetails.questions (legacy) and direct questions array (new structure)
+    let questionsArray = null;
+    if (responseDetails?.questions && Array.isArray(responseDetails.questions)) {
+      questionsArray = responseDetails.questions;
+    } else if (Array.isArray(responseDetails)) {
+      // If responseDetails itself is an array of questions (direct structure)
+      questionsArray = responseDetails;
+    }
+    
+    if (!questionsArray || questionsArray.length === 0) {
       return [];
     }
 
     // Ordenar questões pelo index do JSON (sem gaps, sequencial)
-    const allQuestions = responseDetails.questions
+    const allQuestions = questionsArray
       .sort((a, b) => (a.index || 0) - (b.index || 0));
 
     // If questionId is provided and we're in export mode, show only that question
@@ -434,36 +440,47 @@ export function QuestionsList({
     if (normalizedQuestionFilter === "all") {
       filtered = allQuestions;
     } else if (normalizedQuestionFilter === "open-ended") {
-      filtered = allQuestions.filter((q) => q.type === "open-ended");
+      filtered = allQuestions.filter((q) => q.questionType === "open-ended");
     } else if (normalizedQuestionFilter === "multiple-choice") {
       filtered = allQuestions.filter(
-        (q) => q.type === "multiple-choice" && !isNPSQuestion(q)
+        (q) => q.questionType === "multiple-choice" && !isNPSQuestion(q)
       );
     } else if (normalizedQuestionFilter === "single-choice") {
-      filtered = allQuestions.filter((q) => q.type === "single-choice");
+      filtered = allQuestions.filter((q) => q.questionType === "single-choice");
     } else if (normalizedQuestionFilter === "nps") {
       filtered = allQuestions.filter(
-        (q) => isNPSQuestion(q) || q.type === "nps"
+        (q) => isNPSQuestion(q) || q.questionType === "nps"
       );
     } else {
       filtered = allQuestions;
     }
 
     return filtered;
-  }, [normalizedQuestionFilter, responseDetails, initialQuestionId, data]);
+  }, [normalizedQuestionFilter, responseDetails, initialQuestionId, data, getQuestionsFromResponseDetails]);
+
+  // Helper to get questions from responseDetails (supports both structures)
+  const getQuestionsFromResponseDetails = useCallback((responseDetails) => {
+    if (!responseDetails) return [];
+    if (Array.isArray(responseDetails)) return responseDetails;
+    if (responseDetails.questions && Array.isArray(responseDetails.questions)) {
+      return responseDetails.questions;
+    }
+    return [];
+  }, []);
 
   // Effect to scroll to specific question when questionId is provided - MUST be before early returns
   useEffect(() => {
-    if (initialQuestionId && responseDetails?.questions) {
+    const questionsFromDetails = getQuestionsFromResponseDetails(responseDetails);
+    if (initialQuestionId && questionsFromDetails.length > 0) {
       setSelectedQuestionId(null);
 
-      const allQuestions = responseDetails.questions.sort((a, b) => (a.index || 0) - (b.index || 0));
+      const allQuestions = questionsFromDetails.sort((a, b) => (a.index || 0) - (b.index || 0));
 
       const question = allQuestions.find((q) => q.id === initialQuestionId);
 
       if (question) {
         setTimeout(() => {
-          const questionValue = `${question.type}-${question.id}`;
+          const questionValue = `${question.questionType}-${question.id}`;
           setOpenAccordionValue(questionValue);
 
           setTimeout(() => {
@@ -478,7 +495,7 @@ export function QuestionsList({
         }, 100);
       }
     }
-  }, [initialQuestionId, responseDetails]);
+  }, [initialQuestionId, responseDetails, getQuestionsFromResponseDetails]);
 
   // Effect for when selectedQuestionId changes - MUST be before early returns
   useEffect(() => {
@@ -487,7 +504,7 @@ export function QuestionsList({
         (q) => q.id === selectedQuestionId
       );
       if (question) {
-        const questionValue = `${question.type}-${question.id}`;
+        const questionValue = `${question.questionType}-${question.id}`;
         setOpenAccordionValue(questionValue);
 
         setTimeout(() => {
@@ -510,12 +527,17 @@ export function QuestionsList({
     return <div>{loadingText}</div>;
   }
 
-  if (!responseDetails || !surveyInfo) {
+  // Get questions from responseDetails (supports both structures)
+  const questionsFromDetails = getQuestionsFromResponseDetails(responseDetails);
+  
+  if ((!responseDetails || questionsFromDetails.length === 0) && !surveyInfo) {
     console.warn("QuestionsList: Missing required data", {
       hasResponseDetails: !!responseDetails,
       hasSurveyInfo: !!surveyInfo,
       dataPath,
       responseDetailsKeys: responseDetails ? Object.keys(responseDetails) : [],
+      questionsCount: questionsFromDetails.length,
+      isArray: Array.isArray(responseDetails),
     });
     const commonTexts = rootUiTexts?.common?.errors || {};
     const dataNotFound = commonTexts.dataNotFound || "Data not found.";
@@ -528,41 +550,33 @@ export function QuestionsList({
         <p className="text-sm mt-2">dataPath: {dataPath || notSpecified}</p>
         {responseDetails && (
           <p className="text-xs mt-1">
-            {availableKeys} {Object.keys(responseDetails).join(", ")}
+            {availableKeys} {Array.isArray(responseDetails) ? "Array of questions" : Object.keys(responseDetails).join(", ")}
           </p>
         )}
       </div>
     );
   }
 
-
-  // Verificar se questions existe e é um array
-  if (!responseDetails.questions || !Array.isArray(responseDetails.questions)) {
+  // Verificar se temos questões (suporta tanto responseDetails.questions quanto array direto)
+  if (questionsFromDetails.length === 0) {
     const commonTexts = rootUiTexts?.common?.errors || {};
     const questionsNotFound =
       commonTexts.questionsNotFound || "Questions not found.";
     const availableStructure =
       commonTexts.availableStructure || "Available structure:";
     const none = commonTexts.none || "none";
-    const questionsExists =
-      commonTexts.questionsExists || "responseDetails.questions exists?";
-    const yes = commonTexts.yes || "yes";
-    const no = commonTexts.no || "no";
-    const isArray = commonTexts.isArray || "Is array?";
 
     return (
       <div className="p-4 text-center text-muted-foreground">
         <p>{questionsNotFound}</p>
         <p className="text-sm mt-2">
           {availableStructure}{" "}
-          {responseDetails ? Object.keys(responseDetails).join(", ") : none}
+          {responseDetails 
+            ? (Array.isArray(responseDetails) 
+                ? `Array with ${responseDetails.length} items` 
+                : Object.keys(responseDetails).join(", "))
+            : none}
         </p>
-        {responseDetails && (
-          <p className="text-xs mt-1">
-            {questionsExists} {responseDetails.questions ? yes : no} | {isArray}{" "}
-            {Array.isArray(responseDetails.questions) ? yes : no}
-          </p>
-        )}
       </div>
     );
   }
@@ -610,7 +624,7 @@ export function QuestionsList({
   };
 
   const getQuestionType = (question) => {
-    const questionType = question.type;
+    const questionType = question.questionType;
     // Use type directly from JSON
     return questionTypeMap[questionType] || questionTypeMap["multiple-choice"];
   };
@@ -624,18 +638,13 @@ export function QuestionsList({
   };
 
   const getQuestionIcon = (question) => {
-    // Use icon from question if specified, otherwise use type-based icon
-    if (question.icon) {
-      const IconComponent = getIcon(question.icon);
-      if (IconComponent) return IconComponent;
-    }
     // Use type from JSON to get icon
-    const questionType = question.type || "multiple-choice";
+    const questionType = question.questionType || "multiple-choice";
     return questionIconMap[questionType] || CheckSquare;
   };
 
   const getTotalResponses = (question) => {
-    const questionType = question.type;
+    const questionType = question.questionType;
     // Use type from JSON to determine response calculation
     // For closed and NPS questions, sum all values
     if (
@@ -643,7 +652,14 @@ export function QuestionsList({
       "data" in question &&
       question.data
     ) {
-      return question.data.reduce((sum, item) => sum + (item.value || 0), 0);
+      // Access data based on component name: barChart for multiple-choice/single-choice, npsStackedChart for nps
+      const dataArray = questionType === "nps" 
+        ? question.data.npsStackedChart 
+        : question.data.barChart;
+      
+      if (dataArray && Array.isArray(dataArray)) {
+        return dataArray.reduce((sum, item) => sum + (item.value || 0), 0);
+      }
     }
     // For open questions, use total survey respondents
     if (questionType === "open-ended") {
@@ -676,12 +692,12 @@ export function QuestionsList({
   };
 
   const QuestionTypePill = ({ question }) => {
-    const questionType = question.type || "multiple-choice";
+    const questionType = question.questionType || "multiple-choice";
 
     const badgeConfig = getBadgeConfig(questionType);
     const badgeVariant = badgeConfig?.variant || "outline";
     const badgeLabel = badgeConfig?.label || getQuestionType(question);
-    const badgeIconName = badgeConfig?.icon || question.icon;
+    const badgeIconName = badgeConfig?.icon;
     const BadgeIcon = badgeIconName
       ? getIcon(badgeIconName)
       : getQuestionIcon(question);
@@ -762,7 +778,7 @@ export function QuestionsList({
 
       if (question) {
         setTimeout(() => {
-          const questionValue = `${question.type}-${question.id}`;
+          const questionValue = `${question.questionType}-${question.id}`;
           setOpenAccordionValue(questionValue);
 
           setTimeout(() => {
@@ -796,7 +812,7 @@ export function QuestionsList({
         (q) => q.id === selectedQuestionId
       );
       if (question) {
-        const questionValue = `${question.type}-${question.id}`;
+        const questionValue = `${question.questionType}-${question.id}`;
         setOpenAccordionValue(questionValue);
 
         setTimeout(() => {
@@ -844,7 +860,7 @@ export function QuestionsList({
                   <p className="text-xs mt-1">
                     {questionsInResponseDetails}{" "}
                     {responseDetails?.questions
-                      ?.map((q) => `ID:${q.id}(type:${q.type})`)
+                      ?.map((q) => `ID:${q.id}(type:${q.questionType})`)
                       .join(", ") || none}
                   </p>
                 </>
@@ -853,7 +869,7 @@ export function QuestionsList({
           </div>
         ) : (
           allAvailableQuestions.map((question, index) => {
-            const questionValue = `${question.type}-${question.id}`;
+            const questionValue = `${question.questionType}-${question.id}`;
             const isHighlighted = highlightedQuestionId === question.id;
             const isOpen = openAccordionValue === questionValue;
             const displayNumber = index + 1;

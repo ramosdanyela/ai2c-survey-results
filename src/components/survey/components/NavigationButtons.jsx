@@ -6,20 +6,15 @@ import {
   RGBA_WHITE_20,
 } from "@/lib/colors";
 import { useSurveyData } from "@/hooks/useSurveyData";
-import { getAttributesFromData } from "@/services/dataResolver";
+import { getAttributesFromData, getQuestionsFromData } from "@/services/dataResolver";
 
 /**
  * Get all questions for navigation (sorted by index)
  * Programmatically built from data
+ * Uses getQuestionsFromData to support both new (sectionConfig.questions) and old structures
  */
 function getAllQuestions(data) {
-  const responsesSection = data?.sections?.find(
-    (s) => s.id === "responses"
-  );
-
-  if (!responsesSection?.data?.questions) return [];
-
-  const allQuestions = responsesSection.data.questions
+  const allQuestions = getQuestionsFromData(data)
     .sort((a, b) => (a.index || 0) - (b.index || 0));
 
   return allQuestions.map((q) => ({
@@ -30,15 +25,10 @@ function getAllQuestions(data) {
 
 /**
  * Get display number based on real questionId (1-based index in sorted list)
+ * Uses getQuestionsFromData to support both new (sectionConfig.questions) and old structures
  */
 function getDisplayNumber(questionId, data) {
-  const responsesSection = data?.sections?.find(
-    (s) => s.id === "responses"
-  );
-
-  if (!responsesSection?.data?.questions) return questionId;
-
-  const allQuestions = responsesSection.data.questions
+  const allQuestions = getQuestionsFromData(data)
     .sort((a, b) => (a.index || 0) - (b.index || 0));
 
   const index = allQuestions.findIndex((q) => q.id === questionId);
@@ -53,15 +43,29 @@ function getAllAttributes(data) {
     (s) => s.id === "attributes"
   );
 
-  if (!attributesSection?.data?.attributes) return [];
+  // NEW STRUCTURE: Use subsections
+  if (attributesSection?.subsections && Array.isArray(attributesSection.subsections)) {
+    return attributesSection.subsections
+      .filter((sub) => sub.icon && sub.id && sub.id.startsWith("attributes-"))
+      .map((sub) => ({
+        id: sub.id, // Keep full ID (attributes-department, etc.)
+        index: sub.index || 0,
+      }))
+      .sort((a, b) => (a.index || 0) - (b.index || 0));
+  }
 
-  return attributesSection.data.attributes
-    .filter((attr) => attr.icon)
-    .sort((a, b) => (a.index || 0) - (b.index || 0))
-    .map((attr) => ({
-      id: `attributes-${attr.id}`,
-      index: attr.index || 0,
-    }));
+  // OLD STRUCTURE: Fallback to data.attributes (backward compatibility)
+  if (attributesSection?.data?.attributes) {
+    return attributesSection.data.attributes
+      .filter((attr) => attr.icon)
+      .sort((a, b) => (a.index || 0) - (b.index || 0))
+      .map((attr) => ({
+        id: `attributes-${attr.id}`,
+        index: attr.index || 0,
+      }));
+  }
+
+  return [];
 }
 
 /**
@@ -192,16 +196,29 @@ function getSectionIconFromConfig(sectionId, data) {
     typeof sectionId === "string" &&
     sectionId.startsWith("attributes-")
   ) {
-    const attributeId = sectionId.replace("attributes-", "");
     const attributesSection = data?.sections?.find(
       (s) => s.id === "attributes"
     );
+    
+    // NEW STRUCTURE: Check subsections first
+    if (attributesSection?.subsections) {
+      const subsection = attributesSection.subsections.find(
+        (sub) => sub.id === sectionId
+      );
+      if (subsection && subsection.icon) {
+        return getIcon(subsection.icon);
+      }
+    }
+    
+    // OLD STRUCTURE: Fallback to data.attributes (backward compatibility)
+    const attributeId = sectionId.replace("attributes-", "");
     const attribute = attributesSection?.data?.attributes?.find(
       (attr) => attr.id === attributeId
     );
     if (attribute && attribute.icon) {
       return getIcon(attribute.icon);
     }
+    
     // Fallback to section icon
     if (attributesSection && attributesSection.icon) {
       return getIcon(attributesSection.icon);
@@ -218,11 +235,6 @@ function getSectionIconFromConfig(sectionId, data) {
     const responsesSection = data?.sections?.find(
       (s) => s.id === "responses"
     );
-    const allQuestions = responsesSection?.data?.questions || [];
-    const question = allQuestions.find((q) => q.id === questionId);
-    if (question && question.icon) {
-      return getIcon(question.icon);
-    }
     // Fallback to section icon
     if (responsesSection && responsesSection.icon) {
       return getIcon(responsesSection.icon);
@@ -475,10 +487,22 @@ function getSubsectionTitle(sectionId, data, maxLength = 40) {
     sectionId.startsWith("attributes-") &&
     !sectionId.includes("template")
   ) {
-    const attributeId = sectionId.replace("attributes-", "");
     const attributesSection = data?.sections?.find(
       (s) => s.id === "attributes"
     );
+    
+    // NEW STRUCTURE: Check subsections first
+    if (attributesSection?.subsections) {
+      const subsection = attributesSection.subsections.find(
+        (sub) => sub.id === sectionId
+      );
+      if (subsection?.name) {
+        return subsection.name;
+      }
+    }
+    
+    // OLD STRUCTURE: Fallback to data.attributes (backward compatibility)
+    const attributeId = sectionId.replace("attributes-", "");
     const attribute = attributesSection?.data?.attributes?.find(
       (attr) => attr.id === attributeId
     );

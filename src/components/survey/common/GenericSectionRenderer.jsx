@@ -11,6 +11,7 @@ import {
   resolveTemplate,
   getQuestionsFromData,
 } from "@/services/dataResolver";
+import { getQuestionTemplate } from "@/config/questionTemplates";
 
 /**
  * Decide se o componente deve ser exibido. Lógica no código (não em condition no JSON).
@@ -110,7 +111,7 @@ function SchemaComponent({
 
     // Special case for h3 with "Respostas" text (can be overridden by className in wrapperProps)
     if (wrapper === "h3" && !wrapperProps.className) {
-      const resolvedText = resolveTemplate(component.text || "", data);
+      const resolvedText = resolveTemplate(component.text || component.content || "", data);
       if (
         resolvedText &&
         (resolvedText.includes("Respostas") || resolvedText.includes("responses"))
@@ -530,6 +531,57 @@ export function GenericSectionRenderer({
   const sectionData = useMemo(() => {
     if (!data || !sectionId) return null;
 
+    // Special handling for attributes section: build sectionData from subsections data
+    if (sectionId === "attributes" && sectionConfig?.subsections) {
+      const attributesData = {};
+      
+      // Map subsection data to sectionData keys (department, tenure, role)
+      // This allows dataPath like "sectionData.department.distributionChart" to work
+      sectionConfig.subsections.forEach((subsection) => {
+        if (subsection.data) {
+          // Map attributes-department -> department
+          if (subsection.id === "attributes-department") {
+            attributesData.department = subsection.data;
+          }
+          // Map attributes-tenure -> tenure
+          else if (subsection.id === "attributes-tenure") {
+            attributesData.tenure = subsection.data;
+          }
+          // Map attributes-role -> role
+          else if (subsection.id === "attributes-role") {
+            attributesData.role = subsection.data;
+          }
+        }
+      });
+      
+      // Return the mapped data (no need to merge with sectionConfig.data since it was removed)
+      return attributesData;
+    }
+
+    // Special handling for responses section: include questions directly in sectionData
+    if (sectionId === "responses") {
+      const responsesData = {};
+      
+      // Include questions if they exist directly in sectionConfig
+      if (sectionConfig?.questions && Array.isArray(sectionConfig.questions)) {
+        responsesData.questions = sectionConfig.questions;
+      }
+      
+      // Also include sectionConfig.data if it exists (for uiTexts, etc.)
+      if (sectionConfig?.data) {
+        Object.assign(responsesData, sectionConfig.data);
+        // Ensure questions from sectionConfig.questions takes precedence
+        if (sectionConfig.questions && Array.isArray(sectionConfig.questions)) {
+          responsesData.questions = sectionConfig.questions;
+        }
+      }
+      
+      // If we have questions, return the data object
+      if (responsesData.questions || Object.keys(responsesData).length > 0) {
+        return responsesData;
+      }
+    }
+
     // Priority 1: sectionConfig.data (new structure - preferred)
     if (sectionConfig?.data) {
       return sectionConfig.data;
@@ -682,7 +734,6 @@ export function GenericSectionRenderer({
       return questions.map((question) => ({
         id: `responses-${question.id}`,
         name: question.question,
-        icon: question.icon,
         index: question.index ?? 999,
         question: question, // Keep full question object for special rendering
         // Use components from sectionConfig or renderSchema for each question subsection
@@ -715,7 +766,12 @@ export function GenericSectionRenderer({
   // Find the active subsection
   const activeSubsection = useMemo(() => {
     if (!subSection) {
-      // Return first subsection if none specified
+      // Special handling for responses: when no subSection is specified,
+      // don't return the first subsection automatically - we want to show the questions list
+      if (sectionId === "responses") {
+        return null;
+      }
+      // Return first subsection if none specified (for other sections)
       return subsections[0] || null;
     }
 
@@ -759,17 +815,65 @@ export function GenericSectionRenderer({
       }
     } else {
       // With subsections, get from activeSubsection
-      // Components should already be in activeSubsection from the subsections processing above
+      // Special handling for responses section: if activeSubsection has a question object,
+      // use the questionType template instead of components from config
       if (!activeSubsection) {
         return [];
       }
-      if (
-        !activeSubsection?.components ||
-        !Array.isArray(activeSubsection.components)
-      ) {
-        return [];
+      
+      // Special case: for responses section with a question, use questionType template
+      if (sectionId === "responses" && activeSubsection.question) {
+        const question = activeSubsection.question;
+        const questionType = question.questionType;
+        
+        if (questionType) {
+          const template = getQuestionTemplate(questionType);
+          if (template && Array.isArray(template) && template.length > 0) {
+            // Use template components for this question type
+            rawComponents = [...template];
+          } else {
+            console.warn(`No template found for question type: ${questionType}`);
+            return [];
+          }
+        } else {
+          console.warn("Question missing questionType:", question);
+          return [];
+        }
+      } else {
+        // Normal case: use components from activeSubsection
+        if (
+          !activeSubsection?.components ||
+          !Array.isArray(activeSubsection.components)
+        ) {
+          return [];
+        }
+        rawComponents = [...activeSubsection.components];
       }
-      rawComponents = [...activeSubsection.components];
+    }
+
+    // For "responses" section: automatically add filterPills before questionsList
+    // Only add filterPills when showing the questions list, not when showing a specific question
+    // When activeSubsection has a question object, we're showing a specific question, so skip filterPills
+    if (sectionId === "responses" && !activeSubsection?.question) {
+      // Filter out any existing filterPills from JSON
+      rawComponents = rawComponents.filter(comp => comp.type !== "filterPills");
+      
+      // Find the index of the first questionsList component
+      const questionsListIndex = rawComponents.findIndex(comp => comp.type === "questionsList");
+      
+      // Create filterPills component
+      const filterPillsComponent = {
+        type: "filterPills",
+        index: questionsListIndex >= 0 ? questionsListIndex : 0,
+        config: {}
+      };
+      
+      // Insert filterPills before questionsList, or at the beginning if no questionsList found
+      if (questionsListIndex >= 0) {
+        rawComponents.splice(questionsListIndex, 0, filterPillsComponent);
+      } else {
+        rawComponents.unshift(filterPillsComponent);
+      }
     }
 
     // Sort by index
@@ -784,9 +888,11 @@ export function GenericSectionRenderer({
   }, [
     activeSubsection,
     activeSubsection?.components,
+    activeSubsection?.question,
     hasSubsections,
     renderSchema?.components,
     sectionConfig?.components,
+    sectionId,
   ]);
 
   // Merge section-specific uiTexts into data context
@@ -878,6 +984,12 @@ export function GenericSectionRenderer({
       enhanced._exportWordCloud = exportWordCloud;
     }
 
+    // Special handling for responses section: if a specific question is selected,
+    // add the question object to enhancedData so components can access it
+    if (sectionId === "responses" && activeSubsection?.question) {
+      enhanced.question = activeSubsection.question;
+    }
+
     // Debug: verify uiTexts is present in final enhancedData
     if (!enhanced.uiTexts) {
       console.error("GenericSectionRenderer: enhancedData missing uiTexts!", {
@@ -899,6 +1011,7 @@ export function GenericSectionRenderer({
     sectionData,
     isExport,
     exportWordCloud,
+    activeSubsection,
   ]);
 
   // NEW STRUCTURE: Sections can work without renderSchema if components are directly in subsections
@@ -927,8 +1040,54 @@ export function GenericSectionRenderer({
     subSection.startsWith("responses-") &&
     !hasSubsections;
 
-  // If has subsections, require activeSubsection (unless it's responses with questionId)
-  if (hasSubsections && !activeSubsection && !isResponsesWithQuestionId) {
+  // Special handling for responses section: if no subSection specified, render questionsList at root
+  // This handles the case where the section has questions but no specific subsection is selected
+  // For "responses" section, when no subSection is specified, we want to show all questions in a list,
+  // not the first question as a subsection
+  if (sectionId === "responses" && !subSection && !isExport) {
+    const questions = getQuestionsFromData(data);
+    if (questions.length > 0) {
+      const questionsListComponent = {
+        type: "questionsList",
+        index: 0,
+        dataPath: "sectionData",
+        config: {}
+      };
+      
+      // Also add filterPills before questionsList
+      const filterPillsComponent = {
+        type: "filterPills",
+        index: 0,
+        config: {}
+      };
+      
+      return (
+        <div className="space-y-8 animate-fade-in">
+          <section>
+            <div className="space-y-6">
+              {renderComponent(filterPillsComponent, enhancedData, {
+                subSection,
+                isExport,
+                exportWordCloud,
+              })}
+              {renderComponent(questionsListComponent, enhancedData, {
+                subSection,
+                isExport,
+                exportWordCloud,
+              })}
+            </div>
+          </section>
+        </div>
+      );
+    }
+  }
+
+  // If has subsections, require activeSubsection (unless it's responses with questionId or responses without subSection)
+  // Special case: for responses section, when no subSection is specified, we want to show the questions list,
+  // so we allow hasSubsections=true with activeSubsection=null
+  const isResponsesWithoutSubSection = sectionId === "responses" && !subSection;
+  
+  if (hasSubsections && !activeSubsection && !isResponsesWithQuestionId && !isResponsesWithoutSubSection) {
     // Debug: log what we're looking for
     console.warn("GenericSectionRenderer: Subsection not found", {
       sectionId,
@@ -969,16 +1128,45 @@ export function GenericSectionRenderer({
     containerClassName = "space-y-6";
   }
 
+  // Special handling for responses section: when showing an individual question,
+  // don't use SubsectionTitle - use the old question structure instead
+  const isResponsesQuestion = sectionId === "responses" && activeSubsection?.question;
+
   return (
     <div className="space-y-8 animate-fade-in">
       <section>
         <div className="space-y-6">
-          {/* Subsection Title - show only if has subsections */}
-          {hasSubsections && activeSubsection ? (
+          {/* Subsection Title - show only if has subsections and activeSubsection exists */}
+          {/* For responses section with individual question: use old question structure (no SubsectionTitle) */}
+          {/* For other sections or responses without question: use SubsectionTitle */}
+          {hasSubsections && activeSubsection && !isResponsesQuestion ? (
             <SubsectionTitle
               title={activeSubsection?.name || "Subseção"}
               icon={SubsectionIcon}
+              summary={activeSubsection?.summary}
             />
+          ) : null}
+          
+          {/* For responses section with individual question: render question title and summary in old structure */}
+          {isResponsesQuestion && activeSubsection?.question ? (
+            <div className="space-y-6">
+              {/* Question Title - old structure (h2 instead of SubsectionTitle Card) */}
+              <div className="space-y-3">
+                <h2 className="text-2xl font-bold text-foreground">
+                  {activeSubsection.question.question}
+                </h2>
+                {/* Question Summary - old structure */}
+                {activeSubsection.question.summary && (
+                  <div className="text-muted-foreground space-y-3">
+                    {activeSubsection.question.summary.split("\n").map((line, index) => (
+                      <p key={index} className={line.trim() ? "" : "h-3"}>
+                        {line}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
           ) : null}
 
           {/* Render components in order */}
@@ -1006,10 +1194,82 @@ export function GenericSectionRenderer({
                   />
                 );
               })}
+              
+              {/* For responses section without subsections: automatically render questionsList if not present */}
+              {sectionId === "responses" && !hasSubsections && !isExport && (
+                (() => {
+                  const hasQuestionsList = components.some(c => c.type === "questionsList");
+                  const questions = getQuestionsFromData(data);
+                  
+                  if (!hasQuestionsList && questions.length > 0) {
+                    const questionsListComponent = {
+                      type: "questionsList",
+                      index: 999, // Render after filterPills
+                      dataPath: "sectionData",
+                      config: {}
+                    };
+                    
+                    return (
+                      <React.Fragment key={`${sectionId}-${subSection || "root"}-auto-questionsList`}>
+                        {renderComponent(questionsListComponent, enhancedData, {
+                          subSection,
+                          isExport,
+                          exportWordCloud,
+                        })}
+                      </React.Fragment>
+                    );
+                  }
+                  return null;
+                })()
+              )}
             </div>
           )}
 
-          {components.length === 0 && (
+          {/* For responses section: render questionsList even if no components or when hasSubsections but no activeSubsection */}
+          {sectionId === "responses" && !isExport && 
+           ((!hasSubsections && components.length === 0) || (hasSubsections && !activeSubsection && components.length === 0)) && (
+            (() => {
+              const questions = getQuestionsFromData(data);
+              if (questions.length > 0) {
+                // Add filterPills before questionsList
+                const filterPillsComponent = {
+                  type: "filterPills",
+                  index: 0,
+                  config: {}
+                };
+                
+                const questionsListComponent = {
+                  type: "questionsList",
+                  index: 1,
+                  dataPath: "sectionData",
+                  config: {}
+                };
+                
+                return (
+                  <div className={containerClassName}>
+                    {renderComponent(filterPillsComponent, enhancedData, {
+                      subSection,
+                      isExport,
+                      exportWordCloud,
+                    })}
+                    {renderComponent(questionsListComponent, enhancedData, {
+                      subSection,
+                      isExport,
+                      exportWordCloud,
+                    })}
+                  </div>
+                );
+              }
+              return (
+                <p className="text-muted-foreground">
+                  Nenhum componente definido para esta{" "}
+                  {hasSubsections ? "subseção" : "seção"}.
+                </p>
+              );
+            })()
+          )}
+
+          {sectionId !== "responses" && components.length === 0 && (
             <p className="text-muted-foreground">
               Nenhum componente definido para esta{" "}
               {hasSubsections ? "subseção" : "seção"}.

@@ -23,8 +23,7 @@ O arquivo `surveyData.json` é o arquivo central que define toda a estrutura e c
 ```json
 {
   "metadata": { ... },
-  "sectionsConfig": { ... },
-  "components": { ... },
+  "sections": [ ... ],
   "uiTexts": { ... },
   "surveyInfo": { ... }
 }
@@ -33,10 +32,11 @@ O arquivo `surveyData.json` é o arquivo central que define toda a estrutura e c
 ### Visão Geral dos Campos Principais
 
 - **`metadata`**: Informações básicas sobre a pesquisa (versão, idioma, ID)
-- **`sectionsConfig`**: Define todas as seções, subseções e seus schemas de renderização
-- **`components`**: (Opcional) Documentação dos tipos de componentes disponíveis
+- **`sections`**: Array de seções que define todas as seções, subseções e seus schemas de renderização
 - **`uiTexts`**: Textos estáticos da interface que não mudam com os dados da pesquisa
 - **`surveyInfo`**: Informações gerais da pesquisa (título, empresa, período, NPS, etc.)
+
+**⚠️ Mudança importante:** A estrutura agora usa `sections` diretamente no nível raiz (não mais `sectionsConfig.sections`).
 
 ---
 
@@ -63,34 +63,32 @@ Informações básicas da pesquisa.
 
 ---
 
-### 2. `sectionsConfig`
+### 2. `sections`
 
 Define as seções da pesquisa. Cada seção pode ter subseções e um schema de renderização que define como os componentes são exibidos.
 
 ```json
 {
-  "sectionsConfig": {
-    "sections": [
-      {
-        "id": "executive",
-        "index": 0,
-        "name": "Relatório Executivo",
-        "icon": "FileText",
-        "subsections": [
-          {
-            "id": "executive-summary",
-            "index": 0,
-            "name": "Sumário Executivo",
-            "icon": "ClipboardList"
-          }
-        ],
-        "data": {
-          "renderSchema": { ... },
-          "summary": { ... }
+  "sections": [
+    {
+      "id": "executive",
+      "index": 0,
+      "name": "Relatório Executivo",
+      "icon": "FileText",
+      "subsections": [
+        {
+          "id": "executive-summary",
+          "index": 0,
+          "name": "Sumário Executivo",
+          "icon": "ClipboardList"
         }
+      ],
+      "data": {
+        "renderSchema": { ... },
+        "summary": { ... }
       }
-    ]
-  }
+    }
+  ]
 }
 ```
 
@@ -182,28 +180,26 @@ Esta seção contém todas as traduções e textos da interface que são fixos, 
 
 ## 🏗️ Criando uma Seção
 
-### Passo 1: Adicionar em `sectionsConfig.sections`
+### Passo 1: Adicionar em `sections`
 
 ```json
 {
-  "sectionsConfig": {
-    "sections": [
-      {
-        "id": "minha-secao",
-        "index": 0,
-        "name": "Minha Seção",
-        "icon": "BarChart3",
-        "subsections": [
-          {
-            "id": "minha-subsecao",
-            "index": 0,
-            "name": "Minha Subseção",
-            "icon": "TrendingUp"
-          }
-        ]
-      }
-    ]
-  }
+  "sections": [
+    {
+      "id": "minha-secao",
+      "index": 0,
+      "name": "Minha Seção",
+      "icon": "BarChart3",
+      "subsections": [
+        {
+          "id": "minha-subsecao",
+          "index": 0,
+          "name": "Minha Subseção",
+          "icon": "TrendingUp"
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -227,7 +223,7 @@ O `renderSchema` define como os componentes são renderizados. **O `name` pode s
               "index": 0,
               "title": "{{uiTexts.minhaSecao.titulo}}",
               "text": "{{sectionData.descricao}}",
-              "styleVariant": "default"
+              "cardStyleVariant": "default"
             }
           ]
         }
@@ -291,9 +287,9 @@ Como o código é programático, você pode definir o `name` diretamente no `ren
             {
               "type": "card",
               "index": 0,
-              "title": "Título do Card",
-              "text": "Conteúdo do card",
-              "styleVariant": "default"
+                  "title": "Título do Card",
+                  "text": "Conteúdo do card",
+                  "cardStyleVariant": "default"
             }
           ]
         }
@@ -337,26 +333,24 @@ As questões ficam dentro da seção `responses` (ou qualquer seção que use `q
 
 ```json
 {
-  "sectionsConfig": {
-    "sections": [
-      {
-        "id": "responses",
-        "data": {
-          "questions": [
-            {
-              "id": 1,
-              "index": 1,
-              "question": "Qual é a probabilidade de você recomendar...",
-              "icon": "Percent",
-              "summary": "Com 51% dos entrevistados...",
-              "data": [ ... ],
-              "type": "nps"
-            }
-          ]
-        }
+  "sections": [
+    {
+      "id": "responses",
+      "data": {
+        "questions": [
+          {
+            "id": 1,
+            "index": 1,
+            "question": "Qual é a probabilidade de você recomendar...",
+            "icon": "Percent",
+            "summary": "Com 51% dos entrevistados...",
+            "data": [ ... ],
+            "type": "nps"
+          }
+        ]
       }
-    ]
-  }
+    }
+  ]
 }
 ```
 
@@ -547,20 +541,18 @@ Cada seção pode ter seus próprios textos em `data.uiTexts`. Estes textos têm
 
 ```json
 {
-  "sectionsConfig": {
-    "sections": [
-      {
-        "id": "responses",
-        "data": {
-          "uiTexts": {
-            "summary": "Sumário:",
-            "wordCloud": "Nuvem de Palavras",
-            "top3Categories": "Top 3 Categorias"
-          }
+  "sections": [
+    {
+      "id": "responses",
+      "data": {
+        "uiTexts": {
+          "summary": "Sumário:",
+          "wordCloud": "Nuvem de Palavras",
+          "top3Categories": "Top 3 Categorias"
         }
       }
-    ]
-  }
+    }
+  ]
 }
 ```
 
@@ -594,8 +586,8 @@ Exibe conteúdo com título e corpo.
   "index": 0,
   "title": "{{uiTexts.titulo}}",
   "text": "{{sectionData.conteudo}}",
-  "styleVariant": "default",
-  "textStyleVariant": "with-description",
+  "cardStyleVariant": "default",
+  "cardContentVariant": "with-description",
   "components": [ ... ]
 }
 ```
@@ -606,10 +598,12 @@ Exibe conteúdo com título e corpo.
 - `index`: Ordem (number, opcional)
 - `title`: Título (string, suporta templates)
 - `text`: Texto (string, suporta templates)
-- `styleVariant`: Estilo do card (string, opcional)
+- `cardStyleVariant`: Estilo do card (string, opcional)
   - Valores: `"default"`, `"highlight"`, `"border-left"`, `"overflow-hidden"`, `"flex-column"`
-- `textStyleVariant`: Estilo do texto/conteúdo interno (string, opcional)
+- `cardContentVariant`: Estilo do conteúdo interno (string, opcional)
   - Valores: `"with-description"`, `"with-charts"`, `"with-tables"`
+  
+**⚠️ Mudança:** `styleVariant` foi renomeado para `cardStyleVariant` e `textStyleVariant` foi renomeado para `cardContentVariant` para maior clareza.
 - `useDescription`: Usar CardDescription (boolean, opcional)
 - `components`: Componentes filhos (array, opcional)
 - `condition`: Condição para renderizar (string, opcional)
@@ -1060,7 +1054,7 @@ Ver seção [Gerenciando Questões](#gerenciando-questões) para exemplos comple
 
 ### Como adicionar uma nova seção?
 
-1. Adicione em `sectionsConfig.sections`:
+1. Adicione em `sections`:
 
 ```json
 {
@@ -1115,7 +1109,7 @@ Use `dataPath` com o caminho completo:
 
 ```json
 {
-  "dataPath": "sectionsConfig.sections[0].data.summary"
+  "dataPath": "sections[0].data.summary"
 }
 ```
 
@@ -1194,7 +1188,7 @@ Use `hasSubsections: false` e `components` diretamente:
 
 ### E o item Export?
 
-O **Export não fica em `sectionsConfig.sections`**. Só é preciso ter **`uiTexts.export`** com os textos (ex.: `title`, `description`, `exportFullReport`, etc.). O app injeta o item no fim do menu usando `uiTexts.export.title` e ícone "Download". A página de Export usa as seções de `sectionsConfig.sections` para montar as opções. A rota /export é sempre oferecida pelo app.
+O **Export não fica em `sections`**. Só é preciso ter **`uiTexts.export`** com os textos (ex.: `title`, `description`, `exportFullReport`, etc.). O app injeta o item no fim do menu usando `uiTexts.export.title` e ícone "Download". A página de Export usa as seções de `sections` para montar as opções. A rota /export é sempre oferecida pelo app.
 
 ```json
 "uiTexts": {
@@ -1212,7 +1206,7 @@ O **Export não fica em `sectionsConfig.sections`**. Só é preciso ter **`uiTex
 
 ### Quais são os styleVariants disponíveis?
 
-#### `styleVariant` (estilo do card)
+#### `cardStyleVariant` (estilo do card)
 
 - `default`: Estilo padrão do card
 - `highlight`: Card com destaque visual
@@ -1220,13 +1214,15 @@ O **Export não fica em `sectionsConfig.sections`**. Só é preciso ter **`uiTex
 - `overflow-hidden`: Card com overflow oculto (útil para tabelas)
 - `flex-column`: Card com layout em coluna
 
-#### `textStyleVariant` (estilo do conteúdo interno)
+#### `cardContentVariant` (estilo do conteúdo interno)
 
 - `with-description`: Layout otimizado para conteúdo descritivo
 - `with-charts`: Layout otimizado para exibir gráficos
 - `with-tables`: Layout otimizado para exibir tabelas
 
-**Nota:** `styleVariant` e `textStyleVariant` são propriedades diferentes e podem ser usadas juntas.
+**⚠️ Mudança:** `styleVariant` foi renomeado para `cardStyleVariant` e `textStyleVariant` foi renomeado para `cardContentVariant`.
+
+**Nota:** `cardStyleVariant` e `cardContentVariant` são propriedades diferentes e podem ser usadas juntas.
 
 ---
 
@@ -1236,45 +1232,43 @@ O **Export não fica em `sectionsConfig.sections`**. Só é preciso ter **`uiTex
 
 ```json
 {
-  "sectionsConfig": {
-    "sections": [
-      {
-        "id": "exemplo-simples",
-        "index": 0,
-        "name": "Exemplo Simples",
-        "icon": "FileText",
-        "subsections": [
-          {
-            "id": "exemplo-subsecao",
-            "index": 0,
-            "icon": "ClipboardList"
-          }
-        ],
-        "data": {
-          "renderSchema": {
-            "subsections": [
-              {
-                "id": "exemplo-subsecao",
-                "index": 0,
-                "name": "Subseção de Exemplo",
-                "icon": "ClipboardList",
-                "components": [
-                  {
-                    "type": "card",
-                    "index": 0,
-                    "title": "{{uiTexts.exemplo.titulo}}",
-                    "text": "{{sectionData.descricao}}",
-                    "styleVariant": "default"
-                  }
-                ]
-              }
-            ]
-          },
-          "descricao": "Esta é uma descrição de exemplo."
+  "sections": [
+    {
+      "id": "exemplo-simples",
+      "index": 0,
+      "name": "Exemplo Simples",
+      "icon": "FileText",
+      "subsections": [
+        {
+          "id": "exemplo-subsecao",
+          "index": 0,
+          "icon": "ClipboardList"
         }
+      ],
+      "data": {
+        "renderSchema": {
+          "subsections": [
+            {
+              "id": "exemplo-subsecao",
+              "index": 0,
+              "name": "Subseção de Exemplo",
+              "icon": "ClipboardList",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "{{uiTexts.exemplo.titulo}}",
+                  "text": "{{sectionData.descricao}}",
+                  "cardStyleVariant": "default"
+                }
+              ]
+            }
+          ]
+        },
+        "descricao": "Esta é uma descrição de exemplo."
       }
-    ]
-  },
+    }
+  ],
   "uiTexts": {
     "exemplo": {
       "titulo": "Título de Exemplo"
@@ -1311,8 +1305,8 @@ O **Export não fica em `sectionsConfig.sections`**. Só é preciso ter **`uiTex
               "type": "card",
               "index": 0,
               "title": "{{uiTexts.grafico.titulo}}",
-              "styleVariant": "flex-column",
-              "textStyleVariant": "with-charts",
+              "cardStyleVariant": "flex-column",
+              "cardContentVariant": "with-charts",
               "components": [
                 {
                   "type": "barChart",

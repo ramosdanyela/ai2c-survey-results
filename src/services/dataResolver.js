@@ -8,7 +8,8 @@
  */
 /**
  * Get attributes from data dynamically
- * Looks for attributes in sections[id="attributes"].data.attributes
+ * Looks for attributes in sections[id="attributes"].subsections (new structure)
+ * or in sections[id="attributes"].data.attributes (old structure - backward compatibility)
  * or in data.attributeDeepDive.attributes (legacy support)
  * 
  * @param {Object} data - The survey data object
@@ -17,12 +18,28 @@
 export function getAttributesFromData(data) {
   if (!data) return [];
   
-  // Priority 1: Check sections[id="attributes"].data.attributes (new structure)
+  // Priority 1: Check sections[id="attributes"].subsections (new structure)
   if (data?.sections) {
     const attributesSection = data.sections.find(
       (section) => section.id === "attributes"
     );
     
+    // NEW STRUCTURE: subsections contain the attributes metadata
+    if (attributesSection?.subsections && Array.isArray(attributesSection.subsections)) {
+      // Return subsections as attributes (they have id, index, name, icon, etc.)
+      return attributesSection.subsections
+        .filter((sub) => sub.id && sub.id.startsWith("attributes-"))
+        .map((sub) => ({
+          id: sub.id.replace("attributes-", ""), // Remove prefix for backward compatibility
+          index: sub.index,
+          name: sub.name,
+          icon: sub.icon,
+          summary: sub.summary,
+        }))
+        .sort((a, b) => (a.index || 0) - (b.index || 0));
+    }
+    
+    // OLD STRUCTURE: Check sections[id="attributes"].data.attributes (backward compatibility)
     if (attributesSection?.data?.attributes && Array.isArray(attributesSection.data.attributes)) {
       return attributesSection.data.attributes;
     }
@@ -47,12 +64,18 @@ export function getAttributesFromData(data) {
 export function getQuestionsFromData(data) {
   if (!data) return [];
   
-  // Priority 1: Check sections[id="responses"].data.questions (new structure)
+  // Priority 1: Check sections[id="responses"].questions (new structure - direct questions)
   if (data?.sections) {
     const responsesSection = data.sections.find(
       (section) => section.id === "responses"
     );
     
+    // NEW: Check section.questions directly (preferred)
+    if (responsesSection?.questions && Array.isArray(responsesSection.questions)) {
+      return responsesSection.questions;
+    }
+    
+    // Legacy: Check sections[id="responses"].data.questions (old structure)
     if (responsesSection?.data?.questions && Array.isArray(responsesSection.data.questions)) {
       return responsesSection.data.questions;
     }

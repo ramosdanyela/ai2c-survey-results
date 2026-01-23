@@ -41,7 +41,30 @@ export function SchemaCard({ component, data, children }) {
     }
   }
   
-  const text = resolveTemplate(component.text || "", data);
+  const text = resolveTemplate(component.text || component.content || "", data);
+
+  // Debug: log if text exists but is empty after resolution
+  if (component.text && component.text.trim() !== "" && (!text || text.trim() === "")) {
+    console.warn("SchemaCard: Text was lost during resolution!", {
+      original: component.text,
+      resolved: text,
+      hasData: !!data,
+    });
+  }
+
+  // Debug: log text resolution for flat cards
+  if (component.cardStyleVariant === "flat" && component.text) {
+    console.log("SchemaCard: Flat card text resolution", {
+      original: component.text,
+      resolved: text,
+      hasText: text && text.trim() !== "",
+      component: {
+        type: component.type,
+        cardStyleVariant: component.cardStyleVariant,
+        cardContentVariant: component.cardContentVariant,
+      },
+    });
+  }
 
   // Debug: log if title was not resolved
   if (
@@ -60,30 +83,61 @@ export function SchemaCard({ component, data, children }) {
   const styleClass = component.className || "card-elevated";
 
   // Build style object - adiciona cor da borda para variante border-left
+  // Remove sombra para variante flat
   const styleObj = {};
   if (component.cardStyleVariant === "border-left") {
     styleObj.borderLeftColor = COLOR_ORANGE_PRIMARY;
   }
+  const isFlat = component.cardStyleVariant === "flat";
+  if (isFlat) {
+    styleObj.boxShadow = "none";
+  }
 
   const useDescription = component.useDescription === true;
   const ContentWrapper = useDescription ? CardDescription : "div";
-  const textBaseClassName = useDescription
-    ? "text-base leading-relaxed space-y-3"
-    : "text-muted-foreground font-normal leading-relaxed space-y-3";
+  
+  // Aplica cardContentVariant ao ContentWrapper (não ao CardContent)
+  // O textClassName já contém o cardContentVariant resolvido (ex: "space-y-3" para "flat")
+  const cardContentVariantClass = component.textClassName || "";
+  
+  // Base classes para o texto
+  const baseTextClasses = useDescription
+    ? "text-base leading-relaxed"
+    : "text-muted-foreground font-normal leading-relaxed";
+  
+  // Combina base classes com cardContentVariant
+  // Se cardContentVariant for "flat", já terá "space-y-3" do textClassName
+  const textBaseClassName = `${baseTextClasses} ${cardContentVariantClass}`.trim();
 
   // If children are provided, render them instead of text
   const hasChildren = children && React.Children.count(children) > 0;
   const hasText = text && text.trim() !== "";
 
+  // Debug: log text resolution
+  if (component.text && !hasText) {
+    console.warn("SchemaCard: Text not rendering!", {
+      original: component.text,
+      resolved: text,
+      hasText,
+      component: component,
+    });
+  }
+
   // Usa className do componente enriquecido ou fallback
   const titleClassName =
     component.titleClassName || "text-xl font-bold text-card-foreground";
-  const finalTextClassName = component.textClassName || "";
+  const finalTextClassName = ""; // CardContent não precisa de className extra quando cardContentVariant é aplicado ao ContentWrapper
+
+  // Handlers para desabilitar hover shadow quando for flat
+  const handleMouseEnter = isFlat ? undefined : undefined; // Card component já gerencia
+  const handleMouseLeave = isFlat ? undefined : undefined; // Card component já gerencia
 
   return (
     <Card
       className={styleClass}
       style={Object.keys(styleObj).length > 0 ? styleObj : undefined}
+      onMouseEnter={isFlat ? (e) => { e.currentTarget.style.boxShadow = "none"; } : undefined}
+      onMouseLeave={isFlat ? (e) => { e.currentTarget.style.boxShadow = "none"; } : undefined}
     >
       {title && (
         <CardHeader>
@@ -93,7 +147,7 @@ export function SchemaCard({ component, data, children }) {
       <CardContent className={finalTextClassName}>
         {/* Render text first if it exists */}
         {hasText && (
-          <ContentWrapper className={textBaseClassName}>
+          <ContentWrapper className={textBaseClassName.trim()}>
             {text.split("\n").map((line, index) => (
               <p key={index} className={line.trim() ? "" : "h-3"}>
                 {line}
@@ -113,14 +167,19 @@ export function SchemaCard({ component, data, children }) {
  * All styling is hardcoded - no config needed
  */
 export function SchemaNPSScoreCard({ component, data }) {
-  const surveyInfo = resolveDataPath(data, component.dataPath || "surveyInfo");
+  const npsData = resolveDataPath(data, component.dataPath || "surveyInfo");
   const uiTexts = resolveDataPath(data, "uiTexts");
 
-  if (!surveyInfo || !uiTexts) {
+  // Support both question.data (with npsScore) and surveyInfo (with nps) structures
+  const npsScore = npsData?.npsScore ?? npsData?.nps;
+  const npsCategory = npsData?.npsCategory;
+
+  if (npsScore === undefined || !uiTexts) {
     console.warn(
       `NPSScoreCard: Data not found at path "${
         component.dataPath || "surveyInfo"
-      }"`
+      }" or npsScore/nps is missing`,
+      { npsData, hasNpsScore: !!npsData?.npsScore, hasNps: !!npsData?.nps }
     );
     return null;
   }
@@ -135,16 +194,18 @@ export function SchemaNPSScoreCard({ component, data }) {
       >
         <div className="text-center mb-4">
           <div className="text-5xl font-bold text-foreground mb-2">
-            {surveyInfo.nps}
+            {npsScore}
           </div>
           <div className="text-base font-semibold text-foreground mb-3">
             {uiTexts.responseDetails?.npsScore || "NPS Score"}
           </div>
           {/* Simple bar with score for quick visualization */}
-          <Progress value={(surveyInfo.nps + 100) / 2} className="h-3 mb-2" />
-          <div className="inline-block px-3 py-1 rounded-full highlight-container text-base font-semibold">
-            {surveyInfo.npsCategory}
-          </div>
+          <Progress value={(npsScore + 100) / 2} className="h-3 mb-2" />
+          {npsCategory && (
+            <div className="inline-block px-3 py-1 rounded-full highlight-container text-base font-semibold">
+              {npsCategory}
+            </div>
+          )}
         </div>
       </div>
     </div>

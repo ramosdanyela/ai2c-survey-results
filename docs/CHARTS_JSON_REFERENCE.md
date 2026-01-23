@@ -74,8 +74,7 @@ Este documento descreve como estruturar os dados JSON para utilizar cada tipo de
 
 ```json
 {
-  "sectionsConfig": {
-    "sections": [
+  "sections": [
       {
         "id": "dashboard",
         "data": {
@@ -137,8 +136,7 @@ Este documento descreve como estruturar os dados JSON para utilizar cada tipo de
       }
     ],
     "height": 400,
-    "showGrid": true,
-    "showLegend": true
+    "showGrid": true
   }
 }
 ```
@@ -921,6 +919,5 @@ npm run validate:json src/data/surveyData.json
 
 ---
 
-**Versão:** 1.0  
+**Versão:** 1.1  
 **Última Atualização:** 2025-01-XX
-

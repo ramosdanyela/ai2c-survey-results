@@ -41,11 +41,16 @@ export function SchemaFilterPills({ component, data }) {
 
   const config = component.config || {};
   
+  // Get all questions and determine available types
+  const questions = getQuestionsFromData(data);
+  
+  // Get unique question types from available questions
+  const availableTypes = new Set(questions.map(q => q.questionType).filter(Boolean));
+  
   // Verificar se há questões do tipo "open-ended" que têm wordCloud
   // Apenas questões open-ended têm wordCloud no template (questionTemplates.js)
-  const questions = getQuestionsFromData(data);
   const hasWordCloudQuestions = questions.some(
-    (q) => q.type === "open-ended" && q.data?.wordCloud
+    (q) => q.questionType === "open-ended" && q.data?.wordCloud
   );
   
   // Padrão: true, mas só mostrar se houver questões com wordCloud
@@ -94,6 +99,36 @@ export function SchemaFilterPills({ component, data }) {
     data,
   ]);
 
+  // Define filter badge configurations
+  const filterBadges = [
+    {
+      type: "open-ended",
+      icon: FileText,
+      label: sectionUiTexts?.["open-ended"] ||
+        rootUiTexts?.responseDetails?.["open-ended"] ||
+        "Campo Aberto",
+    },
+    {
+      type: "multiple-choice",
+      icon: CheckSquare,
+      label: sectionUiTexts?.["multiple-choice"] ||
+        rootUiTexts?.responseDetails?.["multiple-choice"] ||
+        "Múltipla Escolha",
+    },
+    {
+      type: "single-choice",
+      icon: CircleDot,
+      label: sectionUiTexts?.["single-choice"] ||
+        rootUiTexts?.responseDetails?.["single-choice"] ||
+        "Escolha única",
+    },
+    {
+      type: "nps",
+      icon: TrendingUp,
+      label: sectionUiTexts?.nps || rootUiTexts?.responseDetails?.nps || "NPS",
+    },
+  ];
+
   return (
     <div className="flex flex-wrap gap-2 items-center mb-6">
       <Badge
@@ -107,60 +142,27 @@ export function SchemaFilterPills({ component, data }) {
       >
         {sectionUiTexts?.all || rootUiTexts?.responseDetails?.all || "Todos"}
       </Badge>
-      <Badge
-        variant={questionFilter === "open-ended" ? "default" : "outline"}
-        className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
-          questionFilter === "open-ended"
-            ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
-            : ""
-        }`}
-        onClick={() => setQuestionFilter("open-ended")}
-      >
-        <FileText className="w-3 h-3" />
-        {sectionUiTexts?.["open-ended"] ||
-          rootUiTexts?.responseDetails?.["open-ended"] ||
-          "Campo Aberto"}
-      </Badge>
-      <Badge
-        variant={questionFilter === "multiple-choice" ? "default" : "outline"}
-        className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
-          questionFilter === "multiple-choice"
-            ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
-            : ""
-        }`}
-        onClick={() => setQuestionFilter("multiple-choice")}
-      >
-        <CheckSquare className="w-3 h-3" />
-        {sectionUiTexts?.["multiple-choice"] ||
-          rootUiTexts?.responseDetails?.["multiple-choice"] ||
-          "Múltipla Escolha"}
-      </Badge>
-      <Badge
-        variant={questionFilter === "single-choice" ? "default" : "outline"}
-        className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
-          questionFilter === "single-choice"
-            ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
-            : ""
-        }`}
-        onClick={() => setQuestionFilter("single-choice")}
-      >
-        <CircleDot className="w-3 h-3" />
-        {sectionUiTexts?.["single-choice"] ||
-          rootUiTexts?.responseDetails?.["single-choice"] ||
-          "Escolha única"}
-      </Badge>
-      <Badge
-        variant={questionFilter === "nps" ? "default" : "outline"}
-        className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
-          questionFilter === "nps"
-            ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
-            : ""
-        }`}
-        onClick={() => setQuestionFilter("nps")}
-      >
-        <TrendingUp className="w-3 h-3" />
-        {sectionUiTexts?.nps || rootUiTexts?.responseDetails?.nps || "NPS"}
-      </Badge>
+      {/* Only show filter badges for question types that exist in the data */}
+      {filterBadges
+        .filter((badge) => availableTypes.has(badge.type))
+        .map((badge) => {
+          const Icon = badge.icon;
+          return (
+            <Badge
+              key={badge.type}
+              variant={questionFilter === badge.type ? "default" : "outline"}
+              className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
+                questionFilter === badge.type
+                  ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
+                  : ""
+              }`}
+              onClick={() => setQuestionFilter(badge.type)}
+            >
+              <Icon className="w-3 h-3" />
+              {badge.label}
+            </Badge>
+          );
+        })}
       {/* Word Cloud Toggle */}
       {showWordCloudToggle && (
         <div className="flex items-center gap-2 ml-auto">

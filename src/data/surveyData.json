@@ -289,7 +289,7 @@
             ]
           },
           {
-            "id": "engagement-intent",
+            "id": "retention-intent",
             "index": 2,
             "name": "Intenção de Permanência",
             "icon": "Target",
@@ -303,7 +303,7 @@
                   {
                     "type": "barChart",
                     "index": 0,
-                    "dataPath": "sectionData.retentionIntent",
+                    "dataPath": "sectionData.retentionIntentChart",
                     "config": {
                       "dataKey": "percentage",
                       "yAxisDataKey": "intent"
@@ -416,7 +416,7 @@
               ]
             }
           ],
-          "retentionIntent": [
+          "retentionIntentChart": [
             {
               "intent": "Pretende permanecer na empresa",
               "percentage": 58,
@@ -440,693 +440,7 @@
         "index": 2,
         "name": "Análise por Atributos",
         "icon": "Layers",
-        "data": {
-          "attributes": [
-            {
-              "id": "department",
-              "index": 0,
-              "name": "Por Departamento",
-              "icon": "Building",
-              "summary": "A análise por departamento revela diferenças significativas na satisfação dos funcionários.\nEngenharia e Marketing apresentam os maiores índices de satisfação, com NPS positivo de 42 e 38 respectivamente.\nVendas e Operações demonstram maior insatisfação, com NPS negativo de -15 e -22.\nEstas diferenças indicam a necessidade de abordagens personalizadas por departamento para melhorar o engajamento.",
-              "distribution": [
-                {
-                  "segment": "Engenharia",
-                  "count": 298,
-                  "percentage": 35
-                },
-                {
-                  "segment": "Vendas",
-                  "count": 213,
-                  "percentage": 25
-                },
-                {
-                  "segment": "Marketing",
-                  "count": 128,
-                  "percentage": 15
-                },
-                {
-                  "segment": "RH",
-                  "count": 85,
-                  "percentage": 10
-                },
-                {
-                  "segment": "Operações",
-                  "count": 85,
-                  "percentage": 10
-                },
-                {
-                  "segment": "Outros",
-                  "count": 41,
-                  "percentage": 5
-                }
-              ],
-              "sentiment": [
-                {
-                  "segment": "Engenharia",
-                  "positive": 75.2,
-                  "neutral": 15.8,
-                  "negative": 9
-                },
-                {
-                  "segment": "Marketing",
-                  "positive": 72.5,
-                  "neutral": 18.5,
-                  "negative": 9
-                },
-                {
-                  "segment": "RH",
-                  "positive": 65,
-                  "neutral": 25,
-                  "negative": 10
-                },
-                {
-                  "segment": "Vendas",
-                  "positive": 45.5,
-                  "neutral": 30.5,
-                  "negative": 24
-                },
-                {
-                  "segment": "Operações",
-                  "positive": 38.2,
-                  "neutral": 32.8,
-                  "negative": 29
-                },
-                {
-                  "segment": "Outros",
-                  "positive": 60,
-                  "neutral": 25,
-                  "negative": 15
-                }
-              ],
-              "npsSummary": "Os escores NPS variam significativamente entre departamentos.\nEngenharia e Marketing lideram com NPS positivo (42 e 38), indicando alta satisfação e lealdade.\nVendas e Operações apresentam NPS negativo (-15 e -22), sinalizando necessidade urgente de intervenção.\nRH e Outros departamentos apresentam NPS moderadamente positivo, indicando satisfação adequada.",
-              "npsTable": [
-                {
-                  "segment": "Engenharia",
-                  "nps": 42
-                },
-                {
-                  "segment": "Marketing",
-                  "nps": 38
-                },
-                {
-                  "segment": "RH",
-                  "nps": 12
-                },
-                {
-                  "segment": "Outros",
-                  "nps": 8
-                },
-                {
-                  "segment": "Vendas",
-                  "nps": -15
-                },
-                {
-                  "segment": "Operações",
-                  "nps": -22
-                }
-              ],
-              "npsDistributionTable": [
-                {
-                  "segment": "Engenharia",
-                  "promotores": 58.5,
-                  "neutros": 16.5,
-                  "detratores": 25
-                },
-                {
-                  "segment": "Marketing",
-                  "promotores": 55,
-                  "neutros": 17,
-                  "detratores": 28
-                },
-                {
-                  "segment": "RH",
-                  "promotores": 42.5,
-                  "neutros": 30.5,
-                  "detratores": 27
-                },
-                {
-                  "segment": "Vendas",
-                  "promotores": 32,
-                  "neutros": 28,
-                  "detratores": 40
-                },
-                {
-                  "segment": "Operações",
-                  "promotores": 28.5,
-                  "neutros": 28.5,
-                  "detratores": 43
-                },
-                {
-                  "segment": "Outros",
-                  "promotores": 40,
-                  "neutros": 32,
-                  "detratores": 28
-                }
-              ],
-              "satisfactionImpactSummary": "Engenharia e Marketing valorizam principalmente trabalho em equipe, desenvolvimento profissional e flexibilidade.\nVendas e Operações expressam maior insatisfação com carga de trabalho, processos burocráticos e comunicação interna.\nRH demonstra satisfação equilibrada, com preocupações moderadas sobre processos.",
-              "satisfactionImpactSentiment": [
-                {
-                  "sentiment": "Negativo",
-                  "Engenharia": 9,
-                  "Marketing": 9,
-                  "RH": 10,
-                  "Vendas": 24,
-                  "Operações": 29,
-                  "Outros": 15
-                },
-                {
-                  "sentiment": "Não aplicável",
-                  "Engenharia": 0,
-                  "Marketing": 0,
-                  "RH": 0,
-                  "Vendas": 0,
-                  "Operações": 0,
-                  "Outros": 0
-                },
-                {
-                  "sentiment": "Positivo",
-                  "Engenharia": 75.2,
-                  "Marketing": 72.5,
-                  "RH": 65,
-                  "Vendas": 45.5,
-                  "Operações": 38.2,
-                  "Outros": 60
-                }
-              ],
-              "positiveCategoriesTable": [
-                {
-                  "category": "Trabalho em Equipe",
-                  "Engenharia": 85.2,
-                  "Marketing": 78.5,
-                  "RH": 72,
-                  "Vendas": 55,
-                  "Operações": 48,
-                  "Outros": 70
-                },
-                {
-                  "category": "Desenvolvimento Profissional",
-                  "Engenharia": 82.5,
-                  "Marketing": 75,
-                  "RH": 68,
-                  "Vendas": 42,
-                  "Operações": 35,
-                  "Outros": 65
-                },
-                {
-                  "category": "Flexibilidade",
-                  "Engenharia": 78,
-                  "Marketing": 72,
-                  "RH": 65,
-                  "Vendas": 38,
-                  "Operações": 32,
-                  "Outros": 60
-                }
-              ],
-              "negativeCategoriesTable": [
-                {
-                  "category": "Carga de Trabalho",
-                  "Engenharia": 12,
-                  "Marketing": 15,
-                  "RH": 18,
-                  "Vendas": 58,
-                  "Operações": 65,
-                  "Outros": 20
-                },
-                {
-                  "category": "Processos Burocráticos",
-                  "Engenharia": 8,
-                  "Marketing": 12,
-                  "RH": 22,
-                  "Vendas": 52,
-                  "Operações": 58,
-                  "Outros": 18
-                },
-                {
-                  "category": "Comunicação Interna",
-                  "Engenharia": 10,
-                  "Marketing": 18,
-                  "RH": 25,
-                  "Vendas": 48,
-                  "Operações": 55,
-                  "Outros": 22
-                }
-              ]
-            },
-            {
-              "id": "tenure",
-              "index": 1,
-              "name": "Por Tempo de Empresa",
-              "icon": "Clock",
-              "summary": "Funcionários com mais tempo de empresa (3+ anos) demonstram maior satisfação e engajamento.\nFuncionários novos (menos de 1 ano) apresentam satisfação moderada, indicando necessidade de melhor onboarding.\nA análise revela que a satisfação aumenta com o tempo de empresa, sugerindo que programas de retenção são eficazes.",
-              "distribution": [
-                {
-                  "segment": "Menos de 1 ano",
-                  "count": 170,
-                  "percentage": 20
-                },
-                {
-                  "segment": "1-3 anos",
-                  "count": 298,
-                  "percentage": 35
-                },
-                {
-                  "segment": "3-5 anos",
-                  "count": 213,
-                  "percentage": 25
-                },
-                {
-                  "segment": "Mais de 5 anos",
-                  "count": 169,
-                  "percentage": 20
-                }
-              ],
-              "sentiment": [
-                {
-                  "segment": "Mais de 5 anos",
-                  "positive": 78.5,
-                  "neutral": 15.5,
-                  "negative": 6
-                },
-                {
-                  "segment": "3-5 anos",
-                  "positive": 72,
-                  "neutral": 20,
-                  "negative": 8
-                },
-                {
-                  "segment": "1-3 anos",
-                  "positive": 65.5,
-                  "neutral": 25.5,
-                  "negative": 9
-                },
-                {
-                  "segment": "Menos de 1 ano",
-                  "positive": 58,
-                  "neutral": 28,
-                  "negative": 14
-                }
-              ]
-            },
-            {
-              "id": "role",
-              "index": 2,
-              "name": "Por Cargo",
-              "icon": "Briefcase",
-              "summary": "Liderança e funcionários sênior apresentam maior satisfação, com NPS positivo.\nEstagiários e júnior demonstram satisfação moderada, com oportunidades de melhoria em desenvolvimento e mentoria.\nA análise sugere que programas de desenvolvimento são especialmente importantes para níveis iniciais.",
-              "distribution": [
-                {
-                  "segment": "Estagiário/Júnior",
-                  "count": 255,
-                  "percentage": 30
-                },
-                {
-                  "segment": "Pleno",
-                  "count": 340,
-                  "percentage": 40
-                },
-                {
-                  "segment": "Sênior",
-                  "count": 170,
-                  "percentage": 20
-                },
-                {
-                  "segment": "Liderança",
-                  "count": 85,
-                  "percentage": 10
-                }
-              ],
-              "sentiment": [
-                {
-                  "segment": "Liderança",
-                  "positive": 82,
-                  "neutral": 12,
-                  "negative": 6
-                },
-                {
-                  "segment": "Sênior",
-                  "positive": 75.5,
-                  "neutral": 18.5,
-                  "negative": 6
-                },
-                {
-                  "segment": "Pleno",
-                  "positive": 68,
-                  "neutral": 22,
-                  "negative": 10
-                },
-                {
-                  "segment": "Estagiário/Júnior",
-                  "positive": 58.5,
-                  "neutral": 28.5,
-                  "negative": 13
-                }
-              ]
-            }
-          ],
-          "config": {
-            "defaultIcon": "Building"
-          },
-          "department": {
-            "id": "department",
-            "index": 0,
-            "name": "Por Departamento",
-            "icon": "Building",
-            "summary": "A análise por departamento revela diferenças significativas na satisfação dos funcionários.\nEngenharia e Marketing apresentam os maiores índices de satisfação, com NPS positivo de 42 e 38 respectivamente.\nVendas e Operações demonstram maior insatisfação, com NPS negativo de -15 e -22.\nEstas diferenças indicam a necessidade de abordagens personalizadas por departamento para melhorar o engajamento.",
-            "distribution": [
-              {
-                "segment": "Engenharia",
-                "count": 298,
-                "percentage": 35
-              },
-              {
-                "segment": "Vendas",
-                "count": 213,
-                "percentage": 25
-              },
-              {
-                "segment": "Marketing",
-                "count": 128,
-                "percentage": 15
-              },
-              {
-                "segment": "RH",
-                "count": 85,
-                "percentage": 10
-              },
-              {
-                "segment": "Operações",
-                "count": 85,
-                "percentage": 10
-              },
-              {
-                "segment": "Outros",
-                "count": 41,
-                "percentage": 5
-              }
-            ],
-            "sentiment": [
-              {
-                "segment": "Engenharia",
-                "positive": 75.2,
-                "neutral": 15.8,
-                "negative": 9
-              },
-              {
-                "segment": "Marketing",
-                "positive": 72.5,
-                "neutral": 18.5,
-                "negative": 9
-              },
-              {
-                "segment": "RH",
-                "positive": 65,
-                "neutral": 25,
-                "negative": 10
-              },
-              {
-                "segment": "Vendas",
-                "positive": 45.5,
-                "neutral": 30.5,
-                "negative": 24
-              },
-              {
-                "segment": "Operações",
-                "positive": 38.2,
-                "neutral": 32.8,
-                "negative": 29
-              },
-              {
-                "segment": "Outros",
-                "positive": 60,
-                "neutral": 25,
-                "negative": 15
-              }
-            ],
-            "npsSummary": "Os escores NPS variam significativamente entre departamentos.\nEngenharia e Marketing lideram com NPS positivo (42 e 38), indicando alta satisfação e lealdade.\nVendas e Operações apresentam NPS negativo (-15 e -22), sinalizando necessidade urgente de intervenção.\nRH e Outros departamentos apresentam NPS moderadamente positivo, indicando satisfação adequada.",
-            "npsTable": [
-              {
-                "segment": "Engenharia",
-                "nps": 42
-              },
-              {
-                "segment": "Marketing",
-                "nps": 38
-              },
-              {
-                "segment": "RH",
-                "nps": 12
-              },
-              {
-                "segment": "Outros",
-                "nps": 8
-              },
-              {
-                "segment": "Vendas",
-                "nps": -15
-              },
-              {
-                "segment": "Operações",
-                "nps": -22
-              }
-            ],
-            "npsDistribution": [
-              {
-                "segment": "Engenharia",
-                "promotores": 58.5,
-                "neutros": 16.5,
-                "detratores": 25
-              },
-              {
-                "segment": "Marketing",
-                "promotores": 55,
-                "neutros": 17,
-                "detratores": 28
-              },
-              {
-                "segment": "RH",
-                "promotores": 42.5,
-                "neutros": 30.5,
-                "detratores": 27
-              },
-              {
-                "segment": "Vendas",
-                "promotores": 32,
-                "neutros": 28,
-                "detratores": 40
-              },
-              {
-                "segment": "Operações",
-                "promotores": 28.5,
-                "neutros": 28.5,
-                "detratores": 43
-              },
-              {
-                "segment": "Outros",
-                "promotores": 40,
-                "neutros": 32,
-                "detratores": 28
-              }
-            ],
-            "satisfactionImpactSummary": "Engenharia e Marketing valorizam principalmente trabalho em equipe, desenvolvimento profissional e flexibilidade.\nVendas e Operações expressam maior insatisfação com carga de trabalho, processos burocráticos e comunicação interna.\nRH demonstra satisfação equilibrada, com preocupações moderadas sobre processos.",
-            "satisfactionImpactSentiment": [
-              {
-                "sentiment": "Negativo",
-                "Engenharia": 9,
-                "Marketing": 9,
-                "RH": 10,
-                "Vendas": 24,
-                "Operações": 29,
-                "Outros": 15
-              },
-              {
-                "sentiment": "Não aplicável",
-                "Engenharia": 0,
-                "Marketing": 0,
-                "RH": 0,
-                "Vendas": 0,
-                "Operações": 0,
-                "Outros": 0
-              },
-              {
-                "sentiment": "Positivo",
-                "Engenharia": 75.2,
-                "Marketing": 72.5,
-                "RH": 65,
-                "Vendas": 45.5,
-                "Operações": 38.2,
-                "Outros": 60
-              }
-            ],
-            "positiveCategoriesTable": [
-              {
-                "category": "Trabalho em Equipe",
-                "Engenharia": 85.2,
-                "Marketing": 78.5,
-                "RH": 72,
-                "Vendas": 55,
-                "Operações": 48,
-                "Outros": 70
-              },
-              {
-                "category": "Desenvolvimento Profissional",
-                "Engenharia": 82.5,
-                "Marketing": 75,
-                "RH": 68,
-                "Vendas": 42,
-                "Operações": 35,
-                "Outros": 65
-              },
-              {
-                "category": "Flexibilidade",
-                "Engenharia": 78,
-                "Marketing": 72,
-                "RH": 65,
-                "Vendas": 38,
-                "Operações": 32,
-                "Outros": 60
-              }
-            ],
-            "negativeCategoriesTable": [
-              {
-                "category": "Carga de Trabalho",
-                "Engenharia": 12,
-                "Marketing": 15,
-                "RH": 18,
-                "Vendas": 58,
-                "Operações": 65,
-                "Outros": 20
-              },
-              {
-                "category": "Processos Burocráticos",
-                "Engenharia": 8,
-                "Marketing": 12,
-                "RH": 22,
-                "Vendas": 52,
-                "Operações": 58,
-                "Outros": 18
-              },
-              {
-                "category": "Comunicação Interna",
-                "Engenharia": 10,
-                "Marketing": 18,
-                "RH": 25,
-                "Vendas": 48,
-                "Operações": 55,
-                "Outros": 22
-              }
-            ]
-          },
-          "tenure": {
-            "id": "tenure",
-            "index": 1,
-            "name": "Por Tempo de Empresa",
-            "icon": "Clock",
-            "summary": "Funcionários com mais tempo de empresa (3+ anos) demonstram maior satisfação e engajamento.\nFuncionários novos (menos de 1 ano) apresentam satisfação moderada, indicando necessidade de melhor onboarding.\nA análise revela que a satisfação aumenta com o tempo de empresa, sugerindo que programas de retenção são eficazes.",
-            "distribution": [
-              {
-                "segment": "Menos de 1 ano",
-                "count": 170,
-                "percentage": 20
-              },
-              {
-                "segment": "1-3 anos",
-                "count": 298,
-                "percentage": 35
-              },
-              {
-                "segment": "3-5 anos",
-                "count": 213,
-                "percentage": 25
-              },
-              {
-                "segment": "Mais de 5 anos",
-                "count": 169,
-                "percentage": 20
-              }
-            ],
-            "sentiment": [
-              {
-                "segment": "Mais de 5 anos",
-                "positive": 78.5,
-                "neutral": 15.5,
-                "negative": 6
-              },
-              {
-                "segment": "3-5 anos",
-                "positive": 72,
-                "neutral": 20,
-                "negative": 8
-              },
-              {
-                "segment": "1-3 anos",
-                "positive": 65.5,
-                "neutral": 25.5,
-                "negative": 9
-              },
-              {
-                "segment": "Menos de 1 ano",
-                "positive": 58,
-                "neutral": 28,
-                "negative": 14
-              }
-            ]
-          },
-          "role": {
-            "id": "role",
-            "index": 2,
-            "name": "Por Cargo",
-            "icon": "Briefcase",
-            "summary": "Liderança e funcionários sênior apresentam maior satisfação, com NPS positivo.\nEstagiários e júnior demonstram satisfação moderada, com oportunidades de melhoria em desenvolvimento e mentoria.\nA análise sugere que programas de desenvolvimento são especialmente importantes para níveis iniciais.",
-            "distribution": [
-              {
-                "segment": "Estagiário/Júnior",
-                "count": 255,
-                "percentage": 30
-              },
-              {
-                "segment": "Pleno",
-                "count": 340,
-                "percentage": 40
-              },
-              {
-                "segment": "Sênior",
-                "count": 170,
-                "percentage": 20
-              },
-              {
-                "segment": "Liderança",
-                "count": 85,
-                "percentage": 10
-              }
-            ],
-            "sentiment": [
-              {
-                "segment": "Liderança",
-                "positive": 82,
-                "neutral": 12,
-                "negative": 6
-              },
-              {
-                "segment": "Sênior",
-                "positive": 75.5,
-                "neutral": 18.5,
-                "negative": 6
-              },
-              {
-                "segment": "Pleno",
-                "positive": 68,
-                "neutral": 22,
-                "negative": 10
-              },
-              {
-                "segment": "Estagiário/Júnior",
-                "positive": 58.5,
-                "neutral": 28.5,
-                "negative": 13
-              }
-            ]
-          }
-        },
+        "defaultIcon": "Building",
         "subsections": [
           {
             "id": "attributes-department",
@@ -1155,7 +469,7 @@
                       {
                         "type": "barChart",
                         "index": 0,
-                        "dataPath": "sectionData.department.distribution",
+                        "dataPath": "sectionData.department.distributionChart",
                         "config": {
                           "dataKey": "percentage",
                           "yAxisDataKey": "segment"
@@ -1164,7 +478,7 @@
                       {
                         "type": "distributionTable",
                         "index": 1,
-                        "dataPath": "sectionData.department.distribution"
+                        "dataPath": "sectionData.department.distributionTable"
                       }
                     ]
                   },
@@ -1178,7 +492,7 @@
                       {
                         "type": "sentimentStackedChart",
                         "index": 0,
-                        "dataPath": "sectionData.department.sentiment",
+                        "dataPath": "sectionData.department.sentimentChart",
                         "config": {
                           "yAxisDataKey": "segment"
                         }
@@ -1186,7 +500,7 @@
                       {
                         "type": "sentimentTable",
                         "index": 1,
-                        "dataPath": "sectionData.department.sentiment"
+                        "dataPath": "sectionData.department.sentimentTable"
                       }
                     ]
                   }
@@ -1200,20 +514,12 @@
                 "cardContentVariant": "with-tables",
                 "components": [
                   {
-                    "type": "container",
+                    "type": "card",
                     "index": 0,
-                    "components": [
-                      {
-                        "type": "h3",
-                        "index": 0,
-                        "text": "Sumário"
-                      },
-                      {
-                        "type": "container",
-                        "index": 1,
-                        "text": "Os escores NPS variam significativamente entre departamentos.\nEngenharia e Marketing lideram com NPS positivo (42 e 38), indicando alta satisfação e lealdade.\nVendas e Operações apresentam NPS negativo (-15 e -22), sinalizando necessidade urgente de intervenção.\nRH e Outros departamentos apresentam NPS moderadamente positivo, indicando satisfação adequada."
-                      }
-                    ]
+                    "title": "Sumário",
+                    "text": "Os escores NPS variam significativamente entre departamentos.\nEngenharia e Marketing lideram com NPS positivo (42 e 38), indicando alta satisfação e lealdade.\nVendas e Operações apresentam NPS negativo (-15 e -22), sinalizando necessidade urgente de intervenção.\nRH e Outros departamentos apresentam NPS moderadamente positivo, indicando satisfação adequada.",
+                    "cardStyleVariant": "flat",
+                    "titleStyleVariant": "h3-style"
                   },
                   {
                     "type": "container",
@@ -1301,13 +607,13 @@
                           {
                             "type": "sentimentThreeColorChart",
                             "index": 1,
-                            "dataPath": "sectionData.department.satisfactionImpactSentiment",
+                            "dataPath": "sectionData.department.satisfactionImpactSentimentChart",
                             "config": {}
                           },
                           {
                             "type": "sentimentImpactTable",
                             "index": 2,
-                            "dataPath": "sectionData.department.satisfactionImpactSentiment"
+                            "dataPath": "sectionData.department.satisfactionImpactSentimentTable"
                           }
                         ]
                       },
@@ -1318,7 +624,7 @@
                           {
                             "type": "h3",
                             "index": 0,
-                            "content": "Categorias com sentimento positivo - Top 3"
+                            "text": "Categorias com sentimento positivo - Top 3"
                           },
                           {
                             "type": "positiveCategoriesTable",
@@ -1347,7 +653,329 @@
                   }
                 ]
               }
-            ]
+            ],
+            "data": {
+              "distributionChart": [
+                {
+                  "segment": "Engenharia",
+                  "count": 298,
+                  "percentage": 35
+                },
+                {
+                  "segment": "Vendas",
+                  "count": 213,
+                  "percentage": 25
+                },
+                {
+                  "segment": "Marketing",
+                  "count": 128,
+                  "percentage": 15
+                },
+                {
+                  "segment": "RH",
+                  "count": 85,
+                  "percentage": 10
+                },
+                {
+                  "segment": "Operações",
+                  "count": 85,
+                  "percentage": 10
+                },
+                {
+                  "segment": "Outros",
+                  "count": 41,
+                  "percentage": 5
+                }
+              ],
+              "distributionTable": [
+                {
+                  "segment": "Engenharia",
+                  "count": 298,
+                  "percentage": 35
+                },
+                {
+                  "segment": "Vendas",
+                  "count": 213,
+                  "percentage": 25
+                },
+                {
+                  "segment": "Marketing",
+                  "count": 128,
+                  "percentage": 15
+                },
+                {
+                  "segment": "RH",
+                  "count": 85,
+                  "percentage": 10
+                },
+                {
+                  "segment": "Operações",
+                  "count": 85,
+                  "percentage": 10
+                },
+                {
+                  "segment": "Outros",
+                  "count": 41,
+                  "percentage": 5
+                }
+              ],
+              "sentimentChart": [
+                {
+                  "segment": "Engenharia",
+                  "positive": 75.2,
+                  "neutral": 15.8,
+                  "negative": 9
+                },
+                {
+                  "segment": "Marketing",
+                  "positive": 72.5,
+                  "neutral": 18.5,
+                  "negative": 9
+                },
+                {
+                  "segment": "RH",
+                  "positive": 65,
+                  "neutral": 25,
+                  "negative": 10
+                },
+                {
+                  "segment": "Vendas",
+                  "positive": 45.5,
+                  "neutral": 30.5,
+                  "negative": 24
+                },
+                {
+                  "segment": "Operações",
+                  "positive": 38.2,
+                  "neutral": 32.8,
+                  "negative": 29
+                },
+                {
+                  "segment": "Outros",
+                  "positive": 60,
+                  "neutral": 25,
+                  "negative": 15
+                }
+              ],
+              "sentimentTable": [
+                {
+                  "segment": "Engenharia",
+                  "positive": 75.2,
+                  "neutral": 15.8,
+                  "negative": 9
+                },
+                {
+                  "segment": "Marketing",
+                  "positive": 72.5,
+                  "neutral": 18.5,
+                  "negative": 9
+                },
+                {
+                  "segment": "RH",
+                  "positive": 65,
+                  "neutral": 25,
+                  "negative": 10
+                },
+                {
+                  "segment": "Vendas",
+                  "positive": 45.5,
+                  "neutral": 30.5,
+                  "negative": 24
+                },
+                {
+                  "segment": "Operações",
+                  "positive": 38.2,
+                  "neutral": 32.8,
+                  "negative": 29
+                },
+                {
+                  "segment": "Outros",
+                  "positive": 60,
+                  "neutral": 25,
+                  "negative": 15
+                }
+              ],
+              "npsTable": [
+                {
+                  "segment": "Engenharia",
+                  "nps": 42
+                },
+                {
+                  "segment": "Marketing",
+                  "nps": 38
+                },
+                {
+                  "segment": "RH",
+                  "nps": 12
+                },
+                {
+                  "segment": "Outros",
+                  "nps": 8
+                },
+                {
+                  "segment": "Vendas",
+                  "nps": -15
+                },
+                {
+                  "segment": "Operações",
+                  "nps": -22
+                }
+              ],
+              "npsDistributionTable": [
+                {
+                  "segment": "Engenharia",
+                  "promotores": 58.5,
+                  "neutros": 16.5,
+                  "detratores": 25
+                },
+                {
+                  "segment": "Marketing",
+                  "promotores": 55,
+                  "neutros": 17,
+                  "detratores": 28
+                },
+                {
+                  "segment": "RH",
+                  "promotores": 42.5,
+                  "neutros": 30.5,
+                  "detratores": 27
+                },
+                {
+                  "segment": "Vendas",
+                  "promotores": 32,
+                  "neutros": 28,
+                  "detratores": 40
+                },
+                {
+                  "segment": "Operações",
+                  "promotores": 28.5,
+                  "neutros": 28.5,
+                  "detratores": 43
+                },
+                {
+                  "segment": "Outros",
+                  "promotores": 40,
+                  "neutros": 32,
+                  "detratores": 28
+                }
+              ],
+              "satisfactionImpactSentimentChart": [
+                {
+                  "sentiment": "Negativo",
+                  "Engenharia": 9,
+                  "Marketing": 9,
+                  "RH": 10,
+                  "Vendas": 24,
+                  "Operações": 29,
+                  "Outros": 15
+                },
+                {
+                  "sentiment": "Não aplicável",
+                  "Engenharia": 0,
+                  "Marketing": 0,
+                  "RH": 0,
+                  "Vendas": 0,
+                  "Operações": 0,
+                  "Outros": 0
+                },
+                {
+                  "sentiment": "Positivo",
+                  "Engenharia": 75.2,
+                  "Marketing": 72.5,
+                  "RH": 65,
+                  "Vendas": 45.5,
+                  "Operações": 38.2,
+                  "Outros": 60
+                }
+              ],
+              "satisfactionImpactSentimentTable": [
+                {
+                  "sentiment": "Negativo",
+                  "Engenharia": 9,
+                  "Marketing": 9,
+                  "RH": 10,
+                  "Vendas": 24,
+                  "Operações": 29,
+                  "Outros": 15
+                },
+                {
+                  "sentiment": "Não aplicável",
+                  "Engenharia": 0,
+                  "Marketing": 0,
+                  "RH": 0,
+                  "Vendas": 0,
+                  "Operações": 0,
+                  "Outros": 0
+                },
+                {
+                  "sentiment": "Positivo",
+                  "Engenharia": 75.2,
+                  "Marketing": 72.5,
+                  "RH": 65,
+                  "Vendas": 45.5,
+                  "Operações": 38.2,
+                  "Outros": 60
+                }
+              ],
+              "positiveCategoriesTable": [
+                {
+                  "category": "Trabalho em Equipe",
+                  "Engenharia": 85.2,
+                  "Marketing": 78.5,
+                  "RH": 72,
+                  "Vendas": 55,
+                  "Operações": 48,
+                  "Outros": 70
+                },
+                {
+                  "category": "Desenvolvimento Profissional",
+                  "Engenharia": 82.5,
+                  "Marketing": 75,
+                  "RH": 68,
+                  "Vendas": 42,
+                  "Operações": 35,
+                  "Outros": 65
+                },
+                {
+                  "category": "Flexibilidade",
+                  "Engenharia": 78,
+                  "Marketing": 72,
+                  "RH": 65,
+                  "Vendas": 38,
+                  "Operações": 32,
+                  "Outros": 60
+                }
+              ],
+              "negativeCategoriesTable": [
+                {
+                  "category": "Carga de Trabalho",
+                  "Engenharia": 12,
+                  "Marketing": 15,
+                  "RH": 18,
+                  "Vendas": 58,
+                  "Operações": 65,
+                  "Outros": 20
+                },
+                {
+                  "category": "Processos Burocráticos",
+                  "Engenharia": 8,
+                  "Marketing": 12,
+                  "RH": 22,
+                  "Vendas": 52,
+                  "Operações": 58,
+                  "Outros": 18
+                },
+                {
+                  "category": "Comunicação Interna",
+                  "Engenharia": 10,
+                  "Marketing": 18,
+                  "RH": 25,
+                  "Vendas": 48,
+                  "Operações": 55,
+                  "Outros": 22
+                }
+              ]
+            }
           },
           {
             "id": "attributes-tenure",
@@ -1376,7 +1004,7 @@
                       {
                         "type": "barChart",
                         "index": 0,
-                        "dataPath": "sectionData.tenure.distribution",
+                        "dataPath": "sectionData.tenure.distributionChart",
                         "config": {
                           "dataKey": "percentage",
                           "yAxisDataKey": "segment"
@@ -1385,7 +1013,7 @@
                       {
                         "type": "distributionTable",
                         "index": 1,
-                        "dataPath": "sectionData.tenure.distribution"
+                        "dataPath": "sectionData.tenure.distributionTable"
                       }
                     ]
                   },
@@ -1399,7 +1027,7 @@
                       {
                         "type": "sentimentStackedChart",
                         "index": 0,
-                        "dataPath": "sectionData.tenure.sentiment",
+                        "dataPath": "sectionData.tenure.sentimentChart",
                         "config": {
                           "yAxisDataKey": "segment"
                         }
@@ -1407,13 +1035,111 @@
                       {
                         "type": "sentimentTable",
                         "index": 1,
-                        "dataPath": "sectionData.tenure.sentiment"
+                        "dataPath": "sectionData.tenure.sentimentTable"
                       }
                     ]
                   }
                 ]
               }
-            ]
+            ],
+            "data": {
+              "distributionChart": [
+                {
+                  "segment": "Menos de 1 ano",
+                  "count": 170,
+                  "percentage": 20
+                },
+                {
+                  "segment": "1-3 anos",
+                  "count": 298,
+                  "percentage": 35
+                },
+                {
+                  "segment": "3-5 anos",
+                  "count": 213,
+                  "percentage": 25
+                },
+                {
+                  "segment": "Mais de 5 anos",
+                  "count": 169,
+                  "percentage": 20
+                }
+              ],
+              "distributionTable": [
+                {
+                  "segment": "Menos de 1 ano",
+                  "count": 170,
+                  "percentage": 20
+                },
+                {
+                  "segment": "1-3 anos",
+                  "count": 298,
+                  "percentage": 35
+                },
+                {
+                  "segment": "3-5 anos",
+                  "count": 213,
+                  "percentage": 25
+                },
+                {
+                  "segment": "Mais de 5 anos",
+                  "count": 169,
+                  "percentage": 20
+                }
+              ],
+              "sentimentChart": [
+                {
+                  "segment": "Mais de 5 anos",
+                  "positive": 78.5,
+                  "neutral": 15.5,
+                  "negative": 6
+                },
+                {
+                  "segment": "3-5 anos",
+                  "positive": 72,
+                  "neutral": 20,
+                  "negative": 8
+                },
+                {
+                  "segment": "1-3 anos",
+                  "positive": 65.5,
+                  "neutral": 25.5,
+                  "negative": 9
+                },
+                {
+                  "segment": "Menos de 1 ano",
+                  "positive": 58,
+                  "neutral": 28,
+                  "negative": 14
+                }
+              ],
+              "sentimentTable": [
+                {
+                  "segment": "Mais de 5 anos",
+                  "positive": 78.5,
+                  "neutral": 15.5,
+                  "negative": 6
+                },
+                {
+                  "segment": "3-5 anos",
+                  "positive": 72,
+                  "neutral": 20,
+                  "negative": 8
+                },
+                {
+                  "segment": "1-3 anos",
+                  "positive": 65.5,
+                  "neutral": 25.5,
+                  "negative": 9
+                },
+                {
+                  "segment": "Menos de 1 ano",
+                  "positive": 58,
+                  "neutral": 28,
+                  "negative": 14
+                }
+              ]
+            }
           },
           {
             "id": "attributes-role",
@@ -1442,7 +1168,7 @@
                       {
                         "type": "barChart",
                         "index": 0,
-                        "dataPath": "sectionData.role.distribution",
+                        "dataPath": "sectionData.role.distributionChart",
                         "config": {
                           "dataKey": "percentage",
                           "yAxisDataKey": "segment"
@@ -1451,7 +1177,7 @@
                       {
                         "type": "distributionTable",
                         "index": 1,
-                        "dataPath": "sectionData.role.distribution"
+                        "dataPath": "sectionData.role.distributionTable"
                       }
                     ]
                   },
@@ -1465,7 +1191,7 @@
                       {
                         "type": "sentimentStackedChart",
                         "index": 0,
-                        "dataPath": "sectionData.role.sentiment",
+                        "dataPath": "sectionData.role.sentimentChart",
                         "config": {
                           "yAxisDataKey": "segment"
                         }
@@ -1473,7 +1199,217 @@
                       {
                         "type": "sentimentTable",
                         "index": 1,
-                        "dataPath": "sectionData.role.sentiment"
+                        "dataPath": "sectionData.role.sentimentTable"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "data": {
+              "distributionChart": [
+                {
+                  "segment": "Estagiário/Júnior",
+                  "count": 255,
+                  "percentage": 30
+                },
+                {
+                  "segment": "Pleno",
+                  "count": 340,
+                  "percentage": 40
+                },
+                {
+                  "segment": "Sênior",
+                  "count": 170,
+                  "percentage": 20
+                },
+                {
+                  "segment": "Liderança",
+                  "count": 85,
+                  "percentage": 10
+                }
+              ],
+              "distributionTable": [
+                {
+                  "segment": "Estagiário/Júnior",
+                  "count": 255,
+                  "percentage": 30
+                },
+                {
+                  "segment": "Pleno",
+                  "count": 340,
+                  "percentage": 40
+                },
+                {
+                  "segment": "Sênior",
+                  "count": 170,
+                  "percentage": 20
+                },
+                {
+                  "segment": "Liderança",
+                  "count": 85,
+                  "percentage": 10
+                }
+              ],
+              "sentimentChart": [
+                {
+                  "segment": "Liderança",
+                  "positive": 82,
+                  "neutral": 12,
+                  "negative": 6
+                },
+                {
+                  "segment": "Sênior",
+                  "positive": 75.5,
+                  "neutral": 18.5,
+                  "negative": 6
+                },
+                {
+                  "segment": "Pleno",
+                  "positive": 68,
+                  "neutral": 22,
+                  "negative": 10
+                },
+                {
+                  "segment": "Estagiário/Júnior",
+                  "positive": 58.5,
+                  "neutral": 28.5,
+                  "negative": 13
+                }
+              ],
+              "sentimentTable": [
+                {
+                  "segment": "Liderança",
+                  "positive": 82,
+                  "neutral": 12,
+                  "negative": 6
+                },
+                {
+                  "segment": "Sênior",
+                  "positive": 75.5,
+                  "neutral": 18.5,
+                  "negative": 6
+                },
+                {
+                  "segment": "Pleno",
+                  "positive": 68,
+                  "neutral": 22,
+                  "negative": 10
+                },
+                {
+                  "segment": "Estagiário/Júnior",
+                  "positive": 58.5,
+                  "neutral": 28.5,
+                  "negative": 13
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "culture",
+        "index": 3,
+        "name": "Análise de Cultura Organizacional",
+        "icon": "Users",
+        "subsections": [
+          {
+            "id": "culture-values",
+            "index": 0,
+            "name": "Valores Organizacionais",
+            "icon": "Star",
+            "components": [
+              {
+                "type": "grid-container",
+                "className": "grid grid-cols-1 md:grid-cols-2 gap-6",
+                "index": 0,
+                "components": [
+                  {
+                    "type": "card",
+                    "index": 0,
+                    "title": "Valores Organizacionais",
+                    "text": "Os valores organizacionais mais reconhecidos pelos funcionários são colaboração, inovação e integridade.\nA maioria dos funcionários (78%) identifica colaboração como um valor forte da empresa.",
+                    "cardStyleVariant": "default"
+                  },
+                  {
+                    "type": "card",
+                    "index": 1,
+                    "title": "Distribuição por Valor",
+                    "cardStyleVariant": "flex-column",
+                    "cardContentVariant": "with-charts",
+                    "components": [
+                      {
+                        "type": "sentimentStackedChart",
+                        "index": 0,
+                        "dataPath": "sectionData.sentimentStackedChart",
+                        "config": {
+                          "yAxisDataKey": "value"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "culture-communication",
+            "index": 1,
+            "name": "Comunicação Interna",
+            "icon": "MessageSquare",
+            "components": [
+              {
+                "type": "card",
+                "index": 0,
+                "useDescription": true,
+                "text": "A comunicação interna é uma área que necessita melhorias significativas.\n45% dos funcionários expressam sentimentos negativos sobre a comunicação, enquanto apenas 32.5% são positivos.",
+                "cardStyleVariant": "default",
+                "cardContentVariant": "with-description",
+                "components": [
+                  {
+                    "type": "sentimentDivergentChart",
+                    "index": 0,
+                    "dataPath": "sectionData.sentimentDivergentChartCommunication",
+                    "config": {
+                      "yAxisDataKey": "aspect"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "culture-development",
+            "index": 2,
+            "name": "Desenvolvimento Profissional",
+            "icon": "TrendingUp",
+            "components": [
+              {
+                "type": "grid-container",
+                "index": 0,
+                "components": [
+                  {
+                    "type": "card",
+                    "index": 0,
+                    "title": "Desenvolvimento Profissional",
+                    "text": "Os programas de desenvolvimento profissional são bem avaliados, com 68% de satisfação positiva.\nFuncionários valorizam especialmente treinamentos técnicos, mentoria e oportunidades de crescimento.",
+                    "cardStyleVariant": "border-left"
+                  },
+                  {
+                    "type": "card",
+                    "index": 1,
+                    "title": "Satisfação com Programas",
+                    "cardStyleVariant": "flex-column",
+                    "cardContentVariant": "with-charts",
+                    "components": [
+                      {
+                        "type": "barChart",
+                        "index": 0,
+                        "dataPath": "sectionData.programsBarChart",
+                        "config": {
+                          "dataKey": "satisfaction",
+                          "yAxisDataKey": "program"
+                        }
                       }
                     ]
                   }
@@ -1481,132 +1417,204 @@
               }
             ]
           }
-        ]
+        ],
+        "data": {
+          "sentimentStackedChart": [
+            {
+              "value": "Colaboração",
+              "positive": 78.5,
+              "neutral": 15.2,
+              "negative": 6.3
+            },
+            {
+              "value": "Inovação",
+              "positive": 72.3,
+              "neutral": 20.5,
+              "negative": 7.2
+            },
+            {
+              "value": "Integridade",
+              "positive": 68.5,
+              "neutral": 25,
+              "negative": 6.5
+            },
+            {
+              "value": "Transparência",
+              "positive": 45.2,
+              "neutral": 32.8,
+              "negative": 22
+            }
+          ],
+          "sentimentDivergentChartCommunication": [
+            {
+              "aspect": "Clareza das Mensagens",
+              "positive": 38.5,
+              "neutral": 25,
+              "negative": 36.5
+            },
+            {
+              "aspect": "Frequência de Comunicação",
+              "positive": 28.2,
+              "neutral": 22.8,
+              "negative": 49
+            },
+            {
+              "aspect": "Canais de Comunicação",
+              "positive": 42.5,
+              "neutral": 28.5,
+              "negative": 29
+            },
+            {
+              "aspect": "Transparência",
+              "positive": 32.5,
+              "neutral": 22.5,
+              "negative": 45
+            }
+          ],
+          "programsBarChart": [
+              {
+                "program": "Treinamentos Técnicos",
+                "satisfaction": 82.5,
+                "count": 701
+              },
+              {
+                "program": "Programa de Mentoria",
+                "satisfaction": 75,
+                "count": 638
+              },
+              {
+                "program": "Oportunidades de Crescimento",
+                "satisfaction": 68.5,
+                "count": 582
+              },
+              {
+                "program": "Desenvolvimento de Liderança",
+                "satisfaction": 62,
+                "count": 527
+              },
+              {
+                "program": "Certificações",
+                "satisfaction": 58.5,
+                "count": 497
+              }
+            ]
+        }
       },
+
       {
         "id": "responses",
         "index": 4,
         "name": "Análise por Questão",
         "icon": "MessageSquare",
-        "hasSubsections": false,
-        "components": [
-          {
-            "type": "filterPills",
-            "index": 0,
-            "config": {}
-          },
-          {
-            "type": "questionsList",
-            "index": 1,
-            "dataPath": "sectionData",
-            "config": {}
-          }
-        ],
-        "data": {
-          "questions": [
+        "questions": [
             {
               "id": 1,
               "index": 1,
+              "questionType": "nps",
               "question": "Em uma escala de 0 a 10, qual a probabilidade de você recomendar nossa empresa como um ótimo lugar para trabalhar?",
-              "icon": "Percent",
               "summary": "O NPS organizacional é de 35 pontos, indicando uma base sólida de promotores.\n58% dos funcionários são promotores, 20% são neutros e 22% são detratores.\nEste resultado positivo indica que a maioria dos funcionários está satisfeita e recomendaria a empresa.",
-              "data": [
-                {
-                  "option": "Promotor",
-                  "value": 493,
-                  "percentage": 58
-                },
-                {
-                  "option": "Neutro",
-                  "value": 170,
-                  "percentage": 20
-                },
-                {
-                  "option": "Detrator",
-                  "value": 187,
-                  "percentage": 22
-                }
-              ],
-              "type": "nps"
+              "data": {
+                "npsScore": 35,
+                "npsCategory": "Bom",
+                "npsStackedChart": [
+                  {
+                    "option": "Promotor",
+                    "value": 493,
+                    "percentage": 58
+                  },
+                  {
+                    "option": "Neutro",
+                    "value": 170,
+                    "percentage": 20
+                  },
+                  {
+                    "option": "Detrator",
+                    "value": 187,
+                    "percentage": 22
+                  }
+                ]
+              }
             },
             {
               "id": 2,
               "index": 2,
+              "questionType": "multiple-choice",
               "question": "Como você avalia o equilíbrio entre vida pessoal e profissional?",
-              "icon": "Scale",
               "summary": "A maioria dos funcionários (52%) avalia o equilíbrio como bom ou muito bom.\n28% consideram regular, enquanto 20% avaliam como ruim ou muito ruim.\nEste resultado indica que há espaço para melhorias, especialmente em flexibilidade e gestão de carga de trabalho.",
-              "data": [
-                {
-                  "option": "Muito bom",
-                  "value": 221,
-                  "percentage": 26
-                },
-                {
-                  "option": "Bom",
-                  "value": 221,
-                  "percentage": 26
-                },
-                {
-                  "option": "Regular",
-                  "value": 238,
-                  "percentage": 28
-                },
-                {
-                  "option": "Ruim",
-                  "value": 136,
-                  "percentage": 16
-                },
-                {
-                  "option": "Muito ruim",
-                  "value": 34,
-                  "percentage": 4
-                }
-              ],
-              "type": "multiple-choice"
+              "data": {
+                "barChart": [
+                  {
+                    "option": "Muito bom",
+                    "value": 221,
+                    "percentage": 26
+                  },
+                  {
+                    "option": "Bom",
+                    "value": 221,
+                    "percentage": 26
+                  },
+                  {
+                    "option": "Regular",
+                    "value": 238,
+                    "percentage": 28
+                  },
+                  {
+                    "option": "Ruim",
+                    "value": 136,
+                    "percentage": 16
+                  },
+                  {
+                    "option": "Muito ruim",
+                    "value": 34,
+                    "percentage": 4
+                  }
+                ]
+              }
             },
             {
               "id": 3,
               "index": 3,
+              "questionType": "multiple-choice",
               "question": "Com que frequência você recebe feedback sobre seu desempenho?",
-              "icon": "MessageCircle",
               "summary": "42% dos funcionários recebem feedback mensalmente, enquanto 28% recebem trimestralmente.\n18% recebem feedback esporadicamente e 12% raramente ou nunca.\nHá oportunidade de melhorar a frequência e qualidade do feedback, especialmente feedback contínuo.",
-              "data": [
-                {
-                  "option": "Mensalmente",
-                  "value": 357,
-                  "percentage": 42
-                },
-                {
-                  "option": "Trimestralmente",
-                  "value": 238,
-                  "percentage": 28
-                },
-                {
-                  "option": "Esporadicamente",
-                  "value": 153,
-                  "percentage": 18
-                },
-                {
-                  "option": "Raramente",
-                  "value": 85,
-                  "percentage": 10
-                },
-                {
-                  "option": "Nunca",
-                  "value": 17,
-                  "percentage": 2
-                }
-              ],
-              "type": "multiple-choice"
+              "data": {
+                "barChart": [
+                  {
+                    "option": "Mensalmente",
+                    "value": 357,
+                    "percentage": 42
+                  },
+                  {
+                    "option": "Trimestralmente",
+                    "value": 238,
+                    "percentage": 28
+                  },
+                  {
+                    "option": "Esporadicamente",
+                    "value": 153,
+                    "percentage": 18
+                  },
+                  {
+                    "option": "Raramente",
+                    "value": 85,
+                    "percentage": 10
+                  },
+                  {
+                    "option": "Nunca",
+                    "value": 17,
+                    "percentage": 2
+                  }
+                ]
+              }
             },
             {
               "id": 4,
               "index": 4,
+              "questionType": "open-ended",
               "question": "O que você mais valoriza na empresa?",
-              "icon": "Heart",
               "summary": "As respostas abertas destacam trabalho em equipe, oportunidades de desenvolvimento e flexibilidade como os principais valores.\nComunicação interna e processos burocráticos são mencionados como áreas de melhoria.",
               "data": {
-                "sentimentData": [
+                "sentimentStackedChart": [
                   {
                     "category": "Trabalho em Equipe",
                     "positive": 72.3,
@@ -1632,7 +1640,7 @@
                     "negative": 13
                   }
                 ],
-                "topCategories": [
+                "topCategoriesCards": [
                   {
                     "rank": 1,
                     "category": "Trabalho em Equipe",
@@ -1736,17 +1744,16 @@
                     "value": 76
                   }
                 ]
-              },
-              "type": "open-ended"
+              }
             },
             {
               "id": 5,
               "index": 5,
+              "questionType": "open-ended",
               "question": "O que poderia ser melhorado na empresa?",
-              "icon": "TrendingUp",
               "summary": "As principais áreas de melhoria mencionadas são comunicação interna, processos burocráticos e gestão de carga de trabalho.\nFuncionários também mencionam necessidade de mais reconhecimento e melhorias em ferramentas e tecnologia.",
               "data": {
-                "sentimentData": [
+                "sentimentStackedChart": [
                   {
                     "category": "Comunicação Interna",
                     "positive": 32.5,
@@ -1766,7 +1773,7 @@
                     "negative": 48
                   }
                 ],
-                "topCategories": [
+                "topCategoriesCards": [
                   {
                     "rank": 1,
                     "category": "Comunicação Interna",
@@ -1870,17 +1877,16 @@
                     "value": 98
                   }
                 ]
-              },
-              "type": "open-ended"
+              }
             },
             {
               "id": 6,
               "index": 6,
+              "questionType": "open-ended",
               "question": "Como você descreveria a cultura organizacional?",
-              "icon": "Users",
               "summary": "A maioria dos funcionários descreve a cultura como colaborativa e inovadora.\nAlguns mencionam necessidade de mais transparência e agilidade.\nA cultura é vista como um ponto forte, mas há oportunidades de melhoria em comunicação e processos.",
               "data": {
-                "sentimentData": [
+                "sentimentStackedChart": [
                   {
                     "category": "Colaboração",
                     "positive": 78.5,
@@ -1900,7 +1906,7 @@
                     "negative": 22
                   }
                 ],
-                "topCategories": [
+                "topCategoriesCards": [
                   {
                     "rank": 1,
                     "category": "Colaborativa",
@@ -2004,218 +2010,23 @@
                     "value": 87
                   }
                 ]
-              },
-              "type": "open-ended"
+              }
             }
           ],
-          "config": {
-            "npsCategories": {
-              "detractor": "Detrator",
-              "promoter": "Promotor",
-              "neutral": "Neutro",
-              "labels": {
-                "detractors": "Detratores",
-                "neutrals": "Neutros",
-                "promoters": "Promotores"
+          "data": {
+            "config": {
+              "npsCategories": {
+                "detractor": "Detrator",
+                "promoter": "Promotor",
+                "neutral": "Neutro",
+                "labels": {
+                  "detractors": "Detratores",
+                  "neutrals": "Neutros",
+                  "promoters": "Promotores"
+                }
               }
             }
           }
-        }
-      },
-      {
-        "id": "culture",
-        "index": 3,
-        "name": "Análise de Cultura Organizacional",
-        "icon": "Users",
-        "subsections": [
-          {
-            "id": "culture-values",
-            "index": 0,
-            "name": "Valores Organizacionais",
-            "icon": "Star",
-            "components": [
-              {
-                "type": "grid-container",
-                "className": "grid grid-cols-1 md:grid-cols-2 gap-6",
-                "index": 0,
-                "components": [
-                  {
-                    "type": "card",
-                    "index": 0,
-                    "title": "Valores Organizacionais",
-                    "text": "Os valores organizacionais mais reconhecidos pelos funcionários são colaboração, inovação e integridade.\nA maioria dos funcionários (78%) identifica colaboração como um valor forte da empresa.",
-                    "cardStyleVariant": "default"
-                  },
-                  {
-                    "type": "card",
-                    "index": 1,
-                    "title": "Distribuição por Valor",
-                    "cardStyleVariant": "flex-column",
-                    "cardContentVariant": "with-charts",
-                    "components": [
-                      {
-                        "type": "sentimentStackedChart",
-                        "index": 0,
-                        "dataPath": "sectionData.sentimentStackedChart",
-                        "config": {
-                          "yAxisDataKey": "value"
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "id": "culture-communication",
-            "index": 1,
-            "name": "Comunicação Interna",
-            "icon": "MessageSquare",
-            "components": [
-              {
-                "type": "card",
-                "index": 0,
-                "useDescription": true,
-                "text": "A comunicação interna é uma área que necessita melhorias significativas.\n45% dos funcionários expressam sentimentos negativos sobre a comunicação, enquanto apenas 32.5% são positivos.",
-                "cardStyleVariant": "default",
-                "cardContentVariant": "with-description",
-                "components": [
-                  {
-                    "type": "sentimentDivergentChart",
-                    "index": 0,
-                    "dataPath": "sectionData.sentimentDivergentChartCommunication",
-                    "config": {
-                      "yAxisDataKey": "aspect"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "id": "culture-development",
-            "index": 2,
-            "name": "Desenvolvimento Profissional",
-            "icon": "TrendingUp",
-            "components": [
-              {
-                "type": "grid-container",
-                "index": 0,
-                "components": [
-                  {
-                    "type": "card",
-                    "index": 0,
-                    "title": "Desenvolvimento Profissional",
-                    "text": "Os programas de desenvolvimento profissional são bem avaliados, com 68% de satisfação positiva.\nFuncionários valorizam especialmente treinamentos técnicos, mentoria e oportunidades de crescimento.",
-                    "cardStyleVariant": "border-left"
-                  },
-                  {
-                    "type": "card",
-                    "index": 1,
-                    "title": "Satisfação com Programas",
-                    "cardStyleVariant": "flex-column",
-                    "cardContentVariant": "with-charts",
-                    "components": [
-                      {
-                        "type": "barChart",
-                        "index": 0,
-                        "dataPath": "sectionData.development.programs",
-                        "config": {
-                          "dataKey": "satisfaction",
-                          "yAxisDataKey": "program"
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "data": {
-          "sentimentStackedChart": [
-            {
-              "value": "Colaboração",
-              "positive": 78.5,
-              "neutral": 15.2,
-              "negative": 6.3
-            },
-            {
-              "value": "Inovação",
-              "positive": 72.3,
-              "neutral": 20.5,
-              "negative": 7.2
-            },
-            {
-              "value": "Integridade",
-              "positive": 68.5,
-              "neutral": 25,
-              "negative": 6.5
-            },
-            {
-              "value": "Transparência",
-              "positive": 45.2,
-              "neutral": 32.8,
-              "negative": 22
-            }
-          ],
-          "sentimentDivergentChartCommunication": [
-            {
-              "aspect": "Clareza das Mensagens",
-              "positive": 38.5,
-              "neutral": 25,
-              "negative": 36.5
-            },
-            {
-              "aspect": "Frequência de Comunicação",
-              "positive": 28.2,
-              "neutral": 22.8,
-              "negative": 49
-            },
-            {
-              "aspect": "Canais de Comunicação",
-              "positive": 42.5,
-              "neutral": 28.5,
-              "negative": 29
-            },
-            {
-              "aspect": "Transparência",
-              "positive": 32.5,
-              "neutral": 22.5,
-              "negative": 45
-            }
-          ],
-          "development": {
-            "programs": [
-              {
-                "program": "Treinamentos Técnicos",
-                "satisfaction": 82.5,
-                "count": 701
-              },
-              {
-                "program": "Programa de Mentoria",
-                "satisfaction": 75,
-                "count": 638
-              },
-              {
-                "program": "Oportunidades de Crescimento",
-                "satisfaction": 68.5,
-                "count": 582
-              },
-              {
-                "program": "Desenvolvimento de Liderança",
-                "satisfaction": 62,
-                "count": 527
-              },
-              {
-                "program": "Certificações",
-                "satisfaction": 58.5,
-                "count": 497
-              }
-            ]
-          }
-        }
       }
     ],
   "uiTexts": {

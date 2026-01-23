@@ -319,12 +319,12 @@ export function FilterPanel({
                     {getFilterText("allQuestions", "Todas as questões")}
                   </SelectItem>
                   {questions.map((q, index) => {
-                    const isNPS = q.type === "nps";
+                    const isNPS = q.questionType === "nps";
                     const questionType = isNPS
                       ? getFilterText("nps", "NPS")
-                      : q.type === "open-ended"
+                      : q.questionType === "open-ended"
                       ? getFilterText("open-ended", "Campo Aberto")
-                      : q.type === "single-choice"
+                      : q.questionType === "single-choice"
                       ? getFilterText("single-choice", "Escolha única")
                       : getFilterText("multiple-choice", "Múltipla Escolha");
                     const truncatedQuestion =

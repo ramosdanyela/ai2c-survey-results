@@ -294,11 +294,9 @@ A API deve retornar um JSON com a mesma estrutura do `surveyData.json`. A estrut
   "uiTexts": {
     /* ... textos da interface ... */
   },
-  "sectionsConfig": {
-    "sections": [
-      /* ... */
-    ]
-  }
+  "sections": [
+    /* ... */
+  ]
 }
 ```
 

@@ -21,13 +21,13 @@ export const questionTypeTemplates = {
     {
       type: "npsScoreCard",
       index: 0,
-      dataPath: "surveyInfo",
+      dataPath: "question.data",
       config: {},
     },
     {
       type: "npsStackedChart",
       index: 1,
-      dataPath: "question.data",
+      dataPath: "question.data.npsStackedChart",
       config: {},
     },
   ],
@@ -40,7 +40,7 @@ export const questionTypeTemplates = {
     {
       type: "barChart",
       index: 0,
-      dataPath: "question.data",
+      dataPath: "question.data.barChart",
       config: {
         dataKey: "percentage",
         yAxisDataKey: "option",
@@ -57,7 +57,7 @@ export const questionTypeTemplates = {
     {
       type: "barChart",
       index: 0,
-      dataPath: "question.data",
+      dataPath: "question.data.barChart",
       config: {
         dataKey: "percentage",
         yAxisDataKey: "option",
@@ -73,13 +73,13 @@ export const questionTypeTemplates = {
     {
       type: "sentimentStackedChart",
       index: 0,
-      dataPath: "question.data.sentimentData",
+      dataPath: "question.data.sentimentStackedChart",
       config: {},
     },
     {
       type: "topCategoriesCards",
       index: 1,
-      dataPath: "question.data.topCategories",
+      dataPath: "question.data.topCategoriesCards",
       config: {
         title: "Top 3 Categorias",
       },
@@ -102,7 +102,7 @@ export const questionTypeTemplates = {
     {
       type: "barChart",
       index: 0,
-      dataPath: "question.data",
+      dataPath: "question.data.barChart",
       config: {
         dataKey: "percentage",
         yAxisDataKey: "option",

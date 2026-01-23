@@ -104,13 +104,30 @@ export function getAllSubsectionsForSection(sectionId, data) {
     // Try multiple possible paths for questions
     let allQuestions = [];
 
-    // Priority 1: Try responseDetails from root level (surveyData.js structure)
-    const responseDetails = data?.responseDetails;
-    if (responseDetails) {
-      allQuestions = getQuestionsFromResponseDetails(responseDetails);
+    // Priority 1: Try sections[responses].questions (new structure - direct questions)
+    if (data?.sections) {
+      const responsesSection = data.sections?.find(
+        (s) => s.id === "responses"
+      );
+      if (
+        responsesSection?.questions &&
+        Array.isArray(responsesSection.questions)
+      ) {
+        allQuestions = [...responsesSection.questions].sort(
+          (a, b) => (a.index || 0) - (b.index || 0)
+        );
+      }
     }
 
-    // Priority 2: Try sections[responses].data.questions (JSON structure)
+    // Priority 2: Try responseDetails from root level (surveyData.js structure)
+    if (allQuestions.length === 0) {
+      const responseDetails = data?.responseDetails;
+      if (responseDetails) {
+        allQuestions = getQuestionsFromResponseDetails(responseDetails);
+      }
+    }
+
+    // Priority 3: Try sections[responses].data.questions (old JSON structure)
     if (allQuestions.length === 0 && data?.sections) {
       const responsesSection = data.sections?.find(
         (s) => s.id === "responses"
@@ -125,7 +142,7 @@ export function getAllSubsectionsForSection(sectionId, data) {
       }
     }
 
-    // Priority 3: Try responseDetails from sections.data
+    // Priority 4: Try responseDetails from sections.data
     if (allQuestions.length === 0 && data?.sections) {
       const responsesSection = data.sections?.find(
         (s) => s.id === "responses"
@@ -153,6 +170,9 @@ export function getAllSubsectionsForSection(sectionId, data) {
     const filteredQuestions = allQuestions.sort(
       (a, b) => (a.index || 0) - (b.index || 0)
     );
+
+    // Get export config for question label prefix
+    const exportConfig = getExportConfig(sectionId, data);
 
     return filteredQuestions.map((q, index) => {
       const displayNumber = index + 1;

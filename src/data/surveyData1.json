@@ -4,8 +4,7 @@
     "language": "pt-BR",
     "surveyId": "survey-2024-01"
   },
-  "sectionsConfig": {
-    "sections": [
+  "sections": [
       {
         "id": "executive",
         "index": 0,
@@ -385,9 +384,7 @@
                         "dataPath": "sectionData.respondentIntent.data",
                         "config": {
                           "dataKey": "percentage",
-                          "yAxisDataKey": "intent",
-                          "sortData": true,
-                          "sortDirection": "desc"
+                          "yAxisDataKey": "intent"
                         }
                       }
                     ]
@@ -1044,17 +1041,13 @@
               {
                 "type": "filterPills",
                 "index": 0,
-                "config": {
-                  "showWordCloudToggle": true
-                }
+                "config": {}
               },
               {
                 "type": "questionsList",
                 "index": 1,
                 "dataPath": "sectionData",
-                "config": {
-                  "hideFilterPills": true
-                }
+                "config": {}
               }
             ],
             "questionTypeSchemas": {
@@ -1989,22 +1982,6 @@
                 "type": "string",
                 "required": false
               },
-              "tooltipFormatter": {
-                "type": "string",
-                "required": false
-              },
-              "sortData": {
-                "type": "boolean",
-                "default": true
-              },
-              "sortDirection": {
-                "type": "string",
-                "values": [
-                  "asc",
-                  "desc"
-                ],
-                "default": "desc"
-              },
               "hideXAxis": {
                 "type": "boolean",
                 "default": true
@@ -2048,10 +2025,6 @@
               "showGrid": {
                 "type": "boolean",
                 "default": false
-              },
-              "showLegend": {
-                "type": "boolean",
-                "default": true
               },
               "axisLine": {
                 "type": "boolean",
@@ -2110,10 +2083,6 @@
                 "required": false
               },
               "showLabels": {
-                "type": "boolean",
-                "required": false
-              },
-              "showLegend": {
                 "type": "boolean",
                 "required": false
               },
@@ -2276,10 +2245,6 @@
             "type": "object",
             "required": false,
             "properties": {
-              "showWordCloudToggle": {
-                "type": "boolean",
-                "default": false
-              }
             }
           },
           "condition": {
@@ -2415,10 +2380,6 @@
             "type": "object",
             "required": false,
             "properties": {
-              "hideFilterPills": {
-                "type": "boolean",
-                "default": false
-              },
               "hideWordCloudToggle": {
                 "type": "boolean",
                 "default": false

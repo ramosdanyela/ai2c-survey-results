@@ -88,12 +88,6 @@ function getSectionIconFromConfig(sectionId, data) {
     typeof sectionId === "string" &&
     sectionId.startsWith("responses-")
   ) {
-    const questionId = parseInt(sectionId.replace("responses-", ""), 10);
-    const allQuestions = data?.responseDetails?.questions || [];
-    const question = allQuestions.find((q) => q.id === questionId);
-    if (question && question.icon) {
-      return getIcon(question.icon);
-    }
     // Fallback to section icon
     const responsesSection = data.sections.find(
       (s) => s.id === "responses"

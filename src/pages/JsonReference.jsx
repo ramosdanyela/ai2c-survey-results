@@ -188,8 +188,26 @@ export default function JsonReference() {
   // Prepara os dados no formato esperado pelos componentes
   const attributesSection = surveyDataJson.sections?.find(s => s.id === "attributes");
   
-  // Garante que sectionData existe e tem a estrutura correta
-  const sectionData = attributesSection?.data || {};
+  // Build sectionData from subsections data (new structure)
+  let sectionData = {};
+  if (attributesSection?.subsections) {
+    attributesSection.subsections.forEach((subsection) => {
+      if (subsection.data) {
+        if (subsection.id === "attributes-department") {
+          sectionData.department = subsection.data;
+        } else if (subsection.id === "attributes-tenure") {
+          sectionData.tenure = subsection.data;
+        } else if (subsection.id === "attributes-role") {
+          sectionData.role = subsection.data;
+        }
+      }
+    });
+  }
+  
+  // Fallback to old structure (backward compatibility)
+  if (Object.keys(sectionData).length === 0) {
+    sectionData = attributesSection?.data || {};
+  }
   
   const realData = {
     ...surveyDataJson,
@@ -1072,8 +1090,8 @@ export default function JsonReference() {
                       { name: "index", required: false, type: "number", desc: "Ordem de renderização" },
                       { name: "dataPath", required: false, type: "string", desc: "Caminho para os dados (ex: 'sectionData.data')" },
                       { name: "config", required: false, type: "object", desc: "Configurações específicas do componente" },
-                      { name: "title", required: false, type: "string", desc: "Título (suporta templates {{...}})" },
-                      { name: "text", required: false, type: "string", desc: "Texto (suporta templates e \\n para quebras)" },
+                      { name: "title", required: false, type: "string", desc: "Título do componente" },
+                      { name: "text", required: false, type: "string", desc: "Texto do componente (suporta \\n para quebras)" },
                       { name: "cardStyleVariant", required: false, type: "string", desc: "Variante de estilo do card" },
                       { name: "cardContentVariant", required: false, type: "string", desc: "Variante de estilo do conteúdo" },
                       { name: "titleStyleVariant", required: false, type: "string", desc: "Variante de estilo do título" },
@@ -1135,32 +1153,50 @@ export default function JsonReference() {
                   </div>
                 </div>
 
-                {/* Templates */}
+                {/* DataPaths */}
                 <div className="space-y-3">
-                  <h3 className="font-semibold text-lg">Templates e DataPaths</h3>
+                  <h3 className="font-semibold text-lg">DataPaths</h3>
                   <Card className="p-4">
-                    <div className="space-y-3">
-                      <div>
-                        <p className="font-medium mb-2">Templates ({"{{...}}"})</p>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          Use <code className="bg-muted px-1 rounded">{`{{path}}`}</code> para referenciar dados ou textos:
-                        </p>
-                        <ul className="text-sm text-muted-foreground space-y-1 ml-4 list-disc">
-                          <li><code>{"{{uiTexts.section.name}}"}</code> - Textos traduzíveis</li>
-                          <li><code>{"{{sectionData.summary}}"}</code> - Dados da seção</li>
-                          <li><code>{"{{data.field}}"}</code> - Dados do contexto</li>
-                        </ul>
-                      </div>
+                    <div className="space-y-4">
                       <div>
                         <p className="font-medium mb-2">DataPaths</p>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          Caminhos para acessar dados:
+                        <p className="text-sm text-muted-foreground mb-3">
+                          Caminhos para acessar dados em componentes que usam <code className="bg-muted px-1 rounded">dataPath</code> (gráficos, tabelas, etc.):
                         </p>
-                        <ul className="text-sm text-muted-foreground space-y-1 ml-4 list-disc">
-                          <li><code>sectionData.field</code> - Dados da seção atual</li>
-                          <li><code>sectionData.array[0]</code> - Primeiro item de array</li>
-                          <li><code>uiTexts.path.to.text</code> - Textos traduzíveis</li>
-                        </ul>
+                        <div className="space-y-3">
+                          <div className="p-3 bg-muted/30 rounded-lg">
+                            <p className="font-semibold text-sm mb-2">Contextos Disponíveis:</p>
+                            <ul className="text-sm text-muted-foreground space-y-2 ml-4 list-disc">
+                              <li>
+                                <code className="bg-muted px-1 rounded">sectionData.field</code>
+                                <span className="ml-2">- Dados da seção atual. Sempre disponível. Para seção "attributes", use <code>sectionData.department</code>, <code>sectionData.tenure</code> ou <code>sectionData.role</code> (ex: <code>sectionData.distribution</code>)</span>
+                              </li>
+                              <li>
+                                <code className="bg-muted px-1 rounded">sectionData.array[0]</code>
+                                <span className="ml-2">- Acessa item específico de array usando índice (ex: <code>sectionData.recommendations[0]</code>)</span>
+                              </li>
+                              <li>
+                                <code className="bg-muted px-1 rounded">question.field</code>
+                                <span className="ml-2">- Questão atual. Disponível apenas na seção "responses" quando uma questão específica está ativa (ex: <code>question.data</code>, <code>question.wordCloud</code>)</span>
+                              </li>
+                              <li>
+                                <code className="bg-muted px-1 rounded">surveyInfo</code>
+                                <span className="ml-2">- Informações gerais da pesquisa (ex: <code>surveyInfo</code> para NPSScoreCard, contém nps, totalRespondents, etc.)</span>
+                              </li>
+                            </ul>
+                          </div>
+                          <div className="p-3 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
+                            <p className="font-semibold text-sm mb-2 text-green-900 dark:text-green-100">✅ Exemplos de Uso:</p>
+                            <ul className="text-sm space-y-1 ml-4 list-disc text-green-800 dark:text-green-200">
+                              <li><code>dataPath: "sectionData.distribution"</code> → Para tabelas de distribuição</li>
+                              <li><code>dataPath: "sectionData.department.sentiment"</code> → Para gráficos de sentimento por atributo (seção "attributes")</li>
+                              <li><code>dataPath: "sectionData.recommendations[0]"</code> → Para acessar primeiro item de array</li>
+                              <li><code>dataPath: "question.wordCloud"</code> → Para nuvem de palavras de questão (seção "responses")</li>
+                              <li><code>dataPath: "question.data"</code> → Para dados de questão específica (seção "responses")</li>
+                              <li><code>dataPath: "surveyInfo"</code> → Para componentes que usam dados gerais (NPS, total de respondentes, etc.)</li>
+                            </ul>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </Card>
@@ -1425,9 +1461,6 @@ export default function JsonReference() {
                           ) : (
                             <div className="text-muted-foreground">Nenhum texto encontrado</div>
                           )}
-                          <div className="text-xs text-muted-foreground italic mt-2">
-                            Nota: Templates {"{{}}"} foram removidos. Use texto direto.
-                          </div>
                         </div>
                       </TableCell>
                     </TableRow>

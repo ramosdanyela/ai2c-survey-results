@@ -118,7 +118,7 @@ Criar `data/validation/schema/surveyData.schema.json` com a estrutura esperada:
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "required": ["metadata", "sectionsConfig", "uiTexts", "surveyInfo"],
+  "required": ["metadata", "sections", "uiTexts", "surveyInfo"],
   "properties": {
     "metadata": {
       "type": "object",
@@ -129,27 +129,21 @@ Criar `data/validation/schema/surveyData.schema.json` com a estrutura esperada:
         "surveyId": { "type": "string" }
       }
     },
-    "sectionsConfig": {
-      "type": "object",
-      "required": ["sections"],
-      "properties": {
-        "sections": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "required": ["id", "index", "name", "icon"],
-            "properties": {
-              "id": { "type": "string" },
-              "index": { "type": "number" },
-              "name": { "type": "string" },
-              "icon": { "type": "string" },
-              "subsections": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "required": ["id", "index", "name", "icon"]
-                }
-              }
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "index", "name", "icon"],
+        "properties": {
+          "id": { "type": "string" },
+          "index": { "type": "number" },
+          "name": { "type": "string" },
+          "icon": { "type": "string" },
+          "subsections": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "index"]
             }
           }
         }
@@ -158,6 +152,8 @@ Criar `data/validation/schema/surveyData.schema.json` com a estrutura esperada:
   }
 }
 ```
+
+**⚠️ Mudança importante:** A estrutura agora usa `sections` diretamente no nível raiz (não mais `sectionsConfig.sections`).
 
 **Nota:** O schema completo será extenso. Considere criar schemas parciais e combiná-los.
 
@@ -239,25 +235,24 @@ function validateCustomRules(data) {
   const errors = [];
 
   // Validar IDs únicos de seções
-  const sectionIds = data.sectionsConfig?.sections?.map((s) => s.id) || [];
+  const sectionIds = data.sections?.map((s) => s.id) || [];
   const duplicateSectionIds = sectionIds.filter(
     (id, index) => sectionIds.indexOf(id) !== index
   );
   if (duplicateSectionIds.length > 0) {
     errors.push({
-      path: "/sectionsConfig/sections",
+      path: "/sections",
       message: `IDs de seções duplicados: ${duplicateSectionIds.join(", ")}`,
     });
   }
 
   // Validar índices sequenciais
-  const sectionIndices =
-    data.sectionsConfig?.sections?.map((s) => s.index) || [];
+  const sectionIndices = data.sections?.map((s) => s.index) || [];
   const sortedIndices = [...sectionIndices].sort((a, b) => a - b);
   for (let i = 0; i < sortedIndices.length; i++) {
     if (sortedIndices[i] !== i) {
       errors.push({
-        path: "/sectionsConfig/sections",
+        path: "/sections",
         message: `Índices de seções devem começar em 0 e ser sequenciais. Encontrado: ${sectionIndices.join(
           ", "
         )}`,
@@ -267,10 +262,10 @@ function validateCustomRules(data) {
   }
 
   // Validar que seções têm data.renderSchema (export não está em sections)
-  data.sectionsConfig?.sections?.forEach((section, index) => {
+  data.sections?.forEach((section, index) => {
     if (!section.data?.renderSchema) {
       errors.push({
-        path: `/sectionsConfig/sections[${index}]`,
+        path: `/sections[${index}]`,
         message: `Seção "${section.name}" deve ter "data.renderSchema"`,
       });
     }
@@ -407,10 +402,10 @@ npm run validate:all
 
 ❌ ERROS DE VALIDAÇÃO:
 
-1. /sectionsConfig/sections[0]/subsections[0]
+1. /sections[0]/subsections[0]
    required property "name" is missing
 
-2. /sectionsConfig/sections[1]/data/renderSchema
+2. /sections[1]/data/renderSchema
    should have required property "subsections"
 
 3. /surveyInfo/nps

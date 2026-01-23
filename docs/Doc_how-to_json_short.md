@@ -4,43 +4,50 @@
 
 ```json
 {
-  "id": "minha-secao",
-  "index": 0,
-  "name": "Minha Seção",
-  "icon": "FileText",
-  "subsections": [
+  "sections": [
     {
-      "id": "minha-subsecao",
+      "id": "minha-secao",
       "index": 0,
-      "icon": "ClipboardList"
-    }
-  ],
-  "data": {
-    "renderSchema": {
+      "name": "Minha Seção",
+      "icon": "FileText",
       "subsections": [
         {
           "id": "minha-subsecao",
           "index": 0,
-          "name": "Minha Subseção",
-          "icon": "ClipboardList",
-          "components": [
+          "icon": "ClipboardList"
+        }
+      ],
+      "data": {
+        "renderSchema": {
+          "subsections": [
             {
-              "type": "card",
+              "id": "minha-subsecao",
               "index": 0,
-              "title": "{{uiTexts.minhaSecao.titulo}}",
-              "text": "{{sectionData.descricao}}",
-              "styleVariant": "default"
+              "name": "Minha Subseção",
+              "icon": "ClipboardList",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "{{uiTexts.minhaSecao.titulo}}",
+                  "text": "{{sectionData.descricao}}",
+                  "cardStyleVariant": "default"
+                }
+              ]
             }
           ]
-        }
-      ]
-    },
-    "descricao": "Conteúdo aqui"
-  }
+        },
+        "descricao": "Conteúdo aqui"
+      }
+    }
+  ]
 }
 ```
 
-**💡 Dica:** Como o código é programático, você pode colocar o `name` diretamente no `renderSchema` junto com os componentes, evitando duplicação. Mantenha os dados separados do `renderSchema` porque podem ser verbosos.
+**💡 Dicas:**
+- Como o código é programático, você pode colocar o `name` diretamente no `renderSchema` junto com os componentes, evitando duplicação.
+- Mantenha os dados separados do `renderSchema` porque podem ser verbosos.
+- **⚠️ Mudança importante:** A estrutura agora usa `sections` diretamente no nível raiz (não mais `sectionsConfig.sections`).
 
 ---
 
@@ -115,7 +122,30 @@ As traduções que **não mudam com a pesquisa** ficam em `uiTexts` no nível ra
   "type": "card",
   "title": "{{uiTexts.titulo}}",
   "text": "{{sectionData.conteudo}}",
-  "styleVariant": "default"
+  "cardStyleVariant": "default"
+}
+```
+
+### Container
+
+Agrupa componentes em um layout flexível:
+
+```json
+{
+  "type": "container",
+  "index": 0,
+  "components": [
+    {
+      "type": "card",
+      "index": 0,
+      "title": "Card 1"
+    },
+    {
+      "type": "card",
+      "index": 1,
+      "title": "Card 2"
+    }
+  ]
 }
 ```
 
@@ -137,14 +167,11 @@ As traduções que **não mudam com a pesquisa** ficam em `uiTexts` no nível ra
 ```json
 {
   "type": "questionsList",
-  "dataPath": "sectionData",
-  "config": {
-    "hideFilterPills": false
-  }
+  "dataPath": "sectionData"
 }
 ```
 
-### Wrapper
+### Wrapper (Legado)
 
 ```json
 {
@@ -155,6 +182,8 @@ As traduções que **não mudam com a pesquisa** ficam em `uiTexts` no nível ra
   "components": [ ... ]
 }
 ```
+
+**💡 Dica:** Prefira usar `container` ao invés de `wrapper` para novos componentes.
 
 ---
 
@@ -241,19 +270,23 @@ As traduções que **não mudam com a pesquisa** ficam em `uiTexts` no nível ra
 
 ## 🎨 StyleVariants
 
-### `styleVariant` (estilo do card)
+### `cardStyleVariant` (estilo do card)
 
 - `default` - Padrão
 - `highlight` - Destaque
 - `border-left` - Borda esquerda
-- `overflow-hidden` - Overflow oculto
+- `overflow-hidden` - Overflow oculto (útil para tabelas)
 - `flex-column` - Coluna
 
-### `textStyleVariant` (estilo do conteúdo)
+**⚠️ Mudança:** `styleVariant` foi renomeado para `cardStyleVariant` para maior clareza.
+
+### `cardContentVariant` (estilo do conteúdo interno)
 
 - `with-description` - Com descrição
 - `with-charts` - Com gráficos
 - `with-tables` - Com tabelas
+
+**⚠️ Mudança:** `textStyleVariant` foi renomeado para `cardContentVariant`.
 
 ---
 
@@ -265,7 +298,7 @@ As traduções que **não mudam com a pesquisa** ficam em `uiTexts` no nível ra
 
 ## ✅ Checklist para Nova Seção
 
-- [ ] Adicionar em `sectionsConfig.sections`
+- [ ] Adicionar em `sections` (nível raiz do JSON)
 - [ ] Definir `id`, `index`, `name`, `icon`
 - [ ] Criar `subsections` (se necessário)
 - [ ] Incluir `data.renderSchema` (a existência define seção com schema)
@@ -285,6 +318,29 @@ As traduções que **não mudam com a pesquisa** ficam em `uiTexts` no nível ra
 
 ---
 
+## 📊 Gráficos Avançados
+
+O sistema suporta diversos tipos de gráficos avançados:
+
+- `kpiCard` - Card de KPI com métricas
+- `lineChart` - Gráfico de linha temporal
+- `paretoChart` - Gráfico de Pareto
+- `scatterPlot` - Gráfico de dispersão
+- `histogram` - Histograma
+- `quadrantChart` - Gráfico de quadrantes
+- `heatmap` - Mapa de calor
+- `sankeyDiagram` - Diagrama de Sankey
+- `stackedBarMECE` - Barras empilhadas MECE
+- `evolutionaryScorecard` - Scorecard evolutivo
+- `slopeGraph` - Gráfico de inclinação
+- `waterfallChart` - Gráfico cascata
+- `analyticalTable` - Tabela analítica
+
+**📖 Veja `CHARTS_JSON_REFERENCE.md` para documentação completa de todos os gráficos.**
+
+---
+
 ## 📖 Documentação Completa
 
-Veja `SURVEY_DATA_DOCUMENTATION.md` para documentação detalhada.
+- **Documentação detalhada:** `Doc_how-to_json.md`
+- **Referência de gráficos:** `CHARTS_JSON_REFERENCE.md`

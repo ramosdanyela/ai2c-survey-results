@@ -128,7 +128,6 @@ function getDynamicSubsections(section, data) {
     return questions.map((question) => ({
       id: `responses-${question.id}`,
       name: question.question,
-      icon: question.icon,
       index: question.index ?? 999,
       question: question, // Keep full question object for special rendering
     }));
@@ -275,11 +274,9 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
   }, [data?.sections]);
 
   // Get all questions for "responses" section (sorted by index)
+  // Uses getQuestionsFromData to support both new (sectionConfig.questions) and old structures
   const allQuestions = useMemo(() => {
-    const responsesSection = data?.sections?.find(
-      (s) => s.id === "responses"
-    );
-    const questions = responsesSection?.data?.questions || [];
+    const questions = getQuestionsFromData(data);
     return questions.sort((a, b) => (a.index || 0) - (b.index || 0));
   }, [data]);
 
@@ -482,13 +479,8 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         style={{ color: COLOR_GRAY_DARK }}
                       >
                         {currentSurveyInfo?.questions ||
-                          (() => {
-                            const responsesSection =
-                              data?.sections?.find(
-                                (s) => s.id === "responses"
-                              );
-                            const questions =
-                              responsesSection?.data?.questions || [];
+                            (() => {
+                            const questions = getQuestionsFromData(data);
                             return questions.length;
                           })()}
                       </div>
