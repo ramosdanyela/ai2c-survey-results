@@ -649,13 +649,27 @@ function validateQuestions(questions, context = "") {
     const questionContext = `${context}[${index}]`;
 
     // Valida campos obrigatórios
-    if (!question.id) {
+    if (question.id === undefined || question.id === null) {
       errors.push({
         path: questionContext,
         message: "Questão deve ter 'id'",
       });
     } else {
       questionIds.push(question.id);
+    }
+
+    if (question.index === undefined || question.index === null) {
+      errors.push({
+        path: questionContext,
+        message: "Questão deve ter 'index'",
+      });
+    }
+
+    if (!question.question) {
+      errors.push({
+        path: questionContext,
+        message: "Questão deve ter 'question' (texto da pergunta)",
+      });
     }
 
     // Valida questionType (não type)
@@ -750,6 +764,27 @@ function validateQuestions(questions, context = "") {
         ", "
       )}`,
     });
+  }
+
+  // Validar índices sequenciais de questões
+  const questionIndices = questions
+    .map((q) => q.index)
+    .filter((idx) => idx !== undefined && idx !== null);
+  if (questionIndices.length > 0) {
+    const sortedIndices = [...questionIndices].sort((a, b) => a - b);
+    const expectedIndices = Array.from(
+      { length: sortedIndices.length },
+      (_, i) => i + 1 // Questões começam em 1 (não 0)
+    );
+
+    if (JSON.stringify(sortedIndices) !== JSON.stringify(expectedIndices)) {
+      errors.push({
+        path: context,
+        message: `Índices de questões devem começar em 1 e ser sequenciais. Encontrado: ${questionIndices.join(
+          ", "
+        )}`,
+      });
+    }
   }
 
   return errors;
