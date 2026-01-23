@@ -35,9 +35,9 @@ function shouldShowComponent(component, data) {
 }
 
 /**
- * Render a component based on its type
+ * Render a component based on its type from JSON config
  */
-function SchemaComponent({
+function ComponentRenderer({
   component,
   data,
   subSection,
@@ -219,7 +219,7 @@ function SchemaComponent({
           const uniqueKey = `nested-${parentKey}-${childKey}-${childType}-${idx}`;
           try {
             const rendered = (
-              <SchemaComponent
+              <ComponentRenderer
                 key={uniqueKey}
                 component={comp}
                 data={data}
@@ -232,7 +232,7 @@ function SchemaComponent({
             if (rendered && React.isValidElement(rendered)) {
               return rendered;
             }
-            logger.warnCritical(`SchemaComponent retornou valor inválido para ${comp.type} no heading:`, rendered);
+            logger.warnCritical(`ComponentRenderer retornou valor inválido para ${comp.type} no heading:`, rendered);
             return null;
           } catch (err) {
             logger.error(`Erro ao renderizar componente ${comp.type} no heading:`, err);
@@ -293,7 +293,7 @@ function SchemaComponent({
         const childType = comp.type || "unknown";
         try {
           const rendered = (
-            <SchemaComponent
+            <ComponentRenderer
               key={`nested-${parentKey}-${childKey}-${childType}-${idx}`}
               component={comp}
               data={data}
@@ -306,7 +306,7 @@ function SchemaComponent({
           if (rendered && React.isValidElement(rendered)) {
             return rendered;
           }
-          logger.warnCritical(`SchemaComponent retornou valor inválido para ${comp.type}:`, rendered);
+          logger.warnCritical(`ComponentRenderer retornou valor inválido para ${comp.type}:`, rendered);
           return null;
         } catch (err) {
           logger.error(`Erro ao renderizar componente ${comp.type} no grid-container:`, err);
@@ -354,7 +354,7 @@ function SchemaComponent({
         const childType = comp.type || "unknown";
         try {
           const rendered = (
-            <SchemaComponent
+            <ComponentRenderer
               key={`nested-${parentKey}-${childKey}-${childType}-${idx}`}
               component={comp}
               data={data}
@@ -367,7 +367,7 @@ function SchemaComponent({
           if (rendered && React.isValidElement(rendered)) {
             return rendered;
           }
-          logger.warnCritical(`SchemaComponent retornou valor inválido para ${comp.type}:`, rendered);
+          logger.warnCritical(`ComponentRenderer retornou valor inválido para ${comp.type}:`, rendered);
           return null;
         } catch (err) {
           logger.error(`Erro ao renderizar componente ${comp.type} no container:`, err);
@@ -407,7 +407,7 @@ function SchemaComponent({
           const childType = comp.type || "unknown";
           const uniqueKey = `nested-${parentKey}-${childKey}-${childType}-${idx}`;
           return (
-            <SchemaComponent
+            <ComponentRenderer
               key={uniqueKey}
               component={comp}
               data={data}
@@ -432,8 +432,8 @@ function SchemaComponent({
       subSection,
       isExport,
       exportWordCloud,
-      renderSchemaComponent: (comp, idx) => (
-        <SchemaComponent
+      renderComponentRenderer: (comp, idx) => (
+        <ComponentRenderer
           key={`nested-${comp.index !== undefined ? comp.index : idx}-${comp.type || "unknown"}-${idx}`}
           component={comp}
           data={data}
@@ -497,8 +497,8 @@ export function GenericSectionRenderer({
   const { data } = useSurveyData();
 
 
-  // Get section config from sections (must be defined before sectionData)
-  const sectionConfig = useMemo(() => {
+  // Get section from sections array (must be defined before sectionData)
+  const section = useMemo(() => {
     if (!data?.sections) return null;
     return data.sections.find((s) => s.id === sectionId) || null;
   }, [data, sectionId]);
@@ -508,47 +508,34 @@ export function GenericSectionRenderer({
     if (!data || !sectionId) return null;
 
     // Special handling for attributes section: build sectionData from subsections data
-    if (sectionId === "attributes" && sectionConfig?.subsections) {
-      const attributesData = {};
-      
-      // Map subsection data to sectionData keys (department, tenure, role)
-      // This allows dataPath like "sectionData.department.distributionChart" to work
-      sectionConfig.subsections.forEach((subsection) => {
-        if (subsection.data) {
-          // Map attributes-department -> department
-          if (subsection.id === "attributes-department") {
-            attributesData.department = subsection.data;
-          }
-          // Map attributes-tenure -> tenure
-          else if (subsection.id === "attributes-tenure") {
-            attributesData.tenure = subsection.data;
-          }
-          // Map attributes-role -> role
-          else if (subsection.id === "attributes-role") {
-            attributesData.role = subsection.data;
-          }
+    // Maps subsection IDs like "attributes-department" -> "department" in sectionData
+    // This allows dataPath like "sectionData.department.distributionChart" to work
+    if (sectionId === "attributes" && section?.subsections) {
+      return section.subsections.reduce((acc, subsection) => {
+        if (subsection.data && subsection.id?.startsWith("attributes-")) {
+          // Remove "attributes-" prefix to get the key (e.g., "attributes-department" -> "department")
+          const key = subsection.id.replace(/^attributes-/, "");
+          acc[key] = subsection.data;
         }
-      });
-      
-      // Return the mapped data (no need to merge with sectionConfig.data since it was removed)
-      return attributesData;
+        return acc;
+      }, {});
     }
 
     // Special handling for responses section: include questions directly in sectionData
     if (sectionId === "responses") {
       const responsesData = {};
       
-      // Include questions if they exist directly in sectionConfig
-      if (sectionConfig?.questions && Array.isArray(sectionConfig.questions)) {
-        responsesData.questions = sectionConfig.questions;
+      // Include questions if they exist directly in section
+      if (section?.questions && Array.isArray(section.questions)) {
+        responsesData.questions = section.questions;
       }
       
-      // Also include sectionConfig.data if it exists (for uiTexts, etc.)
-      if (sectionConfig?.data) {
-        Object.assign(responsesData, sectionConfig.data);
-        // Ensure questions from sectionConfig.questions takes precedence
-        if (sectionConfig.questions && Array.isArray(sectionConfig.questions)) {
-          responsesData.questions = sectionConfig.questions;
+      // Also include section.data if it exists (for uiTexts, etc.)
+      if (section?.data) {
+        Object.assign(responsesData, section.data);
+        // Ensure questions from section.questions takes precedence
+        if (section.questions && Array.isArray(section.questions)) {
+          responsesData.questions = section.questions;
         }
       }
       
@@ -558,59 +545,30 @@ export function GenericSectionRenderer({
       }
     }
 
-    // Priority 1: sectionConfig.data (new structure - preferred)
-    if (sectionConfig?.data) {
-      return sectionConfig.data;
+    // Priority 1: section.data
+    if (section?.data) {
+      return section.data;
     }
 
-    // Priority 2: dataPath configured in sectionConfig
-    if (sectionConfig?.dataPath) {
-      const resolved = resolveDataPath(data, sectionConfig.dataPath);
+    // Priority 2: dataPath configured in section
+    if (section?.dataPath) {
+      const resolved = resolveDataPath(data, section.dataPath);
       if (resolved) return resolved;
     }
 
-    // Priority 3: Try sectionId directly
-    if (data[sectionId]) {
-      return data[sectionId];
-    }
-
     return null;
-  }, [data, sectionId, sectionConfig]);
-
-  // Check if section has subsections
-  const hasSubsections = useMemo(() => {
-    // responses: sempre dinâmico (questions)
-    if (sectionId === "responses") {
-      const questions = getQuestionsFromData(data);
-      if (questions.length > 0) return true;
-    }
-
-    // Priority 1: Check sectionConfig first (fixed subsections)
-    if (
-      sectionConfig?.subsections &&
-      Array.isArray(sectionConfig.subsections) &&
-      sectionConfig.subsections.length > 0
-    ) {
-      return true;
-    }
-    // Priority 2: Check sectionConfig.hasSubsections flag
-    if (sectionConfig?.hasSubsections !== undefined) {
-      return sectionConfig.hasSubsections;
-    }
-    // Default: no subsections
-    return false;
-  }, [sectionConfig, sectionId, data]);
+  }, [data, sectionId, section]);
 
   // Get subsections sorted by index
   // Components directly in subsections[].components
   const subsections = useMemo(() => {
-    // Priority 1: Use fixed subsections from sectionConfig if available
+    // Priority 1: Use fixed subsections from section if available
     if (
-      sectionConfig?.subsections &&
-      Array.isArray(sectionConfig.subsections)
+      section?.subsections &&
+      Array.isArray(section.subsections)
     ) {
       // Process subsections with components directly in subsection
-      const processedSubsections = sectionConfig.subsections
+      const processedSubsections = section.subsections
         .sort((a, b) => (a.index || 0) - (b.index || 0))
         .map((subsection) => {
           // Components directly in subsection
@@ -635,15 +593,15 @@ export function GenericSectionRenderer({
       const questions = getQuestionsFromData(data)
         .sort((a, b) => (a.index || 0) - (b.index || 0));
 
-      // Use components from sectionConfig (new structure)
-      const baseComponents = sectionConfig?.components || [];
+      // Use components from section
+      const baseComponents = section?.components || [];
 
       return questions.map((question) => ({
         id: `responses-${question.id}`,
         name: question.question,
         index: question.index ?? 999,
         question: question, // Keep full question object for special rendering
-        // Use components from sectionConfig for each question subsection
+        // Use components from section for each question subsection
         components: baseComponents.length > 0 ? baseComponents : undefined,
       }));
     }
@@ -653,10 +611,12 @@ export function GenericSectionRenderer({
   }, [
     sectionId,
     data,
-    hasSubsections,
-    sectionConfig,
+    section,
     sectionData,
   ]);
+
+  // Derive hasSubsections from subsections array (simpler and more reliable)
+  const hasSubsections = subsections.length > 0;
 
   // Find the active subsection
   const activeSubsection = useMemo(() => {
@@ -686,8 +646,8 @@ export function GenericSectionRenderer({
     // If no subsections, get components from section directly
     if (!hasSubsections) {
       // Components directly in section
-      if (sectionConfig?.components && Array.isArray(sectionConfig.components)) {
-        rawComponents = [...sectionConfig.components];
+      if (section?.components && Array.isArray(section.components)) {
+        rawComponents = [...section.components];
       } else {
         return [];
       }
@@ -699,11 +659,9 @@ export function GenericSectionRenderer({
         return [];
       }
       
-      // Special case: for responses section with a question, use questionsList instead of template
-      // This ensures all questions are shown with accordions, not just the selected one
+  
       if (sectionId === "responses" && activeSubsection.question) {
-        // Instead of using question template, use questionsList to show all questions with accordions
-        // The questionId will be passed to questionsList to open the specific accordion
+       
         const questionsListComponent = {
           type: "questionsList",
           index: 0,
@@ -723,9 +681,7 @@ export function GenericSectionRenderer({
       }
     }
 
-    // For "responses" section: ALWAYS add filterPills before questionsList
-    // FilterPills must always be rendered in responses section, regardless of whether
-    // we're showing the full list or a specific question
+   
     if (sectionId === "responses") {
       // Filter out any existing filterPills from JSON to avoid duplicates
       rawComponents = rawComponents.filter(comp => comp.type !== "filterPills");
@@ -763,7 +719,7 @@ export function GenericSectionRenderer({
     activeSubsection?.components,
     activeSubsection?.question,
     hasSubsections,
-    sectionConfig?.components,
+    section?.components,
     sectionId,
   ]);
 
@@ -788,67 +744,8 @@ export function GenericSectionRenderer({
     // Always add sectionData, even if empty, to prevent errors in components
     enhanced.sectionData = sectionData || {};
 
-    // Add section-specific uiTexts to data context
-    // CRITICAL FIX: Always use data.uiTexts directly as the base (not enhanced.uiTexts)
-    // This ensures ALL root properties are preserved
-    const rootUiTexts = data?.uiTexts || {};
-
-    // ALWAYS start with a complete copy of rootUiTexts to preserve ALL properties
-    // This is the key fix - we must use data.uiTexts directly, not enhanced.uiTexts
-    enhanced.uiTexts = rootUiTexts ? { ...rootUiTexts } : {};
-
-    // If there are section-specific uiTexts, merge them on top
-    // But NEVER lose root properties
-    if (sectionConfig?.data?.uiTexts) {
-      const sectionUiTexts = sectionConfig.data.uiTexts;
-
-      // Merge section-specific uiTexts (deep merge for nested objects)
-      // This only ADDS or OVERRIDES, never removes root properties
-      Object.keys(sectionUiTexts).forEach((key) => {
-        if (
-          typeof sectionUiTexts[key] === "object" &&
-          !Array.isArray(sectionUiTexts[key]) &&
-          rootUiTexts[key] &&
-          typeof rootUiTexts[key] === "object"
-        ) {
-          // If both are objects, merge them deeply (section takes precedence for overlapping keys)
-          // But preserve all root properties
-          enhanced.uiTexts[key] = {
-            ...rootUiTexts[key],
-            ...sectionUiTexts[key],
-          };
-        } else {
-          // Section uiTexts override root for this key, but other root keys remain
-          enhanced.uiTexts[key] = sectionUiTexts[key];
-        }
-      });
-    }
-
-    // FINAL SAFETY CHECK: Ensure ALL root uiTexts properties are present
-    // This is critical - if any root property was lost, restore it
-    if (data?.uiTexts) {
-      Object.keys(data.uiTexts).forEach((key) => {
-        // Only add if it's missing (don't override section-specific overrides)
-        if (!(key in enhanced.uiTexts)) {
-          enhanced.uiTexts[key] = data.uiTexts[key];
-        } else if (
-          typeof data.uiTexts[key] === "object" &&
-          !Array.isArray(data.uiTexts[key])
-        ) {
-          // For objects, ensure all nested properties from root are present
-          if (
-            typeof enhanced.uiTexts[key] === "object" &&
-            !Array.isArray(enhanced.uiTexts[key])
-          ) {
-            Object.keys(data.uiTexts[key]).forEach((nestedKey) => {
-              if (!(nestedKey in enhanced.uiTexts[key])) {
-                enhanced.uiTexts[key][nestedKey] = data.uiTexts[key][nestedKey];
-              }
-            });
-          }
-        }
-      });
-    }
+    // Use uiTexts from root only (no section-specific uiTexts)
+    enhanced.uiTexts = data?.uiTexts || {};
 
     // Add export mode state to data for QuestionsList and FilterPills
     if (isExport) {
@@ -879,15 +776,15 @@ export function GenericSectionRenderer({
     data,
     sectionId,
     subSection,
-    sectionConfig,
+    section,
     sectionData,
     isExport,
     exportWordCloud,
     activeSubsection,
   ]);
 
-  // Early validation: if no sectionConfig and not responses, can't render
-  if (!sectionConfig && sectionId !== "responses") {
+  // Early validation: if no section and not responses, can't render
+  if (!section && sectionId !== "responses") {
     logger.warnCritical(`Section config not found for section: ${sectionId}`);
     return (
       <div className="space-y-8 animate-fade-in">
@@ -1021,7 +918,7 @@ export function GenericSectionRenderer({
                 };
                 return (
                   <div key={`${sectionId}-${subSection || "root"}-filterPills-auto`} className="mb-6">
-                    <SchemaComponent
+                    <ComponentRenderer
                       component={filterPillsComponent}
                       data={enhancedData}
                       subSection={subSection}
@@ -1050,7 +947,7 @@ export function GenericSectionRenderer({
                 const uniqueKey = `${sectionId}-${subSection || "root"}-${componentIndex}-${componentType}-${idx}`;
 
                 return (
-                  <SchemaComponent
+                  <ComponentRenderer
                     key={uniqueKey}
                     component={component}
                     data={enhancedData}

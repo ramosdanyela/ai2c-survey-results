@@ -10,6 +10,8 @@ import {
   getIcon,
 } from "@/lib/icons";
 import { useSurveyData } from "@/hooks/useSurveyData";
+import { useQuestionTypeFilter } from "@/hooks/useQuestionTypeFilter";
+import { useQuestionFilters } from "@/hooks/useQuestionFilters";
 import { getBadgeConfig } from "../widgets/badgeTypes";
 import {
   Accordion,
@@ -42,211 +44,36 @@ export function QuestionsList({
   const { data: hookData, loading } = useSurveyData();
   // Use external data if provided (from schema context with sectionData), otherwise use hook data
   const data = externalData || hookData;
-  const [questionFilters, setQuestionFilters] = useState({});
+  
+  // Use unified hook for dynamic question filters (replaces local state)
+  const {
+    questionFilters,
+    setQuestionFilters,
+    getQuestionFilters,
+    updateQuestionFilter,
+    removeFilterValue,
+    clearQuestionFilters,
+    hasActiveFilters,
+  } = useQuestionFilters({
+    data,
+    apiMode: false, // TODO: Enable when API is ready
+  });
+  
   const [questionFilterOpen, setQuestionFilterOpen] = useState({});
   const [questionDownloadOpen, setQuestionDownloadOpen] = useState({});
 
-  // Use external state if provided, otherwise use internal state
-  const [internalQuestionFilter, setInternalQuestionFilter] = useState("all");
-  const [internalShowWordCloud, setInternalShowWordCloud] = useState(true);
-
-  // Force re-render when _filterPillsState changes by polling (since mutations don't trigger re-renders)
-  // This ensures QuestionsList reacts to FilterPills changes
-  // MUST be declared before useMemo hooks that depend on it
-  const [syncCounter, setSyncCounter] = useState(0);
-
-  // Initialize internal state from _filterPillsState when it becomes available
-  useEffect(() => {
-    if (data?._filterPillsState) {
-      const pillsFilter = data._filterPillsState.questionFilter;
-      const pillsWordCloud = data._filterPillsState.showWordCloud;
-      
-      // Sync internal state with _filterPillsState on mount
-      if (pillsFilter !== undefined && pillsFilter !== internalQuestionFilter) {
-        setInternalQuestionFilter(pillsFilter || "all");
-      }
-      if (pillsWordCloud !== undefined && pillsWordCloud !== internalShowWordCloud) {
-        setInternalShowWordCloud(pillsWordCloud);
-      }
-    }
-  }, [data?._filterPillsState]); // Only run when _filterPillsState is created/destroyed
-
-  // Use refs to track previous values for polling comparison
-  const prevFilterRef = useRef(null);
-  const prevWordCloudRef = useRef(null);
-
-  // Polling effect to detect changes in _filterPillsState and trigger re-renders
-  // This is necessary because direct mutations to data._filterPillsState don't trigger React re-renders
-  useEffect(() => {
-    if (data?._filterPillsState) {
-      // Initialize refs with current values
-      if (prevFilterRef.current === null) {
-        prevFilterRef.current = data._filterPillsState.questionFilter;
-      }
-      if (prevWordCloudRef.current === null) {
-        prevWordCloudRef.current = data._filterPillsState.showWordCloud;
-      }
-      
-      const interval = setInterval(() => {
-        const currentWordCloud = data._filterPillsState?.showWordCloud;
-        const currentFilter = data._filterPillsState?.questionFilter;
-
-        // Check if values actually changed
-        const filterChanged = currentFilter !== prevFilterRef.current;
-        const wordCloudChanged = currentWordCloud !== prevWordCloudRef.current;
-        
-        if (filterChanged || wordCloudChanged) {
-          // Update refs with new values
-          prevFilterRef.current = currentFilter;
-          prevWordCloudRef.current = currentWordCloud;
-          
-          // Update internal state to match _filterPillsState
-          if (filterChanged && currentFilter !== undefined) {
-            setInternalQuestionFilter(currentFilter || "all");
-          }
-          if (wordCloudChanged && currentWordCloud !== undefined) {
-            setInternalShowWordCloud(currentWordCloud);
-          }
-          
-          // Force useMemo recalculation by updating syncCounter
-          // This ensures normalizedQuestionFilter and showWordCloud are recalculated
-          setSyncCounter((prev) => prev + 1);
-        }
-      }, 50); // Check every 50ms for responsiveness
-
-      return () => clearInterval(interval);
-    } else {
-      // Reset refs when _filterPillsState is removed
-      prevFilterRef.current = null;
-      prevWordCloudRef.current = null;
-    }
-  }, [data?._filterPillsState]);
-
-  // Always read from _filterPillsState if available (real-time updates from FilterPills)
-  // Otherwise use internal state or externalFilterState
-  // CRITICAL: When _filterPillsState exists, always read directly from it to get the latest value
-  // Use useMemo to recalculate when syncCounter changes (triggered by polling)
-  const normalizedQuestionFilter = useMemo(() => {
-    // Always read the latest value directly from _filterPillsState
-    const pillsFilter = data?._filterPillsState?.questionFilter;
-    if (pillsFilter !== undefined) {
-      return pillsFilter || "all";
-    }
-    // Fallback to external or internal state
-    return externalFilterState?.questionFilter || internalQuestionFilter || "all";
-  }, [data?._filterPillsState?.questionFilter, externalFilterState?.questionFilter, internalQuestionFilter, syncCounter]);
-
-  // For showWordCloud, always read from _filterPillsState if available (real-time updates)
-  // Otherwise use internal state or externalFilterState
-  // Use useMemo to recalculate when syncCounter changes (triggered by polling)
-  const showWordCloud = useMemo(() => {
-    // Always read the latest value directly from _filterPillsState
-    const pillsWordCloud = data?._filterPillsState?.showWordCloud;
-    if (pillsWordCloud !== undefined) {
-      return pillsWordCloud;
-    }
-    // Fallback to external or internal state
-    return externalFilterState?.showWordCloud ?? internalShowWordCloud;
-  }, [data?._filterPillsState?.showWordCloud, externalFilterState?.showWordCloud, internalShowWordCloud, syncCounter]);
-
-  // Sync internal state with external state on mount and when external state changes
-  useEffect(() => {
-    if (externalFilterState) {
-      const externalFilter = externalFilterState.questionFilter;
-      const externalWordCloud = externalFilterState.showWordCloud;
-
-      if (
-        externalFilter !== undefined &&
-        externalFilter !== internalQuestionFilter
-      ) {
-        setInternalQuestionFilter(externalFilter || "all");
-      }
-      if (
-        externalWordCloud !== undefined &&
-        externalWordCloud !== internalShowWordCloud
-      ) {
-        setInternalShowWordCloud(externalWordCloud);
-      }
-    }
-  }, [externalFilterState?.questionFilter, externalFilterState?.showWordCloud]);
-
-  // Also sync with _filterPillsState directly for real-time updates (when externalFilterState exists)
-  useEffect(() => {
-    if (externalFilterState && data?._filterPillsState) {
-      const pillsFilter = data._filterPillsState.questionFilter;
-      const pillsWordCloud = data._filterPillsState.showWordCloud;
-
-      if (pillsFilter !== undefined && pillsFilter !== internalQuestionFilter) {
-        console.log(
-          "QuestionsList: Syncing filter from _filterPillsState",
-          pillsFilter
-        );
-        setInternalQuestionFilter(pillsFilter || "all");
-      }
-      if (
-        pillsWordCloud !== undefined &&
-        pillsWordCloud !== internalShowWordCloud
-      ) {
-        console.log(
-          "QuestionsList: Syncing wordCloud from _filterPillsState",
-          pillsWordCloud
-        );
-        setInternalShowWordCloud(pillsWordCloud);
-      }
-    }
-  }, [
-    data?._filterPillsState?.questionFilter,
-    data?._filterPillsState?.showWordCloud,
+  // Use unified hook for question type filter (replaces three redundant states)
+  const {
+    questionTypeFilter,
+    setQuestionTypeFilter,
+    showWordCloud,
+    setShowWordCloud,
+  } = useQuestionTypeFilter({
+    data,
     externalFilterState,
-    internalQuestionFilter,
-    internalShowWordCloud,
-  ]);
-
-  // Simple handlers that ALWAYS update internal state (causes re-render)
-  // These handlers are defined as regular functions (not useCallback) to ensure they're always fresh
-  const setQuestionFilter = (value) => {
-    const filterValue = value || "all";
-
-    // CRITICAL: Always update internal state FIRST (this causes re-render)
-    setInternalQuestionFilter(filterValue);
-
-    // Then update external state if available
-    if (externalFilterState?.setQuestionFilter) {
-      try {
-        externalFilterState.setQuestionFilter(filterValue);
-      } catch (e) {
-        // Error updating external filter state - silently handle
-      }
-    }
-
-    // Also update data._filterPillsState directly for real-time sync
-    if (data && typeof data === "object" && !Array.isArray(data)) {
-      if (data._filterPillsState) {
-        data._filterPillsState.questionFilter = filterValue;
-      }
-    }
-  };
-
-  const setShowWordCloud = (value) => {
-    // CRITICAL: Always update internal state FIRST (this causes re-render)
-    setInternalShowWordCloud(value);
-
-    // Then update external state if available
-    if (externalFilterState?.setShowWordCloud) {
-      try {
-        externalFilterState.setShowWordCloud(value);
-      } catch (e) {
-        // Error updating external wordCloud state - silently handle
-      }
-    }
-
-    // Also update data._filterPillsState directly for real-time sync
-    if (data && typeof data === "object" && !Array.isArray(data)) {
-      if (data._filterPillsState) {
-        data._filterPillsState.showWordCloud = value;
-      }
-    }
-  };
+    initialQuestionTypeFilter: "all",
+    initialShowWordCloud: true,
+  });
 
   const [selectedQuestionId, setSelectedQuestionId] = useState(null);
   const [openAccordionValue, setOpenAccordionValue] = useState(undefined);
@@ -407,19 +234,19 @@ export function QuestionsList({
       return result;
     }
 
-    // Apply filter based on normalizedQuestionFilter
+    // Apply filter based on questionTypeFilter
     let filtered;
-    if (normalizedQuestionFilter === "all") {
+    if (questionTypeFilter === "all") {
       filtered = allQuestions;
-    } else if (normalizedQuestionFilter === "open-ended") {
+    } else if (questionTypeFilter === "open-ended") {
       filtered = allQuestions.filter((q) => q.questionType === "open-ended");
-    } else if (normalizedQuestionFilter === "multiple-choice") {
+    } else if (questionTypeFilter === "multiple-choice") {
       filtered = allQuestions.filter(
         (q) => q.questionType === "multiple-choice" && !isNPSQuestion(q)
       );
-    } else if (normalizedQuestionFilter === "single-choice") {
+    } else if (questionTypeFilter === "single-choice") {
       filtered = allQuestions.filter((q) => q.questionType === "single-choice");
-    } else if (normalizedQuestionFilter === "nps") {
+    } else if (questionTypeFilter === "nps") {
       filtered = allQuestions.filter(
         (q) => isNPSQuestion(q) || q.questionType === "nps"
       );
@@ -441,7 +268,7 @@ export function QuestionsList({
     }
 
     return filtered;
-  }, [normalizedQuestionFilter, initialQuestionId, data, syncCounter]);
+  }, [questionTypeFilter, initialQuestionId, data]);
 
   // Effect to scroll to specific question when questionId is provided - MUST be before early returns
   // This handles navigation from sidebar clicks and navigation buttons
@@ -570,10 +397,8 @@ export function QuestionsList({
   }
 
   const handleQuestionFiltersChange = (questionId, newFilters) => {
-    setQuestionFilters((prev) => ({
-      ...prev,
-      [questionId]: newFilters,
-    }));
+    // Directly set filters for the question (simpler approach)
+    setQuestionFilters(questionId, newFilters);
   };
 
   const handleQuestionFilterOpenChange = (questionId, isOpen) => {
@@ -656,28 +481,7 @@ export function QuestionsList({
     return 0;
   };
 
-  const hasActiveFilters = (questionId) => {
-    const filters = questionFilters[questionId] || [];
-    return filters.some((f) => f.values && f.values.length > 0);
-  };
-
-  const handleRemoveFilterValue = (questionId, filterType, value) => {
-    const currentFilters = questionFilters[questionId] || [];
-    const updatedFilters = currentFilters
-      .map((filter) => {
-        if (filter.filterType === filterType && filter.values) {
-          const updatedValues = filter.values.filter((v) => v !== value);
-          if (updatedValues.length === 0) {
-            return null;
-          }
-          return { ...filter, values: updatedValues };
-        }
-        return filter;
-      })
-      .filter(Boolean);
-
-    handleQuestionFiltersChange(questionId, updatedFilters);
-  };
+  // hasActiveFilters and handleRemoveFilterValue are now provided by the hook
 
   const QuestionTypePill = ({ question }) => {
     const questionType = question.questionType || "multiple-choice";
@@ -783,7 +587,7 @@ export function QuestionsList({
                     {responseDetails?.questions?.length || 0}
                   </p>
                   <p className="text-xs mt-1">
-                    {activeFilter} {normalizedQuestionFilter}
+                    {activeFilter} {questionTypeFilter}
                   </p>
                   <p className="text-xs mt-1">
                     {questionsInResponseDetails}{" "}
@@ -899,7 +703,7 @@ export function QuestionsList({
                                     questions={[]}
                                     hideQuestionFilters={true}
                                     initialFilters={
-                                      questionFilters[question.id] || []
+                                      getQuestionFilters(question.id)
                                     }
                                   />
                                 </PopoverContent>
