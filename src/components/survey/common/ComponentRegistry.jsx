@@ -147,10 +147,10 @@ export const renderComponent = (component, data, props = {}) => {
 
   if (component.type === "accordion") {
     // Accordion precisa de renderSchemaComponent para renderizar componentes aninhados
-    const renderSchemaComponent = props.renderSchemaComponent || ((comp, idx) => {
-      logger.warnCritical("Accordion: renderSchemaComponent not provided");
+    if (!props.renderSchemaComponent) {
+      logger.error("Accordion: renderSchemaComponent is required but not provided");
       return null;
-    });
+    }
     
     return wrapWithTooltip(
       component,
@@ -158,7 +158,7 @@ export const renderComponent = (component, data, props = {}) => {
       <Component
         component={component}
         data={data}
-        renderSchemaComponent={renderSchemaComponent}
+        renderSchemaComponent={props.renderSchemaComponent}
       />
     );
   }

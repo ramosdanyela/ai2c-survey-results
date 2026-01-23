@@ -326,23 +326,15 @@ export function SchemaNPSStackedChart({ component, data }) {
 
   const chartConfig = getNPSStackedChartConfig(component);
 
-  // Handle data format - can be object with Detratores/Neutros/Promotores or array
-  let npsData = chartData;
-  if (Array.isArray(chartData) && chartData.length > 0) {
-    // Convert array format to object format
-    const detrator = chartData.find((d) => d.option === "Detrator");
-    const promotor = chartData.find((d) => d.option === "Promotor");
-    const neutro = chartData.find((d) => d.option === "Neutro");
-    npsData = {
-      Detratores: detrator?.percentage || 0,
-      Neutros: neutro?.percentage || 0,
-      Promotores: promotor?.percentage || 0,
-    };
+  // Data format: object with Detratores/Neutros/Promotores
+  // If data is not in the expected format, return null
+  if (!chartData || typeof chartData !== 'object' || Array.isArray(chartData)) {
+    return null;
   }
 
   return (
     <NPSStackedChart
-      data={npsData}
+      data={chartData}
       height={chartConfig.height}
       margin={chartConfig.margin}
       showGrid={chartConfig.showGrid}

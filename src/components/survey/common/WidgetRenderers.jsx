@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/accordion";
 import { WordCloud } from "../widgets/WordCloud";
 import { QuestionsList } from "./QuestionsList";
-import { resolveDataPath, resolveTemplate, getQuestionsFromData } from "@/services/dataResolver";
+import { resolveDataPath, getQuestionsFromData } from "@/services/dataResolver";
 
 /**
  * Render filter pills component based on schema
@@ -280,10 +280,7 @@ export function SchemaWordCloud({ component, data, exportWordCloud = true }) {
   }
 
   const config = component.config || {};
-  const title = resolveTemplate(
-    config.title || "{{uiTexts.responseDetails.wordCloud}}",
-    data
-  );
+  const title = config.title || uiTexts?.responseDetails?.wordCloud || "Word Cloud";
 
   return (
     <div>
@@ -380,21 +377,14 @@ export function SchemaAccordion({ component, data, renderSchemaComponent }) {
             return indexA - indexB;
           })
           .map((comp, idx) => {
-            if (renderSchemaComponent) {
-              return renderSchemaComponent(comp, idx);
+            if (!renderSchemaComponent) {
+              logger.error("SchemaAccordion: renderSchemaComponent is required but not provided");
+              return null;
             }
-            // Fallback if renderSchemaComponent not provided
-            return (
-              <div key={`accordion-content-${comp.index !== undefined ? comp.index : idx}`}>
-                Component rendering not available
-              </div>
-            );
+            return renderSchemaComponent(comp, idx);
           });
 
-        const trigger = resolveTemplate(
-          item.trigger || item.title || `Item ${index + 1}`,
-          data
-        );
+        const trigger = item.trigger || item.title || `Item ${index + 1}`;
 
         return (
           <AccordionItem
@@ -453,7 +443,7 @@ export function SchemaQuestionsList({
   }
 
 
-  // Use sectionData if dataPath is not specified or is legacy
+  // Use sectionData if dataPath is not specified
   const dataPath =
     component.dataPath || (data.sectionData ? "sectionData" : null);
   const config = component.config || {};

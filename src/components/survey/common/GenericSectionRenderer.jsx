@@ -9,7 +9,6 @@ import { useSurveyData } from "@/hooks/useSurveyData";
 import { enrichComponentWithStyles } from "@/services/styleResolver";
 import {
   resolveDataPath,
-  resolveTemplate,
   getQuestionsFromData,
 } from "@/services/dataResolver";
 
@@ -111,7 +110,7 @@ function SchemaComponent({
 
     // Special case for h3 with "Respostas" text (can be overridden by className in wrapperProps)
     if (wrapper === "h3" && !wrapperProps.className) {
-      const resolvedText = resolveTemplate(component.text || component.content || "", data);
+      const resolvedText = component.text || component.content || "";
       if (
         resolvedText &&
         (resolvedText.includes("Respostas") || resolvedText.includes("responses"))
@@ -260,8 +259,7 @@ function SchemaComponent({
 
     // If wrapper has text, render it
     if (component.text || component.content) {
-      const textToRender = component.text || component.content || "";
-      const resolvedText = resolveTemplate(textToRender, data);
+      const resolvedText = component.text || component.content || "";
       // Handle multi-line text like summary
       if (resolvedText.includes("\n")) {
         return wrapWithTooltip(component, isExport, (
@@ -579,22 +577,6 @@ export function GenericSectionRenderer({
     return null;
   }, [data, sectionId, sectionConfig]);
 
-  // Get render schema
-  // Priority: sectionConfig.data.renderSchema (new structure) > sectionData.renderSchema
-  const renderSchema = useMemo(() => {
-    // Try sectionConfig.data.renderSchema first (new structure)
-    if (sectionConfig?.data?.renderSchema) {
-      return sectionConfig.data.renderSchema;
-    }
-
-    // Try sectionData.renderSchema
-    if (sectionData?.renderSchema) {
-      return sectionData.renderSchema;
-    }
-
-    return null;
-  }, [sectionData, sectionConfig]);
-
   // Check if section has subsections
   const hasSubsections = useMemo(() => {
     // responses: sempre dinâmico (questions)
@@ -615,13 +597,9 @@ export function GenericSectionRenderer({
     if (sectionConfig?.hasSubsections !== undefined) {
       return sectionConfig.hasSubsections;
     }
-    // Priority 3: Check renderSchema.hasSubsections flag
-    if (renderSchema?.hasSubsections !== undefined) {
-      return renderSchema.hasSubsections;
-    }
     // Default: no subsections
     return false;
-  }, [sectionConfig, renderSchema, sectionId, data]);
+  }, [sectionConfig, sectionId, data]);
 
   // Get subsections sorted by index
   // Components directly in subsections[].components
@@ -657,15 +635,15 @@ export function GenericSectionRenderer({
       const questions = getQuestionsFromData(data)
         .sort((a, b) => (a.index || 0) - (b.index || 0));
 
-      // Use components from sectionConfig (new structure) or renderSchema (old structure) if available
-      const baseComponents = sectionConfig?.components || renderSchema?.components || [];
+      // Use components from sectionConfig (new structure)
+      const baseComponents = sectionConfig?.components || [];
 
       return questions.map((question) => ({
         id: `responses-${question.id}`,
         name: question.question,
         index: question.index ?? 999,
         question: question, // Keep full question object for special rendering
-        // Use components from sectionConfig or renderSchema for each question subsection
+        // Use components from sectionConfig for each question subsection
         components: baseComponents.length > 0 ? baseComponents : undefined,
       }));
     }
@@ -673,7 +651,6 @@ export function GenericSectionRenderer({
 
     return [];
   }, [
-    renderSchema,
     sectionId,
     data,
     hasSubsections,
@@ -702,20 +679,15 @@ export function GenericSectionRenderer({
   }, [subsections, subSection, sectionId]);
 
   // Get components sorted by index and enriched with styles
-  // NEW STRUCTURE: Components directly in section.components or subsection.components (preferred)
-  // OLD STRUCTURE: Components in renderSchema.components (fallback for compatibility)
+  // Components directly in section.components or subsection.components
   const components = useMemo(() => {
     let rawComponents = [];
 
-    // If no subsections, get components from section directly or renderSchema
+    // If no subsections, get components from section directly
     if (!hasSubsections) {
-      // NEW STRUCTURE: Priority 1 - Components directly in section
+      // Components directly in section
       if (sectionConfig?.components && Array.isArray(sectionConfig.components)) {
         rawComponents = [...sectionConfig.components];
-      }
-      // OLD STRUCTURE: Priority 2 - Fallback to renderSchema for compatibility
-      else if (renderSchema?.components && Array.isArray(renderSchema.components)) {
-        rawComponents = [...renderSchema.components];
       } else {
         return [];
       }
@@ -791,7 +763,6 @@ export function GenericSectionRenderer({
     activeSubsection?.components,
     activeSubsection?.question,
     hasSubsections,
-    renderSchema?.components,
     sectionConfig?.components,
     sectionId,
   ]);
@@ -915,19 +886,12 @@ export function GenericSectionRenderer({
     activeSubsection,
   ]);
 
-  // NEW STRUCTURE: Sections can work without renderSchema if components are directly in subsections
-  // OLD STRUCTURE: renderSchema was required (now optional for compatibility)
-  const canRenderWithoutSchema = 
-    sectionId === "responses" || // responses is always dynamic
-    (hasSubsections && subsections.length > 0 && subsections.some(s => s.components)) || // Has subsections with components
-    (sectionConfig?.components && Array.isArray(sectionConfig.components)); // Has components directly in section
-  
-  // Only warn if we truly can't render (no components anywhere)
-  if (!renderSchema && !canRenderWithoutSchema && !sectionConfig) {
-    logger.warnCritical(`No renderSchema and no components found for section: ${sectionId}`);
+  // Early validation: if no sectionConfig and not responses, can't render
+  if (!sectionConfig && sectionId !== "responses") {
+    logger.warnCritical(`Section config not found for section: ${sectionId}`);
     return (
       <div className="space-y-8 animate-fade-in">
-        <p>Seção não encontrada ou sem schema de renderização.</p>
+        <p>Seção não encontrada: {sectionId}</p>
       </div>
     );
   }

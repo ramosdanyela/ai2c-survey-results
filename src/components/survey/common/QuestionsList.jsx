@@ -253,51 +253,6 @@ export function QuestionsList({
   const [highlightedQuestionId, setHighlightedQuestionId] = useState(null);
   const questionRefs = useRef({});
 
-  // Resolve data path (supports sectionData.* and sectionData)
-  const resolveDataPath = (data, path) => {
-    if (!data || !path) return null;
-
-    // Handle sectionData (exact match or prefix)
-    if (path === "sectionData") {
-      return data.sectionData || null;
-    }
-
-    // Handle sectionData.* prefix
-    if (path.startsWith("sectionData.")) {
-      const relativePath = path.replace("sectionData.", "");
-      if (data.sectionData) {
-        return resolveDataPath(data.sectionData, relativePath);
-      }
-      return null;
-    }
-
-    // Handle array indices in brackets: attributes[0] -> attributes.0
-    const normalizedPath = path.replace(/\[(\d+)\]/g, ".$1");
-    const keys = normalizedPath.split(".").filter(Boolean);
-    let current = data;
-
-    for (const key of keys) {
-      if (current && typeof current === "object") {
-        if (Array.isArray(current) && /^\d+$/.test(key)) {
-          const index = parseInt(key, 10);
-          if (index >= 0 && index < current.length) {
-            current = current[index];
-          } else {
-            return null;
-          }
-        } else if (key in current) {
-          current = current[key];
-        } else {
-          return null;
-        }
-      } else {
-        return null;
-      }
-    }
-
-    return current;
-  };
-
   // Resolve data path
   const responseDetails = useMemo(() => {
     if (!data || !dataPath) {
@@ -949,7 +904,7 @@ export function QuestionsList({
                                   />
                                 </PopoverContent>
                               </Popover>
-                              {/* Download Icon - Oculto */}
+                              {/* Download PDF - Preparado para implementação futura */}
                               {/* <Popover
                                 open={
                                   questionDownloadOpen[question.id] || false
@@ -996,32 +951,19 @@ export function QuestionsList({
                                   align="end"
                                   onClick={(e) => e.stopPropagation()}
                                 >
-                                  <div className="space-y-1">
-                                    <button
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleQuestionDownloadOpenChange(
-                                          question.id,
-                                          false
-                                        );
-                                      }}
-                                      className="w-full text-left px-3 py-2 rounded-md text-sm hover:bg-muted/50 transition-colors cursor-pointer"
-                                    >
-                                      {safeUiTexts.responseDetails.png}
-                                    </button>
-                                    <button
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleQuestionDownloadOpenChange(
-                                          question.id,
-                                          false
-                                        );
-                                      }}
-                                      className="w-full text-left px-3 py-2 rounded-md text-sm hover:bg-muted/50 transition-colors cursor-pointer"
-                                    >
-                                      {safeUiTexts.responseDetails.pdf}
-                                    </button>
-                                  </div>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleQuestionDownloadOpenChange(
+                                        question.id,
+                                        false
+                                      );
+                                      // TODO: Implementar download PDF
+                                    }}
+                                    className="w-full text-left px-3 py-2 rounded-md text-sm hover:bg-muted/50 transition-colors cursor-pointer"
+                                  >
+                                    {safeUiTexts.responseDetails.pdf}
+                                  </button>
                                 </PopoverContent>
                               </Popover> */}
                             </div>

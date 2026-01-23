@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { resolveDataPath, resolveTemplate } from "@/services/dataResolver";
+import { resolveDataPath } from "@/services/dataResolver";
 import {
   RecommendationsTable,
   TasksTable,
@@ -36,17 +36,8 @@ export function SchemaRecommendationsTable({ component, data }) {
       );
     }
 
-    // Support both new structure (object with config and items) and old structure (array)
-    let recommendations, severityLabels;
-    if (Array.isArray(recommendationsData)) {
-      // Old structure: direct array
-      recommendations = recommendationsData;
-      severityLabels = null;
-    } else if (recommendationsData.items && Array.isArray(recommendationsData.items)) {
-      // New structure: object with config and items
-      recommendations = recommendationsData.items;
-      severityLabels = recommendationsData.config?.severityLabels || null;
-    } else {
+    // New structure: object with config and items
+    if (!recommendationsData || !recommendationsData.items || !Array.isArray(recommendationsData.items)) {
       // Invalid data structure - return empty state silently
       return (
         <div className="p-4 text-center text-muted-foreground">
@@ -54,6 +45,9 @@ export function SchemaRecommendationsTable({ component, data }) {
         </div>
       );
     }
+
+    const recommendations = recommendationsData.items;
+    const severityLabels = recommendationsData.config?.severityLabels || null;
 
   const toggleRecExpansion = (recId) => {
     setExpandedRecs((prev) => {
@@ -224,7 +218,7 @@ export function SchemaSentimentTable({ component, data }) {
 export function SchemaNPSDistributionTable({ component, data }) {
   try {
     const tableData = resolveDataPath(data, component.dataPath);
-    const categoryName = resolveTemplate(component.categoryName || "", data);
+    const categoryName = component.categoryName || "";
 
     if (!tableData || !Array.isArray(tableData)) {
       return (
@@ -261,7 +255,7 @@ export function SchemaNPSDistributionTable({ component, data }) {
 export function SchemaNPSTable({ component, data }) {
   try {
     const tableData = resolveDataPath(data, component.dataPath);
-    const categoryName = resolveTemplate(component.categoryName || "", data);
+    const categoryName = component.categoryName || "";
 
     if (!tableData || !Array.isArray(tableData)) {
       return (

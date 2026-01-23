@@ -15,33 +15,16 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { KPICard } from "../widgets/KPICard";
-import { resolveDataPath, resolveTemplate } from "@/services/dataResolver";
+import { resolveDataPath } from "@/services/dataResolver";
 
 /**
  * Render a card component based on schema
  * Usa cardStyleVariant do JSON para aplicar estilos do código
  */
 export function SchemaCard({ component, data, children }) {
-  // Resolve title - if it's just a template that resolves, use only the resolved value
-  let title = resolveTemplate(component.title || "", data);
-  // If title is just a template (starts and ends with {{}}), and it was resolved, use only the value
-  if (component.title && component.title.trim().match(/^\{\{[^}]+\}\}$/)) {
-    // It's a pure template, so if it resolved to something different, use that
-    // If it didn't resolve (still has {{}}), try to get the value directly
-    if (title === component.title) {
-      // Template wasn't resolved, try direct resolution
-      const templateMatch = component.title.match(/\{\{([^}]+)\}\}/);
-      if (templateMatch) {
-        const path = templateMatch[1].trim();
-        const directValue = resolveDataPath(data, path);
-        if (directValue !== null && directValue !== undefined) {
-          title = String(directValue);
-        }
-      }
-    }
-  }
-  
-  const text = resolveTemplate(component.text || component.content || "", data);
+  // Use title and text directly (no template resolution needed)
+  const title = component.title || "";
+  const text = component.text || component.content || "";
 
   // Text resolution - silently handle empty text (expected in some cases)
 
@@ -59,14 +42,6 @@ export function SchemaCard({ component, data, children }) {
     });
   }
 
-  // Debug: log if title was not resolved
-  if (
-    component.title &&
-    component.title.includes("uiTexts") &&
-    title === component.title
-  ) {
-    // Title not resolved - silently use original (expected in some cases)
-  }
 
   // Usa className do componente enriquecido (resolvido de cardStyleVariant)
   const styleClass = component.className || "card-elevated";
@@ -151,8 +126,8 @@ export function SchemaNPSScoreCard({ component, data }) {
   const npsData = resolveDataPath(data, component.dataPath || "surveyInfo");
   const uiTexts = resolveDataPath(data, "uiTexts");
 
-  // Support both question.data (with npsScore) and surveyInfo (with nps) structures
-  const npsScore = npsData?.npsScore ?? npsData?.nps;
+  // Use npsScore from question.data (as used in surveyData.json)
+  const npsScore = npsData?.npsScore;
   const npsCategory = npsData?.npsCategory;
 
   if (npsScore === undefined || !uiTexts) {
@@ -199,10 +174,7 @@ export function SchemaTopCategoriesCards({ component, data }) {
     return null;
   }
 
-  const title = resolveTemplate(
-    component.config?.title || "{{uiTexts.responseDetails.top3Categories}}",
-    data
-  );
+  const title = component.config?.title || uiTexts?.responseDetails?.top3Categories || "Top 3 Categories";
 
   return (
     <div className="mb-6">
