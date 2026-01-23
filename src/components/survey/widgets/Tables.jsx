@@ -373,12 +373,21 @@ export function NegativeCategoriesTable({ data }) {
 export function RecommendationsTable({
   recommendations,
   severityColors,
+  severityLabels,
   expandedRecs,
   onToggleRec,
   getRecTasks,
   renderTasksTable,
 }) {
   const texts = useTableTexts();
+  
+  // Helper function to get the display label for severity
+  const getSeverityLabel = (severity) => {
+    if (severityLabels && severityLabels[severity]) {
+      return severityLabels[severity];
+    }
+    return severity;
+  };
   
   return (
     <Table className="table-auto">
@@ -404,6 +413,8 @@ export function RecommendationsTable({
           const isExpanded = expandedRecs.has(rec.id);
           const tasks = getRecTasks(rec.id);
           const hasTasks = tasks.length > 0;
+          // Use English severity for color lookup, Portuguese label for display
+          const severityLabel = getSeverityLabel(rec.severity);
 
           return (
             <React.Fragment>
@@ -422,7 +433,7 @@ export function RecommendationsTable({
                 </TableCell>
                 <TableCell className="text-center py-2">
                   <Badge className={severityColors[rec.severity] || severityColors.medium}>
-                    {rec.severity}
+                    {severityLabel}
                   </Badge>
                 </TableCell>
                 <TableCell className="p-0 py-2">

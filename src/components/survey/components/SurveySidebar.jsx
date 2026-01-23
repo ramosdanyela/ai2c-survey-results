@@ -322,14 +322,22 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
   };
 
   // Handler for when clicking the main section button
-  // Always navigates to the first subsection
+  // For responses section: navigate to section without subSection to show all questions with accordions
+  // For other sections: navigate to first subsection
   // If closed, Collapsible will open automatically
   const handleSectionClick = (sectionId) => {
-    const firstSubsection = getFirstSubsection(sectionId);
-
-    // Always navigate to first subsection when clicking main section
-    if (firstSubsection && onSectionChange) {
-      onSectionChange(firstSubsection);
+    // Special handling for responses section: show all questions with accordions
+    if (sectionId === "responses") {
+      // Navigate to responses section without subSection to show all questions
+      if (onSectionChange) {
+        onSectionChange("responses");
+      }
+    } else {
+      // For other sections, navigate to first subsection
+      const firstSubsection = getFirstSubsection(sectionId);
+      if (firstSubsection && onSectionChange) {
+        onSectionChange(firstSubsection);
+      }
     }
 
     // If there's an item click callback (mobile), call it too

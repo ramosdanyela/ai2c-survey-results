@@ -32,11 +32,14 @@ O arquivo `surveyData.json` é o arquivo central que define toda a estrutura e c
 ### Visão Geral dos Campos Principais
 
 - **`metadata`**: Informações básicas sobre a pesquisa (versão, idioma, ID)
-- **`sections`**: Array de seções que define todas as seções, subseções e seus schemas de renderização
+- **`sections`**: Array de seções que define todas as seções, subseções e componentes diretamente
 - **`uiTexts`**: Textos estáticos da interface que não mudam com os dados da pesquisa
 - **`surveyInfo`**: Informações gerais da pesquisa (título, empresa, período, NPS, etc.)
 
-**⚠️ Mudança importante:** A estrutura agora usa `sections` diretamente no nível raiz (não mais `sectionsConfig.sections`).
+**⚠️ Mudança importante:** 
+- A estrutura usa `sections` diretamente no nível raiz (não mais `sectionsConfig.sections`)
+- Os componentes estão diretamente em `subsections[].components` (não há mais `renderSchema`)
+- Questões usam `questionType` (não `type`) e ficam em `questions` dentro da seção
 
 ---
 
@@ -65,7 +68,7 @@ Informações básicas da pesquisa.
 
 ### 2. `sections`
 
-Define as seções da pesquisa. Cada seção pode ter subseções e um schema de renderização que define como os componentes são exibidos.
+Define as seções da pesquisa. Cada seção pode ter subseções com componentes diretamente definidos.
 
 ```json
 {
@@ -80,11 +83,19 @@ Define as seções da pesquisa. Cada seção pode ter subseções e um schema de
           "id": "executive-summary",
           "index": 0,
           "name": "Sumário Executivo",
-          "icon": "ClipboardList"
+          "icon": "ClipboardList",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Sobre o Estudo",
+              "text": "Conteúdo...",
+              "cardStyleVariant": "default"
+            }
+          ]
         }
       ],
       "data": {
-        "renderSchema": { ... },
         "summary": { ... }
       }
     }
@@ -98,12 +109,14 @@ Define as seções da pesquisa. Cada seção pode ter subseções e um schema de
 - `index` (obrigatório): Ordem de exibição, começa em 0 (number)
 - `name` (obrigatório): Nome exibido na interface (string)
 - `icon` (obrigatório): Nome do ícone do Lucide React (string)
-- `subsections` (opcional): Array de subseções
-- `data` (obrigatório para seções de conteúdo): Dados e `renderSchema` de renderização; a existência de `data.renderSchema` define se a seção usa o renderizador genérico. O **Export** não fica em `sections`; só em `uiTexts.export`; o app injeta o item no menu.
-- `hasSubsections` (opcional): Se tem subseções (boolean)
-- `defaultExpanded` (opcional): Se a seção inicia expandida no sidebar (boolean)
+- `subsections` (opcional): Array de subseções com componentes diretamente definidos
+- `components` (opcional): Array de componentes para seções sem subseções
+- `questions` (opcional): Array de questões (usado na seção "responses")
+- `data` (opcional): Dados específicos da seção, separados dos componentes
 
-**Importante:** O `name` das subseções pode ser definido tanto em `subsections` quanto em `renderSchema.subsections`. Como o código é programático, você pode colocar o `name` diretamente junto com os componentes no `renderSchema`, evitando duplicação.
+**⚠️ Mudança importante:** Os componentes agora estão diretamente em `subsections[].components` (não há mais `renderSchema`). Os dados ficam separados em `data`.
+
+**Nota sobre Export:** O **Export** não fica em `sections`. Só é preciso ter `uiTexts.export` com os textos. O app injeta o item no menu automaticamente.
 
 ---
 
@@ -195,7 +208,16 @@ Esta seção contém todas as traduções e textos da interface que são fixos, 
           "id": "minha-subsecao",
           "index": 0,
           "name": "Minha Subseção",
-          "icon": "TrendingUp"
+          "icon": "TrendingUp",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Título do Card",
+              "text": "Conteúdo do card",
+              "cardStyleVariant": "default"
+            }
+          ]
         }
       ]
     }
@@ -203,46 +225,13 @@ Esta seção contém todas as traduções e textos da interface que são fixos, 
 }
 ```
 
-### Passo 2: Criar o schema de renderização
+### Passo 2: Adicionar os dados
 
-O `renderSchema` define como os componentes são renderizados. **O `name` pode ser colocado diretamente aqui junto com os componentes**, evitando duplicação:
-
-```json
-{
-  "data": {
-    "renderSchema": {
-      "subsections": [
-        {
-          "id": "minha-subsecao",
-          "index": 0,
-          "name": "Minha Subseção",
-          "icon": "TrendingUp",
-          "components": [
-            {
-              "type": "card",
-              "index": 0,
-              "title": "{{uiTexts.minhaSecao.titulo}}",
-              "text": "{{sectionData.descricao}}",
-              "cardStyleVariant": "default"
-            }
-          ]
-        }
-      ]
-    }
-  }
-}
-```
-
-**Nota:** Como o código é programático, você não precisa duplicar o `name` em `subsections` e `renderSchema.subsections`. Coloque o `name` apenas no `renderSchema` se preferir.
-
-### Passo 3: Adicionar os dados
-
-Os dados específicos da pesquisa ficam em `data`, separados do `renderSchema`:
+Os dados específicos da pesquisa ficam em `data`, separados dos componentes:
 
 ```json
 {
   "data": {
-    "renderSchema": { ... },
     "descricao": "Esta é a descrição da minha seção",
     "dados": [
       { "label": "Item 1", "value": 100 },
@@ -252,7 +241,9 @@ Os dados específicos da pesquisa ficam em `data`, separados do `renderSchema`:
 }
 ```
 
-### Passo 4: Adicionar textos em `uiTexts`
+**⚠️ Importante:** Os componentes estão diretamente em `subsections[].components`. Não há mais `renderSchema`. Mantenha os dados separados em `data` porque podem ser verbosos.
+
+### Passo 3: Adicionar textos em `uiTexts`
 
 ```json
 {
@@ -271,31 +262,27 @@ Os dados específicos da pesquisa ficam em `data`, separados do `renderSchema`:
 
 ### Subseção com componentes
 
-Como o código é programático, você pode definir o `name` diretamente no `renderSchema` junto com os componentes:
+Os componentes estão diretamente nas subseções:
 
 ```json
 {
-  "data": {
-    "renderSchema": {
-      "subsections": [
+  "subsections": [
+    {
+      "id": "subsecao-1",
+      "index": 0,
+      "name": "Subseção 1",
+      "icon": "FileText",
+      "components": [
         {
-          "id": "subsecao-1",
+          "type": "card",
           "index": 0,
-          "name": "Subseção 1",
-          "icon": "FileText",
-          "components": [
-            {
-              "type": "card",
-              "index": 0,
-                  "title": "Título do Card",
-                  "text": "Conteúdo do card",
-                  "cardStyleVariant": "default"
-            }
-          ]
+          "title": "Título do Card",
+          "text": "Conteúdo do card",
+          "cardStyleVariant": "default"
         }
       ]
     }
-  }
+  ]
 }
 ```
 
@@ -329,25 +316,36 @@ Como o código é programático, você pode definir o `name` diretamente no `ren
 
 ### Onde ficam as questões?
 
-As questões ficam dentro da seção `responses` (ou qualquer seção que use `questionsList`), em `data.questions`:
+As questões ficam dentro da seção `responses`, diretamente em `questions` (não em `data.questions`):
 
 ```json
 {
   "sections": [
     {
       "id": "responses",
-      "data": {
-        "questions": [
-          {
-            "id": 1,
-            "index": 1,
-            "question": "Qual é a probabilidade de você recomendar...",
-            "icon": "Percent",
-            "summary": "Com 51% dos entrevistados...",
-            "data": [ ... ],
-            "type": "nps"
+      "index": 4,
+      "name": "Análise por Questão",
+      "icon": "MessageSquare",
+      "questions": [
+        {
+          "id": 1,
+          "index": 1,
+          "questionType": "nps",
+          "question": "Qual é a probabilidade de você recomendar...",
+          "icon": "Percent",
+          "summary": "Com 51% dos entrevistados...",
+          "data": {
+            "npsScore": 35,
+            "npsCategory": "Bom",
+            "npsStackedChart": [ ... ]
           }
-        ]
+        }
+      ],
+      "components": [],
+      "data": {
+        "config": {
+          "npsCategories": { ... }
+        }
       }
     }
   ]
@@ -364,23 +362,26 @@ Para adicionar uma nova questão, simplesmente adicione um objeto ao array `ques
     {
       "id": 1,
       "index": 1,
+      "questionType": "nps",
       "question": "Pergunta existente",
-      "type": "nps"
+      "data": { ... }
     },
     {
       "id": 7,
       "index": 7,
+      "questionType": "multiple-choice",
       "question": "Nova pergunta",
       "icon": "HelpCircle",
       "summary": "Resumo da nova pergunta",
-      "data": [
-        {
-          "option": "Opção 1",
-          "value": 100,
-          "percentage": 50
-        }
-      ],
-      "type": "multiple-choice"
+      "data": {
+        "barChart": [
+          {
+            "option": "Opção 1",
+            "value": 100,
+            "percentage": 50
+          }
+        ]
+      }
     }
   ]
 }
@@ -391,16 +392,18 @@ Para adicionar uma nova questão, simplesmente adicione um objeto ao array `ques
 - `id`: ID único (number)
 - `index`: Ordem de exibição (number)
 - `question`: Texto da pergunta (string)
-- `type`: Tipo da questão - `"nps"`, `"open-ended"`, `"multiple-choice"` ou `"single-choice"` (string)
+- `questionType`: Tipo da questão - `"nps"`, `"open-ended"`, `"multiple-choice"` ou `"single-choice"` (string)
+
+**⚠️ Importante:** Use `questionType` (não `type`) para questões. Os componentes são gerados automaticamente baseados no `questionType` usando templates pré-definidos.
 
 **Campos opcionais:**
 
 - `icon`: Nome do ícone (string)
 - `summary`: Resumo da questão (string)
-- `data`: Dados da questão (array) - estrutura varia conforme o tipo
-- `wordCloud`: Dados da nuvem de palavras (array) - para questões `"open-ended"`
-- `sentimentData`: Dados de sentimento (array) - para questões `"open-ended"`
-- `topCategories`: Categorias principais (array) - para questões `"open-ended"`
+- `data`: Dados da questão (object) - estrutura varia conforme o tipo
+  - Para `nps`: `npsScore`, `npsCategory`, `npsStackedChart`
+  - Para `multiple-choice` ou `single-choice`: `barChart`
+  - Para `open-ended`: `wordCloud`, `topCategoriesCards`, `sentimentStackedChart`
 
 ### Remover uma questão
 
@@ -408,100 +411,115 @@ Para adicionar uma nova questão, simplesmente adicione um objeto ao array `ques
 
 ### Estrutura de uma questão por tipo
 
-#### Questão NPS (`type: "nps"`)
+#### Questão NPS (`questionType: "nps"`)
 
 ```json
 {
   "id": 1,
   "index": 1,
+  "questionType": "nps",
   "question": "Qual é a probabilidade de você recomendar...",
   "icon": "Percent",
   "summary": "Resumo...",
-  "data": [
-    {
-      "option": "Detrator",
-      "value": 636,
-      "percentage": 51
-    },
-    {
-      "option": "Promotor",
-      "value": 374,
-      "percentage": 30
-    },
-    {
-      "option": "Neutro",
-      "value": 237,
-      "percentage": 19
-    }
-  ],
-  "type": "nps"
+  "data": {
+    "npsScore": 35,
+    "npsCategory": "Bom",
+    "npsStackedChart": [
+      {
+        "option": "Detrator",
+        "value": 636,
+        "percentage": 51
+      },
+      {
+        "option": "Promotor",
+        "value": 374,
+        "percentage": 30
+      },
+      {
+        "option": "Neutro",
+        "value": 237,
+        "percentage": 19
+      }
+    ]
+  }
 }
 ```
 
-#### Questão Múltipla Escolha (`type: "multiple-choice"`)
+**Componentes gerados automaticamente:** `npsScoreCard`, `npsStackedChart`
+
+#### Questão Múltipla Escolha (`questionType: "multiple-choice"`)
 
 ```json
 {
   "id": 2,
   "index": 2,
+  "questionType": "multiple-choice",
   "question": "Qual é o principal ponto que impacta sua satisfação?",
   "icon": "HelpCircle",
   "summary": "Resumo...",
-  "data": [
-    {
-      "option": "Opção 1",
-      "value": 168,
-      "percentage": 26
-    },
-    {
-      "option": "Opção 2",
-      "value": 150,
-      "percentage": 23
-    }
-  ],
-  "type": "multiple-choice"
+  "data": {
+    "barChart": [
+      {
+        "option": "Opção 1",
+        "value": 168,
+        "percentage": 26
+      },
+      {
+        "option": "Opção 2",
+        "value": 150,
+        "percentage": 23
+      }
+    ]
+  }
 }
 ```
 
-#### Questão Aberta / Campo Livre (`type: "open-ended"`)
+**Componente gerado automaticamente:** `barChart`
+
+#### Questão Aberta / Campo Livre (`questionType: "open-ended"`)
 
 ```json
 {
   "id": 4,
   "index": 4,
+  "questionType": "open-ended",
   "question": "O que podemos melhorar?",
   "icon": "TrendingUp",
   "summary": "Resumo...",
-  "sentimentData": [
-    {
-      "category": "Suporte",
-      "positive": 15,
-      "neutral": 25,
-      "negative": 60
-    }
-  ],
-  "topCategories": [
-    {
-      "rank": 1,
-      "category": "Tempo de resposta do suporte",
-      "mentions": 412,
-      "percentage": 33,
-      "topics": [
-        "demora no atendimento",
-        {
-          "topic": "tempo de espera",
-          "sentiment": "negative"
-        }
-      ]
-    }
-  ],
-  "wordCloud": [
-    { "text": "suporte", "value": 412 },
-    { "text": "tempo", "value": 356 }
-  ],
-  "type": "open-ended"
+  "data": {
+    "sentimentStackedChart": [
+      {
+        "category": "Suporte",
+        "positive": 15,
+        "neutral": 25,
+        "negative": 60
+      }
+    ],
+    "topCategoriesCards": [
+      {
+        "rank": 1,
+        "category": "Tempo de resposta do suporte",
+        "mentions": 412,
+        "percentage": 33,
+        "topics": [
+          {
+            "topic": "tempo de espera",
+            "sentiment": "negative"
+          }
+        ]
+      }
+    ],
+    "wordCloud": [
+      { "text": "suporte", "value": 412 },
+      { "text": "tempo", "value": 356 }
+    ]
+  }
 }
 ```
+
+**Componentes gerados automaticamente:** `sentimentStackedChart`, `topCategoriesCards`, `wordCloud`
+
+**⚠️ Importante:** As questões **não possuem** um campo `components` no JSON. Os componentes são gerados automaticamente baseados no `questionType` usando templates pré-definidos.
 
 ---
 
@@ -576,7 +594,11 @@ Além dos textos no JSON, existem traduções hardcoded em `src/data/surveyData.
 
 ## 🧩 Componentes Disponíveis
 
-### Card
+O sistema suporta diversos tipos de componentes. **Mesmo que não estejam no JSON atual, o código processa e renderiza qualquer um dos seguintes tipos**. Todos os componentes estão registrados no `ComponentRegistry` e podem ser usados em qualquer seção/subseção.
+
+### Cards
+
+#### Card
 
 Exibe conteúdo com título e corpo.
 
@@ -584,10 +606,11 @@ Exibe conteúdo com título e corpo.
 {
   "type": "card",
   "index": 0,
-  "title": "{{uiTexts.titulo}}",
-  "text": "{{sectionData.conteudo}}",
+  "title": "Título do Card",
+  "text": "Texto do card com suporte a quebras de linha.\nSegunda linha.",
   "cardStyleVariant": "default",
   "cardContentVariant": "with-description",
+  "useDescription": false,
   "components": [ ... ]
 }
 ```
@@ -596,21 +619,60 @@ Exibe conteúdo com título e corpo.
 
 - `type`: `"card"` (obrigatório)
 - `index`: Ordem (number, opcional)
-- `title`: Título (string, suporta templates)
-- `text`: Texto (string, suporta templates)
+- `title`: Título (string, opcional)
+- `text`: Texto (string, suporta `\n` para quebras, opcional)
 - `cardStyleVariant`: Estilo do card (string, opcional)
   - Valores: `"default"`, `"highlight"`, `"border-left"`, `"overflow-hidden"`, `"flex-column"`
 - `cardContentVariant`: Estilo do conteúdo interno (string, opcional)
   - Valores: `"with-description"`, `"with-charts"`, `"with-tables"`
-  
-**⚠️ Mudança:** `styleVariant` foi renomeado para `cardStyleVariant` e `textStyleVariant` foi renomeado para `cardContentVariant` para maior clareza.
 - `useDescription`: Usar CardDescription (boolean, opcional)
 - `components`: Componentes filhos (array, opcional)
 - `condition`: Condição para renderizar (string, opcional)
 
+#### NPSScoreCard
+
+Card com score NPS.
+
+```json
+{
+  "type": "npsScoreCard",
+  "index": 0,
+  "dataPath": "question.data"
+}
+```
+
+#### TopCategoriesCards
+
+Cards de categorias principais.
+
+```json
+{
+  "type": "topCategoriesCards",
+  "index": 0,
+  "dataPath": "question.data.topCategoriesCards",
+  "config": {
+    "title": "Top 3 Categorias"
+  }
+}
+```
+
+#### KPICard
+
+Card de KPI com métricas.
+
+```json
+{
+  "type": "kpiCard",
+  "index": 0,
+  "dataPath": "sectionData.kpiData"
+}
+```
+
 ---
 
-### BarChart
+### Charts (Gráficos)
+
+#### BarChart
 
 Gráfico de barras horizontal.
 
@@ -629,9 +691,7 @@ Gráfico de barras horizontal.
 }
 ```
 
----
-
-### SentimentDivergentChart
+#### SentimentDivergentChart
 
 Gráfico divergente de sentimento.
 
@@ -639,7 +699,7 @@ Gráfico divergente de sentimento.
 {
   "type": "sentimentDivergentChart",
   "index": 0,
-  "dataPath": "sectionData.sentimentAnalysis.data",
+  "dataPath": "sectionData.sentimentDivergentChart",
   "config": {
     "yAxisDataKey": "category",
     "showLegend": true
@@ -647,9 +707,7 @@ Gráfico divergente de sentimento.
 }
 ```
 
----
-
-### SentimentStackedChart
+#### SentimentStackedChart
 
 Gráfico empilhado de sentimento.
 
@@ -657,7 +715,7 @@ Gráfico empilhado de sentimento.
 {
   "type": "sentimentStackedChart",
   "index": 0,
-  "dataPath": "currentAttribute.sentiment",
+  "dataPath": "sectionData.sentiment",
   "config": {
     "yAxisDataKey": "segment",
     "showLabels": true
@@ -665,9 +723,22 @@ Gráfico empilhado de sentimento.
 }
 ```
 
----
+#### SentimentThreeColorChart
 
-### NPSStackedChart
+Gráfico de três cores de sentimento.
+
+```json
+{
+  "type": "sentimentThreeColorChart",
+  "index": 0,
+  "dataPath": "sectionData.sentiment",
+  "config": {
+    "yAxisDataKey": "category"
+  }
+}
+```
+
+#### NPSStackedChart
 
 Gráfico empilhado NPS.
 
@@ -675,49 +746,183 @@ Gráfico empilhado NPS.
 {
   "type": "npsStackedChart",
   "index": 0,
-  "dataPath": "question.data",
+  "dataPath": "question.data.npsStackedChart",
+  "config": {}
+}
+```
+
+#### LineChart
+
+Gráfico de linha temporal.
+
+```json
+{
+  "type": "lineChart",
+  "index": 0,
+  "dataPath": "sectionData.timelineData",
   "config": {
-    "hideXAxis": true
+    "dataKey": "value",
+    "xAxisDataKey": "date"
   }
 }
 ```
 
----
+#### ParetoChart
 
-### NPSScoreCard
-
-Card com score NPS.
+Gráfico de Pareto.
 
 ```json
 {
-  "type": "npsScoreCard",
+  "type": "paretoChart",
   "index": 0,
-  "dataPath": "surveyInfo"
-}
-```
-
-Usa dados de `surveyInfo` automaticamente.
-
----
-
-### WordCloud
-
-Nuvem de palavras. Usa a estrutura de dados nativa `[{text, value}]` em `dataPath`. Imagens não são usadas.
-
-```json
-{
-  "type": "wordCloud",
-  "index": 0,
-  "dataPath": "question.wordCloud",
+  "dataPath": "sectionData.paretoData",
   "config": {
-    "title": "{{uiTexts.responseDetails.wordCloud}}"
+    "dataKey": "value",
+    "yAxisDataKey": "category"
   }
 }
 ```
 
----
+#### ScatterPlot
 
-### Tables
+Gráfico de dispersão.
+
+```json
+{
+  "type": "scatterPlot",
+  "index": 0,
+  "dataPath": "sectionData.scatterData",
+  "config": {
+    "xAxisDataKey": "x",
+    "yAxisDataKey": "y",
+    "dataKey": "value"
+  }
+}
+```
+
+#### Histogram
+
+Histograma.
+
+```json
+{
+  "type": "histogram",
+  "index": 0,
+  "dataPath": "sectionData.histogramData",
+  "config": {
+    "dataKey": "frequency",
+    "xAxisDataKey": "bin"
+  }
+}
+```
+
+#### QuadrantChart
+
+Gráfico de quadrantes.
+
+```json
+{
+  "type": "quadrantChart",
+  "index": 0,
+  "dataPath": "sectionData.quadrantData",
+  "config": {
+    "xAxisDataKey": "x",
+    "yAxisDataKey": "y"
+  }
+}
+```
+
+#### Heatmap
+
+Mapa de calor.
+
+```json
+{
+  "type": "heatmap",
+  "index": 0,
+  "dataPath": "sectionData.heatmapData",
+  "config": {
+    "xAxisDataKey": "x",
+    "yAxisDataKey": "y",
+    "dataKey": "value"
+  }
+}
+```
+
+#### SankeyDiagram
+
+Diagrama de Sankey.
+
+```json
+{
+  "type": "sankeyDiagram",
+  "index": 0,
+  "dataPath": "sectionData.sankeyData",
+  "config": {}
+}
+```
+
+#### StackedBarMECE
+
+Barras empilhadas MECE.
+
+```json
+{
+  "type": "stackedBarMECE",
+  "index": 0,
+  "dataPath": "sectionData.meceData",
+  "config": {
+    "yAxisDataKey": "category"
+  }
+}
+```
+
+#### EvolutionaryScorecard
+
+Scorecard evolutivo.
+
+```json
+{
+  "type": "evolutionaryScorecard",
+  "index": 0,
+  "dataPath": "sectionData.scorecardData",
+  "config": {}
+}
+```
+
+#### SlopeGraph
+
+Gráfico de inclinação.
+
+```json
+{
+  "type": "slopeGraph",
+  "index": 0,
+  "dataPath": "sectionData.slopeData",
+  "config": {
+    "xAxisDataKey": "period",
+    "yAxisDataKey": "value"
+  }
+}
+```
+
+#### WaterfallChart
+
+Gráfico cascata.
+
+```json
+{
+  "type": "waterfallChart",
+  "index": 0,
+  "dataPath": "sectionData.waterfallData",
+  "config": {
+    "dataKey": "value",
+    "xAxisDataKey": "category"
+  }
+}
+```
+
+### Tables (Tabelas)
 
 #### RecommendationsTable
 
@@ -725,8 +930,7 @@ Nuvem de palavras. Usa a estrutura de dados nativa `[{text, value}]` em `dataPat
 {
   "type": "recommendationsTable",
   "index": 0,
-  "dataPath": "sectionData.recommendations",
-  "severityLabelsPath": "uiTexts.severityLabels"
+  "dataPath": "sectionData.recommendationsTable"
 }
 ```
 
@@ -736,7 +940,7 @@ Nuvem de palavras. Usa a estrutura de dados nativa `[{text, value}]` em `dataPat
 {
   "type": "segmentationTable",
   "index": 0,
-  "dataPath": "sectionData.segmentation"
+  "dataPath": "sectionData.segmentationTable"
 }
 ```
 
@@ -746,7 +950,7 @@ Nuvem de palavras. Usa a estrutura de dados nativa `[{text, value}]` em `dataPat
 {
   "type": "distributionTable",
   "index": 0,
-  "dataPath": "currentAttribute.distribution"
+  "dataPath": "sectionData.distributionTable"
 }
 ```
 
@@ -756,7 +960,17 @@ Nuvem de palavras. Usa a estrutura de dados nativa `[{text, value}]` em `dataPat
 {
   "type": "sentimentTable",
   "index": 0,
-  "dataPath": "currentAttribute.sentiment"
+  "dataPath": "sectionData.sentimentTable"
+}
+```
+
+#### NPSDistributionTable
+
+```json
+{
+  "type": "npsDistributionTable",
+  "index": 0,
+  "dataPath": "sectionData.npsDistribution"
 }
 ```
 
@@ -766,45 +980,53 @@ Nuvem de palavras. Usa a estrutura de dados nativa `[{text, value}]` em `dataPat
 {
   "type": "npsTable",
   "index": 0,
-  "dataPath": "currentAttribute.nps"
+  "dataPath": "sectionData.nps"
 }
 ```
 
----
-
-### Wrapper
-
-Agrupa outros componentes.
+#### SentimentImpactTable
 
 ```json
 {
-  "wrapper": "div",
-  "wrapperProps": {
-    "className": "grid grid-cols-2 gap-4"
-  },
+  "type": "sentimentImpactTable",
   "index": 0,
-  "components": [
-    {
-      "type": "card",
-      "index": 0,
-      "title": "Card 1"
-    }
-  ]
+  "dataPath": "sectionData.sentimentImpact"
 }
 ```
 
-**Propriedades:**
+#### PositiveCategoriesTable
 
-- `wrapper`: Tag HTML (string, obrigatório) - Exemplos: `"div"`, `"section"`, `"h3"`
-- `wrapperProps`: Props do wrapper (object, opcional) - Permite passar propriedades HTML/React
-- `components`: Componentes filhos (array, opcional)
-- `text`: Texto (string, suporta templates, opcional)
-- `index`: Ordem (number, opcional)
-- `condition`: Condição (string, opcional)
+```json
+{
+  "type": "positiveCategoriesTable",
+  "index": 0,
+  "dataPath": "sectionData.positiveCategories"
+}
+```
 
----
+#### NegativeCategoriesTable
 
-### QuestionsList
+```json
+{
+  "type": "negativeCategoriesTable",
+  "index": 0,
+  "dataPath": "sectionData.negativeCategories"
+}
+```
+
+#### AnalyticalTable
+
+```json
+{
+  "type": "analyticalTable",
+  "index": 0,
+  "dataPath": "sectionData.analyticalData"
+}
+```
+
+### Widgets
+
+#### QuestionsList
 
 Lista de questões com filtros.
 
@@ -820,9 +1042,7 @@ Lista de questões com filtros.
 }
 ```
 
----
-
-### FilterPills
+#### FilterPills
 
 Pills de filtro.
 
@@ -835,6 +1055,138 @@ Pills de filtro.
   }
 }
 ```
+
+#### WordCloud
+
+Nuvem de palavras.
+
+```json
+{
+  "type": "wordCloud",
+  "index": 0,
+  "dataPath": "question.data.wordCloud",
+  "config": {
+    "title": "Nuvem de Palavras"
+  }
+}
+```
+
+#### Accordion
+
+Acordeão expansível para organizar conteúdo.
+
+```json
+{
+  "type": "accordion",
+  "index": 0,
+  "title": "Título do Acordeão",
+  "components": [
+    {
+      "type": "card",
+      "index": 0,
+      "title": "Conteúdo dentro do acordeão"
+    }
+  ]
+}
+```
+
+**Propriedades:**
+
+- `type`: `"accordion"` (obrigatório)
+- `index`: Ordem (number, opcional)
+- `title`: Título do acordeão (string, opcional)
+- `components`: Componentes filhos (array, opcional)
+
+### Containers e Headings
+
+#### Container
+
+Container flexível.
+
+```json
+{
+  "type": "container",
+  "index": 0,
+  "components": [
+    {
+      "type": "card",
+      "index": 0,
+      "title": "Card 1"
+    }
+  ]
+}
+```
+
+#### Grid Container
+
+Container em grid.
+
+```json
+{
+  "type": "grid-container",
+  "index": 0,
+  "className": "grid gap-6 md:grid-cols-2",
+  "components": [
+    {
+      "type": "card",
+      "index": 0,
+      "title": "Card 1"
+    },
+    {
+      "type": "card",
+      "index": 1,
+      "title": "Card 2"
+    }
+  ]
+}
+```
+
+**Propriedades:**
+
+- `type`: `"grid-container"` (obrigatório)
+- `index`: Ordem (number, opcional)
+- `components`: Componentes filhos (array, opcional)
+- `className`: Classes CSS para o grid (string, opcional) - padrão: `"grid gap-6 md:grid-cols-2"`
+
+#### Headings (h3, h4)
+
+Componentes de cabeçalho para organizar conteúdo.
+
+```json
+{
+  "type": "h3",
+  "index": 0,
+  "text": "Título da Seção"
+}
+```
+
+ou com componentes aninhados:
+
+```json
+{
+  "type": "h3",
+  "index": 0,
+  "text": "Respostas",
+  "components": [
+    {
+      "type": "npsDistributionTable",
+      "index": 1,
+      "dataPath": "sectionData.department.npsDistributionTable"
+    }
+  ]
+}
+```
+
+**Propriedades:**
+
+- `type`: `"h3"` ou `"h4"` (obrigatório)
+- `index`: Ordem (number, opcional)
+- `text`: Texto do cabeçalho (string, suporta templates, opcional)
+- `components`: Componentes filhos (array, opcional)
+- `wrapperProps`: Props adicionais para o elemento (object, opcional)
+```
+
+**📖 Veja `CHARTS_JSON_REFERENCE.md` para documentação completa de todos os gráficos com exemplos detalhados.**
 
 ---
 
@@ -865,7 +1217,7 @@ Use `{{path}}` para referenciar dados dinamicamente.
 4. **`question`**: Questão atual (em listas de questões)
 
    ```json
-   "condition": "question.type === 'nps'"
+   "condition": "question.questionType === 'nps'"
    ```
 
 5. **`surveyInfo`**: Informações gerais
@@ -883,7 +1235,7 @@ Use condições para renderizar componentes condicionalmente.
 
 ```json
 {
-  "condition": "question.type === 'nps'"
+  "condition": "question.questionType === 'nps'"
 }
 ```
 
@@ -899,13 +1251,13 @@ Use condições para renderizar componentes condicionalmente.
 
 ```json
 {
-  "condition": "question.type === 'nps'"
+  "condition": "question.questionType === 'nps'"
 }
 ```
 
 ```json
 {
-  "condition": "question.type === 'open-ended' && question.wordCloud && showWordCloud"
+  "condition": "question.questionType === 'open-ended' && question.data.wordCloud && showWordCloud"
 }
 ```
 
@@ -921,7 +1273,7 @@ Valores truthy/falsy são avaliados automaticamente.
 
 ## 📊 Estruturas de Dados
 
-As estruturas de dados abaixo são **exemplos simplificados**. Os dados reais podem ser muito mais verbosos, então mantenha-os separados do `renderSchema` no JSON.
+As estruturas de dados abaixo são **exemplos simplificados**. Os dados reais podem ser muito mais verbosos, então mantenha-os separados dos componentes em `data` no JSON.
 
 ### Distribuição
 
@@ -1025,11 +1377,11 @@ Ver seção [Gerenciando Questões](#gerenciando-questões) para exemplos comple
 }
 ```
 
-### Top Categories
+### Top Categories Cards
 
 ```json
 {
-  "topCategories": [
+  "topCategoriesCards": [
     {
       "rank": 1,
       "category": "Serviço de rede",
@@ -1046,7 +1398,9 @@ Ver seção [Gerenciando Questões](#gerenciando-questões) para exemplos comple
 }
 ```
 
-**Nota:** Mantenha os dados separados do `renderSchema` porque podem ser muito verbosos. O `renderSchema` deve conter apenas a estrutura de renderização, enquanto os dados ficam em propriedades separadas dentro de `data`.
+**Nota:** Para questões `open-ended`, use `topCategoriesCards` (não `topCategories`) dentro de `data`.
+
+**Nota:** Mantenha os dados separados dos componentes porque podem ser muito verbosos. Os componentes definem a estrutura de renderização, enquanto os dados ficam em `data`.
 
 ---
 
@@ -1062,36 +1416,60 @@ Ver seção [Gerenciando Questões](#gerenciando-questões) para exemplos comple
   "index": 5,
   "name": "Nova Seção",
   "icon": "BarChart3",
-  "subsections": [ ... ]
+  "subsections": [
+    {
+      "id": "nova-subsecao",
+      "index": 0,
+      "name": "Nova Subseção",
+      "icon": "FileText",
+      "components": [
+        {
+          "type": "card",
+          "index": 0,
+          "title": "Título",
+          "text": "Conteúdo"
+        }
+      ]
+    }
+  ],
+  "data": {
+    "meusDados": "Dados aqui"
+  }
 }
 ```
 
-2. Adicione o schema em `data.renderSchema`
-3. Adicione os dados em `data` (separados do `renderSchema`)
-4. Adicione os textos em `uiTexts`
+2. Adicione os dados em `data` (separados dos componentes)
+3. Adicione os textos em `uiTexts`
 
 ### Como criar uma subseção?
 
-1. Adicione em `subsections` (ou apenas no `renderSchema`):
+1. Adicione em `subsections` com `components` diretamente:
 
 ```json
 {
   "id": "nova-subsecao",
   "index": 0,
   "name": "Nova Subseção",
-  "icon": "FileText"
+  "icon": "FileText",
+  "components": [
+    {
+      "type": "card",
+      "index": 0,
+      "title": "Título",
+      "text": "Conteúdo"
+    }
+  ]
 }
 ```
 
-2. Adicione o schema correspondente em `renderSchema.subsections` com o `name` junto dos componentes
-3. Adicione os dados necessários em `data`
+2. Adicione os dados necessários em `data` da seção
 
 ### Como adicionar ou remover questões?
 
-- **Adicionar:** Adicione um objeto ao array `questions` em `data.questions`
+- **Adicionar:** Adicione um objeto ao array `questions` na seção `responses` (não em `data.questions`)
 - **Remover:** Remova o objeto do array `questions`
 
-Veja a seção [Gerenciando Questões](#gerenciando-questões) para detalhes.
+**⚠️ Importante:** Use `questionType` (não `type`) para questões. Veja a seção [Gerenciando Questões](#gerenciando-questões) para detalhes.
 
 ### Onde ficam as traduções que não mudam?
 
@@ -1115,19 +1493,39 @@ Use `dataPath` com o caminho completo:
 
 ### Como criar um gráfico?
 
-1. Prepare os dados em `data` (separados do `renderSchema`)
-2. Use o componente com `dataPath`:
+1. Prepare os dados em `data` (separados dos componentes)
+2. Use o componente com `dataPath` em `subsections[].components`:
 
 ```json
 {
-  "type": "barChart",
-  "dataPath": "sectionData.dados",
-  "config": {
-    "dataKey": "percentage",
-    "yAxisDataKey": "label"
+  "subsections": [
+    {
+      "id": "grafico-subsecao",
+      "index": 0,
+      "name": "Gráfico",
+      "icon": "BarChart3",
+      "components": [
+        {
+          "type": "barChart",
+          "index": 0,
+          "dataPath": "sectionData.dados",
+          "config": {
+            "dataKey": "percentage",
+            "yAxisDataKey": "label"
+          }
+        }
+      ]
+    }
+  ],
+  "data": {
+    "dados": [
+      { "label": "Opção A", "value": 100, "percentage": 50 }
+    ]
   }
 }
 ```
+
+**💡 Dica:** Mesmo que um tipo de gráfico não esteja no JSON atual, o código processa e renderiza qualquer tipo registrado no ComponentRegistry. Veja a lista completa de componentes disponíveis na seção [Componentes Disponíveis](#componentes-disponíveis).
 
 ### Como adicionar textos em múltiplos idiomas?
 
@@ -1144,7 +1542,7 @@ Combine operadores:
 
 ```json
 {
-  "condition": "question.type === 'open-ended' && question.wordCloud && showWordCloud"
+  "condition": "question.questionType === 'open-ended' && question.data.wordCloud && showWordCloud"
 }
 ```
 
@@ -1167,21 +1565,24 @@ Use `components`:
 
 ### Como criar uma seção sem subseções?
 
-Use `hasSubsections: false` e `components` diretamente:
+Use `components` diretamente na seção:
 
 ```json
 {
   "id": "secao-simples",
-  "hasSubsections": false,
-  "data": {
-    "renderSchema": {
-      "components": [
-        {
-          "type": "card",
-          "title": "Conteúdo"
-        }
-      ]
+  "index": 0,
+  "name": "Seção Simples",
+  "icon": "FileText",
+  "components": [
+    {
+      "type": "card",
+      "index": 0,
+      "title": "Conteúdo",
+      "text": "Texto do card"
     }
+  ],
+  "data": {
+    "meusDados": "Dados aqui"
   }
 }
 ```
@@ -1242,29 +1643,20 @@ O **Export não fica em `sections`**. Só é preciso ter **`uiTexts.export`** co
         {
           "id": "exemplo-subsecao",
           "index": 0,
-          "icon": "ClipboardList"
+          "name": "Subseção de Exemplo",
+          "icon": "ClipboardList",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Título do Card",
+              "text": "Esta é uma descrição de exemplo.",
+              "cardStyleVariant": "default"
+            }
+          ]
         }
       ],
       "data": {
-        "renderSchema": {
-          "subsections": [
-            {
-              "id": "exemplo-subsecao",
-              "index": 0,
-              "name": "Subseção de Exemplo",
-              "icon": "ClipboardList",
-              "components": [
-                {
-                  "type": "card",
-                  "index": 0,
-                  "title": "{{uiTexts.exemplo.titulo}}",
-                  "text": "{{sectionData.descricao}}",
-                  "cardStyleVariant": "default"
-                }
-              ]
-            }
-          ]
-        },
         "descricao": "Esta é uma descrição de exemplo."
       }
     }
@@ -1281,19 +1673,12 @@ O **Export não fica em `sections`**. Só é preciso ter **`uiTexts.export`** co
 
 ```json
 {
-  "id": "exemplo-grafico",
-  "index": 1,
-  "name": "Exemplo com Gráfico",
-  "icon": "BarChart3",
-  "subsections": [
+  "sections": [
     {
-      "id": "grafico-subsecao",
-      "index": 0,
-      "icon": "TrendingUp"
-    }
-  ],
-  "data": {
-    "renderSchema": {
+      "id": "exemplo-grafico",
+      "index": 1,
+      "name": "Exemplo com Gráfico",
+      "icon": "BarChart3",
       "subsections": [
         {
           "id": "grafico-subsecao",
@@ -1304,7 +1689,7 @@ O **Export não fica em `sections`**. Só é preciso ter **`uiTexts.export`** co
             {
               "type": "card",
               "index": 0,
-              "title": "{{uiTexts.grafico.titulo}}",
+              "title": "Análise de Dados",
               "cardStyleVariant": "flex-column",
               "cardContentVariant": "with-charts",
               "components": [
@@ -1323,64 +1708,77 @@ O **Export não fica em `sections`**. Só é preciso ter **`uiTexts.export`** co
             }
           ]
         }
-      ]
-    },
-    "dados": [
-      { "label": "Opção A", "value": 100, "percentage": 50 },
-      { "label": "Opção B", "value": 50, "percentage": 25 }
-    ]
-  }
+      ],
+      "data": {
+        "dados": [
+          { "label": "Opção A", "value": 100, "percentage": 50 },
+          { "label": "Opção B", "value": 50, "percentage": 25 }
+        ]
+      }
+    }
+  ]
 }
 ```
 
-**Nota:** Os dados (`dados`) estão separados do `renderSchema` porque podem ser verbosos.
+**Nota:** Os dados (`dados`) estão separados dos componentes porque podem ser verbosos.
 
 ### Exemplo 3: Seção com Questões
 
 ```json
 {
-  "id": "responses",
-  "index": 3,
-  "name": "Análise por Questão",
-  "icon": "MessageSquare",
-  "data": {
-    "renderSchema": {
-      "subsections": [
+  "sections": [
+    {
+      "id": "responses",
+      "index": 4,
+      "name": "Análise por Questão",
+      "icon": "MessageSquare",
+      "questions": [
         {
-          "id": "questions-list",
-          "index": 0,
-          "name": "Lista de Questões",
-          "icon": "FileText",
-          "components": [
-            {
-              "type": "questionsList",
-              "index": 0,
-              "dataPath": "sectionData"
-            }
-          ]
-        }
-      ]
-    },
-    "questions": [
-      {
-        "id": 1,
-        "index": 1,
-        "question": "Qual é a probabilidade de você recomendar...",
-        "icon": "Percent",
-        "summary": "Resumo...",
-        "data": [
-          {
-            "option": "Detrator",
-            "value": 636,
-            "percentage": 51
+          "id": 1,
+          "index": 1,
+          "questionType": "nps",
+          "question": "Qual é a probabilidade de você recomendar...",
+          "icon": "Percent",
+          "summary": "Resumo...",
+          "data": {
+            "npsScore": 35,
+            "npsCategory": "Bom",
+            "npsStackedChart": [
+              {
+                "option": "Detrator",
+                "value": 636,
+                "percentage": 51
+              },
+              {
+                "option": "Promotor",
+                "value": 374,
+                "percentage": 30
+              },
+              {
+                "option": "Neutro",
+                "value": 237,
+                "percentage": 19
+              }
+            ]
           }
-        ],
-        "type": "nps"
+        }
+      ],
+      "components": [],
+      "data": {
+        "config": {
+          "npsCategories": {
+            "detractor": "Detrator",
+            "promoter": "Promotor",
+            "neutral": "Neutro"
+          }
+        }
       }
-    ]
-  }
+    }
+  ]
 }
 ```
+
+**⚠️ Importante:** As questões usam `questionType` (não `type`). Os componentes são gerados automaticamente baseados no `questionType`.
 
 ---
 
@@ -1396,11 +1794,14 @@ Novos tipos de componentes devem ser criados no código, não no JSON.
 
 ### Separação de Dados
 
-Mantenha os dados separados do `renderSchema` porque podem ser muito verbosos. O `renderSchema` deve conter apenas a estrutura de renderização.
+Mantenha os dados separados dos componentes em `data` porque podem ser muito verbosos. Os componentes estão diretamente em `subsections[].components` ou `components` na seção.
 
-### Name nos Componentes
+### Estrutura Atual
 
-Como o código é programático, você pode colocar o `name` diretamente no `renderSchema` junto com os componentes, evitando duplicação.
+**⚠️ Mudança importante:** Não há mais `renderSchema`. A estrutura atual é:
+- Componentes diretamente em `subsections[].components`
+- Dados separados em `data` da seção
+- Questões diretamente em `questions` (na seção `responses`)
 
 ---
 

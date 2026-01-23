@@ -1,0 +1,119 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["metadata", "sections", "uiTexts", "surveyInfo"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["version", "language", "surveyId"],
+      "properties": {
+        "version": { "type": "string" },
+        "language": { 
+          "type": "string",
+          "pattern": "^[a-z]{2}-[A-Z]{2}$",
+          "description": "Formato: pt-BR, en-US, etc."
+        },
+        "surveyId": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "index", "name", "icon"],
+        "properties": {
+          "id": { 
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "ID único sem espaços (ex: executive-report)"
+          },
+          "index": { 
+            "type": "number",
+            "minimum": 0
+          },
+          "name": { "type": "string" },
+          "icon": { "type": "string" },
+          "defaultIcon": { "type": "string" },
+          "subsections": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "index", "name", "icon"],
+              "properties": {
+                "id": { "type": "string" },
+                "index": { "type": "number", "minimum": 0 },
+                "name": { "type": "string" },
+                "icon": { "type": "string" },
+                "components": {
+                  "type": "array",
+                  "description": "Componentes diretamente na subseção (não há mais renderSchema)"
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "components": {
+            "type": "array",
+            "description": "Componentes diretos na seção (quando não há subsections)"
+          },
+          "questions": {
+            "type": "array",
+            "description": "Questões (usado na seção 'responses')",
+            "items": {
+              "type": "object",
+              "required": ["id", "index", "questionType", "question"],
+              "properties": {
+                "id": { "type": "number" },
+                "index": { "type": "number" },
+                "questionType": {
+                  "type": "string",
+                  "enum": ["nps", "open-ended", "multiple-choice", "single-choice"],
+                  "description": "Tipo da questão (não 'type')"
+                },
+                "question": { "type": "string" },
+                "icon": { "type": "string" },
+                "summary": { "type": "string" },
+                "data": {
+                  "type": "object",
+                  "description": "Dados da questão (estrutura varia conforme questionType)"
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "data": {
+            "type": "object",
+            "description": "Dados específicos da seção, separados dos componentes"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "uiTexts": {
+      "type": "object",
+      "description": "Textos estáticos da interface que não mudam com os dados da pesquisa"
+    },
+    "surveyInfo": {
+      "type": "object",
+      "required": ["title", "company", "period", "totalRespondents", "responseRate", "questions"],
+      "properties": {
+        "title": { "type": "string" },
+        "company": { "type": "string" },
+        "period": { "type": "string" },
+        "totalRespondents": { "type": "number", "minimum": 0 },
+        "responseRate": { "type": "number", "minimum": 0, "maximum": 100 },
+        "nps": { "type": "number", "minimum": -100, "maximum": 100 },
+        "npsCategory": { 
+          "type": "string",
+          "enum": ["Excelente", "Bom", "Regular", "Ruim"],
+          "description": "Categoria do NPS"
+        },
+        "questions": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

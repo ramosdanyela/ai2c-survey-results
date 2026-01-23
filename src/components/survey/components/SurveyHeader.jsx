@@ -11,6 +11,105 @@ import { NavigationButtons } from "@/components/survey/components/NavigationButt
 import { getAttributesFromData } from "@/services/dataResolver";
 
 /**
+ * Extract section ID from activeSection by checking sections
+ * Handles formats like: "section-id", "section-id-subsection-id"
+ * This matches the logic in ContentRenderer for consistency
+ */
+function extractSectionId(data, activeSection) {
+  if (!data?.sections) {
+    return null;
+  }
+
+  // Check if activeSection matches a section ID exactly
+  const exactMatch = data.sections.find(
+    (s) => s.id === activeSection
+  );
+  if (exactMatch) {
+    return activeSection;
+  }
+
+  // Check if activeSection matches a subsection ID
+  // Find which section contains this subsection
+  for (const section of data.sections) {
+    // Check subsections from config
+    if (section.subsections) {
+      const subsection = section.subsections.find(
+        (sub) => sub.id === activeSection
+      );
+      if (subsection) {
+        return section.id;
+      }
+    }
+    // Check subsections from renderSchema
+    if (section.data?.renderSchema?.subsections) {
+      const subsection = section.data.renderSchema.subsections.find(
+        (sub) => sub.id === activeSection
+      );
+      if (subsection) {
+        return section.id;
+      }
+    }
+    // Check dynamic subsections (responses)
+    if (
+      section.id === "responses" &&
+      activeSection &&
+      activeSection.startsWith("responses-")
+    ) {
+      return section.id;
+    }
+    // Check dynamic subsections (attributes)
+    if (
+      section.id === "attributes" &&
+      activeSection &&
+      activeSection.startsWith("attributes-")
+    ) {
+      return section.id;
+    }
+  }
+
+  // If no match, try to extract from pattern (e.g., "nova-secao-subsec" -> "nova-secao")
+  // This is a fallback for sections with schema that might not be in sectionsConfig yet
+  if (!activeSection) return null;
+  const parts = activeSection.split("-");
+  if (parts.length >= 2) {
+    // Try all possible combinations from longest to shortest
+    for (let i = parts.length; i >= 1; i--) {
+      const potentialId = parts.slice(0, i).join("-");
+      const section = data.sections.find(
+        (s) => s.id === potentialId
+      );
+      if (section) {
+        // Check if it's a dynamic subsection or regular subsection
+        if (section.dynamicSubsections) {
+          return section.id;
+        }
+        // Check if activeSection matches a subsection of this section
+        if (section.subsections?.some((sub) => sub.id === activeSection)) {
+          return section.id;
+        }
+        if (
+          section.data?.renderSchema?.subsections?.some(
+            (sub) => sub.id === activeSection
+          )
+        ) {
+          return section.id;
+        }
+        // If section has dynamicSubsections, check if pattern matches
+        if (section.dynamicSubsections) {
+          // Pattern like "section-id" where id is from dynamic data
+          const remainingParts = parts.slice(i);
+          if (remainingParts.length > 0) {
+            return section.id;
+          }
+        }
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
  * Get section title from data (programmatic)
  * Priority: sections[].name > sectionId
  * This matches the logic in NavigationButtons for consistency
@@ -18,7 +117,21 @@ import { getAttributesFromData } from "@/services/dataResolver";
 function getSectionTitleFromData(activeSection, data) {
   if (!data || !activeSection) return activeSection || "";
 
-  // Extract base section ID (e.g., "executive-summary" -> "executive")
+  // First, try to extract the section ID from activeSection
+  // This handles cases where activeSection is a subsection (e.g., "retention-intent" -> "engagement")
+  const sectionId = extractSectionId(data, activeSection);
+  
+  // If we found a section ID, use it to get the title
+  if (sectionId && data?.sections) {
+    const section = data.sections.find(
+      (s) => s.id === sectionId
+    );
+    if (section?.name) {
+      return section.name;
+    }
+  }
+
+  // Fallback: try simple split (e.g., "executive-summary" -> "executive")
   const baseSectionId =
     activeSection && typeof activeSection === "string"
       ? activeSection.split("-")[0]
@@ -40,24 +153,30 @@ function getSectionTitleFromData(activeSection, data) {
 
 /**
  * Get icon for a section or subsection (programmatic)
+ * Always returns the icon of the parent section, not the subsection
  */
 function getSectionIconFromConfig(sectionId, data) {
   if (!data?.sections || !sectionId) return FileText;
 
-  // First try to find exact match in sections
+  // First, try to extract the section ID from sectionId
+  // This handles cases where sectionId is a subsection (e.g., "retention-intent" -> "engagement")
+  const parentSectionId = extractSectionId(data, sectionId);
+  
+  // If we found a parent section ID, use it to get the icon
+  if (parentSectionId) {
+    const section = data.sections.find(
+      (s) => s.id === parentSectionId
+    );
+    if (section && section.icon) {
+      return getIcon(section.icon);
+    }
+  }
+
+  // Fallback: try to find exact match in sections
   for (const section of data.sections) {
     // Check if it's the main section
     if (section.id === sectionId) {
       return getIcon(section.icon);
-    }
-    // Check subsections from config
-    if (section.subsections && Array.isArray(section.subsections)) {
-      const subsection = section.subsections.find(
-        (sub) => sub.id === sectionId
-      );
-      if (subsection && subsection.icon) {
-        return getIcon(subsection.icon);
-      }
     }
   }
 
@@ -67,12 +186,6 @@ function getSectionIconFromConfig(sectionId, data) {
     typeof sectionId === "string" &&
     sectionId.startsWith("attributes-")
   ) {
-    const attributeId = sectionId.replace("attributes-", "");
-    const attributes = getAttributesFromData(data);
-    const attribute = attributes.find((attr) => attr.id === attributeId);
-    if (attribute && attribute.icon) {
-      return getIcon(attribute.icon);
-    }
     // Fallback to section icon
     const attributesSection = data.sections.find(
       (s) => s.id === "attributes"

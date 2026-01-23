@@ -1,0 +1,1643 @@
+path,key,type,value,depth
+metadata,metadata,object,,1
+metadata.version,version,string,1.0,2
+metadata.language,language,string,pt-BR,2
+metadata.surveyId,surveyId,string,stress-test-2025-01,2
+sections,sections,array,,1
+sections[0],sections[0],object,,2
+sections[0].id,id,string,executive,3
+sections[0].index,index,number,0,3
+sections[0].name,name,string,Relatório Executivo,3
+sections[0].icon,icon,string,FileText,3
+sections[0].subsections,subsections,array,,3
+sections[0].subsections[0],subsections[0],object,,4
+sections[0].subsections[0].id,id,string,executive-summary,5
+sections[0].subsections[0].index,index,number,0,5
+sections[0].subsections[0].name,name,string,Sumário Executivo,5
+sections[0].subsections[0].icon,icon,string,ClipboardList,5
+sections[0].subsections[0].components,components,array,,5
+sections[0].subsections[0].components[0],components[0],object,,6
+sections[0].subsections[0].components[0].type,type,string,card,7
+sections[0].subsections[0].components[0].index,index,number,0,7
+sections[0].subsections[0].components[0].title,title,string,Sobre o Estudo,7
+sections[0].subsections[0].components[0].text,text,string,"Esta pesquisa de satisfação de funcionários foi conduzida entre janeiro e março de 2025, envolvendo 850 colaboradores da InnovaTech Solutions.
+O objetivo principal é avaliar o nível de engajamento, satisfação e identificar áreas de melhoria no ambiente de trabalho, cultura organizacional e processos internos.",7
+sections[0].subsections[0].components[0].cardStyleVariant,cardStyleVariant,string,default,7
+sections[0].subsections[0].components[1],components[1],object,,6
+sections[0].subsections[0].components[1].type,type,string,grid-container,7
+sections[0].subsections[0].components[1].index,index,number,1,7
+sections[0].subsections[0].components[1].components,components,array,,7
+sections[0].subsections[0].components[1].components[0],components[0],object,,8
+sections[0].subsections[0].components[1].components[0].type,type,string,card,9
+sections[0].subsections[0].components[1].components[0].index,index,number,0,9
+sections[0].subsections[0].components[1].components[0].title,title,string,Principais Descobertas,9
+sections[0].subsections[0].components[1].components[0].text,text,string,"O NPS organizacional é de 35 pontos, classificado como 'Bom', indicando uma base sólida de funcionários satisfeitos.
+Principais pontos positivos incluem: qualidade do trabalho em equipe (72% positivo), oportunidades de desenvolvimento (68% positivo) e flexibilidade de horários (65% positivo).
+Áreas que necessitam atenção: comunicação interna (45% negativo), carga de trabalho (52% negativo) e processos burocráticos (48% negativo).
+A análise por departamento revela que Engenharia e Marketing apresentam maior satisfação, enquanto Vendas e Operações demonstram maior insatisfação.",9
+sections[0].subsections[0].components[1].components[0].cardStyleVariant,cardStyleVariant,string,border-left,9
+sections[0].subsections[0].components[1].components[1],components[1],object,,8
+sections[0].subsections[0].components[1].components[1].type,type,string,card,9
+sections[0].subsections[0].components[1].components[1].index,index,number,1,9
+sections[0].subsections[0].components[1].components[1].title,title,string,Conclusões,9
+sections[0].subsections[0].components[1].components[1].text,text,string,"A empresa possui uma base sólida de funcionários engajados, mas há oportunidades significativas de melhoria.
+Priorizar melhorias na comunicação interna e redução de processos burocráticos pode aumentar significativamente a satisfação.
+Programas de desenvolvimento profissional e reconhecimento devem ser expandidos, especialmente para departamentos com menor satisfação.
+A implementação de feedback contínuo e ações de melhoria baseadas nestes resultados é essencial para manter e melhorar o engajamento.",9
+sections[0].subsections[0].components[1].components[1].cardStyleVariant,cardStyleVariant,string,border-left,9
+sections[0].subsections[1],subsections[1],object,,4
+sections[0].subsections[1].id,id,string,executive-recommendations,5
+sections[0].subsections[1].index,index,number,1,5
+sections[0].subsections[1].name,name,string,Recomendações Estratégicas,5
+sections[0].subsections[1].icon,icon,string,AlertTriangle,5
+sections[0].subsections[1].components,components,array,,5
+sections[0].subsections[1].components[0],components[0],object,,6
+sections[0].subsections[1].components[0].type,type,string,card,7
+sections[0].subsections[1].components[0].index,index,number,0,7
+sections[0].subsections[1].components[0].title,title,string,,7
+sections[0].subsections[1].components[0].text,text,string,,7
+sections[0].subsections[1].components[0].cardStyleVariant,cardStyleVariant,string,overflow-hidden,7
+sections[0].subsections[1].components[0].components,components,array,,7
+sections[0].subsections[1].components[0].components[0],components[0],object,,8
+sections[0].subsections[1].components[0].components[0].type,type,string,recommendationsTable,9
+sections[0].subsections[1].components[0].components[0].index,index,number,0,9
+sections[0].subsections[1].components[0].components[0].dataPath,dataPath,string,sectionData.recommendationsTable,9
+sections[0].data,data,object,,3
+sections[0].data.recommendationsTable,recommendationsTable,object,,4
+sections[0].data.recommendationsTable.config,config,object,,5
+sections[0].data.recommendationsTable.config.severityLabels,severityLabels,object,,6
+sections[0].data.recommendationsTable.config.severityLabels.high,high,string,Alto,7
+sections[0].data.recommendationsTable.config.severityLabels.medium,medium,string,Médio,7
+sections[0].data.recommendationsTable.config.severityLabels.low,low,string,Baixo,7
+sections[0].data.recommendationsTable.config.severityLabels.critical,critical,string,Crítico,7
+sections[0].data.recommendationsTable.items,items,array,,5
+sections[0].data.recommendationsTable.items[0],items[0],object,,6
+sections[0].data.recommendationsTable.items[0].id,id,number,1,7
+sections[0].data.recommendationsTable.items[0].recommendation,recommendation,string,Implementar Sistema de Comunicação Interna Mais Eficiente,7
+sections[0].data.recommendationsTable.items[0].severity,severity,string,high,7
+sections[0].data.recommendationsTable.items[0].stakeholders,stakeholders,array,,7
+sections[0].data.recommendationsTable.items[0].stakeholders[0],stakeholders[0],string,Comunicação Corporativa,8
+sections[0].data.recommendationsTable.items[0].stakeholders[1],stakeholders[1],string,Tecnologia da Informação,8
+sections[0].data.recommendationsTable.items[0].stakeholders[2],stakeholders[2],string,Recursos Humanos,8
+sections[0].data.recommendationsTable.items[0].tasks,tasks,array,,7
+sections[0].data.recommendationsTable.items[0].tasks[0],tasks[0],object,,8
+sections[0].data.recommendationsTable.items[0].tasks[0].task,task,string,Avaliar ferramentas de comunicação interna disponíveis,9
+sections[0].data.recommendationsTable.items[0].tasks[0].owner,owner,string,TI,9
+sections[0].data.recommendationsTable.items[0].tasks[1],tasks[1],object,,8
+sections[0].data.recommendationsTable.items[0].tasks[1].task,task,string,Definir estratégia de comunicação por departamento,9
+sections[0].data.recommendationsTable.items[0].tasks[1].owner,owner,string,Comunicação Corporativa,9
+sections[0].data.recommendationsTable.items[0].tasks[2],tasks[2],object,,8
+sections[0].data.recommendationsTable.items[0].tasks[2].task,task,string,Implementar plataforma unificada de comunicação,9
+sections[0].data.recommendationsTable.items[0].tasks[2].owner,owner,string,TI,9
+sections[0].data.recommendationsTable.items[0].tasks[3],tasks[3],object,,8
+sections[0].data.recommendationsTable.items[0].tasks[3].task,task,string,Treinar equipes no uso da nova plataforma,9
+sections[0].data.recommendationsTable.items[0].tasks[3].owner,owner,string,RH,9
+sections[0].data.recommendationsTable.items[0].tasks[4],tasks[4],object,,8
+sections[0].data.recommendationsTable.items[0].tasks[4].task,task,string,Monitorar adoção e ajustar conforme necessário,9
+sections[0].data.recommendationsTable.items[0].tasks[4].owner,owner,string,Comunicação Corporativa,9
+sections[0].data.recommendationsTable.items[1],items[1],object,,6
+sections[0].data.recommendationsTable.items[1].id,id,number,2,7
+sections[0].data.recommendationsTable.items[1].recommendation,recommendation,string,Reduzir Processos Burocráticos e Simplificar Workflows,7
+sections[0].data.recommendationsTable.items[1].severity,severity,string,high,7
+sections[0].data.recommendationsTable.items[1].stakeholders,stakeholders,array,,7
+sections[0].data.recommendationsTable.items[1].stakeholders[0],stakeholders[0],string,Operações,8
+sections[0].data.recommendationsTable.items[1].stakeholders[1],stakeholders[1],string,Processos e Qualidade,8
+sections[0].data.recommendationsTable.items[1].stakeholders[2],stakeholders[2],string,Liderança,8
+sections[0].data.recommendationsTable.items[1].tasks,tasks,array,,7
+sections[0].data.recommendationsTable.items[1].tasks[0],tasks[0],object,,8
+sections[0].data.recommendationsTable.items[1].tasks[0].task,task,string,Mapear processos atuais e identificar gargalos,9
+sections[0].data.recommendationsTable.items[1].tasks[0].owner,owner,string,Processos e Qualidade,9
+sections[0].data.recommendationsTable.items[1].tasks[1],tasks[1],object,,8
+sections[0].data.recommendationsTable.items[1].tasks[1].task,task,string,Priorizar processos para simplificação,9
+sections[0].data.recommendationsTable.items[1].tasks[1].owner,owner,string,Liderança,9
+sections[0].data.recommendationsTable.items[1].tasks[2],tasks[2],object,,8
+sections[0].data.recommendationsTable.items[1].tasks[2].task,task,string,Redesenhar workflows críticos,9
+sections[0].data.recommendationsTable.items[1].tasks[2].owner,owner,string,Operações,9
+sections[0].data.recommendationsTable.items[1].tasks[3],tasks[3],object,,8
+sections[0].data.recommendationsTable.items[1].tasks[3].task,task,string,Implementar automações onde possível,9
+sections[0].data.recommendationsTable.items[1].tasks[3].owner,owner,string,TI,9
+sections[0].data.recommendationsTable.items[1].tasks[4],tasks[4],object,,8
+sections[0].data.recommendationsTable.items[1].tasks[4].task,task,string,Comunicar mudanças e treinar equipes,9
+sections[0].data.recommendationsTable.items[1].tasks[4].owner,owner,string,RH,9
+sections[0].data.recommendationsTable.items[2],items[2],object,,6
+sections[0].data.recommendationsTable.items[2].id,id,number,3,7
+sections[0].data.recommendationsTable.items[2].recommendation,recommendation,string,Expandir Programas de Desenvolvimento Profissional,7
+sections[0].data.recommendationsTable.items[2].severity,severity,string,medium,7
+sections[0].data.recommendationsTable.items[2].stakeholders,stakeholders,array,,7
+sections[0].data.recommendationsTable.items[2].stakeholders[0],stakeholders[0],string,Recursos Humanos,8
+sections[0].data.recommendationsTable.items[2].stakeholders[1],stakeholders[1],string,Liderança,8
+sections[0].data.recommendationsTable.items[2].stakeholders[2],stakeholders[2],string,Desenvolvimento Organizacional,8
+sections[0].data.recommendationsTable.items[2].tasks,tasks,array,,7
+sections[0].data.recommendationsTable.items[2].tasks[0],tasks[0],object,,8
+sections[0].data.recommendationsTable.items[2].tasks[0].task,task,string,Avaliar necessidades de desenvolvimento por departamento,9
+sections[0].data.recommendationsTable.items[2].tasks[0].owner,owner,string,RH,9
+sections[0].data.recommendationsTable.items[2].tasks[1],tasks[1],object,,8
+sections[0].data.recommendationsTable.items[2].tasks[1].task,task,string,Criar plano de desenvolvimento personalizado,9
+sections[0].data.recommendationsTable.items[2].tasks[1].owner,owner,string,Desenvolvimento Organizacional,9
+sections[0].data.recommendationsTable.items[2].tasks[2],tasks[2],object,,8
+sections[0].data.recommendationsTable.items[2].tasks[2].task,task,string,Estabelecer parcerias com instituições de ensino,9
+sections[0].data.recommendationsTable.items[2].tasks[2].owner,owner,string,RH,9
+sections[0].data.recommendationsTable.items[2].tasks[3],tasks[3],object,,8
+sections[0].data.recommendationsTable.items[2].tasks[3].task,task,string,Implementar programa de mentoria,9
+sections[0].data.recommendationsTable.items[2].tasks[3].owner,owner,string,Liderança,9
+sections[0].data.recommendationsTable.items[2].tasks[4],tasks[4],object,,8
+sections[0].data.recommendationsTable.items[2].tasks[4].task,task,string,Acompanhar progresso e ajustar programas,9
+sections[0].data.recommendationsTable.items[2].tasks[4].owner,owner,string,Desenvolvimento Organizacional,9
+sections[0].data.recommendationsTable.items[3],items[3],object,,6
+sections[0].data.recommendationsTable.items[3].id,id,number,4,7
+sections[0].data.recommendationsTable.items[3].recommendation,recommendation,string,Melhorar Gestão de Carga de Trabalho,7
+sections[0].data.recommendationsTable.items[3].severity,severity,string,medium,7
+sections[0].data.recommendationsTable.items[3].stakeholders,stakeholders,array,,7
+sections[0].data.recommendationsTable.items[3].stakeholders[0],stakeholders[0],string,Liderança,8
+sections[0].data.recommendationsTable.items[3].stakeholders[1],stakeholders[1],string,Recursos Humanos,8
+sections[0].data.recommendationsTable.items[3].stakeholders[2],stakeholders[2],string,Operações,8
+sections[0].data.recommendationsTable.items[3].tasks,tasks,array,,7
+sections[0].data.recommendationsTable.items[3].tasks[0],tasks[0],object,,8
+sections[0].data.recommendationsTable.items[3].tasks[0].task,task,string,Realizar análise de carga de trabalho por equipe,9
+sections[0].data.recommendationsTable.items[3].tasks[0].owner,owner,string,Liderança,9
+sections[0].data.recommendationsTable.items[3].tasks[1],tasks[1],object,,8
+sections[0].data.recommendationsTable.items[3].tasks[1].task,task,string,Identificar equipes sobrecarregadas,9
+sections[0].data.recommendationsTable.items[3].tasks[1].owner,owner,string,RH,9
+sections[0].data.recommendationsTable.items[3].tasks[2],tasks[2],object,,8
+sections[0].data.recommendationsTable.items[3].tasks[2].task,task,string,Redistribuir tarefas e projetos,9
+sections[0].data.recommendationsTable.items[3].tasks[2].owner,owner,string,Operações,9
+sections[0].data.recommendationsTable.items[3].tasks[3],tasks[3],object,,8
+sections[0].data.recommendationsTable.items[3].tasks[3].task,task,string,Implementar ferramentas de gestão de tempo,9
+sections[0].data.recommendationsTable.items[3].tasks[3].owner,owner,string,TI,9
+sections[0].data.recommendationsTable.items[3].tasks[4],tasks[4],object,,8
+sections[0].data.recommendationsTable.items[3].tasks[4].task,task,string,Estabelecer limites de horas extras,9
+sections[0].data.recommendationsTable.items[3].tasks[4].owner,owner,string,RH,9
+sections[0].data.recommendationsTable.items[4],items[4],object,,6
+sections[0].data.recommendationsTable.items[4].id,id,number,5,7
+sections[0].data.recommendationsTable.items[4].recommendation,recommendation,string,Criar Programa de Reconhecimento e Recompensas,7
+sections[0].data.recommendationsTable.items[4].severity,severity,string,low,7
+sections[0].data.recommendationsTable.items[4].stakeholders,stakeholders,array,,7
+sections[0].data.recommendationsTable.items[4].stakeholders[0],stakeholders[0],string,Recursos Humanos,8
+sections[0].data.recommendationsTable.items[4].stakeholders[1],stakeholders[1],string,Liderança,8
+sections[0].data.recommendationsTable.items[4].stakeholders[2],stakeholders[2],string,Financeiro,8
+sections[0].data.recommendationsTable.items[4].tasks,tasks,array,,7
+sections[0].data.recommendationsTable.items[4].tasks[0],tasks[0],object,,8
+sections[0].data.recommendationsTable.items[4].tasks[0].task,task,string,Definir critérios de reconhecimento,9
+sections[0].data.recommendationsTable.items[4].tasks[0].owner,owner,string,RH,9
+sections[0].data.recommendationsTable.items[4].tasks[1],tasks[1],object,,8
+sections[0].data.recommendationsTable.items[4].tasks[1].task,task,string,Criar sistema de pontos e recompensas,9
+sections[0].data.recommendationsTable.items[4].tasks[1].owner,owner,string,RH,9
+sections[0].data.recommendationsTable.items[4].tasks[2],tasks[2],object,,8
+sections[0].data.recommendationsTable.items[4].tasks[2].task,task,string,Aprovar orçamento para programa,9
+sections[0].data.recommendationsTable.items[4].tasks[2].owner,owner,string,Financeiro,9
+sections[0].data.recommendationsTable.items[4].tasks[3],tasks[3],object,,8
+sections[0].data.recommendationsTable.items[4].tasks[3].task,task,string,Lançar programa piloto,9
+sections[0].data.recommendationsTable.items[4].tasks[3].owner,owner,string,RH,9
+sections[0].data.recommendationsTable.items[4].tasks[4],tasks[4],object,,8
+sections[0].data.recommendationsTable.items[4].tasks[4].task,task,string,Avaliar resultados e expandir,9
+sections[0].data.recommendationsTable.items[4].tasks[4].owner,owner,string,Liderança,9
+sections[1],sections[1],object,,2
+sections[1].id,id,string,engagement,3
+sections[1].index,index,number,1,3
+sections[1].name,name,string,Análise de Engajamento,3
+sections[1].icon,icon,string,Heart,3
+sections[1].subsections,subsections,array,,3
+sections[1].subsections[0],subsections[0],object,,4
+sections[1].subsections[0].id,id,string,engagement-sentiment,5
+sections[1].subsections[0].index,index,number,0,5
+sections[1].subsections[0].name,name,string,Sentimento Geral,5
+sections[1].subsections[0].icon,icon,string,Smile,5
+sections[1].subsections[0].components,components,array,,5
+sections[1].subsections[0].components[0],components[0],object,,6
+sections[1].subsections[0].components[0].type,type,string,card,7
+sections[1].subsections[0].components[0].index,index,number,0,7
+sections[1].subsections[0].components[0].useDescription,useDescription,boolean,true,7
+sections[1].subsections[0].components[0].text,text,string,"A análise de sentimento foi realizada com base nas respostas dos funcionários sobre diferentes aspectos do ambiente de trabalho.
+Foram analisadas 2.450 menções em 7 categorias principais.
+Os resultados mostram predominância de sentimentos positivos em trabalho em equipe, desenvolvimento profissional e flexibilidade.
+Enquanto comunicação interna, carga de trabalho e processos burocráticos apresentam maior proporção de sentimentos negativos.",7
+sections[1].subsections[0].components[0].cardStyleVariant,cardStyleVariant,string,default,7
+sections[1].subsections[0].components[0].cardContentVariant,cardContentVariant,string,with-description,7
+sections[1].subsections[0].components[0].components,components,array,,7
+sections[1].subsections[0].components[0].components[0],components[0],object,,8
+sections[1].subsections[0].components[0].components[0].type,type,string,sentimentDivergentChart,9
+sections[1].subsections[0].components[0].components[0].index,index,number,0,9
+sections[1].subsections[0].components[0].components[0].dataPath,dataPath,string,sectionData.sentimentDivergentChart,9
+sections[1].subsections[0].components[0].components[0].config,config,object,,9
+sections[1].subsections[0].components[0].components[0].config.yAxisDataKey,yAxisDataKey,string,category,10
+sections[1].subsections[1],subsections[1],object,,4
+sections[1].subsections[1].id,id,string,engagement-segmentation,5
+sections[1].subsections[1].index,index,number,1,5
+sections[1].subsections[1].name,name,string,Segmentação por Departamento,5
+sections[1].subsections[1].icon,icon,string,Users2,5
+sections[1].subsections[1].components,components,array,,5
+sections[1].subsections[1].components[0],components[0],object,,6
+sections[1].subsections[1].components[0].type,type,string,card,7
+sections[1].subsections[1].components[0].index,index,number,0,7
+sections[1].subsections[1].components[0].title,title,string,,7
+sections[1].subsections[1].components[0].text,text,string,,7
+sections[1].subsections[1].components[0].cardStyleVariant,cardStyleVariant,string,overflow-hidden,7
+sections[1].subsections[1].components[0].components,components,array,,7
+sections[1].subsections[1].components[0].components[0],components[0],object,,8
+sections[1].subsections[1].components[0].components[0].type,type,string,segmentationTable,9
+sections[1].subsections[1].components[0].components[0].index,index,number,0,9
+sections[1].subsections[1].components[0].components[0].dataPath,dataPath,string,sectionData.segmentationTable,9
+sections[1].subsections[2],subsections[2],object,,4
+sections[1].subsections[2].id,id,string,retention-intent,5
+sections[1].subsections[2].index,index,number,2,5
+sections[1].subsections[2].name,name,string,Intenção de Permanência,5
+sections[1].subsections[2].icon,icon,string,Target,5
+sections[1].subsections[2].components,components,array,,5
+sections[1].subsections[2].components[0],components[0],object,,6
+sections[1].subsections[2].components[0].type,type,string,card,7
+sections[1].subsections[2].components[0].index,index,number,0,7
+sections[1].subsections[2].components[0].text,text,string,"A análise de intenção de permanência revela que 58% dos funcionários pretendem permanecer na empresa nos próximos 2 anos, enquanto 22% estão considerando outras oportunidades e 20% estão indecisos.
+Este resultado indica uma base sólida de retenção, mas também sinaliza a necessidade de ações proativas para manter os talentos e engajar os funcionários indecisos.",7
+sections[1].subsections[2].components[0].cardStyleVariant,cardStyleVariant,string,default,7
+sections[1].subsections[2].components[0].components,components,array,,7
+sections[1].subsections[2].components[0].components[0],components[0],object,,8
+sections[1].subsections[2].components[0].components[0].type,type,string,barChart,9
+sections[1].subsections[2].components[0].components[0].index,index,number,0,9
+sections[1].subsections[2].components[0].components[0].dataPath,dataPath,string,sectionData.retentionIntentChart,9
+sections[1].subsections[2].components[0].components[0].config,config,object,,9
+sections[1].subsections[2].components[0].components[0].config.dataKey,dataKey,string,percentage,10
+sections[1].subsections[2].components[0].components[0].config.yAxisDataKey,yAxisDataKey,string,intent,10
+sections[1].data,data,object,,3
+sections[1].data.sentimentDivergentChart,sentimentDivergentChart,array,,4
+sections[1].data.sentimentDivergentChart[0],sentimentDivergentChart[0],object,,5
+sections[1].data.sentimentDivergentChart[0].category,category,string,Trabalho em Equipe,6
+sections[1].data.sentimentDivergentChart[0].positive,positive,number,72.3,6
+sections[1].data.sentimentDivergentChart[0].neutral,neutral,number,18.5,6
+sections[1].data.sentimentDivergentChart[0].negative,negative,number,9.2,6
+sections[1].data.sentimentDivergentChart[1],sentimentDivergentChart[1],object,,5
+sections[1].data.sentimentDivergentChart[1].category,category,string,Desenvolvimento Profissional,6
+sections[1].data.sentimentDivergentChart[1].positive,positive,number,68.1,6
+sections[1].data.sentimentDivergentChart[1].neutral,neutral,number,22.4,6
+sections[1].data.sentimentDivergentChart[1].negative,negative,number,9.5,6
+sections[1].data.sentimentDivergentChart[2],sentimentDivergentChart[2],object,,5
+sections[1].data.sentimentDivergentChart[2].category,category,string,Flexibilidade,6
+sections[1].data.sentimentDivergentChart[2].positive,positive,number,65.2,6
+sections[1].data.sentimentDivergentChart[2].neutral,neutral,number,25.8,6
+sections[1].data.sentimentDivergentChart[2].negative,negative,number,9,6
+sections[1].data.sentimentDivergentChart[3],sentimentDivergentChart[3],object,,5
+sections[1].data.sentimentDivergentChart[3].category,category,string,Liderança,6
+sections[1].data.sentimentDivergentChart[3].positive,positive,number,58.7,6
+sections[1].data.sentimentDivergentChart[3].neutral,neutral,number,28.3,6
+sections[1].data.sentimentDivergentChart[3].negative,negative,number,13,6
+sections[1].data.sentimentDivergentChart[4],sentimentDivergentChart[4],object,,5
+sections[1].data.sentimentDivergentChart[4].category,category,string,Comunicação Interna,6
+sections[1].data.sentimentDivergentChart[4].positive,positive,number,32.5,6
+sections[1].data.sentimentDivergentChart[4].neutral,neutral,number,22.5,6
+sections[1].data.sentimentDivergentChart[4].negative,negative,number,45,6
+sections[1].data.sentimentDivergentChart[5],sentimentDivergentChart[5],object,,5
+sections[1].data.sentimentDivergentChart[5].category,category,string,Carga de Trabalho,6
+sections[1].data.sentimentDivergentChart[5].positive,positive,number,18.2,6
+sections[1].data.sentimentDivergentChart[5].neutral,neutral,number,29.8,6
+sections[1].data.sentimentDivergentChart[5].negative,negative,number,52,6
+sections[1].data.sentimentDivergentChart[6],sentimentDivergentChart[6],object,,5
+sections[1].data.sentimentDivergentChart[6].category,category,string,Processos Burocráticos,6
+sections[1].data.sentimentDivergentChart[6].positive,positive,number,15.5,6
+sections[1].data.sentimentDivergentChart[6].neutral,neutral,number,36.5,6
+sections[1].data.sentimentDivergentChart[6].negative,negative,number,48,6
+sections[1].data.segmentationTable,segmentationTable,array,,4
+sections[1].data.segmentationTable[0],segmentationTable[0],object,,5
+sections[1].data.segmentationTable[0].cluster,cluster,string,Engajados e Satisfeitos,6
+sections[1].data.segmentationTable[0].description,description,string,"Funcionários altamente engajados que valorizam o ambiente de trabalho, oportunidades de crescimento e reconhecimento.",6
+sections[1].data.segmentationTable[0].percentage,percentage,number,42.3,6
+sections[1].data.segmentationTable[0].id,id,number,1,6
+sections[1].data.segmentationTable[0].characteristics,characteristics,array,,6
+sections[1].data.segmentationTable[0].characteristics[0],characteristics[0],string,Alto engajamento,7
+sections[1].data.segmentationTable[0].characteristics[1],characteristics[1],string,Satisfação com liderança,7
+sections[1].data.segmentationTable[0].characteristics[2],characteristics[2],string,Valorizam desenvolvimento,7
+sections[1].data.segmentationTable[1],segmentationTable[1],object,,5
+sections[1].data.segmentationTable[1].cluster,cluster,string,Satisfeitos mas Buscando Crescimento,6
+sections[1].data.segmentationTable[1].description,description,string,"Funcionários satisfeitos com a empresa, mas que buscam mais oportunidades de desenvolvimento e crescimento.",6
+sections[1].data.segmentationTable[1].percentage,percentage,number,28.5,6
+sections[1].data.segmentationTable[1].id,id,number,2,6
+sections[1].data.segmentationTable[1].characteristics,characteristics,array,,6
+sections[1].data.segmentationTable[1].characteristics[0],characteristics[0],string,Satisfação moderada,7
+sections[1].data.segmentationTable[1].characteristics[1],characteristics[1],string,Busca por crescimento,7
+sections[1].data.segmentationTable[1].characteristics[2],characteristics[2],string,Necessita mais desafios,7
+sections[1].data.segmentationTable[2],segmentationTable[2],object,,5
+sections[1].data.segmentationTable[2].cluster,cluster,string,Neutros com Preocupações,6
+sections[1].data.segmentationTable[2].description,description,string,"Funcionários neutros que expressam preocupações sobre comunicação, processos e carga de trabalho.",6
+sections[1].data.segmentationTable[2].percentage,percentage,number,18.2,6
+sections[1].data.segmentationTable[2].id,id,number,3,6
+sections[1].data.segmentationTable[2].characteristics,characteristics,array,,6
+sections[1].data.segmentationTable[2].characteristics[0],characteristics[0],string,Neutros,7
+sections[1].data.segmentationTable[2].characteristics[1],characteristics[1],string,Preocupações com processos,7
+sections[1].data.segmentationTable[2].characteristics[2],characteristics[2],string,Comunicação insuficiente,7
+sections[1].data.segmentationTable[3],segmentationTable[3],object,,5
+sections[1].data.segmentationTable[3].cluster,cluster,string,Insatisfeitos Críticos,6
+sections[1].data.segmentationTable[3].description,description,string,"Funcionários insatisfeitos com múltiplos aspectos: carga de trabalho, comunicação, processos e reconhecimento.",6
+sections[1].data.segmentationTable[3].percentage,percentage,number,8.5,6
+sections[1].data.segmentationTable[3].id,id,number,4,6
+sections[1].data.segmentationTable[3].characteristics,characteristics,array,,6
+sections[1].data.segmentationTable[3].characteristics[0],characteristics[0],string,Alta insatisfação,7
+sections[1].data.segmentationTable[3].characteristics[1],characteristics[1],string,Sobrecarga de trabalho,7
+sections[1].data.segmentationTable[3].characteristics[2],characteristics[2],string,Falta de reconhecimento,7
+sections[1].data.segmentationTable[4],segmentationTable[4],object,,5
+sections[1].data.segmentationTable[4].cluster,cluster,string,Outros,6
+sections[1].data.segmentationTable[4].description,description,string,Grupo de pequenos segmentos que não formam clusters estatisticamente relevantes.,6
+sections[1].data.segmentationTable[4].percentage,percentage,number,2.5,6
+sections[1].data.segmentationTable[4].characteristics,characteristics,array,,6
+sections[1].data.segmentationTable[4].characteristics[0],characteristics[0],string,Segmentos diversos,7
+sections[1].data.segmentationTable[4].characteristics[1],characteristics[1],string,Baixa representatividade,7
+sections[1].data.segmentationTable[4].characteristics[2],characteristics[2],string,Agrupamento residual,7
+sections[1].data.retentionIntentChart,retentionIntentChart,array,,4
+sections[1].data.retentionIntentChart[0],retentionIntentChart[0],object,,5
+sections[1].data.retentionIntentChart[0].intent,intent,string,Pretende permanecer na empresa,6
+sections[1].data.retentionIntentChart[0].percentage,percentage,number,58,6
+sections[1].data.retentionIntentChart[0].count,count,number,493,6
+sections[1].data.retentionIntentChart[1],retentionIntentChart[1],object,,5
+sections[1].data.retentionIntentChart[1].intent,intent,string,Indeciso sobre permanência,6
+sections[1].data.retentionIntentChart[1].percentage,percentage,number,20,6
+sections[1].data.retentionIntentChart[1].count,count,number,170,6
+sections[1].data.retentionIntentChart[2],retentionIntentChart[2],object,,5
+sections[1].data.retentionIntentChart[2].intent,intent,string,Considerando outras oportunidades,6
+sections[1].data.retentionIntentChart[2].percentage,percentage,number,22,6
+sections[1].data.retentionIntentChart[2].count,count,number,187,6
+sections[2],sections[2],object,,2
+sections[2].id,id,string,attributes,3
+sections[2].index,index,number,2,3
+sections[2].name,name,string,Análise por Atributos,3
+sections[2].icon,icon,string,Layers,3
+sections[2].defaultIcon,defaultIcon,string,Building,3
+sections[2].subsections,subsections,array,,3
+sections[2].subsections[0],subsections[0],object,,4
+sections[2].subsections[0].id,id,string,attributes-department,5
+sections[2].subsections[0].index,index,number,0,5
+sections[2].subsections[0].name,name,string,Por Departamento,5
+sections[2].subsections[0].icon,icon,string,Building,5
+sections[2].subsections[0].components,components,array,,5
+sections[2].subsections[0].components[0],components[0],object,,6
+sections[2].subsections[0].components[0].type,type,string,card,7
+sections[2].subsections[0].components[0].index,index,number,0,7
+sections[2].subsections[0].components[0].title,title,string,Sumário,7
+sections[2].subsections[0].components[0].text,text,string,"A análise por departamento revela diferenças significativas na satisfação dos funcionários.
+Engenharia e Marketing apresentam os maiores índices de satisfação, com NPS positivo de 42 e 38 respectivamente.
+Vendas e Operações demonstram maior insatisfação, com NPS negativo de -15 e -22.
+Estas diferenças indicam a necessidade de abordagens personalizadas por departamento para melhorar o engajamento.",7
+sections[2].subsections[0].components[0].cardStyleVariant,cardStyleVariant,string,default,7
+sections[2].subsections[0].components[1],components[1],object,,6
+sections[2].subsections[0].components[1].type,type,string,grid-container,7
+sections[2].subsections[0].components[1].index,index,number,1,7
+sections[2].subsections[0].components[1].components,components,array,,7
+sections[2].subsections[0].components[1].components[0],components[0],object,,8
+sections[2].subsections[0].components[1].components[0].type,type,string,card,9
+sections[2].subsections[0].components[1].components[0].index,index,number,0,9
+sections[2].subsections[0].components[1].components[0].title,title,string,Distribuição dos respondentes,9
+sections[2].subsections[0].components[1].components[0].cardStyleVariant,cardStyleVariant,string,flex-column,9
+sections[2].subsections[0].components[1].components[0].cardContentVariant,cardContentVariant,string,with-charts,9
+sections[2].subsections[0].components[1].components[0].components,components,array,,9
+sections[2].subsections[0].components[1].components[0].components[0],components[0],object,,10
+sections[2].subsections[0].components[1].components[0].components[0].type,type,string,barChart,11
+sections[2].subsections[0].components[1].components[0].components[0].index,index,number,0,11
+sections[2].subsections[0].components[1].components[0].components[0].dataPath,dataPath,string,sectionData.department.distributionChart,11
+sections[2].subsections[0].components[1].components[0].components[0].config,config,object,,11
+sections[2].subsections[0].components[1].components[0].components[0].config.dataKey,dataKey,string,percentage,12
+sections[2].subsections[0].components[1].components[0].components[0].config.yAxisDataKey,yAxisDataKey,string,segment,12
+sections[2].subsections[0].components[1].components[0].components[1],components[1],object,,10
+sections[2].subsections[0].components[1].components[0].components[1].type,type,string,distributionTable,11
+sections[2].subsections[0].components[1].components[0].components[1].index,index,number,1,11
+sections[2].subsections[0].components[1].components[0].components[1].dataPath,dataPath,string,sectionData.department.distributionTable,11
+sections[2].subsections[0].components[1].components[1],components[1],object,,8
+sections[2].subsections[0].components[1].components[1].type,type,string,card,9
+sections[2].subsections[0].components[1].components[1].index,index,number,1,9
+sections[2].subsections[0].components[1].components[1].title,title,string,Análise de sentimento,9
+sections[2].subsections[0].components[1].components[1].cardStyleVariant,cardStyleVariant,string,flex-column,9
+sections[2].subsections[0].components[1].components[1].cardContentVariant,cardContentVariant,string,with-charts,9
+sections[2].subsections[0].components[1].components[1].components,components,array,,9
+sections[2].subsections[0].components[1].components[1].components[0],components[0],object,,10
+sections[2].subsections[0].components[1].components[1].components[0].type,type,string,sentimentStackedChart,11
+sections[2].subsections[0].components[1].components[1].components[0].index,index,number,0,11
+sections[2].subsections[0].components[1].components[1].components[0].dataPath,dataPath,string,sectionData.department.sentimentChart,11
+sections[2].subsections[0].components[1].components[1].components[0].config,config,object,,11
+sections[2].subsections[0].components[1].components[1].components[0].config.yAxisDataKey,yAxisDataKey,string,segment,12
+sections[2].subsections[0].components[1].components[1].components[1],components[1],object,,10
+sections[2].subsections[0].components[1].components[1].components[1].type,type,string,sentimentTable,11
+sections[2].subsections[0].components[1].components[1].components[1].index,index,number,1,11
+sections[2].subsections[0].components[1].components[1].components[1].dataPath,dataPath,string,sectionData.department.sentimentTable,11
+sections[2].subsections[0].components[2],components[2],object,,6
+sections[2].subsections[0].components[2].type,type,string,card,7
+sections[2].subsections[0].components[2].index,index,number,2,7
+sections[2].subsections[0].components[2].title,title,string,Qual é a probabilidade de você recomendar nossa empresa como um ótimo lugar para trabalhar?,7
+sections[2].subsections[0].components[2].cardStyleVariant,cardStyleVariant,string,default,7
+sections[2].subsections[0].components[2].cardContentVariant,cardContentVariant,string,with-tables,7
+sections[2].subsections[0].components[2].components,components,array,,7
+sections[2].subsections[0].components[2].components[0],components[0],object,,8
+sections[2].subsections[0].components[2].components[0].type,type,string,card,9
+sections[2].subsections[0].components[2].components[0].index,index,number,0,9
+sections[2].subsections[0].components[2].components[0].title,title,string,Sumário,9
+sections[2].subsections[0].components[2].components[0].text,text,string,"Os escores NPS variam significativamente entre departamentos.
+Engenharia e Marketing lideram com NPS positivo (42 e 38), indicando alta satisfação e lealdade.
+Vendas e Operações apresentam NPS negativo (-15 e -22), sinalizando necessidade urgente de intervenção.
+RH e Outros departamentos apresentam NPS moderadamente positivo, indicando satisfação adequada.",9
+sections[2].subsections[0].components[2].components[0].cardStyleVariant,cardStyleVariant,string,flat,9
+sections[2].subsections[0].components[2].components[0].titleStyleVariant,titleStyleVariant,string,h3-style,9
+sections[2].subsections[0].components[2].components[1],components[1],object,,8
+sections[2].subsections[0].components[2].components[1].type,type,string,container,9
+sections[2].subsections[0].components[2].components[1].index,index,number,1,9
+sections[2].subsections[0].components[2].components[1].components,components,array,,9
+sections[2].subsections[0].components[2].components[1].components[0],components[0],object,,10
+sections[2].subsections[0].components[2].components[1].components[0].type,type,string,h3,11
+sections[2].subsections[0].components[2].components[1].components[0].index,index,number,0,11
+sections[2].subsections[0].components[2].components[1].components[0].text,text,string,Respostas,11
+sections[2].subsections[0].components[2].components[1].components[1],components[1],object,,10
+sections[2].subsections[0].components[2].components[1].components[1].type,type,string,container,11
+sections[2].subsections[0].components[2].components[1].components[1].index,index,number,1,11
+sections[2].subsections[0].components[2].components[1].components[1].components,components,array,,11
+sections[2].subsections[0].components[2].components[1].components[1].components[0],components[0],object,,12
+sections[2].subsections[0].components[2].components[1].components[1].components[0].type,type,string,container,13
+sections[2].subsections[0].components[2].components[1].components[1].components[0].index,index,number,0,13
+sections[2].subsections[0].components[2].components[1].components[1].components[0].components,components,array,,13
+sections[2].subsections[0].components[2].components[1].components[1].components[0].components[0],components[0],object,,14
+sections[2].subsections[0].components[2].components[1].components[1].components[0].components[0].type,type,string,h4,15
+sections[2].subsections[0].components[2].components[1].components[1].components[0].components[0].index,index,number,0,15
+sections[2].subsections[0].components[2].components[1].components[1].components[0].components[0].text,text,string,"Promotores, Neutros, Detratores",15
+sections[2].subsections[0].components[2].components[1].components[1].components[0].components[1],components[1],object,,14
+sections[2].subsections[0].components[2].components[1].components[1].components[0].components[1].type,type,string,npsDistributionTable,15
+sections[2].subsections[0].components[2].components[1].components[1].components[0].components[1].index,index,number,1,15
+sections[2].subsections[0].components[2].components[1].components[1].components[0].components[1].dataPath,dataPath,string,sectionData.department.npsDistributionTable,15
+sections[2].subsections[0].components[2].components[1].components[1].components[0].components[1].categoryName,categoryName,string,Por Departamento,15
+sections[2].subsections[0].components[2].components[1].components[1].components[1],components[1],object,,12
+sections[2].subsections[0].components[2].components[1].components[1].components[1].type,type,string,container,13
+sections[2].subsections[0].components[2].components[1].components[1].components[1].index,index,number,1,13
+sections[2].subsections[0].components[2].components[1].components[1].components[1].components,components,array,,13
+sections[2].subsections[0].components[2].components[1].components[1].components[1].components[0],components[0],object,,14
+sections[2].subsections[0].components[2].components[1].components[1].components[1].components[0].type,type,string,h4,15
+sections[2].subsections[0].components[2].components[1].components[1].components[1].components[0].index,index,number,0,15
+sections[2].subsections[0].components[2].components[1].components[1].components[1].components[0].text,text,string,NPS,15
+sections[2].subsections[0].components[2].components[1].components[1].components[1].components[1],components[1],object,,14
+sections[2].subsections[0].components[2].components[1].components[1].components[1].components[1].type,type,string,npsTable,15
+sections[2].subsections[0].components[2].components[1].components[1].components[1].components[1].index,index,number,1,15
+sections[2].subsections[0].components[2].components[1].components[1].components[1].components[1].dataPath,dataPath,string,sectionData.department.npsTable,15
+sections[2].subsections[0].components[2].components[1].components[1].components[1].components[1].categoryName,categoryName,string,Por Departamento,15
+sections[2].subsections[0].components[2].components[2],components[2],object,,8
+sections[2].subsections[0].components[2].components[2].type,type,string,card,9
+sections[2].subsections[0].components[2].components[2].index,index,number,3,9
+sections[2].subsections[0].components[2].components[2].title,title,string,Quais são os principais fatores que impactam sua satisfação no trabalho?,9
+sections[2].subsections[0].components[2].components[2].cardStyleVariant,cardStyleVariant,string,default,9
+sections[2].subsections[0].components[2].components[2].cardContentVariant,cardContentVariant,string,with-tables,9
+sections[2].subsections[0].components[2].components[2].components,components,array,,9
+sections[2].subsections[0].components[2].components[2].components[0],components[0],object,,10
+sections[2].subsections[0].components[2].components[2].components[0].type,type,string,container,11
+sections[2].subsections[0].components[2].components[2].components[0].index,index,number,0,11
+sections[2].subsections[0].components[2].components[2].components[0].components,components,array,,11
+sections[2].subsections[0].components[2].components[2].components[0].components[0],components[0],object,,12
+sections[2].subsections[0].components[2].components[2].components[0].components[0].type,type,string,h3,13
+sections[2].subsections[0].components[2].components[2].components[0].components[0].index,index,number,0,13
+sections[2].subsections[0].components[2].components[2].components[0].components[0].text,text,string,Sumário,13
+sections[2].subsections[0].components[2].components[2].components[0].components[1],components[1],object,,12
+sections[2].subsections[0].components[2].components[2].components[0].components[1].type,type,string,container,13
+sections[2].subsections[0].components[2].components[2].components[0].components[1].index,index,number,1,13
+sections[2].subsections[0].components[2].components[2].components[0].components[1].text,text,string,"Engenharia e Marketing valorizam principalmente trabalho em equipe, desenvolvimento profissional e flexibilidade.
+Vendas e Operações expressam maior insatisfação com carga de trabalho, processos burocráticos e comunicação interna.
+RH demonstra satisfação equilibrada, com preocupações moderadas sobre processos.",13
+sections[2].subsections[0].components[2].components[2].components[1],components[1],object,,10
+sections[2].subsections[0].components[2].components[2].components[1].type,type,string,container,11
+sections[2].subsections[0].components[2].components[2].components[1].index,index,number,1,11
+sections[2].subsections[0].components[2].components[2].components[1].components,components,array,,11
+sections[2].subsections[0].components[2].components[2].components[1].components[0],components[0],object,,12
+sections[2].subsections[0].components[2].components[2].components[1].components[0].type,type,string,h3,13
+sections[2].subsections[0].components[2].components[2].components[1].components[0].index,index,number,0,13
+sections[2].subsections[0].components[2].components[2].components[1].components[0].text,text,string,Análise de sentimento,13
+sections[2].subsections[0].components[2].components[2].components[1].components[1],components[1],object,,12
+sections[2].subsections[0].components[2].components[2].components[1].components[1].type,type,string,sentimentThreeColorChart,13
+sections[2].subsections[0].components[2].components[2].components[1].components[1].index,index,number,1,13
+sections[2].subsections[0].components[2].components[2].components[1].components[1].dataPath,dataPath,string,sectionData.department.satisfactionImpactSentimentChart,13
+sections[2].subsections[0].components[2].components[2].components[1].components[1].config,config,object,,13
+sections[2].subsections[0].components[2].components[2].components[1].components[2],components[2],object,,12
+sections[2].subsections[0].components[2].components[2].components[1].components[2].type,type,string,sentimentImpactTable,13
+sections[2].subsections[0].components[2].components[2].components[1].components[2].index,index,number,2,13
+sections[2].subsections[0].components[2].components[2].components[1].components[2].dataPath,dataPath,string,sectionData.department.satisfactionImpactSentimentTable,13
+sections[2].subsections[0].components[2].components[2].components[2],components[2],object,,10
+sections[2].subsections[0].components[2].components[2].components[2].type,type,string,container,11
+sections[2].subsections[0].components[2].components[2].components[2].index,index,number,2,11
+sections[2].subsections[0].components[2].components[2].components[2].components,components,array,,11
+sections[2].subsections[0].components[2].components[2].components[2].components[0],components[0],object,,12
+sections[2].subsections[0].components[2].components[2].components[2].components[0].type,type,string,h3,13
+sections[2].subsections[0].components[2].components[2].components[2].components[0].index,index,number,0,13
+sections[2].subsections[0].components[2].components[2].components[2].components[0].text,text,string,Categorias com sentimento positivo - Top 3,13
+sections[2].subsections[0].components[2].components[2].components[2].components[1],components[1],object,,12
+sections[2].subsections[0].components[2].components[2].components[2].components[1].type,type,string,positiveCategoriesTable,13
+sections[2].subsections[0].components[2].components[2].components[2].components[1].index,index,number,1,13
+sections[2].subsections[0].components[2].components[2].components[2].components[1].dataPath,dataPath,string,sectionData.department.positiveCategoriesTable,13
+sections[2].subsections[0].components[2].components[2].components[3],components[3],object,,10
+sections[2].subsections[0].components[2].components[2].components[3].type,type,string,container,11
+sections[2].subsections[0].components[2].components[2].components[3].index,index,number,3,11
+sections[2].subsections[0].components[2].components[2].components[3].components,components,array,,11
+sections[2].subsections[0].components[2].components[2].components[3].components[0],components[0],object,,12
+sections[2].subsections[0].components[2].components[2].components[3].components[0].type,type,string,h3,13
+sections[2].subsections[0].components[2].components[2].components[3].components[0].index,index,number,0,13
+sections[2].subsections[0].components[2].components[2].components[3].components[0].text,text,string,Categorias com sentimento negativo - Top 3,13
+sections[2].subsections[0].components[2].components[2].components[3].components[1],components[1],object,,12
+sections[2].subsections[0].components[2].components[2].components[3].components[1].type,type,string,negativeCategoriesTable,13
+sections[2].subsections[0].components[2].components[2].components[3].components[1].index,index,number,1,13
+sections[2].subsections[0].components[2].components[2].components[3].components[1].dataPath,dataPath,string,sectionData.department.negativeCategoriesTable,13
+sections[2].subsections[0].data,data,object,,5
+sections[2].subsections[0].data.distributionChart,distributionChart,array,,6
+sections[2].subsections[0].data.distributionChart[0],distributionChart[0],object,,7
+sections[2].subsections[0].data.distributionChart[0].segment,segment,string,Engenharia,8
+sections[2].subsections[0].data.distributionChart[0].count,count,number,298,8
+sections[2].subsections[0].data.distributionChart[0].percentage,percentage,number,35,8
+sections[2].subsections[0].data.distributionChart[1],distributionChart[1],object,,7
+sections[2].subsections[0].data.distributionChart[1].segment,segment,string,Vendas,8
+sections[2].subsections[0].data.distributionChart[1].count,count,number,213,8
+sections[2].subsections[0].data.distributionChart[1].percentage,percentage,number,25,8
+sections[2].subsections[0].data.distributionChart[2],distributionChart[2],object,,7
+sections[2].subsections[0].data.distributionChart[2].segment,segment,string,Marketing,8
+sections[2].subsections[0].data.distributionChart[2].count,count,number,128,8
+sections[2].subsections[0].data.distributionChart[2].percentage,percentage,number,15,8
+sections[2].subsections[0].data.distributionChart[3],distributionChart[3],object,,7
+sections[2].subsections[0].data.distributionChart[3].segment,segment,string,RH,8
+sections[2].subsections[0].data.distributionChart[3].count,count,number,85,8
+sections[2].subsections[0].data.distributionChart[3].percentage,percentage,number,10,8
+sections[2].subsections[0].data.distributionChart[4],distributionChart[4],object,,7
+sections[2].subsections[0].data.distributionChart[4].segment,segment,string,Operações,8
+sections[2].subsections[0].data.distributionChart[4].count,count,number,85,8
+sections[2].subsections[0].data.distributionChart[4].percentage,percentage,number,10,8
+sections[2].subsections[0].data.distributionChart[5],distributionChart[5],object,,7
+sections[2].subsections[0].data.distributionChart[5].segment,segment,string,Outros,8
+sections[2].subsections[0].data.distributionChart[5].count,count,number,41,8
+sections[2].subsections[0].data.distributionChart[5].percentage,percentage,number,5,8
+sections[2].subsections[0].data.distributionTable,distributionTable,array,,6
+sections[2].subsections[0].data.distributionTable[0],distributionTable[0],object,,7
+sections[2].subsections[0].data.distributionTable[0].segment,segment,string,Engenharia,8
+sections[2].subsections[0].data.distributionTable[0].count,count,number,298,8
+sections[2].subsections[0].data.distributionTable[0].percentage,percentage,number,35,8
+sections[2].subsections[0].data.distributionTable[1],distributionTable[1],object,,7
+sections[2].subsections[0].data.distributionTable[1].segment,segment,string,Vendas,8
+sections[2].subsections[0].data.distributionTable[1].count,count,number,213,8
+sections[2].subsections[0].data.distributionTable[1].percentage,percentage,number,25,8
+sections[2].subsections[0].data.distributionTable[2],distributionTable[2],object,,7
+sections[2].subsections[0].data.distributionTable[2].segment,segment,string,Marketing,8
+sections[2].subsections[0].data.distributionTable[2].count,count,number,128,8
+sections[2].subsections[0].data.distributionTable[2].percentage,percentage,number,15,8
+sections[2].subsections[0].data.distributionTable[3],distributionTable[3],object,,7
+sections[2].subsections[0].data.distributionTable[3].segment,segment,string,RH,8
+sections[2].subsections[0].data.distributionTable[3].count,count,number,85,8
+sections[2].subsections[0].data.distributionTable[3].percentage,percentage,number,10,8
+sections[2].subsections[0].data.distributionTable[4],distributionTable[4],object,,7
+sections[2].subsections[0].data.distributionTable[4].segment,segment,string,Operações,8
+sections[2].subsections[0].data.distributionTable[4].count,count,number,85,8
+sections[2].subsections[0].data.distributionTable[4].percentage,percentage,number,10,8
+sections[2].subsections[0].data.distributionTable[5],distributionTable[5],object,,7
+sections[2].subsections[0].data.distributionTable[5].segment,segment,string,Outros,8
+sections[2].subsections[0].data.distributionTable[5].count,count,number,41,8
+sections[2].subsections[0].data.distributionTable[5].percentage,percentage,number,5,8
+sections[2].subsections[0].data.sentimentChart,sentimentChart,array,,6
+sections[2].subsections[0].data.sentimentChart[0],sentimentChart[0],object,,7
+sections[2].subsections[0].data.sentimentChart[0].segment,segment,string,Engenharia,8
+sections[2].subsections[0].data.sentimentChart[0].positive,positive,number,75.2,8
+sections[2].subsections[0].data.sentimentChart[0].neutral,neutral,number,15.8,8
+sections[2].subsections[0].data.sentimentChart[0].negative,negative,number,9,8
+sections[2].subsections[0].data.sentimentChart[1],sentimentChart[1],object,,7
+sections[2].subsections[0].data.sentimentChart[1].segment,segment,string,Marketing,8
+sections[2].subsections[0].data.sentimentChart[1].positive,positive,number,72.5,8
+sections[2].subsections[0].data.sentimentChart[1].neutral,neutral,number,18.5,8
+sections[2].subsections[0].data.sentimentChart[1].negative,negative,number,9,8
+sections[2].subsections[0].data.sentimentChart[2],sentimentChart[2],object,,7
+sections[2].subsections[0].data.sentimentChart[2].segment,segment,string,RH,8
+sections[2].subsections[0].data.sentimentChart[2].positive,positive,number,65,8
+sections[2].subsections[0].data.sentimentChart[2].neutral,neutral,number,25,8
+sections[2].subsections[0].data.sentimentChart[2].negative,negative,number,10,8
+sections[2].subsections[0].data.sentimentChart[3],sentimentChart[3],object,,7
+sections[2].subsections[0].data.sentimentChart[3].segment,segment,string,Vendas,8
+sections[2].subsections[0].data.sentimentChart[3].positive,positive,number,45.5,8
+sections[2].subsections[0].data.sentimentChart[3].neutral,neutral,number,30.5,8
+sections[2].subsections[0].data.sentimentChart[3].negative,negative,number,24,8
+sections[2].subsections[0].data.sentimentChart[4],sentimentChart[4],object,,7
+sections[2].subsections[0].data.sentimentChart[4].segment,segment,string,Operações,8
+sections[2].subsections[0].data.sentimentChart[4].positive,positive,number,38.2,8
+sections[2].subsections[0].data.sentimentChart[4].neutral,neutral,number,32.8,8
+sections[2].subsections[0].data.sentimentChart[4].negative,negative,number,29,8
+sections[2].subsections[0].data.sentimentChart[5],sentimentChart[5],object,,7
+sections[2].subsections[0].data.sentimentChart[5].segment,segment,string,Outros,8
+sections[2].subsections[0].data.sentimentChart[5].positive,positive,number,60,8
+sections[2].subsections[0].data.sentimentChart[5].neutral,neutral,number,25,8
+sections[2].subsections[0].data.sentimentChart[5].negative,negative,number,15,8
+sections[2].subsections[0].data.sentimentTable,sentimentTable,array,,6
+sections[2].subsections[0].data.sentimentTable[0],sentimentTable[0],object,,7
+sections[2].subsections[0].data.sentimentTable[0].segment,segment,string,Engenharia,8
+sections[2].subsections[0].data.sentimentTable[0].positive,positive,number,75.2,8
+sections[2].subsections[0].data.sentimentTable[0].neutral,neutral,number,15.8,8
+sections[2].subsections[0].data.sentimentTable[0].negative,negative,number,9,8
+sections[2].subsections[0].data.sentimentTable[1],sentimentTable[1],object,,7
+sections[2].subsections[0].data.sentimentTable[1].segment,segment,string,Marketing,8
+sections[2].subsections[0].data.sentimentTable[1].positive,positive,number,72.5,8
+sections[2].subsections[0].data.sentimentTable[1].neutral,neutral,number,18.5,8
+sections[2].subsections[0].data.sentimentTable[1].negative,negative,number,9,8
+sections[2].subsections[0].data.sentimentTable[2],sentimentTable[2],object,,7
+sections[2].subsections[0].data.sentimentTable[2].segment,segment,string,RH,8
+sections[2].subsections[0].data.sentimentTable[2].positive,positive,number,65,8
+sections[2].subsections[0].data.sentimentTable[2].neutral,neutral,number,25,8
+sections[2].subsections[0].data.sentimentTable[2].negative,negative,number,10,8
+sections[2].subsections[0].data.sentimentTable[3],sentimentTable[3],object,,7
+sections[2].subsections[0].data.sentimentTable[3].segment,segment,string,Vendas,8
+sections[2].subsections[0].data.sentimentTable[3].positive,positive,number,45.5,8
+sections[2].subsections[0].data.sentimentTable[3].neutral,neutral,number,30.5,8
+sections[2].subsections[0].data.sentimentTable[3].negative,negative,number,24,8
+sections[2].subsections[0].data.sentimentTable[4],sentimentTable[4],object,,7
+sections[2].subsections[0].data.sentimentTable[4].segment,segment,string,Operações,8
+sections[2].subsections[0].data.sentimentTable[4].positive,positive,number,38.2,8
+sections[2].subsections[0].data.sentimentTable[4].neutral,neutral,number,32.8,8
+sections[2].subsections[0].data.sentimentTable[4].negative,negative,number,29,8
+sections[2].subsections[0].data.sentimentTable[5],sentimentTable[5],object,,7
+sections[2].subsections[0].data.sentimentTable[5].segment,segment,string,Outros,8
+sections[2].subsections[0].data.sentimentTable[5].positive,positive,number,60,8
+sections[2].subsections[0].data.sentimentTable[5].neutral,neutral,number,25,8
+sections[2].subsections[0].data.sentimentTable[5].negative,negative,number,15,8
+sections[2].subsections[0].data.npsTable,npsTable,array,,6
+sections[2].subsections[0].data.npsTable[0],npsTable[0],object,,7
+sections[2].subsections[0].data.npsTable[0].segment,segment,string,Engenharia,8
+sections[2].subsections[0].data.npsTable[0].nps,nps,number,42,8
+sections[2].subsections[0].data.npsTable[1],npsTable[1],object,,7
+sections[2].subsections[0].data.npsTable[1].segment,segment,string,Marketing,8
+sections[2].subsections[0].data.npsTable[1].nps,nps,number,38,8
+sections[2].subsections[0].data.npsTable[2],npsTable[2],object,,7
+sections[2].subsections[0].data.npsTable[2].segment,segment,string,RH,8
+sections[2].subsections[0].data.npsTable[2].nps,nps,number,12,8
+sections[2].subsections[0].data.npsTable[3],npsTable[3],object,,7
+sections[2].subsections[0].data.npsTable[3].segment,segment,string,Outros,8
+sections[2].subsections[0].data.npsTable[3].nps,nps,number,8,8
+sections[2].subsections[0].data.npsTable[4],npsTable[4],object,,7
+sections[2].subsections[0].data.npsTable[4].segment,segment,string,Vendas,8
+sections[2].subsections[0].data.npsTable[4].nps,nps,number,-15,8
+sections[2].subsections[0].data.npsTable[5],npsTable[5],object,,7
+sections[2].subsections[0].data.npsTable[5].segment,segment,string,Operações,8
+sections[2].subsections[0].data.npsTable[5].nps,nps,number,-22,8
+sections[2].subsections[0].data.npsDistributionTable,npsDistributionTable,array,,6
+sections[2].subsections[0].data.npsDistributionTable[0],npsDistributionTable[0],object,,7
+sections[2].subsections[0].data.npsDistributionTable[0].segment,segment,string,Engenharia,8
+sections[2].subsections[0].data.npsDistributionTable[0].promotores,promotores,number,58.5,8
+sections[2].subsections[0].data.npsDistributionTable[0].neutros,neutros,number,16.5,8
+sections[2].subsections[0].data.npsDistributionTable[0].detratores,detratores,number,25,8
+sections[2].subsections[0].data.npsDistributionTable[1],npsDistributionTable[1],object,,7
+sections[2].subsections[0].data.npsDistributionTable[1].segment,segment,string,Marketing,8
+sections[2].subsections[0].data.npsDistributionTable[1].promotores,promotores,number,55,8
+sections[2].subsections[0].data.npsDistributionTable[1].neutros,neutros,number,17,8
+sections[2].subsections[0].data.npsDistributionTable[1].detratores,detratores,number,28,8
+sections[2].subsections[0].data.npsDistributionTable[2],npsDistributionTable[2],object,,7
+sections[2].subsections[0].data.npsDistributionTable[2].segment,segment,string,RH,8
+sections[2].subsections[0].data.npsDistributionTable[2].promotores,promotores,number,42.5,8
+sections[2].subsections[0].data.npsDistributionTable[2].neutros,neutros,number,30.5,8
+sections[2].subsections[0].data.npsDistributionTable[2].detratores,detratores,number,27,8
+sections[2].subsections[0].data.npsDistributionTable[3],npsDistributionTable[3],object,,7
+sections[2].subsections[0].data.npsDistributionTable[3].segment,segment,string,Vendas,8
+sections[2].subsections[0].data.npsDistributionTable[3].promotores,promotores,number,32,8
+sections[2].subsections[0].data.npsDistributionTable[3].neutros,neutros,number,28,8
+sections[2].subsections[0].data.npsDistributionTable[3].detratores,detratores,number,40,8
+sections[2].subsections[0].data.npsDistributionTable[4],npsDistributionTable[4],object,,7
+sections[2].subsections[0].data.npsDistributionTable[4].segment,segment,string,Operações,8
+sections[2].subsections[0].data.npsDistributionTable[4].promotores,promotores,number,28.5,8
+sections[2].subsections[0].data.npsDistributionTable[4].neutros,neutros,number,28.5,8
+sections[2].subsections[0].data.npsDistributionTable[4].detratores,detratores,number,43,8
+sections[2].subsections[0].data.npsDistributionTable[5],npsDistributionTable[5],object,,7
+sections[2].subsections[0].data.npsDistributionTable[5].segment,segment,string,Outros,8
+sections[2].subsections[0].data.npsDistributionTable[5].promotores,promotores,number,40,8
+sections[2].subsections[0].data.npsDistributionTable[5].neutros,neutros,number,32,8
+sections[2].subsections[0].data.npsDistributionTable[5].detratores,detratores,number,28,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart,satisfactionImpactSentimentChart,array,,6
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[0],satisfactionImpactSentimentChart[0],object,,7
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[0].sentiment,sentiment,string,Negativo,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[0].Engenharia,Engenharia,number,9,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[0].Marketing,Marketing,number,9,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[0].RH,RH,number,10,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[0].Vendas,Vendas,number,24,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[0].Operações,Operações,number,29,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[0].Outros,Outros,number,15,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[1],satisfactionImpactSentimentChart[1],object,,7
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[1].sentiment,sentiment,string,Não aplicável,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[1].Engenharia,Engenharia,number,0,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[1].Marketing,Marketing,number,0,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[1].RH,RH,number,0,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[1].Vendas,Vendas,number,0,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[1].Operações,Operações,number,0,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[1].Outros,Outros,number,0,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[2],satisfactionImpactSentimentChart[2],object,,7
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[2].sentiment,sentiment,string,Positivo,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[2].Engenharia,Engenharia,number,75.2,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[2].Marketing,Marketing,number,72.5,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[2].RH,RH,number,65,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[2].Vendas,Vendas,number,45.5,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[2].Operações,Operações,number,38.2,8
+sections[2].subsections[0].data.satisfactionImpactSentimentChart[2].Outros,Outros,number,60,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable,satisfactionImpactSentimentTable,array,,6
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[0],satisfactionImpactSentimentTable[0],object,,7
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[0].sentiment,sentiment,string,Negativo,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[0].Engenharia,Engenharia,number,9,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[0].Marketing,Marketing,number,9,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[0].RH,RH,number,10,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[0].Vendas,Vendas,number,24,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[0].Operações,Operações,number,29,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[0].Outros,Outros,number,15,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[1],satisfactionImpactSentimentTable[1],object,,7
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[1].sentiment,sentiment,string,Não aplicável,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[1].Engenharia,Engenharia,number,0,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[1].Marketing,Marketing,number,0,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[1].RH,RH,number,0,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[1].Vendas,Vendas,number,0,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[1].Operações,Operações,number,0,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[1].Outros,Outros,number,0,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[2],satisfactionImpactSentimentTable[2],object,,7
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[2].sentiment,sentiment,string,Positivo,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[2].Engenharia,Engenharia,number,75.2,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[2].Marketing,Marketing,number,72.5,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[2].RH,RH,number,65,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[2].Vendas,Vendas,number,45.5,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[2].Operações,Operações,number,38.2,8
+sections[2].subsections[0].data.satisfactionImpactSentimentTable[2].Outros,Outros,number,60,8
+sections[2].subsections[0].data.positiveCategoriesTable,positiveCategoriesTable,array,,6
+sections[2].subsections[0].data.positiveCategoriesTable[0],positiveCategoriesTable[0],object,,7
+sections[2].subsections[0].data.positiveCategoriesTable[0].category,category,string,Trabalho em Equipe,8
+sections[2].subsections[0].data.positiveCategoriesTable[0].Engenharia,Engenharia,number,85.2,8
+sections[2].subsections[0].data.positiveCategoriesTable[0].Marketing,Marketing,number,78.5,8
+sections[2].subsections[0].data.positiveCategoriesTable[0].RH,RH,number,72,8
+sections[2].subsections[0].data.positiveCategoriesTable[0].Vendas,Vendas,number,55,8
+sections[2].subsections[0].data.positiveCategoriesTable[0].Operações,Operações,number,48,8
+sections[2].subsections[0].data.positiveCategoriesTable[0].Outros,Outros,number,70,8
+sections[2].subsections[0].data.positiveCategoriesTable[1],positiveCategoriesTable[1],object,,7
+sections[2].subsections[0].data.positiveCategoriesTable[1].category,category,string,Desenvolvimento Profissional,8
+sections[2].subsections[0].data.positiveCategoriesTable[1].Engenharia,Engenharia,number,82.5,8
+sections[2].subsections[0].data.positiveCategoriesTable[1].Marketing,Marketing,number,75,8
+sections[2].subsections[0].data.positiveCategoriesTable[1].RH,RH,number,68,8
+sections[2].subsections[0].data.positiveCategoriesTable[1].Vendas,Vendas,number,42,8
+sections[2].subsections[0].data.positiveCategoriesTable[1].Operações,Operações,number,35,8
+sections[2].subsections[0].data.positiveCategoriesTable[1].Outros,Outros,number,65,8
+sections[2].subsections[0].data.positiveCategoriesTable[2],positiveCategoriesTable[2],object,,7
+sections[2].subsections[0].data.positiveCategoriesTable[2].category,category,string,Flexibilidade,8
+sections[2].subsections[0].data.positiveCategoriesTable[2].Engenharia,Engenharia,number,78,8
+sections[2].subsections[0].data.positiveCategoriesTable[2].Marketing,Marketing,number,72,8
+sections[2].subsections[0].data.positiveCategoriesTable[2].RH,RH,number,65,8
+sections[2].subsections[0].data.positiveCategoriesTable[2].Vendas,Vendas,number,38,8
+sections[2].subsections[0].data.positiveCategoriesTable[2].Operações,Operações,number,32,8
+sections[2].subsections[0].data.positiveCategoriesTable[2].Outros,Outros,number,60,8
+sections[2].subsections[0].data.negativeCategoriesTable,negativeCategoriesTable,array,,6
+sections[2].subsections[0].data.negativeCategoriesTable[0],negativeCategoriesTable[0],object,,7
+sections[2].subsections[0].data.negativeCategoriesTable[0].category,category,string,Carga de Trabalho,8
+sections[2].subsections[0].data.negativeCategoriesTable[0].Engenharia,Engenharia,number,12,8
+sections[2].subsections[0].data.negativeCategoriesTable[0].Marketing,Marketing,number,15,8
+sections[2].subsections[0].data.negativeCategoriesTable[0].RH,RH,number,18,8
+sections[2].subsections[0].data.negativeCategoriesTable[0].Vendas,Vendas,number,58,8
+sections[2].subsections[0].data.negativeCategoriesTable[0].Operações,Operações,number,65,8
+sections[2].subsections[0].data.negativeCategoriesTable[0].Outros,Outros,number,20,8
+sections[2].subsections[0].data.negativeCategoriesTable[1],negativeCategoriesTable[1],object,,7
+sections[2].subsections[0].data.negativeCategoriesTable[1].category,category,string,Processos Burocráticos,8
+sections[2].subsections[0].data.negativeCategoriesTable[1].Engenharia,Engenharia,number,8,8
+sections[2].subsections[0].data.negativeCategoriesTable[1].Marketing,Marketing,number,12,8
+sections[2].subsections[0].data.negativeCategoriesTable[1].RH,RH,number,22,8
+sections[2].subsections[0].data.negativeCategoriesTable[1].Vendas,Vendas,number,52,8
+sections[2].subsections[0].data.negativeCategoriesTable[1].Operações,Operações,number,58,8
+sections[2].subsections[0].data.negativeCategoriesTable[1].Outros,Outros,number,18,8
+sections[2].subsections[0].data.negativeCategoriesTable[2],negativeCategoriesTable[2],object,,7
+sections[2].subsections[0].data.negativeCategoriesTable[2].category,category,string,Comunicação Interna,8
+sections[2].subsections[0].data.negativeCategoriesTable[2].Engenharia,Engenharia,number,10,8
+sections[2].subsections[0].data.negativeCategoriesTable[2].Marketing,Marketing,number,18,8
+sections[2].subsections[0].data.negativeCategoriesTable[2].RH,RH,number,25,8
+sections[2].subsections[0].data.negativeCategoriesTable[2].Vendas,Vendas,number,48,8
+sections[2].subsections[0].data.negativeCategoriesTable[2].Operações,Operações,number,55,8
+sections[2].subsections[0].data.negativeCategoriesTable[2].Outros,Outros,number,22,8
+sections[2].subsections[1],subsections[1],object,,4
+sections[2].subsections[1].id,id,string,attributes-tenure,5
+sections[2].subsections[1].index,index,number,1,5
+sections[2].subsections[1].name,name,string,Por Tempo de Empresa,5
+sections[2].subsections[1].icon,icon,string,Clock,5
+sections[2].subsections[1].components,components,array,,5
+sections[2].subsections[1].components[0],components[0],object,,6
+sections[2].subsections[1].components[0].type,type,string,card,7
+sections[2].subsections[1].components[0].index,index,number,0,7
+sections[2].subsections[1].components[0].title,title,string,Sumário,7
+sections[2].subsections[1].components[0].text,text,string,"Funcionários com mais tempo de empresa (3+ anos) demonstram maior satisfação e engajamento.
+Funcionários novos (menos de 1 ano) apresentam satisfação moderada, indicando necessidade de melhor onboarding.
+A análise revela que a satisfação aumenta com o tempo de empresa, sugerindo que programas de retenção são eficazes.",7
+sections[2].subsections[1].components[0].cardStyleVariant,cardStyleVariant,string,default,7
+sections[2].subsections[1].components[1],components[1],object,,6
+sections[2].subsections[1].components[1].type,type,string,grid-container,7
+sections[2].subsections[1].components[1].index,index,number,1,7
+sections[2].subsections[1].components[1].components,components,array,,7
+sections[2].subsections[1].components[1].components[0],components[0],object,,8
+sections[2].subsections[1].components[1].components[0].type,type,string,card,9
+sections[2].subsections[1].components[1].components[0].index,index,number,0,9
+sections[2].subsections[1].components[1].components[0].title,title,string,Distribuição dos respondentes,9
+sections[2].subsections[1].components[1].components[0].cardStyleVariant,cardStyleVariant,string,flex-column,9
+sections[2].subsections[1].components[1].components[0].cardContentVariant,cardContentVariant,string,with-charts,9
+sections[2].subsections[1].components[1].components[0].components,components,array,,9
+sections[2].subsections[1].components[1].components[0].components[0],components[0],object,,10
+sections[2].subsections[1].components[1].components[0].components[0].type,type,string,barChart,11
+sections[2].subsections[1].components[1].components[0].components[0].index,index,number,0,11
+sections[2].subsections[1].components[1].components[0].components[0].dataPath,dataPath,string,sectionData.tenure.distributionChart,11
+sections[2].subsections[1].components[1].components[0].components[0].config,config,object,,11
+sections[2].subsections[1].components[1].components[0].components[0].config.dataKey,dataKey,string,percentage,12
+sections[2].subsections[1].components[1].components[0].components[0].config.yAxisDataKey,yAxisDataKey,string,segment,12
+sections[2].subsections[1].components[1].components[0].components[1],components[1],object,,10
+sections[2].subsections[1].components[1].components[0].components[1].type,type,string,distributionTable,11
+sections[2].subsections[1].components[1].components[0].components[1].index,index,number,1,11
+sections[2].subsections[1].components[1].components[0].components[1].dataPath,dataPath,string,sectionData.tenure.distributionTable,11
+sections[2].subsections[1].components[1].components[1],components[1],object,,8
+sections[2].subsections[1].components[1].components[1].type,type,string,card,9
+sections[2].subsections[1].components[1].components[1].index,index,number,1,9
+sections[2].subsections[1].components[1].components[1].title,title,string,Análise de sentimento,9
+sections[2].subsections[1].components[1].components[1].cardStyleVariant,cardStyleVariant,string,flex-column,9
+sections[2].subsections[1].components[1].components[1].cardContentVariant,cardContentVariant,string,with-charts,9
+sections[2].subsections[1].components[1].components[1].components,components,array,,9
+sections[2].subsections[1].components[1].components[1].components[0],components[0],object,,10
+sections[2].subsections[1].components[1].components[1].components[0].type,type,string,sentimentStackedChart,11
+sections[2].subsections[1].components[1].components[1].components[0].index,index,number,0,11
+sections[2].subsections[1].components[1].components[1].components[0].dataPath,dataPath,string,sectionData.tenure.sentimentChart,11
+sections[2].subsections[1].components[1].components[1].components[0].config,config,object,,11
+sections[2].subsections[1].components[1].components[1].components[0].config.yAxisDataKey,yAxisDataKey,string,segment,12
+sections[2].subsections[1].components[1].components[1].components[1],components[1],object,,10
+sections[2].subsections[1].components[1].components[1].components[1].type,type,string,sentimentTable,11
+sections[2].subsections[1].components[1].components[1].components[1].index,index,number,1,11
+sections[2].subsections[1].components[1].components[1].components[1].dataPath,dataPath,string,sectionData.tenure.sentimentTable,11
+sections[2].subsections[1].data,data,object,,5
+sections[2].subsections[1].data.distributionChart,distributionChart,array,,6
+sections[2].subsections[1].data.distributionChart[0],distributionChart[0],object,,7
+sections[2].subsections[1].data.distributionChart[0].segment,segment,string,Menos de 1 ano,8
+sections[2].subsections[1].data.distributionChart[0].count,count,number,170,8
+sections[2].subsections[1].data.distributionChart[0].percentage,percentage,number,20,8
+sections[2].subsections[1].data.distributionChart[1],distributionChart[1],object,,7
+sections[2].subsections[1].data.distributionChart[1].segment,segment,string,1-3 anos,8
+sections[2].subsections[1].data.distributionChart[1].count,count,number,298,8
+sections[2].subsections[1].data.distributionChart[1].percentage,percentage,number,35,8
+sections[2].subsections[1].data.distributionChart[2],distributionChart[2],object,,7
+sections[2].subsections[1].data.distributionChart[2].segment,segment,string,3-5 anos,8
+sections[2].subsections[1].data.distributionChart[2].count,count,number,213,8
+sections[2].subsections[1].data.distributionChart[2].percentage,percentage,number,25,8
+sections[2].subsections[1].data.distributionChart[3],distributionChart[3],object,,7
+sections[2].subsections[1].data.distributionChart[3].segment,segment,string,Mais de 5 anos,8
+sections[2].subsections[1].data.distributionChart[3].count,count,number,169,8
+sections[2].subsections[1].data.distributionChart[3].percentage,percentage,number,20,8
+sections[2].subsections[1].data.distributionTable,distributionTable,array,,6
+sections[2].subsections[1].data.distributionTable[0],distributionTable[0],object,,7
+sections[2].subsections[1].data.distributionTable[0].segment,segment,string,Menos de 1 ano,8
+sections[2].subsections[1].data.distributionTable[0].count,count,number,170,8
+sections[2].subsections[1].data.distributionTable[0].percentage,percentage,number,20,8
+sections[2].subsections[1].data.distributionTable[1],distributionTable[1],object,,7
+sections[2].subsections[1].data.distributionTable[1].segment,segment,string,1-3 anos,8
+sections[2].subsections[1].data.distributionTable[1].count,count,number,298,8
+sections[2].subsections[1].data.distributionTable[1].percentage,percentage,number,35,8
+sections[2].subsections[1].data.distributionTable[2],distributionTable[2],object,,7
+sections[2].subsections[1].data.distributionTable[2].segment,segment,string,3-5 anos,8
+sections[2].subsections[1].data.distributionTable[2].count,count,number,213,8
+sections[2].subsections[1].data.distributionTable[2].percentage,percentage,number,25,8
+sections[2].subsections[1].data.distributionTable[3],distributionTable[3],object,,7
+sections[2].subsections[1].data.distributionTable[3].segment,segment,string,Mais de 5 anos,8
+sections[2].subsections[1].data.distributionTable[3].count,count,number,169,8
+sections[2].subsections[1].data.distributionTable[3].percentage,percentage,number,20,8
+sections[2].subsections[1].data.sentimentChart,sentimentChart,array,,6
+sections[2].subsections[1].data.sentimentChart[0],sentimentChart[0],object,,7
+sections[2].subsections[1].data.sentimentChart[0].segment,segment,string,Mais de 5 anos,8
+sections[2].subsections[1].data.sentimentChart[0].positive,positive,number,78.5,8
+sections[2].subsections[1].data.sentimentChart[0].neutral,neutral,number,15.5,8
+sections[2].subsections[1].data.sentimentChart[0].negative,negative,number,6,8
+sections[2].subsections[1].data.sentimentChart[1],sentimentChart[1],object,,7
+sections[2].subsections[1].data.sentimentChart[1].segment,segment,string,3-5 anos,8
+sections[2].subsections[1].data.sentimentChart[1].positive,positive,number,72,8
+sections[2].subsections[1].data.sentimentChart[1].neutral,neutral,number,20,8
+sections[2].subsections[1].data.sentimentChart[1].negative,negative,number,8,8
+sections[2].subsections[1].data.sentimentChart[2],sentimentChart[2],object,,7
+sections[2].subsections[1].data.sentimentChart[2].segment,segment,string,1-3 anos,8
+sections[2].subsections[1].data.sentimentChart[2].positive,positive,number,65.5,8
+sections[2].subsections[1].data.sentimentChart[2].neutral,neutral,number,25.5,8
+sections[2].subsections[1].data.sentimentChart[2].negative,negative,number,9,8
+sections[2].subsections[1].data.sentimentChart[3],sentimentChart[3],object,,7
+sections[2].subsections[1].data.sentimentChart[3].segment,segment,string,Menos de 1 ano,8
+sections[2].subsections[1].data.sentimentChart[3].positive,positive,number,58,8
+sections[2].subsections[1].data.sentimentChart[3].neutral,neutral,number,28,8
+sections[2].subsections[1].data.sentimentChart[3].negative,negative,number,14,8
+sections[2].subsections[1].data.sentimentTable,sentimentTable,array,,6
+sections[2].subsections[1].data.sentimentTable[0],sentimentTable[0],object,,7
+sections[2].subsections[1].data.sentimentTable[0].segment,segment,string,Mais de 5 anos,8
+sections[2].subsections[1].data.sentimentTable[0].positive,positive,number,78.5,8
+sections[2].subsections[1].data.sentimentTable[0].neutral,neutral,number,15.5,8
+sections[2].subsections[1].data.sentimentTable[0].negative,negative,number,6,8
+sections[2].subsections[1].data.sentimentTable[1],sentimentTable[1],object,,7
+sections[2].subsections[1].data.sentimentTable[1].segment,segment,string,3-5 anos,8
+sections[2].subsections[1].data.sentimentTable[1].positive,positive,number,72,8
+sections[2].subsections[1].data.sentimentTable[1].neutral,neutral,number,20,8
+sections[2].subsections[1].data.sentimentTable[1].negative,negative,number,8,8
+sections[2].subsections[1].data.sentimentTable[2],sentimentTable[2],object,,7
+sections[2].subsections[1].data.sentimentTable[2].segment,segment,string,1-3 anos,8
+sections[2].subsections[1].data.sentimentTable[2].positive,positive,number,65.5,8
+sections[2].subsections[1].data.sentimentTable[2].neutral,neutral,number,25.5,8
+sections[2].subsections[1].data.sentimentTable[2].negative,negative,number,9,8
+sections[2].subsections[1].data.sentimentTable[3],sentimentTable[3],object,,7
+sections[2].subsections[1].data.sentimentTable[3].segment,segment,string,Menos de 1 ano,8
+sections[2].subsections[1].data.sentimentTable[3].positive,positive,number,58,8
+sections[2].subsections[1].data.sentimentTable[3].neutral,neutral,number,28,8
+sections[2].subsections[1].data.sentimentTable[3].negative,negative,number,14,8
+sections[2].subsections[2],subsections[2],object,,4
+sections[2].subsections[2].id,id,string,attributes-role,5
+sections[2].subsections[2].index,index,number,2,5
+sections[2].subsections[2].name,name,string,Por Cargo,5
+sections[2].subsections[2].icon,icon,string,Briefcase,5
+sections[2].subsections[2].components,components,array,,5
+sections[2].subsections[2].components[0],components[0],object,,6
+sections[2].subsections[2].components[0].type,type,string,card,7
+sections[2].subsections[2].components[0].index,index,number,0,7
+sections[2].subsections[2].components[0].title,title,string,Sumário,7
+sections[2].subsections[2].components[0].text,text,string,"Liderança e funcionários sênior apresentam maior satisfação, com NPS positivo.
+Estagiários e júnior demonstram satisfação moderada, com oportunidades de melhoria em desenvolvimento e mentoria.
+A análise sugere que programas de desenvolvimento são especialmente importantes para níveis iniciais.",7
+sections[2].subsections[2].components[0].cardStyleVariant,cardStyleVariant,string,default,7
+sections[2].subsections[2].components[1],components[1],object,,6
+sections[2].subsections[2].components[1].type,type,string,grid-container,7
+sections[2].subsections[2].components[1].index,index,number,1,7
+sections[2].subsections[2].components[1].components,components,array,,7
+sections[2].subsections[2].components[1].components[0],components[0],object,,8
+sections[2].subsections[2].components[1].components[0].type,type,string,card,9
+sections[2].subsections[2].components[1].components[0].index,index,number,0,9
+sections[2].subsections[2].components[1].components[0].title,title,string,Distribuição dos respondentes,9
+sections[2].subsections[2].components[1].components[0].cardStyleVariant,cardStyleVariant,string,flex-column,9
+sections[2].subsections[2].components[1].components[0].cardContentVariant,cardContentVariant,string,with-charts,9
+sections[2].subsections[2].components[1].components[0].components,components,array,,9
+sections[2].subsections[2].components[1].components[0].components[0],components[0],object,,10
+sections[2].subsections[2].components[1].components[0].components[0].type,type,string,barChart,11
+sections[2].subsections[2].components[1].components[0].components[0].index,index,number,0,11
+sections[2].subsections[2].components[1].components[0].components[0].dataPath,dataPath,string,sectionData.role.distributionChart,11
+sections[2].subsections[2].components[1].components[0].components[0].config,config,object,,11
+sections[2].subsections[2].components[1].components[0].components[0].config.dataKey,dataKey,string,percentage,12
+sections[2].subsections[2].components[1].components[0].components[0].config.yAxisDataKey,yAxisDataKey,string,segment,12
+sections[2].subsections[2].components[1].components[0].components[1],components[1],object,,10
+sections[2].subsections[2].components[1].components[0].components[1].type,type,string,distributionTable,11
+sections[2].subsections[2].components[1].components[0].components[1].index,index,number,1,11
+sections[2].subsections[2].components[1].components[0].components[1].dataPath,dataPath,string,sectionData.role.distributionTable,11
+sections[2].subsections[2].components[1].components[1],components[1],object,,8
+sections[2].subsections[2].components[1].components[1].type,type,string,card,9
+sections[2].subsections[2].components[1].components[1].index,index,number,1,9
+sections[2].subsections[2].components[1].components[1].title,title,string,Análise de sentimento,9
+sections[2].subsections[2].components[1].components[1].cardStyleVariant,cardStyleVariant,string,flex-column,9
+sections[2].subsections[2].components[1].components[1].cardContentVariant,cardContentVariant,string,with-charts,9
+sections[2].subsections[2].components[1].components[1].components,components,array,,9
+sections[2].subsections[2].components[1].components[1].components[0],components[0],object,,10
+sections[2].subsections[2].components[1].components[1].components[0].type,type,string,sentimentStackedChart,11
+sections[2].subsections[2].components[1].components[1].components[0].index,index,number,0,11
+sections[2].subsections[2].components[1].components[1].components[0].dataPath,dataPath,string,sectionData.role.sentimentChart,11
+sections[2].subsections[2].components[1].components[1].components[0].config,config,object,,11
+sections[2].subsections[2].components[1].components[1].components[0].config.yAxisDataKey,yAxisDataKey,string,segment,12
+sections[2].subsections[2].components[1].components[1].components[1],components[1],object,,10
+sections[2].subsections[2].components[1].components[1].components[1].type,type,string,sentimentTable,11
+sections[2].subsections[2].components[1].components[1].components[1].index,index,number,1,11
+sections[2].subsections[2].components[1].components[1].components[1].dataPath,dataPath,string,sectionData.role.sentimentTable,11
+sections[2].subsections[2].data,data,object,,5
+sections[2].subsections[2].data.distributionChart,distributionChart,array,,6
+sections[2].subsections[2].data.distributionChart[0],distributionChart[0],object,,7
+sections[2].subsections[2].data.distributionChart[0].segment,segment,string,Estagiário/Júnior,8
+sections[2].subsections[2].data.distributionChart[0].count,count,number,255,8
+sections[2].subsections[2].data.distributionChart[0].percentage,percentage,number,30,8
+sections[2].subsections[2].data.distributionChart[1],distributionChart[1],object,,7
+sections[2].subsections[2].data.distributionChart[1].segment,segment,string,Pleno,8
+sections[2].subsections[2].data.distributionChart[1].count,count,number,340,8
+sections[2].subsections[2].data.distributionChart[1].percentage,percentage,number,40,8
+sections[2].subsections[2].data.distributionChart[2],distributionChart[2],object,,7
+sections[2].subsections[2].data.distributionChart[2].segment,segment,string,Sênior,8
+sections[2].subsections[2].data.distributionChart[2].count,count,number,170,8
+sections[2].subsections[2].data.distributionChart[2].percentage,percentage,number,20,8
+sections[2].subsections[2].data.distributionChart[3],distributionChart[3],object,,7
+sections[2].subsections[2].data.distributionChart[3].segment,segment,string,Liderança,8
+sections[2].subsections[2].data.distributionChart[3].count,count,number,85,8
+sections[2].subsections[2].data.distributionChart[3].percentage,percentage,number,10,8
+sections[2].subsections[2].data.distributionTable,distributionTable,array,,6
+sections[2].subsections[2].data.distributionTable[0],distributionTable[0],object,,7
+sections[2].subsections[2].data.distributionTable[0].segment,segment,string,Estagiário/Júnior,8
+sections[2].subsections[2].data.distributionTable[0].count,count,number,255,8
+sections[2].subsections[2].data.distributionTable[0].percentage,percentage,number,30,8
+sections[2].subsections[2].data.distributionTable[1],distributionTable[1],object,,7
+sections[2].subsections[2].data.distributionTable[1].segment,segment,string,Pleno,8
+sections[2].subsections[2].data.distributionTable[1].count,count,number,340,8
+sections[2].subsections[2].data.distributionTable[1].percentage,percentage,number,40,8
+sections[2].subsections[2].data.distributionTable[2],distributionTable[2],object,,7
+sections[2].subsections[2].data.distributionTable[2].segment,segment,string,Sênior,8
+sections[2].subsections[2].data.distributionTable[2].count,count,number,170,8
+sections[2].subsections[2].data.distributionTable[2].percentage,percentage,number,20,8
+sections[2].subsections[2].data.distributionTable[3],distributionTable[3],object,,7
+sections[2].subsections[2].data.distributionTable[3].segment,segment,string,Liderança,8
+sections[2].subsections[2].data.distributionTable[3].count,count,number,85,8
+sections[2].subsections[2].data.distributionTable[3].percentage,percentage,number,10,8
+sections[2].subsections[2].data.sentimentChart,sentimentChart,array,,6
+sections[2].subsections[2].data.sentimentChart[0],sentimentChart[0],object,,7
+sections[2].subsections[2].data.sentimentChart[0].segment,segment,string,Liderança,8
+sections[2].subsections[2].data.sentimentChart[0].positive,positive,number,82,8
+sections[2].subsections[2].data.sentimentChart[0].neutral,neutral,number,12,8
+sections[2].subsections[2].data.sentimentChart[0].negative,negative,number,6,8
+sections[2].subsections[2].data.sentimentChart[1],sentimentChart[1],object,,7
+sections[2].subsections[2].data.sentimentChart[1].segment,segment,string,Sênior,8
+sections[2].subsections[2].data.sentimentChart[1].positive,positive,number,75.5,8
+sections[2].subsections[2].data.sentimentChart[1].neutral,neutral,number,18.5,8
+sections[2].subsections[2].data.sentimentChart[1].negative,negative,number,6,8
+sections[2].subsections[2].data.sentimentChart[2],sentimentChart[2],object,,7
+sections[2].subsections[2].data.sentimentChart[2].segment,segment,string,Pleno,8
+sections[2].subsections[2].data.sentimentChart[2].positive,positive,number,68,8
+sections[2].subsections[2].data.sentimentChart[2].neutral,neutral,number,22,8
+sections[2].subsections[2].data.sentimentChart[2].negative,negative,number,10,8
+sections[2].subsections[2].data.sentimentChart[3],sentimentChart[3],object,,7
+sections[2].subsections[2].data.sentimentChart[3].segment,segment,string,Estagiário/Júnior,8
+sections[2].subsections[2].data.sentimentChart[3].positive,positive,number,58.5,8
+sections[2].subsections[2].data.sentimentChart[3].neutral,neutral,number,28.5,8
+sections[2].subsections[2].data.sentimentChart[3].negative,negative,number,13,8
+sections[2].subsections[2].data.sentimentTable,sentimentTable,array,,6
+sections[2].subsections[2].data.sentimentTable[0],sentimentTable[0],object,,7
+sections[2].subsections[2].data.sentimentTable[0].segment,segment,string,Liderança,8
+sections[2].subsections[2].data.sentimentTable[0].positive,positive,number,82,8
+sections[2].subsections[2].data.sentimentTable[0].neutral,neutral,number,12,8
+sections[2].subsections[2].data.sentimentTable[0].negative,negative,number,6,8
+sections[2].subsections[2].data.sentimentTable[1],sentimentTable[1],object,,7
+sections[2].subsections[2].data.sentimentTable[1].segment,segment,string,Sênior,8
+sections[2].subsections[2].data.sentimentTable[1].positive,positive,number,75.5,8
+sections[2].subsections[2].data.sentimentTable[1].neutral,neutral,number,18.5,8
+sections[2].subsections[2].data.sentimentTable[1].negative,negative,number,6,8
+sections[2].subsections[2].data.sentimentTable[2],sentimentTable[2],object,,7
+sections[2].subsections[2].data.sentimentTable[2].segment,segment,string,Pleno,8
+sections[2].subsections[2].data.sentimentTable[2].positive,positive,number,68,8
+sections[2].subsections[2].data.sentimentTable[2].neutral,neutral,number,22,8
+sections[2].subsections[2].data.sentimentTable[2].negative,negative,number,10,8
+sections[2].subsections[2].data.sentimentTable[3],sentimentTable[3],object,,7
+sections[2].subsections[2].data.sentimentTable[3].segment,segment,string,Estagiário/Júnior,8
+sections[2].subsections[2].data.sentimentTable[3].positive,positive,number,58.5,8
+sections[2].subsections[2].data.sentimentTable[3].neutral,neutral,number,28.5,8
+sections[2].subsections[2].data.sentimentTable[3].negative,negative,number,13,8
+sections[3],sections[3],object,,2
+sections[3].id,id,string,culture,3
+sections[3].index,index,number,3,3
+sections[3].name,name,string,Análise de Cultura Organizacional,3
+sections[3].icon,icon,string,Users,3
+sections[3].subsections,subsections,array,,3
+sections[3].subsections[0],subsections[0],object,,4
+sections[3].subsections[0].id,id,string,culture-values,5
+sections[3].subsections[0].index,index,number,0,5
+sections[3].subsections[0].name,name,string,Valores Organizacionais,5
+sections[3].subsections[0].icon,icon,string,Star,5
+sections[3].subsections[0].components,components,array,,5
+sections[3].subsections[0].components[0],components[0],object,,6
+sections[3].subsections[0].components[0].type,type,string,grid-container,7
+sections[3].subsections[0].components[0].index,index,number,0,7
+sections[3].subsections[0].components[0].components,components,array,,7
+sections[3].subsections[0].components[0].components[0],components[0],object,,8
+sections[3].subsections[0].components[0].components[0].type,type,string,card,9
+sections[3].subsections[0].components[0].components[0].index,index,number,0,9
+sections[3].subsections[0].components[0].components[0].title,title,string,Valores Organizacionais,9
+sections[3].subsections[0].components[0].components[0].text,text,string,"Os valores organizacionais mais reconhecidos pelos funcionários são colaboração, inovação e integridade.
+A maioria dos funcionários (78%) identifica colaboração como um valor forte da empresa.",9
+sections[3].subsections[0].components[0].components[0].cardStyleVariant,cardStyleVariant,string,default,9
+sections[3].subsections[0].components[0].components[1],components[1],object,,8
+sections[3].subsections[0].components[0].components[1].type,type,string,card,9
+sections[3].subsections[0].components[0].components[1].index,index,number,1,9
+sections[3].subsections[0].components[0].components[1].title,title,string,Distribuição por Valor,9
+sections[3].subsections[0].components[0].components[1].cardStyleVariant,cardStyleVariant,string,flex-column,9
+sections[3].subsections[0].components[0].components[1].cardContentVariant,cardContentVariant,string,with-charts,9
+sections[3].subsections[0].components[0].components[1].components,components,array,,9
+sections[3].subsections[0].components[0].components[1].components[0],components[0],object,,10
+sections[3].subsections[0].components[0].components[1].components[0].type,type,string,sentimentStackedChart,11
+sections[3].subsections[0].components[0].components[1].components[0].index,index,number,0,11
+sections[3].subsections[0].components[0].components[1].components[0].dataPath,dataPath,string,sectionData.sentimentStackedChart,11
+sections[3].subsections[0].components[0].components[1].components[0].config,config,object,,11
+sections[3].subsections[0].components[0].components[1].components[0].config.yAxisDataKey,yAxisDataKey,string,value,12
+sections[3].subsections[1],subsections[1],object,,4
+sections[3].subsections[1].id,id,string,culture-communication,5
+sections[3].subsections[1].index,index,number,1,5
+sections[3].subsections[1].name,name,string,Comunicação Interna,5
+sections[3].subsections[1].icon,icon,string,MessageSquare,5
+sections[3].subsections[1].components,components,array,,5
+sections[3].subsections[1].components[0],components[0],object,,6
+sections[3].subsections[1].components[0].type,type,string,card,7
+sections[3].subsections[1].components[0].index,index,number,0,7
+sections[3].subsections[1].components[0].useDescription,useDescription,boolean,true,7
+sections[3].subsections[1].components[0].text,text,string,"A comunicação interna é uma área que necessita melhorias significativas.
+45% dos funcionários expressam sentimentos negativos sobre a comunicação, enquanto apenas 32.5% são positivos.",7
+sections[3].subsections[1].components[0].cardStyleVariant,cardStyleVariant,string,default,7
+sections[3].subsections[1].components[0].cardContentVariant,cardContentVariant,string,with-description,7
+sections[3].subsections[1].components[0].components,components,array,,7
+sections[3].subsections[1].components[0].components[0],components[0],object,,8
+sections[3].subsections[1].components[0].components[0].type,type,string,sentimentDivergentChart,9
+sections[3].subsections[1].components[0].components[0].index,index,number,0,9
+sections[3].subsections[1].components[0].components[0].dataPath,dataPath,string,sectionData.sentimentDivergentChartCommunication,9
+sections[3].subsections[1].components[0].components[0].config,config,object,,9
+sections[3].subsections[1].components[0].components[0].config.yAxisDataKey,yAxisDataKey,string,aspect,10
+sections[3].subsections[2],subsections[2],object,,4
+sections[3].subsections[2].id,id,string,culture-development,5
+sections[3].subsections[2].index,index,number,2,5
+sections[3].subsections[2].name,name,string,Desenvolvimento Profissional,5
+sections[3].subsections[2].icon,icon,string,TrendingUp,5
+sections[3].subsections[2].components,components,array,,5
+sections[3].subsections[2].components[0],components[0],object,,6
+sections[3].subsections[2].components[0].type,type,string,grid-container,7
+sections[3].subsections[2].components[0].index,index,number,0,7
+sections[3].subsections[2].components[0].components,components,array,,7
+sections[3].subsections[2].components[0].components[0],components[0],object,,8
+sections[3].subsections[2].components[0].components[0].type,type,string,card,9
+sections[3].subsections[2].components[0].components[0].index,index,number,0,9
+sections[3].subsections[2].components[0].components[0].title,title,string,Desenvolvimento Profissional,9
+sections[3].subsections[2].components[0].components[0].text,text,string,"Os programas de desenvolvimento profissional são bem avaliados, com 68% de satisfação positiva.
+Funcionários valorizam especialmente treinamentos técnicos, mentoria e oportunidades de crescimento.",9
+sections[3].subsections[2].components[0].components[0].cardStyleVariant,cardStyleVariant,string,border-left,9
+sections[3].subsections[2].components[0].components[1],components[1],object,,8
+sections[3].subsections[2].components[0].components[1].type,type,string,card,9
+sections[3].subsections[2].components[0].components[1].index,index,number,1,9
+sections[3].subsections[2].components[0].components[1].title,title,string,Satisfação com Programas,9
+sections[3].subsections[2].components[0].components[1].cardStyleVariant,cardStyleVariant,string,flex-column,9
+sections[3].subsections[2].components[0].components[1].cardContentVariant,cardContentVariant,string,with-charts,9
+sections[3].subsections[2].components[0].components[1].components,components,array,,9
+sections[3].subsections[2].components[0].components[1].components[0],components[0],object,,10
+sections[3].subsections[2].components[0].components[1].components[0].type,type,string,barChart,11
+sections[3].subsections[2].components[0].components[1].components[0].index,index,number,0,11
+sections[3].subsections[2].components[0].components[1].components[0].dataPath,dataPath,string,sectionData.programsBarChart,11
+sections[3].subsections[2].components[0].components[1].components[0].config,config,object,,11
+sections[3].subsections[2].components[0].components[1].components[0].config.dataKey,dataKey,string,satisfaction,12
+sections[3].subsections[2].components[0].components[1].components[0].config.yAxisDataKey,yAxisDataKey,string,program,12
+sections[3].data,data,object,,3
+sections[3].data.sentimentStackedChart,sentimentStackedChart,array,,4
+sections[3].data.sentimentStackedChart[0],sentimentStackedChart[0],object,,5
+sections[3].data.sentimentStackedChart[0].value,value,string,Colaboração,6
+sections[3].data.sentimentStackedChart[0].positive,positive,number,78.5,6
+sections[3].data.sentimentStackedChart[0].neutral,neutral,number,15.2,6
+sections[3].data.sentimentStackedChart[0].negative,negative,number,6.3,6
+sections[3].data.sentimentStackedChart[1],sentimentStackedChart[1],object,,5
+sections[3].data.sentimentStackedChart[1].value,value,string,Inovação,6
+sections[3].data.sentimentStackedChart[1].positive,positive,number,72.3,6
+sections[3].data.sentimentStackedChart[1].neutral,neutral,number,20.5,6
+sections[3].data.sentimentStackedChart[1].negative,negative,number,7.2,6
+sections[3].data.sentimentStackedChart[2],sentimentStackedChart[2],object,,5
+sections[3].data.sentimentStackedChart[2].value,value,string,Integridade,6
+sections[3].data.sentimentStackedChart[2].positive,positive,number,68.5,6
+sections[3].data.sentimentStackedChart[2].neutral,neutral,number,25,6
+sections[3].data.sentimentStackedChart[2].negative,negative,number,6.5,6
+sections[3].data.sentimentStackedChart[3],sentimentStackedChart[3],object,,5
+sections[3].data.sentimentStackedChart[3].value,value,string,Transparência,6
+sections[3].data.sentimentStackedChart[3].positive,positive,number,45.2,6
+sections[3].data.sentimentStackedChart[3].neutral,neutral,number,32.8,6
+sections[3].data.sentimentStackedChart[3].negative,negative,number,22,6
+sections[3].data.sentimentDivergentChartCommunication,sentimentDivergentChartCommunication,array,,4
+sections[3].data.sentimentDivergentChartCommunication[0],sentimentDivergentChartCommunication[0],object,,5
+sections[3].data.sentimentDivergentChartCommunication[0].aspect,aspect,string,Clareza das Mensagens,6
+sections[3].data.sentimentDivergentChartCommunication[0].positive,positive,number,38.5,6
+sections[3].data.sentimentDivergentChartCommunication[0].neutral,neutral,number,25,6
+sections[3].data.sentimentDivergentChartCommunication[0].negative,negative,number,36.5,6
+sections[3].data.sentimentDivergentChartCommunication[1],sentimentDivergentChartCommunication[1],object,,5
+sections[3].data.sentimentDivergentChartCommunication[1].aspect,aspect,string,Frequência de Comunicação,6
+sections[3].data.sentimentDivergentChartCommunication[1].positive,positive,number,28.2,6
+sections[3].data.sentimentDivergentChartCommunication[1].neutral,neutral,number,22.8,6
+sections[3].data.sentimentDivergentChartCommunication[1].negative,negative,number,49,6
+sections[3].data.sentimentDivergentChartCommunication[2],sentimentDivergentChartCommunication[2],object,,5
+sections[3].data.sentimentDivergentChartCommunication[2].aspect,aspect,string,Canais de Comunicação,6
+sections[3].data.sentimentDivergentChartCommunication[2].positive,positive,number,42.5,6
+sections[3].data.sentimentDivergentChartCommunication[2].neutral,neutral,number,28.5,6
+sections[3].data.sentimentDivergentChartCommunication[2].negative,negative,number,29,6
+sections[3].data.sentimentDivergentChartCommunication[3],sentimentDivergentChartCommunication[3],object,,5
+sections[3].data.sentimentDivergentChartCommunication[3].aspect,aspect,string,Transparência,6
+sections[3].data.sentimentDivergentChartCommunication[3].positive,positive,number,32.5,6
+sections[3].data.sentimentDivergentChartCommunication[3].neutral,neutral,number,22.5,6
+sections[3].data.sentimentDivergentChartCommunication[3].negative,negative,number,45,6
+sections[3].data.programsBarChart,programsBarChart,array,,4
+sections[3].data.programsBarChart[0],programsBarChart[0],object,,5
+sections[3].data.programsBarChart[0].program,program,string,Treinamentos Técnicos,6
+sections[3].data.programsBarChart[0].satisfaction,satisfaction,number,82.5,6
+sections[3].data.programsBarChart[0].count,count,number,701,6
+sections[3].data.programsBarChart[1],programsBarChart[1],object,,5
+sections[3].data.programsBarChart[1].program,program,string,Programa de Mentoria,6
+sections[3].data.programsBarChart[1].satisfaction,satisfaction,number,75,6
+sections[3].data.programsBarChart[1].count,count,number,638,6
+sections[3].data.programsBarChart[2],programsBarChart[2],object,,5
+sections[3].data.programsBarChart[2].program,program,string,Oportunidades de Crescimento,6
+sections[3].data.programsBarChart[2].satisfaction,satisfaction,number,68.5,6
+sections[3].data.programsBarChart[2].count,count,number,582,6
+sections[3].data.programsBarChart[3],programsBarChart[3],object,,5
+sections[3].data.programsBarChart[3].program,program,string,Desenvolvimento de Liderança,6
+sections[3].data.programsBarChart[3].satisfaction,satisfaction,number,62,6
+sections[3].data.programsBarChart[3].count,count,number,527,6
+sections[3].data.programsBarChart[4],programsBarChart[4],object,,5
+sections[3].data.programsBarChart[4].program,program,string,Certificações,6
+sections[3].data.programsBarChart[4].satisfaction,satisfaction,number,58.5,6
+sections[3].data.programsBarChart[4].count,count,number,497,6
+sections[4],sections[4],object,,2
+sections[4].id,id,string,responses,3
+sections[4].index,index,number,4,3
+sections[4].name,name,string,Análise por Questão,3
+sections[4].icon,icon,string,MessageSquare,3
+sections[4].questions,questions,array,,3
+sections[4].questions[0],questions[0],object,,4
+sections[4].questions[0].id,id,number,1,5
+sections[4].questions[0].index,index,number,1,5
+sections[4].questions[0].questionType,questionType,string,nps,5
+sections[4].questions[0].question,question,string,"Em uma escala de 0 a 10, qual a probabilidade de você recomendar nossa empresa como um ótimo lugar para trabalhar?",5
+sections[4].questions[0].summary,summary,string,"O NPS organizacional é de 35 pontos, indicando uma base sólida de promotores.
+58% dos funcionários são promotores, 20% são neutros e 22% são detratores.
+Este resultado positivo indica que a maioria dos funcionários está satisfeita e recomendaria a empresa.",5
+sections[4].questions[0].data,data,object,,5
+sections[4].questions[0].data.npsScore,npsScore,number,35,6
+sections[4].questions[0].data.npsCategory,npsCategory,string,Bom,6
+sections[4].questions[0].data.npsStackedChart,npsStackedChart,array,,6
+sections[4].questions[0].data.npsStackedChart[0],npsStackedChart[0],object,,7
+sections[4].questions[0].data.npsStackedChart[0].option,option,string,Promotor,8
+sections[4].questions[0].data.npsStackedChart[0].value,value,number,493,8
+sections[4].questions[0].data.npsStackedChart[0].percentage,percentage,number,58,8
+sections[4].questions[0].data.npsStackedChart[1],npsStackedChart[1],object,,7
+sections[4].questions[0].data.npsStackedChart[1].option,option,string,Neutro,8
+sections[4].questions[0].data.npsStackedChart[1].value,value,number,170,8
+sections[4].questions[0].data.npsStackedChart[1].percentage,percentage,number,20,8
+sections[4].questions[0].data.npsStackedChart[2],npsStackedChart[2],object,,7
+sections[4].questions[0].data.npsStackedChart[2].option,option,string,Detrator,8
+sections[4].questions[0].data.npsStackedChart[2].value,value,number,187,8
+sections[4].questions[0].data.npsStackedChart[2].percentage,percentage,number,22,8
+sections[4].questions[1],questions[1],object,,4
+sections[4].questions[1].id,id,number,2,5
+sections[4].questions[1].index,index,number,2,5
+sections[4].questions[1].questionType,questionType,string,multiple-choice,5
+sections[4].questions[1].question,question,string,Como você avalia o equilíbrio entre vida pessoal e profissional?,5
+sections[4].questions[1].summary,summary,string,"A maioria dos funcionários (52%) avalia o equilíbrio como bom ou muito bom.
+28% consideram regular, enquanto 20% avaliam como ruim ou muito ruim.
+Este resultado indica que há espaço para melhorias, especialmente em flexibilidade e gestão de carga de trabalho.",5
+sections[4].questions[1].data,data,object,,5
+sections[4].questions[1].data.barChart,barChart,array,,6
+sections[4].questions[1].data.barChart[0],barChart[0],object,,7
+sections[4].questions[1].data.barChart[0].option,option,string,Muito bom,8
+sections[4].questions[1].data.barChart[0].value,value,number,221,8
+sections[4].questions[1].data.barChart[0].percentage,percentage,number,26,8
+sections[4].questions[1].data.barChart[1],barChart[1],object,,7
+sections[4].questions[1].data.barChart[1].option,option,string,Bom,8
+sections[4].questions[1].data.barChart[1].value,value,number,221,8
+sections[4].questions[1].data.barChart[1].percentage,percentage,number,26,8
+sections[4].questions[1].data.barChart[2],barChart[2],object,,7
+sections[4].questions[1].data.barChart[2].option,option,string,Regular,8
+sections[4].questions[1].data.barChart[2].value,value,number,238,8
+sections[4].questions[1].data.barChart[2].percentage,percentage,number,28,8
+sections[4].questions[1].data.barChart[3],barChart[3],object,,7
+sections[4].questions[1].data.barChart[3].option,option,string,Ruim,8
+sections[4].questions[1].data.barChart[3].value,value,number,136,8
+sections[4].questions[1].data.barChart[3].percentage,percentage,number,16,8
+sections[4].questions[1].data.barChart[4],barChart[4],object,,7
+sections[4].questions[1].data.barChart[4].option,option,string,Muito ruim,8
+sections[4].questions[1].data.barChart[4].value,value,number,34,8
+sections[4].questions[1].data.barChart[4].percentage,percentage,number,4,8
+sections[4].questions[2],questions[2],object,,4
+sections[4].questions[2].id,id,number,3,5
+sections[4].questions[2].index,index,number,3,5
+sections[4].questions[2].questionType,questionType,string,multiple-choice,5
+sections[4].questions[2].question,question,string,Com que frequência você recebe feedback sobre seu desempenho?,5
+sections[4].questions[2].summary,summary,string,"42% dos funcionários recebem feedback mensalmente, enquanto 28% recebem trimestralmente.
+18% recebem feedback esporadicamente e 12% raramente ou nunca.
+Há oportunidade de melhorar a frequência e qualidade do feedback, especialmente feedback contínuo.",5
+sections[4].questions[2].data,data,object,,5
+sections[4].questions[2].data.barChart,barChart,array,,6
+sections[4].questions[2].data.barChart[0],barChart[0],object,,7
+sections[4].questions[2].data.barChart[0].option,option,string,Mensalmente,8
+sections[4].questions[2].data.barChart[0].value,value,number,357,8
+sections[4].questions[2].data.barChart[0].percentage,percentage,number,42,8
+sections[4].questions[2].data.barChart[1],barChart[1],object,,7
+sections[4].questions[2].data.barChart[1].option,option,string,Trimestralmente,8
+sections[4].questions[2].data.barChart[1].value,value,number,238,8
+sections[4].questions[2].data.barChart[1].percentage,percentage,number,28,8
+sections[4].questions[2].data.barChart[2],barChart[2],object,,7
+sections[4].questions[2].data.barChart[2].option,option,string,Esporadicamente,8
+sections[4].questions[2].data.barChart[2].value,value,number,153,8
+sections[4].questions[2].data.barChart[2].percentage,percentage,number,18,8
+sections[4].questions[2].data.barChart[3],barChart[3],object,,7
+sections[4].questions[2].data.barChart[3].option,option,string,Raramente,8
+sections[4].questions[2].data.barChart[3].value,value,number,85,8
+sections[4].questions[2].data.barChart[3].percentage,percentage,number,10,8
+sections[4].questions[2].data.barChart[4],barChart[4],object,,7
+sections[4].questions[2].data.barChart[4].option,option,string,Nunca,8
+sections[4].questions[2].data.barChart[4].value,value,number,17,8
+sections[4].questions[2].data.barChart[4].percentage,percentage,number,2,8
+sections[4].questions[3],questions[3],object,,4
+sections[4].questions[3].id,id,number,4,5
+sections[4].questions[3].index,index,number,4,5
+sections[4].questions[3].questionType,questionType,string,open-ended,5
+sections[4].questions[3].question,question,string,O que você mais valoriza na empresa?,5
+sections[4].questions[3].summary,summary,string,"As respostas abertas destacam trabalho em equipe, oportunidades de desenvolvimento e flexibilidade como os principais valores.
+Comunicação interna e processos burocráticos são mencionados como áreas de melhoria.",5
+sections[4].questions[3].data,data,object,,5
+sections[4].questions[3].data.sentimentStackedChart,sentimentStackedChart,array,,6
+sections[4].questions[3].data.sentimentStackedChart[0],sentimentStackedChart[0],object,,7
+sections[4].questions[3].data.sentimentStackedChart[0].category,category,string,Trabalho em Equipe,8
+sections[4].questions[3].data.sentimentStackedChart[0].positive,positive,number,72.3,8
+sections[4].questions[3].data.sentimentStackedChart[0].neutral,neutral,number,18.5,8
+sections[4].questions[3].data.sentimentStackedChart[0].negative,negative,number,9.2,8
+sections[4].questions[3].data.sentimentStackedChart[1],sentimentStackedChart[1],object,,7
+sections[4].questions[3].data.sentimentStackedChart[1].category,category,string,Desenvolvimento Profissional,8
+sections[4].questions[3].data.sentimentStackedChart[1].positive,positive,number,68.1,8
+sections[4].questions[3].data.sentimentStackedChart[1].neutral,neutral,number,22.4,8
+sections[4].questions[3].data.sentimentStackedChart[1].negative,negative,number,9.5,8
+sections[4].questions[3].data.sentimentStackedChart[2],sentimentStackedChart[2],object,,7
+sections[4].questions[3].data.sentimentStackedChart[2].category,category,string,Flexibilidade,8
+sections[4].questions[3].data.sentimentStackedChart[2].positive,positive,number,65.2,8
+sections[4].questions[3].data.sentimentStackedChart[2].neutral,neutral,number,25.8,8
+sections[4].questions[3].data.sentimentStackedChart[2].negative,negative,number,9,8
+sections[4].questions[3].data.sentimentStackedChart[3],sentimentStackedChart[3],object,,7
+sections[4].questions[3].data.sentimentStackedChart[3].category,category,string,Liderança,8
+sections[4].questions[3].data.sentimentStackedChart[3].positive,positive,number,58.7,8
+sections[4].questions[3].data.sentimentStackedChart[3].neutral,neutral,number,28.3,8
+sections[4].questions[3].data.sentimentStackedChart[3].negative,negative,number,13,8
+sections[4].questions[3].data.topCategoriesCards,topCategoriesCards,array,,6
+sections[4].questions[3].data.topCategoriesCards[0],topCategoriesCards[0],object,,7
+sections[4].questions[3].data.topCategoriesCards[0].rank,rank,number,1,8
+sections[4].questions[3].data.topCategoriesCards[0].category,category,string,Trabalho em Equipe,8
+sections[4].questions[3].data.topCategoriesCards[0].mentions,mentions,number,425,8
+sections[4].questions[3].data.topCategoriesCards[0].percentage,percentage,number,100,8
+sections[4].questions[3].data.topCategoriesCards[0].topics,topics,array,,8
+sections[4].questions[3].data.topCategoriesCards[0].topics[0],topics[0],object,,9
+sections[4].questions[3].data.topCategoriesCards[0].topics[0].topic,topic,string,colaboração eficiente,10
+sections[4].questions[3].data.topCategoriesCards[0].topics[0].sentiment,sentiment,string,positive,10
+sections[4].questions[3].data.topCategoriesCards[0].topics[1],topics[1],object,,9
+sections[4].questions[3].data.topCategoriesCards[0].topics[1].topic,topic,string,ambiente colaborativo,10
+sections[4].questions[3].data.topCategoriesCards[0].topics[1].sentiment,sentiment,string,positive,10
+sections[4].questions[3].data.topCategoriesCards[0].topics[2],topics[2],object,,9
+sections[4].questions[3].data.topCategoriesCards[0].topics[2].topic,topic,string,suporte entre colegas,10
+sections[4].questions[3].data.topCategoriesCards[0].topics[2].sentiment,sentiment,string,positive,10
+sections[4].questions[3].data.topCategoriesCards[1],topCategoriesCards[1],object,,7
+sections[4].questions[3].data.topCategoriesCards[1].rank,rank,number,2,8
+sections[4].questions[3].data.topCategoriesCards[1].category,category,string,Desenvolvimento Profissional,8
+sections[4].questions[3].data.topCategoriesCards[1].mentions,mentions,number,312,8
+sections[4].questions[3].data.topCategoriesCards[1].percentage,percentage,number,73,8
+sections[4].questions[3].data.topCategoriesCards[1].topics,topics,array,,8
+sections[4].questions[3].data.topCategoriesCards[1].topics[0],topics[0],object,,9
+sections[4].questions[3].data.topCategoriesCards[1].topics[0].topic,topic,string,oportunidades de crescimento,10
+sections[4].questions[3].data.topCategoriesCards[1].topics[0].sentiment,sentiment,string,positive,10
+sections[4].questions[3].data.topCategoriesCards[1].topics[1],topics[1],object,,9
+sections[4].questions[3].data.topCategoriesCards[1].topics[1].topic,topic,string,treinamentos relevantes,10
+sections[4].questions[3].data.topCategoriesCards[1].topics[1].sentiment,sentiment,string,positive,10
+sections[4].questions[3].data.topCategoriesCards[1].topics[2],topics[2],object,,9
+sections[4].questions[3].data.topCategoriesCards[1].topics[2].topic,topic,string,mentoria,10
+sections[4].questions[3].data.topCategoriesCards[1].topics[2].sentiment,sentiment,string,positive,10
+sections[4].questions[3].data.topCategoriesCards[2],topCategoriesCards[2],object,,7
+sections[4].questions[3].data.topCategoriesCards[2].rank,rank,number,3,8
+sections[4].questions[3].data.topCategoriesCards[2].category,category,string,Flexibilidade,8
+sections[4].questions[3].data.topCategoriesCards[2].mentions,mentions,number,285,8
+sections[4].questions[3].data.topCategoriesCards[2].percentage,percentage,number,67,8
+sections[4].questions[3].data.topCategoriesCards[2].topics,topics,array,,8
+sections[4].questions[3].data.topCategoriesCards[2].topics[0],topics[0],object,,9
+sections[4].questions[3].data.topCategoriesCards[2].topics[0].topic,topic,string,horário flexível,10
+sections[4].questions[3].data.topCategoriesCards[2].topics[0].sentiment,sentiment,string,positive,10
+sections[4].questions[3].data.topCategoriesCards[2].topics[1],topics[1],object,,9
+sections[4].questions[3].data.topCategoriesCards[2].topics[1].topic,topic,string,trabalho remoto,10
+sections[4].questions[3].data.topCategoriesCards[2].topics[1].sentiment,sentiment,string,positive,10
+sections[4].questions[3].data.topCategoriesCards[2].topics[2],topics[2],object,,9
+sections[4].questions[3].data.topCategoriesCards[2].topics[2].topic,topic,string,autonomia,10
+sections[4].questions[3].data.topCategoriesCards[2].topics[2].sentiment,sentiment,string,positive,10
+sections[4].questions[3].data.wordCloud,wordCloud,array,,6
+sections[4].questions[3].data.wordCloud[0],wordCloud[0],object,,7
+sections[4].questions[3].data.wordCloud[0].text,text,string,equipe,8
+sections[4].questions[3].data.wordCloud[0].value,value,number,425,8
+sections[4].questions[3].data.wordCloud[1],wordCloud[1],object,,7
+sections[4].questions[3].data.wordCloud[1].text,text,string,desenvolvimento,8
+sections[4].questions[3].data.wordCloud[1].value,value,number,312,8
+sections[4].questions[3].data.wordCloud[2],wordCloud[2],object,,7
+sections[4].questions[3].data.wordCloud[2].text,text,string,flexibilidade,8
+sections[4].questions[3].data.wordCloud[2].value,value,number,285,8
+sections[4].questions[3].data.wordCloud[3],wordCloud[3],object,,7
+sections[4].questions[3].data.wordCloud[3].text,text,string,colaboração,8
+sections[4].questions[3].data.wordCloud[3].value,value,number,198,8
+sections[4].questions[3].data.wordCloud[4],wordCloud[4],object,,7
+sections[4].questions[3].data.wordCloud[4].text,text,string,crescimento,8
+sections[4].questions[3].data.wordCloud[4].value,value,number,156,8
+sections[4].questions[3].data.wordCloud[5],wordCloud[5],object,,7
+sections[4].questions[3].data.wordCloud[5].text,text,string,oportunidades,8
+sections[4].questions[3].data.wordCloud[5].value,value,number,134,8
+sections[4].questions[3].data.wordCloud[6],wordCloud[6],object,,7
+sections[4].questions[3].data.wordCloud[6].text,text,string,liderança,8
+sections[4].questions[3].data.wordCloud[6].value,value,number,112,8
+sections[4].questions[3].data.wordCloud[7],wordCloud[7],object,,7
+sections[4].questions[3].data.wordCloud[7].text,text,string,autonomia,8
+sections[4].questions[3].data.wordCloud[7].value,value,number,98,8
+sections[4].questions[3].data.wordCloud[8],wordCloud[8],object,,7
+sections[4].questions[3].data.wordCloud[8].text,text,string,reconhecimento,8
+sections[4].questions[3].data.wordCloud[8].value,value,number,87,8
+sections[4].questions[3].data.wordCloud[9],wordCloud[9],object,,7
+sections[4].questions[3].data.wordCloud[9].text,text,string,cultura,8
+sections[4].questions[3].data.wordCloud[9].value,value,number,76,8
+sections[4].questions[4],questions[4],object,,4
+sections[4].questions[4].id,id,number,5,5
+sections[4].questions[4].index,index,number,5,5
+sections[4].questions[4].questionType,questionType,string,open-ended,5
+sections[4].questions[4].question,question,string,O que poderia ser melhorado na empresa?,5
+sections[4].questions[4].summary,summary,string,"As principais áreas de melhoria mencionadas são comunicação interna, processos burocráticos e gestão de carga de trabalho.
+Funcionários também mencionam necessidade de mais reconhecimento e melhorias em ferramentas e tecnologia.",5
+sections[4].questions[4].data,data,object,,5
+sections[4].questions[4].data.sentimentStackedChart,sentimentStackedChart,array,,6
+sections[4].questions[4].data.sentimentStackedChart[0],sentimentStackedChart[0],object,,7
+sections[4].questions[4].data.sentimentStackedChart[0].category,category,string,Comunicação Interna,8
+sections[4].questions[4].data.sentimentStackedChart[0].positive,positive,number,32.5,8
+sections[4].questions[4].data.sentimentStackedChart[0].neutral,neutral,number,22.5,8
+sections[4].questions[4].data.sentimentStackedChart[0].negative,negative,number,45,8
+sections[4].questions[4].data.sentimentStackedChart[1],sentimentStackedChart[1],object,,7
+sections[4].questions[4].data.sentimentStackedChart[1].category,category,string,Carga de Trabalho,8
+sections[4].questions[4].data.sentimentStackedChart[1].positive,positive,number,18.2,8
+sections[4].questions[4].data.sentimentStackedChart[1].neutral,neutral,number,29.8,8
+sections[4].questions[4].data.sentimentStackedChart[1].negative,negative,number,52,8
+sections[4].questions[4].data.sentimentStackedChart[2],sentimentStackedChart[2],object,,7
+sections[4].questions[4].data.sentimentStackedChart[2].category,category,string,Processos Burocráticos,8
+sections[4].questions[4].data.sentimentStackedChart[2].positive,positive,number,15.5,8
+sections[4].questions[4].data.sentimentStackedChart[2].neutral,neutral,number,36.5,8
+sections[4].questions[4].data.sentimentStackedChart[2].negative,negative,number,48,8
+sections[4].questions[4].data.topCategoriesCards,topCategoriesCards,array,,6
+sections[4].questions[4].data.topCategoriesCards[0],topCategoriesCards[0],object,,7
+sections[4].questions[4].data.topCategoriesCards[0].rank,rank,number,1,8
+sections[4].questions[4].data.topCategoriesCards[0].category,category,string,Comunicação Interna,8
+sections[4].questions[4].data.topCategoriesCards[0].mentions,mentions,number,387,8
+sections[4].questions[4].data.topCategoriesCards[0].percentage,percentage,number,100,8
+sections[4].questions[4].data.topCategoriesCards[0].topics,topics,array,,8
+sections[4].questions[4].data.topCategoriesCards[0].topics[0],topics[0],object,,9
+sections[4].questions[4].data.topCategoriesCards[0].topics[0].topic,topic,string,falta de transparência,10
+sections[4].questions[4].data.topCategoriesCards[0].topics[0].sentiment,sentiment,string,negative,10
+sections[4].questions[4].data.topCategoriesCards[0].topics[1],topics[1],object,,9
+sections[4].questions[4].data.topCategoriesCards[0].topics[1].topic,topic,string,comunicação fragmentada,10
+sections[4].questions[4].data.topCategoriesCards[0].topics[1].sentiment,sentiment,string,negative,10
+sections[4].questions[4].data.topCategoriesCards[0].topics[2],topics[2],object,,9
+sections[4].questions[4].data.topCategoriesCards[0].topics[2].topic,topic,string,necessidade de mais atualizações,10
+sections[4].questions[4].data.topCategoriesCards[0].topics[2].sentiment,sentiment,string,negative,10
+sections[4].questions[4].data.topCategoriesCards[1],topCategoriesCards[1],object,,7
+sections[4].questions[4].data.topCategoriesCards[1].rank,rank,number,2,8
+sections[4].questions[4].data.topCategoriesCards[1].category,category,string,Processos Burocráticos,8
+sections[4].questions[4].data.topCategoriesCards[1].mentions,mentions,number,298,8
+sections[4].questions[4].data.topCategoriesCards[1].percentage,percentage,number,77,8
+sections[4].questions[4].data.topCategoriesCards[1].topics,topics,array,,8
+sections[4].questions[4].data.topCategoriesCards[1].topics[0],topics[0],object,,9
+sections[4].questions[4].data.topCategoriesCards[1].topics[0].topic,topic,string,processos lentos,10
+sections[4].questions[4].data.topCategoriesCards[1].topics[0].sentiment,sentiment,string,negative,10
+sections[4].questions[4].data.topCategoriesCards[1].topics[1],topics[1],object,,9
+sections[4].questions[4].data.topCategoriesCards[1].topics[1].topic,topic,string,muitas aprovações,10
+sections[4].questions[4].data.topCategoriesCards[1].topics[1].sentiment,sentiment,string,negative,10
+sections[4].questions[4].data.topCategoriesCards[1].topics[2],topics[2],object,,9
+sections[4].questions[4].data.topCategoriesCards[1].topics[2].topic,topic,string,necessidade de simplificação,10
+sections[4].questions[4].data.topCategoriesCards[1].topics[2].sentiment,sentiment,string,negative,10
+sections[4].questions[4].data.topCategoriesCards[2],topCategoriesCards[2],object,,7
+sections[4].questions[4].data.topCategoriesCards[2].rank,rank,number,3,8
+sections[4].questions[4].data.topCategoriesCards[2].category,category,string,Carga de Trabalho,8
+sections[4].questions[4].data.topCategoriesCards[2].mentions,mentions,number,256,8
+sections[4].questions[4].data.topCategoriesCards[2].percentage,percentage,number,66,8
+sections[4].questions[4].data.topCategoriesCards[2].topics,topics,array,,8
+sections[4].questions[4].data.topCategoriesCards[2].topics[0],topics[0],object,,9
+sections[4].questions[4].data.topCategoriesCards[2].topics[0].topic,topic,string,sobrecarga,10
+sections[4].questions[4].data.topCategoriesCards[2].topics[0].sentiment,sentiment,string,negative,10
+sections[4].questions[4].data.topCategoriesCards[2].topics[1],topics[1],object,,9
+sections[4].questions[4].data.topCategoriesCards[2].topics[1].topic,topic,string,prazos apertados,10
+sections[4].questions[4].data.topCategoriesCards[2].topics[1].sentiment,sentiment,string,negative,10
+sections[4].questions[4].data.topCategoriesCards[2].topics[2],topics[2],object,,9
+sections[4].questions[4].data.topCategoriesCards[2].topics[2].topic,topic,string,necessidade de melhor distribuição,10
+sections[4].questions[4].data.topCategoriesCards[2].topics[2].sentiment,sentiment,string,negative,10
+sections[4].questions[4].data.wordCloud,wordCloud,array,,6
+sections[4].questions[4].data.wordCloud[0],wordCloud[0],object,,7
+sections[4].questions[4].data.wordCloud[0].text,text,string,comunicação,8
+sections[4].questions[4].data.wordCloud[0].value,value,number,387,8
+sections[4].questions[4].data.wordCloud[1],wordCloud[1],object,,7
+sections[4].questions[4].data.wordCloud[1].text,text,string,processos,8
+sections[4].questions[4].data.wordCloud[1].value,value,number,298,8
+sections[4].questions[4].data.wordCloud[2],wordCloud[2],object,,7
+sections[4].questions[4].data.wordCloud[2].text,text,string,carga,8
+sections[4].questions[4].data.wordCloud[2].value,value,number,256,8
+sections[4].questions[4].data.wordCloud[3],wordCloud[3],object,,7
+sections[4].questions[4].data.wordCloud[3].text,text,string,trabalho,8
+sections[4].questions[4].data.wordCloud[3].value,value,number,234,8
+sections[4].questions[4].data.wordCloud[4],wordCloud[4],object,,7
+sections[4].questions[4].data.wordCloud[4].text,text,string,burocráticos,8
+sections[4].questions[4].data.wordCloud[4].value,value,number,198,8
+sections[4].questions[4].data.wordCloud[5],wordCloud[5],object,,7
+sections[4].questions[4].data.wordCloud[5].text,text,string,melhorias,8
+sections[4].questions[4].data.wordCloud[5].value,value,number,176,8
+sections[4].questions[4].data.wordCloud[6],wordCloud[6],object,,7
+sections[4].questions[4].data.wordCloud[6].text,text,string,transparência,8
+sections[4].questions[4].data.wordCloud[6].value,value,number,154,8
+sections[4].questions[4].data.wordCloud[7],wordCloud[7],object,,7
+sections[4].questions[4].data.wordCloud[7].text,text,string,simplificação,8
+sections[4].questions[4].data.wordCloud[7].value,value,number,132,8
+sections[4].questions[4].data.wordCloud[8],wordCloud[8],object,,7
+sections[4].questions[4].data.wordCloud[8].text,text,string,reconhecimento,8
+sections[4].questions[4].data.wordCloud[8].value,value,number,118,8
+sections[4].questions[4].data.wordCloud[9],wordCloud[9],object,,7
+sections[4].questions[4].data.wordCloud[9].text,text,string,ferramentas,8
+sections[4].questions[4].data.wordCloud[9].value,value,number,98,8
+sections[4].questions[5],questions[5],object,,4
+sections[4].questions[5].id,id,number,6,5
+sections[4].questions[5].index,index,number,6,5
+sections[4].questions[5].questionType,questionType,string,open-ended,5
+sections[4].questions[5].question,question,string,Como você descreveria a cultura organizacional?,5
+sections[4].questions[5].summary,summary,string,"A maioria dos funcionários descreve a cultura como colaborativa e inovadora.
+Alguns mencionam necessidade de mais transparência e agilidade.
+A cultura é vista como um ponto forte, mas há oportunidades de melhoria em comunicação e processos.",5
+sections[4].questions[5].data,data,object,,5
+sections[4].questions[5].data.sentimentStackedChart,sentimentStackedChart,array,,6
+sections[4].questions[5].data.sentimentStackedChart[0],sentimentStackedChart[0],object,,7
+sections[4].questions[5].data.sentimentStackedChart[0].category,category,string,Colaboração,8
+sections[4].questions[5].data.sentimentStackedChart[0].positive,positive,number,78.5,8
+sections[4].questions[5].data.sentimentStackedChart[0].neutral,neutral,number,15.2,8
+sections[4].questions[5].data.sentimentStackedChart[0].negative,negative,number,6.3,8
+sections[4].questions[5].data.sentimentStackedChart[1],sentimentStackedChart[1],object,,7
+sections[4].questions[5].data.sentimentStackedChart[1].category,category,string,Inovação,8
+sections[4].questions[5].data.sentimentStackedChart[1].positive,positive,number,72.3,8
+sections[4].questions[5].data.sentimentStackedChart[1].neutral,neutral,number,20.5,8
+sections[4].questions[5].data.sentimentStackedChart[1].negative,negative,number,7.2,8
+sections[4].questions[5].data.sentimentStackedChart[2],sentimentStackedChart[2],object,,7
+sections[4].questions[5].data.sentimentStackedChart[2].category,category,string,Transparência,8
+sections[4].questions[5].data.sentimentStackedChart[2].positive,positive,number,45.2,8
+sections[4].questions[5].data.sentimentStackedChart[2].neutral,neutral,number,32.8,8
+sections[4].questions[5].data.sentimentStackedChart[2].negative,negative,number,22,8
+sections[4].questions[5].data.topCategoriesCards,topCategoriesCards,array,,6
+sections[4].questions[5].data.topCategoriesCards[0],topCategoriesCards[0],object,,7
+sections[4].questions[5].data.topCategoriesCards[0].rank,rank,number,1,8
+sections[4].questions[5].data.topCategoriesCards[0].category,category,string,Colaborativa,8
+sections[4].questions[5].data.topCategoriesCards[0].mentions,mentions,number,412,8
+sections[4].questions[5].data.topCategoriesCards[0].percentage,percentage,number,100,8
+sections[4].questions[5].data.topCategoriesCards[0].topics,topics,array,,8
+sections[4].questions[5].data.topCategoriesCards[0].topics[0],topics[0],object,,9
+sections[4].questions[5].data.topCategoriesCards[0].topics[0].topic,topic,string,trabalho em equipe,10
+sections[4].questions[5].data.topCategoriesCards[0].topics[0].sentiment,sentiment,string,positive,10
+sections[4].questions[5].data.topCategoriesCards[0].topics[1],topics[1],object,,9
+sections[4].questions[5].data.topCategoriesCards[0].topics[1].topic,topic,string,apoio mútuo,10
+sections[4].questions[5].data.topCategoriesCards[0].topics[1].sentiment,sentiment,string,positive,10
+sections[4].questions[5].data.topCategoriesCards[0].topics[2],topics[2],object,,9
+sections[4].questions[5].data.topCategoriesCards[0].topics[2].topic,topic,string,ambiente acolhedor,10
+sections[4].questions[5].data.topCategoriesCards[0].topics[2].sentiment,sentiment,string,positive,10
+sections[4].questions[5].data.topCategoriesCards[1],topCategoriesCards[1],object,,7
+sections[4].questions[5].data.topCategoriesCards[1].rank,rank,number,2,8
+sections[4].questions[5].data.topCategoriesCards[1].category,category,string,Inovadora,8
+sections[4].questions[5].data.topCategoriesCards[1].mentions,mentions,number,298,8
+sections[4].questions[5].data.topCategoriesCards[1].percentage,percentage,number,72,8
+sections[4].questions[5].data.topCategoriesCards[1].topics,topics,array,,8
+sections[4].questions[5].data.topCategoriesCards[1].topics[0],topics[0],object,,9
+sections[4].questions[5].data.topCategoriesCards[1].topics[0].topic,topic,string,aberta a novas ideias,10
+sections[4].questions[5].data.topCategoriesCards[1].topics[0].sentiment,sentiment,string,positive,10
+sections[4].questions[5].data.topCategoriesCards[1].topics[1],topics[1],object,,9
+sections[4].questions[5].data.topCategoriesCards[1].topics[1].topic,topic,string,encoraja criatividade,10
+sections[4].questions[5].data.topCategoriesCards[1].topics[1].sentiment,sentiment,string,positive,10
+sections[4].questions[5].data.topCategoriesCards[1].topics[2],topics[2],object,,9
+sections[4].questions[5].data.topCategoriesCards[1].topics[2].topic,topic,string,tecnologia moderna,10
+sections[4].questions[5].data.topCategoriesCards[1].topics[2].sentiment,sentiment,string,positive,10
+sections[4].questions[5].data.topCategoriesCards[2],topCategoriesCards[2],object,,7
+sections[4].questions[5].data.topCategoriesCards[2].rank,rank,number,3,8
+sections[4].questions[5].data.topCategoriesCards[2].category,category,string,Transparência,8
+sections[4].questions[5].data.topCategoriesCards[2].mentions,mentions,number,234,8
+sections[4].questions[5].data.topCategoriesCards[2].percentage,percentage,number,57,8
+sections[4].questions[5].data.topCategoriesCards[2].topics,topics,array,,8
+sections[4].questions[5].data.topCategoriesCards[2].topics[0],topics[0],object,,9
+sections[4].questions[5].data.topCategoriesCards[2].topics[0].topic,topic,string,comunicação clara,10
+sections[4].questions[5].data.topCategoriesCards[2].topics[0].sentiment,sentiment,string,positive,10
+sections[4].questions[5].data.topCategoriesCards[2].topics[1],topics[1],object,,9
+sections[4].questions[5].data.topCategoriesCards[2].topics[1].topic,topic,string,falta de transparência em decisões,10
+sections[4].questions[5].data.topCategoriesCards[2].topics[1].sentiment,sentiment,string,negative,10
+sections[4].questions[5].data.topCategoriesCards[2].topics[2],topics[2],object,,9
+sections[4].questions[5].data.topCategoriesCards[2].topics[2].topic,topic,string,necessidade de mais abertura,10
+sections[4].questions[5].data.topCategoriesCards[2].topics[2].sentiment,sentiment,string,negative,10
+sections[4].questions[5].data.wordCloud,wordCloud,array,,6
+sections[4].questions[5].data.wordCloud[0],wordCloud[0],object,,7
+sections[4].questions[5].data.wordCloud[0].text,text,string,colaborativa,8
+sections[4].questions[5].data.wordCloud[0].value,value,number,412,8
+sections[4].questions[5].data.wordCloud[1],wordCloud[1],object,,7
+sections[4].questions[5].data.wordCloud[1].text,text,string,inovadora,8
+sections[4].questions[5].data.wordCloud[1].value,value,number,298,8
+sections[4].questions[5].data.wordCloud[2],wordCloud[2],object,,7
+sections[4].questions[5].data.wordCloud[2].text,text,string,transparência,8
+sections[4].questions[5].data.wordCloud[2].value,value,number,234,8
+sections[4].questions[5].data.wordCloud[3],wordCloud[3],object,,7
+sections[4].questions[5].data.wordCloud[3].text,text,string,dinâmica,8
+sections[4].questions[5].data.wordCloud[3].value,value,number,198,8
+sections[4].questions[5].data.wordCloud[4],wordCloud[4],object,,7
+sections[4].questions[5].data.wordCloud[4].text,text,string,acolhedora,8
+sections[4].questions[5].data.wordCloud[4].value,value,number,176,8
+sections[4].questions[5].data.wordCloud[5],wordCloud[5],object,,7
+sections[4].questions[5].data.wordCloud[5].text,text,string,criativa,8
+sections[4].questions[5].data.wordCloud[5].value,value,number,154,8
+sections[4].questions[5].data.wordCloud[6],wordCloud[6],object,,7
+sections[4].questions[5].data.wordCloud[6].text,text,string,moderna,8
+sections[4].questions[5].data.wordCloud[6].value,value,number,132,8
+sections[4].questions[5].data.wordCloud[7],wordCloud[7],object,,7
+sections[4].questions[5].data.wordCloud[7].text,text,string,ágil,8
+sections[4].questions[5].data.wordCloud[7].value,value,number,118,8
+sections[4].questions[5].data.wordCloud[8],wordCloud[8],object,,7
+sections[4].questions[5].data.wordCloud[8].text,text,string,inclusiva,8
+sections[4].questions[5].data.wordCloud[8].value,value,number,98,8
+sections[4].questions[5].data.wordCloud[9],wordCloud[9],object,,7
+sections[4].questions[5].data.wordCloud[9].text,text,string,flexível,8
+sections[4].questions[5].data.wordCloud[9].value,value,number,87,8
+sections[4].components,components,array,,3
+sections[4].data,data,object,,3
+sections[4].data.config,config,object,,4
+sections[4].data.config.npsCategories,npsCategories,object,,5
+sections[4].data.config.npsCategories.detractor,detractor,string,Detrator,6
+sections[4].data.config.npsCategories.promoter,promoter,string,Promotor,6
+sections[4].data.config.npsCategories.neutral,neutral,string,Neutro,6
+sections[4].data.config.npsCategories.labels,labels,object,,6
+sections[4].data.config.npsCategories.labels.detractors,detractors,string,Detratores,7
+sections[4].data.config.npsCategories.labels.neutrals,neutrals,string,Neutros,7
+sections[4].data.config.npsCategories.labels.promoters,promoters,string,Promotores,7
+uiTexts,uiTexts,object,,1
+uiTexts.filterPanel,filterPanel,object,,2
+uiTexts.filterPanel.all,all,string,Todas,3
+uiTexts.filterPanel.open-ended,open-ended,string,Campo Aberto,3
+uiTexts.filterPanel.multiple-choice,multiple-choice,string,Múltipla Escolha,3
+uiTexts.filterPanel.single-choice,single-choice,string,Escolha única,3
+uiTexts.filterPanel.nps,nps,string,NPS,3
+uiTexts.export,export,object,,2
+uiTexts.export.title,title,string,Export de Dados,3
+uiTexts.export.description,description,string,Exporte os dados da pesquisa em diferentes formatos,3
+uiTexts.export.exportFullReport,exportFullReport,string,Exportar Relatório Completo,3
+uiTexts.export.selectSpecificSections,selectSpecificSections,string,Selecionar Seções Específicas,3
+uiTexts.export.exportAsPDF,exportAsPDF,string,Exportar como PDF,3
+uiTexts.export.selectAtLeastOneSection,selectAtLeastOneSection,string,Selecione pelo menos uma seção,3
+uiTexts.common,common,object,,2
+uiTexts.common.loading,loading,object,,3
+uiTexts.common.loading.loadingQuestions,loadingQuestions,string,Carregando questões...,4
+uiTexts.common.errors,errors,object,,3
+uiTexts.common.errors.dataNotFound,dataNotFound,string,Dados não encontrados.,4
+surveyInfo,surveyInfo,object,,1
+surveyInfo.title,title,string,Pesquisa de Satisfação de Funcionários 2025,2
+surveyInfo.company,company,string,InnovaTech Solutions,2
+surveyInfo.period,period,string,Janeiro - Março 2025,2
+surveyInfo.totalRespondents,totalRespondents,number,850,2
+surveyInfo.responseRate,responseRate,number,78.5,2
+surveyInfo.questions,questions,number,6,2

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -47,23 +47,47 @@ export function SchemaFilterPills({ component, data }) {
   // Get unique question types from available questions
   const availableTypes = new Set(questions.map(q => q.questionType).filter(Boolean));
   
-  // Verificar se há questões do tipo "open-ended" que têm wordCloud
-  // Apenas questões open-ended têm wordCloud no template (questionTemplates.js)
-  const hasWordCloudQuestions = questions.some(
-    (q) => q.questionType === "open-ended" && q.data?.wordCloud
+  // Verificar se há questões do tipo "open-ended" (campo aberto)
+  // Todas as questões open-ended podem ter wordCloud no template (questionTemplates.js)
+  // O toggle deve aparecer sempre que houver questões do tipo "open-ended"
+  const hasOpenEndedQuestions = questions.some(
+    (q) => q.questionType === "open-ended"
   );
   
-  // Padrão: true, mas só mostrar se houver questões com wordCloud
-  const showWordCloudToggle = hasWordCloudQuestions;
+  // Mostrar toggle de WordCloud sempre que houver questões do tipo "open-ended"
+  const showWordCloudToggle = hasOpenEndedQuestions;
+
+  // Initialize _filterPillsState immediately on mount
+  useEffect(() => {
+    if (data && typeof data === "object" && !Array.isArray(data)) {
+      if (!data._filterPillsState) {
+        data._filterPillsState = {
+          questionFilter: "all",
+          setQuestionFilter: () => {},
+          showWordCloud: true,
+          setShowWordCloud: () => {},
+        };
+      }
+    }
+  }, [data]);
 
   // Create wrapper functions that update both state and data._filterPillsState
   const handleQuestionFilterChange = useCallback(
     (value) => {
-      setQuestionFilter(value);
+      const filterValue = value || "all";
+      // Update local state
+      setQuestionFilter(filterValue);
+      // Update _filterPillsState immediately (synchronous update)
       if (data && typeof data === "object" && !Array.isArray(data)) {
-        if (data._filterPillsState) {
-          data._filterPillsState.questionFilter = value;
+        if (!data._filterPillsState) {
+          data._filterPillsState = {
+            questionFilter: filterValue,
+            setQuestionFilter: () => {},
+            showWordCloud: true,
+            setShowWordCloud: () => {},
+          };
         }
+        data._filterPillsState.questionFilter = filterValue;
       }
     },
     [data]
@@ -71,25 +95,34 @@ export function SchemaFilterPills({ component, data }) {
 
   const handleShowWordCloudChange = useCallback(
     (value) => {
+      // Update local state
       setShowWordCloud(value);
+      // Update _filterPillsState immediately (synchronous update)
       if (data && typeof data === "object" && !Array.isArray(data)) {
-        if (data._filterPillsState) {
-          data._filterPillsState.showWordCloud = value;
+        if (!data._filterPillsState) {
+          data._filterPillsState = {
+            questionFilter: "all",
+            setQuestionFilter: () => {},
+            showWordCloud: value,
+            setShowWordCloud: () => {},
+          };
         }
+        data._filterPillsState.showWordCloud = value;
       }
     },
     [data]
   );
 
-  // Initialize and update data._filterPillsState whenever state changes
+  // Update _filterPillsState handlers whenever they change
   useEffect(() => {
     if (data && typeof data === "object" && !Array.isArray(data)) {
-      data._filterPillsState = {
-        questionFilter,
-        setQuestionFilter: handleQuestionFilterChange,
-        showWordCloud,
-        setShowWordCloud: handleShowWordCloudChange,
-      };
+      if (data._filterPillsState) {
+        data._filterPillsState.setQuestionFilter = handleQuestionFilterChange;
+        data._filterPillsState.setShowWordCloud = handleShowWordCloudChange;
+        // Also sync current values
+        data._filterPillsState.questionFilter = questionFilter;
+        data._filterPillsState.showWordCloud = showWordCloud;
+      }
     }
   }, [
     questionFilter,
@@ -138,7 +171,7 @@ export function SchemaFilterPills({ component, data }) {
             ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
             : ""
         }`}
-        onClick={() => setQuestionFilter("all")}
+        onClick={() => handleQuestionFilterChange("all")}
       >
         {sectionUiTexts?.all || rootUiTexts?.responseDetails?.all || "Todos"}
       </Badge>
@@ -156,7 +189,7 @@ export function SchemaFilterPills({ component, data }) {
                   ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
                   : ""
               }`}
-              onClick={() => setQuestionFilter(badge.type)}
+              onClick={() => handleQuestionFilterChange(badge.type)}
             >
               <Icon className="w-3 h-3" />
               {badge.label}
@@ -177,7 +210,7 @@ export function SchemaFilterPills({ component, data }) {
           <Switch
             id="word-cloud-toggle"
             checked={showWordCloud}
-            onCheckedChange={setShowWordCloud}
+            onCheckedChange={handleShowWordCloudChange}
           />
         </div>
       )}
@@ -189,7 +222,56 @@ export function SchemaFilterPills({ component, data }) {
  * Render word cloud component based on schema
  * All styling is hardcoded - only data path and title from config
  */
-export function SchemaWordCloud({ component, data }) {
+export function SchemaWordCloud({ component, data, exportWordCloud = true }) {
+  // Track state changes using polling (similar to QuestionsList)
+  const [syncCounter, setSyncCounter] = useState(0);
+  const prevWordCloudRef = useRef(null);
+
+  // Polling effect to detect changes in _filterPillsState and trigger re-renders
+  useEffect(() => {
+    if (data?._filterPillsState) {
+      // Initialize ref with current value
+      if (prevWordCloudRef.current === null) {
+        prevWordCloudRef.current = data._filterPillsState.showWordCloud;
+      }
+      
+      const interval = setInterval(() => {
+        const currentWordCloud = data._filterPillsState?.showWordCloud;
+        const wordCloudChanged = currentWordCloud !== prevWordCloudRef.current;
+        
+        if (wordCloudChanged) {
+          prevWordCloudRef.current = currentWordCloud;
+          setSyncCounter((prev) => prev + 1);
+        }
+      }, 50); // Check every 50ms for responsiveness
+
+      return () => clearInterval(interval);
+    } else {
+      prevWordCloudRef.current = null;
+    }
+  }, [data?._filterPillsState]);
+
+  // Check if wordCloud should be shown
+  // Priority: 1) data.showWordCloud (from context), 2) data._filterPillsState.showWordCloud, 3) exportWordCloud prop, 4) default true
+  // Use useMemo to reactively track changes in _filterPillsState
+  const shouldShowWordCloud = useMemo(() => {
+    // First check if showWordCloud is directly in data (from context)
+    if (data?.showWordCloud !== undefined) {
+      return data.showWordCloud;
+    }
+    // Then check _filterPillsState (shared state from FilterPills)
+    if (data?._filterPillsState?.showWordCloud !== undefined) {
+      return data._filterPillsState.showWordCloud;
+    }
+    // Fallback to exportWordCloud prop
+    return exportWordCloud;
+  }, [data?.showWordCloud, data?._filterPillsState?.showWordCloud, exportWordCloud, syncCounter]);
+
+  // If showWordCloud is false, don't render
+  if (!shouldShowWordCloud) {
+    return null;
+  }
+
   const wordCloudData = resolveDataPath(data, component.dataPath);
   const uiTexts = resolveDataPath(data, "uiTexts");
 

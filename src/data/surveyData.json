@@ -70,168 +70,178 @@
           }
         ],
         "data": {
-          "recommendationsTable": [
-            {
-              "id": 1,
-              "recommendation": "Implementar Sistema de Comunicação Interna Mais Eficiente",
-              "severity": "Alto",
-              "stakeholders": [
-                "Comunicação Corporativa",
-                "Tecnologia da Informação",
-                "Recursos Humanos"
-              ],
-              "tasks": [
-                {
-                  "task": "Avaliar ferramentas de comunicação interna disponíveis",
-                  "owner": "TI"
-                },
-                {
-                  "task": "Definir estratégia de comunicação por departamento",
-                  "owner": "Comunicação Corporativa"
-                },
-                {
-                  "task": "Implementar plataforma unificada de comunicação",
-                  "owner": "TI"
-                },
-                {
-                  "task": "Treinar equipes no uso da nova plataforma",
-                  "owner": "RH"
-                },
-                {
-                  "task": "Monitorar adoção e ajustar conforme necessário",
-                  "owner": "Comunicação Corporativa"
-                }
-              ]
+          "recommendationsTable": {
+            "config": {
+              "severityLabels": {
+                "high": "Alto",
+                "medium": "Médio",
+                "low": "Baixo",
+                "critical": "Crítico"
+              }
             },
-            {
-              "id": 2,
-              "recommendation": "Reduzir Processos Burocráticos e Simplificar Workflows",
-              "severity": "Alto",
-              "stakeholders": [
-                "Operações",
-                "Processos e Qualidade",
-                "Liderança"
-              ],
-              "tasks": [
-                {
-                  "task": "Mapear processos atuais e identificar gargalos",
-                  "owner": "Processos e Qualidade"
-                },
-                {
-                  "task": "Priorizar processos para simplificação",
-                  "owner": "Liderança"
-                },
-                {
-                  "task": "Redesenhar workflows críticos",
-                  "owner": "Operações"
-                },
-                {
-                  "task": "Implementar automações onde possível",
-                  "owner": "TI"
-                },
-                {
-                  "task": "Comunicar mudanças e treinar equipes",
-                  "owner": "RH"
-                }
-              ]
-            },
-            {
-              "id": 3,
-              "recommendation": "Expandir Programas de Desenvolvimento Profissional",
-              "severity": "Médio",
-              "stakeholders": [
-                "Recursos Humanos",
-                "Liderança",
-                "Desenvolvimento Organizacional"
-              ],
-              "tasks": [
-                {
-                  "task": "Avaliar necessidades de desenvolvimento por departamento",
-                  "owner": "RH"
-                },
-                {
-                  "task": "Criar plano de desenvolvimento personalizado",
-                  "owner": "Desenvolvimento Organizacional"
-                },
-                {
-                  "task": "Estabelecer parcerias com instituições de ensino",
-                  "owner": "RH"
-                },
-                {
-                  "task": "Implementar programa de mentoria",
-                  "owner": "Liderança"
-                },
-                {
-                  "task": "Acompanhar progresso e ajustar programas",
-                  "owner": "Desenvolvimento Organizacional"
-                }
-              ]
-            },
-            {
-              "id": 4,
-              "recommendation": "Melhorar Gestão de Carga de Trabalho",
-              "severity": "Médio",
-              "stakeholders": [
-                "Liderança",
-                "Recursos Humanos",
-                "Operações"
-              ],
-              "tasks": [
-                {
-                  "task": "Realizar análise de carga de trabalho por equipe",
-                  "owner": "Liderança"
-                },
-                {
-                  "task": "Identificar equipes sobrecarregadas",
-                  "owner": "RH"
-                },
-                {
-                  "task": "Redistribuir tarefas e projetos",
-                  "owner": "Operações"
-                },
-                {
-                  "task": "Implementar ferramentas de gestão de tempo",
-                  "owner": "TI"
-                },
-                {
-                  "task": "Estabelecer limites de horas extras",
-                  "owner": "RH"
-                }
-              ]
-            },
-            {
-              "id": 5,
-              "recommendation": "Criar Programa de Reconhecimento e Recompensas",
-              "severity": "Baixo",
-              "stakeholders": [
-                "Recursos Humanos",
-                "Liderança",
-                "Financeiro"
-              ],
-              "tasks": [
-                {
-                  "task": "Definir critérios de reconhecimento",
-                  "owner": "RH"
-                },
-                {
-                  "task": "Criar sistema de pontos e recompensas",
-                  "owner": "RH"
-                },
-                {
-                  "task": "Aprovar orçamento para programa",
-                  "owner": "Financeiro"
-                },
-                {
-                  "task": "Lançar programa piloto",
-                  "owner": "RH"
-                },
-                {
-                  "task": "Avaliar resultados e expandir",
-                  "owner": "Liderança"
-                }
-              ]
-            }
-          ]
+            "items": [
+              {
+                "id": 1,
+                "recommendation": "Implementar Sistema de Comunicação Interna Mais Eficiente",
+                "severity": "high",
+                "stakeholders": [
+                  "Comunicação Corporativa",
+                  "Tecnologia da Informação",
+                  "Recursos Humanos"
+                ],
+                "tasks": [
+                  {
+                    "task": "Avaliar ferramentas de comunicação interna disponíveis",
+                    "owner": "TI"
+                  },
+                  {
+                    "task": "Definir estratégia de comunicação por departamento",
+                    "owner": "Comunicação Corporativa"
+                  },
+                  {
+                    "task": "Implementar plataforma unificada de comunicação",
+                    "owner": "TI"
+                  },
+                  {
+                    "task": "Treinar equipes no uso da nova plataforma",
+                    "owner": "RH"
+                  },
+                  {
+                    "task": "Monitorar adoção e ajustar conforme necessário",
+                    "owner": "Comunicação Corporativa"
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "recommendation": "Reduzir Processos Burocráticos e Simplificar Workflows",
+                "severity": "high",
+                "stakeholders": [
+                  "Operações",
+                  "Processos e Qualidade",
+                  "Liderança"
+                ],
+                "tasks": [
+                  {
+                    "task": "Mapear processos atuais e identificar gargalos",
+                    "owner": "Processos e Qualidade"
+                  },
+                  {
+                    "task": "Priorizar processos para simplificação",
+                    "owner": "Liderança"
+                  },
+                  {
+                    "task": "Redesenhar workflows críticos",
+                    "owner": "Operações"
+                  },
+                  {
+                    "task": "Implementar automações onde possível",
+                    "owner": "TI"
+                  },
+                  {
+                    "task": "Comunicar mudanças e treinar equipes",
+                    "owner": "RH"
+                  }
+                ]
+              },
+              {
+                "id": 3,
+                "recommendation": "Expandir Programas de Desenvolvimento Profissional",
+                "severity": "medium",
+                "stakeholders": [
+                  "Recursos Humanos",
+                  "Liderança",
+                  "Desenvolvimento Organizacional"
+                ],
+                "tasks": [
+                  {
+                    "task": "Avaliar necessidades de desenvolvimento por departamento",
+                    "owner": "RH"
+                  },
+                  {
+                    "task": "Criar plano de desenvolvimento personalizado",
+                    "owner": "Desenvolvimento Organizacional"
+                  },
+                  {
+                    "task": "Estabelecer parcerias com instituições de ensino",
+                    "owner": "RH"
+                  },
+                  {
+                    "task": "Implementar programa de mentoria",
+                    "owner": "Liderança"
+                  },
+                  {
+                    "task": "Acompanhar progresso e ajustar programas",
+                    "owner": "Desenvolvimento Organizacional"
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "recommendation": "Melhorar Gestão de Carga de Trabalho",
+                "severity": "medium",
+                "stakeholders": [
+                  "Liderança",
+                  "Recursos Humanos",
+                  "Operações"
+                ],
+                "tasks": [
+                  {
+                    "task": "Realizar análise de carga de trabalho por equipe",
+                    "owner": "Liderança"
+                  },
+                  {
+                    "task": "Identificar equipes sobrecarregadas",
+                    "owner": "RH"
+                  },
+                  {
+                    "task": "Redistribuir tarefas e projetos",
+                    "owner": "Operações"
+                  },
+                  {
+                    "task": "Implementar ferramentas de gestão de tempo",
+                    "owner": "TI"
+                  },
+                  {
+                    "task": "Estabelecer limites de horas extras",
+                    "owner": "RH"
+                  }
+                ]
+              },
+              {
+                "id": 5,
+                "recommendation": "Criar Programa de Reconhecimento e Recompensas",
+                "severity": "low",
+                "stakeholders": [
+                  "Recursos Humanos",
+                  "Liderança",
+                  "Financeiro"
+                ],
+                "tasks": [
+                  {
+                    "task": "Definir critérios de reconhecimento",
+                    "owner": "RH"
+                  },
+                  {
+                    "task": "Criar sistema de pontos e recompensas",
+                    "owner": "RH"
+                  },
+                  {
+                    "task": "Aprovar orçamento para programa",
+                    "owner": "Financeiro"
+                  },
+                  {
+                    "task": "Lançar programa piloto",
+                    "owner": "RH"
+                  },
+                  {
+                    "task": "Avaliar resultados e expandir",
+                    "owner": "Liderança"
+                  }
+                ]
+              }
+            ]
+          }
         }
       },
       {
@@ -1321,7 +1331,7 @@
             "components": [
               {
                 "type": "grid-container",
-                "className": "grid grid-cols-1 md:grid-cols-2 gap-6",
+            
                 "index": 0,
                 "components": [
                   {
@@ -2013,6 +2023,7 @@
               }
             }
           ],
+          "components": [],
           "data": {
             "config": {
               "npsCategories": {

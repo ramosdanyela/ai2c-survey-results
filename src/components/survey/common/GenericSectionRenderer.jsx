@@ -821,24 +821,18 @@ export function GenericSectionRenderer({
         return [];
       }
       
-      // Special case: for responses section with a question, use questionType template
+      // Special case: for responses section with a question, use questionsList instead of template
+      // This ensures all questions are shown with accordions, not just the selected one
       if (sectionId === "responses" && activeSubsection.question) {
-        const question = activeSubsection.question;
-        const questionType = question.questionType;
-        
-        if (questionType) {
-          const template = getQuestionTemplate(questionType);
-          if (template && Array.isArray(template) && template.length > 0) {
-            // Use template components for this question type
-            rawComponents = [...template];
-          } else {
-            console.warn(`No template found for question type: ${questionType}`);
-            return [];
-          }
-        } else {
-          console.warn("Question missing questionType:", question);
-          return [];
-        }
+        // Instead of using question template, use questionsList to show all questions with accordions
+        // The questionId will be passed to questionsList to open the specific accordion
+        const questionsListComponent = {
+          type: "questionsList",
+          index: 0,
+          dataPath: "sectionData",
+          config: {}
+        };
+        rawComponents = [questionsListComponent];
       } else {
         // Normal case: use components from activeSubsection
         if (
@@ -851,20 +845,21 @@ export function GenericSectionRenderer({
       }
     }
 
-    // For "responses" section: automatically add filterPills before questionsList
-    // Only add filterPills when showing the questions list, not when showing a specific question
-    // When activeSubsection has a question object, we're showing a specific question, so skip filterPills
-    if (sectionId === "responses" && !activeSubsection?.question) {
-      // Filter out any existing filterPills from JSON
+    // For "responses" section: ALWAYS add filterPills before questionsList
+    // FilterPills must always be rendered in responses section, regardless of whether
+    // we're showing the full list or a specific question
+    if (sectionId === "responses") {
+      // Filter out any existing filterPills from JSON to avoid duplicates
       rawComponents = rawComponents.filter(comp => comp.type !== "filterPills");
       
       // Find the index of the first questionsList component
       const questionsListIndex = rawComponents.findIndex(comp => comp.type === "questionsList");
       
       // Create filterPills component
+      // FilterPills must appear right after SurveyHeader, before QuestionsList
       const filterPillsComponent = {
         type: "filterPills",
-        index: questionsListIndex >= 0 ? questionsListIndex : 0,
+        index: questionsListIndex >= 0 ? questionsListIndex - 1 : -1, // Always before questionsList
         config: {}
       };
       
@@ -1147,27 +1142,37 @@ export function GenericSectionRenderer({
             />
           ) : null}
           
-          {/* For responses section with individual question: render question title and summary in old structure */}
-          {isResponsesQuestion && activeSubsection?.question ? (
-            <div className="space-y-6">
-              {/* Question Title - old structure (h2 instead of SubsectionTitle Card) */}
-              <div className="space-y-3">
-                <h2 className="text-2xl font-bold text-foreground">
-                  {activeSubsection.question.question}
-                </h2>
-                {/* Question Summary - old structure */}
-                {activeSubsection.question.summary && (
-                  <div className="text-muted-foreground space-y-3">
-                    {activeSubsection.question.summary.split("\n").map((line, index) => (
-                      <p key={index} className={line.trim() ? "" : "h-3"}>
-                        {line}
-                      </p>
-                    ))}
+          {/* For responses section: Don't show individual question title/summary */}
+          {/* QuestionsList will handle showing all questions with accordions */}
+          {/* The selected question will be opened automatically via questionId prop */}
+
+          {/* For responses section: ALWAYS render FilterPills before components */}
+          {/* FilterPills must appear right after SurveyHeader, before QuestionsList */}
+          {/* This ensures FilterPills is always visible, even when a specific question is selected */}
+          {sectionId === "responses" && !isExport && (
+            (() => {
+              const hasFilterPills = components.some(c => c.type === "filterPills");
+              if (!hasFilterPills) {
+                const filterPillsComponent = {
+                  type: "filterPills",
+                  index: -1, // Render before all other components
+                  config: {}
+                };
+                return (
+                  <div key={`${sectionId}-${subSection || "root"}-filterPills-auto`} className="mb-6">
+                    <SchemaComponent
+                      component={filterPillsComponent}
+                      data={enhancedData}
+                      subSection={subSection}
+                      isExport={isExport}
+                      exportWordCloud={exportWordCloud}
+                    />
                   </div>
-                )}
-              </div>
-            </div>
-          ) : null}
+                );
+              }
+              return null;
+            })()
+          )}
 
           {/* Render components in order */}
           {components.length > 0 && (

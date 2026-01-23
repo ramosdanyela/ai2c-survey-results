@@ -293,11 +293,6 @@ export const severityColors = {
   high: "bg-severity-high text-white",
   medium: "bg-severity-medium text-white",
   low: "bg-severity-low text-white",
-  // Mapeamento para valores traduzidos (pt-BR)
-  "Crítico": "bg-severity-critical text-white",
-  "Alto": "bg-severity-high text-white",
-  "Médio": "bg-severity-medium text-white",
-  "Baixo": "bg-severity-low text-white",
 };
 
 /**

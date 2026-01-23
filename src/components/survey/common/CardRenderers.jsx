@@ -217,12 +217,38 @@ export function SchemaNPSScoreCard({ component, data }) {
  * All styling is hardcoded - no config needed
  */
 export function SchemaTopCategoriesCards({ component, data }) {
+  // Debug: Log antes de tentar resolver
+  console.log("SchemaTopCategoriesCards: Starting render", {
+    dataPath: component.dataPath,
+    hasData: !!data,
+    hasQuestion: !!data?.question,
+    questionId: data?.question?.id,
+    questionType: data?.question?.questionType,
+    questionDataKeys: data?.question?.data ? Object.keys(data.question.data) : [],
+    hasTopCategories: !!data?.question?.data?.topCategoriesCards,
+  });
+
   const categoriesData = resolveDataPath(data, component.dataPath);
   const uiTexts = resolveDataPath(data, "uiTexts");
 
+  console.log("SchemaTopCategoriesCards: After resolveDataPath", {
+    dataPath: component.dataPath,
+    categoriesData: categoriesData ? (Array.isArray(categoriesData) ? `Array(${categoriesData.length})` : typeof categoriesData) : null,
+    isArray: Array.isArray(categoriesData),
+  });
+
   if (!categoriesData || !Array.isArray(categoriesData)) {
     console.warn(
-      `TopCategoriesCards: Data not found at path "${component.dataPath}"`
+      `TopCategoriesCards: Data not found at path "${component.dataPath}"`,
+      {
+        dataPath: component.dataPath,
+        hasData: !!data,
+        hasQuestion: !!data?.question,
+        questionDataKeys: data?.question?.data ? Object.keys(data.question.data) : [],
+        resolvedValue: categoriesData,
+        resolvedType: typeof categoriesData,
+        isArray: Array.isArray(categoriesData),
+      }
     );
     return null;
   }

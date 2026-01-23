@@ -115,6 +115,34 @@ export function resolveDataPath(obj, path) {
     return null;
   }
 
+  // Handle relative paths with "question." prefix (for question components)
+  if (path.startsWith("question.")) {
+    const relativePath = path.replace("question.", "");
+    if (obj.question) {
+      const result = resolveDataPath(obj.question, relativePath);
+      // Debug log for topCategoriesCards
+      if (path.includes("topCategoriesCards")) {
+        console.log("resolveDataPath: question.* path resolved", {
+          originalPath: path,
+          relativePath,
+          hasQuestion: !!obj.question,
+          questionId: obj.question?.id,
+          questionType: obj.question?.questionType,
+          questionDataKeys: obj.question?.data ? Object.keys(obj.question.data) : [],
+          result: result ? (Array.isArray(result) ? `Array(${result.length})` : typeof result) : null,
+        });
+      }
+      return result;
+    }
+    if (path.includes("topCategoriesCards")) {
+      console.warn("resolveDataPath: question.* path but no question in obj", {
+        path,
+        objKeys: Object.keys(obj).slice(0, 10),
+      });
+    }
+    return null;
+  }
+
   // Handle array indices in brackets: attributes[0] -> attributes.0
   const normalizedPath = path.replace(/\[(\d+)\]/g, ".$1");
 

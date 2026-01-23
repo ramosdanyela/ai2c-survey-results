@@ -25,11 +25,32 @@ export function SchemaRecommendationsTable({ component, data }) {
   const [checkedTasks, setCheckedTasks] = useState({});
 
   try {
-    const recommendations = resolveDataPath(data, component.dataPath);
+    const recommendationsData = resolveDataPath(data, component.dataPath);
 
-    if (!recommendations || !Array.isArray(recommendations)) {
+    if (!recommendationsData) {
       console.warn(
         `RecommendationsTable: Data not found at path "${component.dataPath}"`
+      );
+      return (
+        <div className="p-4 text-center text-muted-foreground">
+          <p>Nenhuma recomendação encontrada.</p>
+        </div>
+      );
+    }
+
+    // Support both new structure (object with config and items) and old structure (array)
+    let recommendations, severityLabels;
+    if (Array.isArray(recommendationsData)) {
+      // Old structure: direct array
+      recommendations = recommendationsData;
+      severityLabels = null;
+    } else if (recommendationsData.items && Array.isArray(recommendationsData.items)) {
+      // New structure: object with config and items
+      recommendations = recommendationsData.items;
+      severityLabels = recommendationsData.config?.severityLabels || null;
+    } else {
+      console.warn(
+        `RecommendationsTable: Invalid data structure at path "${component.dataPath}"`
       );
       return (
         <div className="p-4 text-center text-muted-foreground">
@@ -67,6 +88,7 @@ export function SchemaRecommendationsTable({ component, data }) {
       <RecommendationsTable
         recommendations={recommendations}
         severityColors={severityColors}
+        severityLabels={severityLabels}
         expandedRecs={expandedRecs}
         onToggleRec={toggleRecExpansion}
         getRecTasks={getRecTasks}

@@ -53,7 +53,7 @@ node data/validation/scripts/validate-json.js caminho/do/arquivo.json
 
 ### 1. Estrutura Básica
 
-- Campos obrigatórios (`metadata`, `sectionsConfig`, `uiTexts`, `surveyInfo`)
+- Campos obrigatórios (`metadata`, `sections`, `uiTexts`, `surveyInfo`)
 - Tipos de dados corretos
 - Formatos válidos (ex: `language` deve ser `pt-BR`, `en-US`, etc.)
 
@@ -61,15 +61,18 @@ node data/validation/scripts/validate-json.js caminho/do/arquivo.json
 
 - IDs únicos
 - Índices sequenciais (começando em 0)
-- Seções em `sectionsConfig.sections` devem ter `data.renderSchema` (Export não fica em sections; vem de uiTexts)
+- **Estrutura atualizada:** `sections` diretamente no nível raiz (não `sectionsConfig.sections`)
+- **Componentes diretamente em `subsections[].components`** (não há mais `renderSchema`)
 - Subseções devem ter `id`, `index`, `name`, `icon`
+- Dados ficam separados em `data` da seção
 
 ### 3. Componentes
 
-- Tipos válidos (`card`, `barChart`, `sentimentStackedChart`, etc.)
-- `dataPath` deve apontar para dados que existem
+- Tipos válidos (incluindo `card`, `barChart`, `sentimentStackedChart`, `container`, `grid-container`, `h3`, `h4`, etc.)
+- `dataPath` deve apontar para dados que existem (quando necessário)
 - Arrays esperados devem ser arrays
 - Estrutura de dados correta para cada tipo
+- Componentes estão diretamente em `subsections[].components` ou `components` na seção
 
 ### 4. Templates
 
@@ -80,9 +83,11 @@ node data/validation/scripts/validate-json.js caminho/do/arquivo.json
 ### 5. Questões
 
 - IDs únicos
-- Tipos válidos (`nps`, `closed`, `open`)
-- Questões `nps` devem ter opções corretas
-- Questões `open` devem ter `sentimentData` ou `wordCloud`
+- **Usar `questionType` (não `type`)** - tipos válidos: `nps`, `open-ended`, `multiple-choice`, `single-choice`
+- Questões ficam diretamente em `questions` na seção `responses` (não em `data.questions`)
+- Questões `nps` devem ter `data.npsScore`, `data.npsCategory` e `data.npsStackedChart`
+- Questões `open-ended` devem ter pelo menos um de: `data.sentimentStackedChart`, `data.wordCloud`, ou `data.topCategoriesCards`
+- Questões `multiple-choice`/`single-choice` devem ter `data.barChart` como array
 
 ### 6. Dados Específicos
 
@@ -103,6 +108,18 @@ Para adicionar novas regras de validação:
 - A validação é **isolada** - não afeta o código de renderização
 - Em produção, o JSON virá via API, mas a validação pode ser aplicada antes de usar os dados
 - **Arquitetura do código:** Todos os componentes utilizam o hook `useSurveyData()` para acessar os dados. Não há imports diretos do JSON nos componentes - apenas no serviço `surveyDataService.js` que é usado pelo hook. Isso garante uma única fonte de verdade e facilita a migração para API real.
+
+## ⚠️ Mudanças Importantes na Estrutura
+
+A validação foi atualizada para refletir a estrutura atual do JSON:
+
+1. **`sections` diretamente no nível raiz** (não mais `sectionsConfig.sections`)
+2. **Componentes diretamente em `subsections[].components`** (não há mais `renderSchema`)
+3. **Questões usam `questionType`** (não `type`) e ficam em `questions` diretamente na seção
+4. **Dados separados em `data`** da seção (separados dos componentes)
+5. **Novos componentes:** `container`, `grid-container`, `h3`, `h4` estão disponíveis
+
+Consulte `Doc_how-to_json.md` para a documentação completa da estrutura atual.
 
 ## 🐛 Solução de Problemas
 

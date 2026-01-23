@@ -1,8 +1,8 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, ChevronDown, File, Folder, FolderOpen, Maximize2, Minimize2 } from "lucide-react";
-import surveyData from "@/data/surveyData.json";
+import { ChevronRight, ChevronDown, File, Folder, FolderOpen, Maximize2, Minimize2, RefreshCw } from "lucide-react";
+import { useSurveyData } from "@/hooks/useSurveyData";
 
 /**
  * Componente para renderizar um item da árvore JSON
@@ -151,13 +151,18 @@ function collectAllPaths(obj, currentPath = "", paths = new Set()) {
  * Componente principal para visualizar o JSON
  */
 export default function JsonViewer() {
-  // Expande os 2 primeiros níveis por padrão
-  const [expandedPaths, setExpandedPaths] = useState(() => {
+  // Carrega dados dinamicamente usando o hook
+  const { data: surveyData, loading, error, refetch, isFetching } = useSurveyData();
+
+  // Função para calcular paths iniciais expandidos
+  const calculateInitialPaths = useCallback((data) => {
+    if (!data || typeof data !== "object") return new Set();
+    
     const initial = new Set();
     // Adiciona paths dos primeiros 2 níveis
-    Object.keys(surveyData).forEach((key) => {
+    Object.keys(data).forEach((key) => {
       initial.add(key);
-      const value = surveyData[key];
+      const value = data[key];
       if (value && typeof value === "object") {
         if (Array.isArray(value)) {
           // Para arrays, expande o primeiro item se existir
@@ -173,7 +178,17 @@ export default function JsonViewer() {
       }
     });
     return initial;
-  });
+  }, []);
+
+  // Estado de paths expandidos - recalcula quando os dados mudam
+  const [expandedPaths, setExpandedPaths] = useState(() => new Set());
+
+  // Recalcula paths iniciais quando os dados mudam
+  useEffect(() => {
+    if (surveyData) {
+      setExpandedPaths(calculateInitialPaths(surveyData));
+    }
+  }, [surveyData, calculateInitialPaths]);
 
   const togglePath = useCallback((path) => {
     setExpandedPaths((prev) => {
@@ -188,13 +203,66 @@ export default function JsonViewer() {
   }, []);
 
   const expandAll = useCallback(() => {
+    if (!surveyData) return;
     const allPaths = collectAllPaths(surveyData);
     setExpandedPaths(allPaths);
-  }, []);
+  }, [surveyData]);
 
   const collapseAll = useCallback(() => {
     setExpandedPaths(new Set());
   }, []);
+
+  const handleRefresh = useCallback(() => {
+    refetch();
+  }, [refetch]);
+
+  // Renderiza estado de loading
+  if (loading) {
+    return (
+      <div className="container mx-auto p-6 space-y-6 max-w-7xl">
+        <Card>
+          <CardContent className="flex items-center justify-center py-12">
+            <div className="text-center space-y-2">
+              <RefreshCw className="w-8 h-8 animate-spin mx-auto text-muted-foreground" />
+              <p className="text-sm text-muted-foreground">Carregando estrutura do JSON...</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Renderiza estado de erro
+  if (error) {
+    return (
+      <div className="container mx-auto p-6 space-y-6 max-w-7xl">
+        <Card>
+          <CardContent className="flex items-center justify-center py-12">
+            <div className="text-center space-y-4">
+              <p className="text-sm text-destructive">Erro ao carregar dados: {error.message}</p>
+              <Button variant="outline" onClick={handleRefresh}>
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Tentar Novamente
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Renderiza conteúdo quando não há dados
+  if (!surveyData) {
+    return (
+      <div className="container mx-auto p-6 space-y-6 max-w-7xl">
+        <Card>
+          <CardContent className="flex items-center justify-center py-12">
+            <p className="text-sm text-muted-foreground">Nenhum dado disponível</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-6 space-y-6 max-w-7xl">
@@ -208,7 +276,16 @@ export default function JsonViewer() {
               </p>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={expandAll}>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleRefresh}
+                disabled={isFetching}
+              >
+                <RefreshCw className={`w-4 h-4 mr-2 ${isFetching ? 'animate-spin' : ''}`} />
+                Atualizar
+              </Button>
+              <Button variant="outline" size="sm" onClick={expandAll} disabled={!surveyData}>
                 <Maximize2 className="w-4 h-4 mr-2" />
                 Expandir Tudo
               </Button>

@@ -67,54 +67,104 @@ export function QuestionsList({
   const [internalQuestionFilter, setInternalQuestionFilter] = useState("all");
   const [internalShowWordCloud, setInternalShowWordCloud] = useState(true);
 
-  // Always use internal state as the source of truth
-  // But if externalFilterState exists, also check _filterPillsState for real-time updates
-  // This ensures the component re-renders when state changes
-  const normalizedQuestionFilter = internalQuestionFilter || "all";
-
-  // For showWordCloud, always read from _filterPillsState if available (real-time updates)
-  // Otherwise use internal state
-  // CRITICAL: When externalFilterState exists, always read directly from _filterPillsState
-  // to get the latest value, even if it was mutated
-  const showWordCloud =
-    externalFilterState && data?._filterPillsState?.showWordCloud !== undefined
-      ? data._filterPillsState.showWordCloud
-      : internalShowWordCloud;
-
   // Force re-render when _filterPillsState changes by polling (since mutations don't trigger re-renders)
+  // This ensures QuestionsList reacts to FilterPills changes
+  // MUST be declared before useMemo hooks that depend on it
   const [syncCounter, setSyncCounter] = useState(0);
+
+  // Initialize internal state from _filterPillsState when it becomes available
   useEffect(() => {
-    if (externalFilterState && data?._filterPillsState) {
+    if (data?._filterPillsState) {
+      const pillsFilter = data._filterPillsState.questionFilter;
+      const pillsWordCloud = data._filterPillsState.showWordCloud;
+      
+      // Sync internal state with _filterPillsState on mount
+      if (pillsFilter !== undefined && pillsFilter !== internalQuestionFilter) {
+        setInternalQuestionFilter(pillsFilter || "all");
+      }
+      if (pillsWordCloud !== undefined && pillsWordCloud !== internalShowWordCloud) {
+        setInternalShowWordCloud(pillsWordCloud);
+      }
+    }
+  }, [data?._filterPillsState]); // Only run when _filterPillsState is created/destroyed
+
+  // Use refs to track previous values for polling comparison
+  const prevFilterRef = useRef(null);
+  const prevWordCloudRef = useRef(null);
+
+  // Polling effect to detect changes in _filterPillsState and trigger re-renders
+  // This is necessary because direct mutations to data._filterPillsState don't trigger React re-renders
+  useEffect(() => {
+    if (data?._filterPillsState) {
+      // Initialize refs with current values
+      if (prevFilterRef.current === null) {
+        prevFilterRef.current = data._filterPillsState.questionFilter;
+      }
+      if (prevWordCloudRef.current === null) {
+        prevWordCloudRef.current = data._filterPillsState.showWordCloud;
+      }
+      
       const interval = setInterval(() => {
         const currentWordCloud = data._filterPillsState?.showWordCloud;
         const currentFilter = data._filterPillsState?.questionFilter;
 
-        // Update internal state if _filterPillsState changed
-        if (
-          currentWordCloud !== undefined &&
-          currentWordCloud !== internalShowWordCloud
-        ) {
-          setInternalShowWordCloud(currentWordCloud);
-          setSyncCounter((prev) => prev + 1);
-        }
-        if (
-          currentFilter !== undefined &&
-          currentFilter !== internalQuestionFilter
-        ) {
-          setInternalQuestionFilter(currentFilter || "all");
+        // Check if values actually changed
+        const filterChanged = currentFilter !== prevFilterRef.current;
+        const wordCloudChanged = currentWordCloud !== prevWordCloudRef.current;
+        
+        if (filterChanged || wordCloudChanged) {
+          // Update refs with new values
+          prevFilterRef.current = currentFilter;
+          prevWordCloudRef.current = currentWordCloud;
+          
+          // Update internal state to match _filterPillsState
+          if (filterChanged && currentFilter !== undefined) {
+            setInternalQuestionFilter(currentFilter || "all");
+          }
+          if (wordCloudChanged && currentWordCloud !== undefined) {
+            setInternalShowWordCloud(currentWordCloud);
+          }
+          
+          // Force useMemo recalculation by updating syncCounter
+          // This ensures normalizedQuestionFilter and showWordCloud are recalculated
           setSyncCounter((prev) => prev + 1);
         }
       }, 50); // Check every 50ms for responsiveness
 
       return () => clearInterval(interval);
+    } else {
+      // Reset refs when _filterPillsState is removed
+      prevFilterRef.current = null;
+      prevWordCloudRef.current = null;
     }
-  }, [
-    externalFilterState,
-    data?._filterPillsState,
-    internalShowWordCloud,
-    internalQuestionFilter,
-    syncCounter,
-  ]);
+  }, [data?._filterPillsState]);
+
+  // Always read from _filterPillsState if available (real-time updates from FilterPills)
+  // Otherwise use internal state or externalFilterState
+  // CRITICAL: When _filterPillsState exists, always read directly from it to get the latest value
+  // Use useMemo to recalculate when syncCounter changes (triggered by polling)
+  const normalizedQuestionFilter = useMemo(() => {
+    // Always read the latest value directly from _filterPillsState
+    const pillsFilter = data?._filterPillsState?.questionFilter;
+    if (pillsFilter !== undefined) {
+      return pillsFilter || "all";
+    }
+    // Fallback to external or internal state
+    return externalFilterState?.questionFilter || internalQuestionFilter || "all";
+  }, [data?._filterPillsState?.questionFilter, externalFilterState?.questionFilter, internalQuestionFilter, syncCounter]);
+
+  // For showWordCloud, always read from _filterPillsState if available (real-time updates)
+  // Otherwise use internal state or externalFilterState
+  // Use useMemo to recalculate when syncCounter changes (triggered by polling)
+  const showWordCloud = useMemo(() => {
+    // Always read the latest value directly from _filterPillsState
+    const pillsWordCloud = data?._filterPillsState?.showWordCloud;
+    if (pillsWordCloud !== undefined) {
+      return pillsWordCloud;
+    }
+    // Fallback to external or internal state
+    return externalFilterState?.showWordCloud ?? internalShowWordCloud;
+  }, [data?._filterPillsState?.showWordCloud, externalFilterState?.showWordCloud, internalShowWordCloud, syncCounter]);
 
   // Sync internal state with external state on mount and when external state changes
   useEffect(() => {
@@ -346,7 +396,18 @@ export function QuestionsList({
   }, [mergedUiTexts, rootUiTexts]);
 
   // Helper functions - MUST be defined before useMemo that uses them
-  const isNPSQuestion = (question) => question?.type === "nps";
+  const isNPSQuestion = (question) => question?.questionType === "nps" || question?.type === "nps";
+
+  // Helper to get questions from responseDetails (supports both structures)
+  // MUST be defined before useMemo/useEffect that uses it
+  const getQuestionsFromResponseDetails = useCallback((responseDetails) => {
+    if (!responseDetails) return [];
+    if (Array.isArray(responseDetails)) return responseDetails;
+    if (responseDetails.questions && Array.isArray(responseDetails.questions)) {
+      return responseDetails.questions;
+    }
+    return [];
+  }, []);
 
   /**
    * Renderiza os componentes de uma questão baseado no template do tipo
@@ -455,23 +516,28 @@ export function QuestionsList({
       filtered = allQuestions;
     }
 
-    return filtered;
-  }, [normalizedQuestionFilter, responseDetails, initialQuestionId, data, getQuestionsFromResponseDetails]);
-
-  // Helper to get questions from responseDetails (supports both structures)
-  const getQuestionsFromResponseDetails = useCallback((responseDetails) => {
-    if (!responseDetails) return [];
-    if (Array.isArray(responseDetails)) return responseDetails;
-    if (responseDetails.questions && Array.isArray(responseDetails.questions)) {
-      return responseDetails.questions;
+    // CRITICAL: If initialQuestionId is provided (navigation from sidebar or buttons),
+    // ensure the target question is always included, even if filtered out
+    // This maintains dynamic accordion functionality
+    if (initialQuestionId && !data?._exportMode) {
+      const targetQuestion = allQuestions.find((q) => q.id === initialQuestionId);
+      if (targetQuestion && !filtered.find((q) => q.id === initialQuestionId)) {
+        // Add the target question to the filtered list
+        filtered = [...filtered, targetQuestion];
+        // Re-sort to maintain index order
+        filtered.sort((a, b) => (a.index || 0) - (b.index || 0));
+      }
     }
-    return [];
-  }, []);
+
+    return filtered;
+  }, [normalizedQuestionFilter, responseDetails, initialQuestionId, data, syncCounter]);
 
   // Effect to scroll to specific question when questionId is provided - MUST be before early returns
+  // This handles navigation from sidebar clicks and navigation buttons
   useEffect(() => {
     const questionsFromDetails = getQuestionsFromResponseDetails(responseDetails);
     if (initialQuestionId && questionsFromDetails.length > 0) {
+      // Reset selectedQuestionId to ensure we use initialQuestionId
       setSelectedQuestionId(null);
 
       const allQuestions = questionsFromDetails.sort((a, b) => (a.index || 0) - (b.index || 0));
@@ -479,25 +545,49 @@ export function QuestionsList({
       const question = allQuestions.find((q) => q.id === initialQuestionId);
 
       if (question) {
-        setTimeout(() => {
-          const questionValue = `${question.questionType}-${question.id}`;
-          setOpenAccordionValue(questionValue);
+        const questionValue = `${question.questionType}-${question.id}`;
+        // Immediately set the accordion to open (no delay for better UX)
+        // This ensures the accordion opens as soon as the question is found
+        setOpenAccordionValue(questionValue);
 
-          setTimeout(() => {
-            const element = questionRefs.current[initialQuestionId];
-            if (element) {
-              element.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-              });
-            }
-          }, 150);
-        }, 100);
+        // Use a small delay for scrolling to ensure DOM is updated
+        // The accordion should already be open by this point
+        setTimeout(() => {
+          const element = questionRefs.current[initialQuestionId];
+          if (element) {
+            element.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          } else {
+            // Retry after a longer delay if element not found
+            // This can happen if the question hasn't been rendered yet
+            setTimeout(() => {
+              const retryElement = questionRefs.current[initialQuestionId];
+              if (retryElement) {
+                retryElement.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+              }
+            }, 200);
+          }
+        }, 150);
+      } else {
+        // Question not found - this shouldn't happen, but log for debugging
+        console.warn("QuestionsList: Question not found", {
+          initialQuestionId,
+          availableQuestionIds: allQuestions.map((q) => q.id),
+        });
       }
+    } else if (!initialQuestionId) {
+      // If no initialQuestionId, close all accordions
+      setOpenAccordionValue(undefined);
     }
   }, [initialQuestionId, responseDetails, getQuestionsFromResponseDetails]);
 
   // Effect for when selectedQuestionId changes - MUST be before early returns
+  // This handles internal question selection (e.g., from filters)
   useEffect(() => {
     if (selectedQuestionId !== null) {
       const question = allAvailableQuestions.find(
@@ -505,6 +595,7 @@ export function QuestionsList({
       );
       if (question) {
         const questionValue = `${question.questionType}-${question.id}`;
+        // Immediately set the accordion to open
         setOpenAccordionValue(questionValue);
 
         setTimeout(() => {
@@ -514,6 +605,17 @@ export function QuestionsList({
               behavior: "smooth",
               block: "start",
             });
+          } else {
+            // Retry after a longer delay if element not found
+            setTimeout(() => {
+              const retryElement = questionRefs.current[selectedQuestionId];
+              if (retryElement) {
+                retryElement.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+              }
+            }, 200);
           }
         }, 150);
       }
@@ -767,66 +869,6 @@ export function QuestionsList({
     );
   };
 
-  // Effect to scroll to specific question when questionId is provided
-  useEffect(() => {
-    if (initialQuestionId && responseDetails?.questions) {
-      setSelectedQuestionId(null);
-
-      const allQuestions = responseDetails.questions.sort((a, b) => (a.index || 0) - (b.index || 0));
-
-      const question = allQuestions.find((q) => q.id === initialQuestionId);
-
-      if (question) {
-        setTimeout(() => {
-          const questionValue = `${question.questionType}-${question.id}`;
-          setOpenAccordionValue(questionValue);
-
-          setTimeout(() => {
-            const element = questionRefs.current[initialQuestionId];
-            if (element) {
-              element.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-              });
-            } else {
-              setTimeout(() => {
-                const retryElement = questionRefs.current[initialQuestionId];
-                if (retryElement) {
-                  retryElement.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                  });
-                }
-              }, 200);
-            }
-          }, 150);
-        }, 50);
-      }
-    }
-  }, [initialQuestionId, responseDetails]);
-
-  // Effect for when selectedQuestionId changes
-  useEffect(() => {
-    if (selectedQuestionId !== null) {
-      const question = allAvailableQuestions.find(
-        (q) => q.id === selectedQuestionId
-      );
-      if (question) {
-        const questionValue = `${question.questionType}-${question.id}`;
-        setOpenAccordionValue(questionValue);
-
-        setTimeout(() => {
-          const element = questionRefs.current[selectedQuestionId];
-          if (element) {
-            element.scrollIntoView({
-              behavior: "smooth",
-              block: "start",
-            });
-          }
-        }, 150);
-      }
-    }
-  }, [selectedQuestionId, allAvailableQuestions]);
 
   return (
     <div className="space-y-8 animate-fade-in">
