@@ -126,6 +126,49 @@ export default function Export() {
       });
   }, [data]);
 
+  // All hooks must be called before any conditional returns
+  useEffect(() => {
+    const checkIsDesktop = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+
+    checkIsDesktop();
+    window.addEventListener("resize", checkIsDesktop);
+
+    return () => {
+      window.removeEventListener("resize", checkIsDesktop);
+    };
+  }, []);
+
+  useEffect(() => {
+    const updateSidebarWidth = () => {
+      if (sidebarRef.current && isDesktop) {
+        setSidebarWidth(sidebarRef.current.offsetWidth);
+      } else {
+        setSidebarWidth(0);
+      }
+    };
+
+    const timeoutId = setTimeout(updateSidebarWidth, 0);
+    window.addEventListener("resize", updateSidebarWidth);
+
+    const observer = new MutationObserver(updateSidebarWidth);
+    if (sidebarRef.current) {
+      observer.observe(sidebarRef.current, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("resize", updateSidebarWidth);
+      observer.disconnect();
+    };
+  }, [isDesktop]);
+
   // Show loading state if data is not available
   if (loading || !data || !currentUiTexts) {
     return (
@@ -216,48 +259,6 @@ export default function Export() {
     // Navigate to preview page
     navigate(`/export/preview?${params.toString()}`);
   };
-
-  useEffect(() => {
-    const checkIsDesktop = () => {
-      setIsDesktop(window.innerWidth >= 1024);
-    };
-
-    checkIsDesktop();
-    window.addEventListener("resize", checkIsDesktop);
-
-    return () => {
-      window.removeEventListener("resize", checkIsDesktop);
-    };
-  }, []);
-
-  useEffect(() => {
-    const updateSidebarWidth = () => {
-      if (sidebarRef.current && isDesktop) {
-        setSidebarWidth(sidebarRef.current.offsetWidth);
-      } else {
-        setSidebarWidth(0);
-      }
-    };
-
-    const timeoutId = setTimeout(updateSidebarWidth, 0);
-    window.addEventListener("resize", updateSidebarWidth);
-
-    const observer = new MutationObserver(updateSidebarWidth);
-    if (sidebarRef.current) {
-      observer.observe(sidebarRef.current, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ["class"],
-      });
-    }
-
-    return () => {
-      clearTimeout(timeoutId);
-      window.removeEventListener("resize", updateSidebarWidth);
-      observer.disconnect();
-    };
-  }, [isDesktop]);
 
   const handleSectionChange = (section) => {
     // If it's not a route, navigate back to the main page

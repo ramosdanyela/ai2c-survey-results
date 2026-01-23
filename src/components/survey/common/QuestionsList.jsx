@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/popover";
 import { getQuestionTemplate } from "@/config/questionTemplates";
 import { renderComponent } from "./ComponentRegistry";
-import { resolveDataPath } from "@/services/dataResolver";
+import { resolveDataPath, getQuestionsFromData } from "@/services/dataResolver";
 
 /**
  * QuestionsList Component - Renders list of questions with filters, accordions, etc.
@@ -374,16 +374,12 @@ export function QuestionsList({
   // Helper functions - MUST be defined before useMemo that uses them
   const isNPSQuestion = (question) => question?.questionType === "nps" || question?.type === "nps";
 
-  // Helper to get questions from responseDetails (supports both structures)
+  // Helper to get questions - uses getQuestionsFromData which gets from sections[id="responses"].questions
   // MUST be defined before useMemo/useEffect that uses it
-  const getQuestionsFromResponseDetails = useCallback((responseDetails) => {
-    if (!responseDetails) return [];
-    if (Array.isArray(responseDetails)) return responseDetails;
-    if (responseDetails.questions && Array.isArray(responseDetails.questions)) {
-      return responseDetails.questions;
-    }
-    return [];
-  }, []);
+  const getQuestionsFromResponseDetails = useCallback(() => {
+    // Use getQuestionsFromData which gets questions from the new structure
+    return getQuestionsFromData(data);
+  }, [data]);
 
   /**
    * Renderiza os componentes de uma questão baseado no template do tipo
@@ -436,14 +432,8 @@ export function QuestionsList({
 
   // Get all available questions filtered by selected type - MUST be before early returns
   const allAvailableQuestions = useMemo(() => {
-    // Support both responseDetails.questions (legacy) and direct questions array (new structure)
-    let questionsArray = null;
-    if (responseDetails?.questions && Array.isArray(responseDetails.questions)) {
-      questionsArray = responseDetails.questions;
-    } else if (Array.isArray(responseDetails)) {
-      // If responseDetails itself is an array of questions (direct structure)
-      questionsArray = responseDetails;
-    }
+    // Use getQuestionsFromData which gets questions from sections[id="responses"].questions
+    const questionsArray = getQuestionsFromData(data);
     
     if (!questionsArray || questionsArray.length === 0) {
       return [];
@@ -496,12 +486,12 @@ export function QuestionsList({
     }
 
     return filtered;
-  }, [normalizedQuestionFilter, responseDetails, initialQuestionId, data, syncCounter]);
+  }, [normalizedQuestionFilter, initialQuestionId, data, syncCounter]);
 
   // Effect to scroll to specific question when questionId is provided - MUST be before early returns
   // This handles navigation from sidebar clicks and navigation buttons
   useEffect(() => {
-    const questionsFromDetails = getQuestionsFromResponseDetails(responseDetails);
+    const questionsFromDetails = getQuestionsFromResponseDetails();
     if (initialQuestionId && questionsFromDetails.length > 0) {
       // Reset selectedQuestionId to ensure we use initialQuestionId
       setSelectedQuestionId(null);
@@ -547,7 +537,7 @@ export function QuestionsList({
       // If no initialQuestionId, close all accordions
       setOpenAccordionValue(undefined);
     }
-  }, [initialQuestionId, responseDetails, getQuestionsFromResponseDetails]);
+  }, [initialQuestionId, getQuestionsFromResponseDetails]);
 
   // Effect for when selectedQuestionId changes - MUST be before early returns
   // This handles internal question selection (e.g., from filters)
@@ -592,15 +582,15 @@ export function QuestionsList({
     return <div>{loadingText}</div>;
   }
 
-  // Get questions from responseDetails (supports both structures)
-  const questionsFromDetails = getQuestionsFromResponseDetails(responseDetails);
+  // Get questions using getQuestionsFromData
+  const questionsFromDetails = getQuestionsFromResponseDetails();
   
-  if ((!responseDetails || questionsFromDetails.length === 0) && !surveyInfo) {
+  if (questionsFromDetails.length === 0 && !surveyInfo) {
     // Missing required data - expected in some cases (e.g., loading state)
     return null;
   }
 
-  // Verificar se temos questões (suporta tanto responseDetails.questions quanto array direto)
+  // Verificar se temos questões
   if (questionsFromDetails.length === 0) {
     const commonTexts = rootUiTexts?.common?.errors || {};
     const questionsNotFound =
