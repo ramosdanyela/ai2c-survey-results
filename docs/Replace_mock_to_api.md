@@ -57,6 +57,9 @@ VITE_API_TOKEN=seu-token-aqui
 
 # Opcional: Timeout para requisições (em ms)
 VITE_API_TIMEOUT=30000
+
+# Opcional: Delay simulado (apenas para desenvolvimento)
+VITE_API_DELAY=800
 ```
 
 ### Passo 2: Atualizar o Service
@@ -127,6 +130,11 @@ export const fetchSurveyData = async () => {
     // Validar estrutura básica (opcional)
     if (!data || typeof data !== "object") {
       throw new Error("Resposta da API inválida: dados não são um objeto");
+    }
+
+    // Validar estrutura mínima esperada
+    if (!data.sections || !Array.isArray(data.sections)) {
+      throw new Error("Resposta da API inválida: 'sections' não encontrado ou não é um array");
     }
 
     return data;
@@ -218,22 +226,36 @@ import { useSurveyData } from "@/hooks/useSurveyData";
 
 function MeuComponente() {
   const {
-    data, // Dados completos
-    loading, // Estado de carregamento
+    data, // Dados completos da pesquisa
+    loading, // Estado de carregamento (primeira vez)
+    isFetching, // Estado de busca (inclui refetch)
     error, // Erro (se houver)
     isSuccess, // Se carregou com sucesso
     refetch, // Função para refetch manual
-    surveyInfo, // Helper: dados de surveyInfo
-    executiveReport, // Helper: dados de executiveReport
+    getSectionById, // Helper: busca seção por ID no sections
+    resolvePath, // Helper: resolve caminho de dados dinamicamente
   } = useSurveyData();
 
   if (loading) return <div>Carregando...</div>;
   if (error) return <div>Erro: {error.message}</div>;
   if (!isSuccess) return null;
 
+  // Exemplo 1: Acessar dados diretamente
+  const metadata = data?.metadata;
+  const sections = data?.sections;
+  const uiTexts = data?.uiTexts;
+
+  // Exemplo 2: Usar getSectionById para buscar uma seção específica
+  const executiveSection = getSectionById("executive");
+  const engagementSection = getSectionById("engagement");
+
+  // Exemplo 3: Usar resolvePath para caminhos dinâmicos
+  const sectionData = resolvePath("sections[0].data.recommendationsTable");
+  const questionData = resolvePath("sections[4].questions[0].data.npsScore");
+
   return (
     <div>
-      <h1>{surveyInfo?.title}</h1>
+      <h1>{metadata?.surveyId}</h1>
       {/* ... resto do componente ... */}
     </div>
   );
@@ -250,55 +272,120 @@ A API deve retornar um JSON com a mesma estrutura do `surveyData.json`. A estrut
 
 ```json
 {
-  "surveyInfo": {
-    "title": "Pesquisa de Satisfação do Cliente 2024",
-    "company": "TechCorp Brasil",
-    "period": "Outubro - Novembro 2024",
-    "totalRespondents": 1247,
-    "responseRate": 68.5,
-    "nps": -21,
-    "npsCategory": "Ruim"
-  },
-  "executiveReport": {
-    "summary": {
-      /* ... */
-    },
-    "recommendations": [
-      /* ... */
-    ]
-  },
-  "supportAnalysis": {
-    "sentimentAnalysis": {
-      /* ... */
-    },
-    "respondentIntent": {
-      /* ... */
-    },
-    "segmentation": [
-      /* ... */
-    ]
-  },
-  "responseDetails": {
-    "closedQuestions": [
-      /* ... */
-    ],
-    "openQuestions": [
-      /* ... */
-    ]
-  },
-  "attributeDeepDive": {
-    "attributes": [
-      /* ... */
-    ]
-  },
-  "uiTexts": {
-    /* ... textos da interface ... */
+  "metadata": {
+    "version": "1.0",
+    "language": "pt-BR",
+    "surveyId": "survey-id-2025"
   },
   "sections": [
-    /* ... */
-  ]
+    {
+      "id": "executive",
+      "index": 0,
+      "name": "Relatório Executivo",
+      "icon": "FileText",
+      "subsections": [
+        {
+          "id": "executive-summary",
+          "index": 0,
+          "name": "Sumário Executivo",
+          "icon": "ClipboardList",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Título",
+              "text": "Conteúdo",
+              "cardStyleVariant": "default"
+            }
+          ]
+        }
+      ],
+      "data": {
+        "recommendationsTable": { /* ... */ }
+      }
+    },
+    {
+      "id": "engagement",
+      "index": 1,
+      "name": "Análise de Engajamento",
+      "icon": "Heart",
+      "subsections": [
+        {
+          "id": "engagement-sentiment",
+          "index": 0,
+          "name": "Sentimento Geral",
+          "icon": "Smile",
+          "components": [ /* ... */ ]
+        }
+      ]
+    },
+    {
+      "id": "attributes",
+      "index": 2,
+      "name": "Análise por Atributos",
+      "icon": "Layers",
+      "subsections": [
+        {
+          "id": "attributes-department",
+          "index": 0,
+          "name": "Por Departamento",
+          "icon": "Building",
+          "components": [ /* ... */ ],
+          "data": { /* dados específicos desta subsection */ }
+        }
+      ]
+    },
+    {
+      "id": "responses",
+      "index": 4,
+      "name": "Análise por Questão",
+      "icon": "MessageSquare",
+      "questions": [
+        {
+          "id": 1,
+          "index": 1,
+          "questionType": "nps",
+          "question": "Qual é a probabilidade...",
+          "data": {
+            "npsScore": 35,
+            "npsCategory": "Bom"
+          }
+        }
+      ],
+      "components": [ /* componentes compartilhados para todas as questões */ ]
+    }
+  ],
+  "uiTexts": {
+    "surveyHeader": {
+      "question": "Questão",
+      "attributeAnalysis": "Análise por Atributos",
+      "deepDive": "Aprofundamento"
+    },
+    "export": {
+      "title": "Exportar Relatório"
+    }
+  }
 }
 ```
+
+### Estrutura de Dados Importante
+
+1. **`metadata`** (obrigatório): Metadados da pesquisa
+   - `version`: Versão do formato de dados
+   - `language`: Idioma (pt-BR, en-US, etc.)
+   - `surveyId`: ID único da pesquisa
+
+2. **`sections`** (obrigatório): Array de seções
+   - Cada seção tem `id`, `index`, `name`, `icon`
+   - Pode ter `subsections` (array) com `id`, `index`, `name`, `icon`, `components`
+   - Pode ter `data` (objeto) com dados específicos da seção
+   - Seções especiais:
+     - `attributes`: Subsections dinâmicas (ex: `attributes-department`, `attributes-role`)
+     - `responses`: Tem `questions` (array) ao invés de `subsections`
+
+3. **`uiTexts`** (opcional): Textos da interface
+   - Estrutura flexível, pode ter qualquer propriedade
+   - Usado para textos dinâmicos da UI
 
 ### Endpoints Sugeridos
 
@@ -306,12 +393,11 @@ Se sua API tiver múltiplos endpoints, você pode estruturar assim:
 
 ```
 GET /api/v1/survey/data          # Dados completos (endpoint principal)
-GET /api/v1/survey/info          # Apenas surveyInfo
-GET /api/v1/survey/executive     # Apenas executiveReport
-GET /api/v1/survey/responses     # Apenas responseDetails
+GET /api/v1/survey/metadata      # Apenas metadata
+GET /api/v1/survey/sections      # Apenas sections
 ```
 
-**Nota**: O código atual espera todos os dados em uma única resposta. Se sua API tiver endpoints separados, você precisará fazer múltiplas requisições e combinar os dados.
+**Nota**: O código atual espera todos os dados em uma única resposta. Se sua API tiver endpoints separados, você precisará fazer múltiplas requisições e combinar os dados no `fetchSurveyData`.
 
 ---
 
@@ -334,6 +420,9 @@ VITE_API_TIMEOUT=30000
 
 # Modo de desenvolvimento (usa dados locais se true)
 VITE_USE_MOCK_DATA=false
+
+# Delay simulado em ms (apenas para desenvolvimento)
+VITE_API_DELAY=800
 ```
 
 ### Arquivo `.env.example`
@@ -346,6 +435,7 @@ VITE_SURVEY_DATA_ENDPOINT=/survey/data
 VITE_API_TOKEN=
 VITE_API_TIMEOUT=30000
 VITE_USE_MOCK_DATA=false
+VITE_API_DELAY=800
 ```
 
 ### Usando Variáveis de Ambiente
@@ -421,12 +511,24 @@ console.log("URL completa:", `${apiUrl}${endpoint}`);
 VITE_API_TIMEOUT=60000  # 60 segundos
 ```
 
+#### 5. Estrutura de Dados Inválida
+
+**Sintoma**: Erro ao acessar `data.sections` ou propriedades não encontradas
+
+**Solução**: Valide a estrutura da resposta:
+
+```javascript
+if (!data.sections || !Array.isArray(data.sections)) {
+  throw new Error("Resposta da API inválida: 'sections' não encontrado");
+}
+```
+
 ### Exibindo Erros na UI
 
 O hook `useSurveyData()` já expõe o erro. Use assim:
 
 ```javascript
-const { error, loading } = useSurveyData();
+const { error, loading, refetch } = useSurveyData();
 
 if (error) {
   return (
@@ -505,6 +607,7 @@ Para implementar refresh token automático:
 // src/services/authService.js
 export const refreshToken = async () => {
   const refreshToken = localStorage.getItem("refreshToken");
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const response = await fetch(`${apiUrl}/auth/refresh`, {
     method: "POST",
@@ -540,7 +643,14 @@ export const fetchSurveyData = async () => {
     throw new Error(`Erro ${response.status}: ${response.statusText}`);
   }
 
-  return response.json();
+  const data = await response.json();
+
+  // Validar estrutura mínima
+  if (!data.sections || !Array.isArray(data.sections)) {
+    throw new Error("Resposta da API inválida: 'sections' não encontrado");
+  }
+
+  return data;
 };
 ```
 
@@ -571,7 +681,14 @@ const makeRequest = async (url, retries = 2) => {
       throw new Error(`Erro ${response.status}`);
     }
 
-    return response.json();
+    const data = await response.json();
+
+    // Validar estrutura
+    if (!data.sections || !Array.isArray(data.sections)) {
+      throw new Error("Resposta da API inválida");
+    }
+
+    return data;
   } catch (error) {
     if (retries > 0) {
       // Retry com backoff exponencial
@@ -607,7 +724,10 @@ export const fetchSurveyData = async () => {
   if (useMockData && isDevelopment) {
     console.warn("⚠️ Usando dados mockados (modo desenvolvimento)");
     // Simular delay de rede
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    const delay = import.meta.env.VITE_API_DELAY
+      ? parseInt(import.meta.env.VITE_API_DELAY, 10)
+      : 800;
+    await new Promise((resolve) => setTimeout(resolve, delay));
     return surveyDataJson;
   }
 
@@ -628,11 +748,62 @@ export const fetchSurveyData = async () => {
     throw new Error(`Erro ao buscar dados: ${response.status}`);
   }
 
-  return response.json();
+  const data = await response.json();
+
+  // Validar estrutura
+  if (!data.sections || !Array.isArray(data.sections)) {
+    throw new Error("Resposta da API inválida: 'sections' não encontrado");
+  }
+
+  return data;
 };
 ```
 
 **Nota:** Todos os componentes do código já utilizam o hook `useSurveyData()` para acessar os dados. Não há mais imports diretos do JSON nos componentes - apenas no serviço `surveyDataService.js` que é usado pelo hook.
+
+---
+
+## 📚 Usando o Hook useSurveyData
+
+### Propriedades Disponíveis
+
+O hook `useSurveyData()` retorna:
+
+- **`data`**: Dados completos da pesquisa (objeto)
+- **`loading`**: `true` durante o carregamento inicial
+- **`isFetching`**: `true` durante qualquer busca (inclui refetch)
+- **`error`**: Objeto de erro ou `null`
+- **`isSuccess`**: `true` se carregou com sucesso
+- **`refetch`**: Função para refetch manual
+- **`getSectionById(sectionId)`**: Busca seção por ID no array `sections`
+- **`resolvePath(path)`**: Resolve caminho de dados dinamicamente
+
+### Exemplos de Uso
+
+```javascript
+import { useSurveyData } from "@/hooks/useSurveyData";
+
+function MeuComponente() {
+  const { data, loading, error, getSectionById, resolvePath } = useSurveyData();
+
+  // Acessar metadata
+  const surveyId = data?.metadata?.surveyId;
+  const language = data?.metadata?.language;
+
+  // Buscar seção específica
+  const executiveSection = getSectionById("executive");
+  const engagementSection = getSectionById("engagement");
+
+  // Resolver caminhos dinâmicos
+  const recommendations = resolvePath("sections[0].data.recommendationsTable");
+  const firstQuestion = resolvePath("sections[4].questions[0]");
+
+  // Acessar uiTexts
+  const questionLabel = data?.uiTexts?.surveyHeader?.question;
+
+  // ... resto do componente
+}
+```
 
 ---
 
@@ -643,6 +814,7 @@ Use este checklist para garantir que tudo está funcionando:
 - [ ] Variáveis de ambiente configuradas (`.env`)
 - [ ] Arquivo `.env` adicionado ao `.gitignore`
 - [ ] `surveyDataService.js` atualizado com fetch real
+- [ ] Validação de estrutura de dados implementada
 - [ ] Testado em ambiente de desenvolvimento
 - [ ] Autenticação funcionando (se aplicável)
 - [ ] Tratamento de erros implementado
@@ -664,6 +836,7 @@ Use este checklist para garantir que tudo está funcionando:
 2. Verifique se a requisição está sendo feita
 3. Verifique o status code da resposta
 4. Verifique se a URL está correta no console
+5. Verifique se a estrutura de dados está correta (deve ter `sections` como array)
 
 ### Problema: Erro de CORS
 
@@ -684,6 +857,28 @@ app.use(cors({ origin: "http://localhost:5173" }));
 3. Header `Authorization` está sendo enviado?
 4. Backend está esperando o formato correto?
 
+### Problema: Estrutura de dados diferente
+
+**Solução**: Se sua API retorna uma estrutura diferente, você pode transformar os dados no `fetchSurveyData`:
+
+```javascript
+export const fetchSurveyData = async () => {
+  const response = await fetch(/* ... */);
+  const apiData = await response.json();
+
+  // Transformar estrutura da API para o formato esperado
+  return {
+    metadata: {
+      version: apiData.version || "1.0",
+      language: apiData.language || "pt-BR",
+      surveyId: apiData.id,
+    },
+    sections: apiData.sections || [],
+    uiTexts: apiData.uiTexts || {},
+  };
+};
+```
+
 ---
 
 ## 📚 Recursos Adicionais
@@ -694,4 +889,4 @@ app.use(cors({ origin: "http://localhost:5173" }));
 
 ---
 
-**Última atualização**: 2024
+**Última atualização**: Janeiro 2025
