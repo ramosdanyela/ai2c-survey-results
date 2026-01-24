@@ -139,7 +139,7 @@ function getSectionTitleFromData(activeSection, data) {
  * Get icon for a section or subsection (programmatic)
  * Always returns the icon of the parent section, not the subsection
  */
-function getSectionIconFromConfig(sectionId, data) {
+function getSectionIconFromData(sectionId, data) {
   if (!data?.sections || !sectionId) return FileText;
 
   // First, try to extract the section ID from sectionId
@@ -211,8 +211,8 @@ export function SurveyHeader({
   }, [activeSection, data]);
 
   const Icon = useMemo(() => {
-    // getSectionIconFromConfig always returns a valid icon (FileText as fallback)
-    return getSectionIconFromConfig(activeSection, data);
+    // getSectionIconFromData always returns a valid icon (FileText as fallback)
+    return getSectionIconFromData(activeSection, data);
   }, [activeSection, data]);
 
   // Use provided navigationButtons or default NavigationButtons component

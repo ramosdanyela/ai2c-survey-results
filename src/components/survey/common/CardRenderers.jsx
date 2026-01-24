@@ -28,20 +28,6 @@ export function SchemaCard({ component, data, children }) {
 
   // Text resolution - silently handle empty text (expected in some cases)
 
-  // Debug: log text resolution for flat cards
-  if (component.cardStyleVariant === "flat" && component.text) {
-    console.log("SchemaCard: Flat card text resolution", {
-      original: component.text,
-      resolved: text,
-      hasText: text && text.trim() !== "",
-      component: {
-        type: component.type,
-        cardStyleVariant: component.cardStyleVariant,
-        cardContentVariant: component.cardContentVariant,
-      },
-    });
-  }
-
 
   // Usa className do componente enriquecido (resolvido de cardStyleVariant)
   const styleClass = component.className || "card-elevated";

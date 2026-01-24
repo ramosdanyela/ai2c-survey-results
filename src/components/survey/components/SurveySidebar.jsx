@@ -505,15 +505,6 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
               const isExpanded = expandedSections[item.id];
               // Get dynamic subsections using helper function
               const dynamicSubs = getDynamicSubsections(item, data);
-              
-              // Debug log for responses section
-              if (item.id === "responses") {
-                console.log("SurveySidebar: responses section debug", {
-                  dynamicSubsLength: dynamicSubs.length,
-                  dynamicSubs: dynamicSubs.map(s => ({ id: s.id, name: s.name?.substring(0, 30) })),
-                  itemHasSubsections,
-                });
-              }
 
               // Generic rendering for dynamic subsections
               if (dynamicSubs.length > 0) {

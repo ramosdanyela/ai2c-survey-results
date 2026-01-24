@@ -37,35 +37,18 @@ function getDisplayNumber(questionId, data) {
 
 /**
  * Get all attribute subsections for navigation (sorted by index)
+ * Uses getAttributesFromData and adds the "attributes-" prefix to IDs
  */
 function getAllAttributes(data) {
-  const attributesSection = data?.sections?.find(
-    (s) => s.id === "attributes"
-  );
-
-  // NEW STRUCTURE: Use subsections
-  if (attributesSection?.subsections && Array.isArray(attributesSection.subsections)) {
-    return attributesSection.subsections
-      .filter((sub) => sub.icon && sub.id && sub.id.startsWith("attributes-"))
-      .map((sub) => ({
-        id: sub.id, // Keep full ID (attributes-department, etc.)
-        index: sub.index || 0,
-      }))
-      .sort((a, b) => (a.index || 0) - (b.index || 0));
-  }
-
-  // OLD STRUCTURE: Fallback to data.attributes (backward compatibility)
-  if (attributesSection?.data?.attributes) {
-    return attributesSection.data.attributes
-      .filter((attr) => attr.icon)
-      .sort((a, b) => (a.index || 0) - (b.index || 0))
-      .map((attr) => ({
-        id: `attributes-${attr.id}`,
-        index: attr.index || 0,
-      }));
-  }
-
-  return [];
+  const attributes = getAttributesFromData(data);
+  
+  // Add "attributes-" prefix to IDs for navigation
+  return attributes
+    .filter((attr) => attr.icon) // Only include attributes with icons
+    .map((attr) => ({
+      id: `attributes-${attr.id}`, // Add prefix for navigation IDs
+      index: attr.index || 0,
+    }));
 }
 
 /**
@@ -125,34 +108,82 @@ function buildOrderedSubsections(data) {
 }
 
 /**
+ * Find which section contains a given subsection ID
+ * Returns the section ID that contains the subsection, or null if not found
+ */
+function findSectionForSubsection(subsectionId, data) {
+  if (!data?.sections || !subsectionId) return null;
+
+  // Check if subsectionId matches a section ID exactly
+  const exactMatch = data.sections.find((s) => s.id === subsectionId);
+  if (exactMatch) {
+    return subsectionId;
+  }
+
+  // Find which section contains this subsection
+  for (const section of data.sections) {
+    // Check subsections from config
+    if (section.subsections) {
+      const subsection = section.subsections.find(
+        (sub) => sub.id === subsectionId
+      );
+      if (subsection) {
+        return section.id;
+      }
+    }
+    // Check dynamic subsections (responses)
+    if (
+      section.id === "responses" &&
+      subsectionId &&
+      typeof subsectionId === "string" &&
+      subsectionId.startsWith("responses-")
+    ) {
+      return section.id;
+    }
+    // Check dynamic subsections (attributes)
+    if (
+      section.id === "attributes" &&
+      subsectionId &&
+      typeof subsectionId === "string" &&
+      subsectionId.startsWith("attributes-")
+    ) {
+      return section.id;
+    }
+  }
+
+  return null;
+}
+
+/**
  * Get section title from data (programmatic)
- * Priority: sectionsConfig.sections[].name > sectionId
+ * Priority: sectionsConfig.sections[].name > formatted sectionId
  */
 function getSectionTitleFromData(sectionId, data) {
   if (!data || !sectionId) return sectionId;
 
-  // Extract base section ID (e.g., "executive-summary" -> "executive")
-  const baseSectionId =
-    typeof sectionId === "string" ? sectionId.split("-")[0] : sectionId;
-
   // Priority 1: Try to get from sections (most reliable)
   if (data?.sections) {
-    const section = data.sections.find(
-      (s) => s.id === baseSectionId
-    );
+    const section = data.sections.find((s) => s.id === sectionId);
     if (section?.name) {
       return section.name;
     }
   }
 
-  // Fallback: return formatted sectionId
+  // Fallback: format sectionId nicely instead of returning raw ID
+  if (typeof sectionId === "string") {
+    return sectionId
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }
+  
   return sectionId;
 }
 
 /**
  * Get icon for a section or subsection (programmatic)
  */
-function getSectionIconFromConfig(sectionId, data) {
+function getSectionIconFromData(sectionId, data) {
   if (!data?.sections) return FileText;
 
   // First try to find exact match in sectionsConfig
@@ -169,41 +200,6 @@ function getSectionIconFromConfig(sectionId, data) {
       if (subsection && subsection.icon) {
         return getIcon(subsection.icon);
       }
-    }
-  }
-
-  // Check if it's an attribute subsection
-  if (
-    sectionId &&
-    typeof sectionId === "string" &&
-    sectionId.startsWith("attributes-")
-  ) {
-    const attributesSection = data?.sections?.find(
-      (s) => s.id === "attributes"
-    );
-    
-    // NEW STRUCTURE: Check subsections first
-    if (attributesSection?.subsections) {
-      const subsection = attributesSection.subsections.find(
-        (sub) => sub.id === sectionId
-      );
-      if (subsection && subsection.icon) {
-        return getIcon(subsection.icon);
-      }
-    }
-    
-    // OLD STRUCTURE: Fallback to data.attributes (backward compatibility)
-    const attributeId = sectionId.replace("attributes-", "");
-    const attribute = attributesSection?.data?.attributes?.find(
-      (attr) => attr.id === attributeId
-    );
-    if (attribute && attribute.icon) {
-      return getIcon(attribute.icon);
-    }
-    
-    // Fallback to section icon
-    if (attributesSection && attributesSection.icon) {
-      return getIcon(attributesSection.icon);
     }
   }
 
@@ -420,75 +416,26 @@ function getPreviousSection(currentSection, data) {
 function getSubsectionTitle(sectionId, data, maxLength = 40) {
   if (!data || !sectionId) return sectionId;
 
-  // Extract base section ID (e.g., "executive-summary" -> "executive")
-  const baseSectionId =
-    typeof sectionId === "string" ? sectionId.split("-")[0] : sectionId;
-
-  // Find the section config
-  const sectionConfig = data?.sections?.find(
-    (s) => s.id === baseSectionId
-  );
-
-  // Priority 1: Try to get from sectionConfig.subsections
-  if (sectionConfig?.subsections && Array.isArray(sectionConfig.subsections)) {
-    const subsection = sectionConfig.subsections.find(
-      (sub) => sub.id === sectionId
-    );
-    if (subsection?.name) {
-      return subsection.name;
-    }
-  }
-
-  // Priority 2: Try to get section title from data
-  const sectionTitle = getSectionTitleFromData(sectionId, data);
-  if (sectionTitle !== sectionId) {
-    return sectionTitle;
-  }
-
-  // Priority 3: If it's an attribute subsection (attributes-{id})
-  if (
-    sectionId &&
-    typeof sectionId === "string" &&
-    sectionId.startsWith("attributes-") &&
-    !sectionId.includes("template")
-  ) {
-    const attributesSection = data?.sections?.find(
-      (s) => s.id === "attributes"
-    );
-    
-    // NEW STRUCTURE: Check subsections first
-    if (attributesSection?.subsections) {
-      const subsection = attributesSection.subsections.find(
-        (sub) => sub.id === sectionId
-      );
-      if (subsection?.name) {
-        return subsection.name;
+  // Priority 1: Search for subsection in ALL sections (fixes cases like "retention-intent" in "engagement" section)
+  if (data?.sections && Array.isArray(data.sections)) {
+    for (const section of data.sections) {
+      if (section?.subsections && Array.isArray(section.subsections)) {
+        const subsection = section.subsections.find(
+          (sub) => sub.id === sectionId
+        );
+        if (subsection?.name) {
+          return subsection.name;
+        }
       }
     }
-    
-    // OLD STRUCTURE: Fallback to data.attributes (backward compatibility)
-    const attributeId = sectionId.replace("attributes-", "");
-    const attribute = attributesSection?.data?.attributes?.find(
-      (attr) => attr.id === attributeId
-    );
-    if (attribute?.name) {
-      return attribute.name;
-    }
-    // Fallback to legacy structure
-    const legacyAttribute = data?.attributeDeepDive?.attributes?.find(
-      (attr) => attr.id === attributeId
-    );
-    if (legacyAttribute?.name) {
-      return legacyAttribute.name;
-    }
   }
 
-  // Priority 5: If it's a template (like "attribute-template"), return empty
+  // Priority 2: If it's a template (like "attribute-template"), return empty
   if (sectionId && typeof sectionId === "string" && sectionId.includes("template")) {
     return ""; // Don't show template names in navigation
   }
 
-  // Priority 6: If it's a question subsection (responses-{id})
+  // Priority 3: If it's a question subsection (responses-{id})
   if (
     sectionId &&
     typeof sectionId === "string" &&
@@ -496,6 +443,7 @@ function getSubsectionTitle(sectionId, data, maxLength = 40) {
   ) {
     const questionId = parseInt(sectionId.replace("responses-", ""), 10);
     const displayNumber = getDisplayNumber(questionId, data);
+    const uiTexts = data?.uiTexts?.surveyHeader || {};
     return `${uiTexts.question || "Questão"} ${displayNumber}`;
   }
 
@@ -529,19 +477,38 @@ function getSectionAndSubsection(sectionId, data, maxLength = 40) {
         return getSectionAndSubsection(firstAttr, data, maxLength);
       }
     }
-    // For other templates, return empty subsection
+    // For other templates, try to find the section
+    const templateSectionId = findSectionForSubsection(sectionId, data);
     return {
-      section: getSectionTitleFromData(sectionId.split("-")[0], data),
+      section: getSectionTitleFromData(templateSectionId || sectionId, data),
       subsection: "",
     };
   }
 
   const uiTexts = data.uiTexts?.surveyHeader || {};
-  const baseSection =
-    sectionId && typeof sectionId === "string"
-      ? sectionId.split("-")[0]
-      : sectionId;
-  let sectionTitle = getSectionTitleFromData(baseSection, data);
+  
+  // Find the section that contains this subsection (don't use baseSectionId extraction)
+  const actualSectionId = findSectionForSubsection(sectionId, data);
+  
+  // If we couldn't find the section, it means sectionId might be a section ID itself
+  // In that case, use it directly
+  const sectionIdToUse = actualSectionId || sectionId;
+  
+  // Get section title - always use the section name from data, never formatted IDs
+  let sectionTitle = null;
+  if (actualSectionId) {
+    const section = data?.sections?.find((s) => s.id === actualSectionId);
+    if (section?.name) {
+      sectionTitle = section.name;
+    }
+  }
+  
+  // Fallback to getSectionTitleFromData only if we didn't find a section name
+  if (!sectionTitle) {
+    sectionTitle = getSectionTitleFromData(sectionIdToUse, data);
+  }
+  
+  // Get subsection title - always use the subsection name from data
   let subsectionTitle = getSubsectionTitle(sectionId, data, maxLength);
 
   // Special adjustment: for "Attribute Deep Dive", show only "Deep Dive"
@@ -556,8 +523,8 @@ function getSectionAndSubsection(sectionId, data, maxLength = 40) {
   }
 
   // Special adjustment: for "Question Analysis", show question number as subtitle
+  // If sectionId starts with "responses-", it's a question subsection
   if (
-    baseSection === "responses" &&
     sectionId &&
     typeof sectionId === "string" &&
     sectionId.startsWith("responses-")
@@ -620,10 +587,10 @@ export function NavigationButtons({ currentSection, onSectionChange }) {
 
   // Get section icons for buttons
   const PreviousIcon = previousSection
-    ? getSectionIconFromConfig(previousSection, data)
+    ? getSectionIconFromData(previousSection, data)
     : null;
   const NextIcon = nextSection
-    ? getSectionIconFromConfig(nextSection, data)
+    ? getSectionIconFromData(nextSection, data)
     : null;
 
   const handleNext = () => {
