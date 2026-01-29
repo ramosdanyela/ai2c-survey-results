@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { logger } from "@/utils/logger";
 import { SubsectionTitle } from "../widgets/SubsectionTitle";
-import { wrapWithTooltip } from "./tooltipHelpers";
+import { wrapWithTooltip } from "./tooltipDataSourceApi";
 import { SchemaCard } from "./CardRenderers";
 import { renderComponent } from "./ComponentRegistry";
 import { getIcon } from "@/lib/icons";

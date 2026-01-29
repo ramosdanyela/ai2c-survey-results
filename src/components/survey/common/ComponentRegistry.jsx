@@ -1,14 +1,14 @@
 /**
  * Component Registry - Factory Pattern para renderização de componentes
- * 
+ *
  * Este registry substitui o switch/case extenso, facilitando:
  * - Adicionar novos tipos de componentes sem modificar o switch
  * - Manter todos os mapeamentos em um único lugar
  * - Melhorar manutenibilidade e legibilidade
- * 
+ *
  * @example
  * import { renderComponent } from "./ComponentRegistry";
- * 
+ *
  * return renderComponent(component, data, { subSection, isExport, exportWordCloud });
  */
 
@@ -56,7 +56,7 @@ import {
   SchemaAccordion,
   SchemaQuestionsList,
 } from "./WidgetRenderers";
-import { wrapWithTooltip } from "./tooltipHelpers";
+import { wrapWithTooltip } from "./tooltipDataSourceApi";
 
 /**
  * Registry de componentes por tipo
@@ -108,7 +108,7 @@ export const componentRegistry = {
 
 /**
  * Renderiza um componente baseado no tipo usando o registry
- * 
+ *
  * @param {Object} component - Componente schema do JSON
  * @param {Object} data - Dados do contexto
  * @param {Object} props - Props adicionais (subSection, isExport, exportWordCloud, etc.)
@@ -141,17 +141,19 @@ export const renderComponent = (component, data, props = {}) => {
         subSection={subSection}
         isExport={isExport}
         exportWordCloud={exportWordCloud}
-      />
+      />,
     );
   }
 
   if (component.type === "accordion") {
     // Accordion precisa de renderSchemaComponent para renderizar componentes aninhados
     if (!props.renderSchemaComponent) {
-      logger.error("Accordion: renderSchemaComponent is required but not provided");
+      logger.error(
+        "Accordion: renderSchemaComponent is required but not provided",
+      );
       return null;
     }
-    
+
     return wrapWithTooltip(
       component,
       isExport,
@@ -159,38 +161,51 @@ export const renderComponent = (component, data, props = {}) => {
         component={component}
         data={data}
         renderSchemaComponent={props.renderSchemaComponent}
-      />
+      />,
     );
   }
 
   // Renderização padrão para a maioria dos componentes
   try {
-
     const rendered = <Component {...componentProps} />;
-    
+
     // Garante que o resultado é um elemento React válido
     if (rendered === null || rendered === undefined) {
       // Tabelas podem retornar null quando não há dados - comportamento esperado
       return null;
     }
-    
+
     // CRÍTICO: Verifica se é um objeto vazio (não válido como React child)
-    if (typeof rendered === 'object' && !React.isValidElement(rendered)) {
-      logger.error(`Componente ${component.type} retornou objeto inválido (não é elemento React):`, rendered);
+    if (typeof rendered === "object" && !React.isValidElement(rendered)) {
+      logger.error(
+        `Componente ${component.type} retornou objeto inválido (não é elemento React):`,
+        rendered,
+      );
       return null;
     }
-    
+
     if (React.isValidElement(rendered)) {
       const wrapped = wrapWithTooltip(component, isExport, rendered);
       // Garante que o wrapped também é válido
-      if (wrapped === null || wrapped === undefined || React.isValidElement(wrapped)) {
+      if (
+        wrapped === null ||
+        wrapped === undefined ||
+        React.isValidElement(wrapped)
+      ) {
         return wrapped;
       }
-      logger.warnCritical(`wrapWithTooltip retornou valor inválido para ${component.type}:`, wrapped);
+      logger.warnCritical(
+        `wrapWithTooltip retornou valor inválido para ${component.type}:`,
+        wrapped,
+      );
       return null;
     }
-    
-    logger.warnCritical(`Componente ${component.type} retornou elemento inválido:`, rendered, typeof rendered);
+
+    logger.warnCritical(
+      `Componente ${component.type} retornou elemento inválido:`,
+      rendered,
+      typeof rendered,
+    );
     return null;
   } catch (error) {
     logger.error(`Erro ao renderizar componente ${component.type}:`, error, {
@@ -204,7 +219,7 @@ export const renderComponent = (component, data, props = {}) => {
 
 /**
  * Verifica se um tipo de componente está registrado
- * 
+ *
  * @param {string} type - Tipo do componente
  * @returns {boolean} - true se o tipo está registrado
  */
@@ -214,7 +229,7 @@ export const isComponentTypeRegistered = (type) => {
 
 /**
  * Obtém a lista de todos os tipos de componentes registrados
- * 
+ *
  * @returns {string[]} - Array com todos os tipos registrados
  */
 export const getRegisteredComponentTypes = () => {
