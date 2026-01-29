@@ -25,9 +25,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/export" element={<Export />} />
             <Route path="/export/preview" element={<ExportPreview />} />
-            <Route path="/charts" element={<Charts />} />
-            <Route path="/json-viewer" element={<JsonViewer />} />
-            <Route path="/json-reference" element={<JsonReference />} />
+
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

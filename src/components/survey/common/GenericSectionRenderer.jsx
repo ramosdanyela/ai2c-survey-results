@@ -538,23 +538,31 @@ export function GenericSectionRenderer({
     return data.sections.find((s) => s.id === sectionId) || null;
   }, [data, sectionId]);
 
-  // Find section data by ID
+  // sectionData: objeto injetado em data para componentes de seções genéricas.
+  // Padrão correto para todas as seções genéricas: dataPath "sectionData.<chave>"
+  // (ex.: sectionData.recommendationsTable, sectionData.sentimentDivergentChart).
   const sectionData = useMemo(() => {
     if (!data || !sectionId) return null;
 
     // Se a seção tem subseções cujos ids seguem "{sectionId}-*", monta sectionData a partir de subsection.data
+    // e mescla com section.data para seções (ex.: executive) que têm dados no nível da seção (ex.: recommendationsTable)
     if (section?.subsections?.length > 0) {
       const prefix = `${sectionId}-`;
       const allHavePrefix = section.subsections.every(
         (sub) => sub.id && sub.id.startsWith(prefix),
       );
       if (allHavePrefix) {
-        return section.subsections.reduce((acc, sub) => {
+        const fromSubsections = section.subsections.reduce((acc, sub) => {
           if (sub.data && sub.id?.startsWith(prefix)) {
             acc[sub.id.replace(prefix, "")] = sub.data;
           }
           return acc;
         }, {});
+        // section.data (ex.: executive.data.recommendationsTable) precisa estar disponível para componentes
+        if (section?.data && typeof section.data === "object") {
+          return { ...section.data, ...fromSubsections };
+        }
+        return fromSubsections;
       }
     }
 
@@ -770,8 +778,7 @@ export function GenericSectionRenderer({
       enhanced.uiTexts = data?.uiTexts || {};
     }
 
-    // Add sectionData to context for relative paths (sectionData.*)
-    // Always add sectionData, even if empty, to prevent errors in components
+    // Padrão para seções genéricas: componentes usam dataPath "sectionData.<chave>"
     enhanced.sectionData = sectionData || {};
 
     // Use uiTexts from root only (no section-specific uiTexts)
