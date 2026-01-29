@@ -56,7 +56,6 @@ import {
   SchemaAccordion,
   SchemaQuestionsList,
 } from "./WidgetRenderers";
-import { wrapWithTooltip } from "./tooltipDataSourceApi";
 
 /**
  * Registry de componentes por tipo
@@ -132,16 +131,14 @@ export const renderComponent = (component, data, props = {}) => {
 
   // Casos especiais que precisam de props adicionais
   if (component.type === "questionsList") {
-    return wrapWithTooltip(
-      component,
-      isExport,
+    return (
       <Component
         component={component}
         data={data}
         subSection={subSection}
         isExport={isExport}
         exportWordCloud={exportWordCloud}
-      />,
+      />
     );
   }
 
@@ -154,14 +151,12 @@ export const renderComponent = (component, data, props = {}) => {
       return null;
     }
 
-    return wrapWithTooltip(
-      component,
-      isExport,
+    return (
       <Component
         component={component}
         data={data}
         renderSchemaComponent={props.renderSchemaComponent}
-      />,
+      />
     );
   }
 
@@ -185,20 +180,7 @@ export const renderComponent = (component, data, props = {}) => {
     }
 
     if (React.isValidElement(rendered)) {
-      const wrapped = wrapWithTooltip(component, isExport, rendered);
-      // Garante que o wrapped também é válido
-      if (
-        wrapped === null ||
-        wrapped === undefined ||
-        React.isValidElement(wrapped)
-      ) {
-        return wrapped;
-      }
-      logger.warnCritical(
-        `wrapWithTooltip retornou valor inválido para ${component.type}:`,
-        wrapped,
-      );
-      return null;
+      return rendered;
     }
 
     logger.warnCritical(

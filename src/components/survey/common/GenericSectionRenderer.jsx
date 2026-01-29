@@ -1,7 +1,6 @@
 import React, { useMemo } from "react";
 import { logger } from "@/utils/logger";
 import { SubsectionTitle } from "../widgets/SubsectionTitle";
-import { wrapWithTooltip } from "./tooltipDataSourceApi";
 import { SchemaCard } from "./CardRenderers";
 import { renderComponent } from "./ComponentRegistry";
 import { getIcon } from "@/lib/icons";
@@ -258,12 +257,10 @@ function ComponentRenderer({
           return false;
         });
 
-      return wrapWithTooltip(
-        component,
-        isExport,
+      return (
         <ComponentWrapper {...finalWrapperProps}>
           {nestedComponents}
-        </ComponentWrapper>,
+        </ComponentWrapper>
       );
     }
 
@@ -273,33 +270,25 @@ function ComponentRenderer({
       const resolvedText = breakLinesAfterPeriod(rawText);
       // Handle multi-line text like summary
       if (resolvedText.includes("\n")) {
-        return wrapWithTooltip(
-          component,
-          isExport,
+        return (
           <ComponentWrapper {...finalWrapperProps}>
             {resolvedText.split("\n").map((line, index) => (
               <p key={index} className={line.trim() ? "" : "h-3"}>
                 {line}
               </p>
             ))}
-          </ComponentWrapper>,
+          </ComponentWrapper>
         );
       }
-      return wrapWithTooltip(
-        component,
-        isExport,
+      return (
         <ComponentWrapper {...finalWrapperProps}>
           {resolvedText}
-        </ComponentWrapper>,
+        </ComponentWrapper>
       );
     }
 
     // Empty wrapper
-    return wrapWithTooltip(
-      component,
-      isExport,
-      <ComponentWrapper {...finalWrapperProps} />,
-    );
+    return <ComponentWrapper {...finalWrapperProps} />;
   }
 
   // Casos especiais que precisam de lógica customizada antes do registry
@@ -352,11 +341,7 @@ function ComponentRenderer({
         // Removendo objeto inválido do array - comportamento esperado
         return false;
       });
-    return wrapWithTooltip(
-      component,
-      isExport,
-      <div className={className}>{nested}</div>,
-    );
+    return <div className={className}>{nested}</div>;
   }
 
   if (component.type === "container") {
@@ -428,15 +413,13 @@ function ComponentRenderer({
         // Removendo objeto inválido do array - comportamento esperado
         return false;
       });
-    return wrapWithTooltip(
-      component,
-      isExport,
+    return (
       <div
         className={containerClassName || ""}
         style={wrapperStyle || undefined}
       >
         {nested}
-      </div>,
+      </div>
     );
   }
 
@@ -467,19 +450,13 @@ function ComponentRenderer({
             />
           );
         });
-      return wrapWithTooltip(
-        component,
-        isExport,
+      return (
         <SchemaCard component={component} data={data}>
           {nestedComponents}
-        </SchemaCard>,
+        </SchemaCard>
       );
     }
-    return wrapWithTooltip(
-      component,
-      isExport,
-      <SchemaCard component={component} data={data} />,
-    );
+    return <SchemaCard component={component} data={data} />;
   }
 
   // Usa o Component Registry para todos os outros tipos
