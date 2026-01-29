@@ -28,7 +28,6 @@ import {
 } from "@/components/ui/collapsible";
 import { useSurveyData } from "@/hooks/useSurveyData";
 import { useMemo } from "react";
-import { getAttributesFromData } from "@/services/dataResolver";
 
 export function FilterPanel({
   onFiltersChange,
@@ -52,9 +51,16 @@ export function FilterPanel({
     return uiTexts?.filterPanel?.[key] || fallback;
   };
 
-  // Get attributes dynamically from data
   const attributes = useMemo(() => {
-    return getAttributesFromData(data) || [];
+    const section = data?.sections?.find((s) => s.id === "attributes");
+    if (!section?.subsections?.length) return [];
+    const prefix = "attributes-";
+    return section.subsections.map((sub) => ({
+      id: sub.id?.startsWith(prefix) ? sub.id.replace(prefix, "") : sub.id,
+      name: sub.name,
+      icon: sub.icon,
+      index: sub.index,
+    }));
   }, [data]);
 
   // Build filter options dynamically from attributes
@@ -139,7 +145,7 @@ export function FilterPanel({
             newFilters = prev.map((f) =>
               f.filterType === filterType
                 ? { ...f, values: [...f.values, value] }
-                : f
+                : f,
             );
           } else {
             newFilters = prev;
@@ -147,14 +153,14 @@ export function FilterPanel({
         } else {
           // Remove value
           const updatedValues = existingFilter.values.filter(
-            (v) => v !== value
+            (v) => v !== value,
           );
           if (updatedValues.length === 0) {
             // Remove filter if no values left
             newFilters = prev.filter((f) => f.filterType !== filterType);
           } else {
             newFilters = prev.map((f) =>
-              f.filterType === filterType ? { ...f, values: updatedValues } : f
+              f.filterType === filterType ? { ...f, values: updatedValues } : f,
             );
           }
         }
@@ -235,7 +241,9 @@ export function FilterPanel({
                 {getFilterText("all", "Todas")}
               </Badge>
               <Badge
-                variant={questionFilter === "open-ended" ? "default" : "outline"}
+                variant={
+                  questionFilter === "open-ended" ? "default" : "outline"
+                }
                 className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
                   questionFilter === "open-ended"
                     ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
@@ -247,7 +255,9 @@ export function FilterPanel({
                 {getFilterText("open-ended", "Campo Aberto")}
               </Badge>
               <Badge
-                variant={questionFilter === "multiple-choice" ? "default" : "outline"}
+                variant={
+                  questionFilter === "multiple-choice" ? "default" : "outline"
+                }
                 className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
                   questionFilter === "multiple-choice"
                     ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
@@ -259,7 +269,9 @@ export function FilterPanel({
                 {getFilterText("multiple-choice", "Múltipla Escolha")}
               </Badge>
               <Badge
-                variant={questionFilter === "single-choice" ? "default" : "outline"}
+                variant={
+                  questionFilter === "single-choice" ? "default" : "outline"
+                }
                 className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
                   questionFilter === "single-choice"
                     ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
@@ -307,7 +319,7 @@ export function FilterPanel({
                   <SelectValue
                     placeholder={getFilterText(
                       "selectQuestion",
-                      "Selecione uma questão"
+                      "Selecione uma questão",
                     )}
                   />
                 </SelectTrigger>
@@ -323,10 +335,13 @@ export function FilterPanel({
                     const questionType = isNPS
                       ? getFilterText("nps", "NPS")
                       : q.questionType === "open-ended"
-                      ? getFilterText("open-ended", "Campo Aberto")
-                      : q.questionType === "single-choice"
-                      ? getFilterText("single-choice", "Escolha única")
-                      : getFilterText("multiple-choice", "Múltipla Escolha");
+                        ? getFilterText("open-ended", "Campo Aberto")
+                        : q.questionType === "single-choice"
+                          ? getFilterText("single-choice", "Escolha única")
+                          : getFilterText(
+                              "multiple-choice",
+                              "Múltipla Escolha",
+                            );
                     const truncatedQuestion =
                       q.question.length > 80
                         ? q.question.substring(0, 80) + "..."
@@ -375,7 +390,7 @@ export function FilterPanel({
                 <SelectValue
                   placeholder={getFilterText(
                     "selectFilterType",
-                    "Selecione um tipo de filtro"
+                    "Selecione um tipo de filtro",
                   )}
                 />
               </SelectTrigger>
@@ -421,7 +436,7 @@ export function FilterPanel({
             <div className="flex flex-wrap gap-1">
               {activeFilters.map((filter) => {
                 const filterLabel = filterOptions.find(
-                  (opt) => opt.value === filter.filterType
+                  (opt) => opt.value === filter.filterType,
                 )?.label;
                 return filter.values.map((value) => (
                   <Badge
@@ -477,7 +492,7 @@ export function FilterPanel({
                 <div className="space-y-2">
                   {activeFilters.map((filter) => {
                     const filterLabel = filterOptions.find(
-                      (opt) => opt.value === filter.filterType
+                      (opt) => opt.value === filter.filterType,
                     )?.label;
                     const isOpen = openFilters.has(filter.filterType);
                     const filterValues = getFilterValues(filter.filterType);
@@ -504,7 +519,7 @@ export function FilterPanel({
                                 {filter.values.length !== 1
                                   ? getFilterText(
                                       "selectedPlural",
-                                      "selecionados"
+                                      "selecionados",
                                     )
                                   : getFilterText("selected", "selecionado")}
                               </Badge>
@@ -526,7 +541,7 @@ export function FilterPanel({
                             <Label className="text-xs text-muted-foreground">
                               {getFilterText(
                                 "selectValues",
-                                "Selecione os valores"
+                                "Selecione os valores",
                               )}
                             </Label>
                             <div className="space-y-2 max-h-48 overflow-y-auto">
@@ -539,13 +554,13 @@ export function FilterPanel({
                                     id={`${filter.filterType}-${value}`}
                                     checked={isValueSelected(
                                       filter.filterType,
-                                      value
+                                      value,
                                     )}
                                     onCheckedChange={(checked) =>
                                       handleValueToggle(
                                         filter.filterType,
                                         value,
-                                        checked
+                                        checked,
                                       )
                                     }
                                     className="border-[hsl(var(--custom-blue))] data-[state=checked]:bg-[hsl(var(--custom-blue))] data-[state=checked]:text-white focus-visible:ring-[hsl(var(--custom-blue))]"
@@ -573,7 +588,7 @@ export function FilterPanel({
                                       onClick={() =>
                                         handleRemoveValue(
                                           filter.filterType,
-                                          value
+                                          value,
                                         )
                                       }
                                       className="ml-1 hover:bg-muted-foreground/20 rounded-full p-0.5"
@@ -611,13 +626,13 @@ export function FilterPanel({
             {selectedFilterType &&
               availableValues.length > 0 &&
               !activeFilters.find(
-                (f) => f.filterType === selectedFilterType
+                (f) => f.filterType === selectedFilterType,
               ) && (
                 <div className="space-y-2 pt-2 border-t">
                   <Label className="text-sm text-muted-foreground">
                     {
                       filterOptions.find(
-                        (opt) => opt.value === selectedFilterType
+                        (opt) => opt.value === selectedFilterType,
                       )?.label
                     }{" "}
                     - {getFilterText("selectValues", "Selecione os valores")}
@@ -632,7 +647,7 @@ export function FilterPanel({
                             handleValueToggle(
                               selectedFilterType,
                               value,
-                              checked
+                              checked,
                             )
                           }
                           className="border-[hsl(var(--custom-blue))] data-[state=checked]:bg-[hsl(var(--custom-blue))] data-[state=checked]:text-white focus-visible:ring-[hsl(var(--custom-blue))]"

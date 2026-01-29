@@ -8,7 +8,6 @@ import {
 } from "@/lib/colors";
 import { useSurveyData } from "@/hooks/useSurveyData";
 import { NavigationButtons } from "@/components/survey/components/NavigationButtons";
-import { getAttributesFromData } from "@/services/dataResolver";
 
 /**
  * Extract section ID from activeSection by checking sections
@@ -21,9 +20,7 @@ function extractSectionId(data, activeSection) {
   }
 
   // Check if activeSection matches a section ID exactly
-  const exactMatch = data.sections.find(
-    (s) => s.id === activeSection
-  );
+  const exactMatch = data.sections.find((s) => s.id === activeSection);
   if (exactMatch) {
     return activeSection;
   }
@@ -34,25 +31,17 @@ function extractSectionId(data, activeSection) {
     // Check subsections from config
     if (section.subsections) {
       const subsection = section.subsections.find(
-        (sub) => sub.id === activeSection
+        (sub) => sub.id === activeSection,
       );
       if (subsection) {
         return section.id;
       }
     }
-    // Check dynamic subsections (responses)
+    // Check dynamic subsections (responses - built from questions, not section.subsections)
     if (
       section.id === "responses" &&
       activeSection &&
       activeSection.startsWith("responses-")
-    ) {
-      return section.id;
-    }
-    // Check dynamic subsections (attributes)
-    if (
-      section.id === "attributes" &&
-      activeSection &&
-      activeSection.startsWith("attributes-")
     ) {
       return section.id;
     }
@@ -66,9 +55,7 @@ function extractSectionId(data, activeSection) {
     // Try all possible combinations from longest to shortest
     for (let i = parts.length; i >= 1; i--) {
       const potentialId = parts.slice(0, i).join("-");
-      const section = data.sections.find(
-        (s) => s.id === potentialId
-      );
+      const section = data.sections.find((s) => s.id === potentialId);
       if (section) {
         // Check if it's a dynamic subsection or regular subsection
         if (section.dynamicSubsections) {
@@ -104,12 +91,10 @@ function getSectionTitleFromData(activeSection, data) {
   // First, try to extract the section ID from activeSection
   // This handles cases where activeSection is a subsection (e.g., "retention-intent" -> "engagement")
   const sectionId = extractSectionId(data, activeSection);
-  
+
   // If we found a section ID, use it to get the title
   if (sectionId && data?.sections) {
-    const section = data.sections.find(
-      (s) => s.id === sectionId
-    );
+    const section = data.sections.find((s) => s.id === sectionId);
     if (section?.name) {
       return section.name;
     }
@@ -123,9 +108,7 @@ function getSectionTitleFromData(activeSection, data) {
 
   // Priority 1: Try to get from sections (most reliable)
   if (data?.sections) {
-    const section = data.sections.find(
-      (s) => s.id === baseSectionId
-    );
+    const section = data.sections.find((s) => s.id === baseSectionId);
     if (section?.name) {
       return section.name;
     }
@@ -145,12 +128,10 @@ function getSectionIconFromData(sectionId, data) {
   // First, try to extract the section ID from sectionId
   // This handles cases where sectionId is a subsection (e.g., "retention-intent" -> "engagement")
   const parentSectionId = extractSectionId(data, sectionId);
-  
+
   // If we found a parent section ID, use it to get the icon
   if (parentSectionId) {
-    const section = data.sections.find(
-      (s) => s.id === parentSectionId
-    );
+    const section = data.sections.find((s) => s.id === parentSectionId);
     if (section && section.icon) {
       return getIcon(section.icon);
     }
@@ -164,18 +145,11 @@ function getSectionIconFromData(sectionId, data) {
     }
   }
 
-  // Check if it's an attribute subsection
-  if (
-    sectionId &&
-    typeof sectionId === "string" &&
-    sectionId.startsWith("attributes-")
-  ) {
-    // Fallback to section icon
-    const attributesSection = data.sections.find(
-      (s) => s.id === "attributes"
-    );
-    if (attributesSection && attributesSection.icon) {
-      return getIcon(attributesSection.icon);
+  // Check if it's a subsection (any section with subsections)
+  for (const section of data.sections) {
+    const sub = section.subsections?.find((s) => s.id === sectionId);
+    if (sub !== undefined && section.icon) {
+      return getIcon(section.icon);
     }
   }
 
@@ -186,9 +160,7 @@ function getSectionIconFromData(sectionId, data) {
     sectionId.startsWith("responses-")
   ) {
     // Fallback to section icon
-    const responsesSection = data.sections.find(
-      (s) => s.id === "responses"
-    );
+    const responsesSection = data.sections.find((s) => s.id === "responses");
     if (responsesSection && responsesSection.icon) {
       return getIcon(responsesSection.icon);
     }

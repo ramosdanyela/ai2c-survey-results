@@ -27,6 +27,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { getQuestionTemplate } from "@/config/questionTemplates";
+import { breakLinesAfterPeriod } from "@/lib/utils";
 import { renderComponent } from "./ComponentRegistry";
 import { resolveDataPath, getQuestionsFromData } from "@/services/dataResolver";
 
@@ -44,7 +45,7 @@ export function QuestionsList({
   const { data: hookData, loading } = useSurveyData();
   // Use external data if provided (from schema context with sectionData), otherwise use hook data
   const data = externalData || hookData;
-  
+
   // Use unified hook for dynamic question filters (replaces local state)
   const {
     questionFilters,
@@ -58,7 +59,7 @@ export function QuestionsList({
     data,
     apiMode: false, // TODO: Enable when API is ready
   });
-  
+
   const [questionFilterOpen, setQuestionFilterOpen] = useState({});
   const [questionDownloadOpen, setQuestionDownloadOpen] = useState({});
 
@@ -102,9 +103,7 @@ export function QuestionsList({
   // Get section-specific uiTexts from sectionsConfig
   const sectionUiTexts = useMemo(() => {
     if (!data?.sections) return {};
-    const responsesSection = data.sections.find(
-      (s) => s.id === "responses"
-    );
+    const responsesSection = data.sections.find((s) => s.id === "responses");
     return responsesSection?.data?.uiTexts || {};
   }, [data]);
 
@@ -154,7 +153,8 @@ export function QuestionsList({
   }, [mergedUiTexts, rootUiTexts]);
 
   // Helper functions - MUST be defined before useMemo that uses them
-  const isNPSQuestion = (question) => question?.questionType === "nps" || question?.type === "nps";
+  const isNPSQuestion = (question) =>
+    question?.questionType === "nps" || question?.type === "nps";
 
   // Helper to get questions - uses getQuestionsFromData which gets from sections[id="responses"].questions
   // MUST be defined before useMemo/useEffect that uses it
@@ -168,67 +168,76 @@ export function QuestionsList({
    * @param {Object} question - Objeto da questão
    * @returns {React.ReactElement[]|null} Array de componentes renderizados ou null
    */
-  const renderQuestionComponents = useCallback((question) => {
-    if (!question || !question.questionType) return null;
+  const renderQuestionComponents = useCallback(
+    (question) => {
+      if (!question || !question.questionType) return null;
 
-    // Obtém o template para o tipo da questão
-    const template = getQuestionTemplate(question.questionType);
-    if (!template || !Array.isArray(template) || template.length === 0) {
-      // No template found - expected for unsupported question types
-      return null;
-    }
+      // Obtém o template para o tipo da questão
+      const template = getQuestionTemplate(question.questionType);
+      if (!template || !Array.isArray(template) || template.length === 0) {
+        // No template found - expected for unsupported question types
+        return null;
+      }
 
-    // Prepara o contexto de dados para os componentes
-    // Os componentes esperam que o data tenha question, surveyInfo, etc. no contexto
-    const componentData = {
-      ...data,
-      question, // Adiciona a questão no contexto
-      surveyInfo, // Adiciona surveyInfo no contexto
-      showWordCloud, // Adiciona showWordCloud no contexto
-      uiTexts: safeUiTexts, // Adiciona uiTexts no contexto
-    };
+      // Prepara o contexto de dados para os componentes
+      // Os componentes esperam que o data tenha question, surveyInfo, etc. no contexto
+      const componentData = {
+        ...data,
+        question, // Adiciona a questão no contexto
+        surveyInfo, // Adiciona surveyInfo no contexto
+        showWordCloud, // Adiciona showWordCloud no contexto
+        uiTexts: safeUiTexts, // Adiciona uiTexts no contexto
+      };
 
-    // Renderiza cada componente do template
-    return template.map((componentConfig, index) => {
-      // Renderiza o componente usando o ComponentRegistry
-      // O ComponentRegistry vai usar resolveDataPath para acessar os dados
-      return (
-        <div key={`question-${question.id}-component-${componentConfig.index !== undefined ? componentConfig.index : index}`}>
-          {renderComponent(
-            {
-              ...componentConfig,
-              // Garante que o index está definido
-              index: componentConfig.index !== undefined ? componentConfig.index : index,
-            },
-            componentData,
-            {
-              subSection: `responses-${question.id}`,
-              isExport: false,
-              exportWordCloud: showWordCloud,
-            }
-          )}
-        </div>
-      );
-    });
-  }, [data, surveyInfo, showWordCloud, safeUiTexts]);
+      // Renderiza cada componente do template
+      return template.map((componentConfig, index) => {
+        // Renderiza o componente usando o ComponentRegistry
+        // O ComponentRegistry vai usar resolveDataPath para acessar os dados
+        return (
+          <div
+            key={`question-${question.id}-component-${componentConfig.index !== undefined ? componentConfig.index : index}`}
+          >
+            {renderComponent(
+              {
+                ...componentConfig,
+                // Garante que o index está definido
+                index:
+                  componentConfig.index !== undefined
+                    ? componentConfig.index
+                    : index,
+              },
+              componentData,
+              {
+                subSection: `responses-${question.id}`,
+                isExport: false,
+                exportWordCloud: showWordCloud,
+              },
+            )}
+          </div>
+        );
+      });
+    },
+    [data, surveyInfo, showWordCloud, safeUiTexts],
+  );
 
   // Get all available questions filtered by selected type - MUST be before early returns
   const allAvailableQuestions = useMemo(() => {
     // Use getQuestionsFromData which gets questions from sections[id="responses"].questions
     const questionsArray = getQuestionsFromData(data);
-    
+
     if (!questionsArray || questionsArray.length === 0) {
       return [];
     }
 
     // Ordenar questões pelo index do JSON (sem gaps, sequencial)
-    const allQuestions = questionsArray
-      .sort((a, b) => (a.index || 0) - (b.index || 0));
+    const allQuestions = questionsArray.sort(
+      (a, b) => (a.index || 0) - (b.index || 0),
+    );
 
     // If questionId is provided and we're in export mode, show only that question
     if (initialQuestionId && data?._exportMode) {
       const singleQuestion = allQuestions.find(
-        (q) => q.id === initialQuestionId
+        (q) => q.id === initialQuestionId,
       );
       const result = singleQuestion ? [singleQuestion] : [];
       return result;
@@ -242,13 +251,13 @@ export function QuestionsList({
       filtered = allQuestions.filter((q) => q.questionType === "open-ended");
     } else if (questionTypeFilter === "multiple-choice") {
       filtered = allQuestions.filter(
-        (q) => q.questionType === "multiple-choice" && !isNPSQuestion(q)
+        (q) => q.questionType === "multiple-choice" && !isNPSQuestion(q),
       );
     } else if (questionTypeFilter === "single-choice") {
       filtered = allQuestions.filter((q) => q.questionType === "single-choice");
     } else if (questionTypeFilter === "nps") {
       filtered = allQuestions.filter(
-        (q) => isNPSQuestion(q) || q.questionType === "nps"
+        (q) => isNPSQuestion(q) || q.questionType === "nps",
       );
     } else {
       filtered = allQuestions;
@@ -258,7 +267,9 @@ export function QuestionsList({
     // ensure the target question is always included, even if filtered out
     // This maintains dynamic accordion functionality
     if (initialQuestionId && !data?._exportMode) {
-      const targetQuestion = allQuestions.find((q) => q.id === initialQuestionId);
+      const targetQuestion = allQuestions.find(
+        (q) => q.id === initialQuestionId,
+      );
       if (targetQuestion && !filtered.find((q) => q.id === initialQuestionId)) {
         // Add the target question to the filtered list
         filtered = [...filtered, targetQuestion];
@@ -278,7 +289,9 @@ export function QuestionsList({
       // Reset selectedQuestionId to ensure we use initialQuestionId
       setSelectedQuestionId(null);
 
-      const allQuestions = questionsFromDetails.sort((a, b) => (a.index || 0) - (b.index || 0));
+      const allQuestions = questionsFromDetails.sort(
+        (a, b) => (a.index || 0) - (b.index || 0),
+      );
 
       const question = allQuestions.find((q) => q.id === initialQuestionId);
 
@@ -326,7 +339,7 @@ export function QuestionsList({
   useEffect(() => {
     if (selectedQuestionId !== null) {
       const question = allAvailableQuestions.find(
-        (q) => q.id === selectedQuestionId
+        (q) => q.id === selectedQuestionId,
       );
       if (question) {
         const questionValue = `${question.questionType}-${question.id}`;
@@ -366,7 +379,7 @@ export function QuestionsList({
 
   // Get questions using getQuestionsFromData
   const questionsFromDetails = getQuestionsFromResponseDetails();
-  
+
   if (questionsFromDetails.length === 0 && !surveyInfo) {
     // Missing required data - expected in some cases (e.g., loading state)
     return null;
@@ -386,10 +399,10 @@ export function QuestionsList({
         <p>{questionsNotFound}</p>
         <p className="text-sm mt-2">
           {availableStructure}{" "}
-          {responseDetails 
-            ? (Array.isArray(responseDetails) 
-                ? `Array with ${responseDetails.length} items` 
-                : Object.keys(responseDetails).join(", "))
+          {responseDetails
+            ? Array.isArray(responseDetails)
+              ? `Array with ${responseDetails.length} items`
+              : Object.keys(responseDetails).join(", ")
             : none}
         </p>
       </div>
@@ -432,8 +445,10 @@ export function QuestionsList({
   const questionTypeMap = {
     nps: safeUiTexts.responseDetails.nps || "NPS",
     "open-ended": safeUiTexts.responseDetails["open-ended"] || "Campo Aberto",
-    "multiple-choice": safeUiTexts.responseDetails["multiple-choice"] || "Múltipla Escolha",
-    "single-choice": safeUiTexts.responseDetails["single-choice"] || "Escolha única",
+    "multiple-choice":
+      safeUiTexts.responseDetails["multiple-choice"] || "Múltipla Escolha",
+    "single-choice":
+      safeUiTexts.responseDetails["single-choice"] || "Escolha única",
   };
 
   const getQuestionType = (question) => {
@@ -444,7 +459,7 @@ export function QuestionsList({
 
   // Map question types to icons using type from JSON (types: nps, open-ended, multiple-choice, single-choice)
   const questionIconMap = {
-    "nps": TrendingUp,
+    nps: TrendingUp,
     "open-ended": FileText,
     "multiple-choice": CheckSquare,
     "single-choice": CircleDot,
@@ -461,15 +476,18 @@ export function QuestionsList({
     // Use type from JSON to determine response calculation
     // For closed and NPS questions, sum all values
     if (
-      (questionType === "multiple-choice" || questionType === "nps" || questionType === "single-choice") &&
+      (questionType === "multiple-choice" ||
+        questionType === "nps" ||
+        questionType === "single-choice") &&
       "data" in question &&
       question.data
     ) {
       // Access data based on component name: barChart for multiple-choice/single-choice, npsStackedChart for nps
-      const dataArray = questionType === "nps" 
-        ? question.data.npsStackedChart 
-        : question.data.barChart;
-      
+      const dataArray =
+        questionType === "nps"
+          ? question.data.npsStackedChart
+          : question.data.barChart;
+
       if (dataArray && Array.isArray(dataArray)) {
         return dataArray.reduce((sum, item) => sum + (item.value || 0), 0);
       }
@@ -528,7 +546,7 @@ export function QuestionsList({
       <>
         {filters.map((filter) => {
           const filterLabel = filterOptions.find(
-            (opt) => opt.value === filter.filterType
+            (opt) => opt.value === filter.filterType,
           )?.label;
 
           if (!filter.values || filter.values.length === 0) {
@@ -558,7 +576,6 @@ export function QuestionsList({
       </>
     );
   };
-
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -647,7 +664,7 @@ export function QuestionsList({
                                 onOpenChange={(open) =>
                                   handleQuestionFilterOpenChange(
                                     question.id,
-                                    open
+                                    open,
                                   )
                                 }
                               >
@@ -659,7 +676,7 @@ export function QuestionsList({
                                       e.stopPropagation();
                                       handleQuestionFilterOpenChange(
                                         question.id,
-                                        !questionFilterOpen[question.id]
+                                        !questionFilterOpen[question.id],
                                       );
                                     }}
                                     onKeyDown={(e) => {
@@ -668,7 +685,7 @@ export function QuestionsList({
                                         e.stopPropagation();
                                         handleQuestionFilterOpenChange(
                                           question.id,
-                                          !questionFilterOpen[question.id]
+                                          !questionFilterOpen[question.id],
                                         );
                                       }
                                     }}
@@ -693,7 +710,7 @@ export function QuestionsList({
                                     onFiltersChange={(newFilters) =>
                                       handleQuestionFiltersChange(
                                         question.id,
-                                        newFilters
+                                        newFilters,
                                       )
                                     }
                                     questionFilter={undefined}
@@ -702,9 +719,9 @@ export function QuestionsList({
                                     onSelectedQuestionIdChange={undefined}
                                     questions={[]}
                                     hideQuestionFilters={true}
-                                    initialFilters={
-                                      getQuestionFilters(question.id)
-                                    }
+                                    initialFilters={getQuestionFilters(
+                                      question.id,
+                                    )}
                                   />
                                 </PopoverContent>
                               </Popover>
@@ -789,14 +806,16 @@ export function QuestionsList({
                             {safeUiTexts.responseDetails.summary}
                           </h3>
                           <div className="text-muted-foreground mb-6 space-y-3">
-                            {question.summary.split("\n").map((line, index) => (
-                              <p
-                                key={index}
-                                className={line.trim() ? "" : "h-3"}
-                              >
-                                {line}
-                              </p>
-                            ))}
+                            {breakLinesAfterPeriod(question.summary)
+                              .split("\n")
+                              .map((line, index) => (
+                                <p
+                                  key={index}
+                                  className={line.trim() ? "" : "h-3"}
+                                >
+                                  {line}
+                                </p>
+                              ))}
                           </div>
                         </>
                       )}
@@ -805,11 +824,7 @@ export function QuestionsList({
                       {(() => {
                         const components = renderQuestionComponents(question);
                         if (components) {
-                          return (
-                            <div className="space-y-6">
-                              {components}
-                            </div>
-                          );
+                          return <div className="space-y-6">{components}</div>;
                         }
                         return null;
                       })()}

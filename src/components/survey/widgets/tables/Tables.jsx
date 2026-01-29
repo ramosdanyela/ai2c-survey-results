@@ -21,7 +21,7 @@ import { useSurveyData } from "@/hooks/useSurveyData";
 // Helper function to get uiTexts with fallbacks
 function useTableTexts() {
   const { uiTexts } = useSurveyData();
-  
+
   return {
     attributeDeepDive: {
       segment: uiTexts?.attributeDeepDive?.segment || "Segmento",
@@ -39,24 +39,37 @@ function useTableTexts() {
     executiveReport: {
       tableHeaders: {
         number: uiTexts?.executiveReport?.tableHeaders?.number || "#",
-        recommendation: uiTexts?.executiveReport?.tableHeaders?.recommendation || "Recomendação",
-        severity: uiTexts?.executiveReport?.tableHeaders?.severity || "Severidade",
-        stakeholders: uiTexts?.executiveReport?.tableHeaders?.stakeholders || "Stakeholders",
+        recommendation:
+          uiTexts?.executiveReport?.tableHeaders?.recommendation ||
+          "Recomendação",
+        severity:
+          uiTexts?.executiveReport?.tableHeaders?.severity || "Severidade",
+        stakeholders:
+          uiTexts?.executiveReport?.tableHeaders?.stakeholders ||
+          "Stakeholders",
       },
       tasks: {
-        hideTasks: uiTexts?.executiveReport?.tasks?.hideTasks || "Ocultar tarefas",
-        showTasks: uiTexts?.executiveReport?.tasks?.showTasks || "Mostrar tarefas",
+        hideTasks:
+          uiTexts?.executiveReport?.tasks?.hideTasks || "Ocultar tarefas",
+        showTasks:
+          uiTexts?.executiveReport?.tasks?.showTasks || "Mostrar tarefas",
         hide: uiTexts?.executiveReport?.tasks?.hide || "Ocultar",
         show: uiTexts?.executiveReport?.tasks?.show || "Mostrar",
-        implementationTasks: uiTexts?.executiveReport?.tasks?.implementationTasks || "Tarefas de Implementação",
+        implementationTasks:
+          uiTexts?.executiveReport?.tasks?.implementationTasks ||
+          "Tarefas de Implementação",
         task: uiTexts?.executiveReport?.tasks?.task || "Tarefa",
-        responsibleArea: uiTexts?.executiveReport?.tasks?.responsibleArea || "Área Responsável",
+        responsibleArea:
+          uiTexts?.executiveReport?.tasks?.responsibleArea ||
+          "Área Responsável",
       },
     },
     supportAnalysis: {
       clusterLabel: uiTexts?.supportAnalysis?.clusterLabel || "Cluster",
-      clusterDescription: uiTexts?.supportAnalysis?.clusterDescription || "Descrição",
-      memberPercentage: uiTexts?.supportAnalysis?.memberPercentage || "% Membros",
+      clusterDescription:
+        uiTexts?.supportAnalysis?.clusterDescription || "Descrição",
+      memberPercentage:
+        uiTexts?.supportAnalysis?.memberPercentage || "% Membros",
       clusterId: uiTexts?.supportAnalysis?.clusterId || "ID",
     },
   };
@@ -270,8 +283,8 @@ export function SentimentImpactTable({ data }) {
                     item.sentiment === texts.attributeDeepDive.positive
                       ? "hsl(var(--chart-positive))"
                       : item.sentiment === texts.attributeDeepDive.negative
-                      ? "hsl(var(--chart-negative))"
-                      : undefined,
+                        ? "hsl(var(--chart-negative))"
+                        : undefined,
                 }}
               >
                 {item[segment]}%
@@ -380,7 +393,7 @@ export function RecommendationsTable({
   renderTasksTable,
 }) {
   const texts = useTableTexts();
-  
+
   // Helper function to get the display label for severity
   const getSeverityLabel = (severity) => {
     if (severityLabels && severityLabels[severity]) {
@@ -388,7 +401,7 @@ export function RecommendationsTable({
     }
     return severity;
   };
-  
+
   return (
     <Table className="table-auto">
       <TableHeader>
@@ -432,7 +445,11 @@ export function RecommendationsTable({
                   {rec.recommendation}
                 </TableCell>
                 <TableCell className="text-center py-2">
-                  <Badge className={severityColors[rec.severity] || severityColors.medium}>
+                  <Badge
+                    className={
+                      severityColors[rec.severity] || severityColors.medium
+                    }
+                  >
                     {severityLabel}
                   </Badge>
                 </TableCell>
@@ -580,8 +597,16 @@ export function SegmentationTable({ data }) {
       </TableHeader>
       <TableBody>
         {[...data]
-          .sort((a, b) => b.percentage - a.percentage)
-          .map((cluster, index) => (
+          .sort((a, b) => {
+            const aIdx = a.index;
+            const bIdx = b.index;
+            if (aIdx != null && bIdx != null)
+              return Number(aIdx) - Number(bIdx);
+            if (aIdx != null) return -1;
+            if (bIdx != null) return 1;
+            return (b.percentage ?? 0) - (a.percentage ?? 0);
+          })
+          .map((cluster) => (
             <TableRow key={cluster.cluster}>
               <TableCell className="font-semibold">{cluster.cluster}</TableCell>
               <TableCell className="text-muted-foreground">

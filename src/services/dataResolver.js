@@ -1,52 +1,24 @@
 /**
- * Get attributes from data dynamically
- * Looks for attributes in sections[id="attributes"].subsections
- * 
- * @param {Object} data - The survey data object
- * @returns {Array} Array of attributes or empty array
- */
-export function getAttributesFromData(data) {
-  if (!data?.sections) return [];
-  
-  const attributesSection = data.sections.find(
-    (section) => section.id === "attributes"
-  );
-  
-  if (!attributesSection?.subsections || !Array.isArray(attributesSection.subsections)) {
-    return [];
-  }
-  
-  // Return subsections as attributes (they have id, index, name, icon, etc.)
-  return attributesSection.subsections
-    .filter((sub) => sub.id && sub.id.startsWith("attributes-"))
-    .map((sub) => ({
-      id: sub.id.replace("attributes-", ""),
-      index: sub.index,
-      name: sub.name,
-      icon: sub.icon,
-      summary: sub.summary,
-    }))
-    .sort((a, b) => (a.index || 0) - (b.index || 0));
-}
-
-/**
  * Get questions from responses section dynamically
  * Looks for questions in sections[id="responses"].questions
- * 
+ *
  * @param {Object} data - The survey data object
  * @returns {Array} Array of questions or empty array
  */
 export function getQuestionsFromData(data) {
   if (!data?.sections) return [];
-  
+
   const responsesSection = data.sections.find(
-    (section) => section.id === "responses"
+    (section) => section.id === "responses" || section.id === "questions",
   );
-  
-  if (!responsesSection?.questions || !Array.isArray(responsesSection.questions)) {
+
+  if (
+    !responsesSection?.questions ||
+    !Array.isArray(responsesSection.questions)
+  ) {
     return [];
   }
-  
+
   return responsesSection.questions;
 }
 
@@ -117,7 +89,10 @@ export function resolveDataPath(obj, path) {
  */
 export function resolveText(path, data) {
   if (!path || !data) {
-    console.warn("resolveText: Missing path or data", { path, hasData: !!data });
+    console.warn("resolveText: Missing path or data", {
+      path,
+      hasData: !!data,
+    });
     return path;
   }
 
@@ -142,10 +117,12 @@ export function resolveText(path, data) {
       path,
       cleanPath,
       uiTextsKeys: Object.keys(data.uiTexts),
-      sampleUiTexts: data.uiTexts.attributeDeepDive ? Object.keys(data.uiTexts.attributeDeepDive) : "not found",
+      sampleUiTexts: data.uiTexts.attributeDeepDive
+        ? Object.keys(data.uiTexts.attributeDeepDive)
+        : "not found",
     });
   }
-  
+
   return value || path;
 }
 
@@ -161,14 +138,14 @@ export function resolveTemplate(template, data) {
 
   // Check if the entire template is just a single template (e.g., "{{sectionData.department.summary}}")
   const isPureTemplate = template.trim().match(/^\{\{[^}]+\}\}$/);
-  
+
   const resolved = template.replace(/\{\{([^}]+)\}\}/g, (match, path) => {
     const trimmedPath = path.trim();
 
     // Se for path de uiTexts, usa resolveText
     if (trimmedPath.startsWith("uiTexts.")) {
       const value = resolveText(trimmedPath, data);
-      
+
       // Debug: log if template is not resolved
       if (value === trimmedPath || value === match) {
         console.warn("resolveTemplate: Template not resolved", {
@@ -180,7 +157,7 @@ export function resolveTemplate(template, data) {
           value,
         });
       }
-      
+
       return value !== null && value !== undefined ? String(value) : match;
     }
 

@@ -7,10 +7,8 @@ import { renderComponent } from "./ComponentRegistry";
 import { getIcon } from "@/lib/icons";
 import { useSurveyData } from "@/hooks/useSurveyData";
 import { enrichComponentWithStyles } from "@/services/styleResolver";
-import {
-  resolveDataPath,
-  getQuestionsFromData,
-} from "@/services/dataResolver";
+import { breakLinesAfterPeriod } from "@/lib/utils";
+import { resolveDataPath, getQuestionsFromData } from "@/services/dataResolver";
 
 /**
  * Decide se o componente deve ser exibido. Lógica no código (não em condition no JSON).
@@ -53,7 +51,10 @@ function ComponentRenderer({
    */
   function getWrapperClassName(component, data) {
     // Use type: "h3"/"h4" for headings, otherwise "div"
-    const wrapper = component.type === "h3" || component.type === "h4" ? component.type : "div";
+    const wrapper =
+      component.type === "h3" || component.type === "h4"
+        ? component.type
+        : "div";
     const wrapperProps = component.wrapperProps || {};
 
     // Use className from wrapperProps if provided, otherwise use wrapper type mapping
@@ -94,7 +95,6 @@ function ComponentRenderer({
       if (component.layout === "after-chart" || component.className) {
         return component.className || "mt-4";
       }
-
     }
 
     // Map wrapper types to default classNames (based on type from JSON)
@@ -113,7 +113,8 @@ function ComponentRenderer({
       const resolvedText = component.text || component.content || "";
       if (
         resolvedText &&
-        (resolvedText.includes("Respostas") || resolvedText.includes("responses"))
+        (resolvedText.includes("Respostas") ||
+          resolvedText.includes("responses"))
       ) {
         baseClassName = "text-lg font-bold text-foreground mb-4";
       }
@@ -127,7 +128,10 @@ function ComponentRenderer({
    */
   function getWrapperStyle(component, data) {
     // Use type: "h3"/"h4" for headings, otherwise "div"
-    const wrapper = component.type === "h3" || component.type === "h4" ? component.type : "div";
+    const wrapper =
+      component.type === "h3" || component.type === "h4"
+        ? component.type
+        : "div";
 
     // Color indicator wrapper for sentiment legend
     // Detected by: empty div wrapper with no children, inside sentiment impact section
@@ -137,38 +141,36 @@ function ComponentRenderer({
       component.components &&
       component.components.length === 0
     ) {
+      // Actually, we can check if this is the first child (index 0) of a parent with 2 children
+      // where the second child is a span. The span content tells us which color.
+      // For now, use index-based approach since the structure is consistent:
+      // - First legend item (index 0 in parent): Negative
+      // - Second legend item (index 1 in parent): Neutral
+      // - Third legend item (index 2 in parent): Positive
 
-        // Actually, we can check if this is the first child (index 0) of a parent with 2 children
-        // where the second child is a span. The span content tells us which color.
-        // For now, use index-based approach since the structure is consistent:
-        // - First legend item (index 0 in parent): Negative
-        // - Second legend item (index 1 in parent): Neutral
-        // - Third legend item (index 2 in parent): Positive
+      // We'll determine by checking if we're in a legend container structure
+      // The parent should have 3 children, each with 2 children (div + span)
+      // Since we can't easily access parent, we'll use a simpler approach:
+      // Check the data context to see if we have sentiment data, then use index
 
-        // We'll determine by checking if we're in a legend container structure
-        // The parent should have 3 children, each with 2 children (div + span)
-        // Since we can't easily access parent, we'll use a simpler approach:
-        // Check the data context to see if we have sentiment data, then use index
+      // Actually, the best approach is to check the component's index relative to its siblings
+      // But since we don't have that info easily, we'll use a pattern match:
+      // If this empty div is part of a structure with a span sibling, check the span content
+      // For now, we'll use index 0/1/2 pattern which matches the JSON structure
 
-        // Actually, the best approach is to check the component's index relative to its siblings
-        // But since we don't have that info easily, we'll use a pattern match:
-        // If this empty div is part of a structure with a span sibling, check the span content
-        // For now, we'll use index 0/1/2 pattern which matches the JSON structure
-
-        // Use sentimentType or color from component config instead of index
-        const sentimentType = component.sentimentType || component.color;
-        if (sentimentType) {
-          const colorMap = {
-            negative: "hsl(var(--chart-negative))",
-            neutral: "hsl(var(--chart-neutral))",
-            positive: "hsl(var(--chart-positive))",
-          };
-          const backgroundColor = colorMap[sentimentType] || component.color;
-          if (backgroundColor) {
-            return { backgroundColor };
-          }
+      // Use sentimentType or color from component config instead of index
+      const sentimentType = component.sentimentType || component.color;
+      if (sentimentType) {
+        const colorMap = {
+          negative: "hsl(var(--chart-negative))",
+          neutral: "hsl(var(--chart-neutral))",
+          positive: "hsl(var(--chart-positive))",
+        };
+        const backgroundColor = colorMap[sentimentType] || component.color;
+        if (backgroundColor) {
+          return { backgroundColor };
         }
-
+      }
     }
 
     return null;
@@ -176,7 +178,7 @@ function ComponentRenderer({
 
   // Handle heading components (type: "h3"/"h4")
   const isHeadingComponent = component.type === "h3" || component.type === "h4";
-  
+
   if (isHeadingComponent) {
     // Use type as wrapper tag
     const wrapperTag = component.type;
@@ -232,53 +234,72 @@ function ComponentRenderer({
             if (rendered && React.isValidElement(rendered)) {
               return rendered;
             }
-            logger.warnCritical(`ComponentRenderer retornou valor inválido para ${comp.type} no heading:`, rendered);
+            logger.warnCritical(
+              `ComponentRenderer retornou valor inválido para ${comp.type} no heading:`,
+              rendered,
+            );
             return null;
           } catch (err) {
-            logger.error(`Erro ao renderizar componente ${comp.type} no heading:`, err);
+            logger.error(
+              `Erro ao renderizar componente ${comp.type} no heading:`,
+              err,
+            );
             return null;
           }
         })
-        .filter(item => {
+        .filter((item) => {
           // Remove apenas null e undefined - permite elementos React válidos e valores primitivos
           if (item === null || item === undefined) return false;
           // Se for um elemento React válido, mantém
           if (React.isValidElement(item)) return true;
           // Permite valores primitivos (string, number, boolean)
-          if (typeof item !== 'object') return true;
+          if (typeof item !== "object") return true;
           // Se for um objeto que não é um elemento React válido, remove silenciosamente
           return false;
         });
 
-      return wrapWithTooltip(component, isExport, (
+      return wrapWithTooltip(
+        component,
+        isExport,
         <ComponentWrapper {...finalWrapperProps}>
           {nestedComponents}
-        </ComponentWrapper>
-      ));
+        </ComponentWrapper>,
+      );
     }
 
     // If wrapper has text, render it
     if (component.text || component.content) {
-      const resolvedText = component.text || component.content || "";
+      const rawText = component.text || component.content || "";
+      const resolvedText = breakLinesAfterPeriod(rawText);
       // Handle multi-line text like summary
       if (resolvedText.includes("\n")) {
-        return wrapWithTooltip(component, isExport, (
+        return wrapWithTooltip(
+          component,
+          isExport,
           <ComponentWrapper {...finalWrapperProps}>
             {resolvedText.split("\n").map((line, index) => (
               <p key={index} className={line.trim() ? "" : "h-3"}>
                 {line}
               </p>
             ))}
-          </ComponentWrapper>
-        ));
+          </ComponentWrapper>,
+        );
       }
-      return wrapWithTooltip(component, isExport, (
-        <ComponentWrapper {...finalWrapperProps}>{resolvedText}</ComponentWrapper>
-      ));
+      return wrapWithTooltip(
+        component,
+        isExport,
+        <ComponentWrapper {...finalWrapperProps}>
+          {resolvedText}
+        </ComponentWrapper>,
+      );
     }
 
     // Empty wrapper
-    return wrapWithTooltip(component, isExport, <ComponentWrapper {...finalWrapperProps} />);
+    return wrapWithTooltip(
+      component,
+      isExport,
+      <ComponentWrapper {...finalWrapperProps} />,
+    );
   }
 
   // Casos especiais que precisam de lógica customizada antes do registry
@@ -288,7 +309,8 @@ function ComponentRenderer({
     const nested = (component.components || [])
       .sort((a, b) => (a.index ?? 999) - (b.index ?? 999))
       .map((comp, idx) => {
-        const parentKey = component.index !== undefined ? component.index : "grid";
+        const parentKey =
+          component.index !== undefined ? component.index : "grid";
         const childKey = comp.index !== undefined ? comp.index : idx;
         const childType = comp.type || "unknown";
         try {
@@ -306,50 +328,65 @@ function ComponentRenderer({
           if (rendered && React.isValidElement(rendered)) {
             return rendered;
           }
-          logger.warnCritical(`ComponentRenderer retornou valor inválido para ${comp.type}:`, rendered);
+          logger.warnCritical(
+            `ComponentRenderer retornou valor inválido para ${comp.type}:`,
+            rendered,
+          );
           return null;
         } catch (err) {
-          logger.error(`Erro ao renderizar componente ${comp.type} no grid-container:`, err);
+          logger.error(
+            `Erro ao renderizar componente ${comp.type} no grid-container:`,
+            err,
+          );
           return null;
         }
       })
-      .filter(item => {
+      .filter((item) => {
         // Remove apenas null e undefined - permite elementos React válidos e valores primitivos
         if (item === null || item === undefined) return false;
         // Se for um elemento React válido, mantém
         if (React.isValidElement(item)) return true;
         // Permite valores primitivos (string, number, boolean)
-        if (typeof item !== 'object') return true;
+        if (typeof item !== "object") return true;
         // Se for um objeto que não é um elemento React válido, remove e loga
         // Removendo objeto inválido do array - comportamento esperado
         return false;
       });
-    return wrapWithTooltip(component, isExport, <div className={className}>{nested}</div>);
+    return wrapWithTooltip(
+      component,
+      isExport,
+      <div className={className}>{nested}</div>,
+    );
   }
 
   if (component.type === "container") {
     // div sem grid explícito; o layout é inferido pelos filhos (ex.: 2 cards → grid 2 colunas)
     // Se o container tem className definido, use-o; caso contrário, infira do número de filhos
     let containerClassName = component.className;
-    
+
     if (!containerClassName) {
       // Tenta obter className da função getWrapperClassName
       containerClassName = getWrapperClassName(component, data);
-      
+
       // Se ainda não tiver className e tiver 2 cards, aplica grid automático
-      if (!containerClassName && component.components && component.components.length === 2) {
+      if (
+        !containerClassName &&
+        component.components &&
+        component.components.length === 2
+      ) {
         const allCards = component.components.every((c) => c.type === "card");
         if (allCards) {
           containerClassName = "grid gap-6 md:grid-cols-2";
         }
       }
     }
-    
+
     const wrapperStyle = getWrapperStyle(component, data);
     const nested = (component.components || [])
       .sort((a, b) => (a.index ?? 999) - (b.index ?? 999))
       .map((comp, idx) => {
-        const parentKey = component.index !== undefined ? component.index : "container";
+        const parentKey =
+          component.index !== undefined ? component.index : "container";
         const childKey = comp.index !== undefined ? comp.index : idx;
         const childType = comp.type || "unknown";
         try {
@@ -367,27 +404,40 @@ function ComponentRenderer({
           if (rendered && React.isValidElement(rendered)) {
             return rendered;
           }
-          logger.warnCritical(`ComponentRenderer retornou valor inválido para ${comp.type}:`, rendered);
+          logger.warnCritical(
+            `ComponentRenderer retornou valor inválido para ${comp.type}:`,
+            rendered,
+          );
           return null;
         } catch (err) {
-          logger.error(`Erro ao renderizar componente ${comp.type} no container:`, err);
+          logger.error(
+            `Erro ao renderizar componente ${comp.type} no container:`,
+            err,
+          );
           return null;
         }
       })
-      .filter(item => {
+      .filter((item) => {
         // Remove apenas null e undefined - permite elementos React válidos e valores primitivos
         if (item === null || item === undefined) return false;
         // Se for um elemento React válido, mantém
         if (React.isValidElement(item)) return true;
         // Permite valores primitivos (string, number, boolean)
-        if (typeof item !== 'object') return true;
+        if (typeof item !== "object") return true;
         // Se for um objeto que não é um elemento React válido, remove e loga
         // Removendo objeto inválido do array - comportamento esperado
         return false;
       });
-    return wrapWithTooltip(component, isExport, (
-      <div className={containerClassName || ""} style={wrapperStyle || undefined}>{nested}</div>
-    ));
+    return wrapWithTooltip(
+      component,
+      isExport,
+      <div
+        className={containerClassName || ""}
+        style={wrapperStyle || undefined}
+      >
+        {nested}
+      </div>,
+    );
   }
 
   if (component.type === "card") {
@@ -417,13 +467,19 @@ function ComponentRenderer({
             />
           );
         });
-      return wrapWithTooltip(component, isExport, (
+      return wrapWithTooltip(
+        component,
+        isExport,
         <SchemaCard component={component} data={data}>
           {nestedComponents}
-        </SchemaCard>
-      ));
+        </SchemaCard>,
+      );
     }
-    return wrapWithTooltip(component, isExport, <SchemaCard component={component} data={data} />);
+    return wrapWithTooltip(
+      component,
+      isExport,
+      <SchemaCard component={component} data={data} />,
+    );
   }
 
   // Usa o Component Registry para todos os outros tipos
@@ -451,7 +507,10 @@ function ComponentRenderer({
       }
       // Se não for um elemento válido mas não for null, loga o problema
       if (rendered !== null && rendered !== undefined) {
-        logger.warnCritical(`Component ${component.type} retornou valor inválido:`, rendered);
+        logger.warnCritical(
+          `Component ${component.type} retornou valor inválido:`,
+          rendered,
+        );
       }
       // Retorna null se não houver dados (comportamento esperado para tabelas sem dados)
       return null;
@@ -496,7 +555,6 @@ export function GenericSectionRenderer({
 }) {
   const { data } = useSurveyData();
 
-
   // Get section from sections array (must be defined before sectionData)
   const section = useMemo(() => {
     if (!data?.sections) return null;
@@ -507,29 +565,31 @@ export function GenericSectionRenderer({
   const sectionData = useMemo(() => {
     if (!data || !sectionId) return null;
 
-    // Special handling for attributes section: build sectionData from subsections data
-    // Maps subsection IDs like "attributes-department" -> "department" in sectionData
-    // This allows dataPath like "sectionData.department.distributionChart" to work
-    if (sectionId === "attributes" && section?.subsections) {
-      return section.subsections.reduce((acc, subsection) => {
-        if (subsection.data && subsection.id?.startsWith("attributes-")) {
-          // Remove "attributes-" prefix to get the key (e.g., "attributes-department" -> "department")
-          const key = subsection.id.replace(/^attributes-/, "");
-          acc[key] = subsection.data;
-        }
-        return acc;
-      }, {});
+    // Se a seção tem subseções cujos ids seguem "{sectionId}-*", monta sectionData a partir de subsection.data
+    if (section?.subsections?.length > 0) {
+      const prefix = `${sectionId}-`;
+      const allHavePrefix = section.subsections.every(
+        (sub) => sub.id && sub.id.startsWith(prefix),
+      );
+      if (allHavePrefix) {
+        return section.subsections.reduce((acc, sub) => {
+          if (sub.data && sub.id?.startsWith(prefix)) {
+            acc[sub.id.replace(prefix, "")] = sub.data;
+          }
+          return acc;
+        }, {});
+      }
     }
 
     // Special handling for responses section: include questions directly in sectionData
     if (sectionId === "responses") {
       const responsesData = {};
-      
+
       // Include questions if they exist directly in section
       if (section?.questions && Array.isArray(section.questions)) {
         responsesData.questions = section.questions;
       }
-      
+
       // Also include section.data if it exists (for uiTexts, etc.)
       if (section?.data) {
         Object.assign(responsesData, section.data);
@@ -538,7 +598,7 @@ export function GenericSectionRenderer({
           responsesData.questions = section.questions;
         }
       }
-      
+
       // If we have questions, return the data object
       if (responsesData.questions || Object.keys(responsesData).length > 0) {
         return responsesData;
@@ -563,10 +623,7 @@ export function GenericSectionRenderer({
   // Components directly in subsections[].components
   const subsections = useMemo(() => {
     // Priority 1: Use fixed subsections from section if available
-    if (
-      section?.subsections &&
-      Array.isArray(section.subsections)
-    ) {
+    if (section?.subsections && Array.isArray(section.subsections)) {
       // Process subsections with components directly in subsection
       const processedSubsections = section.subsections
         .sort((a, b) => (a.index || 0) - (b.index || 0))
@@ -590,8 +647,9 @@ export function GenericSectionRenderer({
     // Priority 2: Dynamic generation for responses (always works, even if hasSubsections is false)
     // This matches the behavior in SurveySidebar.getDynamicSubsections
     if (sectionId === "responses") {
-      const questions = getQuestionsFromData(data)
-        .sort((a, b) => (a.index || 0) - (b.index || 0));
+      const questions = getQuestionsFromData(data).sort(
+        (a, b) => (a.index || 0) - (b.index || 0),
+      );
 
       // Use components from section
       const baseComponents = section?.components || [];
@@ -606,14 +664,8 @@ export function GenericSectionRenderer({
       }));
     }
 
-
     return [];
-  }, [
-    sectionId,
-    data,
-    section,
-    sectionData,
-  ]);
+  }, [sectionId, data, section, sectionData]);
 
   // Derive hasSubsections from subsections array (simpler and more reliable)
   const hasSubsections = subsections.length > 0;
@@ -658,15 +710,13 @@ export function GenericSectionRenderer({
       if (!activeSubsection) {
         return [];
       }
-      
-  
+
       if (sectionId === "responses" && activeSubsection.question) {
-       
         const questionsListComponent = {
           type: "questionsList",
           index: 0,
           dataPath: "sectionData",
-          config: {}
+          config: {},
         };
         rawComponents = [questionsListComponent];
       } else {
@@ -681,22 +731,25 @@ export function GenericSectionRenderer({
       }
     }
 
-   
     if (sectionId === "responses") {
       // Filter out any existing filterPills from JSON to avoid duplicates
-      rawComponents = rawComponents.filter(comp => comp.type !== "filterPills");
-      
+      rawComponents = rawComponents.filter(
+        (comp) => comp.type !== "filterPills",
+      );
+
       // Find the index of the first questionsList component
-      const questionsListIndex = rawComponents.findIndex(comp => comp.type === "questionsList");
-      
+      const questionsListIndex = rawComponents.findIndex(
+        (comp) => comp.type === "questionsList",
+      );
+
       // Create filterPills component
       // FilterPills must appear right after SurveyHeader, before QuestionsList
       const filterPillsComponent = {
         type: "filterPills",
         index: questionsListIndex >= 0 ? questionsListIndex - 1 : -1, // Always before questionsList
-        config: {}
+        config: {},
       };
-      
+
       // Insert filterPills before questionsList, or at the beginning if no questionsList found
       if (questionsListIndex >= 0) {
         rawComponents.splice(questionsListIndex, 0, filterPillsComponent);
@@ -813,16 +866,16 @@ export function GenericSectionRenderer({
         type: "questionsList",
         index: 0,
         dataPath: "sectionData",
-        config: {}
+        config: {},
       };
-      
+
       // Also add filterPills before questionsList
       const filterPillsComponent = {
         type: "filterPills",
         index: 0,
-        config: {}
+        config: {},
       };
-      
+
       return (
         <div className="space-y-8 animate-fade-in">
           <section>
@@ -848,8 +901,13 @@ export function GenericSectionRenderer({
   // Special case: for responses section, when no subSection is specified, we want to show the questions list,
   // so we allow hasSubsections=true with activeSubsection=null
   const isResponsesWithoutSubSection = sectionId === "responses" && !subSection;
-  
-  if (hasSubsections && !activeSubsection && !isResponsesWithQuestionId && !isResponsesWithoutSubSection) {
+
+  if (
+    hasSubsections &&
+    !activeSubsection &&
+    !isResponsesWithQuestionId &&
+    !isResponsesWithoutSubSection
+  ) {
     // Subsection not found - expected in some cases (e.g., loading state)
     return (
       <div className="space-y-8 animate-fade-in">
@@ -883,7 +941,8 @@ export function GenericSectionRenderer({
 
   // Special handling for responses section: when showing an individual question,
   // don't use SubsectionTitle - use the old question structure instead
-  const isResponsesQuestion = sectionId === "responses" && activeSubsection?.question;
+  const isResponsesQuestion =
+    sectionId === "responses" && activeSubsection?.question;
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -899,7 +958,7 @@ export function GenericSectionRenderer({
               summary={activeSubsection?.summary}
             />
           ) : null}
-          
+
           {/* For responses section: Don't show individual question title/summary */}
           {/* QuestionsList will handle showing all questions with accordions */}
           {/* The selected question will be opened automatically via questionId prop */}
@@ -907,17 +966,23 @@ export function GenericSectionRenderer({
           {/* For responses section: ALWAYS render FilterPills before components */}
           {/* FilterPills must appear right after SurveyHeader, before QuestionsList */}
           {/* This ensures FilterPills is always visible, even when a specific question is selected */}
-          {sectionId === "responses" && !isExport && (
+          {sectionId === "responses" &&
+            !isExport &&
             (() => {
-              const hasFilterPills = components.some(c => c.type === "filterPills");
+              const hasFilterPills = components.some(
+                (c) => c.type === "filterPills",
+              );
               if (!hasFilterPills) {
                 const filterPillsComponent = {
                   type: "filterPills",
                   index: -1, // Render before all other components
-                  config: {}
+                  config: {},
                 };
                 return (
-                  <div key={`${sectionId}-${subSection || "root"}-filterPills-auto`} className="mb-6">
+                  <div
+                    key={`${sectionId}-${subSection || "root"}-filterPills-auto`}
+                    className="mb-6"
+                  >
                     <ComponentRenderer
                       component={filterPillsComponent}
                       data={enhancedData}
@@ -929,8 +994,7 @@ export function GenericSectionRenderer({
                 );
               }
               return null;
-            })()
-          )}
+            })()}
 
           {/* Render components in order */}
           {components.length > 0 && (
@@ -942,7 +1006,8 @@ export function GenericSectionRenderer({
                 }
 
                 // Generate unique key: sectionId + subSection + component index + array idx + component type
-                const componentIndex = component.index !== undefined ? component.index : idx;
+                const componentIndex =
+                  component.index !== undefined ? component.index : idx;
                 const componentType = component.type || "unknown";
                 const uniqueKey = `${sectionId}-${subSection || "root"}-${componentIndex}-${componentType}-${idx}`;
 
@@ -957,23 +1022,29 @@ export function GenericSectionRenderer({
                   />
                 );
               })}
-              
+
               {/* For responses section without subsections: automatically render questionsList if not present */}
-              {sectionId === "responses" && !hasSubsections && !isExport && (
+              {sectionId === "responses" &&
+                !hasSubsections &&
+                !isExport &&
                 (() => {
-                  const hasQuestionsList = components.some(c => c.type === "questionsList");
+                  const hasQuestionsList = components.some(
+                    (c) => c.type === "questionsList",
+                  );
                   const questions = getQuestionsFromData(data);
-                  
+
                   if (!hasQuestionsList && questions.length > 0) {
                     const questionsListComponent = {
                       type: "questionsList",
                       index: 999, // Render after filterPills
                       dataPath: "sectionData",
-                      config: {}
+                      config: {},
                     };
-                    
+
                     return (
-                      <React.Fragment key={`${sectionId}-${subSection || "root"}-auto-questionsList`}>
+                      <React.Fragment
+                        key={`${sectionId}-${subSection || "root"}-auto-questionsList`}
+                      >
                         {renderComponent(questionsListComponent, enhancedData, {
                           subSection,
                           isExport,
@@ -983,14 +1054,17 @@ export function GenericSectionRenderer({
                     );
                   }
                   return null;
-                })()
-              )}
+                })()}
             </div>
           )}
 
           {/* For responses section: render questionsList even if no components or when hasSubsections but no activeSubsection */}
-          {sectionId === "responses" && !isExport && 
-           ((!hasSubsections && components.length === 0) || (hasSubsections && !activeSubsection && components.length === 0)) && (
+          {sectionId === "responses" &&
+            !isExport &&
+            ((!hasSubsections && components.length === 0) ||
+              (hasSubsections &&
+                !activeSubsection &&
+                components.length === 0)) &&
             (() => {
               const questions = getQuestionsFromData(data);
               if (questions.length > 0) {
@@ -998,16 +1072,16 @@ export function GenericSectionRenderer({
                 const filterPillsComponent = {
                   type: "filterPills",
                   index: 0,
-                  config: {}
+                  config: {},
                 };
-                
+
                 const questionsListComponent = {
                   type: "questionsList",
                   index: 1,
                   dataPath: "sectionData",
-                  config: {}
+                  config: {},
                 };
-                
+
                 return (
                   <div className={containerClassName}>
                     {renderComponent(filterPillsComponent, enhancedData, {
@@ -1029,8 +1103,7 @@ export function GenericSectionRenderer({
                   {hasSubsections ? "subseção" : "seção"}.
                 </p>
               );
-            })()
-          )}
+            })()}
 
           {sectionId !== "responses" && components.length === 0 && (
             <p className="text-muted-foreground">

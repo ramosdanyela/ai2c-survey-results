@@ -1,5 +1,11 @@
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { getIcon } from "@/lib/icons";
+import { breakLinesAfterPeriod } from "@/lib/utils";
 
 /**
  * Reusable component for section and subsection titles
@@ -25,11 +31,13 @@ export function SubsectionTitle({ title, icon, summary, className = "" }) {
         </div>
         {summary && (
           <CardDescription className="text-base leading-relaxed space-y-3 mt-4 text-center">
-            {summary.split("\n").map((line, index) => (
-              <p key={index} className={line.trim() ? "" : "h-3"}>
-                {line}
-              </p>
-            ))}
+            {breakLinesAfterPeriod(summary)
+              .split("\n")
+              .map((line, index) => (
+                <p key={index} className={line.trim() ? "" : "h-3"}>
+                  {line}
+                </p>
+              ))}
           </CardDescription>
         )}
       </CardHeader>

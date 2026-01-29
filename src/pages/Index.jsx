@@ -16,25 +16,18 @@ function getFirstSubsectionHelper(sectionId, data) {
   // Priority 1: Subsections from config
   if (section.subsections?.length > 0) {
     const sorted = [...section.subsections].sort(
-      (a, b) => (a.index ?? 999) - (b.index ?? 999)
+      (a, b) => (a.index ?? 999) - (b.index ?? 999),
     );
     return sorted[0].id;
   }
 
-  // Priority 2: Dynamic subsections (attributes, responses)
-  if (section.dynamicSubsections) {
-    if (section.id === "attributes") {
+  // Priority 2: Dynamic subsections (responses)
+  if (section.dynamicSubsections && section.id === "responses") {
+    {
       const sectionData = section.data || {};
-      const attrs = sectionData?.attributes || [];
-      const filtered = attrs
-        .filter((a) => a.icon)
-        .sort((a, b) => (a.index ?? 999) - (b.index ?? 999));
-      return filtered.length > 0 ? `attributes-${filtered[0].id}` : null;
-    }
-    if (section.id === "responses") {
-      const sectionData = section.data || {};
-      const questions = (sectionData?.questions || [])
-        .sort((a, b) => (a.index ?? 999) - (b.index ?? 999));
+      const questions = (sectionData?.questions || []).sort(
+        (a, b) => (a.index ?? 999) - (b.index ?? 999),
+      );
       return questions.length > 0 ? `responses-${questions[0].id}` : null;
     }
   }
@@ -46,16 +39,13 @@ function getFirstSubsectionHelper(sectionId, data) {
  * Get the first section/subsection from data dynamically
  */
 function getInitialSection(data) {
-  if (
-    !data?.sections ||
-    data.sections.length === 0
-  ) {
+  if (!data?.sections || data.sections.length === 0) {
     return null;
   }
 
   // Get first section (sorted by index)
   const sortedSections = [...data.sections].sort(
-    (a, b) => (a.index ?? 999) - (b.index ?? 999)
+    (a, b) => (a.index ?? 999) - (b.index ?? 999),
   );
   const firstSection = sortedSections[0];
 

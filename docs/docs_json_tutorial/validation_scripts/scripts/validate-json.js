@@ -16,7 +16,12 @@ async function loadDependencies() {
     const validateCustomRules = customRulesModule.validateCustomRules;
 
     // Carregar schema (caminho relativo ao script)
-    const schemaPath = path.join(__dirname, "..", "schema", "surveyData.schema.json");
+    const schemaPath = path.join(
+      __dirname,
+      "..",
+      "schema",
+      "surveyData.schema.json",
+    );
     if (!fs.existsSync(schemaPath)) {
       console.error("❌ Schema não encontrado:", schemaPath);
       process.exit(1);
@@ -113,18 +118,33 @@ function validateJSON(filePath, ajv, schema, validateCustomRules) {
     return false;
   }
 
-  // Validações customizadas adicionais
-  const customErrors = validateCustomRules(data);
-  if (customErrors.length > 0) {
+  // Validações customizadas: separar erros e avisos (warnings)
+  const results = validateCustomRules(data);
+  const errorsList = results.filter((r) => r.level !== "warning");
+  const warningsList = results.filter((r) => r.level === "warning");
+
+  if (warningsList.length > 0) {
+    console.error("⚠️  AVISOS (Regras Customizadas):\n");
+    warningsList.forEach((w, index) => {
+      console.error(`   ${index + 1}. ${w.path || "(raiz)"}`);
+      console.error(`      ${w.message}\n`);
+    });
+  }
+
+  if (errorsList.length > 0) {
     console.error("❌ ERROS DE VALIDAÇÃO (Regras Customizadas):\n");
-    customErrors.forEach((error, index) => {
+    errorsList.forEach((error, index) => {
       console.error(`${index + 1}. ${error.path || "(raiz)"}`);
       console.error(`   ${error.message}\n`);
     });
     return false;
   }
 
-  console.log("✅ JSON válido!\n");
+  if (warningsList.length > 0) {
+    console.log("✅ JSON válido (com avisos).\n");
+  } else {
+    console.log("✅ JSON válido!\n");
+  }
   return true;
 }
 
@@ -137,10 +157,10 @@ async function main() {
   const args = process.argv.slice(2);
   if (args.length === 0) {
     console.error(
-      "Uso: node data/validation/scripts/validate-json.js <caminho-do-json>"
+      "Uso: node data/validation/scripts/validate-json.js <caminho-do-json>",
     );
     console.error(
-      "Exemplo: node data/validation/scripts/validate-json.js src/data/surveyData.json"
+      "Exemplo: node data/validation/scripts/validate-json.js src/data/surveyData.json",
     );
     process.exit(1);
   }

@@ -6,7 +6,7 @@ import {
   RGBA_WHITE_20,
 } from "@/lib/colors";
 import { useSurveyData } from "@/hooks/useSurveyData";
-import { getAttributesFromData, getQuestionsFromData } from "@/services/dataResolver";
+import { getQuestionsFromData } from "@/services/dataResolver";
 
 /**
  * Get all questions for navigation (sorted by index)
@@ -14,8 +14,9 @@ import { getAttributesFromData, getQuestionsFromData } from "@/services/dataReso
  * Uses getQuestionsFromData to support both new (sectionConfig.questions) and old structures
  */
 function getAllQuestions(data) {
-  const allQuestions = getQuestionsFromData(data)
-    .sort((a, b) => (a.index || 0) - (b.index || 0));
+  const allQuestions = getQuestionsFromData(data).sort(
+    (a, b) => (a.index || 0) - (b.index || 0),
+  );
 
   return allQuestions.map((q) => ({
     id: `responses-${q.id}`,
@@ -28,27 +29,12 @@ function getAllQuestions(data) {
  * Uses getQuestionsFromData to support both new (sectionConfig.questions) and old structures
  */
 function getDisplayNumber(questionId, data) {
-  const allQuestions = getQuestionsFromData(data)
-    .sort((a, b) => (a.index || 0) - (b.index || 0));
+  const allQuestions = getQuestionsFromData(data).sort(
+    (a, b) => (a.index || 0) - (b.index || 0),
+  );
 
   const index = allQuestions.findIndex((q) => q.id === questionId);
   return index !== -1 ? index + 1 : questionId;
-}
-
-/**
- * Get all attribute subsections for navigation (sorted by index)
- * Uses getAttributesFromData and adds the "attributes-" prefix to IDs
- */
-function getAllAttributes(data) {
-  const attributes = getAttributesFromData(data);
-  
-  // Add "attributes-" prefix to IDs for navigation
-  return attributes
-    .filter((attr) => attr.icon) // Only include attributes with icons
-    .map((attr) => ({
-      id: `attributes-${attr.id}`, // Add prefix for navigation IDs
-      index: attr.index || 0,
-    }));
 }
 
 /**
@@ -65,18 +51,7 @@ function buildOrderedSubsections(data) {
     .filter((section) => section.id !== "export") // Export é página do app; usa sections/subsections e uiTexts, não é seção de conteúdo
     .sort((a, b) => (a.index || 0) - (b.index || 0))
     .forEach((section) => {
-      // Special handling for dynamic sections (attributes, responses)
-      if (section.id === "attributes") {
-        // Dynamic attributes section - use actual attributes from data
-        const attributes = getAllAttributes(data);
-        if (attributes.length > 0) {
-          attributes.forEach((attr) => {
-            subsections.push(attr.id);
-          });
-        }
-        return; // Skip to next section
-      }
-
+      // Special handling for dynamic sections (responses - subsections from questions)
       if (section.id === "responses") {
         // Dynamic questions section - use actual questions from data
         const questions = getAllQuestions(data);
@@ -88,14 +63,13 @@ function buildOrderedSubsections(data) {
         return; // Skip to next section
       }
 
-      // Fixed subsections from config
+      // Fixed subsections (executive, support, attributes, etc.)
       if (section.subsections && Array.isArray(section.subsections)) {
         section.subsections
           .sort((a, b) => (a.index || 0) - (b.index || 0))
           .forEach((subsection) => {
             subsections.push(subsection.id);
           });
-        return;
       }
 
       // Priority 2: Generic dynamic subsections
@@ -125,7 +99,7 @@ function findSectionForSubsection(subsectionId, data) {
     // Check subsections from config
     if (section.subsections) {
       const subsection = section.subsections.find(
-        (sub) => sub.id === subsectionId
+        (sub) => sub.id === subsectionId,
       );
       if (subsection) {
         return section.id;
@@ -137,15 +111,6 @@ function findSectionForSubsection(subsectionId, data) {
       subsectionId &&
       typeof subsectionId === "string" &&
       subsectionId.startsWith("responses-")
-    ) {
-      return section.id;
-    }
-    // Check dynamic subsections (attributes)
-    if (
-      section.id === "attributes" &&
-      subsectionId &&
-      typeof subsectionId === "string" &&
-      subsectionId.startsWith("attributes-")
     ) {
       return section.id;
     }
@@ -176,7 +141,7 @@ function getSectionTitleFromData(sectionId, data) {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   }
-  
+
   return sectionId;
 }
 
@@ -195,7 +160,7 @@ function getSectionIconFromData(sectionId, data) {
     // Check subsections
     if (section.subsections && Array.isArray(section.subsections)) {
       const subsection = section.subsections.find(
-        (sub) => sub.id === sectionId
+        (sub) => sub.id === sectionId,
       );
       if (subsection && subsection.icon) {
         return getIcon(subsection.icon);
@@ -210,9 +175,7 @@ function getSectionIconFromData(sectionId, data) {
     sectionId.startsWith("responses-")
   ) {
     const questionId = parseInt(sectionId.replace("responses-", ""), 10);
-    const responsesSection = data?.sections?.find(
-      (s) => s.id === "responses"
-    );
+    const responsesSection = data?.sections?.find((s) => s.id === "responses");
     // Fallback to section icon
     if (responsesSection && responsesSection.icon) {
       return getIcon(responsesSection.icon);
@@ -239,20 +202,16 @@ function getFirstSubsectionHelper(sectionId, data) {
   const section = data.sections.find((s) => s.id === sectionId);
   if (!section) return null;
 
-  // Priority 1: Dynamic subsections (attributes, responses) - these should always come first
-  if (section.id === "attributes") {
-    const attrs = getAllAttributes(data);
-    return attrs.length > 0 ? attrs[0].id : null;
-  }
+  // Dynamic subsections from questions (responses section only)
   if (section.id === "responses") {
     const questions = getAllQuestions(data);
     return questions.length > 0 ? questions[0].id : null;
   }
 
-  // Priority 2: Fixed subsections from config
+  // Fixed subsections from config (executive, support, attributes, etc.)
   if (section.subsections?.length > 0) {
     const sorted = [...section.subsections].sort(
-      (a, b) => (a.index ?? 999) - (b.index ?? 999)
+      (a, b) => (a.index ?? 999) - (b.index ?? 999),
     );
     return sorted[0].id;
   }
@@ -265,7 +224,7 @@ function getFirstSubsectionHelper(sectionId, data) {
  */
 function normalizeSection(currentSection, data) {
   if (!currentSection) return currentSection;
-  
+
   if (!data?.sections) {
     // Fallback for known sections (backward compatibility)
     const fallbacks = {
@@ -275,32 +234,21 @@ function normalizeSection(currentSection, data) {
     return fallbacks[currentSection] || currentSection;
   }
 
-  // Check if already a valid subsection (including dynamic ones)
-  // First check if it's a dynamic attribute subsection
-  // IMPORTANT: Filter out template IDs
-  if (
-    currentSection &&
-    typeof currentSection === "string" &&
-    currentSection.startsWith("attributes-") &&
-    !currentSection.includes("template")
-  ) {
-    const attributeId = currentSection.replace("attributes-", "");
-    const attributes = getAttributesFromData(data);
-    const attribute = attributes.find((attr) => attr.id === attributeId);
-    if (attribute) {
-      return currentSection; // Already a valid attribute subsection
+  // Check if already a valid subsection (any section with subsections)
+  if (currentSection && typeof currentSection === "string") {
+    if (!currentSection.includes("template")) {
+      for (const section of data.sections) {
+        if (section.subsections?.some((sub) => sub.id === currentSection)) {
+          return currentSection;
+        }
+      }
     }
-  }
-
-  // If it's a template, normalize to first real attribute
-  if (
-    currentSection &&
-    typeof currentSection === "string" &&
-    currentSection.includes("template") &&
-    currentSection.startsWith("attributes")
-  ) {
-    const firstSub = getFirstSubsectionHelper("attributes", data);
-    return firstSub || currentSection;
+    // If it's a template (e.g. attributes-template), normalize to first real subsection
+    if (currentSection.includes("template")) {
+      const sectionIdFromTemplate = currentSection.replace(/-template.*/, "");
+      const firstSub = getFirstSubsectionHelper(sectionIdFromTemplate, data);
+      if (firstSub) return firstSub;
+    }
   }
 
   // Check if it's a dynamic question subsection
@@ -311,7 +259,7 @@ function normalizeSection(currentSection, data) {
   ) {
     const questionId = parseInt(currentSection.replace("responses-", ""), 10);
     const question = data?.responseDetails?.questions?.find(
-      (q) => q.id === questionId
+      (q) => q.id === questionId,
     );
     if (question) {
       return currentSection; // Already a valid question subsection
@@ -326,9 +274,7 @@ function normalizeSection(currentSection, data) {
   }
 
   // If it's a section ID, normalize to first subsection
-  const section = data.sections.find(
-    (s) => s.id === currentSection
-  );
+  const section = data.sections.find((s) => s.id === currentSection);
   if (section) {
     const firstSub = getFirstSubsectionHelper(currentSection, data);
     return firstSub || currentSection;
@@ -421,7 +367,7 @@ function getSubsectionTitle(sectionId, data, maxLength = 40) {
     for (const section of data.sections) {
       if (section?.subsections && Array.isArray(section.subsections)) {
         const subsection = section.subsections.find(
-          (sub) => sub.id === sectionId
+          (sub) => sub.id === sectionId,
         );
         if (subsection?.name) {
           return subsection.name;
@@ -431,7 +377,11 @@ function getSubsectionTitle(sectionId, data, maxLength = 40) {
   }
 
   // Priority 2: If it's a template (like "attribute-template"), return empty
-  if (sectionId && typeof sectionId === "string" && sectionId.includes("template")) {
+  if (
+    sectionId &&
+    typeof sectionId === "string" &&
+    sectionId.includes("template")
+  ) {
     return ""; // Don't show template names in navigation
   }
 
@@ -463,21 +413,17 @@ function getSectionAndSubsection(sectionId, data, maxLength = 40) {
     return { section: sectionId, subsection: "" };
   }
 
-  // IMPORTANT: If it's a template, try to normalize to real subsection first
+  // If it's a template (e.g. attributes-template), normalize to first real subsection
   if (
     sectionId &&
     typeof sectionId === "string" &&
     sectionId.includes("template")
   ) {
-    // For attribute-template, try to get first real attribute
-    if (sectionId.startsWith("attributes")) {
-      const firstAttr = getFirstSubsectionHelper("attributes", data);
-      if (firstAttr) {
-        // Recursively call with the real attribute ID
-        return getSectionAndSubsection(firstAttr, data, maxLength);
-      }
+    const sectionIdFromTemplate = sectionId.replace(/-template.*/, "");
+    const firstSub = getFirstSubsectionHelper(sectionIdFromTemplate, data);
+    if (firstSub) {
+      return getSectionAndSubsection(firstSub, data, maxLength);
     }
-    // For other templates, try to find the section
     const templateSectionId = findSectionForSubsection(sectionId, data);
     return {
       section: getSectionTitleFromData(templateSectionId || sectionId, data),
@@ -486,14 +432,14 @@ function getSectionAndSubsection(sectionId, data, maxLength = 40) {
   }
 
   const uiTexts = data.uiTexts?.surveyHeader || {};
-  
+
   // Find the section that contains this subsection (don't use baseSectionId extraction)
   const actualSectionId = findSectionForSubsection(sectionId, data);
-  
+
   // If we couldn't find the section, it means sectionId might be a section ID itself
   // In that case, use it directly
   const sectionIdToUse = actualSectionId || sectionId;
-  
+
   // Get section title - always use the section name from data, never formatted IDs
   let sectionTitle = null;
   if (actualSectionId) {
@@ -502,12 +448,12 @@ function getSectionAndSubsection(sectionId, data, maxLength = 40) {
       sectionTitle = section.name;
     }
   }
-  
+
   // Fallback to getSectionTitleFromData only if we didn't find a section name
   if (!sectionTitle) {
     sectionTitle = getSectionTitleFromData(sectionIdToUse, data);
   }
-  
+
   // Get subsection title - always use the subsection name from data
   let subsectionTitle = getSubsectionTitle(sectionId, data, maxLength);
 
@@ -517,7 +463,9 @@ function getSectionAndSubsection(sectionId, data, maxLength = 40) {
     uiTexts.attributeAnalysis || "Análise por Atributos";
   if (
     sectionTitle === attributeAnalysisTitle ||
-    (sectionTitle && typeof sectionTitle === "string" && sectionTitle.includes("Atributos"))
+    (sectionTitle &&
+      typeof sectionTitle === "string" &&
+      sectionTitle.includes("Atributos"))
   ) {
     sectionTitle = uiTexts.deepDive || "Aprofundamento";
   }

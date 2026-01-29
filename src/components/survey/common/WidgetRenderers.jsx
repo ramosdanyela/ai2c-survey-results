@@ -2,7 +2,13 @@ import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { CheckSquare, CircleDot, FileText, TrendingUp, Cloud } from "@/lib/icons";
+import {
+  CheckSquare,
+  CircleDot,
+  FileText,
+  TrendingUp,
+  Cloud,
+} from "@/lib/icons";
 import { COLOR_ORANGE_PRIMARY } from "@/lib/colors";
 import {
   Accordion,
@@ -12,6 +18,7 @@ import {
 } from "@/components/ui/accordion";
 import { WordCloud } from "../widgets/WordCloud";
 import { QuestionsList } from "./QuestionsList";
+import { breakLinesAfterPeriod } from "@/lib/utils";
 import { resolveDataPath, getQuestionsFromData } from "@/services/dataResolver";
 import { useQuestionTypeFilter } from "@/hooks/useQuestionTypeFilter";
 
@@ -50,20 +57,22 @@ export function SchemaFilterPills({ component, data }) {
   };
 
   const config = component.config || {};
-  
+
   // Get all questions and determine available types
   const questions = getQuestionsFromData(data);
-  
+
   // Get unique question types from available questions
-  const availableTypes = new Set(questions.map(q => q.questionType).filter(Boolean));
-  
+  const availableTypes = new Set(
+    questions.map((q) => q.questionType).filter(Boolean),
+  );
+
   // Verificar se há questões do tipo "open-ended" (campo aberto)
   // Todas as questões open-ended podem ter wordCloud no template (questionTemplates.js)
   // O toggle deve aparecer sempre que houver questões do tipo "open-ended"
   const hasOpenEndedQuestions = questions.some(
-    (q) => q.questionType === "open-ended"
+    (q) => q.questionType === "open-ended",
   );
-  
+
   // Mostrar toggle de WordCloud sempre que houver questões do tipo "open-ended"
   const showWordCloudToggle = hasOpenEndedQuestions;
 
@@ -85,28 +94,37 @@ export function SchemaFilterPills({ component, data }) {
       // Backward compatibility
       data._filterPillsState.questionFilter = questionTypeFilter;
     }
-  }, [data, questionTypeFilter, showWordCloud, setQuestionTypeFilter, setShowWordCloud]);
+  }, [
+    data,
+    questionTypeFilter,
+    showWordCloud,
+    setQuestionTypeFilter,
+    setShowWordCloud,
+  ]);
 
   // Define filter badge configurations
   const filterBadges = [
     {
       type: "open-ended",
       icon: FileText,
-      label: sectionUiTexts?.["open-ended"] ||
+      label:
+        sectionUiTexts?.["open-ended"] ||
         rootUiTexts?.responseDetails?.["open-ended"] ||
         "Campo Aberto",
     },
     {
       type: "multiple-choice",
       icon: CheckSquare,
-      label: sectionUiTexts?.["multiple-choice"] ||
+      label:
+        sectionUiTexts?.["multiple-choice"] ||
         rootUiTexts?.responseDetails?.["multiple-choice"] ||
         "Múltipla Escolha",
     },
     {
       type: "single-choice",
       icon: CircleDot,
-      label: sectionUiTexts?.["single-choice"] ||
+      label:
+        sectionUiTexts?.["single-choice"] ||
         rootUiTexts?.responseDetails?.["single-choice"] ||
         "Escolha única",
     },
@@ -138,7 +156,9 @@ export function SchemaFilterPills({ component, data }) {
           return (
             <Badge
               key={badge.type}
-              variant={questionTypeFilter === badge.type ? "default" : "outline"}
+              variant={
+                questionTypeFilter === badge.type ? "default" : "outline"
+              }
               className={`cursor-pointer px-4 py-2 text-xs font-normal rounded-full inline-flex items-center gap-1.5 ${
                 questionTypeFilter === badge.type
                   ? "bg-[hsl(var(--custom-blue))]/70 hover:bg-[hsl(var(--custom-blue))]/80"
@@ -212,7 +232,8 @@ export function SchemaWordCloud({ component, data, exportWordCloud = true }) {
   }
 
   const config = component.config || {};
-  const title = config.title || uiTexts?.responseDetails?.wordCloud || "Word Cloud";
+  const title =
+    config.title || uiTexts?.responseDetails?.wordCloud || "Word Cloud";
 
   return (
     <div>
@@ -266,7 +287,7 @@ export function SchemaWordCloud({ component, data, exportWordCloud = true }) {
  */
 export function SchemaAccordion({ component, data, renderSchemaComponent }) {
   const [openValue, setOpenValue] = useState(
-    component.defaultValue || undefined
+    component.defaultValue || undefined,
   );
 
   const config = component.config || {};
@@ -310,7 +331,9 @@ export function SchemaAccordion({ component, data, renderSchemaComponent }) {
           })
           .map((comp, idx) => {
             if (!renderSchemaComponent) {
-              logger.error("SchemaAccordion: renderSchemaComponent is required but not provided");
+              logger.error(
+                "SchemaAccordion: renderSchemaComponent is required but not provided",
+              );
               return null;
             }
             return renderSchemaComponent(comp, idx);
@@ -340,7 +363,22 @@ export function SchemaAccordion({ component, data, renderSchemaComponent }) {
             >
               {nestedComponents.length > 0
                 ? nestedComponents
-                : item.text || null}
+                : (() => {
+                    const text = breakLinesAfterPeriod(item.text || "");
+                    if (!text) return null;
+                    if (text.includes("\n")) {
+                      return (
+                        <div className="space-y-3">
+                          {text.split("\n").map((line, i) => (
+                            <p key={i} className={line.trim() ? "" : "h-3"}>
+                              {line}
+                            </p>
+                          ))}
+                        </div>
+                      );
+                    }
+                    return text;
+                  })()}
             </AccordionContent>
           </AccordionItem>
         );
@@ -374,7 +412,6 @@ export function SchemaQuestionsList({
     questionId = component.questionId;
   }
 
-
   // Use sectionData if dataPath is not specified
   const dataPath =
     component.dataPath || (data.sectionData ? "sectionData" : null);
@@ -382,12 +419,17 @@ export function SchemaQuestionsList({
 
   // Get filter state - use hook for unified state management
   // In export mode, create simple state; otherwise use hook which reads from _filterPillsState
-  const { questionTypeFilter, setQuestionTypeFilter, showWordCloud, setShowWordCloud } = useQuestionTypeFilter({
+  const {
+    questionTypeFilter,
+    setQuestionTypeFilter,
+    showWordCloud,
+    setShowWordCloud,
+  } = useQuestionTypeFilter({
     data,
     initialQuestionTypeFilter: isExport && questionId ? null : "all",
     initialShowWordCloud: isExport ? exportWordCloud : true,
   });
-  
+
   // Create filterState object for QuestionsList (with backward compatibility)
   const filterState = {
     questionTypeFilter: isExport && questionId ? null : questionTypeFilter,

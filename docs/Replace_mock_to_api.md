@@ -120,7 +120,7 @@ export const fetchSurveyData = async () => {
       const errorData = await response.json().catch(() => ({}));
       throw new Error(
         errorData.message ||
-          `Erro ao buscar dados: ${response.status} ${response.statusText}`
+          `Erro ao buscar dados: ${response.status} ${response.statusText}`,
       );
     }
 
@@ -134,7 +134,9 @@ export const fetchSurveyData = async () => {
 
     // Validar estrutura mínima esperada
     if (!data.sections || !Array.isArray(data.sections)) {
-      throw new Error("Resposta da API inválida: 'sections' não encontrado ou não é um array");
+      throw new Error(
+        "Resposta da API inválida: 'sections' não encontrado ou não é um array",
+      );
     }
 
     return data;
@@ -301,7 +303,9 @@ A API deve retornar um JSON com a mesma estrutura do `surveyData.json`. A estrut
         }
       ],
       "data": {
-        "recommendationsTable": { /* ... */ }
+        "recommendationsTable": {
+          /* ... */
+        }
       }
     },
     {
@@ -315,7 +319,9 @@ A API deve retornar um JSON com a mesma estrutura do `surveyData.json`. A estrut
           "index": 0,
           "name": "Sentimento Geral",
           "icon": "Smile",
-          "components": [ /* ... */ ]
+          "components": [
+            /* ... */
+          ]
         }
       ]
     },
@@ -330,8 +336,12 @@ A API deve retornar um JSON com a mesma estrutura do `surveyData.json`. A estrut
           "index": 0,
           "name": "Por Departamento",
           "icon": "Building",
-          "components": [ /* ... */ ],
-          "data": { /* dados específicos desta subsection */ }
+          "components": [
+            /* ... */
+          ],
+          "data": {
+            /* dados específicos desta subsection */
+          }
         }
       ]
     },
@@ -352,7 +362,9 @@ A API deve retornar um JSON com a mesma estrutura do `surveyData.json`. A estrut
           }
         }
       ],
-      "components": [ /* componentes compartilhados para todas as questões */ ]
+      "components": [
+        /* componentes compartilhados para todas as questões */
+      ]
     }
   ],
   "uiTexts": {
@@ -471,7 +483,7 @@ app.use(
   cors({
     origin: "http://localhost:5173", // URL do frontend
     credentials: true,
-  })
+  }),
 );
 ```
 

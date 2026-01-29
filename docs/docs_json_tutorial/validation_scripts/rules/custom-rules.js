@@ -1,11 +1,10 @@
 /**
  * Regras customizadas de validação baseadas no código de renderização
- * Estas regras validam lógica de negócio que não pode ser expressa em JSON Schema
+ * Padrão ouro: surveyData.json (seção de questões com id "responses" ou "questions";
+ * attributes apenas department, tenure, role; charts com campo "option").
  *
- * NOTA: Este arquivo valida o JSON diretamente (não através do hook useSurveyData).
- * Isso é o comportamento esperado, pois a validação ocorre antes dos dados serem
- * utilizados no código. O código de renderização utiliza o hook useSurveyData()
- * para acessar os dados, garantindo uma única fonte de verdade.
+ * - Erros: impedem validação (ex.: seção com questions deve ter id "responses" ou "questions").
+ * - Avisos: não falham (ex.: campo "label" em vez de "option", number como string, campo vazio).
  */
 
 // Tipos de componentes válidos (baseado no ComponentRegistry)
@@ -56,10 +55,36 @@ const VALID_COMPONENT_TYPES = [
 ];
 
 // Tipos de questões válidos
-const VALID_QUESTION_TYPES = ["nps", "open-ended", "multiple-choice", "single-choice"];
+const VALID_QUESTION_TYPES = [
+  "nps",
+  "open-ended",
+  "multiple-choice",
+  "single-choice",
+];
 
 // Opções válidas para questões NPS
 const VALID_NPS_OPTIONS = ["Detrator", "Promotor", "Neutro"];
+
+// Padrão ouro: seção de questões com id "responses"; "questions" também aceito (compatibilidade)
+const VALID_SECTION_IDS_QUESTIONS = ["responses", "questions"];
+
+/**
+ * Cria resultado de validação (erro ou aviso)
+ * @param {string} path
+ * @param {string} message
+ * @param {"error"|"warning"} [level="error"]
+ */
+function result(path, message, level = "error") {
+  return { path, message, level };
+}
+
+function err(path, message) {
+  return result(path, message, "error");
+}
+
+function warn(path, message) {
+  return result(path, message, "warning");
+}
 
 /**
  * Resolve path de dados (simula resolveDataPath do código)
@@ -68,8 +93,11 @@ const VALID_NPS_OPTIONS = ["Detrator", "Promotor", "Neutro"];
 function resolveDataPath(obj, path, sectionId = null, sectionData = null) {
   if (!obj || !path) return null;
 
-  // question.* é contexto dinâmico por questão (responses) — não validar
-  if (path.startsWith("question.") && sectionId === "responses") {
+  // question.* é contexto dinâmico por questão (responses ou questions) — não validar
+  if (
+    path.startsWith("question.") &&
+    VALID_SECTION_IDS_QUESTIONS.includes(sectionId)
+  ) {
     return { _isDynamic: true, _path: path };
   }
   // currentAttribute (contexto dinâmico para seção "attributes")
@@ -97,7 +125,7 @@ function resolveDataPath(obj, path, sectionId = null, sectionData = null) {
         sectionData,
         relativePath,
         sectionId,
-        sectionData
+        sectionData,
       );
       if (resolved !== null && resolved !== undefined) {
         return resolved;
@@ -109,7 +137,7 @@ function resolveDataPath(obj, path, sectionId = null, sectionData = null) {
         obj.sectionData,
         relativePath,
         sectionId,
-        sectionData
+        sectionData,
       );
     }
     return null;
@@ -152,12 +180,15 @@ function validateDataPath(
   data,
   context = "",
   sectionId = null,
-  sectionData = null
+  sectionData = null,
 ) {
   if (!dataPath) return null;
 
-  // question.* é contexto dinâmico por questão (responses)
-  if (dataPath.startsWith("question.") && sectionId === "responses") {
+  // question.* é contexto dinâmico por questão (responses ou questions)
+  if (
+    dataPath.startsWith("question.") &&
+    VALID_SECTION_IDS_QUESTIONS.includes(sectionId)
+  ) {
     return null;
   }
   // currentAttribute é contexto dinâmico (attributes)
@@ -173,7 +204,7 @@ function validateDataPath(
           { currentAttribute: attr },
           dataPath,
           sectionId,
-          sectionData
+          sectionData,
         );
         return value !== null && value !== undefined;
       });
@@ -215,7 +246,7 @@ function validateTemplates(
   data,
   context = "",
   sectionId = null,
-  sectionData = null
+  sectionData = null,
 ) {
   if (!template || typeof template !== "string") return [];
 
@@ -233,7 +264,7 @@ function validateTemplates(
         data.uiTexts,
         cleanPath,
         sectionId,
-        sectionData
+        sectionData,
       );
       if (value === null || value === undefined) {
         errors.push({
@@ -256,7 +287,7 @@ function validateTemplates(
             { currentAttribute: attr },
             path,
             sectionId,
-            sectionData
+            sectionData,
           );
           return value !== null && value !== undefined;
         });
@@ -295,7 +326,7 @@ function validateComponentData(
   data,
   context = "",
   sectionId = null,
-  sectionData = null
+  sectionData = null,
 ) {
   const errors = [];
   const { type, dataPath } = component;
@@ -314,7 +345,7 @@ function validateComponentData(
     errors.push({
       path: context,
       message: `Tipo de componente inválido: "${type}". Tipos válidos: ${VALID_COMPONENT_TYPES.join(
-        ", "
+        ", ",
       )}`,
     });
   }
@@ -368,19 +399,19 @@ function validateComponentData(
 
   // Valida dataPath existe e é array quando necessário
   if (dataPath) {
-      const dataPathError = validateDataPath(
-        dataPath,
-        data,
-        context,
-        sectionId,
-        sectionData
-      );
-      if (dataPathError) {
-        errors.push(dataPathError);
-      } else {
-        // resolveDataPath já trata sectionData.* usando o parâmetro sectionData
-        const resolved = resolveDataPath(data, dataPath, sectionId, sectionData);
-      
+    const dataPathError = validateDataPath(
+      dataPath,
+      data,
+      context,
+      sectionId,
+      sectionData,
+    );
+    if (dataPathError) {
+      errors.push(dataPathError);
+    } else {
+      // resolveDataPath já trata sectionData.* usando o parâmetro sectionData
+      const resolved = resolveDataPath(data, dataPath, sectionId, sectionData);
+
       // Componentes que requerem arrays diretos
       const arrayComponents = [
         "barChart",
@@ -469,13 +500,13 @@ function validateComponentData(
         // Array deve ter opções Detrator, Promotor, Neutro
         const options = resolved.map((d) => d.option);
         const missing = VALID_NPS_OPTIONS.filter(
-          (opt) => !options.includes(opt)
+          (opt) => !options.includes(opt),
         );
         if (missing.length > 0) {
           errors.push({
             path: context,
             message: `NPSStackedChart com array requer opções: ${VALID_NPS_OPTIONS.join(
-              ", "
+              ", ",
             )}. Faltando: ${missing.join(", ")}`,
           });
         }
@@ -491,8 +522,8 @@ function validateComponentData(
         data,
         `${context}.title`,
         sectionId,
-        sectionData
-      )
+        sectionData,
+      ),
     );
   }
   if (component.text) {
@@ -502,8 +533,8 @@ function validateComponentData(
         data,
         `${context}.text`,
         sectionId,
-        sectionData
-      )
+        sectionData,
+      ),
     );
   }
 
@@ -518,7 +549,7 @@ function validateComponents(
   data,
   context = "",
   sectionId = null,
-  sectionData = null
+  sectionData = null,
 ) {
   const errors = [];
 
@@ -539,8 +570,8 @@ function validateComponents(
         data,
         componentContext,
         sectionId,
-        sectionData
-      )
+        sectionData,
+      ),
     );
 
     // Valida componentes aninhados
@@ -551,8 +582,8 @@ function validateComponents(
           data,
           `${componentContext}.components`,
           sectionId,
-          sectionData
-        )
+          sectionData,
+        ),
       );
     }
   });
@@ -569,7 +600,7 @@ function validateSubsections(
   data,
   sectionData,
   context = "",
-  sectionId = null
+  sectionId = null,
 ) {
   const errors = [];
 
@@ -584,7 +615,7 @@ function validateSubsections(
 
   subsections.forEach((subsection, index) => {
     const subsectionContext = `${context}[${index}]`;
-    
+
     // Valida campos obrigatórios da subseção
     if (!subsection.id) {
       errors.push({
@@ -610,7 +641,7 @@ function validateSubsections(
         message: "Subseção deve ter 'icon'",
       });
     }
-    
+
     // Valida componentes diretamente em subsections[].components
     // Passa data e sectionData separadamente para que resolveDataPath funcione corretamente
     if (subsection.components && Array.isArray(subsection.components)) {
@@ -620,13 +651,109 @@ function validateSubsections(
           data, // Passa data original
           `${subsectionContext}.components`,
           sectionId,
-          sectionData // Passa sectionData separadamente
-        )
+          sectionData, // Passa sectionData separadamente
+        ),
       );
     }
   });
 
   return errors;
+}
+
+/**
+ * Alertas: campo esperado (ex: option) recebeu outro (ex: label)
+ */
+function checkChartItemFieldName(
+  items,
+  context,
+  fieldExpected = "option",
+  fieldAlternate = "label",
+) {
+  const out = [];
+  if (!Array.isArray(items)) return out;
+  items.forEach((item, i) => {
+    if (
+      item &&
+      item[fieldAlternate] !== undefined &&
+      item[fieldExpected] === undefined
+    ) {
+      out.push(
+        warn(
+          `${context}[${i}]`,
+          `Campo esperado "${fieldExpected}", recebido "${fieldAlternate}". Use "${fieldExpected}" (padrão ouro).`,
+        ),
+      );
+    }
+  });
+  return out;
+}
+
+/**
+ * Alertas: campo que deveria ser number está como string
+ */
+function checkNumberNotString(value, context, fieldName) {
+  if (value === undefined || value === null) return [];
+  if (typeof value === "string") {
+    return [
+      warn(
+        context,
+        `Campo "${fieldName}" deveria ser number, está como string.`,
+      ),
+    ];
+  }
+  return [];
+}
+
+/**
+ * Alertas: campo vazio (string vazia)
+ */
+function checkNotEmptyString(value, context, fieldName) {
+  if (value === "" || (typeof value === "string" && value.trim() === "")) {
+    return [warn(context, `Campo "${fieldName}" está vazio.`)];
+  }
+  return [];
+}
+
+/**
+ * Charts (em dados de questão) cujos itens devem ter 'value' e 'percentage'.
+ * Baseado no código: npsStackedChart e barChart (QuestionsList, SimpleBarChart, NPS) usam item.value e item.percentage.
+ * Outros charts (sentimentDivergentChart, lineChart, paretoChart, etc.) usam outras chaves (positive/negative, x/y, category/value).
+ */
+const QUESTION_CHART_KEYS_REQUIRING_VALUE_AND_PERCENTAGE = [
+  "npsStackedChart",
+  "barChart",
+];
+
+/**
+ * Alertas: item deve ter value e percentage; avisa quando tem só um deles.
+ * Aplicado apenas aos charts listados em QUESTION_CHART_KEYS_REQUIRING_VALUE_AND_PERCENTAGE.
+ */
+function checkChartItemValueAndPercentage(items, context) {
+  const out = [];
+  if (!Array.isArray(items)) return out;
+  items.forEach((item, i) => {
+    if (!item) return;
+    const hasValue = item.value !== undefined && item.value !== null;
+    const hasPercentage =
+      item.percentage !== undefined && item.percentage !== null;
+    if (hasPercentage && !hasValue) {
+      out.push(
+        warn(
+          `${context}[${i}]`,
+          "Item deve ter 'value' e 'percentage'; tem apenas 'percentage'.",
+        ),
+      );
+    }
+    if (hasValue && !hasPercentage) {
+      out.push(
+        warn(
+          `${context}[${i}]`,
+          "Item deve ter 'value' e 'percentage'; tem apenas 'value'.",
+        ),
+      );
+    }
+  });
+  return out;
 }
 
 /**
@@ -636,155 +763,284 @@ function validateQuestions(questions, context = "") {
   const errors = [];
 
   if (!Array.isArray(questions)) {
-    return [
-      {
-        path: context,
-        message: "questions deve ser um array",
-      },
-    ];
+    return [err(context, "questions deve ser um array")];
   }
 
   const questionIds = [];
   questions.forEach((question, index) => {
     const questionContext = `${context}[${index}]`;
 
+    // Campos numéricos não devem ser string
+    if (question.id !== undefined && question.id !== null) {
+      errors.push(
+        ...checkNumberNotString(question.id, `${questionContext}.id`, "id"),
+      );
+      questionIds.push(question.id);
+    }
+    if (question.index !== undefined && question.index !== null) {
+      errors.push(
+        ...checkNumberNotString(
+          question.index,
+          `${questionContext}.index`,
+          "index",
+        ),
+      );
+    }
+
     // Valida campos obrigatórios
     if (question.id === undefined || question.id === null) {
-      errors.push({
-        path: questionContext,
-        message: "Questão deve ter 'id'",
-      });
-    } else {
-      questionIds.push(question.id);
+      errors.push(err(questionContext, "Questão deve ter 'id'"));
     }
 
     if (question.index === undefined || question.index === null) {
-      errors.push({
-        path: questionContext,
-        message: "Questão deve ter 'index'",
-      });
+      errors.push(err(questionContext, "Questão deve ter 'index'"));
     }
 
     if (!question.question) {
-      errors.push({
-        path: questionContext,
-        message: "Questão deve ter 'question' (texto da pergunta)",
-      });
+      errors.push(
+        err(questionContext, "Questão deve ter 'question' (texto da pergunta)"),
+      );
+    } else {
+      errors.push(
+        ...checkNotEmptyString(
+          question.question,
+          `${questionContext}.question`,
+          "question",
+        ),
+      );
     }
 
     // Valida questionType (não type)
     if (!question.questionType) {
-      errors.push({
-        path: questionContext,
-        message: "Questão deve ter 'questionType' (não 'type')",
-      });
+      errors.push(
+        err(questionContext, "Questão deve ter 'questionType' (não 'type')"),
+      );
     } else if (!VALID_QUESTION_TYPES.includes(question.questionType)) {
-      errors.push({
-        path: questionContext,
-        message: `Tipo de questão inválido: "${
-          question.questionType
-        }". Tipos válidos: ${VALID_QUESTION_TYPES.join(", ")}`,
-      });
+      errors.push(
+        err(
+          questionContext,
+          `Tipo de questão inválido: "${question.questionType}". Tipos válidos: ${VALID_QUESTION_TYPES.join(", ")}`,
+        ),
+      );
     }
-    
-    // Aviso se usar 'type' em vez de 'questionType'
+
     if (question.type && !question.questionType) {
-      errors.push({
-        path: questionContext,
-        message: "Questões devem usar 'questionType' (não 'type'). Use 'questionType' para questões.",
-      });
+      errors.push(
+        err(
+          questionContext,
+          "Questões devem usar 'questionType' (não 'type'). Use 'questionType' para questões.",
+        ),
+      );
     }
 
     // Validações específicas por tipo (usando questionType)
     if (question.questionType === "nps") {
-      if (question.data && question.data.npsStackedChart && Array.isArray(question.data.npsStackedChart)) {
-        const options = question.data.npsStackedChart.map((d) => d.option);
+      if (
+        question.data &&
+        question.data.npsStackedChart &&
+        Array.isArray(question.data.npsStackedChart)
+      ) {
+        const chart = question.data.npsStackedChart;
+        const options = chart.map((d) => d.option);
         const missing = VALID_NPS_OPTIONS.filter(
-          (opt) => !options.includes(opt)
+          (opt) => !options.includes(opt),
         );
         if (missing.length > 0) {
-          errors.push({
-            path: questionContext,
-            message: `Questão NPS deve ter opções em data.npsStackedChart: ${VALID_NPS_OPTIONS.join(
-              ", "
-            )}. Faltando: ${missing.join(", ")}`,
-          });
+          errors.push(
+            err(
+              questionContext,
+              `Questão NPS deve ter opções em data.npsStackedChart: ${VALID_NPS_OPTIONS.join(", ")}. Faltando: ${missing.join(", ")}`,
+            ),
+          );
         }
+        // Alerta: option vs label
+        errors.push(
+          ...checkChartItemFieldName(
+            chart,
+            `${questionContext}.data.npsStackedChart`,
+            "option",
+            "label",
+          ),
+        );
+        // Alerta: value/percentage como string
+        chart.forEach((item, i) => {
+          const ctx = `${questionContext}.data.npsStackedChart[${i}]`;
+          if (item && item.value !== undefined) {
+            errors.push(
+              ...checkNumberNotString(item.value, `${ctx}.value`, "value"),
+            );
+          }
+          if (item && item.percentage !== undefined) {
+            errors.push(
+              ...checkNumberNotString(
+                item.percentage,
+                `${ctx}.percentage`,
+                "percentage",
+              ),
+            );
+          }
+        });
+        // npsStackedChart: itens devem ter value e percentage (QUESTION_CHART_KEYS_REQUIRING_VALUE_AND_PERCENTAGE)
+        errors.push(
+          ...checkChartItemValueAndPercentage(
+            chart,
+            `${questionContext}.data.npsStackedChart`,
+          ),
+        );
       }
-      // Valida estrutura de dados NPS
       if (question.data) {
         if (question.data.npsScore === undefined) {
-          errors.push({
-            path: questionContext,
-            message: "Questão NPS deve ter 'data.npsScore'",
-          });
+          errors.push(
+            err(questionContext, "Questão NPS deve ter 'data.npsScore'"),
+          );
+        } else {
+          errors.push(
+            ...checkNumberNotString(
+              question.data.npsScore,
+              `${questionContext}.data.npsScore`,
+              "npsScore",
+            ),
+          );
         }
         if (!question.data.npsCategory) {
-          errors.push({
-            path: questionContext,
-            message: "Questão NPS deve ter 'data.npsCategory'",
-          });
+          errors.push(
+            err(questionContext, "Questão NPS deve ter 'data.npsCategory'"),
+          );
+        } else {
+          errors.push(
+            ...checkNotEmptyString(
+              question.data.npsCategory,
+              `${questionContext}.data.npsCategory`,
+              "npsCategory",
+            ),
+          );
         }
       }
     }
 
     if (question.questionType === "open-ended") {
       if (question.data) {
-        const hasSentiment = question.data.sentimentStackedChart && Array.isArray(question.data.sentimentStackedChart);
-        const hasWordCloud = question.data.wordCloud && Array.isArray(question.data.wordCloud);
-        const hasTopCategories = question.data.topCategoriesCards && Array.isArray(question.data.topCategoriesCards);
-        
+        const hasSentiment =
+          question.data.sentimentStackedChart &&
+          Array.isArray(question.data.sentimentStackedChart);
+        const hasWordCloud =
+          question.data.wordCloud && Array.isArray(question.data.wordCloud);
+        const hasTopCategories =
+          question.data.topCategoriesCards &&
+          Array.isArray(question.data.topCategoriesCards);
+
         if (!hasSentiment && !hasWordCloud && !hasTopCategories) {
-          errors.push({
-            path: questionContext,
-            message: "Questão open-ended deve ter pelo menos um de: 'data.sentimentStackedChart', 'data.wordCloud', ou 'data.topCategoriesCards'",
-          });
+          errors.push(
+            err(
+              questionContext,
+              "Questão open-ended deve ter pelo menos um de: 'data.sentimentStackedChart', 'data.wordCloud', ou 'data.topCategoriesCards'",
+            ),
+          );
+        }
+        // Aviso: arrays vazios (falta dado para renderizar)
+        if (
+          question.data.wordCloud &&
+          Array.isArray(question.data.wordCloud) &&
+          question.data.wordCloud.length === 0
+        ) {
+          errors.push(
+            warn(
+              `${questionContext}.data.wordCloud`,
+              "Array wordCloud vazio; preencher para exibir nuvem de palavras.",
+            ),
+          );
+        }
+        if (
+          question.data.sentimentCategories &&
+          Array.isArray(question.data.sentimentCategories) &&
+          question.data.sentimentCategories.length === 0
+        ) {
+          errors.push(
+            warn(
+              `${questionContext}.data.sentimentCategories`,
+              "Array sentimentCategories vazio; preencher para exibir.",
+            ),
+          );
+        }
+        if (
+          question.data.topicsByCategory &&
+          Array.isArray(question.data.topicsByCategory) &&
+          question.data.topicsByCategory.length === 0
+        ) {
+          errors.push(
+            warn(
+              `${questionContext}.data.topicsByCategory`,
+              "Array topicsByCategory vazio; preencher para exibir.",
+            ),
+          );
         }
       }
     }
 
-    if (question.questionType === "multiple-choice" || question.questionType === "single-choice") {
-      if (!question.data || !question.data.barChart || !Array.isArray(question.data.barChart)) {
-        errors.push({
-          path: questionContext,
-          message: "Questão multiple-choice/single-choice deve ter 'data.barChart' como array",
+    if (
+      question.questionType === "multiple-choice" ||
+      question.questionType === "single-choice"
+    ) {
+      if (
+        !question.data ||
+        !question.data.barChart ||
+        !Array.isArray(question.data.barChart)
+      ) {
+        errors.push(
+          err(
+            questionContext,
+            "Questão multiple-choice/single-choice deve ter 'data.barChart' como array",
+          ),
+        );
+      } else {
+        const chart = question.data.barChart;
+        errors.push(
+          ...checkChartItemFieldName(
+            chart,
+            `${questionContext}.data.barChart`,
+            "option",
+            "label",
+          ),
+        );
+        chart.forEach((item, i) => {
+          const ctx = `${questionContext}.data.barChart[${i}]`;
+          if (item && item.value !== undefined) {
+            errors.push(
+              ...checkNumberNotString(item.value, `${ctx}.value`, "value"),
+            );
+          }
+          if (item && item.percentage !== undefined) {
+            errors.push(
+              ...checkNumberNotString(
+                item.percentage,
+                `${ctx}.percentage`,
+                "percentage",
+              ),
+            );
+          }
         });
+        // barChart: itens devem ter value e percentage (QUESTION_CHART_KEYS_REQUIRING_VALUE_AND_PERCENTAGE)
+        errors.push(
+          ...checkChartItemValueAndPercentage(
+            chart,
+            `${questionContext}.data.barChart`,
+          ),
+        );
       }
     }
   });
 
   // Valida IDs únicos
   const duplicateIds = questionIds.filter(
-    (id, index) => questionIds.indexOf(id) !== index
+    (id, index) => questionIds.indexOf(id) !== index,
   );
   if (duplicateIds.length > 0) {
-    errors.push({
-      path: context,
-      message: `IDs de questões duplicados: ${[...new Set(duplicateIds)].join(
-        ", "
-      )}`,
-    });
-  }
-
-  // Validar índices sequenciais de questões
-  const questionIndices = questions
-    .map((q) => q.index)
-    .filter((idx) => idx !== undefined && idx !== null);
-  if (questionIndices.length > 0) {
-    const sortedIndices = [...questionIndices].sort((a, b) => a - b);
-    const expectedIndices = Array.from(
-      { length: sortedIndices.length },
-      (_, i) => i + 1 // Questões começam em 1 (não 0)
+    errors.push(
+      err(
+        context,
+        `IDs de questões duplicados: ${[...new Set(duplicateIds)].join(", ")}`,
+      ),
     );
-
-    if (JSON.stringify(sortedIndices) !== JSON.stringify(expectedIndices)) {
-      errors.push({
-        path: context,
-        message: `Índices de questões devem começar em 1 e ser sequenciais. Encontrado: ${questionIndices.join(
-          ", "
-        )}`,
-      });
-    }
   }
 
   return errors;
@@ -803,7 +1059,7 @@ export function validateCustomRules(data) {
   if (data.sections && Array.isArray(data.sections)) {
     const sectionIds = data.sections.map((s) => s.id);
     const duplicateSectionIds = sectionIds.filter(
-      (id, index) => sectionIds.indexOf(id) !== index
+      (id, index) => sectionIds.indexOf(id) !== index,
     );
     if (duplicateSectionIds.length > 0) {
       errors.push({
@@ -819,14 +1075,14 @@ export function validateCustomRules(data) {
     const sortedIndices = [...sectionIndices].sort((a, b) => a - b);
     const expectedIndices = Array.from(
       { length: sortedIndices.length },
-      (_, i) => i
+      (_, i) => i,
     );
 
     if (JSON.stringify(sortedIndices) !== JSON.stringify(expectedIndices)) {
       errors.push({
         path: "/sections",
         message: `Índices de seções devem começar em 0 e ser sequenciais. Encontrado: ${sectionIndices.join(
-          ", "
+          ", ",
         )}`,
       });
     }
@@ -834,32 +1090,23 @@ export function validateCustomRules(data) {
     // Validar cada seção
     data.sections.forEach((section, index) => {
       const sectionContext = `/sections[${index}]`;
-      
-      // Construir sectionData baseado na estrutura da seção
-      let sectionData = section.data || {};
-      
-      // Special handling for attributes section: build sectionData from subsections data
-      // O código mapeia subsection.data para sectionData.department, sectionData.tenure, etc.
-      if (section.id === "attributes" && section.subsections) {
-        const attributesData = {};
-        section.subsections.forEach((subsection) => {
-          if (subsection.data) {
-            // Map attributes-department -> department
-            if (subsection.id === "attributes-department") {
-              attributesData.department = subsection.data;
-            }
-            // Map attributes-tenure -> tenure
-            else if (subsection.id === "attributes-tenure") {
-              attributesData.tenure = subsection.data;
-            }
-            // Map attributes-role -> role
-            else if (subsection.id === "attributes-role") {
-              attributesData.role = subsection.data;
-            }
-          }
+
+      // Construir sectionData de forma genérica para qualquer seção com subsections
+      // (exceto a de questions/responses, cujas "subseções" vêm de section.questions)
+      let sectionData = { ...(section.data || {}) };
+      if (section.subsections && section.subsections.length > 0) {
+        section.subsections.forEach((sub) => {
+          const key = sub.id.startsWith(section.id + "-")
+            ? sub.id.slice(section.id.length + 1)
+            : sub.id;
+          sectionData[key] = sub.data ?? {};
         });
-        // Usar os dados mapeados das subseções como sectionData
-        sectionData = attributesData;
+        // Para seção attributes, manter sectionData.attributes (array) para currentAttribute.*
+        if (section.id === "attributes") {
+          sectionData.attributes = section.subsections.map(
+            (sub) => sub.data ?? {},
+          );
+        }
       }
 
       // Validar subsections com componentes diretamente
@@ -867,7 +1114,7 @@ export function validateCustomRules(data) {
         // Validar IDs únicos de subseções
         const subsectionIds = section.subsections.map((s) => s.id);
         const duplicateSubsectionIds = subsectionIds.filter(
-          (id, index) => subsectionIds.indexOf(id) !== index
+          (id, index) => subsectionIds.indexOf(id) !== index,
         );
         if (duplicateSubsectionIds.length > 0) {
           errors.push({
@@ -883,7 +1130,7 @@ export function validateCustomRules(data) {
         const sortedSubIndices = [...subsectionIndices].sort((a, b) => a - b);
         const expectedSubIndices = Array.from(
           { length: sortedSubIndices.length },
-          (_, i) => i
+          (_, i) => i,
         );
 
         if (
@@ -893,7 +1140,7 @@ export function validateCustomRules(data) {
           errors.push({
             path: `${sectionContext}/subsections`,
             message: `Índices de subseções devem começar em 0 e ser sequenciais. Encontrado: ${subsectionIndices.join(
-              ", "
+              ", ",
             )}`,
           });
         }
@@ -905,8 +1152,8 @@ export function validateCustomRules(data) {
             data,
             sectionData,
             `${sectionContext}.subsections`,
-            section.id
-          )
+            section.id,
+          ),
         );
       }
 
@@ -918,32 +1165,70 @@ export function validateCustomRules(data) {
             data, // Passa data original
             `${sectionContext}.components`,
             section.id,
-            sectionData // Passa sectionData separadamente
-          )
+            sectionData, // Passa sectionData separadamente
+          ),
         );
       }
     });
   }
 
-  // Validar questões (questions diretamente na seção responses)
-  const responsesSection = data.sections?.find((s) => s.id === "responses");
-  if (responsesSection?.questions && Array.isArray(responsesSection.questions)) {
+  // Padrão ouro: a seção que contém 'questions' deve ter id "responses" ou "questions"
+  const sectionWithQuestions = data.sections?.find(
+    (s) => Array.isArray(s.questions) && s.questions.length > 0,
+  );
+  if (sectionWithQuestions) {
+    if (!VALID_SECTION_IDS_QUESTIONS.includes(sectionWithQuestions.id)) {
+      const idx = data.sections.indexOf(sectionWithQuestions);
+      errors.push(
+        err(
+          `/sections[${idx}]`,
+          `A seção que contém 'questions' deve ter id "responses" ou "questions". Encontrado: "${sectionWithQuestions.id}"`,
+        ),
+      );
+    }
+    const sectionIdx = data.sections.indexOf(sectionWithQuestions);
     errors.push(
       ...validateQuestions(
-        responsesSection.questions,
-        "/sections[responses]/questions"
-      )
+        sectionWithQuestions.questions,
+        `/sections[${sectionIdx}]/questions`,
+      ),
     );
   }
 
   // Validar NPS range
   if (data.surveyInfo?.nps !== undefined) {
-    if (data.surveyInfo.nps < -100 || data.surveyInfo.nps > 100) {
-      errors.push({
-        path: "/surveyInfo/nps",
-        message: `NPS deve estar entre -100 e 100. Valor atual: ${data.surveyInfo.nps}`,
-      });
+    errors.push(
+      ...checkNumberNotString(data.surveyInfo.nps, "/surveyInfo/nps", "nps"),
+    );
+    if (
+      typeof data.surveyInfo.nps === "number" &&
+      (data.surveyInfo.nps < -100 || data.surveyInfo.nps > 100)
+    ) {
+      errors.push(
+        err(
+          "/surveyInfo/nps",
+          `NPS deve estar entre -100 e 100. Valor atual: ${data.surveyInfo.nps}`,
+        ),
+      );
     }
+  }
+  if (data.surveyInfo?.totalRespondents !== undefined) {
+    errors.push(
+      ...checkNumberNotString(
+        data.surveyInfo.totalRespondents,
+        "/surveyInfo/totalRespondents",
+        "totalRespondents",
+      ),
+    );
+  }
+  if (data.surveyInfo?.responseRate !== undefined) {
+    errors.push(
+      ...checkNumberNotString(
+        data.surveyInfo.responseRate,
+        "/surveyInfo/responseRate",
+        "responseRate",
+      ),
+    );
   }
 
   return errors;

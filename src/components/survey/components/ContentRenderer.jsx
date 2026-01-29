@@ -1,9 +1,7 @@
 import { GenericSectionRenderer } from "@/components/survey/common/GenericSectionRenderer";
 import { useSurveyData } from "@/hooks/useSurveyData";
 import { useMemo } from "react";
-import {
-  getQuestionsFromData,
-} from "@/services/dataResolver";
+import { getQuestionsFromData } from "@/services/dataResolver";
 
 /**
  * Helper function to get first subsection (shared with SurveySidebar logic)
@@ -24,7 +22,7 @@ function getFirstSubsectionHelper(sectionId, data) {
   // Priority 1: Subsections from config
   if (section.subsections?.length > 0) {
     const sorted = [...section.subsections].sort(
-      (a, b) => (a.index ?? 999) - (b.index ?? 999)
+      (a, b) => (a.index ?? 999) - (b.index ?? 999),
     );
     return sorted[0].id;
   }
@@ -32,7 +30,7 @@ function getFirstSubsectionHelper(sectionId, data) {
   // Priority 2: Respostas (questões em sections ou responseDetails)
   if (section.id === "responses") {
     const questions = getQuestionsFromData(data).sort(
-      (a, b) => (a.index ?? 999) - (b.index ?? 999)
+      (a, b) => (a.index ?? 999) - (b.index ?? 999),
     );
     return questions.length > 0 ? `responses-${questions[0].id}` : null;
   }
@@ -60,25 +58,13 @@ function normalizeSection(activeSection, data) {
       return activeSection;
     }
     // Subseções dinâmicas: responses-*
-    if (
-      section.id === "responses" &&
-      activeSection?.startsWith("responses-")
-    ) {
-      return activeSection;
-    }
-    // Subseções dinâmicas: attributes-*
-    if (
-      section.id === "attributes" &&
-      activeSection?.startsWith("attributes-")
-    ) {
+    if (section.id === "responses" && activeSection?.startsWith("responses-")) {
       return activeSection;
     }
   }
 
   // If it's a section ID, normalize to first subsection
-  const section = data.sections.find(
-    (s) => s.id === activeSection
-  );
+  const section = data.sections.find((s) => s.id === activeSection);
   if (section) {
     const firstSub = getFirstSubsectionHelper(activeSection, data);
     return firstSub || activeSection;
@@ -96,9 +82,7 @@ function normalizeSection(activeSection, data) {
 function hasRenderSchema(data, sectionId) {
   if (!data || !sectionId) return false;
 
-  const sectionConfig = data.sections?.find(
-    (s) => s.id === sectionId
-  );
+  const sectionConfig = data.sections?.find((s) => s.id === sectionId);
   if (!sectionConfig) return false;
 
   // responses: aceita se existir seção e dados de questões (lógica em GenericSectionRenderer)
@@ -108,7 +92,11 @@ function hasRenderSchema(data, sectionId) {
 
   // NOVA ESTRUTURA: Seção tem subsections (com ou sem components - o GenericSectionRenderer vai lidar)
   // Se tem subsections, significa que a seção tem estrutura para renderizar
-  if (sectionConfig.subsections && Array.isArray(sectionConfig.subsections) && sectionConfig.subsections.length > 0) {
+  if (
+    sectionConfig.subsections &&
+    Array.isArray(sectionConfig.subsections) &&
+    sectionConfig.subsections.length > 0
+  ) {
     return true;
   }
 
@@ -130,9 +118,7 @@ function extractSectionId(data, activeSection) {
   }
 
   // Check if activeSection matches a section ID exactly
-  const exactMatch = data.sections.find(
-    (s) => s.id === activeSection
-  );
+  const exactMatch = data.sections.find((s) => s.id === activeSection);
   if (exactMatch) {
     return activeSection;
   }
@@ -143,7 +129,7 @@ function extractSectionId(data, activeSection) {
     // Check subsections from config
     if (section.subsections) {
       const subsection = section.subsections.find(
-        (sub) => sub.id === activeSection
+        (sub) => sub.id === activeSection,
       );
       if (subsection) {
         return section.id;
@@ -157,14 +143,6 @@ function extractSectionId(data, activeSection) {
     ) {
       return section.id;
     }
-    // Check dynamic subsections (attributes)
-    if (
-      section.id === "attributes" &&
-      activeSection &&
-      activeSection.startsWith("attributes-")
-    ) {
-      return section.id;
-    }
   }
 
   // If no match, try to extract from pattern (e.g., "nova-secao-subsec" -> "nova-secao")
@@ -175,9 +153,7 @@ function extractSectionId(data, activeSection) {
     // Try all possible combinations from longest to shortest
     for (let i = parts.length; i >= 1; i--) {
       const potentialId = parts.slice(0, i).join("-");
-      const section = data.sections.find(
-        (s) => s.id === potentialId
-      );
+      const section = data.sections.find((s) => s.id === potentialId);
       if (section) {
         // Check if it's a dynamic subsection or regular subsection
         if (section.dynamicSubsections) {
@@ -215,31 +191,26 @@ export function ContentRenderer({ activeSection }) {
   // First, try to extract section ID from normalizedSection
   const sectionId = data ? extractSectionId(data, normalizedSection) : null;
 
-  // If sectionId is null but normalizedSection matches a known pattern, try to extract it
+  // If sectionId is null, try to infer from subsection prefix (e.g. "attributes-Estado" -> "attributes")
   let finalSectionId = sectionId;
   if (
     !finalSectionId &&
     normalizedSection &&
-    typeof normalizedSection === "string"
+    typeof normalizedSection === "string" &&
+    data?.sections
   ) {
-    if (normalizedSection.startsWith("support-")) {
-      finalSectionId = "support";
-    } else if (normalizedSection.startsWith("responses-")) {
-      finalSectionId = "responses";
-    } else if (normalizedSection.startsWith("attributes-")) {
-      finalSectionId = "attributes";
-    } else if (normalizedSection.startsWith("executive-")) {
-      finalSectionId = "executive";
-    } else if (normalizedSection.startsWith("engagement-")) {
-      finalSectionId = "engagement";
-    }
+    const found = data.sections.find((s) =>
+      normalizedSection.startsWith(s.id + "-"),
+    );
+    if (found) finalSectionId = found.id;
   }
 
   // Use generic renderer if section has schema
   // All sections must have schema in JSON - this is the "proof of fire"
   // Try finalSectionId first, then fallback to extractSectionId
-  let sectionIdToUse = finalSectionId || extractSectionId(data, normalizedSection);
-  
+  let sectionIdToUse =
+    finalSectionId || extractSectionId(data, normalizedSection);
+
   if (sectionIdToUse && data && hasRenderSchema(data, sectionIdToUse)) {
     content = (
       <GenericSectionRenderer
@@ -250,8 +221,7 @@ export function ContentRenderer({ activeSection }) {
   } else {
     // Error state: section not found or missing schema
     const commonTexts = data?.uiTexts?.common?.section || {};
-    const sectionNotFound =
-      commonTexts.sectionNotFound || "Section not found";
+    const sectionNotFound = commonTexts.sectionNotFound || "Section not found";
     const sectionNotFoundDescription =
       commonTexts.sectionNotFoundDescription ||
       `The section "${normalizedSection}" was not found or does not have a rendering schema.`;
@@ -260,7 +230,7 @@ export function ContentRenderer({ activeSection }) {
     // Replace {{section}} placeholder if present
     const description = sectionNotFoundDescription.replace(
       "{{section}}",
-      normalizedSection
+      normalizedSection,
     );
 
     content = (

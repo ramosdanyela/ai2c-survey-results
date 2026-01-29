@@ -1,4 +1,4 @@
-import { getAttributesFromData, getQuestionsFromData } from "@/services/dataResolver";
+import { getQuestionsFromData } from "@/services/dataResolver";
 
 /**
  * Get all available subsections for a given section
@@ -9,33 +9,18 @@ export function getAllSubsectionsForSection(sectionId, data) {
   const section = data.sections.find((s) => s.id === sectionId);
   if (!section) return [];
 
-  // If section has fixed subsections (executive, support)
-  if (section.subsections) {
-    return section.subsections.map((sub) => ({
-      sectionId: section.id,
-      subsectionId: sub.id,
-      label: sub.name,
-    }));
+  // Seção com subseções (executive, support, attributes, etc.)
+  if (section.subsections?.length > 0) {
+    return section.subsections
+      .sort((a, b) => (a.index || 0) - (b.index || 0))
+      .map((sub) => ({
+        sectionId: section.id,
+        subsectionId: sub.id,
+        label: sub.name,
+      }));
   }
 
-  // If it's the "attributes" section, get from data
-  if (sectionId === "attributes") {
-    const availableAttributes = getAttributesFromData(data);
-    if (!availableAttributes || availableAttributes.length === 0) return [];
-
-    // Sort by index
-    const sortedAttributes = availableAttributes.sort(
-      (a, b) => (a.index || 0) - (b.index || 0)
-    );
-
-    return sortedAttributes.map((attr) => ({
-      sectionId: "attributes",
-      subsectionId: `attributes-${attr.id}`,
-      label: attr.name,
-    }));
-  }
-
-  // If it's the "responses" section, get from data
+  // Seção responses: subseções dinâmicas a partir de questions
   if (sectionId === "responses") {
     // Use getQuestionsFromData which gets questions from sections[id="responses"].questions
     const allQuestions = getQuestionsFromData(data);
@@ -44,9 +29,7 @@ export function getAllSubsectionsForSection(sectionId, data) {
       console.warn("Export: No questions found", {
         hasData: !!data,
         hasSections: !!data?.sections,
-        responsesSection: data?.sections?.find(
-          (s) => s.id === "responses"
-        ),
+        responsesSection: data?.sections?.find((s) => s.id === "responses"),
       });
       return [];
     }
@@ -54,7 +37,7 @@ export function getAllSubsectionsForSection(sectionId, data) {
     // Não aplicar filtros que ocultam questões - todas as questões devem ser exportadas
     // Ordenar questões pelo index do JSON
     const sortedQuestions = allQuestions.sort(
-      (a, b) => (a.index || 0) - (b.index || 0)
+      (a, b) => (a.index || 0) - (b.index || 0),
     );
 
     return sortedQuestions.map((q, index) => {
@@ -100,7 +83,7 @@ export function getAllSubsections(data) {
 export function parseSelectedSections(
   selectedSectionsArray,
   exportFullReport,
-  data
+  data,
 ) {
   if (exportFullReport) {
     // Return all subsections
@@ -114,27 +97,20 @@ export function parseSelectedSections(
   if (!data?.sections) return [];
 
   selectedSectionsArray.forEach((subsectionId) => {
-    // Determine sectionId from subsectionId
     let sectionId = null;
-
-    if (subsectionId.startsWith("attributes-")) {
-      sectionId = "attributes";
+    const sectionWithSub = data.sections.find((s) =>
+      s.subsections?.some((sub) => sub.id === subsectionId),
+    );
+    if (sectionWithSub) {
+      sectionId = sectionWithSub.id;
     } else if (subsectionId.startsWith("responses-")) {
       sectionId = "responses";
-    } else {
-      // For executive and support, find the section that contains this subsection
-      const section = data.sections.find((s) =>
-        s.subsections?.some((sub) => sub.id === subsectionId)
-      );
-      if (section) {
-        sectionId = section.id;
-      }
     }
 
     if (sectionId) {
       // Check for duplicates before adding
       const exists = parsed.some(
-        (p) => p.sectionId === sectionId && p.subsectionId === subsectionId
+        (p) => p.sectionId === sectionId && p.subsectionId === subsectionId,
       );
 
       if (!exists) {
@@ -162,33 +138,14 @@ export function parseSelectedSections(
       return sectionOrderA - sectionOrderB;
     }
 
-    // Within same section, sort by subsection index
-    // For fixed subsections (executive, support)
     const subsectionA = sectionA?.subsections?.find(
-      (sub) => sub.id === a.subsectionId
+      (sub) => sub.id === a.subsectionId,
     );
     const subsectionB = sectionB?.subsections?.find(
-      (sub) => sub.id === b.subsectionId
+      (sub) => sub.id === b.subsectionId,
     );
-
-    // For dynamic subsections (attributes, responses), extract from subsectionId
     let subOrderA = subsectionA?.index;
     let subOrderB = subsectionB?.index;
-
-    if (subOrderA === undefined && a.sectionId === "attributes") {
-      // Extract attribute ID and find its index from data
-      const attrId = a.subsectionId.replace("attributes-", "");
-      const attributes = getAttributesFromData(data);
-      const attr = attributes.find((attr) => attr.id === attrId);
-      subOrderA = attr?.index || 999;
-    }
-
-    if (subOrderB === undefined && b.sectionId === "attributes") {
-      const attrId = b.subsectionId.replace("attributes-", "");
-      const attributes = getAttributesFromData(data);
-      const attr = attributes.find((attr) => attr.id === attrId);
-      subOrderB = attr?.index || 999;
-    }
 
     if (subOrderA === undefined && a.sectionId === "responses") {
       // Extract question ID and find its index from data

@@ -60,11 +60,12 @@ node data/validation/scripts/validate-json.js caminho/do/arquivo.json
 ### 2. Seções e Subseções
 
 - IDs únicos
-- Índices sequenciais (começando em 0)
+- Índices sequenciais: **seções** começam em 0; **subseções** começam em 0
 - **Estrutura atualizada:** `sections` diretamente no nível raiz (não `sectionsConfig.sections`)
 - **Componentes diretamente em `subsections[].components`** (não há mais `renderSchema`)
 - Subseções devem ter `id`, `index`, `name`, `icon`
-- Dados ficam separados em `data` da seção
+- Dados ficam separados em `data` da seção (ou em `subsection.data` por subseção)
+- **Única seção não genérica:** a que contém o array `questions` deve ter `id: "responses"` (padrão ouro) ou `id: "questions"` (aceito). Todas as demais (executive, support, attributes, etc.) são **genéricas**: subsections em `section.subsections`, dados em `subsection.data`; o validador constrói `sectionData` de forma genérica para todas
 
 ### 3. Componentes
 
@@ -83,8 +84,9 @@ node data/validation/scripts/validate-json.js caminho/do/arquivo.json
 ### 5. Questões
 
 - IDs únicos
+- Cada questão deve ter `index` (não é exigido começar em 1 nem ser sequencial)
 - **Usar `questionType` (não `type`)** - tipos válidos: `nps`, `open-ended`, `multiple-choice`, `single-choice`
-- Questões ficam diretamente em `questions` na seção `responses` (não em `data.questions`)
+- Questões ficam em `questions` na seção com `id: "responses"` ou `"questions"`
 - Questões `nps` devem ter `data.npsScore`, `data.npsCategory` e `data.npsStackedChart`
 - Questões `open-ended` devem ter pelo menos um de: `data.sentimentStackedChart`, `data.wordCloud`, ou `data.topCategoriesCards`
 - Questões `multiple-choice`/`single-choice` devem ter `data.barChart` como array
@@ -95,12 +97,23 @@ node data/validation/scripts/validate-json.js caminho/do/arquivo.json
 - Percentuais devem somar ~100% (com tolerância)
 - Arrays não devem estar vazios quando esperados
 
+## 📐 Estratégia de validação
+
+O documento **`ESTRATEGIA_VALIDACAO_ATUALIZADA.md`** descreve:
+
+- Como a validação reflete as mudanças de código (attributes como seção normal).
+- Checklist de todos os pontos de validação (IDs, sectionData genérico, option vs label, numéricos, vazios, estruturas).
+- Ajustes recomendados em schema e custom-rules e ordem de implementação.
+
+Use-o como referência ao alterar regras ou adicionar novas validações.
+
 ## 🔧 Adicionar Novas Validações
 
 Para adicionar novas regras de validação:
 
 1. **Validação de estrutura**: Edite `schema/surveyData.schema.json`
 2. **Validação customizada**: Edite `rules/custom-rules.js`
+3. Consulte `ESTRATEGIA_VALIDACAO_ATUALIZADA.md` para alinhar com a estratégia atual.
 
 ## 📝 Notas
 
@@ -111,15 +124,16 @@ Para adicionar novas regras de validação:
 
 ## ⚠️ Mudanças Importantes na Estrutura
 
-A validação foi atualizada para refletir a estrutura atual do JSON:
+A validação foi atualizada para refletir a estrutura atual do JSON e a estratégia em `ESTRATEGIA_VALIDACAO_ATUALIZADA.md`:
 
 1. **`sections` diretamente no nível raiz** (não mais `sectionsConfig.sections`)
 2. **Componentes diretamente em `subsections[].components`** (não há mais `renderSchema`)
-3. **Questões usam `questionType`** (não `type`) e ficam em `questions` diretamente na seção
-4. **Dados separados em `data`** da seção (separados dos componentes)
-5. **Novos componentes:** `container`, `grid-container`, `h3`, `h4` estão disponíveis
+3. **Seção de questões:** a seção que contém `questions` deve ter `id: "responses"` (padrão ouro) ou `id: "questions"` (aceito). Cada questão deve ter `index` (não é exigido começar em 1 nem ser sequencial).
+4. **Attributes é uma seção como as demais:** subsections em `section.subsections`, dados em `subsection.data`; o validador constrói `sectionData` de forma **genérica** para todas as seções com subsections (qualquer `attributes-*` ou outro padrão).
+5. **Dados separados em `data`** da seção ou em `subsection.data` por subseção
+6. **Novos componentes:** `container`, `grid-container`, `h3`, `h4` estão disponíveis
 
-Consulte `Doc_how-to_json.md` para a documentação completa da estrutura atual.
+Consulte `Doc_how-to_json.md` para a documentação completa da estrutura atual e `ESTRATEGIA_VALIDACAO_ATUALIZADA.md` para o checklist de validação.
 
 ## 🐛 Solução de Problemas
 

@@ -15,6 +15,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { KPICard } from "../widgets/KPICard";
+import { breakLinesAfterPeriod } from "@/lib/utils";
 import { resolveDataPath } from "@/services/dataResolver";
 
 /**
@@ -24,10 +25,10 @@ import { resolveDataPath } from "@/services/dataResolver";
 export function SchemaCard({ component, data, children }) {
   // Use title and text directly (no template resolution needed)
   const title = component.title || "";
-  const text = component.text || component.content || "";
+  const rawText = component.text || component.content || "";
+  const text = breakLinesAfterPeriod(rawText);
 
   // Text resolution - silently handle empty text (expected in some cases)
-
 
   // Usa className do componente enriquecido (resolvido de cardStyleVariant)
   const styleClass = component.className || "card-elevated";
@@ -45,19 +46,20 @@ export function SchemaCard({ component, data, children }) {
 
   const useDescription = component.useDescription === true;
   const ContentWrapper = useDescription ? CardDescription : "div";
-  
+
   // Aplica cardContentVariant ao ContentWrapper (não ao CardContent)
   // O textClassName já contém o cardContentVariant resolvido (ex: "space-y-3" para "flat")
   const cardContentVariantClass = component.textClassName || "";
-  
+
   // Base classes para o texto
   const baseTextClasses = useDescription
     ? "text-base leading-relaxed"
     : "text-muted-foreground font-normal leading-relaxed";
-  
+
   // Combina base classes com cardContentVariant
   // Se cardContentVariant for "flat", já terá "space-y-3" do textClassName
-  const textBaseClassName = `${baseTextClasses} ${cardContentVariantClass}`.trim();
+  const textBaseClassName =
+    `${baseTextClasses} ${cardContentVariantClass}`.trim();
 
   // If children are provided, render them instead of text
   const hasChildren = children && React.Children.count(children) > 0;
@@ -78,8 +80,20 @@ export function SchemaCard({ component, data, children }) {
     <Card
       className={styleClass}
       style={Object.keys(styleObj).length > 0 ? styleObj : undefined}
-      onMouseEnter={isFlat ? (e) => { e.currentTarget.style.boxShadow = "none"; } : undefined}
-      onMouseLeave={isFlat ? (e) => { e.currentTarget.style.boxShadow = "none"; } : undefined}
+      onMouseEnter={
+        isFlat
+          ? (e) => {
+              e.currentTarget.style.boxShadow = "none";
+            }
+          : undefined
+      }
+      onMouseLeave={
+        isFlat
+          ? (e) => {
+              e.currentTarget.style.boxShadow = "none";
+            }
+          : undefined
+      }
     >
       {title && (
         <CardHeader>
@@ -160,7 +174,10 @@ export function SchemaTopCategoriesCards({ component, data }) {
     return null;
   }
 
-  const title = component.config?.title || uiTexts?.responseDetails?.top3Categories || "Top 3 Categories";
+  const title =
+    component.config?.title ||
+    uiTexts?.responseDetails?.top3Categories ||
+    "Top 3 Categories";
 
   return (
     <div className="mb-6">
