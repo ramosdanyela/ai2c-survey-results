@@ -1221,7 +1221,6 @@ sections[4].questions[0].summary,summary,string,"O NPS organizacional é de 35 p
 Este resultado positivo indica que a maioria dos funcionários está satisfeita e recomendaria a empresa.",5
 sections[4].questions[0].data,data,object,,5
 sections[4].questions[0].data.npsScore,npsScore,number,35,6
-sections[4].questions[0].data.npsCategory,npsCategory,string,Bom,6
 sections[4].questions[0].data.npsStackedChart,npsStackedChart,array,,6
 sections[4].questions[0].data.npsStackedChart[0],npsStackedChart[0],object,,7
 sections[4].questions[0].data.npsStackedChart[0].option,option,string,Promotor,8

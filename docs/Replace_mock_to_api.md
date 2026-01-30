@@ -357,8 +357,7 @@ A API deve retornar um JSON com a mesma estrutura do `surveyData.json`. A estrut
           "questionType": "nps",
           "question": "Qual é a probabilidade...",
           "data": {
-            "npsScore": 35,
-            "npsCategory": "Bom"
+            "npsScore": 35
           }
         }
       ],

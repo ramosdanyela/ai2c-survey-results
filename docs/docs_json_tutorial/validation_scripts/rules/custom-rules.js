@@ -902,19 +902,6 @@ function validateQuestions(questions, context = "") {
             ),
           );
         }
-        if (!question.data.npsCategory) {
-          errors.push(
-            err(questionContext, "Questão NPS deve ter 'data.npsCategory'"),
-          );
-        } else {
-          errors.push(
-            ...checkNotEmptyString(
-              question.data.npsCategory,
-              `${questionContext}.data.npsCategory`,
-              "npsCategory",
-            ),
-          );
-        }
       }
     }
 

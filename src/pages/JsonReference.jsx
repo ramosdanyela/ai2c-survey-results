@@ -62,7 +62,6 @@ export default function JsonReference() {
         ...(surveyDataJson?.metadata || {}),
         totalRespondents: surveyDataJson?.metadata?.totalRespondents || 850,
         nps: surveyDataJson?.metadata?.nps || 35,
-        npsCategory: surveyDataJson?.metadata?.npsCategory || "Bom",
       },
       uiTexts: surveyDataJson?.uiTexts || {},
       _filterPillsState: null,
@@ -2747,7 +2746,6 @@ export default function JsonReference() {
                                       question: {
                                         data: {
                                           npsScore: 35,
-                                          npsCategory: "Bom",
                                         },
                                       },
                                     },
@@ -2775,7 +2773,6 @@ export default function JsonReference() {
                                 question: {
                                   data: {
                                     npsScore: 35,
-                                    npsCategory: "Bom",
                                   },
                                 },
                               },
@@ -3204,7 +3201,6 @@ export default function JsonReference() {
                                         "O NPS organizacional é de 35 pontos, indicando uma base sólida de promotores.",
                                       data: {
                                         npsScore: 35,
-                                        npsCategory: "Bom",
                                         npsStackedChart: [
                                           {
                                             option: "Promotor",
@@ -3248,7 +3244,6 @@ export default function JsonReference() {
                                 question: {
                                   data: {
                                     npsScore: 35,
-                                    npsCategory: "Bom",
                                     npsStackedChart: [
                                       {
                                         option: "Promotor",
@@ -3283,7 +3278,6 @@ export default function JsonReference() {
                                 question: {
                                   data: {
                                     npsScore: 35,
-                                    npsCategory: "Bom",
                                     npsStackedChart: [
                                       {
                                         option: "Promotor",

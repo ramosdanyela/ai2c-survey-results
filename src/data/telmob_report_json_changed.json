@@ -546,7 +546,6 @@
           "summary": "Atualmente, 51% dos entrevistados são detratores, indicando potencial insatisfação; a empresa deve investigar os principais problemas de serviço que afetam esse grupo para reduzir o risco de churn.",
           "data": {
             "npsScore": -21.0,
-            "npsCategory": "",
             "npsStackedChart": [
               {
                 "option": "Detrator",

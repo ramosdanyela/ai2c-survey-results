@@ -128,7 +128,6 @@ export function SchemaNPSScoreCard({ component, data }) {
 
   // Use npsScore from question.data (as used in surveyData.json)
   const npsScore = npsData?.npsScore;
-  const npsCategory = npsData?.npsCategory;
 
   if (npsScore === undefined || !uiTexts) {
     return null;
@@ -151,11 +150,6 @@ export function SchemaNPSScoreCard({ component, data }) {
           </div>
           {/* Simple bar with score for quick visualization */}
           <Progress value={(npsScore + 100) / 2} className="h-3 mb-2" />
-          {npsCategory && (
-            <div className="inline-block px-3 py-1 rounded-full highlight-container text-base font-semibold">
-              {npsCategory}
-            </div>
-          )}
         </div>
       </div>
     </div>

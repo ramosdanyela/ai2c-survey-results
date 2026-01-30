@@ -87,7 +87,7 @@ node data/validation/scripts/validate-json.js caminho/do/arquivo.json
 - Cada questão deve ter `index` (não é exigido começar em 1 nem ser sequencial)
 - **Usar `questionType` (não `type`)** - tipos válidos: `nps`, `open-ended`, `multiple-choice`, `single-choice`
 - Questões ficam em `questions` na seção com `id: "responses"` ou `"questions"`
-- Questões `nps` devem ter `data.npsScore`, `data.npsCategory` e `data.npsStackedChart`
+- Questões `nps` devem ter `data.npsScore` e `data.npsStackedChart`
 - Questões `open-ended` devem ter pelo menos um de: `data.sentimentStackedChart`, `data.wordCloud`, ou `data.topCategoriesCards`
 - Questões `multiple-choice`/`single-choice` devem ter `data.barChart` como array
 

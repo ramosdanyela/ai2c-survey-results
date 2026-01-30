@@ -95,32 +95,35 @@ Retorna quais filtros estão disponíveis para a pesquisa e seus valores possív
 
 #### Obrigatórios
 
-| Campo | Tipo | Descrição | Exemplo |
-|-------|------|-----------|---------|
+| Campo      | Tipo   | Descrição                       | Exemplo               |
+| ---------- | ------ | ------------------------------- | --------------------- |
 | `surveyId` | string | ID da pesquisa (path parameter) | `stress-test-2025-01` |
 
 #### Opcionais - Filtros de Questões
 
-| Campo | Tipo | Descrição | Exemplo |
-|-------|------|-----------|---------|
-| `questionIds` | string | IDs específicos (separados por vírgula) | `1,2,3` |
-| `questionType` | string | Tipo da questão | `nps`, `open-ended`, `multiple-choice`, `single-choice` |
-| `minIndex` | number | Índice mínimo | `1` |
+| Campo          | Tipo   | Descrição                               | Exemplo                                                 |
+| -------------- | ------ | --------------------------------------- | ------------------------------------------------------- |
+| `questionIds`  | string | IDs específicos (separados por vírgula) | `1,2,3`                                                 |
+| `questionType` | string | Tipo da questão                         | `nps`, `open-ended`, `multiple-choice`, `single-choice` |
+| `minIndex`     | number | Índice mínimo                           | `1`                                                     |
 
 **Nota sobre `minIndex`**: Em pesquisas de clima, preservar a confidencialidade pode exigir um índice mínimo mais alto (mercado trabalha com no mínimo 3 respostas agregadas para mostrar resultado).
 
 #### Opcionais - Filtros Dinâmicos (aplicados aos respondentes)
 
 Os filtros dinâmicos são enviados como query parameters no formato:
+
 - `filters[{filterId}]=value1,value2,value3`
 
 **Exemplos:**
+
 - `filters[state]=SP,RJ` - Filtrar por estados SP e RJ
 - `filters[customerType]=Pós-pago` - Filtrar por tipo de cliente
 - `filters[state]=SP&filters[customerType]=Pós-pago` - Múltiplos filtros (AND)
 
 **Nota sobre comportamento dos filtros**: Os filtros são **cumulativos e agregados**:
-- **Múltiplos valores no mesmo filtro** (ex: `filters[state]=SP,RJ,MG`): São **somados/agregados juntos** - retorna dados agregados de SP + RJ + MG combinados 
+
+- **Múltiplos valores no mesmo filtro** (ex: `filters[state]=SP,RJ,MG`): São **somados/agregados juntos** - retorna dados agregados de SP + RJ + MG combinados
 - **Diferentes filtros** (ex: `filters[state]=SP,RJ&filters[customerType]=Pós-pago`): São unidos com **AND** - retorna dados que atendem ambos os critérios simultaneamente
 - **Filtros são cumulativos**: À medida que o usuário seleciona mais valores/filtros, eles vão se somando/refinando os resultados. Por exemplo:
   - Selecionar `state=SP` → retorna dados agregados de SP
@@ -144,7 +147,6 @@ Os filtros dinâmicos são enviados como query parameters no formato:
         "questionType": "nps",
         "data": {
           "npsScore": 35,
-          "npsCategory": "Bom",
           "npsStackedChart": [
             {
               "option": "Promotor",
@@ -195,10 +197,7 @@ Os filtros dinâmicos são enviados como query parameters no formato:
 }
 ```
 
-
-
 ### Estrutura de Dados por Tipo de Questão
-
 
 A estrutura de `data` deve ser **idêntica** ao JSON atual para manter compatibilidade total com o frontend.
 
@@ -210,7 +209,6 @@ A estrutura de `data` deve ser **idêntica** ao JSON atual para manter compatibi
   "questionType": "nps",
   "data": {
     "npsScore": 35,
-    "npsCategory": "Bom",
     "npsStackedChart": [
       {
         "option": "Promotor",
@@ -234,21 +232,23 @@ A estrutura de `data` deve ser **idêntica** ao JSON atual para manter compatibi
 ```
 
 **Estrutura da API:**
+
 - `id` (number) - ID único da questão (obrigatório)
 - `questionType` (string) - Tipo da questão: `"nps"` (obrigatório)
 - `data` (object) - Dados agregados (obrigatório)
 - `totalResponses` (number, opcional) - Total de respostas após aplicar filtros
 
 **Estrutura de `data` (idêntica ao JSON atual):**
+
 - `npsScore` (number) - Score NPS calculado (obrigatório)
-- `npsCategory` (string) - Categoria do NPS: "Bom", "Excelente", "Ruim", etc. (obrigatório)
 - `npsStackedChart` (array) - Array com Promotor, Neutro, Detrator (obrigatório). Cada item tem:
   - `option` (string) - Nome da categoria: "Promotor", "Neutro", "Detrator"
   - `value` (number) - Quantidade de respostas
   - `percentage` (number) - Percentual
 
 **Nota sobre renderização**: O frontend usa templates pré-definidos (`questionTemplates.js`) que renderizam:
-- `npsScoreCard` usando `question.data` (acessa `npsScore` e `npsCategory`)
+
+- `npsScoreCard` usando `question.data` (acessa `npsScore`)
 - `npsStackedChart` usando `question.data.npsStackedChart`
 
 #### 2. Questão Múltipla Escolha (`questionType: "multiple-choice"`)
@@ -291,17 +291,18 @@ A estrutura de `data` deve ser **idêntica** ao JSON atual para manter compatibi
 ```
 
 **Estrutura da API:**
+
 - `id` (number) - ID único da questão (obrigatório)
 - `questionType` (string) - Tipo da questão: `"multiple-choice"` (obrigatório)
 - `data` (object) - Dados agregados (obrigatório)
 - `totalResponses` (number, opcional) - Total de respostas após aplicar filtros
 
 **Estrutura de `data` (idêntica ao JSON atual):**
+
 - `barChart` (array) - Array de opções (obrigatório). Cada item tem:
   - `option` (string) - Texto da opção
   - `value` (number) - Quantidade de respostas
   - `percentage` (number) - Percentual
-
 
 #### 3. Questão Escolha Única (`questionType: "single-choice"`)
 
@@ -345,14 +346,15 @@ Mesma estrutura de `multiple-choice`:
 ```
 
 **Estrutura da API:**
+
 - `id` (number) - ID único da questão (obrigatório)
 - `questionType` (string) - Tipo da questão: `"single-choice"` (obrigatório)
 - `data` (object) - Dados agregados (obrigatório)
 - `totalResponses` (number, opcional) - Total de respostas após aplicar filtros
 
 **Estrutura de `data` (idêntica ao JSON atual):**
-- `barChart` (array) - Mesma estrutura de `multiple-choice`
 
+- `barChart` (array) - Mesma estrutura de `multiple-choice`
 
 #### 4. Questão Aberta (`questionType: "open-ended"`)
 
@@ -497,12 +499,14 @@ Mesma estrutura de `multiple-choice`:
 ```
 
 **Estrutura da API:**
+
 - `id` (number) - ID único da questão (obrigatório)
 - `questionType` (string) - Tipo da questão: `"open-ended"` (obrigatório)
 - `data` (object) - Dados agregados (obrigatório)
 - `totalResponses` (number, opcional) - Total de respostas após aplicar filtros
 
 **Estrutura de `data` (idêntica ao JSON atual):**
+
 - `sentimentStackedChart` (array) - Categorias com percentuais de sentimento (obrigatório). Cada item tem:
   - `category` (string) - Nome da categoria
   - `positive` (number) - Percentual positivo
@@ -519,7 +523,6 @@ Mesma estrutura de `multiple-choice`:
 - `wordCloud` (array) - Nuvem de palavras (obrigatório). Cada item tem:
   - `text` (string) - Palavra/texto
   - `value` (number) - Frequência/peso
-
 
 **Importante**: Para questões abertas, todos os três campos (`sentimentStackedChart`, `topCategoriesCards`, `wordCloud`) devem estar presentes.
 
@@ -538,7 +541,6 @@ Mesma estrutura de `multiple-choice`:
   "data": { ... }             // ✅ Obrigatório: dados agregados (mesma estrutura do JSON)
 }
 ```
-
 
 ## 🔌 Exemplos de Requisições
 

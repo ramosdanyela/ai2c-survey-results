@@ -36,6 +36,7 @@
 ```
 
 **💡 Dicas:**
+
 - Os componentes estão diretamente em `subsections[].components` (não há mais `renderSchema`)
 - Mantenha os dados separados em `data` porque podem ser verbosos
 - Cada subseção pode ter múltiplos componentes em ordem de `index`
@@ -65,7 +66,6 @@ Adicione ao array `questions` dentro da seção `responses`:
           "summary": "Resumo da questão",
           "data": {
             "npsScore": 35,
-            "npsCategory": "Bom",
             "npsStackedChart": [ ... ]
           }
         }
@@ -270,7 +270,6 @@ Cabeçalhos para organizar conteúdo:
   "summary": "Resumo...",
   "data": {
     "npsScore": 35,
-    "npsCategory": "Bom",
     "npsStackedChart": [
       { "option": "Detrator", "value": 636, "percentage": 51 },
       { "option": "Promotor", "value": 374, "percentage": 30 },

@@ -120,11 +120,6 @@
         "totalRespondents": { "type": "number", "minimum": 0 },
         "responseRate": { "type": "number", "minimum": 0, "maximum": 100 },
         "nps": { "type": "number", "minimum": -100, "maximum": 100 },
-        "npsCategory": {
-          "type": "string",
-          "enum": ["Excelente", "Bom", "Regular", "Ruim"],
-          "description": "Categoria do NPS"
-        },
         "questions": { "type": "number", "minimum": 0 }
       },
       "additionalProperties": true

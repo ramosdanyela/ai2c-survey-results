@@ -36,7 +36,8 @@ O arquivo `surveyData.json` é o arquivo central que define toda a estrutura e c
 - **`uiTexts`**: Textos estáticos da interface que não mudam com os dados da pesquisa
 - **`surveyInfo`**: Informações gerais da pesquisa (título, empresa, período, NPS, etc.)
 
-**⚠️ Mudança importante:** 
+**⚠️ Mudança importante:**
+
 - A estrutura usa `sections` diretamente no nível raiz (não mais `sectionsConfig.sections`)
 - Os componentes estão diretamente em `subsections[].components` (não há mais `renderSchema`)
 - Questões usam `questionType` (não `type`) e ficam em `questions` dentro da seção
@@ -133,7 +134,6 @@ Informações gerais da pesquisa.
     "totalRespondents": 1247,
     "responseRate": 68.5,
     "nps": -21,
-    "npsCategory": "Ruim",
     "questions": 6
   }
 }
@@ -147,7 +147,6 @@ Informações gerais da pesquisa.
 - `totalRespondents`: Total de respondentes (number)
 - `responseRate`: Taxa de resposta % (number)
 - `nps`: Score NPS, -100 a 100 (number)
-- `npsCategory`: Categoria (string: "Excelente", "Bom", "Regular", "Ruim")
 - `questions`: Número de questões (number)
 
 ---
@@ -336,7 +335,6 @@ As questões ficam dentro da seção `responses`, diretamente em `questions` (n�
           "summary": "Com 51% dos entrevistados...",
           "data": {
             "npsScore": 35,
-            "npsCategory": "Bom",
             "npsStackedChart": [ ... ]
           }
         }
@@ -401,7 +399,7 @@ Para adicionar uma nova questão, simplesmente adicione um objeto ao array `ques
 - `icon`: Nome do ícone (string)
 - `summary`: Resumo da questão (string)
 - `data`: Dados da questão (object) - estrutura varia conforme o tipo
-  - Para `nps`: `npsScore`, `npsCategory`, `npsStackedChart`
+  - Para `nps`: `npsScore`, `npsStackedChart`
   - Para `multiple-choice` ou `single-choice`: `barChart`
   - Para `open-ended`: `wordCloud`, `topCategoriesCards`, `sentimentStackedChart`
 
@@ -423,7 +421,6 @@ Para adicionar uma nova questão, simplesmente adicione um objeto ao array `ques
   "summary": "Resumo...",
   "data": {
     "npsScore": 35,
-    "npsCategory": "Bom",
     "npsStackedChart": [
       {
         "option": "Detrator",
@@ -1184,7 +1181,8 @@ ou com componentes aninhados:
 - `text`: Texto do cabeçalho (string, suporta templates, opcional)
 - `components`: Componentes filhos (array, opcional)
 - `wrapperProps`: Props adicionais para o elemento (object, opcional)
-```
+
+````
 
 **📖 Veja `CHARTS_JSON_REFERENCE.md` para documentação completa de todos os gráficos com exemplos detalhados.**
 
@@ -1200,7 +1198,7 @@ Use `{{path}}` para referenciar dados dinamicamente.
 
    ```json
    "title": "{{uiTexts.executiveReport.aboutStudy}}"
-   ```
+````
 
 2. **`sectionData`**: Dados da seção atual
 
@@ -1518,9 +1516,7 @@ Use `dataPath` com o caminho completo:
     }
   ],
   "data": {
-    "dados": [
-      { "label": "Opção A", "value": 100, "percentage": 50 }
-    ]
+    "dados": [{ "label": "Opção A", "value": 100, "percentage": 50 }]
   }
 }
 ```
@@ -1742,7 +1738,6 @@ O **Export não fica em `sections`**. Só é preciso ter **`uiTexts.export`** co
           "summary": "Resumo...",
           "data": {
             "npsScore": 35,
-            "npsCategory": "Bom",
             "npsStackedChart": [
               {
                 "option": "Detrator",
@@ -1799,6 +1794,7 @@ Mantenha os dados separados dos componentes em `data` porque podem ser muito ver
 ### Estrutura Atual
 
 **⚠️ Mudança importante:** Não há mais `renderSchema`. A estrutura atual é:
+
 - Componentes diretamente em `subsections[].components`
 - Dados separados em `data` da seção
 - Questões diretamente em `questions` (na seção `responses`)

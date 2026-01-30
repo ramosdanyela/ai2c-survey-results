@@ -38,9 +38,9 @@ Cada item abaixo é um “ponto” que a análise do JSON/docs levantou. A colun
 | 3   | Resolver `sectionData.*` e `currentAttribute.*` usando o `sectionData` genérico                                | R    | Feito    | currentAttribute._ usa sectionData.attributes (array) construído no sectionData genérico; sectionData._ resolve pelas chaves (Estado, department, etc.).             |
 | 4   | Campo esperado `option`, recebido `label` (npsStackedChart, barChart)                                          | R    | Feito    | `checkChartItemFieldName`: aviso quando item tem `label` e não tem `option`.                                                                                         |
 | 5   | Campos numéricos como string (id, index, npsScore, value, percentage, totalRespondents, responseRate, nps)     | R    | Feito    | `checkNumberNotString`: aviso.                                                                                                                                       |
-| 6   | Campos string vazios (question, npsCategory)                                                                   | R    | Feito    | `checkNotEmptyString`: aviso para question e npsCategory.                                                                                                            |
+| 6   | Campos string vazios (question)                                                                                | R    | Feito    | `checkNotEmptyString`: aviso para question.                                                                                                                          |
 | 7   | dataPath apontando para array vazio quando componente exige array não vazio                                    | R    | Feito    | `validateComponentData`: erro para componentes que exigem array e dataPath resolve para `[]`.                                                                        |
-| 8   | Questão NPS: `data.npsCategory` e `data.npsScore` obrigatórios                                                 | R    | Feito    | Erro se faltar; aviso se npsCategory vazio.                                                                                                                          |
+| 8   | Questão NPS: `data.npsScore` obrigatório                                                                       | R    | Feito    | Erro se faltar.                                                                                                                                                      |
 | 9   | Questão open-ended: pelo menos um de sentimentStackedChart, wordCloud, topCategoriesCards                      | R    | Feito    | Erro se nenhum existir.                                                                                                                                              |
 | 10  | Questão multiple-choice/single-choice: `data.barChart` array                                                   | R    | Feito    | Erro se não for array.                                                                                                                                               |
 | 11  | IDs de questões únicos                                                                                         | R    | Feito    | Erro se duplicados.                                                                                                                                                  |
@@ -67,13 +67,13 @@ Cada item abaixo é um “ponto” que a análise do JSON/docs levantou. A colun
 - **ID da seção de questões:** aceita `id: "responses"` (padrão ouro) ou `id: "questions"` → ponto 1 (feito).
 - **Attributes: sectionData para qualquer attributes-\*** → pontos 2, 3, 18 (2 e 3 a fazer; 18 a considerar).
 - **Arrays vazios em campos de dados** → pontos 7, 17 (7 feito; 17 opcional).
-- **NPS: npsCategory vazio, npsScore** → pontos 6, 8 (feito).
+- **NPS: npsScore** → ponto 8 (feito).
 - **option vs label em npsStackedChart e barChart** → ponto 4 (feito).
 - **Numeric as string** → ponto 5 (feito).
 
 ### 3.2 De telmob_falta_para_renderizar.csv
 
-- **responses > question01:** `data.npsCategory` (string); wordCloud, sentimentCategories, topicsByCategory (arrays preenchidos) → pontos 6, 8, 17 (6 e 8 feito; 17 opcional).
+- **responses > question01:** wordCloud, sentimentCategories, topicsByCategory (arrays preenchidos) → pontos 6, 17 (6 feito; 17 opcional).
 - **attributes > attributes-Estado:** npsDistributionTable, npsTable, sentimentChart, sentimentTable, etc. → coberto por sectionData genérico (ponto 2) + ponto 7 (array não vazio quando obrigatório).
 
 ### 3.3 De telmob_renderizacao_por_secao.csv e telmob_ajustes_codigo.csv
