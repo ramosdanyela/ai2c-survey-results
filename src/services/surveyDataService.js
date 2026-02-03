@@ -9,28 +9,12 @@
 // ============================================================
 
 // Importa diretamente o JSON (simula API)
-import surveyDataJson from "@/data/telmob_report_json_changed.json";
+import surveyDataJson from "@/data/surveyDataFromDaniel.json";
 
 /**
- * Simula uma chamada de API para buscar dados da pesquisa
- *
- * @returns {Promise<Object>} Dados completos da pesquisa
- * @throws {Error} Se houver erro ao carregar dados
+ * Retorna os dados da pesquisa imediatamente (evita loading infinito).
+ * Em produção real, troque por fetch(API_URL).
  */
 export const fetchSurveyData = async () => {
-  try {
-    // Simula delay de rede (configurável via env)
-    const delay = import.meta.env.VITE_API_DELAY
-      ? parseInt(import.meta.env.VITE_API_DELAY, 10)
-      : 800; // Default: 800ms
-
-    await new Promise((resolve) => setTimeout(resolve, delay));
-
-    // Retorna os dados (simula resposta de API)
-    // Em produção real, aqui viria: await fetch(API_URL)
-    return surveyDataJson;
-  } catch (error) {
-    console.error("Erro ao buscar dados da pesquisa:", error);
-    throw new Error("Falha ao carregar dados da pesquisa");
-  }
+  return Promise.resolve(surveyDataJson);
 };

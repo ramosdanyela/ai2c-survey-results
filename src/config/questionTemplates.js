@@ -1,10 +1,10 @@
 /**
  * Question Type Templates
- * 
+ *
  * Define a estrutura de renderização de componentes para cada tipo de questão.
  * Cada tipo de questão sempre terá os mesmos componentes renderizados na mesma ordem.
  * O que muda entre questões do mesmo tipo são apenas os dados, sumário e título.
- * 
+ *
  * IMPORTANTE: single-choice e multiple-choice têm a mesma estrutura de renderização.
  */
 
@@ -35,6 +35,7 @@ export const questionTypeTemplates = {
   /**
    * Template para questões de múltipla escolha
    * Componente: barChart
+   * Config de altura/largura evita encavalar legendas quando há muitas barras.
    */
   "multiple-choice": [
     {
@@ -44,6 +45,10 @@ export const questionTypeTemplates = {
       config: {
         dataKey: "percentage",
         yAxisDataKey: "option",
+        heightPerBar: 44,
+        maxHeight: 960,
+        yAxisWidth: 200,
+        margin: { top: 10, right: 80, left: 220, bottom: 10 },
       },
     },
   ],
@@ -61,6 +66,10 @@ export const questionTypeTemplates = {
       config: {
         dataKey: "percentage",
         yAxisDataKey: "option",
+        heightPerBar: 44,
+        maxHeight: 960,
+        yAxisWidth: 200,
+        margin: { top: 10, right: 80, left: 220, bottom: 10 },
       },
     },
   ],
@@ -106,6 +115,10 @@ export const questionTypeTemplates = {
       config: {
         dataKey: "percentage",
         yAxisDataKey: "option",
+        heightPerBar: 44,
+        maxHeight: 960,
+        yAxisWidth: 200,
+        margin: { top: 10, right: 80, left: 220, bottom: 10 },
       },
     },
   ],
@@ -113,7 +126,7 @@ export const questionTypeTemplates = {
 
 /**
  * Obtém o template de componentes para um tipo de questão
- * 
+ *
  * @param {string} questionType - Tipo da questão ("nps", "multiple-choice", "single-choice", "open-ended", "rating")
  * @returns {Array} Array de componentes do template ou null se tipo inválido
  */
@@ -128,17 +141,19 @@ export const getQuestionTemplate = (questionType) => {
 
 /**
  * Verifica se um tipo de questão é válido
- * 
+ *
  * @param {string} questionType - Tipo da questão
  * @returns {boolean} true se o tipo é válido
  */
 export const isValidQuestionType = (questionType) => {
-  return questionType in questionTypeTemplates || questionType === "single-choice";
+  return (
+    questionType in questionTypeTemplates || questionType === "single-choice"
+  );
 };
 
 /**
  * Lista todos os tipos de questões suportados
- * 
+ *
  * @returns {string[]} Array com todos os tipos suportados
  */
 export const getSupportedQuestionTypes = () => {

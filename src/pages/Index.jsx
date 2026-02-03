@@ -1,6 +1,10 @@
 import { useState, useMemo, useEffect } from "react";
 import { SurveyLayout } from "@/components/survey/components/SurveyLayout";
 import { useSurveyData } from "@/hooks/useSurveyData";
+import {
+  getQuestionsFromData,
+  isQuestionsSectionId,
+} from "@/services/dataResolver";
 
 /**
  * Helper function to get first subsection of a section
@@ -21,15 +25,12 @@ function getFirstSubsectionHelper(sectionId, data) {
     return sorted[0].id;
   }
 
-  // Priority 2: Dynamic subsections (responses)
-  if (section.dynamicSubsections && section.id === "responses") {
-    {
-      const sectionData = section.data || {};
-      const questions = (sectionData?.questions || []).sort(
-        (a, b) => (a.index ?? 999) - (b.index ?? 999),
-      );
-      return questions.length > 0 ? `responses-${questions[0].id}` : null;
-    }
+  // Priority 2: Dynamic subsections (responses / questions)
+  if (isQuestionsSectionId(section.id)) {
+    const questions = getQuestionsFromData(data).sort(
+      (a, b) => (a.index ?? 999) - (b.index ?? 999),
+    );
+    return questions.length > 0 ? `responses-${questions[0].id}` : null;
   }
 
   return null;
@@ -56,7 +57,7 @@ function getInitialSection(data) {
 }
 
 export default function Index() {
-  const { loading, data } = useSurveyData();
+  const { loading, data, error, refetch } = useSurveyData();
 
   // Calculate initial section dynamically from data
   const initialSection = useMemo(() => {
@@ -71,6 +72,26 @@ export default function Index() {
       setActiveSection(initialSection);
     }
   }, [loading, data, initialSection]);
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-4 max-w-md text-center px-4">
+          <p className="text-sm text-destructive font-medium">
+            Erro ao carregar os dados
+          </p>
+          <p className="text-xs text-muted-foreground">{error?.message}</p>
+          <button
+            type="button"
+            onClick={() => refetch()}
+            className="px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium hover:opacity-90"
+          >
+            Tentar novamente
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (

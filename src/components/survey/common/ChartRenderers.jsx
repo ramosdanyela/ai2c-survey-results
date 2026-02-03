@@ -19,6 +19,27 @@ import { WaterfallChart } from "../widgets/WaterfallChart";
 import { resolveDataPath } from "@/services/dataResolver";
 import { useIsMobile } from "@/hooks/use-mobile";
 
+// Defaults for dynamic bar chart height (few bars = compact, many bars = more space for labels)
+const BAR_CHART_HEIGHT_PER_BAR = 32;
+const BAR_CHART_MIN_HEIGHT = 200;
+const BAR_CHART_MAX_HEIGHT = 720;
+const BAR_CHART_MANY_BARS_THRESHOLD = 8;
+
+/**
+ * Compute bar chart height from number of bars (flexible layout: compact when few, roomy when many)
+ */
+export function getBarChartHeightFromCount(barCount, config = {}) {
+  if (!barCount) return config.height || BAR_CHART_MIN_HEIGHT;
+  const heightPerBar = config.heightPerBar ?? BAR_CHART_HEIGHT_PER_BAR;
+  const minH = config.minHeight ?? BAR_CHART_MIN_HEIGHT;
+  const maxH = config.maxHeight ?? BAR_CHART_MAX_HEIGHT;
+  const margin = config.margin || { top: 10, right: 80, left: 120, bottom: 10 };
+  const totalMargin = (margin.top ?? 10) + (margin.bottom ?? 10);
+  const contentHeight = barCount * heightPerBar;
+  const height = contentHeight + totalMargin;
+  return Math.min(maxH, Math.max(minH, Math.round(height)));
+}
+
 /**
  * Get bar chart config defaults based on context
  * All styling/config is determined programmatically
@@ -72,6 +93,13 @@ export function getBarChartConfig(component, isMobile) {
     sortData: config.sortData !== false,
     sortDirection: config.sortDirection || "desc",
     hideXAxis: config.hideXAxis !== false,
+    // Dynamic height: when true, height is computed from bar count (compact when few, roomy when many)
+    dynamicHeight: config.dynamicHeight !== false,
+    heightPerBar: config.heightPerBar ?? BAR_CHART_HEIGHT_PER_BAR,
+    minHeight: config.minHeight ?? BAR_CHART_MIN_HEIGHT,
+    maxHeight: config.maxHeight ?? BAR_CHART_MAX_HEIGHT,
+    manyBarsThreshold:
+      config.manyBarsThreshold ?? BAR_CHART_MANY_BARS_THRESHOLD,
   };
 }
 
@@ -87,13 +115,24 @@ export function SchemaBarChart({ component, data }) {
   }
 
   const chartConfig = getBarChartConfig(component, isMobile);
+  const barCount = chartData.length;
+
+  // Flexible height: few bars = compact, many bars = more space so labels don't overlap
+  const height = chartConfig.dynamicHeight
+    ? getBarChartHeightFromCount(barCount, {
+        heightPerBar: chartConfig.heightPerBar,
+        minHeight: chartConfig.minHeight,
+        maxHeight: chartConfig.maxHeight,
+        margin: chartConfig.margin,
+      })
+    : chartConfig.height;
 
   const chart = (
     <SimpleBarChart
       data={chartData}
       dataKey={chartConfig.dataKey}
       yAxisDataKey={chartConfig.yAxisDataKey}
-      height={chartConfig.height}
+      height={height}
       margin={chartConfig.margin}
       yAxisWidth={chartConfig.yAxisWidth}
       fillColor={chartConfig.fillColor}
@@ -103,6 +142,7 @@ export function SchemaBarChart({ component, data }) {
       sortData={chartConfig.sortData}
       sortDirection={chartConfig.sortDirection}
       hideXAxis={chartConfig.hideXAxis}
+      manyBarsThreshold={chartConfig.manyBarsThreshold}
     />
   );
 
@@ -328,7 +368,7 @@ export function SchemaNPSStackedChart({ component, data }) {
 
   // Data format: object with Detratores/Neutros/Promotores
   // If data is not in the expected format, return null
-  if (!chartData || typeof chartData !== 'object' || Array.isArray(chartData)) {
+  if (!chartData || typeof chartData !== "object" || Array.isArray(chartData)) {
     return null;
   }
 

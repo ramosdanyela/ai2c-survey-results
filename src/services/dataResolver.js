@@ -1,6 +1,30 @@
+/** Section IDs that contain the list of questions (responses / Análise por Questão) */
+const QUESTIONS_SECTION_IDS = ["responses", "questions"];
+
 /**
- * Get questions from responses section dynamically
- * Looks for questions in sections[id="responses"].questions
+ * True if sectionId is the questions section (responses or questions).
+ * @param {string} sectionId
+ * @returns {boolean}
+ */
+export function isQuestionsSectionId(sectionId) {
+  return QUESTIONS_SECTION_IDS.includes(sectionId);
+}
+
+/**
+ * Returns the section object that holds questions (id "responses" or "questions").
+ * @param {Object} data - The survey data object
+ * @returns {Object|null}
+ */
+export function getQuestionsSection(data) {
+  if (!data?.sections) return null;
+  return (
+    data.sections.find((s) => QUESTIONS_SECTION_IDS.includes(s.id)) ?? null
+  );
+}
+
+/**
+ * Get questions from responses/questions section dynamically
+ * Looks for questions in sections[id="responses"].questions or sections[id="questions"].questions
  *
  * @param {Object} data - The survey data object
  * @returns {Array} Array of questions or empty array
@@ -8,18 +32,12 @@
 export function getQuestionsFromData(data) {
   if (!data?.sections) return [];
 
-  const responsesSection = data.sections.find(
-    (section) => section.id === "responses" || section.id === "questions",
-  );
-
-  if (
-    !responsesSection?.questions ||
-    !Array.isArray(responsesSection.questions)
-  ) {
+  const section = getQuestionsSection(data);
+  if (!section?.questions || !Array.isArray(section.questions)) {
     return [];
   }
 
-  return responsesSection.questions;
+  return section.questions;
 }
 
 /**

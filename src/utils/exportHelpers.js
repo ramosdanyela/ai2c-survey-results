@@ -1,4 +1,8 @@
-import { getQuestionsFromData } from "@/services/dataResolver";
+import {
+  getQuestionsFromData,
+  getQuestionsSection,
+  isQuestionsSectionId,
+} from "@/services/dataResolver";
 
 /**
  * Get all available subsections for a given section
@@ -20,16 +24,15 @@ export function getAllSubsectionsForSection(sectionId, data) {
       }));
   }
 
-  // Seção responses: subseções dinâmicas a partir de questions
-  if (sectionId === "responses") {
-    // Use getQuestionsFromData which gets questions from sections[id="responses"].questions
+  // Seção responses/questions: subseções dinâmicas a partir de questions
+  if (isQuestionsSectionId(sectionId)) {
     const allQuestions = getQuestionsFromData(data);
 
     if (allQuestions.length === 0) {
       console.warn("Export: No questions found", {
         hasData: !!data,
         hasSections: !!data?.sections,
-        responsesSection: data?.sections?.find((s) => s.id === "responses"),
+        questionsSection: getQuestionsSection(data),
       });
       return [];
     }
@@ -43,7 +46,7 @@ export function getAllSubsectionsForSection(sectionId, data) {
     return sortedQuestions.map((q, index) => {
       const displayNumber = index + 1;
       return {
-        sectionId: "responses",
+        sectionId,
         subsectionId: `responses-${q.id}`,
         label: `Pergunta ${displayNumber}: ${
           q.question && q.question.length > 60
@@ -104,7 +107,7 @@ export function parseSelectedSections(
     if (sectionWithSub) {
       sectionId = sectionWithSub.id;
     } else if (subsectionId.startsWith("responses-")) {
-      sectionId = "responses";
+      sectionId = getQuestionsSection(data)?.id ?? "responses";
     }
 
     if (sectionId) {
@@ -147,7 +150,7 @@ export function parseSelectedSections(
     let subOrderA = subsectionA?.index;
     let subOrderB = subsectionB?.index;
 
-    if (subOrderA === undefined && a.sectionId === "responses") {
+    if (subOrderA === undefined && isQuestionsSectionId(a.sectionId)) {
       // Extract question ID and find its index from data
       const questionId = parseInt(a.subsectionId.replace("responses-", ""), 10);
       const allQuestions = getQuestionsFromData(data);
@@ -155,7 +158,7 @@ export function parseSelectedSections(
       subOrderA = question?.index || 999;
     }
 
-    if (subOrderB === undefined && b.sectionId === "responses") {
+    if (subOrderB === undefined && isQuestionsSectionId(b.sectionId)) {
       const questionId = parseInt(b.subsectionId.replace("responses-", ""), 10);
       const allQuestions = getQuestionsFromData(data);
       const question = allQuestions.find((q) => q.id === questionId);

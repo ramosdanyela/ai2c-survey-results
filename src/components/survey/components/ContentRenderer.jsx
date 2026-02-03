@@ -1,7 +1,10 @@
 import { GenericSectionRenderer } from "@/components/survey/common/GenericSectionRenderer";
 import { useSurveyData } from "@/hooks/useSurveyData";
 import { useMemo } from "react";
-import { getQuestionsFromData } from "@/services/dataResolver";
+import {
+  getQuestionsFromData,
+  isQuestionsSectionId,
+} from "@/services/dataResolver";
 
 /**
  * Helper function to get first subsection (shared with SurveySidebar logic)
@@ -27,8 +30,8 @@ function getFirstSubsectionHelper(sectionId, data) {
     return sorted[0].id;
   }
 
-  // Priority 2: Respostas (questões em sections ou responseDetails)
-  if (section.id === "responses") {
+  // Priority 2: Respostas / Análise por Questão (questões em sections)
+  if (isQuestionsSectionId(section.id)) {
     const questions = getQuestionsFromData(data).sort(
       (a, b) => (a.index ?? 999) - (b.index ?? 999),
     );
@@ -58,7 +61,10 @@ function normalizeSection(activeSection, data) {
       return activeSection;
     }
     // Subseções dinâmicas: responses-*
-    if (section.id === "responses" && activeSection?.startsWith("responses-")) {
+    if (
+      isQuestionsSectionId(section.id) &&
+      activeSection?.startsWith("responses-")
+    ) {
       return activeSection;
     }
   }
@@ -85,8 +91,8 @@ function hasRenderSchema(data, sectionId) {
   const sectionConfig = data.sections?.find((s) => s.id === sectionId);
   if (!sectionConfig) return false;
 
-  // responses: aceita se existir seção e dados de questões (lógica em GenericSectionRenderer)
-  if (sectionId === "responses") {
+  // responses / questions: aceita se existir seção e dados de questões (lógica em GenericSectionRenderer)
+  if (isQuestionsSectionId(sectionId)) {
     return getQuestionsFromData(data).length > 0;
   }
 
@@ -135,9 +141,9 @@ function extractSectionId(data, activeSection) {
         return section.id;
       }
     }
-    // Check dynamic subsections (responses)
+    // Check dynamic subsections (responses / questions)
     if (
-      section.id === "responses" &&
+      isQuestionsSectionId(section.id) &&
       activeSection &&
       activeSection.startsWith("responses-")
     ) {

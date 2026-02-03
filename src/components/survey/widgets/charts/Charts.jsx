@@ -68,19 +68,20 @@ export function SentimentDivergentChart({
     legendWrapperStyle === null
       ? undefined
       : legendWrapperStyle !== undefined
-      ? legendWrapperStyle
-      : { paddingTop: "20px" };
+        ? legendWrapperStyle
+        : { paddingTop: "20px" };
   const finalLegendIconType =
     legendIconType === null
       ? undefined
       : legendIconType !== undefined
-      ? legendIconType
-      : "square";
+        ? legendIconType
+        : "square";
   // Transform data: negative values become negative for divergent display
   // Only plot positive and negative, ignore neutral completely
   const transformedData = data.map((item) => {
     // Try to get the category value from various possible keys
-    const categoryValue = item[yAxisDataKey] || item.category || item.segment || item.value || "";
+    const categoryValue =
+      item[yAxisDataKey] || item.category || item.segment || item.value || "";
     return {
       [yAxisDataKey]: categoryValue,
       positive: item.positive,
@@ -93,7 +94,7 @@ export function SentimentDivergentChart({
     ...transformedData.flatMap((item) => [
       Math.abs(item.positive),
       Math.abs(item.negative),
-    ])
+    ]),
   );
   const domain = xAxisDomain || [
     -Math.ceil(maxValue * 1.1),
@@ -159,8 +160,8 @@ export function SentimentDivergentChart({
                 return value === "negative" || value === "Negative"
                   ? chartLabels.negative
                   : value === "positive" || value === "Positive"
-                  ? chartLabels.positive
-                  : "";
+                    ? chartLabels.positive
+                    : "";
               }}
             />
           )}
@@ -209,13 +210,13 @@ export function SentimentDivergentChart({
 // ============================================================
 /**
  * Stacked sentiment chart (0-100%)
- * 
+ *
  * Used in: AttributeDeepDive - Sentiment by Segment
  *          ResponseDetails - Sentiment Analysis
- * 
+ *
  * @note Wrapper that maintains compatibility with existing code.
  *       Uses SentimentDivergentChart internally with different default values.
- * 
+ *
  * @param {Array} data - Chart data
  * @param {number} [height=256] - Chart height
  * @param {Object} [margin] - Chart margins
@@ -366,7 +367,7 @@ export function NPSStackedChart({
 }) {
   // Extract keys dynamically from data object
   const dataKeys = Object.keys(data).filter(
-    (key) => typeof data[key] === "number"
+    (key) => typeof data[key] === "number",
   );
 
   // Create chart data dynamically from data keys
@@ -444,9 +445,9 @@ export function NPSStackedChart({
 //           SupportAnalysis - Other Intentions
 /**
  * Simple Bar Chart
- * 
+ *
  * @note Always uses fixed scale of 0-100% to show real proportions
- * 
+ *
  * @param {Array} data - Chart data
  * @param {string} dataKey - Key for data values
  * @param {string} yAxisDataKey - Key for Y axis labels
@@ -461,6 +462,9 @@ export function NPSStackedChart({
  * @param {string} [sortDirection="desc"] - Sort direction
  * @param {boolean} [hideXAxis=true] - Hide X axis
  */
+const DEFAULT_MANY_BARS_THRESHOLD = 8;
+const BAR_SIZE_WHEN_MANY = 28;
+
 export function SimpleBarChart({
   data,
   dataKey,
@@ -475,6 +479,7 @@ export function SimpleBarChart({
   sortData = true,
   sortDirection = "desc",
   hideXAxis = true,
+  manyBarsThreshold = DEFAULT_MANY_BARS_THRESHOLD,
 }) {
   const sortedData = sortData
     ? [...data].sort((a, b) => {
@@ -532,7 +537,16 @@ export function SimpleBarChart({
                   }
             }
           />
-          <Bar dataKey={dataKey} fill={fillColor} radius={[0, 4, 4, 0]}>
+          <Bar
+            dataKey={dataKey}
+            fill={fillColor}
+            radius={[0, 4, 4, 0]}
+            barSize={
+              sortedData.length >= manyBarsThreshold
+                ? BAR_SIZE_WHEN_MANY
+                : undefined
+            }
+          >
             {showLabels && (
               <LabelList
                 dataKey={dataKey}

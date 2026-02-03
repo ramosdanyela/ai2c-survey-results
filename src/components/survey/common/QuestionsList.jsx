@@ -29,7 +29,11 @@ import {
 import { getQuestionTemplate } from "@/config/questionTemplates";
 import { breakLinesAfterPeriod } from "@/lib/utils";
 import { renderComponent } from "./ComponentRegistry";
-import { resolveDataPath, getQuestionsFromData } from "@/services/dataResolver";
+import {
+  resolveDataPath,
+  getQuestionsFromData,
+  getQuestionsSection,
+} from "@/services/dataResolver";
 
 /**
  * QuestionsList Component - Renders list of questions with filters, accordions, etc.
@@ -103,8 +107,8 @@ export function QuestionsList({
   // Get section-specific uiTexts from sectionsConfig
   const sectionUiTexts = useMemo(() => {
     if (!data?.sections) return {};
-    const responsesSection = data.sections.find((s) => s.id === "responses");
-    return responsesSection?.data?.uiTexts || {};
+    const questionsSection = getQuestionsSection(data);
+    return questionsSection?.data?.uiTexts || {};
   }, [data]);
 
   // Merge uiTexts from root and section (must be before renderQuestionComponents)
@@ -824,7 +828,7 @@ export function QuestionsList({
                       {(() => {
                         const components = renderQuestionComponents(question);
                         if (components) {
-                          return <div className="space-y-6">{components}</div>;
+                          return <div className="space-y-4">{components}</div>;
                         }
                         return null;
                       })()}

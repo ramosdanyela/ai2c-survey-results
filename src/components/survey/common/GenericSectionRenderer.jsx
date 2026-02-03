@@ -7,7 +7,11 @@ import { getIcon } from "@/lib/icons";
 import { useSurveyData } from "@/hooks/useSurveyData";
 import { enrichComponentWithStyles } from "@/services/styleResolver";
 import { breakLinesAfterPeriod } from "@/lib/utils";
-import { resolveDataPath, getQuestionsFromData } from "@/services/dataResolver";
+import {
+  resolveDataPath,
+  getQuestionsFromData,
+  isQuestionsSectionId,
+} from "@/services/dataResolver";
 
 /**
  * Decide se o componente deve ser exibido. Lógica no código (não em condition no JSON).
@@ -567,7 +571,7 @@ export function GenericSectionRenderer({
     }
 
     // Special handling for responses section: include questions directly in sectionData
-    if (sectionId === "responses") {
+    if (isQuestionsSectionId(sectionId)) {
       const responsesData = {};
 
       // Include questions if they exist directly in section
@@ -631,7 +635,7 @@ export function GenericSectionRenderer({
 
     // Priority 2: Dynamic generation for responses (always works, even if hasSubsections is false)
     // This matches the behavior in SurveySidebar.getDynamicSubsections
-    if (sectionId === "responses") {
+    if (isQuestionsSectionId(sectionId)) {
       const questions = getQuestionsFromData(data).sort(
         (a, b) => (a.index || 0) - (b.index || 0),
       );
@@ -660,7 +664,7 @@ export function GenericSectionRenderer({
     if (!subSection) {
       // Special handling for responses: when no subSection is specified,
       // don't return the first subsection automatically - we want to show the questions list
-      if (sectionId === "responses") {
+      if (isQuestionsSectionId(sectionId)) {
         return null;
       }
       // Return first subsection if none specified (for other sections)
@@ -696,7 +700,7 @@ export function GenericSectionRenderer({
         return [];
       }
 
-      if (sectionId === "responses" && activeSubsection.question) {
+      if (isQuestionsSectionId(sectionId) && activeSubsection.question) {
         const questionsListComponent = {
           type: "questionsList",
           index: 0,
@@ -716,7 +720,7 @@ export function GenericSectionRenderer({
       }
     }
 
-    if (sectionId === "responses") {
+    if (isQuestionsSectionId(sectionId)) {
       // Filter out any existing filterPills from JSON to avoid duplicates
       rawComponents = rawComponents.filter(
         (comp) => comp.type !== "filterPills",
@@ -792,7 +796,7 @@ export function GenericSectionRenderer({
 
     // Special handling for responses section: if a specific question is selected,
     // add the question object to enhancedData so components can access it
-    if (sectionId === "responses" && activeSubsection?.question) {
+    if (isQuestionsSectionId(sectionId) && activeSubsection?.question) {
       enhanced.question = activeSubsection.question;
     }
 
@@ -834,7 +838,7 @@ export function GenericSectionRenderer({
   // Even though hasSubsections is false, we may receive subSection like "responses-1"
   // In this case, we should use the components directly and pass questionId to questionsList
   const isResponsesWithQuestionId =
-    sectionId === "responses" &&
+    isQuestionsSectionId(sectionId) &&
     subSection &&
     subSection.startsWith("responses-") &&
     !hasSubsections;
@@ -843,7 +847,7 @@ export function GenericSectionRenderer({
   // This handles the case where the section has questions but no specific subsection is selected
   // For "responses" section, when no subSection is specified, we want to show all questions in a list,
   // not the first question as a subsection
-  if (sectionId === "responses" && !subSection && !isExport) {
+  if (isQuestionsSectionId(sectionId) && !subSection && !isExport) {
     const questions = getQuestionsFromData(data);
     if (questions.length > 0) {
       const questionsListComponent = {
@@ -884,7 +888,8 @@ export function GenericSectionRenderer({
   // If has subsections, require activeSubsection (unless it's responses with questionId or responses without subSection)
   // Special case: for responses section, when no subSection is specified, we want to show the questions list,
   // so we allow hasSubsections=true with activeSubsection=null
-  const isResponsesWithoutSubSection = sectionId === "responses" && !subSection;
+  const isResponsesWithoutSubSection =
+    isQuestionsSectionId(sectionId) && !subSection;
 
   if (
     hasSubsections &&
@@ -926,7 +931,7 @@ export function GenericSectionRenderer({
   // Special handling for responses section: when showing an individual question,
   // don't use SubsectionTitle - use the old question structure instead
   const isResponsesQuestion =
-    sectionId === "responses" && activeSubsection?.question;
+    isQuestionsSectionId(sectionId) && activeSubsection?.question;
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -950,7 +955,7 @@ export function GenericSectionRenderer({
           {/* For responses section: ALWAYS render FilterPills before components */}
           {/* FilterPills must appear right after SurveyHeader, before QuestionsList */}
           {/* This ensures FilterPills is always visible, even when a specific question is selected */}
-          {sectionId === "responses" &&
+          {isQuestionsSectionId(sectionId) &&
             !isExport &&
             (() => {
               const hasFilterPills = components.some(
@@ -1008,7 +1013,7 @@ export function GenericSectionRenderer({
               })}
 
               {/* For responses section without subsections: automatically render questionsList if not present */}
-              {sectionId === "responses" &&
+              {isQuestionsSectionId(sectionId) &&
                 !hasSubsections &&
                 !isExport &&
                 (() => {
@@ -1043,7 +1048,7 @@ export function GenericSectionRenderer({
           )}
 
           {/* For responses section: render questionsList even if no components or when hasSubsections but no activeSubsection */}
-          {sectionId === "responses" &&
+          {isQuestionsSectionId(sectionId) &&
             !isExport &&
             ((!hasSubsections && components.length === 0) ||
               (hasSubsections &&

@@ -8,6 +8,10 @@ import {
 } from "@/lib/colors";
 import { useSurveyData } from "@/hooks/useSurveyData";
 import { NavigationButtons } from "@/components/survey/components/NavigationButtons";
+import {
+  getQuestionsSection,
+  isQuestionsSectionId,
+} from "@/services/dataResolver";
 
 /**
  * Extract section ID from activeSection by checking sections
@@ -37,9 +41,9 @@ function extractSectionId(data, activeSection) {
         return section.id;
       }
     }
-    // Check dynamic subsections (responses - built from questions, not section.subsections)
+    // Check dynamic subsections (responses/questions - built from questions)
     if (
-      section.id === "responses" &&
+      isQuestionsSectionId(section.id) &&
       activeSection &&
       activeSection.startsWith("responses-")
     ) {
@@ -159,10 +163,9 @@ function getSectionIconFromData(sectionId, data) {
     typeof sectionId === "string" &&
     sectionId.startsWith("responses-")
   ) {
-    // Fallback to section icon
-    const responsesSection = data.sections.find((s) => s.id === "responses");
-    if (responsesSection && responsesSection.icon) {
-      return getIcon(responsesSection.icon);
+    const questionsSection = getQuestionsSection(data);
+    if (questionsSection?.icon) {
+      return getIcon(questionsSection.icon);
     }
   }
 

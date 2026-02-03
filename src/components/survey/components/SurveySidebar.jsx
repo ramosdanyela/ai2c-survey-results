@@ -9,7 +9,10 @@ import {
 } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 import { useSurveyData } from "@/hooks/useSurveyData";
-import { getQuestionsFromData } from "@/services/dataResolver";
+import {
+  getQuestionsFromData,
+  isQuestionsSectionId,
+} from "@/services/dataResolver";
 import { forwardRef, useState, useMemo, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -68,9 +71,8 @@ function hasSubsections(item, data) {
     return true;
   }
 
-  // Priority 3: Check dynamic subsections (responses) - even without dynamicSubsections flag
-  // Check responses (known dynamic section)
-  if (item.id === "responses") {
+  // Priority 3: Check dynamic subsections (responses / questions) - even without dynamicSubsections flag
+  if (isQuestionsSectionId(item.id)) {
     const questions = getQuestionsFromData(data);
     return questions.length > 0;
   }
@@ -104,8 +106,8 @@ function getDynamicSubsections(section, data) {
       }));
   }
 
-  // Special handling for responses (always works, even without dynamicSubsections flag)
-  if (section.id === "responses") {
+  // Special handling for responses / questions (always works, even without dynamicSubsections flag)
+  if (isQuestionsSectionId(section.id)) {
     const questions = getQuestionsFromData(data).sort(
       (a, b) => (a.index || 0) - (b.index || 0),
     );
@@ -178,8 +180,8 @@ function getFirstSubsectionHelper(sectionId, data) {
     return sorted[0].id;
   }
 
-  // Priority 2: Dynamic subsections
-  if (section.dynamicSubsections) {
+  // Priority 2: Dynamic subsections (responses/questions or section.dynamicSubsections)
+  if (section.dynamicSubsections || isQuestionsSectionId(section.id)) {
     const dynamicSubs = getDynamicSubsections(section, data);
     if (dynamicSubs.length > 0) return dynamicSubs[0].id;
   }
@@ -266,7 +268,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
 
       // Fallback for legacy behavior if helper returns null
       if (!result) {
-        if (sectionId === "responses") {
+        if (isQuestionsSectionId(sectionId)) {
           return allQuestions.length > 0
             ? `responses-${allQuestions[0].id}`
             : null;
@@ -284,15 +286,14 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
   };
 
   // Handler for when clicking the main section button
-  // For responses section: navigate to section without subSection to show all questions with accordions
+  // For responses/questions section: navigate to section without subSection to show all questions with accordions
   // For other sections: navigate to first subsection
   // If closed, Collapsible will open automatically
   const handleSectionClick = (sectionId) => {
-    // Special handling for responses section: show all questions with accordions
-    if (sectionId === "responses") {
-      // Navigate to responses section without subSection to show all questions
+    // Special handling for responses/questions section: show all questions with accordions
+    if (isQuestionsSectionId(sectionId)) {
       if (onSectionChange) {
-        onSectionChange("responses");
+        onSectionChange(sectionId);
       }
     } else {
       // For other sections, navigate to first subsection
@@ -492,8 +493,8 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
 
                 // Generic rendering for dynamic subsections
                 if (dynamicSubs.length > 0) {
-                  // Special rendering for responses (questions with Q prefix)
-                  if (item.id === "responses" && dynamicSubs.length > 0) {
+                  // Special rendering for responses/questions (questions with Q prefix)
+                  if (isQuestionsSectionId(item.id) && dynamicSubs.length > 0) {
                     return (
                       <Collapsible
                         key={item.id}

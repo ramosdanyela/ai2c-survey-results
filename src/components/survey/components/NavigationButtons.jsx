@@ -6,7 +6,11 @@ import {
   RGBA_WHITE_20,
 } from "@/lib/colors";
 import { useSurveyData } from "@/hooks/useSurveyData";
-import { getQuestionsFromData } from "@/services/dataResolver";
+import {
+  getQuestionsFromData,
+  getQuestionsSection,
+  isQuestionsSectionId,
+} from "@/services/dataResolver";
 
 /**
  * Get all questions for navigation (sorted by index)
@@ -52,7 +56,7 @@ function buildOrderedSubsections(data) {
     .sort((a, b) => (a.index || 0) - (b.index || 0))
     .forEach((section) => {
       // Special handling for dynamic sections (responses - subsections from questions)
-      if (section.id === "responses") {
+      if (isQuestionsSectionId(section.id)) {
         // Dynamic questions section - use actual questions from data
         const questions = getAllQuestions(data);
         if (questions.length > 0) {
@@ -105,9 +109,9 @@ function findSectionForSubsection(subsectionId, data) {
         return section.id;
       }
     }
-    // Check dynamic subsections (responses)
+    // Check dynamic subsections (responses / questions)
     if (
-      section.id === "responses" &&
+      isQuestionsSectionId(section.id) &&
       subsectionId &&
       typeof subsectionId === "string" &&
       subsectionId.startsWith("responses-")
@@ -175,10 +179,10 @@ function getSectionIconFromData(sectionId, data) {
     sectionId.startsWith("responses-")
   ) {
     const questionId = parseInt(sectionId.replace("responses-", ""), 10);
-    const responsesSection = data?.sections?.find((s) => s.id === "responses");
+    const questionsSection = getQuestionsSection(data);
     // Fallback to section icon
-    if (responsesSection && responsesSection.icon) {
-      return getIcon(responsesSection.icon);
+    if (questionsSection && questionsSection.icon) {
+      return getIcon(questionsSection.icon);
     }
   }
 
@@ -202,8 +206,8 @@ function getFirstSubsectionHelper(sectionId, data) {
   const section = data.sections.find((s) => s.id === sectionId);
   if (!section) return null;
 
-  // Dynamic subsections from questions (responses section only)
-  if (section.id === "responses") {
+  // Dynamic subsections from questions (responses / questions section)
+  if (isQuestionsSectionId(section.id)) {
     const questions = getAllQuestions(data);
     return questions.length > 0 ? questions[0].id : null;
   }
