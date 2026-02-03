@@ -9,7 +9,7 @@
 // ============================================================
 
 // Importa diretamente o JSON (simula API)
-import surveyDataJson from "@/data/surveyDataFromDaniel.json";
+import surveyDataJson from "@/data/telmob_fixed_daniel.json";
 
 /**
  * Retorna os dados da pesquisa imediatamente (evita loading infinito).
