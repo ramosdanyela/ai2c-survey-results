@@ -46,7 +46,7 @@ export default function JsonReference() {
     if (!surveyDataJson?.sections) return {};
     // Usa a primeira seção com data para o contexto de exemplos (ex.: executive ou attributes)
     const sectionWithData = surveyDataJson.sections.find(
-      (s) => s.data && Object.keys(s.data).length > 0,
+      (s) => s.data && Object.keys(s.data).length > 0
     );
     if (sectionWithData?.data) return sectionWithData.data;
     // Fallback: qualquer seção com .data
@@ -66,7 +66,7 @@ export default function JsonReference() {
       uiTexts: surveyDataJson?.uiTexts || {},
       _filterPillsState: null,
     }),
-    [surveyDataJson, sectionData],
+    [surveyDataJson, sectionData]
   );
 
   const extractSectionData = useMemo(() => {
@@ -77,7 +77,7 @@ export default function JsonReference() {
         ...new Set(
           sections
             .map((s) => s.index)
-            .filter((v) => v !== undefined && v !== null),
+            .filter((v) => v !== undefined && v !== null)
         ),
       ].sort((a, b) => a - b),
       names: [...new Set(sections.map((s) => s.name).filter(Boolean))],
@@ -99,7 +99,7 @@ export default function JsonReference() {
         ...new Set(
           allSubsections
             .map((s) => s.index)
-            .filter((v) => v !== undefined && v !== null),
+            .filter((v) => v !== undefined && v !== null)
         ),
       ].sort((a, b) => a - b),
       names: [...new Set(allSubsections.map((s) => s.name).filter(Boolean))],
@@ -133,7 +133,7 @@ export default function JsonReference() {
       ...new Set(
         allComponents
           .map((c) => c.index)
-          .filter((v) => v !== undefined && v !== null),
+          .filter((v) => v !== undefined && v !== null)
       ),
     ].sort((a, b) => a - b);
     const cardStyleVariants = [
@@ -141,21 +141,21 @@ export default function JsonReference() {
     ];
     const cardContentVariantsList = [
       ...new Set(
-        allComponents.map((c) => c.cardContentVariant).filter(Boolean),
+        allComponents.map((c) => c.cardContentVariant).filter(Boolean)
       ),
     ];
     const useDescription = [
       ...new Set(
         allComponents
           .map((c) => c.useDescription)
-          .filter((v) => v !== undefined),
+          .filter((v) => v !== undefined)
       ),
     ];
     const titles = [
       ...new Set(
         allComponents
           .map((c) => c.title)
-          .filter((v) => v !== undefined && v !== null),
+          .filter((v) => v !== undefined && v !== null)
       ),
     ];
     const texts = allComponents
@@ -167,10 +167,10 @@ export default function JsonReference() {
     ];
     const typeCategories = {
       Cards: types.filter((t) =>
-        ["card", "npsScoreCard", "topCategoriesCards", "kpiCard"].includes(t),
+        ["card", "npsScoreCard", "topCategoriesCards", "kpiCard"].includes(t)
       ),
       Containers: types.filter((t) =>
-        ["container", "grid-container"].includes(t),
+        ["container", "grid-container"].includes(t)
       ),
       Charts: types.filter(
         (t) =>
@@ -178,12 +178,12 @@ export default function JsonReference() {
           t.includes("Plot") ||
           t.includes("Diagram") ||
           t.includes("Graph") ||
-          t.includes("Scorecard"),
+          t.includes("Scorecard")
       ),
       Tables: types.filter((t) => t.includes("Table")),
       Headers: types.filter((t) => ["h3", "h4"].includes(t)),
       Widgets: types.filter((t) =>
-        ["questionsList", "filterPills", "wordCloud", "accordion"].includes(t),
+        ["questionsList", "filterPills", "wordCloud", "accordion"].includes(t)
       ),
     };
     return {
@@ -310,7 +310,6 @@ export default function JsonReference() {
     Charts: [
       "barChart",
       "sentimentDivergentChart",
-      "sentimentStackedChart",
       "sentimentThreeColorChart",
       "npsStackedChart",
       "lineChart",
@@ -420,7 +419,7 @@ export default function JsonReference() {
   const renderComponentExampleWithData = (
     componentType,
     exampleConfig = {},
-    customData = null,
+    customData = null
   ) => {
     const dataToUse = customData || realData;
     try {
@@ -472,7 +471,7 @@ export default function JsonReference() {
         `Componente ${componentType} retornou valor inválido:`,
         rendered,
         "Tipo:",
-        typeof rendered,
+        typeof rendered
       );
       return null;
     } catch (error) {
@@ -506,7 +505,7 @@ export default function JsonReference() {
                   const rendered = renderComponent(
                     nestedComponent,
                     realData,
-                    {},
+                    {}
                   );
                   // Verifica se é um elemento React válido
                   if (rendered === null || rendered === undefined) {
@@ -519,14 +518,14 @@ export default function JsonReference() {
                   console.warn(
                     `Componente aninhado ${comp.type} retornou valor inválido:`,
                     rendered,
-                    typeof rendered,
+                    typeof rendered
                   );
                   return null;
                 }
               } catch (err) {
                 console.error(
                   `Erro ao renderizar componente aninhado ${comp.type}:`,
-                  err,
+                  err
                 );
               }
               return null;
@@ -539,7 +538,7 @@ export default function JsonReference() {
               if (typeof item === "object" && !React.isValidElement(item)) {
                 console.warn(
                   "Removendo objeto inválido do array nested:",
-                  item,
+                  item
                 );
                 return false;
               }
@@ -561,7 +560,7 @@ export default function JsonReference() {
                   const rendered = renderComponent(
                     nestedComponent,
                     realData,
-                    {},
+                    {}
                   );
                   // Verifica se é um elemento React válido
                   if (rendered === null || rendered === undefined) {
@@ -574,14 +573,14 @@ export default function JsonReference() {
                   console.warn(
                     `Componente aninhado ${comp.type} retornou valor inválido:`,
                     rendered,
-                    typeof rendered,
+                    typeof rendered
                   );
                   return null;
                 }
               } catch (err) {
                 console.error(
                   `Erro ao renderizar componente aninhado ${comp.type}:`,
-                  err,
+                  err
                 );
               }
               return null;
@@ -594,7 +593,7 @@ export default function JsonReference() {
               if (typeof item === "object" && !React.isValidElement(item)) {
                 console.warn(
                   "Removendo objeto inválido do array nested:",
-                  item,
+                  item
                 );
                 return false;
               }
@@ -659,7 +658,7 @@ export default function JsonReference() {
         `Componente ${componentType} retornou valor inválido:`,
         rendered,
         "Tipo:",
-        typeof rendered,
+        typeof rendered
       );
       return null;
     } catch (error) {
@@ -690,8 +689,8 @@ export default function JsonReference() {
         yAxisDataKey: "label",
       },
     },
-    sentimentStackedChart: {
-      type: "sentimentStackedChart",
+    sentimentDivergentChart: {
+      type: "sentimentDivergentChart",
       index: 0,
       dataPath: "sectionData.sentiment",
       config: {
@@ -748,7 +747,7 @@ export default function JsonReference() {
               `SafeRender: Tentando renderizar objeto inválido no índice ${index}:`,
               child,
               "Tipo:",
-              typeof child,
+              typeof child
             );
             return null;
           }
@@ -759,7 +758,7 @@ export default function JsonReference() {
           // Se chegou aqui, é um objeto inválido
           console.warn(`SafeRender: Valor inválido no índice ${index}:`, child);
           return null;
-        },
+        }
       );
       return <>{safeChildren}</>;
     } catch (error) {
@@ -1325,7 +1324,7 @@ export default function JsonReference() {
                                               ))}
                                             </div>
                                           </div>
-                                        ),
+                                        )
                                     )}
                                   </div>
                                 ) : (
@@ -1365,7 +1364,7 @@ export default function JsonReference() {
                                         >
                                           {String(val)}
                                         </Badge>
-                                      ),
+                                      )
                                     )}
                                     {field.hasMore && (
                                       <Badge
@@ -1405,7 +1404,7 @@ export default function JsonReference() {
                                             >
                                               {key}
                                             </Badge>
-                                          ),
+                                          )
                                         )}
                                       </div>
                                     </div>
@@ -1425,7 +1424,7 @@ export default function JsonReference() {
                                             >
                                               {key}
                                             </Badge>
-                                          ),
+                                          )
                                         )}
                                       </div>
                                     </div>
@@ -1575,7 +1574,7 @@ export default function JsonReference() {
                                       >
                                         {String(val)}
                                       </Badge>
-                                    ),
+                                    )
                                   )}
                                 </div>
                               </div>
@@ -1716,7 +1715,7 @@ export default function JsonReference() {
                                       >
                                         {String(val)}
                                       </Badge>
-                                    ),
+                                    )
                                   )}
                                 </div>
                               </div>
@@ -1944,7 +1943,7 @@ export default function JsonReference() {
                         <TableCell>
                           <div className="space-y-2">
                             {Object.entries(
-                              extractComponentData.typeCategories,
+                              extractComponentData.typeCategories
                             ).map(
                               ([category, types]) =>
                                 types.length > 0 && (
@@ -1960,7 +1959,7 @@ export default function JsonReference() {
                                       ))}
                                     </div>
                                   </div>
-                                ),
+                                )
                             )}
                           </div>
                         </TableCell>
@@ -1996,7 +1995,7 @@ export default function JsonReference() {
                                 <Badge key={variant} variant="outline">
                                   {variant}
                                 </Badge>
-                              ),
+                              )
                             )}
                           </div>
                         </TableCell>
@@ -2015,7 +2014,7 @@ export default function JsonReference() {
                                 <Badge key={variant} variant="outline">
                                   {variant}
                                 </Badge>
-                              ),
+                              )
                             )}
                           </div>
                         </TableCell>
@@ -2080,7 +2079,9 @@ export default function JsonReference() {
                                 <div key={idx} className="truncate">
                                   {text === ""
                                     ? '"" (string vazia)'
-                                    : `"${text.substring(0, 50)}${text.length > 50 ? "..." : ""}"`}
+                                    : `"${text.substring(0, 50)}${
+                                        text.length > 50 ? "..." : ""
+                                      }"`}
                                 </div>
                               ))
                             ) : (
@@ -2272,7 +2273,7 @@ export default function JsonReference() {
                                     },
                                   },
                                   null,
-                                  2,
+                                  2
                                 )}
                               </code>
                             </pre>
@@ -2324,17 +2325,17 @@ export default function JsonReference() {
                                     },
                                   ],
                                 },
-                              },
+                              }
                             )}
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* SentimentStackedChart */}
+                    {/* SentimentDivergentChart */}
                     <div className="space-y-3">
                       <h4 className="font-semibold text-lg">
-                        sentimentStackedChart
+                        sentimentDivergentChart
                       </h4>
                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         <div className="space-y-2">
@@ -2347,7 +2348,7 @@ export default function JsonReference() {
                                 {JSON.stringify(
                                   {
                                     component: {
-                                      type: "sentimentStackedChart",
+                                      type: "sentimentDivergentChart",
                                       index: 0,
                                       dataPath:
                                         "sectionData.sentimentStackedChart",
@@ -2381,7 +2382,7 @@ export default function JsonReference() {
                                     },
                                   },
                                   null,
-                                  2,
+                                  2
                                 )}
                               </code>
                             </pre>
@@ -2391,9 +2392,9 @@ export default function JsonReference() {
                           <p className="text-sm font-medium">Renderizado:</p>
                           <div className="border rounded-lg p-4 bg-background min-h-[200px]">
                             {renderComponentExampleWithData(
-                              "sentimentStackedChart",
+                              "sentimentDivergentChart",
                               {
-                                type: "sentimentStackedChart",
+                                type: "sentimentDivergentChart",
                                 index: 0,
                                 dataPath: "sectionData.sentimentStackedChart",
                                 config: {
@@ -2425,7 +2426,7 @@ export default function JsonReference() {
                                     },
                                   ],
                                 },
-                              },
+                              }
                             )}
                           </div>
                         </div>
@@ -2476,7 +2477,7 @@ export default function JsonReference() {
                                     },
                                   },
                                   null,
-                                  2,
+                                  2
                                 )}
                               </code>
                             </pre>
@@ -2516,7 +2517,7 @@ export default function JsonReference() {
                                     ],
                                   },
                                 },
-                              },
+                              }
                             )}
                           </div>
                         </div>
@@ -2550,7 +2551,7 @@ export default function JsonReference() {
                                     },
                                   },
                                   null,
-                                  2,
+                                  2
                                 )}
                               </code>
                             </pre>
@@ -2595,7 +2596,7 @@ export default function JsonReference() {
                                     },
                                   },
                                   null,
-                                  2,
+                                  2
                                 )}
                               </code>
                             </pre>
@@ -2669,7 +2670,7 @@ export default function JsonReference() {
                                     },
                                   },
                                   null,
-                                  2,
+                                  2
                                 )}
                               </code>
                             </pre>
@@ -2717,7 +2718,7 @@ export default function JsonReference() {
                                     },
                                   ],
                                 },
-                              },
+                              }
                             )}
                           </div>
                         </div>
@@ -2752,7 +2753,7 @@ export default function JsonReference() {
                                     },
                                   },
                                   null,
-                                  2,
+                                  2
                                 )}
                               </code>
                             </pre>
@@ -2776,7 +2777,7 @@ export default function JsonReference() {
                                     npsScore: 35,
                                   },
                                 },
-                              },
+                              }
                             )}
                           </div>
                         </div>
@@ -2837,7 +2838,7 @@ export default function JsonReference() {
                                     },
                                   },
                                   null,
-                                  2,
+                                  2
                                 )}
                               </code>
                             </pre>
@@ -2881,7 +2882,7 @@ export default function JsonReference() {
                                     },
                                   ],
                                 },
-                              },
+                              }
                             )}
                           </div>
                         </div>
@@ -2939,7 +2940,7 @@ export default function JsonReference() {
                                     },
                                   },
                                   null,
-                                  2,
+                                  2
                                 )}
                               </code>
                             </pre>
@@ -2987,7 +2988,7 @@ export default function JsonReference() {
                                     },
                                   ],
                                 },
-                              },
+                              }
                             )}
                           </div>
                         </div>
@@ -3075,7 +3076,7 @@ export default function JsonReference() {
                                     },
                                   },
                                   null,
-                                  2,
+                                  2
                                 )}
                               </code>
                             </pre>
@@ -3150,7 +3151,7 @@ export default function JsonReference() {
                                     ],
                                   },
                                 },
-                              },
+                              }
                             )}
                           </div>
                         </div>
@@ -3223,7 +3224,7 @@ export default function JsonReference() {
                                     },
                                   },
                                   null,
-                                  2,
+                                  2
                                 )}
                               </code>
                             </pre>
@@ -3264,7 +3265,7 @@ export default function JsonReference() {
                                     ],
                                   },
                                 },
-                              },
+                              }
                             )}
                             {renderComponentExampleWithData(
                               "npsStackedChart",
@@ -3298,7 +3299,7 @@ export default function JsonReference() {
                                     ],
                                   },
                                 },
-                              },
+                              }
                             )}
                           </div>
                         </div>
@@ -3363,7 +3364,7 @@ export default function JsonReference() {
                                     },
                                   },
                                   null,
-                                  2,
+                                  2
                                 )}
                               </code>
                             </pre>
@@ -3416,7 +3417,7 @@ export default function JsonReference() {
                                     ],
                                   },
                                 },
-                              },
+                              }
                             )}
                           </div>
                         </div>
@@ -3430,7 +3431,7 @@ export default function JsonReference() {
                       </h4>
                       <p className="text-sm text-muted-foreground mb-2">
                         Componentes gerados automaticamente:{" "}
-                        <code>sentimentStackedChart</code>,{" "}
+                        <code>sentimentDivergentChart</code>,{" "}
                         <code>topCategoriesCards</code>, <code>wordCloud</code>
                       </p>
                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -3552,7 +3553,7 @@ export default function JsonReference() {
                                     },
                                   },
                                   null,
-                                  2,
+                                  2
                                 )}
                               </code>
                             </pre>
@@ -3562,9 +3563,9 @@ export default function JsonReference() {
                           <p className="text-sm font-medium">Renderizado:</p>
                           <div className="border rounded-lg p-4 bg-background space-y-4">
                             {renderComponentExampleWithData(
-                              "sentimentStackedChart",
+                              "sentimentDivergentChart",
                               {
-                                type: "sentimentStackedChart",
+                                type: "sentimentDivergentChart",
                                 index: 0,
                                 dataPath: "question.data.sentimentStackedChart",
                                 config: {},
@@ -3667,7 +3668,7 @@ export default function JsonReference() {
                                     ],
                                   },
                                 },
-                              },
+                              }
                             )}
                             {renderComponentExampleWithData(
                               "topCategoriesCards",
@@ -3747,7 +3748,7 @@ export default function JsonReference() {
                                     ],
                                   },
                                 },
-                              },
+                              }
                             )}
                             {renderComponentExampleWithData(
                               "wordCloud",
@@ -3770,7 +3771,7 @@ export default function JsonReference() {
                                     ],
                                   },
                                 },
-                              },
+                              }
                             )}
                           </div>
                         </div>
@@ -3817,7 +3818,7 @@ export default function JsonReference() {
                           ))}
                         </div>
                       </div>
-                    ),
+                    )
                   )}
                 </div>
               </CardContent>
@@ -3846,7 +3847,7 @@ export default function JsonReference() {
                             onClick={() =>
                               copyToClipboard(
                                 JSON.stringify(example, null, 2),
-                                `card-${name}`,
+                                `card-${name}`
                               )
                             }
                           >

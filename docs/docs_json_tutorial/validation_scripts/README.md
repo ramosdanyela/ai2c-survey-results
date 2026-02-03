@@ -69,7 +69,7 @@ node data/validation/scripts/validate-json.js caminho/do/arquivo.json
 
 ### 3. Componentes
 
-- Tipos válidos (incluindo `card`, `barChart`, `sentimentStackedChart`, `container`, `grid-container`, `h3`, `h4`, etc.)
+- Tipos válidos (incluindo `card`, `barChart`, `sentimentDivergentChart`, `container`, `grid-container`, `h3`, `h4`, etc.)
 - `dataPath` deve apontar para dados que existem (quando necessário)
 - Arrays esperados devem ser arrays
 - Estrutura de dados correta para cada tipo
@@ -88,7 +88,7 @@ node data/validation/scripts/validate-json.js caminho/do/arquivo.json
 - **Usar `questionType` (não `type`)** - tipos válidos: `nps`, `open-ended`, `multiple-choice`, `single-choice`
 - Questões ficam em `questions` na seção com `id: "responses"` ou `"questions"`
 - Questões `nps` devem ter `data.npsScore` e `data.npsStackedChart`
-- Questões `open-ended` devem ter pelo menos um de: `data.sentimentStackedChart`, `data.wordCloud`, ou `data.topCategoriesCards`
+- Questões `open-ended` devem ter pelo menos um de: `data.sentimentDivergentChart` (ou `data.sentimentStackedChart`), `data.wordCloud`, ou `data.topCategoriesCards`
 - Questões `multiple-choice`/`single-choice` devem ter `data.barChart` como array
 
 ### 6. Dados Específicos

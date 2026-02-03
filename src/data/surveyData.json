@@ -492,7 +492,7 @@
                   "cardContentVariant": "with-charts",
                   "components": [
                     {
-                      "type": "sentimentStackedChart",
+                      "type": "sentimentDivergentChart",
                       "index": 0,
                       "dataPath": "sectionData.department.sentimentChart",
                       "config": {
@@ -1027,7 +1027,7 @@
                   "cardContentVariant": "with-charts",
                   "components": [
                     {
-                      "type": "sentimentStackedChart",
+                      "type": "sentimentDivergentChart",
                       "index": 0,
                       "dataPath": "sectionData.tenure.sentimentChart",
                       "config": {
@@ -1191,7 +1191,7 @@
                   "cardContentVariant": "with-charts",
                   "components": [
                     {
-                      "type": "sentimentStackedChart",
+                      "type": "sentimentDivergentChart",
                       "index": 0,
                       "dataPath": "sectionData.role.sentimentChart",
                       "config": {
@@ -1341,7 +1341,7 @@
                   "cardContentVariant": "with-charts",
                   "components": [
                     {
-                      "type": "sentimentStackedChart",
+                      "type": "sentimentDivergentChart",
                       "index": 0,
                       "dataPath": "sectionData.sentimentStackedChart",
                       "config": {

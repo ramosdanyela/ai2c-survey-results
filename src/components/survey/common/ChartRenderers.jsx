@@ -1,10 +1,18 @@
 import {
-  SimpleBarChart,
   SentimentDivergentChart,
-  SentimentStackedChart,
   SentimentThreeColorChart,
   NPSStackedChart,
 } from "../widgets/charts/Charts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  LabelList,
+  ResponsiveContainer,
+} from "recharts";
+import { CHART_COLORS } from "@/lib/colors";
 import { LineChart } from "../widgets/charts/LineChart";
 import { ParetoChart } from "../widgets/charts/ParetoChart";
 import { ScatterPlot } from "../widgets/charts/ScatterPlot";
@@ -47,8 +55,17 @@ export function getBarChartHeightFromCount(barCount, config = {}) {
 export function getBarChartConfig(component, isMobile) {
   const config = component.config || {};
   const preset = config.preset; // Use preset from JSON instead of checking dataPath
-  const yAxisDataKey = config.yAxisDataKey || "label";
   const dataPath = component.dataPath || "";
+  const isDistributionChart =
+    preset === "distribution" ||
+    dataPath.toLowerCase().includes("distribution");
+  // yAxisDataKey: explicit config wins; distribution charts default to "segment", others to "label"
+  const yAxisDataKey =
+    config.yAxisDataKey !== undefined && config.yAxisDataKey !== ""
+      ? config.yAxisDataKey
+      : isDistributionChart
+      ? "segment"
+      : "label";
   const isIntentChart =
     preset === "respondentIntent" ||
     yAxisDataKey === "intent" ||
@@ -58,6 +75,14 @@ export function getBarChartConfig(component, isMobile) {
   let height = config.height || 256;
   let margin = config.margin || { top: 10, right: 80, left: 120, bottom: 10 };
   let yAxisWidth = config.yAxisWidth || 110;
+
+  // dataKey: explicit config wins; distribution charts default to "percentage"; others to "value"
+  const dataKey =
+    config.dataKey !== undefined && config.dataKey !== ""
+      ? config.dataKey
+      : isDistributionChart
+      ? "percentage"
+      : "value";
 
   // Use preset to determine chart configuration
   if (isIntentChart) {
@@ -97,8 +122,8 @@ export function getBarChartConfig(component, isMobile) {
     height,
     margin,
     yAxisWidth,
-    dataKey: config.dataKey || "value",
-    yAxisDataKey: config.yAxisDataKey || "label",
+    dataKey,
+    yAxisDataKey,
     fillColor: config.fillColor,
     showLabels: config.showLabels !== false,
     labelFormatter: labelFormatter,
@@ -139,23 +164,89 @@ export function SchemaBarChart({ component, data }) {
       })
     : chartConfig.height;
 
+  const manyBarsThreshold = chartConfig.manyBarsThreshold ?? 8;
+  const barSizeWhenMany = 28;
+  const sortedData = chartConfig.sortData
+    ? [...chartData].sort((a, b) => {
+        const aVal = a[chartConfig.dataKey];
+        const bVal = b[chartConfig.dataKey];
+        if (typeof aVal !== "number" || typeof bVal !== "number") return 0;
+        return chartConfig.sortDirection === "desc" ? bVal - aVal : aVal - bVal;
+      })
+    : chartData;
+
   const chart = (
-    <SimpleBarChart
-      data={chartData}
-      dataKey={chartConfig.dataKey}
-      yAxisDataKey={chartConfig.yAxisDataKey}
-      height={height}
-      margin={chartConfig.margin}
-      yAxisWidth={chartConfig.yAxisWidth}
-      fillColor={chartConfig.fillColor}
-      showLabels={chartConfig.showLabels}
-      labelFormatter={chartConfig.labelFormatter}
-      tooltipFormatter={chartConfig.tooltipFormatter}
-      sortData={chartConfig.sortData}
-      sortDirection={chartConfig.sortDirection}
-      hideXAxis={chartConfig.hideXAxis}
-      manyBarsThreshold={chartConfig.manyBarsThreshold}
-    />
+    <div style={{ height }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart
+          data={sortedData}
+          layout="vertical"
+          margin={chartConfig.margin}
+        >
+          <XAxis
+            type="number"
+            domain={[0, 100]}
+            tickFormatter={(v) => `${v}%`}
+            axisLine={false}
+            tickLine={false}
+            hide={chartConfig.hideXAxis}
+            allowDataOverflow={false}
+          />
+          <YAxis
+            type="category"
+            dataKey={chartConfig.yAxisDataKey}
+            width={chartConfig.yAxisWidth}
+            axisLine={false}
+            tickLine={false}
+            interval={0}
+          />
+          <Tooltip
+            formatter={
+              chartConfig.tooltipFormatter &&
+              typeof chartConfig.tooltipFormatter === "function"
+                ? (value, name, props) => {
+                    try {
+                      const result = chartConfig.tooltipFormatter(
+                        value,
+                        name,
+                        props
+                      );
+                      if (Array.isArray(result)) return result;
+                      return [result, name || ""];
+                    } catch {
+                      return [`${value}%`, name || ""];
+                    }
+                  }
+                : (value, name) => [`${value}%`, name || ""]
+            }
+          />
+          <Bar
+            dataKey={chartConfig.dataKey}
+            fill={chartConfig.fillColor || CHART_COLORS.primary}
+            radius={[0, 4, 4, 0]}
+            barSize={
+              sortedData.length >= manyBarsThreshold
+                ? barSizeWhenMany
+                : undefined
+            }
+          >
+            {chartConfig.showLabels && (
+              <LabelList
+                dataKey={chartConfig.dataKey}
+                position="right"
+                formatter={
+                  chartConfig.labelFormatter || ((value) => `${value}%`)
+                }
+                style={{
+                  fill: CHART_COLORS.foreground,
+                  fontSize: "12px",
+                }}
+              />
+            )}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
   );
 
   // Use wrapperClassName from component config or preset-based wrapper (bar chart centered vertically in wrapper)
@@ -236,81 +327,6 @@ export function SchemaSentimentDivergentChart({ component, data }) {
       labels={chartConfig.labels}
     />
   );
-}
-
-/**
- * Get sentiment stacked chart config based on context
- */
-export function getSentimentStackedChartConfig(component) {
-  const config = component.config || {};
-  const preset = config.preset; // Use preset from JSON instead of checking dataPath
-
-  // Defaults - use config values or fallback to defaults
-  let height = config.height || 256;
-  let margin = config.margin || { top: 10, right: 30, left: 100, bottom: 10 };
-  let showGrid = config.showGrid !== undefined ? config.showGrid : true;
-  let axisLine = config.axisLine !== undefined ? config.axisLine : true;
-  let tickLine = config.tickLine !== undefined ? config.tickLine : true;
-
-  // Use preset to determine chart configuration
-  if (preset === "questionSentiment") {
-    height = 192;
-    showGrid = false;
-    axisLine = false;
-    tickLine = false;
-  }
-
-  return {
-    height,
-    margin: config.margin || margin,
-    yAxisDataKey: config.yAxisDataKey || "category",
-    yAxisWidth: config.yAxisWidth || 90,
-    showGrid: config.showGrid !== undefined ? config.showGrid : showGrid,
-    showLegend: config.showLegend !== false,
-    axisLine: config.axisLine !== undefined ? config.axisLine : axisLine,
-    tickLine: config.tickLine !== undefined ? config.tickLine : tickLine,
-  };
-}
-
-/**
- * Render a sentiment stacked chart component based on schema
- */
-export function SchemaSentimentStackedChart({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath, component.data);
-
-  if (!chartData || !Array.isArray(chartData)) {
-    return null;
-  }
-
-  const chartConfig = getSentimentStackedChartConfig(component);
-
-  const chart = (
-    <SentimentStackedChart
-      data={chartData}
-      height={chartConfig.height}
-      margin={chartConfig.margin}
-      yAxisDataKey={chartConfig.yAxisDataKey}
-      yAxisWidth={chartConfig.yAxisWidth}
-      showGrid={chartConfig.showGrid}
-      showLegend={chartConfig.showLegend}
-      axisLine={chartConfig.axisLine}
-      tickLine={chartConfig.tickLine}
-    />
-  );
-
-  // Use wrapperClassName from component config
-  const wrapperClassName = component.wrapperClassName;
-  if (wrapperClassName) {
-    const finalClassName = wrapperClassName;
-    const wrapperStyle = component.wrapperStyle;
-    return (
-      <div className={finalClassName} style={wrapperStyle}>
-        {chart}
-      </div>
-    );
-  }
-
-  return chart;
 }
 
 /**
@@ -640,7 +656,7 @@ export function SchemaEvolutionaryScorecard({ component, data }) {
   const scorecardData = resolveDataPath(
     data,
     component.dataPath,
-    component.data,
+    component.data
   );
   const config = component.config || {};
 

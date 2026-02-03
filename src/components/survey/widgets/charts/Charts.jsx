@@ -20,9 +20,8 @@ import { NPS_COLOR_MAP, SENTIMENT_COLOR_MAP, CHART_COLORS } from "@/lib/colors";
 //
 // Available components:
 // 1. SentimentDivergentChart - Divergent sentiment chart
-// 3. SentimentThreeColorChart - Three-color sentiment chart
-// 4. NPSStackedChart - NPS stacked chart
-// 5. SimpleBarChart - Simple bar chart
+// 2. SentimentThreeColorChart - Three-color sentiment chart
+// 3. NPSStackedChart - NPS stacked chart
 
 // ============================================================
 // 1. SENTIMENT DIVERGENT CHART (UNIFIED COMPONENT)
@@ -61,21 +60,20 @@ export function SentimentDivergentChart({
 
   const chartLabels = labels || defaultLabels;
   // Default values specific to SentimentDivergentChart (when not specified)
-  // null means "do not apply" (for SentimentStackedChart)
   const finalBarSize =
     barSize === null ? undefined : barSize !== undefined ? barSize : 40;
   const finalLegendWrapperStyle =
     legendWrapperStyle === null
       ? undefined
       : legendWrapperStyle !== undefined
-        ? legendWrapperStyle
-        : { paddingTop: "20px" };
+      ? legendWrapperStyle
+      : { paddingTop: "20px" };
   const finalLegendIconType =
     legendIconType === null
       ? undefined
       : legendIconType !== undefined
-        ? legendIconType
-        : "square";
+      ? legendIconType
+      : "square";
   // Transform data: negative values become negative for divergent display
   // Only plot positive and negative, ignore neutral completely
   const transformedData = data.map((item) => {
@@ -94,7 +92,7 @@ export function SentimentDivergentChart({
     ...transformedData.flatMap((item) => [
       Math.abs(item.positive),
       Math.abs(item.negative),
-    ]),
+    ])
   );
   const domain = xAxisDomain || [
     -Math.ceil(maxValue * 1.1),
@@ -160,8 +158,8 @@ export function SentimentDivergentChart({
                 return value === "negative" || value === "Negative"
                   ? chartLabels.negative
                   : value === "positive" || value === "Positive"
-                    ? chartLabels.positive
-                    : "";
+                  ? chartLabels.positive
+                  : "";
               }}
             />
           )}
@@ -206,58 +204,7 @@ export function SentimentDivergentChart({
 }
 
 // ============================================================
-// 2. SENTIMENT STACKED CHART (COMPATIBILITY WRAPPER)
-// ============================================================
-/**
- * Stacked sentiment chart (0-100%)
- *
- * Used in: AttributeDeepDive - Sentiment by Segment
- *          ResponseDetails - Sentiment Analysis
- *
- * @note Wrapper that maintains compatibility with existing code.
- *       Uses SentimentDivergentChart internally with different default values.
- *
- * @param {Array} data - Chart data
- * @param {number} [height=256] - Chart height
- * @param {Object} [margin] - Chart margins
- * @param {string} [yAxisDataKey="category"] - Key for Y axis labels
- * @param {number} [yAxisWidth=90] - Y axis width
- * @param {boolean} [showGrid=true] - Show grid
- * @param {boolean} [showLegend=true] - Show legend
- * @param {boolean} [axisLine=true] - Show axis line
- * @param {boolean} [tickLine=true] - Show tick lines
- */
-export function SentimentStackedChart({
-  data,
-  height = 256,
-  margin = { top: 10, right: 30, left: 100, bottom: 10 },
-  yAxisDataKey = "category",
-  yAxisWidth = 90,
-  showGrid = true,
-  showLegend = true,
-  axisLine = true,
-  tickLine = true,
-}) {
-  return (
-    <SentimentDivergentChart
-      data={data}
-      height={height}
-      margin={margin}
-      yAxisDataKey={yAxisDataKey}
-      yAxisWidth={yAxisWidth}
-      showGrid={showGrid}
-      showLegend={showLegend}
-      axisLine={axisLine}
-      tickLine={tickLine}
-      barSize={null}
-      legendWrapperStyle={null}
-      legendIconType={null}
-    />
-  );
-}
-
-// ============================================================
-// 3. SENTIMENT THREE COLOR CHART
+// 2. SENTIMENT THREE COLOR CHART
 // ============================================================
 // Three-color sentiment chart (Positive/Negative/Not applicable)
 // Used in: AttributeDeepDive - Sentiment Analysis by Customer Type
@@ -358,7 +305,7 @@ export function SentimentThreeColorChart({
 }
 
 // ============================================================
-// 4. NPS STACKED CHART
+// 3. NPS STACKED CHART
 // ============================================================
 // NPS stacked chart (Detractors/Neutrals/Promoters)
 // Used in: SupportAnalysis - NPS Distribution
@@ -376,7 +323,7 @@ export function NPSStackedChart({
 }) {
   // Extract keys dynamically from data object
   const dataKeys = Object.keys(data).filter(
-    (key) => typeof data[key] === "number",
+    (key) => typeof data[key] === "number"
   );
 
   // Create chart data dynamically from data keys
@@ -439,135 +386,6 @@ export function NPSStackedChart({
               }
             />
           ))}
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
-  );
-}
-
-// ============================================================
-// 5. SIMPLE BAR CHART
-// ============================================================
-// Simple bar chart (Nussbaumer style)
-// Used in: AttributeDeepDive - Distribution
-//           ResponseDetails - Closed questions
-//           SupportAnalysis - Other Intentions
-/**
- * Simple Bar Chart
- *
- * @note Always uses fixed scale of 0-100% to show real proportions
- *
- * @param {Array} data - Chart data
- * @param {string} dataKey - Key for data values
- * @param {string} yAxisDataKey - Key for Y axis labels
- * @param {number} [height=256] - Chart height
- * @param {Object} [margin] - Chart margins
- * @param {number} [yAxisWidth=110] - Y axis width
- * @param {string} [fillColor] - Bar fill color
- * @param {boolean} [showLabels=true] - Show value labels
- * @param {Function} [labelFormatter] - Label formatter function
- * @param {Function} [tooltipFormatter] - Tooltip formatter function
- * @param {boolean} [sortData=true] - Sort data
- * @param {string} [sortDirection="desc"] - Sort direction
- * @param {boolean} [hideXAxis=true] - Hide X axis
- */
-const DEFAULT_MANY_BARS_THRESHOLD = 8;
-const BAR_SIZE_WHEN_MANY = 28;
-
-export function SimpleBarChart({
-  data,
-  dataKey,
-  yAxisDataKey,
-  height = 256,
-  margin = { top: 10, right: 80, left: 120, bottom: 10 },
-  yAxisWidth = 110,
-  fillColor = CHART_COLORS.primary,
-  showLabels = true,
-  labelFormatter = (value) => `${value}%`,
-  tooltipFormatter,
-  sortData = true,
-  sortDirection = "desc",
-  hideXAxis = true,
-  manyBarsThreshold = DEFAULT_MANY_BARS_THRESHOLD,
-}) {
-  const sortedData = sortData
-    ? [...data].sort((a, b) => {
-        const aVal = a[dataKey];
-        const bVal = b[dataKey];
-        // Validate that they are numbers
-        if (typeof aVal !== "number" || typeof bVal !== "number") {
-          return 0;
-        }
-        return sortDirection === "desc" ? bVal - aVal : aVal - bVal;
-      })
-    : data;
-
-  return (
-    <div style={{ height }}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={sortedData} layout="vertical" margin={margin}>
-          <XAxis
-            type="number"
-            domain={[0, 100]}
-            tickFormatter={(v) => `${v}%`}
-            axisLine={false}
-            tickLine={false}
-            hide={hideXAxis}
-            allowDataOverflow={false}
-          />
-          <YAxis
-            type="category"
-            dataKey={yAxisDataKey}
-            width={yAxisWidth}
-            axisLine={false}
-            tickLine={false}
-            interval={0}
-          />
-          <Tooltip
-            formatter={
-              tooltipFormatter && typeof tooltipFormatter === "function"
-                ? (value, name, props) => {
-                    try {
-                      const result = tooltipFormatter(value, name, props);
-                      // Ensure result is always an array
-                      if (Array.isArray(result)) {
-                        return result;
-                      }
-                      // If it's a string or number, wrap it in an array
-                      return [result, name || ""];
-                    } catch (error) {
-                      // Tooltip formatter error - use fallback silently
-                      return [`${value}%`, name || ""];
-                    }
-                  }
-                : (value, name, props) => {
-                    // Default formatter - ensure it always returns an array
-                    return [`${value}%`, name || ""];
-                  }
-            }
-          />
-          <Bar
-            dataKey={dataKey}
-            fill={fillColor}
-            radius={[0, 4, 4, 0]}
-            barSize={
-              sortedData.length >= manyBarsThreshold
-                ? BAR_SIZE_WHEN_MANY
-                : undefined
-            }
-          >
-            {showLabels && (
-              <LabelList
-                dataKey={dataKey}
-                position="right"
-                formatter={labelFormatter}
-                style={{
-                  fill: CHART_COLORS.foreground,
-                  fontSize: "12px",
-                }}
-              />
-            )}
-          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </div>

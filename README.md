@@ -163,7 +163,7 @@ Exemplo mínimo:
 ### Tipos de Componentes Suportados
 
 - **Cards** - `type: "card"` - Cards com título e conteúdo
-- **Gráficos** - `type: "barChart"`, `type: "sentimentStackedChart"`, etc.
+- **Gráficos** - `type: "barChart"`, `type: "sentimentDivergentChart"`, etc.
 - **Tabelas** - `type: "distributionTable"`, `type: "sentimentTable"`, etc.
 - **Listas** - `type: "questionsList"` - Lista de questões com filtros
 - **Accordions** - `type: "accordion"` - Acordeões expansíveis

@@ -31,7 +31,9 @@ export function SchemaCard({ component, data, children }) {
   // Text resolution - silently handle empty text (expected in some cases)
 
   // Usa className do componente enriquecido (resolvido de cardStyleVariant)
-  const styleClass = component.className || "card-elevated";
+  // Quando cardStyleVariant é "flat", className pode ser ""; não usar fallback nesse caso
+  const styleClass =
+    component.className !== undefined ? component.className : "card-elevated";
 
   // Build style object - adiciona cor da borda para variante border-left
   // Remove sombra para variante flat
@@ -111,8 +113,12 @@ export function SchemaCard({ component, data, children }) {
             ))}
           </ContentWrapper>
         )}
-        {/* Then render children if they exist */}
-        {hasChildren && children}
+        {/* Then render children if they exist - wrap in div with spacing so nested cards/layout render correctly */}
+        {hasChildren && (
+          <div className={cardContentVariantClass || "space-y-6"}>
+            {children}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
@@ -126,7 +132,7 @@ export function SchemaNPSScoreCard({ component, data }) {
   const npsData = resolveDataPath(
     data,
     component.dataPath || "surveyInfo",
-    component.data,
+    component.data
   );
   const uiTexts = resolveDataPath(data, "uiTexts");
 
@@ -168,7 +174,7 @@ export function SchemaTopCategoriesCards({ component, data }) {
   const categoriesData = resolveDataPath(
     data,
     component.dataPath,
-    component.data,
+    component.data
   );
   const uiTexts = resolveDataPath(data, "uiTexts");
 

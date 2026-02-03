@@ -1,33 +1,31 @@
 # Documento de diferenças: telmob_original_daniel.json → telmob_fixed_daniel.json
 
-**Objetivo:** Registrar todas as alterações entre o JSON original e o JSON corrigido. O arquivo **fixed** é a versão de referência (correta).
+## Checklist de impacto
+
+Ao consumir o JSON (app, relatórios, testes) com **telmob_fixed_daniel.json** como referência:
+
+1. **topCategoriesCards:** Usar estrutura por categoria com `rank`, `mentions`, `percentage` e `topics[]`.
+2. **sentimentStackedChart → sentimentDivergentChart:** No fixed, o nome do dado e do componente passou a ser **sentimentDivergentChart**; a propriedade da categoria deixou de ser `value` e passou a ser `category`.
+3. **Distribuição em Atributos (Tipo de Cliente e Estado):** Esperar barChart e distributionTable dentro de um card "Distribuição dos respondentes" com `cardStyleVariant: "flex-column"`; barChart e distributionTable com `index`.
+4. **NPS (UI):** Usar `categoryName` e a hierarquia h3/h4 para títulos.
+5. **NPS (dados):** Usar sempre a chave `segment` nas linhas de npsDistributionTable e npsTable, em todas as seções.
+
+\_\_
 
 **Arquivos:**
 
 - **Original:** `src/data/telmob_original_daniel.json` (1885 linhas)
-- **Fixed:** `src/data/telmob_fixed_daniel.json` (1961 linhas)
-
----
-
-## Resumo das alterações
-
-| #   | Localização                                          | Tipo               | Descrição                                                                                                                                                        |
-| --- | ---------------------------------------------------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | `sections[].data.topCategoriesCards`                 | Estrutura de dados | Lista flat de cards → lista de categorias com `rank`, `mentions`, `percentage` e array `topics`                                                                  |
-| 2   | Seção "Tipo de Cliente"                              | UI / componentes   | `barChart` e `distributionTable` encapsulados em cards com título e `config`; NPS com `index`, `categoryName` e `config`; `sentimentThreeColorChart` com `index` |
-| 3   | Seção "Estado"                                       | UI / componentes   | Mesmo padrão de encapsulamento em cards e configs para gráficos/tabelas                                                                                          |
-| 4   | `satisfactionImpactSentimentChart` (Tipo de Cliente) | Valores            | Labels de sentimento em minúsculo → capitalizados (`Negativo`, `Não Aplicável`, `Positivo`)                                                                      |
-| 5   | Final do arquivo                                     | Formato            | Inclusão de newline no final do JSON                                                                                                                             |
+- **Corrigido/fixed (padrão):** `src/data/telmob_fixed_daniel.json` (2045 linhas)
 
 ---
 
 ## 1. topCategoriesCards — estrutura de dados
 
-**Caminho:** Dentro da primeira seção (ex.: Insights / Análise), em `data.topCategoriesCards`.
+**Caminho:** Na mesma pergunta (question02) da seção de Insights/Análise: `question02.data.topCategoriesCards`.
 
 ### Como era (original)
 
-Cada item era um objeto com `category`, `topic` e `sentiment`. Havia um card por combinação categoria+tópico (lista “flat”):
+Cada item era um objeto com `category`, `topic` e `sentiment`. Havia um card por combinação categoria+tópico (lista flat):
 
 ```json
 "topCategoriesCards": [
@@ -36,71 +34,7 @@ Cada item era um objeto com `category`, `topic` e `sentiment`. Havia um card por
     "topic": "agilidade no atendimento",
     "sentiment": "positive"
   },
-  {
-    "category": "serviço de rede",
-    "topic": "Qualidade dos resultados",
-    "sentiment": "positive"
-  },
-  {
-    "category": "serviço de rede",
-    "topic": "eficiência do serviço",
-    "sentiment": "positive"
-  },
-  {
-    "category": "serviço de rede",
-    "topic": "confiabilidade do serviço",
-    "sentiment": "negative"
-  },
-  {
-    "category": "serviço de rede",
-    "topic": "confiabilidade da rede",
-    "sentiment": "negative"
-  },
-  {
-    "category": "serviço de rede",
-    "topic": "estabilidade da rede",
-    "sentiment": "negative"
-  },
-  {
-    "category": "suporte ao cliente",
-    "topic": "atenção ao cliente",
-    "sentiment": "positive"
-  },
-  {
-    "category": "suporte ao cliente",
-    "topic": "Tratamento respeitoso",
-    "sentiment": "positive"
-  },
-  {
-    "category": "suporte ao cliente",
-    "topic": "prontidão de resposta",
-    "sentiment": "positive"
-  },
-  {
-    "category": "suporte ao cliente",
-    "topic": "Preocupações com a retenção de clientes",
-    "sentiment": "negative"
-  },
-  {
-    "category": "suporte ao cliente",
-    "topic": "usabilidade do aplicativo",
-    "sentiment": "negative"
-  },
-  {
-    "category": "suporte ao cliente",
-    "topic": "intenção de cancelamento do cliente",
-    "sentiment": "negative"
-  },
-  {
-    "category": "cobertura de rede",
-    "topic": "cobertura de rede",
-    "sentiment": "negative"
-  },
-  {
-    "category": "cobertura de rede",
-    "topic": "qualidade do sinal",
-    "sentiment": "negative"
-  },
+  ...
   {
     "category": "cobertura de rede",
     "topic": "disponibilidade do serviço",
@@ -109,7 +43,7 @@ Cada item era um objeto com `category`, `topic` e `sentiment`. Havia um card por
 ]
 ```
 
-### Como ficou (fixed)
+### Como ficou (fixed — padrão)
 
 Os itens passam a ser **por categoria**, com `rank`, `mentions`, `percentage` e um array `topics` (cada tópico com `topic` e `sentiment`):
 
@@ -122,37 +56,20 @@ Os itens passam a ser **por categoria**, com `rank`, `mentions`, `percentage` e 
     "percentage": 100,
     "topics": [
       { "topic": "agilidade no atendimento", "sentiment": "positive" },
-      { "topic": "Qualidade dos resultados", "sentiment": "positive" },
-      { "topic": "eficiência do serviço", "sentiment": "positive" },
-      { "topic": "confiabilidade do serviço", "sentiment": "negative" },
-      { "topic": "confiabilidade da rede", "sentiment": "negative" },
-      { "topic": "estabilidade da rede", "sentiment": "negative" }
+      ...
     ]
   },
   {
     "rank": 2,
     "category": "suporte ao cliente",
-    "mentions": 6,
-    "percentage": 100,
-    "topics": [
-      { "topic": "atenção ao cliente", "sentiment": "positive" },
-      { "topic": "Tratamento respeitoso", "sentiment": "positive" },
-      { "topic": "prontidão de resposta", "sentiment": "positive" },
-      { "topic": "Preocupações com a retenção de clientes", "sentiment": "negative" },
-      { "topic": "usabilidade do aplicativo", "sentiment": "negative" },
-      { "topic": "intenção de cancelamento do cliente", "sentiment": "negative" }
-    ]
+    ...
   },
   {
     "rank": 3,
     "category": "cobertura de rede",
     "mentions": 3,
     "percentage": 50,
-    "topics": [
-      { "topic": "cobertura de rede", "sentiment": "negative" },
-      { "topic": "qualidade do sinal", "sentiment": "negative" },
-      { "topic": "disponibilidade do serviço", "sentiment": "negative" }
-    ]
+    "topics": [ ... ]
   }
 ]
 ```
@@ -161,13 +78,55 @@ Os itens passam a ser **por categoria**, com `rank`, `mentions`, `percentage` e 
 
 ---
 
-## 2. Seção "Tipo de Cliente" — distribuição (barChart e distributionTable)
+## 2. sentimentStackedChart → sentimentDivergentChart
 
-**Caminho:** Seção com `id` relacionado a "Tipo de Cliente", em `subsections[].components` (grid-container).
+**Caminho:** Na seção de Insights/Análise (pergunta "Quais são os principais pontos que impactam sua satisfação?"): os **dados** ficam em `question02.data.sentimentStackedChart` (original) ou `question02.data.sentimentDivergentChart` (fixed). O componente na UI usa `dataPath` para `sectionData.sentimentDivergentChart` (espelhado no nível da seção).
+
+No fixed, **sentimentStackedChart** foi substituído por **sentimentDivergentChart**: tanto o nome do array de dados quanto o tipo do componente. O conteúdo é o mesmo (categoria + positive/negative); só mudam o nome da chave da categoria (`value` → `category`) e o nome do gráfico.
+
+### Original
+
+Dados em `sentimentStackedChart` com propriedade `value` para o nome da categoria (dentro de question02.data):
+
+```json
+"sentimentStackedChart": [
+  { "value": "serviço de rede", "positive": 10.5, "negative": 38.1 },
+  { "value": "suporte ao cliente", "positive": 6.4, "negative": 10.5 },
+  { "value": "cobertura de rede", "positive": 1.8, "negative": 13.6 },
+  { "value": "oferta e preços", "positive": 3.3, "negative": 6.6 },
+  { "value": "outro", "positive": 2.8, "negative": 6.4 }
+]
+```
+
+(O componente na seção já é `sentimentDivergentChart` apontando para `sectionData.sentimentDivergentChart` no nível da seção; no original, dentro de question02 os _dados_ ainda vinham como `sentimentStackedChart` com `value`.)
+
+### Fixed (padrão)
+
+Dados em **sentimentDivergentChart** com propriedade **category**:
+
+```json
+"sentimentDivergentChart": [
+  { "category": "serviço de rede", "positive": 10.5, "negative": 38.1 },
+  { "category": "suporte ao cliente", "positive": 6.4, "negative": 10.5 },
+  { "category": "cobertura de rede", "positive": 1.8, "negative": 13.6 },
+  { "category": "oferta e preços", "positive": 3.3, "negative": 6.6 },
+  { "category": "outro", "positive": 2.8, "negative": 6.4 }
+]
+```
+
+O componente continua sendo `sentimentDivergentChart` com `config.yAxisDataKey: "category"`.
+
+**Resumo:** sentimentStackedChart virou sentimentDivergentChart (nome do dado e alinhamento com o componente); use `category` em vez de `value` nos itens do array.
+
+---
+
+## 3. Seção "Tipo de Cliente" — distribuição (barChart e distributionTable)
+
+**Caminho:** Seção "Tipo de Cliente", em `subsections[].components`.
 
 ### Como era (original)
 
-Gráfico e tabela soltos no mesmo container:
+Gráfico e tabela soltos no mesmo grid-container:
 
 ```json
 {
@@ -186,146 +145,14 @@ Gráfico e tabela soltos no mesmo container:
 }
 ```
 
-### Como ficou (fixed)
+### Como ficou (fixed — padrão)
 
-Cada um dentro de um card, com título e (no gráfico) `config`:
-
-```json
-{
-  "type": "grid-container",
-  "index": 1,
-  "components": [
-    {
-      "type": "card",
-      "index": 0,
-      "title": "Distribuição dos respondentes",
-      "cardStyleVariant": "flex-column",
-      "cardContentVariant": "with-charts",
-      "components": [
-        {
-          "type": "barChart",
-          "index": 0,
-          "dataPath": "sectionData.TipodeCliente.distributionChart",
-          "config": {
-            "dataKey": "percentage",
-            "yAxisDataKey": "segment"
-          }
-        }
-      ]
-    },
-    {
-      "type": "card",
-      "index": 1,
-      "title": "Distribuição dos respondentes",
-      "components": [
-        {
-          "type": "distributionTable",
-          "index": 1,
-          "dataPath": "sectionData.TipodeCliente.distributionTable"
-        }
-      ]
-    }
-  ]
-}
-```
-
-**Resumo:** Gráfico e tabela passam a estar dentro de cards com título; barChart ganha `index` e `config` (`dataKey`, `yAxisDataKey`).
-
----
-
-## 3. Seção "Tipo de Cliente" — NPS (npsDistributionTable e npsTable)
-
-### Como era (original)
-
-```json
-{
-  "type": "npsDistributionTable",
-  "dataPath": "sectionData.TipodeCliente.questions.question01.npsDistributionTable"
-},
-{
-  "type": "npsTable",
-  "dataPath": "sectionData.TipodeCliente.questions.question01.npsTable"
-}
-```
-
-### Como ficou (fixed)
-
-Inclusão de `index`, `categoryName` e `config` (com eixo/coluna de dados):
-
-```json
-{
-  "type": "npsDistributionTable",
-  "index": 0,
-  "dataPath": "sectionData.TipodeCliente.questions.question01.npsDistributionTable",
-  "categoryName": "Por Tipo de Cliente",
-  "config": {
-    "yAxisDataKey": "Tipo de Cliente"
-  }
-},
-{
-  "type": "npsTable",
-  "index": 1,
-  "dataPath": "sectionData.TipodeCliente.questions.question01.npsTable",
-  "categoryName": "Por Tipo de Cliente",
-  "config": {
-    "dataKey": "NPS",
-    "yAxisDataKey": "Tipo de Cliente"
-  }
-}
-```
-
-**Resumo:** Componentes NPS ganham identificação de categoria e configuração de eixo/coluna para renderização correta.
-
----
-
-## 4. Seção "Tipo de Cliente" — sentimentThreeColorChart
-
-### Como era (original)
-
-```json
-{
-  "type": "sentimentThreeColorChart",
-  "dataPath": "sectionData.TipodeCliente.questions.question02.satisfactionImpactSentimentChart"
-}
-```
-
-### Como ficou (fixed)
-
-Inclusão de `index`:
-
-```json
-{
-  "type": "sentimentThreeColorChart",
-  "index": 0,
-  "dataPath": "sectionData.TipodeCliente.questions.question02.satisfactionImpactSentimentChart"
-}
-```
-
----
-
-## 6. Seção "Estado" — distribuição (barChart e distributionTable)
-
-Alteração análoga à da seção "Tipo de Cliente": gráfico e tabela passam a estar dentro de cards, com título e `config` no barChart.
-
-### Original (trecho)
-
-```json
-{
-  "type": "barChart",
-  "dataPath": "sectionData.Estado.distributionChart"
-},
-{
-  "type": "distributionTable",
-  "dataPath": "sectionData.Estado.distributionTable"
-}
-```
-
-### Fixed (trecho)
+Um único card "Distribuição dos respondentes" agrupa gráfico e tabela; barChart e distributionTable ganham `index`; o card usa `cardStyleVariant: "flex-column"` em ambas as seções (Tipo de Cliente e Estado):
 
 ```json
 {
   "type": "card",
-  "index": 0,
+  "index": 1,
   "title": "Distribuição dos respondentes",
   "cardStyleVariant": "flex-column",
   "cardContentVariant": "with-charts",
@@ -333,102 +160,205 @@ Alteração análoga à da seção "Tipo de Cliente": gráfico e tabela passam a
     {
       "type": "barChart",
       "index": 0,
-      "dataPath": "sectionData.Estado.distributionChart",
-      "config": {
-        "dataKey": "percentage",
-        "yAxisDataKey": "segment"
-      }
-    }
-  ]
-},
-{
-  "type": "card",
-  "index": 1,
-  "title": "Distribuição dos respondentes",
-  "components": [
+      "dataPath": "sectionData.TipodeCliente.distributionChart"
+    },
     {
       "type": "distributionTable",
       "index": 1,
-      "dataPath": "sectionData.Estado.distributionTable"
+      "dataPath": "sectionData.TipodeCliente.distributionTable"
     }
   ]
 }
 ```
 
+**Resumo:** Gráfico e tabela dentro de um card com título; barChart e distributionTable com `index`; card com `cardStyleVariant: "flex-column"` em Tipo de Cliente e Estado.
+
 ---
 
-## 7. Seção "Estado" — NPS (npsDistributionTable e npsTable)
+## 4. Seção "Tipo de Cliente" — NPS (npsDistributionTable e npsTable)
 
-### Original (trecho)
+### Original
 
-```json
-"dataPath": "sectionData.Estado.questions.question01.npsDistributionTable"
-...
-"dataPath": "sectionData.Estado.questions.question01.npsTable"
-```
-
-### Fixed (trecho)
+Componentes diretos no container, sem títulos hierárquicos nem metadados:
 
 ```json
 {
-  "type": "npsDistributionTable",
-  "index": 0,
-  "dataPath": "sectionData.Estado.questions.question01.npsDistributionTable",
-  "categoryName": "Por Estado",
-  "config": {
-    "yAxisDataKey": "Estado"
-  }
-},
-{
-  "type": "npsTable",
-  "index": 1,
-  "dataPath": "sectionData.Estado.questions.question01.npsTable",
-  "categoryName": "Por Estado",
-  "config": {
-    "yAxisDataKey": "Estado"
-  }
+  "type": "container",
+  "components": [
+    {
+      "type": "npsDistributionTable",
+      "dataPath": "sectionData.TipodeCliente.questions.question01.npsDistributionTable"
+    },
+    {
+      "type": "npsTable",
+      "dataPath": "sectionData.TipodeCliente.questions.question01.npsTable"
+    }
+  ]
 }
 ```
 
-**Resumo:** Mesmo padrão do Tipo de Cliente: `index`, `categoryName` e `config` com `yAxisDataKey` (e `dataKey` apenas onde aplicável).
+### Fixed (padrão)
+
+Estrutura com h3 "Respostas", containers com h4 "Promotores, Neutros, Detratores" e "NPS", e componentes com `index` e `categoryName`:
+
+```json
+{
+  "type": "container",
+  "index": 1,
+  "components": [
+    { "type": "h3", "index": 0, "text": "Respostas" },
+    {
+      "type": "container",
+      "index": 1,
+      "components": [
+        {
+          "type": "container",
+          "index": 0,
+          "components": [
+            {
+              "type": "h4",
+              "index": 0,
+              "text": "Promotores, Neutros, Detratores"
+            },
+            {
+              "type": "npsDistributionTable",
+              "index": 1,
+              "dataPath": "sectionData.TipodeCliente.questions.question01.npsDistributionTable",
+              "categoryName": "Por Tipo de Cliente"
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "index": 1,
+          "components": [
+            { "type": "h4", "index": 0, "text": "NPS" },
+            {
+              "type": "npsTable",
+              "index": 1,
+              "dataPath": "sectionData.TipodeCliente.questions.question01.npsTable",
+              "categoryName": "Por Tipo de Cliente"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Resumo:** NPS com hierarquia de títulos e metadados `index` e `categoryName` para renderização e acessibilidade.
+
+---
+
+## 5. Seção "Tipo de Cliente" — sentimentThreeColorChart e layout de sentimento
+
+### Original
+
+Card "Sumário" com título e texto; um único container com os quatro componentes (chart e três tabelas), sem `index` nos componentes:
+
+```json
+{
+  "type": "container",
+  "components": [
+    {
+      "type": "sentimentThreeColorChart",
+      "dataPath": "sectionData.TipodeCliente.questions.question02.satisfactionImpactSentimentChart"
+    },
+    {
+      "type": "sentimentImpactTable",
+      "dataPath": "..."
+    },
+    {
+      "type": "positiveCategoriesTable",
+      "dataPath": "..."
+    },
+    {
+      "type": "negativeCategoriesTable",
+      "dataPath": "..."
+    }
+  ]
+}
+```
+
+### Fixed (padrão)
+
+- O primeiro bloco **continua sendo um card** "Sumário" com título e texto (não vira container com h3).
+- O container que agrupava chart e tabelas é **dividido em três containers**, cada um com h3 e os componentes com `index`:
+  - Container com h3 "Análise de sentimento" → sentimentThreeColorChart (`index: 1`) e sentimentImpactTable (`index: 2`).
+  - Container com h3 "Categorias com sentimento positivo - Top 3" → positiveCategoriesTable (`index: 1`).
+  - Container com h3 "Categorias com sentimento negativo - Top 3" → negativeCategoriesTable (`index: 1`).
+- Na seção **Estado**, o sentimentThreeColorChart ganha ainda `config: {}`.
+
+---
+
+## 6. Seção "Estado" — distribuição, NPS e sentimento
+
+Alterações análogas às da seção "Tipo de Cliente":
+
+- **Distribuição:** barChart e distributionTable dentro de um card "Distribuição dos respondentes" com `cardStyleVariant: "flex-column"`; barChart e distributionTable com `index`.
+- **NPS:** Estrutura com h3 "Respostas", h4 e componentes com `index` e `categoryName`: "Por Estado".
+- **sentimentThreeColorChart:** Inclusão de `index: 1` e `config: {}`.
+
+---
+
+## 7. Dados NPS — chave dinâmica → "segment"
+
+**Caminho:** `sectionData.TipodeCliente.questions.question01` e `sectionData.Estado.questions.question01`.
+
+### Original
+
+As linhas das tabelas usavam a chave dinâmica do eixo (nome do segmento) como nome da coluna:
+
+- Tipo de Cliente: `"Tipo de Cliente": "controle"`, `"Tipo de Cliente": "pré-pago"`, etc.
+- Estado: `"Estado": "CE"`, `"Estado": "RJ"`, etc.
+
+Exemplo (Tipo de Cliente):
+
+```json
+"npsDistributionTable": [
+  { "Tipo de Cliente": "controle", "promoters": 28.6, "neutrals": 20.0, "detractors": 51.4 },
+  { "Tipo de Cliente": "pré-pago", ... },
+  { "Tipo de Cliente": "pós-pago", ... }
+],
+"npsTable": [
+  { "Tipo de Cliente": "controle", "NPS": -22.8 },
+  ...
+]
+```
+
+### Fixed (padrão)
+
+Todas as tabelas NPS passam a usar a chave fixa `segment`:
+
+```json
+"npsDistributionTable": [
+  { "segment": "controle", "promoters": 28.6, "neutrals": 20.0, "detractors": 51.4 },
+  { "segment": "pré-pago", ... },
+  { "segment": "pós-pago", ... }
+],
+"npsTable": [
+  { "segment": "controle", "NPS": -22.8 },
+  ...
+]
+```
+
+O mesmo vale para Estado (`"Estado": "CE"` → `"segment": "CE"`).
+
+**Resumo:** Schema padronizado com `segment` em vez de chaves dinâmicas por seção, facilitando consumo e componentes genéricos.
 
 ---
 
 ## 8. Final do arquivo (newline)
 
-### Como era (original)
+### Original
 
-O arquivo terminava sem newline após o último `}`:
+O arquivo terminava sem newline após o último `}`.
 
-```json
-  }
-}
-```
+### Fixed (padrão)
 
-_(sem caractere de nova linha no final)_
-
-### Como ficou (fixed)
-
-O arquivo termina com newline após o último `}`:
-
-```json
-  }
-}
-
-```
-
-_(com newline no final — padrão POSIX/boas práticas)_
+O arquivo termina com newline após o último `}` (padrão POSIX/boas práticas).
 
 ---
 
-## Checklist de impacto
-
-Ao consumir o JSON (app, relatórios, testes):
-
-1. **topCategoriesCards:** Ajustar código que percorria uma lista flat de `{ category, topic, sentiment }` para a nova estrutura por categoria com `rank`, `mentions`, `percentage` e `topics[]`.
-2. **Gráficos/tabelas de distribuição (Tipo de Cliente e Estado):** Garantir que a UI espere componentes dentro de cards e que barChart use `config.dataKey` e `config.yAxisDataKey`.
-3. **NPS (Tipo de Cliente e Estado):** Usar `categoryName` e `config.yAxisDataKey` (e `dataKey` para npsTable onde existir) na renderização.
-
----
-
-_Documento gerado a partir da comparação entre `telmob_original_daniel.json` e `telmob_fixed_daniel.json`._
+_Documento revisado na íntegra a partir do diff entre `telmob_original_daniel.json` e `telmob_fixed_daniel.json`. Referência: `telmob_fixed_daniel.json`._

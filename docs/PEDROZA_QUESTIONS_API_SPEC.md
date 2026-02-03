@@ -524,7 +524,7 @@ Mesma estrutura de `multiple-choice`:
   - `text` (string) - Palavra/texto
   - `value` (number) - Frequência/peso
 
-**Importante**: Para questões abertas, todos os três campos (`sentimentStackedChart`, `topCategoriesCards`, `wordCloud`) devem estar presentes.
+**Importante**: Para questões abertas, todos os três campos (`sentimentDivergentChart` ou `sentimentStackedChart`, `topCategoriesCards`, `wordCloud`) devem estar presentes.
 
 ---
 

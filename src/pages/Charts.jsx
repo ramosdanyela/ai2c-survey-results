@@ -1,11 +1,20 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   SentimentDivergentChart,
-  SentimentStackedChart,
   SentimentThreeColorChart,
   NPSStackedChart,
-  SimpleBarChart,
 } from "@/components/survey/widgets/charts/Charts";
+import { SchemaBarChart } from "@/components/survey/common/ChartRenderers";
+import {
+  SchemaRecommendationsTable,
+  SchemaSegmentationTable,
+  SchemaDistributionTable,
+  SchemaNPSDistributionTable,
+  SchemaNPSTable,
+  SchemaSentimentImpactTable,
+  SchemaPositiveCategoriesTable,
+  SchemaNegativeCategoriesTable,
+} from "@/components/survey/common/TableRenderers";
 import { WordCloud } from "@/components/survey/widgets/WordCloud";
 import { KPICard } from "@/components/survey/widgets/KPICard";
 import { LineChart } from "@/components/survey/widgets/charts/LineChart";
@@ -30,13 +39,6 @@ export default function Charts() {
     { category: "Entrega", positive: 55, negative: 20 },
   ];
 
-  // Dados de exemplo para SentimentStackedChart
-  const sentimentStackedData = [
-    { category: "Segmento A", positive: 50, negative: 30, neutral: 20 },
-    { category: "Segmento B", positive: 40, negative: 35, neutral: 25 },
-    { category: "Segmento C", positive: 60, negative: 20, neutral: 20 },
-  ];
-
   // Dados de exemplo para SentimentThreeColorChart
   const sentimentThreeColorData = [
     { sentiment: "Positivo", "Tipo A": 45, "Tipo B": 55, "Tipo C": 40 },
@@ -50,14 +52,6 @@ export default function Charts() {
     Neutros: 30,
     Promotores: 50,
   };
-
-  // Dados de exemplo para SimpleBarChart
-  const simpleBarData = [
-    { name: "Opção A", value: 45 },
-    { name: "Opção B", value: 30 },
-    { name: "Opção C", value: 15 },
-    { name: "Opção D", value: 10 },
-  ];
 
   // Dados de exemplo para WordCloud
   const wordCloudData = [
@@ -201,6 +195,160 @@ export default function Charts() {
     label: "Satisfação do Cliente",
   };
 
+  // Dados de exemplo para Bar Chart (tipo barChart do JSON)
+  const barChartData = [
+    { label: "Categoria A", value: 72 },
+    { label: "Categoria B", value: 85 },
+    { label: "Categoria C", value: 58 },
+    { label: "Categoria D", value: 91 },
+    { label: "Categoria E", value: 64 },
+  ];
+  const barChartComponent = {
+    type: "barChart",
+    config: { dataKey: "value", yAxisDataKey: "label", height: 280 },
+    dataPath: "",
+    data: barChartData,
+  };
+
+  // Dados de exemplo para Recommendations Table
+  const recommendationsData = {
+    config: {
+      severityLabels: {
+        high: "Alto",
+        medium: "Médio",
+        low: "Baixo",
+        critical: "Crítico",
+      },
+    },
+    items: [
+      {
+        id: 1,
+        recommendation: "Exemplo de recomendação prioritária",
+        severity: "high",
+        stakeholders: ["Área 1", "Área 2"],
+        tasks: [
+          { task: "Tarefa de implementação 1", owner: "Área 1" },
+          { task: "Tarefa de implementação 2", owner: "Área 2" },
+        ],
+      },
+      {
+        id: 2,
+        recommendation: "Exemplo de recomendação média",
+        severity: "medium",
+        stakeholders: ["Área 3"],
+        tasks: [],
+      },
+    ],
+  };
+  const recommendationsComponent = {
+    type: "recommendationsTable",
+    dataPath: "",
+    data: recommendationsData,
+  };
+
+  // Dados de exemplo para Segmentation Table
+  const segmentationTableData = [
+    {
+      cluster: "Cluster Satisfeitos",
+      description: "Perfil de alta satisfação",
+      percentage: 42,
+      id: "C1",
+    },
+    {
+      cluster: "Cluster Neutros",
+      description: "Perfil neutro",
+      percentage: 35,
+      id: "C2",
+    },
+    {
+      cluster: "Cluster Insatisfeitos",
+      description: "Perfil de baixa satisfação",
+      percentage: 23,
+      id: "C3",
+    },
+  ];
+  const segmentationComponent = {
+    type: "segmentationTable",
+    dataPath: "",
+    data: segmentationTableData,
+  };
+
+  // Dados de exemplo para Distribution Table
+  const distributionTableData = [
+    { segment: "Segmento A", count: 450, percentage: 38 },
+    { segment: "Segmento B", count: 320, percentage: 27 },
+    { segment: "Segmento C", count: 280, percentage: 23 },
+    { segment: "Segmento D", count: 150, percentage: 12 },
+  ];
+  const distributionComponent = {
+    type: "distributionTable",
+    dataPath: "",
+    data: distributionTableData,
+  };
+
+  // Dados de exemplo para NPS Distribution Table
+  const npsDistributionTableData = [
+    { segment: "Tipo A", promoters: 55, neutrals: 25, detractors: 20 },
+    { segment: "Tipo B", promoters: 48, neutrals: 30, detractors: 22 },
+    { segment: "Tipo C", promoters: 62, neutrals: 22, detractors: 16 },
+  ];
+  const npsDistributionComponent = {
+    type: "npsDistributionTable",
+    dataPath: "",
+    data: npsDistributionTableData,
+    config: { yAxisDataKey: "segment" },
+  };
+
+  // Dados de exemplo para NPS Table
+  const npsTableData = [
+    { segment: "Tipo A", NPS: 35 },
+    { segment: "Tipo B", NPS: 26 },
+    { segment: "Tipo C", NPS: 46 },
+  ];
+  const npsTableComponent = {
+    type: "npsTable",
+    dataPath: "",
+    data: npsTableData,
+    categoryName: "Segmento",
+    config: { yAxisDataKey: "segment" },
+  };
+
+  // Dados de exemplo para Sentiment Impact Table
+  const sentimentImpactTableData = [
+    { sentiment: "Positivo", "Tipo A": 45, "Tipo B": 55, "Tipo C": 40 },
+    { sentiment: "Negativo", "Tipo A": 25, "Tipo B": 20, "Tipo C": 30 },
+    { sentiment: "Não aplicável", "Tipo A": 30, "Tipo B": 25, "Tipo C": 30 },
+  ];
+  const sentimentImpactComponent = {
+    type: "sentimentImpactTable",
+    dataPath: "",
+    data: sentimentImpactTableData,
+  };
+
+  // Dados de exemplo para Positive Categories Table
+  const positiveCategoriesTableData = [
+    { category: "Atendimento", "Tipo A": 72, "Tipo B": 68, "Tipo C": 75 },
+    { category: "Qualidade", "Tipo A": 80, "Tipo B": 78, "Tipo C": 82 },
+    { category: "Preço", "Tipo A": 55, "Tipo B": 60, "Tipo C": 58 },
+  ];
+  const positiveCategoriesComponent = {
+    type: "positiveCategoriesTable",
+    dataPath: "",
+    data: positiveCategoriesTableData,
+  };
+
+  // Dados de exemplo para Negative Categories Table
+  const negativeCategoriesTableData = [
+    { category: "Atendimento", "Tipo A": 12, "Tipo B": 15, "Tipo C": 10 },
+    { category: "Qualidade", "Tipo A": 8, "Tipo B": 10, "Tipo C": 7 },
+    { category: "Preço", "Tipo A": 28, "Tipo B": 25, "Tipo C": 30 },
+  ];
+  const negativeCategoriesComponent = {
+    type: "negativeCategoriesTable",
+    dataPath: "",
+    data: negativeCategoriesTableData,
+  };
+
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-7xl mx-auto space-y-8">
@@ -228,23 +376,10 @@ export default function Charts() {
           </CardContent>
         </Card>
 
-        {/* SentimentStackedChart */}
-        <Card>
-          <CardHeader>
-            <CardTitle>2. SentimentStackedChart</CardTitle>
-            <p className="text-sm text-muted-foreground">
-              Gráfico empilhado de sentimento (0-100%)
-            </p>
-          </CardHeader>
-          <CardContent className="overflow-visible p-6 pt-0 pb-6">
-            <SentimentStackedChart data={sentimentStackedData} height={256} />
-          </CardContent>
-        </Card>
-
         {/* SentimentThreeColorChart */}
         <Card>
           <CardHeader>
-            <CardTitle>3. SentimentThreeColorChart</CardTitle>
+            <CardTitle>2. SentimentThreeColorChart</CardTitle>
             <p className="text-sm text-muted-foreground">
               Gráfico de três cores (Positivo/Negativo/Não aplicável)
             </p>
@@ -260,7 +395,7 @@ export default function Charts() {
         {/* NPSStackedChart */}
         <Card>
           <CardHeader>
-            <CardTitle>4. NPSStackedChart</CardTitle>
+            <CardTitle>3. NPSStackedChart</CardTitle>
             <p className="text-sm text-muted-foreground">
               Gráfico empilhado de NPS (Detratores/Neutros/Promotores)
             </p>
@@ -270,28 +405,10 @@ export default function Charts() {
           </CardContent>
         </Card>
 
-        {/* SimpleBarChart */}
-        <Card>
-          <CardHeader>
-            <CardTitle>5. SimpleBarChart</CardTitle>
-            <p className="text-sm text-muted-foreground">
-              Gráfico de barras simples (escala fixa 0-100%)
-            </p>
-          </CardHeader>
-          <CardContent className="overflow-visible p-6 pt-0 pb-6">
-            <SimpleBarChart
-              data={simpleBarData}
-              dataKey="value"
-              yAxisDataKey="name"
-              height={256}
-            />
-          </CardContent>
-        </Card>
-
         {/* WordCloud */}
         <Card>
           <CardHeader>
-            <CardTitle>6. WordCloud</CardTitle>
+            <CardTitle>4. WordCloud</CardTitle>
             <p className="text-sm text-muted-foreground">
               Nuvem de palavras interativa
             </p>
@@ -304,7 +421,7 @@ export default function Charts() {
         {/* KPI Card */}
         <Card>
           <CardHeader>
-            <CardTitle>7. KPI Card</CardTitle>
+            <CardTitle>5. KPI Card</CardTitle>
             <p className="text-sm text-muted-foreground">
               Card de indicador chave de performance com valor, delta, tendência
               e meta
@@ -324,7 +441,7 @@ export default function Charts() {
         {/* Line Chart */}
         <Card>
           <CardHeader>
-            <CardTitle>8. Line Chart</CardTitle>
+            <CardTitle>6. Line Chart</CardTitle>
             <p className="text-sm text-muted-foreground">
               Gráfico de linha para evolução temporal
             </p>
@@ -345,7 +462,7 @@ export default function Charts() {
         {/* Pareto Chart */}
         <Card>
           <CardHeader>
-            <CardTitle>9. Pareto Chart</CardTitle>
+            <CardTitle>7. Pareto Chart</CardTitle>
             <p className="text-sm text-muted-foreground">
               Gráfico de Pareto (80/20) com barras e linha cumulativa
             </p>
@@ -363,7 +480,7 @@ export default function Charts() {
         {/* Analytical Table */}
         <Card>
           <CardHeader>
-            <CardTitle>10. Analytical Table</CardTitle>
+            <CardTitle>8. Analytical Table</CardTitle>
             <p className="text-sm text-muted-foreground">
               Tabela analítica com ranking e ordenação
             </p>
@@ -385,7 +502,7 @@ export default function Charts() {
         {/* Slope Graph */}
         <Card>
           <CardHeader>
-            <CardTitle>11. Slope Graph</CardTitle>
+            <CardTitle>9. Slope Graph</CardTitle>
             <p className="text-sm text-muted-foreground">
               Gráfico de comparação antes vs. depois
             </p>
@@ -405,7 +522,7 @@ export default function Charts() {
         {/* Waterfall Chart */}
         <Card>
           <CardHeader>
-            <CardTitle>12. Waterfall Chart</CardTitle>
+            <CardTitle>10. Waterfall Chart</CardTitle>
             <p className="text-sm text-muted-foreground">
               Gráfico de cascata mostrando decomposição causal
             </p>
@@ -424,7 +541,7 @@ export default function Charts() {
         {/* Scatter Plot */}
         <Card>
           <CardHeader>
-            <CardTitle>13. Scatter Plot</CardTitle>
+            <CardTitle>11. Scatter Plot</CardTitle>
             <p className="text-sm text-muted-foreground">
               Gráfico de dispersão para relação entre variáveis
             </p>
@@ -444,7 +561,7 @@ export default function Charts() {
         {/* Histogram */}
         <Card>
           <CardHeader>
-            <CardTitle>14. Histogram</CardTitle>
+            <CardTitle>12. Histogram</CardTitle>
             <p className="text-sm text-muted-foreground">
               Histograma de distribuição estatística
             </p>
@@ -462,7 +579,7 @@ export default function Charts() {
         {/* Quadrant Chart */}
         <Card>
           <CardHeader>
-            <CardTitle>15. Quadrant Chart</CardTitle>
+            <CardTitle>13. Quadrant Chart</CardTitle>
             <p className="text-sm text-muted-foreground">
               Gráfico de quadrantes 2x2 para priorização executiva
             </p>
@@ -499,7 +616,7 @@ export default function Charts() {
         {/* Heatmap */}
         <Card>
           <CardHeader>
-            <CardTitle>16. Heatmap</CardTitle>
+            <CardTitle>14. Heatmap</CardTitle>
             <p className="text-sm text-muted-foreground">
               Mapa de calor para cruzamento multidimensional
             </p>
@@ -520,7 +637,7 @@ export default function Charts() {
         {/* Sankey Diagram */}
         <Card>
           <CardHeader>
-            <CardTitle>17. Sankey Diagram</CardTitle>
+            <CardTitle>15. Sankey Diagram</CardTitle>
             <p className="text-sm text-muted-foreground">
               Diagrama de Sankey para fluxo e jornada
             </p>
@@ -540,7 +657,7 @@ export default function Charts() {
         {/* Stacked Bar MECE */}
         <Card>
           <CardHeader>
-            <CardTitle>18. Stacked Bar MECE (Aprimorado)</CardTitle>
+            <CardTitle>16. Stacked Bar MECE (Aprimorado)</CardTitle>
             <p className="text-sm text-muted-foreground">
               Gráfico de barras empilhadas genérico e flexível
             </p>
@@ -562,7 +679,7 @@ export default function Charts() {
         {/* Evolutionary Scorecard */}
         <Card>
           <CardHeader>
-            <CardTitle>19. Evolutionary Scorecard (Aprimorado)</CardTitle>
+            <CardTitle>17. Evolutionary Scorecard (Aprimorado)</CardTitle>
             <p className="text-sm text-muted-foreground">
               Scorecard evolutivo com meta, delta e tendência
             </p>
@@ -574,6 +691,144 @@ export default function Charts() {
               delta={scorecardData.delta}
               trend={scorecardData.trend}
               label={scorecardData.label}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Bar Chart */}
+        <Card>
+          <CardHeader>
+            <CardTitle>18. Bar Chart</CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Gráfico de barras horizontal (tipo barChart do JSON)
+            </p>
+          </CardHeader>
+          <CardContent className="overflow-visible p-6 pt-0 pb-8">
+            <SchemaBarChart component={barChartComponent} data={{}} />
+          </CardContent>
+        </Card>
+
+        {/* Recommendations Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle>19. Recommendations Table</CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Tabela de recomendações com tarefas expansíveis
+            </p>
+          </CardHeader>
+          <CardContent className="overflow-visible p-6 pt-0 pb-6">
+            <SchemaRecommendationsTable
+              component={recommendationsComponent}
+              data={{}}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Segmentation Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle>20. Segmentation Table</CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Tabela de segmentação por clusters
+            </p>
+          </CardHeader>
+          <CardContent className="overflow-visible p-6 pt-0 pb-6">
+            <SchemaSegmentationTable
+              component={segmentationComponent}
+              data={{}}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Distribution Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle>21. Distribution Table</CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Tabela de distribuição (segmento, quantidade, percentual)
+            </p>
+          </CardHeader>
+          <CardContent className="overflow-visible p-6 pt-0 pb-6">
+            <SchemaDistributionTable
+              component={distributionComponent}
+              data={{}}
+            />
+          </CardContent>
+        </Card>
+
+        {/* NPS Distribution Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle>22. NPS Distribution Table</CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Tabela de distribuição NPS (Promotores / Neutros / Detratores)
+            </p>
+          </CardHeader>
+          <CardContent className="overflow-visible p-6 pt-0 pb-6">
+            <SchemaNPSDistributionTable
+              component={npsDistributionComponent}
+              data={{}}
+            />
+          </CardContent>
+        </Card>
+
+        {/* NPS Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle>23. NPS Table</CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Tabela NPS por segmento (score NPS)
+            </p>
+          </CardHeader>
+          <CardContent className="overflow-visible p-6 pt-0 pb-6">
+            <SchemaNPSTable component={npsTableComponent} data={{}} />
+          </CardContent>
+        </Card>
+
+        {/* Sentiment Impact Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle>24. Sentiment Impact Table</CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Tabela de impacto de sentimento por segmentos
+            </p>
+          </CardHeader>
+          <CardContent className="overflow-visible p-6 pt-0 pb-6">
+            <SchemaSentimentImpactTable
+              component={sentimentImpactComponent}
+              data={{}}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Positive Categories Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle>25. Positive Categories Table</CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Tabela de categorias positivas por segmento
+            </p>
+          </CardHeader>
+          <CardContent className="overflow-visible p-6 pt-0 pb-6">
+            <SchemaPositiveCategoriesTable
+              component={positiveCategoriesComponent}
+              data={{}}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Negative Categories Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle>26. Negative Categories Table</CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Tabela de categorias negativas por segmento
+            </p>
+          </CardHeader>
+          <CardContent className="overflow-visible p-6 pt-0 pb-6">
+            <SchemaNegativeCategoriesTable
+              component={negativeCategoriesComponent}
+              data={{}}
             />
           </CardContent>
         </Card>

@@ -17,7 +17,6 @@ import { logger } from "@/utils/logger";
 import {
   SchemaBarChart,
   SchemaSentimentDivergentChart,
-  SchemaSentimentStackedChart,
   SchemaSentimentThreeColorChart,
   SchemaNPSStackedChart,
   SchemaLineChart,
@@ -65,7 +64,6 @@ export const componentRegistry = {
   // Charts
   barChart: SchemaBarChart,
   sentimentDivergentChart: SchemaSentimentDivergentChart,
-  sentimentStackedChart: SchemaSentimentStackedChart,
   sentimentThreeColorChart: SchemaSentimentThreeColorChart,
   npsStackedChart: SchemaNPSStackedChart,
   lineChart: SchemaLineChart,
@@ -126,7 +124,7 @@ export const renderComponent = (component, data, props = {}) => {
 
   if (!Component) {
     logger.warnCritical(
-      `Unknown component type: ${normalizedComponent.type || "none"}`,
+      `Unknown component type: ${normalizedComponent.type || "none"}`
     );
     return null;
   }
@@ -155,7 +153,7 @@ export const renderComponent = (component, data, props = {}) => {
     // Accordion precisa de renderSchemaComponent para renderizar componentes aninhados
     if (!props.renderSchemaComponent) {
       logger.error(
-        "Accordion: renderSchemaComponent is required but not provided",
+        "Accordion: renderSchemaComponent is required but not provided"
       );
       return null;
     }
@@ -183,7 +181,7 @@ export const renderComponent = (component, data, props = {}) => {
     if (typeof rendered === "object" && !React.isValidElement(rendered)) {
       logger.error(
         `Componente ${normalizedComponent.type} retornou objeto inválido (não é elemento React):`,
-        rendered,
+        rendered
       );
       return null;
     }
@@ -195,7 +193,7 @@ export const renderComponent = (component, data, props = {}) => {
     logger.warnCritical(
       `Componente ${normalizedComponent.type} retornou elemento inválido:`,
       rendered,
-      typeof rendered,
+      typeof rendered
     );
     return null;
   } catch (error) {
@@ -206,7 +204,7 @@ export const renderComponent = (component, data, props = {}) => {
         component: normalizedComponent,
         dataPath: normalizedComponent.dataPath,
         errorStack: error.stack,
-      },
+      }
     );
     return null;
   }

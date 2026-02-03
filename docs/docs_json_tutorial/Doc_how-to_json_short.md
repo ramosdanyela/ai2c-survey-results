@@ -342,7 +342,7 @@ Cabeçalhos para organizar conteúdo:
 - [ ] Adicionar objeto ao array `questions` na seção `responses`
 - [ ] Definir `id`, `index`, `question`, `questionType` (não `type`)
 - [ ] Adicionar `data` (estrutura varia conforme tipo)
-- [ ] Para questões `open-ended`: adicionar `wordCloud`, `topCategoriesCards`, `sentimentStackedChart` em `data`
+- [ ] Para questões `open-ended`: adicionar `wordCloud`, `topCategoriesCards`, `sentimentDivergentChart` (ou `sentimentStackedChart`) em `data`
 - [ ] Adicionar textos relacionados em `uiTexts` (se necessário)
 
 ---
@@ -355,7 +355,6 @@ O sistema suporta diversos tipos de gráficos. Mesmo que não estejam no JSON at
 
 - `barChart` - Gráfico de barras horizontal
 - `sentimentDivergentChart` - Gráfico divergente de sentimento
-- `sentimentStackedChart` - Gráfico empilhado de sentimento
 - `sentimentThreeColorChart` - Gráfico de três cores de sentimento
 - `npsStackedChart` - Gráfico empilhado NPS
 - `lineChart` - Gráfico de linha temporal

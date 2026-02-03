@@ -401,7 +401,7 @@ Para adicionar uma nova questão, simplesmente adicione um objeto ao array `ques
 - `data`: Dados da questão (object) - estrutura varia conforme o tipo
   - Para `nps`: `npsScore`, `npsStackedChart`
   - Para `multiple-choice` ou `single-choice`: `barChart`
-  - Para `open-ended`: `wordCloud`, `topCategoriesCards`, `sentimentStackedChart`
+  - Para `open-ended`: `wordCloud`, `topCategoriesCards`, `sentimentDivergentChart` (dados em `sentimentStackedChart` ou `sentimentDivergentChart`)
 
 ### Remover uma questão
 
@@ -514,7 +514,7 @@ Para adicionar uma nova questão, simplesmente adicione um objeto ao array `ques
 }
 ```
 
-**Componentes gerados automaticamente:** `sentimentStackedChart`, `topCategoriesCards`, `wordCloud`
+**Componentes gerados automaticamente:** `sentimentDivergentChart`, `topCategoriesCards`, `wordCloud`
 
 **⚠️ Importante:** As questões **não possuem** um campo `components` no JSON. Os componentes são gerados automaticamente baseados no `questionType` usando templates pré-definidos.
 
@@ -704,13 +704,13 @@ Gráfico divergente de sentimento.
 }
 ```
 
-#### SentimentStackedChart
+#### SentimentDivergentChart
 
-Gráfico empilhado de sentimento.
+Gráfico divergente de sentimento.
 
 ```json
 {
-  "type": "sentimentStackedChart",
+  "type": "sentimentDivergentChart",
   "index": 0,
   "dataPath": "sectionData.sentiment",
   "config": {

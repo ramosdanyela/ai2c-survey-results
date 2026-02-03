@@ -12,7 +12,6 @@ const VALID_COMPONENT_TYPES = [
   // Charts
   "barChart",
   "sentimentDivergentChart",
-  "sentimentStackedChart",
   "sentimentThreeColorChart",
   "npsStackedChart",
   "lineChart",
@@ -125,7 +124,7 @@ function resolveDataPath(obj, path, sectionId = null, sectionData = null) {
         sectionData,
         relativePath,
         sectionId,
-        sectionData,
+        sectionData
       );
       if (resolved !== null && resolved !== undefined) {
         return resolved;
@@ -137,7 +136,7 @@ function resolveDataPath(obj, path, sectionId = null, sectionData = null) {
         obj.sectionData,
         relativePath,
         sectionId,
-        sectionData,
+        sectionData
       );
     }
     return null;
@@ -180,7 +179,7 @@ function validateDataPath(
   data,
   context = "",
   sectionId = null,
-  sectionData = null,
+  sectionData = null
 ) {
   if (!dataPath) return null;
 
@@ -204,7 +203,7 @@ function validateDataPath(
           { currentAttribute: attr },
           dataPath,
           sectionId,
-          sectionData,
+          sectionData
         );
         return value !== null && value !== undefined;
       });
@@ -246,7 +245,7 @@ function validateTemplates(
   data,
   context = "",
   sectionId = null,
-  sectionData = null,
+  sectionData = null
 ) {
   if (!template || typeof template !== "string") return [];
 
@@ -264,7 +263,7 @@ function validateTemplates(
         data.uiTexts,
         cleanPath,
         sectionId,
-        sectionData,
+        sectionData
       );
       if (value === null || value === undefined) {
         errors.push({
@@ -287,7 +286,7 @@ function validateTemplates(
             { currentAttribute: attr },
             path,
             sectionId,
-            sectionData,
+            sectionData
           );
           return value !== null && value !== undefined;
         });
@@ -326,7 +325,7 @@ function validateComponentData(
   data,
   context = "",
   sectionId = null,
-  sectionData = null,
+  sectionData = null
 ) {
   const errors = [];
   const { type, dataPath } = component;
@@ -345,7 +344,7 @@ function validateComponentData(
     errors.push({
       path: context,
       message: `Tipo de componente inválido: "${type}". Tipos válidos: ${VALID_COMPONENT_TYPES.join(
-        ", ",
+        ", "
       )}`,
     });
   }
@@ -357,7 +356,6 @@ function validateComponentData(
     // Charts
     "barChart",
     "sentimentDivergentChart",
-    "sentimentStackedChart",
     "sentimentThreeColorChart",
     "npsStackedChart",
     "lineChart",
@@ -404,7 +402,7 @@ function validateComponentData(
       data,
       context,
       sectionId,
-      sectionData,
+      sectionData
     );
     if (dataPathError) {
       errors.push(dataPathError);
@@ -416,7 +414,6 @@ function validateComponentData(
       const arrayComponents = [
         "barChart",
         "sentimentDivergentChart",
-        "sentimentStackedChart",
         "sentimentThreeColorChart",
         "segmentationTable",
         "distributionTable",
@@ -500,13 +497,13 @@ function validateComponentData(
         // Array deve ter opções Detrator, Promotor, Neutro
         const options = resolved.map((d) => d.option);
         const missing = VALID_NPS_OPTIONS.filter(
-          (opt) => !options.includes(opt),
+          (opt) => !options.includes(opt)
         );
         if (missing.length > 0) {
           errors.push({
             path: context,
             message: `NPSStackedChart com array requer opções: ${VALID_NPS_OPTIONS.join(
-              ", ",
+              ", "
             )}. Faltando: ${missing.join(", ")}`,
           });
         }
@@ -522,8 +519,8 @@ function validateComponentData(
         data,
         `${context}.title`,
         sectionId,
-        sectionData,
-      ),
+        sectionData
+      )
     );
   }
   if (component.text) {
@@ -533,8 +530,8 @@ function validateComponentData(
         data,
         `${context}.text`,
         sectionId,
-        sectionData,
-      ),
+        sectionData
+      )
     );
   }
 
@@ -549,7 +546,7 @@ function validateComponents(
   data,
   context = "",
   sectionId = null,
-  sectionData = null,
+  sectionData = null
 ) {
   const errors = [];
 
@@ -570,8 +567,8 @@ function validateComponents(
         data,
         componentContext,
         sectionId,
-        sectionData,
-      ),
+        sectionData
+      )
     );
 
     // Valida componentes aninhados
@@ -582,8 +579,8 @@ function validateComponents(
           data,
           `${componentContext}.components`,
           sectionId,
-          sectionData,
-        ),
+          sectionData
+        )
       );
     }
   });
@@ -600,7 +597,7 @@ function validateSubsections(
   data,
   sectionData,
   context = "",
-  sectionId = null,
+  sectionId = null
 ) {
   const errors = [];
 
@@ -651,8 +648,8 @@ function validateSubsections(
           data, // Passa data original
           `${subsectionContext}.components`,
           sectionId,
-          sectionData, // Passa sectionData separadamente
-        ),
+          sectionData // Passa sectionData separadamente
+        )
       );
     }
   });
@@ -667,7 +664,7 @@ function checkChartItemFieldName(
   items,
   context,
   fieldExpected = "option",
-  fieldAlternate = "label",
+  fieldAlternate = "label"
 ) {
   const out = [];
   if (!Array.isArray(items)) return out;
@@ -680,8 +677,8 @@ function checkChartItemFieldName(
       out.push(
         warn(
           `${context}[${i}]`,
-          `Campo esperado "${fieldExpected}", recebido "${fieldAlternate}". Use "${fieldExpected}" (padrão ouro).`,
-        ),
+          `Campo esperado "${fieldExpected}", recebido "${fieldAlternate}". Use "${fieldExpected}" (padrão ouro).`
+        )
       );
     }
   });
@@ -697,7 +694,7 @@ function checkNumberNotString(value, context, fieldName) {
     return [
       warn(
         context,
-        `Campo "${fieldName}" deveria ser number, está como string.`,
+        `Campo "${fieldName}" deveria ser number, está como string.`
       ),
     ];
   }
@@ -716,7 +713,7 @@ function checkNotEmptyString(value, context, fieldName) {
 
 /**
  * Charts (em dados de questão) cujos itens devem ter 'value' e 'percentage'.
- * Baseado no código: npsStackedChart e barChart (QuestionsList, SimpleBarChart, NPS) usam item.value e item.percentage.
+ * Baseado no código: npsStackedChart e barChart (QuestionsList, SchemaBarChart, NPS) usam item.value e item.percentage.
  * Outros charts (sentimentDivergentChart, lineChart, paretoChart, etc.) usam outras chaves (positive/negative, x/y, category/value).
  */
 const QUESTION_CHART_KEYS_REQUIRING_VALUE_AND_PERCENTAGE = [
@@ -740,16 +737,16 @@ function checkChartItemValueAndPercentage(items, context) {
       out.push(
         warn(
           `${context}[${i}]`,
-          "Item deve ter 'value' e 'percentage'; tem apenas 'percentage'.",
-        ),
+          "Item deve ter 'value' e 'percentage'; tem apenas 'percentage'."
+        )
       );
     }
     if (hasValue && !hasPercentage) {
       out.push(
         warn(
           `${context}[${i}]`,
-          "Item deve ter 'value' e 'percentage'; tem apenas 'value'.",
-        ),
+          "Item deve ter 'value' e 'percentage'; tem apenas 'value'."
+        )
       );
     }
   });
@@ -773,7 +770,7 @@ function validateQuestions(questions, context = "") {
     // Campos numéricos não devem ser string
     if (question.id !== undefined && question.id !== null) {
       errors.push(
-        ...checkNumberNotString(question.id, `${questionContext}.id`, "id"),
+        ...checkNumberNotString(question.id, `${questionContext}.id`, "id")
       );
       questionIds.push(question.id);
     }
@@ -782,8 +779,8 @@ function validateQuestions(questions, context = "") {
         ...checkNumberNotString(
           question.index,
           `${questionContext}.index`,
-          "index",
-        ),
+          "index"
+        )
       );
     }
 
@@ -798,29 +795,31 @@ function validateQuestions(questions, context = "") {
 
     if (!question.question) {
       errors.push(
-        err(questionContext, "Questão deve ter 'question' (texto da pergunta)"),
+        err(questionContext, "Questão deve ter 'question' (texto da pergunta)")
       );
     } else {
       errors.push(
         ...checkNotEmptyString(
           question.question,
           `${questionContext}.question`,
-          "question",
-        ),
+          "question"
+        )
       );
     }
 
     // Valida questionType (não type)
     if (!question.questionType) {
       errors.push(
-        err(questionContext, "Questão deve ter 'questionType' (não 'type')"),
+        err(questionContext, "Questão deve ter 'questionType' (não 'type')")
       );
     } else if (!VALID_QUESTION_TYPES.includes(question.questionType)) {
       errors.push(
         err(
           questionContext,
-          `Tipo de questão inválido: "${question.questionType}". Tipos válidos: ${VALID_QUESTION_TYPES.join(", ")}`,
-        ),
+          `Tipo de questão inválido: "${
+            question.questionType
+          }". Tipos válidos: ${VALID_QUESTION_TYPES.join(", ")}`
+        )
       );
     }
 
@@ -828,8 +827,8 @@ function validateQuestions(questions, context = "") {
       errors.push(
         err(
           questionContext,
-          "Questões devem usar 'questionType' (não 'type'). Use 'questionType' para questões.",
-        ),
+          "Questões devem usar 'questionType' (não 'type'). Use 'questionType' para questões."
+        )
       );
     }
 
@@ -843,14 +842,16 @@ function validateQuestions(questions, context = "") {
         const chart = question.data.npsStackedChart;
         const options = chart.map((d) => d.option);
         const missing = VALID_NPS_OPTIONS.filter(
-          (opt) => !options.includes(opt),
+          (opt) => !options.includes(opt)
         );
         if (missing.length > 0) {
           errors.push(
             err(
               questionContext,
-              `Questão NPS deve ter opções em data.npsStackedChart: ${VALID_NPS_OPTIONS.join(", ")}. Faltando: ${missing.join(", ")}`,
-            ),
+              `Questão NPS deve ter opções em data.npsStackedChart: ${VALID_NPS_OPTIONS.join(
+                ", "
+              )}. Faltando: ${missing.join(", ")}`
+            )
           );
         }
         // Alerta: option vs label
@@ -859,15 +860,15 @@ function validateQuestions(questions, context = "") {
             chart,
             `${questionContext}.data.npsStackedChart`,
             "option",
-            "label",
-          ),
+            "label"
+          )
         );
         // Alerta: value/percentage como string
         chart.forEach((item, i) => {
           const ctx = `${questionContext}.data.npsStackedChart[${i}]`;
           if (item && item.value !== undefined) {
             errors.push(
-              ...checkNumberNotString(item.value, `${ctx}.value`, "value"),
+              ...checkNumberNotString(item.value, `${ctx}.value`, "value")
             );
           }
           if (item && item.percentage !== undefined) {
@@ -875,8 +876,8 @@ function validateQuestions(questions, context = "") {
               ...checkNumberNotString(
                 item.percentage,
                 `${ctx}.percentage`,
-                "percentage",
-              ),
+                "percentage"
+              )
             );
           }
         });
@@ -884,22 +885,22 @@ function validateQuestions(questions, context = "") {
         errors.push(
           ...checkChartItemValueAndPercentage(
             chart,
-            `${questionContext}.data.npsStackedChart`,
-          ),
+            `${questionContext}.data.npsStackedChart`
+          )
         );
       }
       if (question.data) {
         if (question.data.npsScore === undefined) {
           errors.push(
-            err(questionContext, "Questão NPS deve ter 'data.npsScore'"),
+            err(questionContext, "Questão NPS deve ter 'data.npsScore'")
           );
         } else {
           errors.push(
             ...checkNumberNotString(
               question.data.npsScore,
               `${questionContext}.data.npsScore`,
-              "npsScore",
-            ),
+              "npsScore"
+            )
           );
         }
       }
@@ -908,8 +909,10 @@ function validateQuestions(questions, context = "") {
     if (question.questionType === "open-ended") {
       if (question.data) {
         const hasSentiment =
-          question.data.sentimentStackedChart &&
-          Array.isArray(question.data.sentimentStackedChart);
+          (question.data.sentimentDivergentChart &&
+            Array.isArray(question.data.sentimentDivergentChart)) ||
+          (question.data.sentimentStackedChart &&
+            Array.isArray(question.data.sentimentStackedChart));
         const hasWordCloud =
           question.data.wordCloud && Array.isArray(question.data.wordCloud);
         const hasTopCategories =
@@ -920,8 +923,8 @@ function validateQuestions(questions, context = "") {
           errors.push(
             err(
               questionContext,
-              "Questão open-ended deve ter pelo menos um de: 'data.sentimentStackedChart', 'data.wordCloud', ou 'data.topCategoriesCards'",
-            ),
+              "Questão open-ended deve ter pelo menos um de: 'data.sentimentDivergentChart' (ou 'data.sentimentStackedChart'), 'data.wordCloud', ou 'data.topCategoriesCards'"
+            )
           );
         }
         // Aviso: arrays vazios (falta dado para renderizar)
@@ -933,8 +936,8 @@ function validateQuestions(questions, context = "") {
           errors.push(
             warn(
               `${questionContext}.data.wordCloud`,
-              "Array wordCloud vazio; preencher para exibir nuvem de palavras.",
-            ),
+              "Array wordCloud vazio; preencher para exibir nuvem de palavras."
+            )
           );
         }
         if (
@@ -945,8 +948,8 @@ function validateQuestions(questions, context = "") {
           errors.push(
             warn(
               `${questionContext}.data.sentimentCategories`,
-              "Array sentimentCategories vazio; preencher para exibir.",
-            ),
+              "Array sentimentCategories vazio; preencher para exibir."
+            )
           );
         }
         if (
@@ -957,8 +960,8 @@ function validateQuestions(questions, context = "") {
           errors.push(
             warn(
               `${questionContext}.data.topicsByCategory`,
-              "Array topicsByCategory vazio; preencher para exibir.",
-            ),
+              "Array topicsByCategory vazio; preencher para exibir."
+            )
           );
         }
       }
@@ -976,8 +979,8 @@ function validateQuestions(questions, context = "") {
         errors.push(
           err(
             questionContext,
-            "Questão multiple-choice/single-choice deve ter 'data.barChart' como array",
-          ),
+            "Questão multiple-choice/single-choice deve ter 'data.barChart' como array"
+          )
         );
       } else {
         const chart = question.data.barChart;
@@ -986,14 +989,14 @@ function validateQuestions(questions, context = "") {
             chart,
             `${questionContext}.data.barChart`,
             "option",
-            "label",
-          ),
+            "label"
+          )
         );
         chart.forEach((item, i) => {
           const ctx = `${questionContext}.data.barChart[${i}]`;
           if (item && item.value !== undefined) {
             errors.push(
-              ...checkNumberNotString(item.value, `${ctx}.value`, "value"),
+              ...checkNumberNotString(item.value, `${ctx}.value`, "value")
             );
           }
           if (item && item.percentage !== undefined) {
@@ -1001,8 +1004,8 @@ function validateQuestions(questions, context = "") {
               ...checkNumberNotString(
                 item.percentage,
                 `${ctx}.percentage`,
-                "percentage",
-              ),
+                "percentage"
+              )
             );
           }
         });
@@ -1010,8 +1013,8 @@ function validateQuestions(questions, context = "") {
         errors.push(
           ...checkChartItemValueAndPercentage(
             chart,
-            `${questionContext}.data.barChart`,
-          ),
+            `${questionContext}.data.barChart`
+          )
         );
       }
     }
@@ -1019,14 +1022,14 @@ function validateQuestions(questions, context = "") {
 
   // Valida IDs únicos
   const duplicateIds = questionIds.filter(
-    (id, index) => questionIds.indexOf(id) !== index,
+    (id, index) => questionIds.indexOf(id) !== index
   );
   if (duplicateIds.length > 0) {
     errors.push(
       err(
         context,
-        `IDs de questões duplicados: ${[...new Set(duplicateIds)].join(", ")}`,
-      ),
+        `IDs de questões duplicados: ${[...new Set(duplicateIds)].join(", ")}`
+      )
     );
   }
 
@@ -1046,7 +1049,7 @@ export function validateCustomRules(data) {
   if (data.sections && Array.isArray(data.sections)) {
     const sectionIds = data.sections.map((s) => s.id);
     const duplicateSectionIds = sectionIds.filter(
-      (id, index) => sectionIds.indexOf(id) !== index,
+      (id, index) => sectionIds.indexOf(id) !== index
     );
     if (duplicateSectionIds.length > 0) {
       errors.push({
@@ -1062,14 +1065,14 @@ export function validateCustomRules(data) {
     const sortedIndices = [...sectionIndices].sort((a, b) => a - b);
     const expectedIndices = Array.from(
       { length: sortedIndices.length },
-      (_, i) => i,
+      (_, i) => i
     );
 
     if (JSON.stringify(sortedIndices) !== JSON.stringify(expectedIndices)) {
       errors.push({
         path: "/sections",
         message: `Índices de seções devem começar em 0 e ser sequenciais. Encontrado: ${sectionIndices.join(
-          ", ",
+          ", "
         )}`,
       });
     }
@@ -1091,7 +1094,7 @@ export function validateCustomRules(data) {
         // Para seção attributes, manter sectionData.attributes (array) para currentAttribute.*
         if (section.id === "attributes") {
           sectionData.attributes = section.subsections.map(
-            (sub) => sub.data ?? {},
+            (sub) => sub.data ?? {}
           );
         }
       }
@@ -1101,7 +1104,7 @@ export function validateCustomRules(data) {
         // Validar IDs únicos de subseções
         const subsectionIds = section.subsections.map((s) => s.id);
         const duplicateSubsectionIds = subsectionIds.filter(
-          (id, index) => subsectionIds.indexOf(id) !== index,
+          (id, index) => subsectionIds.indexOf(id) !== index
         );
         if (duplicateSubsectionIds.length > 0) {
           errors.push({
@@ -1117,7 +1120,7 @@ export function validateCustomRules(data) {
         const sortedSubIndices = [...subsectionIndices].sort((a, b) => a - b);
         const expectedSubIndices = Array.from(
           { length: sortedSubIndices.length },
-          (_, i) => i,
+          (_, i) => i
         );
 
         if (
@@ -1127,7 +1130,7 @@ export function validateCustomRules(data) {
           errors.push({
             path: `${sectionContext}/subsections`,
             message: `Índices de subseções devem começar em 0 e ser sequenciais. Encontrado: ${subsectionIndices.join(
-              ", ",
+              ", "
             )}`,
           });
         }
@@ -1139,8 +1142,8 @@ export function validateCustomRules(data) {
             data,
             sectionData,
             `${sectionContext}.subsections`,
-            section.id,
-          ),
+            section.id
+          )
         );
       }
 
@@ -1152,8 +1155,8 @@ export function validateCustomRules(data) {
             data, // Passa data original
             `${sectionContext}.components`,
             section.id,
-            sectionData, // Passa sectionData separadamente
-          ),
+            sectionData // Passa sectionData separadamente
+          )
         );
       }
     });
@@ -1161,7 +1164,7 @@ export function validateCustomRules(data) {
 
   // Padrão ouro: a seção que contém 'questions' deve ter id "responses" ou "questions"
   const sectionWithQuestions = data.sections?.find(
-    (s) => Array.isArray(s.questions) && s.questions.length > 0,
+    (s) => Array.isArray(s.questions) && s.questions.length > 0
   );
   if (sectionWithQuestions) {
     if (!VALID_SECTION_IDS_QUESTIONS.includes(sectionWithQuestions.id)) {
@@ -1169,23 +1172,23 @@ export function validateCustomRules(data) {
       errors.push(
         err(
           `/sections[${idx}]`,
-          `A seção que contém 'questions' deve ter id "responses" ou "questions". Encontrado: "${sectionWithQuestions.id}"`,
-        ),
+          `A seção que contém 'questions' deve ter id "responses" ou "questions". Encontrado: "${sectionWithQuestions.id}"`
+        )
       );
     }
     const sectionIdx = data.sections.indexOf(sectionWithQuestions);
     errors.push(
       ...validateQuestions(
         sectionWithQuestions.questions,
-        `/sections[${sectionIdx}]/questions`,
-      ),
+        `/sections[${sectionIdx}]/questions`
+      )
     );
   }
 
   // Validar NPS range
   if (data.surveyInfo?.nps !== undefined) {
     errors.push(
-      ...checkNumberNotString(data.surveyInfo.nps, "/surveyInfo/nps", "nps"),
+      ...checkNumberNotString(data.surveyInfo.nps, "/surveyInfo/nps", "nps")
     );
     if (
       typeof data.surveyInfo.nps === "number" &&
@@ -1194,8 +1197,8 @@ export function validateCustomRules(data) {
       errors.push(
         err(
           "/surveyInfo/nps",
-          `NPS deve estar entre -100 e 100. Valor atual: ${data.surveyInfo.nps}`,
-        ),
+          `NPS deve estar entre -100 e 100. Valor atual: ${data.surveyInfo.nps}`
+        )
       );
     }
   }
@@ -1204,8 +1207,8 @@ export function validateCustomRules(data) {
       ...checkNumberNotString(
         data.surveyInfo.totalRespondents,
         "/surveyInfo/totalRespondents",
-        "totalRespondents",
-      ),
+        "totalRespondents"
+      )
     );
   }
   if (data.surveyInfo?.responseRate !== undefined) {
@@ -1213,8 +1216,8 @@ export function validateCustomRules(data) {
       ...checkNumberNotString(
         data.surveyInfo.responseRate,
         "/surveyInfo/responseRate",
-        "responseRate",
-      ),
+        "responseRate"
+      )
     );
   }
 

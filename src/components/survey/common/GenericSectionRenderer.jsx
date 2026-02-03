@@ -15,7 +15,7 @@ import {
 
 /**
  * Decide se o componente deve ser exibido. Lógica no código (não em condition no JSON).
- * - responses: por tipo e dados da questão (barChart, sentimentStackedChart, etc.).
+ * - responses: por tipo e dados da questão (barChart, sentimentDivergentChart, etc.).
  */
 function shouldShowComponent(component, data) {
   // responses: visibilidade por tipo de componente e dados da questão
@@ -25,9 +25,13 @@ function shouldShowComponent(component, data) {
       case "barChart":
         // Verificar apenas se há dados, sem filtrar por ID
         return !!q.data;
-      case "sentimentStackedChart":
-        // Para questões open-ended, sentimentData está dentro de question.data
-        return !!q.data?.sentimentData || !!q.sentimentData;
+      case "sentimentDivergentChart":
+        // Dados podem estar em question.data.sentimentDivergentChart ou question.data.sentimentData
+        return (
+          !!q.data?.sentimentDivergentChart?.length ||
+          !!q.data?.sentimentData ||
+          !!q.sentimentData
+        );
       default:
         return true;
     }
@@ -239,13 +243,13 @@ function ComponentRenderer({
             }
             logger.warnCritical(
               `ComponentRenderer retornou valor inválido para ${comp.type} no heading:`,
-              rendered,
+              rendered
             );
             return null;
           } catch (err) {
             logger.error(
               `Erro ao renderizar componente ${comp.type} no heading:`,
-              err,
+              err
             );
             return null;
           }
@@ -323,13 +327,13 @@ function ComponentRenderer({
           }
           logger.warnCritical(
             `ComponentRenderer retornou valor inválido para ${comp.type}:`,
-            rendered,
+            rendered
           );
           return null;
         } catch (err) {
           logger.error(
             `Erro ao renderizar componente ${comp.type} no grid-container:`,
-            err,
+            err
           );
           return null;
         }
@@ -395,13 +399,13 @@ function ComponentRenderer({
           }
           logger.warnCritical(
             `ComponentRenderer retornou valor inválido para ${comp.type}:`,
-            rendered,
+            rendered
           );
           return null;
         } catch (err) {
           logger.error(
             `Erro ao renderizar componente ${comp.type} no container:`,
-            err,
+            err
           );
           return null;
         }
@@ -471,7 +475,9 @@ function ComponentRenderer({
       exportWordCloud,
       renderComponentRenderer: (comp, idx) => (
         <ComponentRenderer
-          key={`nested-${comp.index !== undefined ? comp.index : idx}-${comp.type || "unknown"}-${idx}`}
+          key={`nested-${comp.index !== undefined ? comp.index : idx}-${
+            comp.type || "unknown"
+          }-${idx}`}
           component={comp}
           data={data}
           subSection={subSection}
@@ -490,7 +496,7 @@ function ComponentRenderer({
       if (rendered !== null && rendered !== undefined) {
         logger.warnCritical(
           `Component ${component.type} retornou valor inválido:`,
-          rendered,
+          rendered
         );
       }
       // Retorna null se não houver dados (comportamento esperado para tabelas sem dados)
@@ -634,7 +640,7 @@ export function GenericSectionRenderer({
     // This matches the behavior in SurveySidebar.getDynamicSubsections
     if (isQuestionsSectionId(sectionId)) {
       const questions = getQuestionsFromData(data).sort(
-        (a, b) => (a.index || 0) - (b.index || 0),
+        (a, b) => (a.index || 0) - (b.index || 0)
       );
 
       // Use components from section
@@ -720,12 +726,12 @@ export function GenericSectionRenderer({
     if (isQuestionsSectionId(sectionId)) {
       // Filter out any existing filterPills from JSON to avoid duplicates
       rawComponents = rawComponents.filter(
-        (comp) => comp.type !== "filterPills",
+        (comp) => comp.type !== "filterPills"
       );
 
       // Find the index of the first questionsList component
       const questionsListIndex = rawComponents.findIndex(
-        (comp) => comp.type === "questionsList",
+        (comp) => comp.type === "questionsList"
       );
 
       // Create filterPills component
@@ -781,6 +787,19 @@ export function GenericSectionRenderer({
 
     // Padrão para seções genéricas: componentes usam dataPath "sectionData.<chave>"; resolução procura primeiro em sectionData
     enhanced.sectionData = sectionData || {};
+
+    // Na seção "responses", os dados do gráfico/tabela estão em question.data (ex.: sentimentDivergentChart).
+    // Injetar question.data em sectionData para que sectionData.sentimentDivergentChart etc. resolvam corretamente.
+    if (
+      isQuestionsSectionId(sectionId) &&
+      activeSubsection?.question?.data &&
+      typeof activeSubsection.question.data === "object"
+    ) {
+      enhanced.sectionData = {
+        ...enhanced.sectionData,
+        ...activeSubsection.question.data,
+      };
+    }
 
     // Contexto da subseção ativa para fallback na resolução (ex.: subsection.data em attributes)
     if (activeSubsection?.data) {
@@ -961,7 +980,7 @@ export function GenericSectionRenderer({
             !isExport &&
             (() => {
               const hasFilterPills = components.some(
-                (c) => c.type === "filterPills",
+                (c) => c.type === "filterPills"
               );
               if (!hasFilterPills) {
                 const filterPillsComponent = {
@@ -971,7 +990,9 @@ export function GenericSectionRenderer({
                 };
                 return (
                   <div
-                    key={`${sectionId}-${subSection || "root"}-filterPills-auto`}
+                    key={`${sectionId}-${
+                      subSection || "root"
+                    }-filterPills-auto`}
                     className="mb-6"
                   >
                     <ComponentRenderer
@@ -1000,7 +1021,9 @@ export function GenericSectionRenderer({
                 const componentIndex =
                   component.index !== undefined ? component.index : idx;
                 const componentType = component.type || "unknown";
-                const uniqueKey = `${sectionId}-${subSection || "root"}-${componentIndex}-${componentType}-${idx}`;
+                const uniqueKey = `${sectionId}-${
+                  subSection || "root"
+                }-${componentIndex}-${componentType}-${idx}`;
 
                 return (
                   <ComponentRenderer
@@ -1020,7 +1043,7 @@ export function GenericSectionRenderer({
                 !isExport &&
                 (() => {
                   const hasQuestionsList = components.some(
-                    (c) => c.type === "questionsList",
+                    (c) => c.type === "questionsList"
                   );
                   const questions = getQuestionsFromData(data);
 
@@ -1034,7 +1057,9 @@ export function GenericSectionRenderer({
 
                     return (
                       <React.Fragment
-                        key={`${sectionId}-${subSection || "root"}-auto-questionsList`}
+                        key={`${sectionId}-${
+                          subSection || "root"
+                        }-auto-questionsList`}
                       >
                         {renderComponent(questionsListComponent, enhancedData, {
                           subSection,

@@ -587,29 +587,29 @@
           "question": "Quais são os principais pontos que impactam sua satisfação?",
           "summary": "A satisfação do cliente em telefonia móvel é impactada principalmente por problemas no serviço de rede, com 51 menções negativas focando em cobertura, confiabilidade e estabilidade, superando as 16 menções positivas relacionadas à qualidade e velocidade do serviço de rede, indicando a necessidade de priorizar melhorias na cobertura e confiabilidade da rede.",
           "data": {
-            "sentimentStackedChart": [
+            "sentimentDivergentChart": [
               {
-                "value": "serviço de rede",
+                "category": "serviço de rede",
                 "positive": 10.5,
                 "negative": 38.1
               },
               {
-                "value": "suporte ao cliente",
+                "category": "suporte ao cliente",
                 "positive": 6.4,
                 "negative": 10.5
               },
               {
-                "value": "cobertura de rede",
+                "category": "cobertura de rede",
                 "positive": 1.8,
                 "negative": 13.6
               },
               {
-                "value": "oferta e preços",
+                "category": "oferta e preços",
                 "positive": 3.3,
                 "negative": 6.6
               },
               {
-                "value": "outro",
+                "category": "outro",
                 "positive": 2.8,
                 "negative": 6.4
               }
@@ -1112,38 +1112,21 @@
               "cardStyleVariant": "default"
             },
             {
-              "type": "grid-container",
+              "type": "card",
               "index": 1,
+              "title": "Distribuição dos respondentes",
+              "cardStyleVariant": "flex-row",
+              "cardContentVariant": "with-charts",
               "components": [
                 {
-                  "type": "card",
+                  "type": "barChart",
                   "index": 0,
-                  "title": "Distribuição dos respondentes",
-                  "cardStyleVariant": "flex-column",
-                  "cardContentVariant": "with-charts",
-                  "components": [
-                    {
-                      "type": "barChart",
-                      "index": 0,
-                      "dataPath": "sectionData.TipodeCliente.distributionChart",
-                      "config": {
-                        "dataKey": "percentage",
-                        "yAxisDataKey": "segment"
-                      }
-                    }
-                  ]
+                  "dataPath": "sectionData.TipodeCliente.distributionChart"
                 },
                 {
-                  "type": "card",
+                  "type": "distributionTable",
                   "index": 1,
-                  "title": "Distribuição dos respondentes",
-                  "components": [
-                    {
-                      "type": "distributionTable",
-                      "index": 1,
-                      "dataPath": "sectionData.TipodeCliente.distributionTable"
-                    }
-                  ]
+                  "dataPath": "sectionData.TipodeCliente.distributionTable"
                 }
               ]
             },
@@ -1158,31 +1141,58 @@
                   "type": "card",
                   "index": 0,
                   "title": "Sumário",
-                  "titleStyleVariant": "h3-style",
+                  "text": "Os Net Promoter Scores (NPS) em todos os tipos de clientes são negativos, indicando insatisfação geral, com os clientes pós-pago apresentando a menor lealdade, com -28,6. O segmento pré-pago tem um desempenho relativamente melhor, com uma proporção maior de promotores e o NPS menos negativo de -13,5, sugerindo algumas oportunidades de retenção. As altas proporções de detratores entre os clientes controle e pós-pago destacam necessidades urgentes de melhoria no serviço e estratégias direcionadas de experiência do cliente nesses segmentos.",
                   "cardStyleVariant": "flat",
-                  "text": "Os Net Promoter Scores (NPS) em todos os tipos de clientes são negativos, indicando insatisfação geral, com os clientes pós-pago apresentando a menor lealdade, com -28,6. O segmento pré-pago tem um desempenho relativamente melhor, com uma proporção maior de promotores e o NPS menos negativo de -13,5, sugerindo algumas oportunidades de retenção. As altas proporções de detratores entre os clientes controle e pós-pago destacam necessidades urgentes de melhoria no serviço e estratégias direcionadas de experiência do cliente nesses segmentos."
+                  "titleStyleVariant": "h3-style"
                 },
                 {
                   "type": "container",
+                  "index": 1,
                   "components": [
                     {
-                      "type": "npsDistributionTable",
+                      "type": "h3",
                       "index": 0,
-                      "dataPath": "sectionData.TipodeCliente.questions.question01.npsDistributionTable",
-                      "categoryName": "Por Tipo de Cliente",
-                      "config": {
-                        "yAxisDataKey": "Tipo de Cliente"
-                      }
+                      "text": "Respostas"
                     },
                     {
-                      "type": "npsTable",
+                      "type": "container",
                       "index": 1,
-                      "dataPath": "sectionData.TipodeCliente.questions.question01.npsTable",
-                      "categoryName": "Por Tipo de Cliente",
-                      "config": {
-                        "dataKey": "NPS",
-                        "yAxisDataKey": "Tipo de Cliente"
-                      }
+                      "components": [
+                        {
+                          "type": "container",
+                          "index": 0,
+                          "components": [
+                            {
+                              "type": "h4",
+                              "index": 0,
+                              "text": "Promotores, Neutros, Detratores"
+                            },
+                            {
+                              "type": "npsDistributionTable",
+                              "index": 1,
+                              "dataPath": "sectionData.TipodeCliente.questions.question01.npsDistributionTable",
+                              "categoryName": "Por Tipo de Cliente"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "container",
+                          "index": 1,
+                          "components": [
+                            {
+                              "type": "h4",
+                              "index": 0,
+                              "text": "NPS"
+                            },
+                            {
+                              "type": "npsTable",
+                              "index": 1,
+                              "dataPath": "sectionData.TipodeCliente.questions.question01.npsTable",
+                              "categoryName": "Por Tipo de Cliente"
+                            }
+                          ]
+                        }
+                      ]
                     }
                   ]
                 }
@@ -1205,22 +1215,53 @@
                 },
                 {
                   "type": "container",
+                  "index": 1,
                   "components": [
                     {
-                      "type": "sentimentThreeColorChart",
+                      "type": "h3",
                       "index": 0,
+                      "text": "Análise de sentimento"
+                    },
+                    {
+                      "type": "sentimentThreeColorChart",
+                      "index": 1,
                       "dataPath": "sectionData.TipodeCliente.questions.question02.satisfactionImpactSentimentChart"
                     },
                     {
                       "type": "sentimentImpactTable",
+                      "index": 2,
                       "dataPath": "sectionData.TipodeCliente.questions.question02.satisfactionImpactSentimentTable"
+                    }
+                  ]
+                },
+                {
+                  "type": "container",
+                  "index": 2,
+                  "components": [
+                    {
+                      "type": "h3",
+                      "index": 0,
+                      "text": "Categorias com sentimento positivo - Top 3"
                     },
                     {
                       "type": "positiveCategoriesTable",
+                      "index": 1,
                       "dataPath": "sectionData.TipodeCliente.questions.question02.positiveCategoriesTable"
+                    }
+                  ]
+                },
+                {
+                  "type": "container",
+                  "index": 3,
+                  "components": [
+                    {
+                      "type": "h3",
+                      "index": 0,
+                      "text": "Categorias com sentimento negativo - Top 3"
                     },
                     {
                       "type": "negativeCategoriesTable",
+                      "index": 1,
                       "dataPath": "sectionData.TipodeCliente.questions.question02.negativeCategoriesTable"
                     }
                   ]
@@ -1267,19 +1308,19 @@
               "question01": {
                 "npsDistributionTable": [
                   {
-                    "Tipo de Cliente": "controle",
+                    "segment": "controle",
                     "promoters": 28.6,
                     "neutrals": 20.0,
                     "detractors": 51.4
                   },
                   {
-                    "Tipo de Cliente": "pré-pago",
+                    "segment": "pré-pago",
                     "promoters": 35.1,
                     "neutrals": 16.2,
                     "detractors": 48.6
                   },
                   {
-                    "Tipo de Cliente": "pós-pago",
+                    "segment": "pós-pago",
                     "promoters": 25.0,
                     "neutrals": 21.4,
                     "detractors": 53.6
@@ -1287,15 +1328,15 @@
                 ],
                 "npsTable": [
                   {
-                    "Tipo de Cliente": "controle",
+                    "segment": "controle",
                     "NPS": -22.799999999999997
                   },
                   {
-                    "Tipo de Cliente": "pré-pago",
+                    "segment": "pré-pago",
                     "NPS": -13.5
                   },
                   {
-                    "Tipo de Cliente": "pós-pago",
+                    "segment": "pós-pago",
                     "NPS": -28.6
                   }
                 ],
@@ -1313,19 +1354,19 @@
                 "distributionTable": [],
                 "satisfactionImpactSentimentChart": [
                   {
-                    "sentiment": "Negativo",
+                    "sentiment": "negativo",
                     "controle": 75.0,
                     "pré-pago": 63.4,
                     "pós-pago": 85.4
                   },
                   {
-                    "sentiment": "Não Aplicável",
+                    "sentiment": "não aplicável",
                     "controle": 0.7,
                     "pré-pago": 0.8,
                     "pós-pago": 0.8
                   },
                   {
-                    "sentiment": "Positivo",
+                    "sentiment": "positivo",
                     "controle": 24.3,
                     "pré-pago": 35.8,
                     "pós-pago": 13.8
@@ -1405,42 +1446,25 @@
               "type": "card",
               "index": 0,
               "title": "Sumário",
-              "text": "O Estado CE demonstra forte satisfação do cliente com alto NPS impulsionado por excelente cobertura de rede e suporte ao cliente, estabelecendo um padrão para outras regiões.  \nEm contraste, SP, RJ e PR apresentam insatisfação significativa principalmente devido ao suporte ao cliente deficiente e problemas de usabilidade do aplicativo, o que prejudica diretamente a defesa e retenção do cliente.  \nPriorizar melhorias na qualidade do suporte ao cliente e no desempenho do aplicativo, especialmente em SP e RJ, será fundamental para reduzir os detratores e aumentar a satisfação geral no serviço de telefonia móvel da empresa.",
-              "cardStyleVariant": "default"
+              "cardStyleVariant": "default",
+              "text": "O Estado CE demonstra forte satisfação do cliente com alto NPS impulsionado por excelente cobertura de rede e suporte ao cliente, estabelecendo um padrão para outras regiões.  \nEm contraste, SP, RJ e PR apresentam insatisfação significativa principalmente devido ao suporte ao cliente deficiente e problemas de usabilidade do aplicativo, o que prejudica diretamente a defesa e retenção do cliente.  \nPriorizar melhorias na qualidade do suporte ao cliente e no desempenho do aplicativo, especialmente em SP e RJ, será fundamental para reduzir os detratores e aumentar a satisfação geral no serviço de telefonia móvel da empresa."
             },
             {
-              "type": "grid-container",
+              "type": "card",
               "index": 1,
+              "title": "Distribuição dos respondentes",
+              "cardStyleVariant": "flex-column",
+              "cardContentVariant": "with-charts",
               "components": [
                 {
-                  "type": "card",
+                  "type": "barChart",
                   "index": 0,
-                  "title": "Distribuição dos respondentes",
-                  "cardStyleVariant": "flex-column",
-                  "cardContentVariant": "with-charts",
-                  "components": [
-                    {
-                      "type": "barChart",
-                      "index": 0,
-                      "dataPath": "sectionData.Estado.distributionChart",
-                      "config": {
-                        "dataKey": "percentage",
-                        "yAxisDataKey": "segment"
-                      }
-                    }
-                  ]
+                  "dataPath": "sectionData.Estado.distributionChart"
                 },
                 {
-                  "type": "card",
+                  "type": "distributionTable",
                   "index": 1,
-                  "title": "Distribuição dos respondentes",
-                  "components": [
-                    {
-                      "type": "distributionTable",
-                      "index": 1,
-                      "dataPath": "sectionData.Estado.distributionTable"
-                    }
-                  ]
+                  "dataPath": "sectionData.Estado.distributionTable"
                 }
               ]
             },
@@ -1455,30 +1479,58 @@
                   "type": "card",
                   "index": 0,
                   "title": "Sumário",
-                  "titleStyleVariant": "h3-style",
+                  "text": "O Estado CE apresenta uma forte satisfação positiva do cliente com o maior NPS de +9,1, impulsionado por uma alta proporção de promotores (45,5%) e relativamente menos detratores.  \nTodos os outros estados (PE, PR, RJ, SP) exibem pontuações NPS negativas, indicando insatisfação substancial, particularmente RJ com o menor NPS de -28,6 e participações iguais de 50% de detratores.  \nEsforços focados de melhoria são necessários nessas regiões com desempenho inferior, especialmente RJ e PR, para reduzir os detratores e converter neutros em promotores para aumentar a defesa geral do cliente.",
                   "cardStyleVariant": "flat",
-                  "text": "O Estado CE apresenta uma forte satisfação positiva do cliente com o maior NPS de +9,1, impulsionado por uma alta proporção de promotores (45,5%) e relativamente menos detratores.  \nTodos os outros estados (PE, PR, RJ, SP) exibem pontuações NPS negativas, indicando insatisfação substancial, particularmente RJ com o menor NPS de -28,6 e participações iguais de 50% de detratores.  \nEsforços focados de melhoria são necessários nessas regiões com desempenho inferior, especialmente RJ e PR, para reduzir os detratores e converter neutros em promotores para aumentar a defesa geral do cliente."
+                  "titleStyleVariant": "h3-style"
                 },
                 {
                   "type": "container",
+                  "index": 1,
                   "components": [
                     {
-                      "type": "npsDistributionTable",
+                      "type": "h3",
                       "index": 0,
-                      "dataPath": "sectionData.Estado.questions.question01.npsDistributionTable",
-                      "categoryName": "Por Estado",
-                      "config": {
-                        "yAxisDataKey": "Estado"
-                      }
+                      "text": "Respostas"
                     },
                     {
-                      "type": "npsTable",
+                      "type": "container",
                       "index": 1,
-                      "dataPath": "sectionData.Estado.questions.question01.npsTable",
-                      "categoryName": "Por Estado",
-                      "config": {
-                        "yAxisDataKey": "Estado"
-                      }
+                      "components": [
+                        {
+                          "type": "container",
+                          "index": 0,
+                          "components": [
+                            {
+                              "type": "h4",
+                              "index": 0,
+                              "text": "Promotores, Neutros, Detratores"
+                            },
+                            {
+                              "type": "npsDistributionTable",
+                              "index": 1,
+                              "dataPath": "sectionData.Estado.questions.question01.npsDistributionTable",
+                              "categoryName": "Por Estado"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "container",
+                          "index": 1,
+                          "components": [
+                            {
+                              "type": "h4",
+                              "index": 0,
+                              "text": "NPS"
+                            },
+                            {
+                              "type": "npsTable",
+                              "index": 1,
+                              "dataPath": "sectionData.Estado.questions.question01.npsTable",
+                              "categoryName": "Por Estado"
+                            }
+                          ]
+                        }
+                      ]
                     }
                   ]
                 }
@@ -1501,21 +1553,49 @@
                 },
                 {
                   "type": "container",
+                  "index": 1,
                   "components": [
                     {
                       "type": "sentimentThreeColorChart",
-                      "dataPath": "sectionData.Estado.questions.question02.satisfactionImpactSentimentChart"
+                      "index": 1,
+                      "dataPath": "sectionData.Estado.questions.question02.satisfactionImpactSentimentChart",
+                      "config": {}
                     },
                     {
                       "type": "sentimentImpactTable",
+                      "index": 2,
                       "dataPath": "sectionData.Estado.questions.question02.satisfactionImpactSentimentTable"
+                    }
+                  ]
+                },
+                {
+                  "type": "container",
+                  "index": 2,
+                  "components": [
+                    {
+                      "type": "h3",
+                      "index": 0,
+                      "text": "Categorias com sentimento positivo - Top 3"
                     },
                     {
                       "type": "positiveCategoriesTable",
+                      "index": 1,
                       "dataPath": "sectionData.Estado.questions.question02.positiveCategoriesTable"
+                    }
+                  ]
+                },
+                {
+                  "type": "container",
+                  "index": 3,
+                  "components": [
+                    {
+                      "type": "h3",
+                      "index": 0,
+                      "text": "Categorias com sentimento negativo - Top 3"
                     },
                     {
                       "type": "negativeCategoriesTable",
+                      "index": 1,
                       "dataPath": "sectionData.Estado.questions.question02.negativeCategoriesTable"
                     }
                   ]
@@ -1632,31 +1712,31 @@
               "question01": {
                 "npsDistributionTable": [
                   {
-                    "Estado": "CE",
+                    "segment": "CE",
                     "promoters": 45.5,
                     "neutrals": 18.2,
                     "detractors": 36.4
                   },
                   {
-                    "Estado": "PE",
+                    "segment": "PE",
                     "promoters": 38.5,
                     "neutrals": 15.4,
                     "detractors": 46.2
                   },
                   {
-                    "Estado": "PR",
+                    "segment": "PR",
                     "promoters": 35.7,
                     "neutrals": 14.3,
                     "detractors": 50.0
                   },
                   {
-                    "Estado": "RJ",
+                    "segment": "RJ",
                     "promoters": 21.4,
                     "neutrals": 28.6,
                     "detractors": 50.0
                   },
                   {
-                    "Estado": "SP",
+                    "segment": "SP",
                     "promoters": 27.3,
                     "neutrals": 27.3,
                     "detractors": 45.5
@@ -1664,23 +1744,23 @@
                 ],
                 "npsTable": [
                   {
-                    "Estado": "CE",
+                    "segment": "CE",
                     "NPS": 9.100000000000001
                   },
                   {
-                    "Estado": "PE",
+                    "segment": "PE",
                     "NPS": -7.700000000000003
                   },
                   {
-                    "Estado": "PR",
+                    "segment": "PR",
                     "NPS": -14.299999999999997
                   },
                   {
-                    "Estado": "RJ",
+                    "segment": "RJ",
                     "NPS": -28.6
                   },
                   {
-                    "Estado": "SP",
+                    "segment": "SP",
                     "NPS": -18.2
                   }
                 ],

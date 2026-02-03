@@ -76,13 +76,14 @@ export const questionTypeTemplates = {
 
   /**
    * Template para questões abertas (open-ended)
-   * Componentes: sentimentStackedChart, topCategoriesCards, wordCloud
+   * Componentes: sentimentDivergentChart, topCategoriesCards, wordCloud
+   * Dados do gráfico em question.data.sentimentDivergentChart
    */
   "open-ended": [
     {
-      type: "sentimentStackedChart",
+      type: "sentimentDivergentChart",
       index: 0,
-      dataPath: "question.data.sentimentStackedChart",
+      dataPath: "question.data.sentimentDivergentChart",
       config: {},
     },
     {
