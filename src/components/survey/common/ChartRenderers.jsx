@@ -158,10 +158,14 @@ export function SchemaBarChart({ component, data }) {
     />
   );
 
-  // Use wrapperClassName from component config or preset-based wrapper
+  // Use wrapperClassName from component config or preset-based wrapper (bar chart centered vertically in wrapper)
   const wrapperClassName = component.wrapperClassName;
   if (wrapperClassName || component.config?.preset === "distribution") {
-    const finalClassName = wrapperClassName || "flex-shrink-0 mb-4";
+    const centerClass = "flex items-center justify-center";
+    const baseClass = "flex-shrink-0 mb-4";
+    const finalClassName = wrapperClassName
+      ? `${centerClass} ${baseClass} ${wrapperClassName}`.trim()
+      : `${centerClass} ${baseClass}`.trim();
     const wrapperStyle =
       component.wrapperStyle ||
       (component.config?.preset === "distribution"

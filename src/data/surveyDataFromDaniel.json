@@ -616,79 +616,88 @@
             ],
             "topCategoriesCards": [
               {
+                "rank": 1,
                 "category": "serviço de rede",
-                "topic": "agilidade no atendimento",
-                "sentiment": "positive"
+                "mentions": 6,
+                "percentage": 100,
+                "topics": [
+                  {
+                    "topic": "agilidade no atendimento",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "Qualidade dos resultados",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "eficiência do serviço",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "confiabilidade do serviço",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "confiabilidade da rede",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "estabilidade da rede",
+                    "sentiment": "negative"
+                  }
+                ]
               },
               {
-                "category": "serviço de rede",
-                "topic": "Qualidade dos resultados",
-                "sentiment": "positive"
-              },
-              {
-                "category": "serviço de rede",
-                "topic": "eficiência do serviço",
-                "sentiment": "positive"
-              },
-              {
-                "category": "serviço de rede",
-                "topic": "confiabilidade do serviço",
-                "sentiment": "negative"
-              },
-              {
-                "category": "serviço de rede",
-                "topic": "confiabilidade da rede",
-                "sentiment": "negative"
-              },
-              {
-                "category": "serviço de rede",
-                "topic": "estabilidade da rede",
-                "sentiment": "negative"
-              },
-              {
+                "rank": 2,
                 "category": "suporte ao cliente",
-                "topic": "atenção ao cliente",
-                "sentiment": "positive"
+                "mentions": 6,
+                "percentage": 100,
+                "topics": [
+                  {
+                    "topic": "atenção ao cliente",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "Tratamento respeitoso",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "prontidão de resposta",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "Preocupações com a retenção de clientes",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "usabilidade do aplicativo",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "intenção de cancelamento do cliente",
+                    "sentiment": "negative"
+                  }
+                ]
               },
               {
-                "category": "suporte ao cliente",
-                "topic": "Tratamento respeitoso",
-                "sentiment": "positive"
-              },
-              {
-                "category": "suporte ao cliente",
-                "topic": "prontidão de resposta",
-                "sentiment": "positive"
-              },
-              {
-                "category": "suporte ao cliente",
-                "topic": "Preocupações com a retenção de clientes",
-                "sentiment": "negative"
-              },
-              {
-                "category": "suporte ao cliente",
-                "topic": "usabilidade do aplicativo",
-                "sentiment": "negative"
-              },
-              {
-                "category": "suporte ao cliente",
-                "topic": "intenção de cancelamento do cliente",
-                "sentiment": "negative"
-              },
-              {
+                "rank": 3,
                 "category": "cobertura de rede",
-                "topic": "cobertura de rede",
-                "sentiment": "negative"
-              },
-              {
-                "category": "cobertura de rede",
-                "topic": "qualidade do sinal",
-                "sentiment": "negative"
-              },
-              {
-                "category": "cobertura de rede",
-                "topic": "disponibilidade do serviço",
-                "sentiment": "negative"
+                "mentions": 3,
+                "percentage": 50,
+                "topics": [
+                  {
+                    "topic": "cobertura de rede",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "qualidade do sinal",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "disponibilidade do serviço",
+                    "sentiment": "negative"
+                  }
+                ]
               }
             ],
             "wordCloud": [
