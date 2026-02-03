@@ -262,6 +262,15 @@ export function SentimentStackedChart({
 // Three-color sentiment chart (Positive/Negative/Not applicable)
 // Used in: AttributeDeepDive - Sentiment Analysis by Customer Type
 
+/** Resolve sentiment color from map; match is case-insensitive so "negativo" and "Negativo" both work */
+function getSentimentFill(sentiment, colorMap) {
+  if (!sentiment) return CHART_COLORS.primary;
+  if (colorMap[sentiment]) return colorMap[sentiment];
+  const lower = String(sentiment).toLowerCase();
+  const key = Object.keys(colorMap).find((k) => k.toLowerCase() === lower);
+  return key ? colorMap[key] : CHART_COLORS.primary;
+}
+
 export function SentimentThreeColorChart({
   data,
   height = 80,
@@ -318,7 +327,7 @@ export function SentimentThreeColorChart({
                     key={sentiment}
                     dataKey={sentiment}
                     name={sentiment}
-                    fill={sentimentColors[sentiment] || CHART_COLORS.primary}
+                    fill={getSentimentFill(sentiment, sentimentColors)}
                     stackId="a"
                     radius={
                       index === sentiments.length - 1

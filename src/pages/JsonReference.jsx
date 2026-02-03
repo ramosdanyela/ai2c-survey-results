@@ -41,7 +41,7 @@ export default function JsonReference() {
   const { data: surveyDataJson, loading } = useSurveyData();
 
   // Hooks precisam ser chamados antes de qualquer return condicional (Rules of Hooks)
-  // Nova regra: attributes (e demais seções) não têm mais subseções específicas; sectionData vem de section.data
+  // sectionData pode vir de section.data e/ou de subsection.data; sempre procurar primeiro em sectionData
   const sectionData = useMemo(() => {
     if (!surveyDataJson?.sections) return {};
     // Usa a primeira seção com data para o contexto de exemplos (ex.: executive ou attributes)
@@ -969,9 +969,10 @@ export default function JsonReference() {
                               <code>"sectionData.barChart"</code>)
                             </li>
                             <li>
-                              <code>sectionData</code> vem de{" "}
-                              <code>section.data</code> (não há mais subseções
-                              específicas por atributo)
+                              <code>sectionData</code> pode vir de{" "}
+                              <code>section.data</code> e/ou de{" "}
+                              <code>subsection.data</code>; a resolução procura
+                              sempre primeiro em <code>sectionData</code>
                             </li>
                             <li>
                               Para seção "responses": contém <code>config</code>{" "}

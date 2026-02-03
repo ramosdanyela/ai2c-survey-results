@@ -1107,12 +1107,34 @@
               "index": 1,
               "components": [
                 {
-                  "type": "barChart",
-                  "dataPath": "sectionData.TipodeCliente.distributionChart"
+                  "type": "card",
+                  "index": 0,
+                  "title": "Distribuição dos respondentes",
+                  "cardStyleVariant": "flex-column",
+                  "cardContentVariant": "with-charts",
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.TipodeCliente.distributionChart",
+                      "config": {
+                        "dataKey": "percentage",
+                        "yAxisDataKey": "segment"
+                      }
+                    }
+                  ]
                 },
                 {
-                  "type": "distributionTable",
-                  "dataPath": "sectionData.TipodeCliente.distributionTable"
+                  "type": "card",
+                  "index": 1,
+                  "title": "Distribuição dos respondentes",
+                  "components": [
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.TipodeCliente.distributionTable"
+                    }
+                  ]
                 }
               ]
             },
@@ -1136,11 +1158,22 @@
                   "components": [
                     {
                       "type": "npsDistributionTable",
-                      "dataPath": "sectionData.TipodeCliente.questions.question01.npsDistributionTable"
+                      "index": 0,
+                      "dataPath": "sectionData.TipodeCliente.questions.question01.npsDistributionTable",
+                      "categoryName": "Por Tipo de Cliente",
+                      "config": {
+                        "yAxisDataKey": "Tipo de Cliente"
+                      }
                     },
                     {
                       "type": "npsTable",
-                      "dataPath": "sectionData.TipodeCliente.questions.question01.npsTable"
+                      "index": 1,
+                      "dataPath": "sectionData.TipodeCliente.questions.question01.npsTable",
+                      "categoryName": "Por Tipo de Cliente",
+                      "config": {
+                        "dataKey": "NPS",
+                        "yAxisDataKey": "Tipo de Cliente"
+                      }
                     }
                   ]
                 }
@@ -1166,6 +1199,7 @@
                   "components": [
                     {
                       "type": "sentimentThreeColorChart",
+                      "index": 0,
                       "dataPath": "sectionData.TipodeCliente.questions.question02.satisfactionImpactSentimentChart"
                     },
                     {
@@ -1270,19 +1304,19 @@
                 "distributionTable": [],
                 "satisfactionImpactSentimentChart": [
                   {
-                    "sentiment": "negativo",
+                    "sentiment": "Negativo",
                     "controle": 75.0,
                     "pré-pago": 63.4,
                     "pós-pago": 85.4
                   },
                   {
-                    "sentiment": "não aplicável",
+                    "sentiment": "Não Aplicável",
                     "controle": 0.7,
                     "pré-pago": 0.8,
                     "pós-pago": 0.8
                   },
                   {
-                    "sentiment": "positivo",
+                    "sentiment": "Positivo",
                     "controle": 24.3,
                     "pré-pago": 35.8,
                     "pós-pago": 13.8
@@ -1370,12 +1404,34 @@
               "index": 1,
               "components": [
                 {
-                  "type": "barChart",
-                  "dataPath": "sectionData.Estado.distributionChart"
+                  "type": "card",
+                  "index": 0,
+                  "title": "Distribuição dos respondentes",
+                  "cardStyleVariant": "flex-column",
+                  "cardContentVariant": "with-charts",
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.Estado.distributionChart",
+                      "config": {
+                        "dataKey": "percentage",
+                        "yAxisDataKey": "segment"
+                      }
+                    }
+                  ]
                 },
                 {
-                  "type": "distributionTable",
-                  "dataPath": "sectionData.Estado.distributionTable"
+                  "type": "card",
+                  "index": 1,
+                  "title": "Distribuição dos respondentes",
+                  "components": [
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.Estado.distributionTable"
+                    }
+                  ]
                 }
               ]
             },
@@ -1399,11 +1455,21 @@
                   "components": [
                     {
                       "type": "npsDistributionTable",
-                      "dataPath": "sectionData.Estado.questions.question01.npsDistributionTable"
+                      "index": 0,
+                      "dataPath": "sectionData.Estado.questions.question01.npsDistributionTable",
+                      "categoryName": "Por Estado",
+                      "config": {
+                        "yAxisDataKey": "Estado"
+                      }
                     },
                     {
                       "type": "npsTable",
-                      "dataPath": "sectionData.Estado.questions.question01.npsTable"
+                      "index": 1,
+                      "dataPath": "sectionData.Estado.questions.question01.npsTable",
+                      "categoryName": "Por Estado",
+                      "config": {
+                        "yAxisDataKey": "Estado"
+                      }
                     }
                   ]
                 }

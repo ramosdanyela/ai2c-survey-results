@@ -542,33 +542,30 @@ export function GenericSectionRenderer({
     return data.sections.find((s) => s.id === sectionId) || null;
   }, [data, sectionId]);
 
-  // sectionData: objeto injetado em data para componentes de seções genéricas.
-  // Padrão correto para todas as seções genéricas: dataPath "sectionData.<chave>"
-  // (ex.: sectionData.recommendationsTable, sectionData.sentimentDivergentChart).
+  // sectionData: objeto injetado em data para componentes. Sempre procurar dados primeiro em sectionData.
+  // Pode vir de section.data e/ou de subsection.data (chave flexível: sectionDataKey ou id, com strip opcional do prefixo sectionId-).
   const sectionData = useMemo(() => {
     if (!data || !sectionId) return null;
 
-    // Se a seção tem subseções cujos ids seguem "{sectionId}-*", monta sectionData a partir de subsection.data
-    // e mescla com section.data para seções (ex.: executive) que têm dados no nível da seção (ex.: recommendationsTable)
+    // Começa com section.data se existir
+    let result =
+      section?.data && typeof section.data === "object"
+        ? { ...section.data }
+        : {};
+
+    // Qualquer subseção com .data entra em sectionData; chave = sectionDataKey (opcional) ou derivada do id
     if (section?.subsections?.length > 0) {
       const prefix = `${sectionId}-`;
-      const allHavePrefix = section.subsections.every(
-        (sub) => sub.id && sub.id.startsWith(prefix),
-      );
-      if (allHavePrefix) {
-        const fromSubsections = section.subsections.reduce((acc, sub) => {
-          if (sub.data && sub.id?.startsWith(prefix)) {
-            acc[sub.id.replace(prefix, "")] = sub.data;
-          }
-          return acc;
-        }, {});
-        // section.data (ex.: executive.data.recommendationsTable) precisa estar disponível para componentes
-        if (section?.data && typeof section.data === "object") {
-          return { ...section.data, ...fromSubsections };
-        }
-        return fromSubsections;
+      for (const sub of section.subsections) {
+        if (!sub?.data) continue;
+        const key =
+          sub.sectionDataKey ??
+          (sub.id?.startsWith(prefix) ? sub.id.replace(prefix, "") : sub.id) ??
+          `sub_${sub.index ?? 0}`;
+        result[key] = sub.data;
       }
     }
+    if (Object.keys(result).length > 0) return result;
 
     // Special handling for responses section: include questions directly in sectionData
     if (isQuestionsSectionId(sectionId)) {
@@ -782,8 +779,13 @@ export function GenericSectionRenderer({
       enhanced.uiTexts = data?.uiTexts || {};
     }
 
-    // Padrão para seções genéricas: componentes usam dataPath "sectionData.<chave>"
+    // Padrão para seções genéricas: componentes usam dataPath "sectionData.<chave>"; resolução procura primeiro em sectionData
     enhanced.sectionData = sectionData || {};
+
+    // Contexto da subseção ativa para fallback na resolução (ex.: subsection.data em attributes)
+    if (activeSubsection?.data) {
+      enhanced._activeSubsection = activeSubsection;
+    }
 
     // Use uiTexts from root only (no section-specific uiTexts)
     enhanced.uiTexts = data?.uiTexts || {};

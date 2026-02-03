@@ -1,17 +1,51 @@
 import { useState, useCallback, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, ChevronDown, File, Folder, FolderOpen, Maximize2, Minimize2, RefreshCw } from "lucide-react";
-import { useSurveyData } from "@/hooks/useSurveyData";
+import {
+  ChevronRight,
+  ChevronDown,
+  File,
+  Folder,
+  FolderOpen,
+  Maximize2,
+  Minimize2,
+} from "lucide-react";
+
+// Escolha os dois JSONs pelo relative path (edite só esta lista)
+const SOURCE_PATHS = [
+  "@/data/surveyDataFromDaniel.json",
+  "@/data/surveyData.json",
+];
+const jsonModules = import.meta.glob("@/data/*.json", { eager: true });
+const globKeys = Object.keys(jsonModules);
+// Vite pode expor chaves como "src/data/arquivo.json" (sem @) — normalizar e buscar
+const getDataByPath = (path) => {
+  const filename = path.split("/").pop();
+  const key =
+    globKeys.find((k) => k === path) ??
+    globKeys.find((k) => k === path.replace(/^@\//, "src/")) ??
+    globKeys.find((k) => k.endsWith("/" + filename));
+  return (key && jsonModules[key]?.default) ?? null;
+};
 
 /**
  * Componente para renderizar um item da árvore JSON
  */
-function JsonTreeItem({ path, keyName, value, depth = 0, expandedPaths, onToggle }) {
-  const isObject = value !== null && typeof value === "object" && !Array.isArray(value);
+function JsonTreeItem({
+  path,
+  keyName,
+  value,
+  depth = 0,
+  expandedPaths,
+  onToggle,
+}) {
+  const isObject =
+    value !== null && typeof value === "object" && !Array.isArray(value);
   const isArray = Array.isArray(value);
   const isExpandable = isObject || isArray;
-  const hasChildren = isExpandable && (isArray ? value.length > 0 : Object.keys(value).length > 0);
+  const hasChildren =
+    isExpandable &&
+    (isArray ? value.length > 0 : Object.keys(value).length > 0);
   const isExpanded = expandedPaths.has(path);
 
   const getType = () => {
@@ -55,7 +89,7 @@ function JsonTreeItem({ path, keyName, value, depth = 0, expandedPaths, onToggle
         onToggle(path);
       }
     },
-    [isExpandable, path, onToggle]
+    [isExpandable, path, onToggle],
   );
 
   return (
@@ -147,48 +181,43 @@ function collectAllPaths(obj, currentPath = "", paths = new Set()) {
   return paths;
 }
 
-/**
- * Componente principal para visualizar o JSON
- */
-export default function JsonViewer() {
-  // Carrega dados dinamicamente usando o hook
-  const { data: surveyData, loading, error, refetch, isFetching } = useSurveyData();
-
-  // Função para calcular paths iniciais expandidos
-  const calculateInitialPaths = useCallback((data) => {
-    if (!data || typeof data !== "object") return new Set();
-    
-    const initial = new Set();
-    // Adiciona paths dos primeiros 2 níveis
-    Object.keys(data).forEach((key) => {
-      initial.add(key);
-      const value = data[key];
-      if (value && typeof value === "object") {
-        if (Array.isArray(value)) {
-          // Para arrays, expande o primeiro item se existir
-          if (value.length > 0 && value[0] && typeof value[0] === "object") {
-            initial.add(`${key}[0]`);
-          }
-        } else {
-          // Para objetos, expande as primeiras propriedades
-          Object.keys(value).slice(0, 3).forEach((subKey) => {
+// Função para calcular paths iniciais expandidos
+function calculateInitialPaths(data) {
+  if (!data || typeof data !== "object") return new Set();
+  const initial = new Set();
+  Object.keys(data).forEach((key) => {
+    initial.add(key);
+    const value = data[key];
+    if (value && typeof value === "object") {
+      if (Array.isArray(value)) {
+        if (value.length > 0 && value[0] && typeof value[0] === "object") {
+          initial.add(`${key}[0]`);
+        }
+      } else {
+        Object.keys(value)
+          .slice(0, 3)
+          .forEach((subKey) => {
             initial.add(`${key}.${subKey}`);
           });
-        }
       }
-    });
-    return initial;
-  }, []);
-
-  // Estado de paths expandidos - recalcula quando os dados mudam
-  const [expandedPaths, setExpandedPaths] = useState(() => new Set());
-
-  // Recalcula paths iniciais quando os dados mudam
-  useEffect(() => {
-    if (surveyData) {
-      setExpandedPaths(calculateInitialPaths(surveyData));
     }
-  }, [surveyData, calculateInitialPaths]);
+  });
+  return initial;
+}
+
+/**
+ * Um painel de visualização de JSON (usado duas vezes, lado a lado)
+ */
+function JsonViewerPanel({ data, title, panelId }) {
+  const [expandedPaths, setExpandedPaths] = useState(() =>
+    calculateInitialPaths(data),
+  );
+
+  useEffect(() => {
+    if (data) {
+      setExpandedPaths(calculateInitialPaths(data));
+    }
+  }, [data]);
 
   const togglePath = useCallback((path) => {
     setExpandedPaths((prev) => {
@@ -203,117 +232,93 @@ export default function JsonViewer() {
   }, []);
 
   const expandAll = useCallback(() => {
-    if (!surveyData) return;
-    const allPaths = collectAllPaths(surveyData);
-    setExpandedPaths(allPaths);
-  }, [surveyData]);
+    if (!data) return;
+    setExpandedPaths(collectAllPaths(data));
+  }, [data]);
 
   const collapseAll = useCallback(() => {
     setExpandedPaths(new Set());
   }, []);
 
-  const handleRefresh = useCallback(() => {
-    refetch();
-  }, [refetch]);
-
-  // Renderiza estado de loading
-  if (loading) {
+  if (!data || typeof data !== "object") {
     return (
-      <div className="container mx-auto p-6 space-y-6 max-w-7xl">
-        <Card>
-          <CardContent className="flex items-center justify-center py-12">
-            <div className="text-center space-y-2">
-              <RefreshCw className="w-8 h-8 animate-spin mx-auto text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">Carregando estrutura do JSON...</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  // Renderiza estado de erro
-  if (error) {
-    return (
-      <div className="container mx-auto p-6 space-y-6 max-w-7xl">
-        <Card>
-          <CardContent className="flex items-center justify-center py-12">
-            <div className="text-center space-y-4">
-              <p className="text-sm text-destructive">Erro ao carregar dados: {error.message}</p>
-              <Button variant="outline" onClick={handleRefresh}>
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Tentar Novamente
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  // Renderiza conteúdo quando não há dados
-  if (!surveyData) {
-    return (
-      <div className="container mx-auto p-6 space-y-6 max-w-7xl">
-        <Card>
-          <CardContent className="flex items-center justify-center py-12">
-            <p className="text-sm text-muted-foreground">Nenhum dado disponível</p>
-          </CardContent>
-        </Card>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">{title}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            Nenhum dado disponível
+          </p>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
+    <Card>
+      <CardHeader className="pb-2">
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <CardTitle className="text-lg">{title}</CardTitle>
+          <div className="flex gap-1">
+            <Button variant="outline" size="sm" onClick={expandAll}>
+              <Maximize2 className="w-4 h-4 mr-1" />
+              Expandir
+            </Button>
+            <Button variant="outline" size="sm" onClick={collapseAll}>
+              <Minimize2 className="w-4 h-4 mr-1" />
+              Colapsar
+            </Button>
+          </div>
+        </div>
+        <p className="text-xs text-muted-foreground mt-1">
+          Clique para expandir/colapsar
+        </p>
+      </CardHeader>
+      <CardContent>
+        <div className="bg-muted/30 rounded-lg p-4 overflow-auto max-h-[80vh] border font-mono text-sm">
+          <div className="space-y-0.5">
+            {Object.entries(data).map(([key, value]) => (
+              <JsonTreeItem
+                key={`${panelId}-${key}`}
+                path={key}
+                keyName={key}
+                value={value}
+                depth={0}
+                expandedPaths={expandedPaths}
+                onToggle={togglePath}
+              />
+            ))}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+/**
+ * Componente principal: dois viewers lado a lado para comparar JSONs
+ */
+export default function JsonViewer() {
+  return (
     <div className="container mx-auto p-6 space-y-6 max-w-7xl">
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div>
-              <CardTitle className="text-2xl">JSON Structure Viewer</CardTitle>
-              <p className="text-sm text-muted-foreground mt-1">
-                Visualização hierárquica do arquivo surveyData.json - Clique para expandir/colapsar
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={handleRefresh}
-                disabled={isFetching}
-              >
-                <RefreshCw className={`w-4 h-4 mr-2 ${isFetching ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
-              <Button variant="outline" size="sm" onClick={expandAll} disabled={!surveyData}>
-                <Maximize2 className="w-4 h-4 mr-2" />
-                Expandir Tudo
-              </Button>
-              <Button variant="outline" size="sm" onClick={collapseAll}>
-                <Minimize2 className="w-4 h-4 mr-2" />
-                Colapsar Tudo
-              </Button>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="bg-muted/30 rounded-lg p-4 overflow-auto max-h-[85vh] border font-mono text-sm">
-            <div className="space-y-0.5">
-              {Object.entries(surveyData).map(([key, value]) => (
-                <JsonTreeItem
-                  key={key}
-                  path={key}
-                  keyName={key}
-                  value={value}
-                  depth={0}
-                  expandedPaths={expandedPaths}
-                  onToggle={togglePath}
-                />
-              ))}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <JsonViewerPanel
+          data={getDataByPath(SOURCE_PATHS[0])}
+          title={SOURCE_PATHS[0]}
+          panelId="a"
+        />
+        <JsonViewerPanel
+          data={getDataByPath(SOURCE_PATHS[1])}
+          title={SOURCE_PATHS[1]}
+          panelId="b"
+        />
+      </div>
+      <p className="text-xs text-muted-foreground text-center">
+        Edite a lista{" "}
+        <code className="bg-muted px-1 rounded">SOURCE_PATHS</code> no topo do
+        arquivo para trocar os JSONs (o título é o path).
+      </p>
     </div>
   );
 }

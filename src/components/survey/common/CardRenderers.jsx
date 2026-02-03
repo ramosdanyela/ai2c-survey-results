@@ -123,7 +123,11 @@ export function SchemaCard({ component, data, children }) {
  * All styling is hardcoded - no config needed
  */
 export function SchemaNPSScoreCard({ component, data }) {
-  const npsData = resolveDataPath(data, component.dataPath || "surveyInfo");
+  const npsData = resolveDataPath(
+    data,
+    component.dataPath || "surveyInfo",
+    component.data,
+  );
   const uiTexts = resolveDataPath(data, "uiTexts");
 
   // Use npsScore from question.data (as used in surveyData.json)
@@ -161,7 +165,11 @@ export function SchemaNPSScoreCard({ component, data }) {
  * All styling is hardcoded - no config needed
  */
 export function SchemaTopCategoriesCards({ component, data }) {
-  const categoriesData = resolveDataPath(data, component.dataPath);
+  const categoriesData = resolveDataPath(
+    data,
+    component.dataPath,
+    component.data,
+  );
   const uiTexts = resolveDataPath(data, "uiTexts");
 
   if (!categoriesData || !Array.isArray(categoriesData)) {
@@ -294,7 +302,7 @@ export function SchemaTopCategoriesCards({ component, data }) {
  * Render KPI Card component based on schema
  */
 export function SchemaKPICard({ component, data }) {
-  const kpiData = resolveDataPath(data, component.dataPath);
+  const kpiData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
   if (!kpiData) {

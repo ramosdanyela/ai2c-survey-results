@@ -47,6 +47,12 @@ export function getBarChartHeightFromCount(barCount, config = {}) {
 export function getBarChartConfig(component, isMobile) {
   const config = component.config || {};
   const preset = config.preset; // Use preset from JSON instead of checking dataPath
+  const yAxisDataKey = config.yAxisDataKey || "label";
+  const dataPath = component.dataPath || "";
+  const isIntentChart =
+    preset === "respondentIntent" ||
+    yAxisDataKey === "intent" ||
+    dataPath.includes("Intent");
 
   // Determine defaults based on preset (from JSON) or fallback to defaults
   let height = config.height || 256;
@@ -54,12 +60,13 @@ export function getBarChartConfig(component, isMobile) {
   let yAxisWidth = config.yAxisWidth || 110;
 
   // Use preset to determine chart configuration
-  if (preset === "respondentIntent") {
+  if (isIntentChart) {
+    // Intention-style charts: long Y-axis labels need more space so legendas don't overlap
     height = isMobile ? 400 : 256;
     margin = isMobile
-      ? { top: 10, right: 35, left: 4, bottom: 10 }
-      : { top: 10, right: 80, left: 250, bottom: 10 };
-    yAxisWidth = isMobile ? 130 : 240;
+      ? { top: 10, right: 50, left: 12, bottom: 10 }
+      : { top: 10, right: 80, left: 260, bottom: 10 };
+    yAxisWidth = isMobile ? 160 : 250;
   } else if (preset === "distribution") {
     height = 400;
     margin = { top: 10, right: 80, left: 120, bottom: 10 };
@@ -80,6 +87,12 @@ export function getBarChartConfig(component, isMobile) {
     labelFormatter = undefined;
   }
 
+  // Intention charts: more vertical space per bar so long Y-axis labels don't overlap
+  const heightPerBar =
+    config.heightPerBar ?? (isIntentChart ? 44 : BAR_CHART_HEIGHT_PER_BAR);
+  const minHeight = config.minHeight ?? BAR_CHART_MIN_HEIGHT;
+  const maxHeight = config.maxHeight ?? BAR_CHART_MAX_HEIGHT;
+
   return {
     height,
     margin,
@@ -93,11 +106,10 @@ export function getBarChartConfig(component, isMobile) {
     sortData: config.sortData !== false,
     sortDirection: config.sortDirection || "desc",
     hideXAxis: config.hideXAxis !== false,
-    // Dynamic height: when true, height is computed from bar count (compact when few, roomy when many)
     dynamicHeight: config.dynamicHeight !== false,
-    heightPerBar: config.heightPerBar ?? BAR_CHART_HEIGHT_PER_BAR,
-    minHeight: config.minHeight ?? BAR_CHART_MIN_HEIGHT,
-    maxHeight: config.maxHeight ?? BAR_CHART_MAX_HEIGHT,
+    heightPerBar,
+    minHeight,
+    maxHeight,
     manyBarsThreshold:
       config.manyBarsThreshold ?? BAR_CHART_MANY_BARS_THRESHOLD,
   };
@@ -107,7 +119,7 @@ export function getBarChartConfig(component, isMobile) {
  * Render a bar chart component based on schema
  */
 export function SchemaBarChart({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath);
+  const chartData = resolveDataPath(data, component.dataPath, component.data);
   const isMobile = useIsMobile();
 
   if (!chartData || !Array.isArray(chartData)) {
@@ -193,7 +205,7 @@ export function getSentimentDivergentChartConfig(component) {
  * Render a sentiment divergent chart component based on schema
  */
 export function SchemaSentimentDivergentChart({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath);
+  const chartData = resolveDataPath(data, component.dataPath, component.data);
 
   if (!chartData || !Array.isArray(chartData)) {
     return null;
@@ -260,7 +272,7 @@ export function getSentimentStackedChartConfig(component) {
  * Render a sentiment stacked chart component based on schema
  */
 export function SchemaSentimentStackedChart({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath);
+  const chartData = resolveDataPath(data, component.dataPath, component.data);
 
   if (!chartData || !Array.isArray(chartData)) {
     return null;
@@ -317,7 +329,7 @@ export function getSentimentThreeColorChartConfig(component) {
  * Render a sentiment three color chart component based on schema
  */
 export function SchemaSentimentThreeColorChart({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath);
+  const chartData = resolveDataPath(data, component.dataPath, component.data);
 
   if (!chartData || !Array.isArray(chartData)) {
     return null;
@@ -358,7 +370,7 @@ export function getNPSStackedChartConfig(component) {
  * Render an NPS stacked chart component based on schema
  */
 export function SchemaNPSStackedChart({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath);
+  const chartData = resolveDataPath(data, component.dataPath, component.data);
 
   if (!chartData) {
     return null;
@@ -391,7 +403,7 @@ export function SchemaNPSStackedChart({ component, data }) {
  * Render Line Chart component based on schema
  */
 export function SchemaLineChart({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath);
+  const chartData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
   if (!chartData || !Array.isArray(chartData)) {
@@ -419,7 +431,7 @@ export function SchemaLineChart({ component, data }) {
  * Render Pareto Chart component based on schema
  */
 export function SchemaParetoChart({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath);
+  const chartData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
   if (!chartData || !Array.isArray(chartData)) {
@@ -445,7 +457,7 @@ export function SchemaParetoChart({ component, data }) {
  * Render Scatter Plot component based on schema
  */
 export function SchemaScatterPlot({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath);
+  const chartData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
   if (!chartData || !Array.isArray(chartData)) {
@@ -474,7 +486,7 @@ export function SchemaScatterPlot({ component, data }) {
  * Render Histogram component based on schema
  */
 export function SchemaHistogram({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath);
+  const chartData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
   if (!chartData) {
@@ -499,7 +511,7 @@ export function SchemaHistogram({ component, data }) {
  * Render Quadrant Chart component based on schema
  */
 export function SchemaQuadrantChart({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath);
+  const chartData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
   if (!chartData || !Array.isArray(chartData)) {
@@ -526,7 +538,7 @@ export function SchemaQuadrantChart({ component, data }) {
  * Render Heatmap component based on schema
  */
 export function SchemaHeatmap({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath);
+  const chartData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
   if (!chartData || !Array.isArray(chartData)) {
@@ -553,7 +565,7 @@ export function SchemaHeatmap({ component, data }) {
  * Render Sankey Diagram component based on schema
  */
 export function SchemaSankeyDiagram({ component, data }) {
-  const sankeyData = resolveDataPath(data, component.dataPath);
+  const sankeyData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
   if (!sankeyData) {
@@ -597,7 +609,7 @@ export function SchemaSankeyDiagram({ component, data }) {
  * Render Stacked Bar MECE component based on schema
  */
 export function SchemaStackedBarMECE({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath);
+  const chartData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
   if (!chartData || !Array.isArray(chartData)) {
@@ -621,7 +633,11 @@ export function SchemaStackedBarMECE({ component, data }) {
  * Render Evolutionary Scorecard component based on schema
  */
 export function SchemaEvolutionaryScorecard({ component, data }) {
-  const scorecardData = resolveDataPath(data, component.dataPath);
+  const scorecardData = resolveDataPath(
+    data,
+    component.dataPath,
+    component.data,
+  );
   const config = component.config || {};
 
   if (!scorecardData) {
@@ -667,7 +683,7 @@ export function SchemaEvolutionaryScorecard({ component, data }) {
  * Render Slope Graph component based on schema
  */
 export function SchemaSlopeGraph({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath);
+  const chartData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
   if (!chartData || !Array.isArray(chartData)) {
@@ -693,7 +709,7 @@ export function SchemaSlopeGraph({ component, data }) {
  * Render Waterfall Chart component based on schema
  */
 export function SchemaWaterfallChart({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath);
+  const chartData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
   if (!chartData || !Array.isArray(chartData)) {

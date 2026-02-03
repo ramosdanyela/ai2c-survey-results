@@ -115,25 +115,34 @@ export const componentRegistry = {
  */
 export const renderComponent = (component, data, props = {}) => {
   const { subSection, isExport = false, exportWordCloud = true } = props;
-  const Component = componentRegistry[component.type];
+
+  // Normalize: config is optional in JSON; renderers expect component.config to be an object
+  const normalizedComponent = {
+    ...component,
+    config: component.config ?? {},
+  };
+
+  const Component = componentRegistry[normalizedComponent.type];
 
   if (!Component) {
-    logger.warnCritical(`Unknown component type: ${component.type || "none"}`);
+    logger.warnCritical(
+      `Unknown component type: ${normalizedComponent.type || "none"}`,
+    );
     return null;
   }
 
   // Props padrão para todos os componentes
   const componentProps = {
-    component,
+    component: normalizedComponent,
     data,
     ...props,
   };
 
   // Casos especiais que precisam de props adicionais
-  if (component.type === "questionsList") {
+  if (normalizedComponent.type === "questionsList") {
     return (
       <Component
-        component={component}
+        component={normalizedComponent}
         data={data}
         subSection={subSection}
         isExport={isExport}
@@ -142,7 +151,7 @@ export const renderComponent = (component, data, props = {}) => {
     );
   }
 
-  if (component.type === "accordion") {
+  if (normalizedComponent.type === "accordion") {
     // Accordion precisa de renderSchemaComponent para renderizar componentes aninhados
     if (!props.renderSchemaComponent) {
       logger.error(
@@ -173,7 +182,7 @@ export const renderComponent = (component, data, props = {}) => {
     // CRÍTICO: Verifica se é um objeto vazio (não válido como React child)
     if (typeof rendered === "object" && !React.isValidElement(rendered)) {
       logger.error(
-        `Componente ${component.type} retornou objeto inválido (não é elemento React):`,
+        `Componente ${normalizedComponent.type} retornou objeto inválido (não é elemento React):`,
         rendered,
       );
       return null;
@@ -184,17 +193,21 @@ export const renderComponent = (component, data, props = {}) => {
     }
 
     logger.warnCritical(
-      `Componente ${component.type} retornou elemento inválido:`,
+      `Componente ${normalizedComponent.type} retornou elemento inválido:`,
       rendered,
       typeof rendered,
     );
     return null;
   } catch (error) {
-    logger.error(`Erro ao renderizar componente ${component.type}:`, error, {
-      component,
-      dataPath: component.dataPath,
-      errorStack: error.stack,
-    });
+    logger.error(
+      `Erro ao renderizar componente ${normalizedComponent.type}:`,
+      error,
+      {
+        component: normalizedComponent,
+        dataPath: normalizedComponent.dataPath,
+        errorStack: error.stack,
+      },
+    );
     return null;
   }
 };

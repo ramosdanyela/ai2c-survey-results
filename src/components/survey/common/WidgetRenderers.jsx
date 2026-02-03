@@ -224,7 +224,11 @@ export function SchemaWordCloud({ component, data, exportWordCloud = true }) {
     return null;
   }
 
-  const wordCloudData = resolveDataPath(data, component.dataPath);
+  const wordCloudData = resolveDataPath(
+    data,
+    component.dataPath,
+    component.data,
+  );
   const uiTexts = resolveDataPath(data, "uiTexts");
 
   if (!wordCloudData || !Array.isArray(wordCloudData)) {

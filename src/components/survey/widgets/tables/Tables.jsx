@@ -177,7 +177,13 @@ export function SentimentTable({ data }) {
 // 3. NPS DISTRIBUTION TABLE
 // ============================================================
 // Used in: AttributeDeepDive - NPS Distribution
-export function NPSDistributionTable({ data, categoryName }) {
+// Data shape: array of { [segmentKey], promoters, neutrals, detractors }
+// segmentKey from component.config.yAxisDataKey or "segment"
+export function NPSDistributionTable({
+  data,
+  categoryName,
+  segmentKey = "segment",
+}) {
   const texts = useTableTexts();
   return (
     <Table>
@@ -196,14 +202,17 @@ export function NPSDistributionTable({ data, categoryName }) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.map((item) => (
-          <TableRow key={item.segment}>
-            <TableCell className="font-medium">{item.segment}</TableCell>
-            <TableCell className="text-right">{item.promotores}%</TableCell>
-            <TableCell className="text-right">{item.neutros}%</TableCell>
-            <TableCell className="text-right">{item.detratores}%</TableCell>
-          </TableRow>
-        ))}
+        {data.map((item) => {
+          const segmentValue = item[segmentKey];
+          return (
+            <TableRow key={segmentValue}>
+              <TableCell className="font-medium">{segmentValue}</TableCell>
+              <TableCell className="text-right">{item.promoters}%</TableCell>
+              <TableCell className="text-right">{item.neutrals}%</TableCell>
+              <TableCell className="text-right">{item.detractors}%</TableCell>
+            </TableRow>
+          );
+        })}
       </TableBody>
     </Table>
   );
@@ -213,7 +222,8 @@ export function NPSDistributionTable({ data, categoryName }) {
 // 4. NPS TABLE
 // ============================================================
 // Used in: AttributeDeepDive - NPS
-export function NPSTable({ data, categoryName }) {
+// Data shape: array of { [segmentKey], NPS } (segmentKey from config.yAxisDataKey or "segment")
+export function NPSTable({ data, categoryName, segmentKey = "segment" }) {
   const texts = useTableTexts();
   return (
     <Table>
@@ -226,23 +236,27 @@ export function NPSTable({ data, categoryName }) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.map((item) => (
-          <TableRow key={item.segment}>
-            <TableCell className="font-medium">{item.segment}</TableCell>
-            <TableCell
-              className="text-right font-bold"
-              style={{
-                color:
-                  item.nps >= 0
-                    ? "hsl(var(--chart-positive))"
-                    : "hsl(var(--chart-negative))",
-              }}
-            >
-              {item.nps > 0 ? "+" : ""}
-              {item.nps}
-            </TableCell>
-          </TableRow>
-        ))}
+        {data.map((item) => {
+          const segmentValue = item[segmentKey];
+          const nps = item.NPS ?? item.nps;
+          return (
+            <TableRow key={segmentValue}>
+              <TableCell className="font-medium">{segmentValue}</TableCell>
+              <TableCell
+                className="text-right font-bold"
+                style={{
+                  color:
+                    nps >= 0
+                      ? "hsl(var(--chart-positive))"
+                      : "hsl(var(--chart-negative))",
+                }}
+              >
+                {nps > 0 ? "+" : ""}
+                {nps}
+              </TableCell>
+            </TableRow>
+          );
+        })}
       </TableBody>
     </Table>
   );

@@ -16,6 +16,28 @@ import { AnalyticalTable } from "../widgets/AnalyticalTable";
 import { severityColors } from "@/lib/colors";
 import { logger } from "@/utils/logger";
 
+/** Known value keys per table type; the remaining key in the first row is the segment/category key */
+const NPS_DISTRIBUTION_VALUE_KEYS = new Set([
+  "promoters",
+  "neutrals",
+  "detractors",
+]);
+const NPS_TABLE_VALUE_KEYS = new Set(["NPS", "nps"]);
+
+/**
+ * Infer segment key from first row when not set in config (e.g. from JSON data keys like "Estado", "Tipo de Cliente").
+ * @param {Object[]} tableData - Array of row objects
+ * @param {Set<string>} valueKeys - Keys that are value columns, not the segment
+ * @returns {string} Inferred key or "segment"
+ */
+function inferSegmentKeyFromData(tableData, valueKeys) {
+  const first =
+    Array.isArray(tableData) && tableData.length > 0 ? tableData[0] : null;
+  if (!first || typeof first !== "object") return "segment";
+  const key = Object.keys(first).find((k) => !valueKeys.has(k));
+  return key || "segment";
+}
+
 /**
  * Render a recommendations table component based on schema
  * This component needs state management for expand/collapse
@@ -26,7 +48,11 @@ export function SchemaRecommendationsTable({ component, data }) {
   const [checkedTasks, setCheckedTasks] = useState({});
 
   try {
-    const recommendationsData = resolveDataPath(data, component.dataPath);
+    const recommendationsData = resolveDataPath(
+      data,
+      component.dataPath,
+      component.data,
+    );
 
     if (!recommendationsData) {
       return (
@@ -37,7 +63,11 @@ export function SchemaRecommendationsTable({ component, data }) {
     }
 
     // New structure: object with config and items
-    if (!recommendationsData || !recommendationsData.items || !Array.isArray(recommendationsData.items)) {
+    if (
+      !recommendationsData ||
+      !recommendationsData.items ||
+      !Array.isArray(recommendationsData.items)
+    ) {
       // Invalid data structure - return empty state silently
       return (
         <div className="p-4 text-center text-muted-foreground">
@@ -49,30 +79,30 @@ export function SchemaRecommendationsTable({ component, data }) {
     const recommendations = recommendationsData.items;
     const severityLabels = recommendationsData.config?.severityLabels || null;
 
-  const toggleRecExpansion = (recId) => {
-    setExpandedRecs((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(recId)) {
-        newSet.delete(recId);
-      } else {
-        newSet.add(recId);
-      }
-      return newSet;
-    });
-  };
+    const toggleRecExpansion = (recId) => {
+      setExpandedRecs((prev) => {
+        const newSet = new Set(prev);
+        if (newSet.has(recId)) {
+          newSet.delete(recId);
+        } else {
+          newSet.add(recId);
+        }
+        return newSet;
+      });
+    };
 
-  const toggleTask = (recId, taskIndex) => {
-    const key = `rec-${recId}-task-${taskIndex}`;
-    setCheckedTasks((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
-  };
+    const toggleTask = (recId, taskIndex) => {
+      const key = `rec-${recId}-task-${taskIndex}`;
+      setCheckedTasks((prev) => ({
+        ...prev,
+        [key]: !prev[key],
+      }));
+    };
 
-  const getRecTasks = (recId) => {
-    const rec = recommendations.find((r) => r.id === recId);
-    return rec?.tasks || [];
-  };
+    const getRecTasks = (recId) => {
+      const rec = recommendations.find((r) => r.id === recId);
+      return rec?.tasks || [];
+    };
 
     return (
       <RecommendationsTable
@@ -115,7 +145,7 @@ export function SchemaRecommendationsTable({ component, data }) {
  */
 export function SchemaSegmentationTable({ component, data }) {
   try {
-    const tableData = resolveDataPath(data, component.dataPath);
+    const tableData = resolveDataPath(data, component.dataPath, component.data);
 
     if (!tableData || !Array.isArray(tableData)) {
       return (
@@ -149,7 +179,7 @@ export function SchemaSegmentationTable({ component, data }) {
  */
 export function SchemaDistributionTable({ component, data }) {
   try {
-    const tableData = resolveDataPath(data, component.dataPath);
+    const tableData = resolveDataPath(data, component.dataPath, component.data);
 
     if (!tableData || !Array.isArray(tableData)) {
       return (
@@ -183,7 +213,7 @@ export function SchemaDistributionTable({ component, data }) {
  */
 export function SchemaSentimentTable({ component, data }) {
   try {
-    const tableData = resolveDataPath(data, component.dataPath);
+    const tableData = resolveDataPath(data, component.dataPath, component.data);
 
     if (!tableData || !Array.isArray(tableData)) {
       return (
@@ -214,11 +244,18 @@ export function SchemaSentimentTable({ component, data }) {
 
 /**
  * Render an NPS distribution table component based on schema
+ * Uses component.config.yAxisDataKey (e.g. "Tipo_de_Cliente") as the segment/category key when present.
  */
 export function SchemaNPSDistributionTable({ component, data }) {
   try {
-    const tableData = resolveDataPath(data, component.dataPath);
+    const tableData = resolveDataPath(data, component.dataPath, component.data);
     const categoryName = component.categoryName || "";
+    const segmentKey =
+      component.config?.yAxisDataKey ||
+      component.segmentKey ||
+      (tableData && Array.isArray(tableData) && tableData.length > 0
+        ? inferSegmentKeyFromData(tableData, NPS_DISTRIBUTION_VALUE_KEYS)
+        : "segment");
 
     if (!tableData || !Array.isArray(tableData)) {
       return (
@@ -229,7 +266,11 @@ export function SchemaNPSDistributionTable({ component, data }) {
     }
 
     return (
-      <NPSDistributionTable data={tableData} categoryName={categoryName} />
+      <NPSDistributionTable
+        data={tableData}
+        categoryName={categoryName}
+        segmentKey={segmentKey}
+      />
     );
   } catch (error) {
     logger.error(`Erro ao renderizar NPSDistributionTable:`, error, {
@@ -251,11 +292,18 @@ export function SchemaNPSDistributionTable({ component, data }) {
 
 /**
  * Render an NPS table component based on schema
+ * Uses component.config.yAxisDataKey (e.g. "Tipo_de_Cliente") as the segment/category key when present.
  */
 export function SchemaNPSTable({ component, data }) {
   try {
-    const tableData = resolveDataPath(data, component.dataPath);
+    const tableData = resolveDataPath(data, component.dataPath, component.data);
     const categoryName = component.categoryName || "";
+    const segmentKey =
+      component.config?.yAxisDataKey ||
+      component.segmentKey ||
+      (tableData && Array.isArray(tableData) && tableData.length > 0
+        ? inferSegmentKeyFromData(tableData, NPS_TABLE_VALUE_KEYS)
+        : "segment");
 
     if (!tableData || !Array.isArray(tableData)) {
       return (
@@ -265,7 +313,13 @@ export function SchemaNPSTable({ component, data }) {
       );
     }
 
-    return <NPSTable data={tableData} categoryName={categoryName} />;
+    return (
+      <NPSTable
+        data={tableData}
+        categoryName={categoryName}
+        segmentKey={segmentKey}
+      />
+    );
   } catch (error) {
     logger.error(`Erro ao renderizar NPSTable:`, error, {
       component,
@@ -289,7 +343,7 @@ export function SchemaNPSTable({ component, data }) {
  */
 export function SchemaSentimentImpactTable({ component, data }) {
   try {
-    const tableData = resolveDataPath(data, component.dataPath);
+    const tableData = resolveDataPath(data, component.dataPath, component.data);
 
     if (!tableData || !Array.isArray(tableData)) {
       return (
@@ -323,7 +377,7 @@ export function SchemaSentimentImpactTable({ component, data }) {
  */
 export function SchemaPositiveCategoriesTable({ component, data }) {
   try {
-    const tableData = resolveDataPath(data, component.dataPath);
+    const tableData = resolveDataPath(data, component.dataPath, component.data);
 
     if (!tableData || !Array.isArray(tableData)) {
       return (
@@ -357,7 +411,7 @@ export function SchemaPositiveCategoriesTable({ component, data }) {
  */
 export function SchemaNegativeCategoriesTable({ component, data }) {
   try {
-    const tableData = resolveDataPath(data, component.dataPath);
+    const tableData = resolveDataPath(data, component.dataPath, component.data);
 
     if (!tableData || !Array.isArray(tableData)) {
       return (
@@ -391,7 +445,7 @@ export function SchemaNegativeCategoriesTable({ component, data }) {
  */
 export function SchemaAnalyticalTable({ component, data }) {
   try {
-    const tableData = resolveDataPath(data, component.dataPath);
+    const tableData = resolveDataPath(data, component.dataPath, component.data);
     const config = component.config || {};
 
     if (!tableData || !Array.isArray(tableData)) {

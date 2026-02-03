@@ -46,27 +46,41 @@ export function getQuestionsFromData(data) {
  * Supports relative paths with "sectionData." prefix (looks in data.sectionData)
  * @param {Object} obj - Objeto raiz (pode conter sectionData)
  * @param {string} path - Path (ex: "sectionData.summary.aboutStudy" ou "attributes[0].distribution")
- * @returns {*} Valor resolvido ou null
+ * @param {*} fallback - Opcional: valor usado quando a resolução retorna null (ex.: component.data)
+ * @returns {*} Valor resolvido, fallback se fornecido e resolução null, ou null
  */
-export function resolveDataPath(obj, path) {
-  if (!obj || !path) return null;
+export function resolveDataPath(obj, path, fallback = undefined) {
+  if (!path) return fallback ?? null;
+  if (!obj) return fallback ?? null;
 
-  // Handle relative paths with "sectionData." prefix
+  // Handle relative paths with "sectionData." prefix: sempre procurar primeiro em sectionData; fallback em _activeSubsection.data
   if (path.startsWith("sectionData.")) {
     const relativePath = path.replace("sectionData.", "");
     if (obj.sectionData) {
-      return resolveDataPath(obj.sectionData, relativePath);
+      const value = resolveDataPath(obj.sectionData, relativePath);
+      if (value !== null && value !== undefined) return value;
     }
-    return null;
+    // Fallback: dados podem estar no contexto da subseção (ex.: subsection.data em attributes)
+    if (obj._activeSubsection?.data && relativePath) {
+      const segments = relativePath.split(".").filter(Boolean);
+      if (segments.length === 1) return obj._activeSubsection.data;
+      const sub = resolveDataPath(
+        obj._activeSubsection.data,
+        segments.slice(1).join("."),
+      );
+      if (sub !== null && sub !== undefined) return sub;
+    }
+    return fallback ?? null;
   }
 
   // Handle relative paths with "question." prefix (for question components)
   if (path.startsWith("question.")) {
     const relativePath = path.replace("question.", "");
     if (obj.question) {
-      return resolveDataPath(obj.question, relativePath);
+      const q = resolveDataPath(obj.question, relativePath);
+      return q !== null && q !== undefined ? q : (fallback ?? null);
     }
-    return null;
+    return fallback ?? null;
   }
 
   // Handle array indices in brackets: attributes[0] -> attributes.0
@@ -83,19 +97,19 @@ export function resolveDataPath(obj, path) {
         if (index >= 0 && index < current.length) {
           current = current[index];
         } else {
-          return null;
+          return fallback ?? null;
         }
       } else if (key in current) {
         current = current[key];
       } else {
-        return null;
+        return fallback ?? null;
       }
     } else {
-      return null;
+      return fallback ?? null;
     }
   }
 
-  return current;
+  return current !== undefined ? current : (fallback ?? null);
 }
 
 /**
