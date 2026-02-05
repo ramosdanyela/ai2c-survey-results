@@ -21,7 +21,7 @@
               "type": "card",
               "index": 0,
               "title": "Sobre o Estudo",
-              "text": "Esta pesquisa analisa a satisfação e a lealdade dos clientes com os serviços de telefonia móvel para identificar áreas de melhoria na indústria de telecomunicações. Os dados foram coletados de 100 clientes de telefonia móvel que responderam a 3 perguntas-chave sobre sua experiência com o serviço.",
+              "text": "Avaliar a satisfação e a lealdade dos clientes em serviços de telefonia móvel na indústria de telecomunicações. Os dados da pesquisa foram coletados de 100 clientes usando três perguntas.",
               "cardStyleVariant": "default"
             },
             {
@@ -32,14 +32,14 @@
                   "type": "card",
                   "index": 0,
                   "title": "Principais Descobertas",
-                  "text": "O NPS é neutro, com 51% de detratores superando 30% de promotores por 21 pontos. O serviço de rede apresenta um forte impacto negativo devido a problemas de serviço e cobertura, enquanto o suporte ao cliente e os preços são mistos, mas menos críticos. Clientes pós-pagos mostram a menor lealdade, principalmente devido a atrasos no 5G e no aplicativo, enquanto clientes pré-pagos relatam maior satisfação impulsionada pela cobertura e bônus. Diferenças regionais são notáveis, com o CE se destacando e SP, RJ, PR ficando atrás no suporte e na usabilidade do aplicativo.",
+                  "text": "O net promoter score é neutro, com detratores superando promotores por 21 pontos. Serviço de rede e cobertura são as categorias mais negativamente percebidas devido à baixa confiabilidade e lacunas, gerando insatisfação; suporte ao cliente e preços apresentam opiniões mistas com impacto moderado. Clientes pós-pagos relatam maior insatisfação com cobertura e problemas no aplicativo; pré-pagos valorizam a cobertura, mas também enfrentam frustrações com o aplicativo; diferenças regionais mostram maior lealdade no Ceará e desafios em São Paulo e Rio de Janeiro relacionados ao suporte e usabilidade.",
                   "cardStyleVariant": "border-left"
                 },
                 {
                   "type": "card",
                   "index": 1,
                   "title": "Conclusões",
-                  "text": "A estabilidade e a cobertura da rede requerem aprimoramento urgente, pois são fatores que geram insatisfação. A clareza na cobrança e o suporte ao cliente devem ser fortalecidos, especialmente em estados de alto impacto. Correções na experiência digital são necessárias para a retenção de clientes pós-pagos. Priorizar melhorias na rede e no suporte reduzirá os detratores e aumentará a defesa da marca.",
+                  "text": "A fraqueza no desempenho da rede compromete a satisfação geral e a lealdade, exigindo atualizações urgentes na infraestrutura. Opiniões divergentes sobre suporte e preços sugerem melhorias seletivas. Disparidades geográficas e entre segmentos de clientes indicam a necessidade de ações direcionadas. Priorizar a cobertura e a funcionalidade do aplicativo provavelmente reduzirá a rotatividade e aumentará as taxas de promotores.",
                   "cardStyleVariant": "border-left"
                 }
               ]
@@ -82,7 +82,7 @@
           "items": [
             {
               "id": 1,
-              "recommendation": "Melhore a Cobertura da Rede em Áreas Problemáticas Chave",
+              "recommendation": "Acelerar a Expansão da Cobertura de Rede em Áreas-Chave com Sinal Fraco",
               "severity": "high",
               "stakeholders": [
                 "Operações de rede",
@@ -91,50 +91,50 @@
               ],
               "tasks": [
                 {
-                  "task": "Realizar levantamentos detalhados no local em áreas problemáticas identificadas",
+                  "task": "Realizar pesquisas abrangentes no local em áreas identificadas com sinal fraco para avaliar lacunas de cobertura",
                   "owner": "Operações de rede"
                 },
                 {
-                  "task": "Analisar os dados atuais de desempenho da rede para identificar lacunas de cobertura",
-                  "owner": "Otimização de rede"
-                },
-                {
-                  "task": "Desenvolver especificações técnicas para melhorias na rede",
-                  "owner": "Rede de acesso via rádio (RAN)"
-                },
-                {
-                  "task": "Planos de atualização de design para melhorias na infraestrutura de rede",
-                  "owner": "Rede de acesso via rádio (RAN)"
-                },
-                {
-                  "task": "Procure os recursos necessários de hardware e software",
+                  "task": "Analisar dados da pesquisa para priorizar locais com base no impacto e na viabilidade",
                   "owner": "Operações de rede"
                 },
                 {
-                  "task": "Implemente as atualizações de rede de acordo com o plano de design",
-                  "owner": "Operações de rede"
-                },
-                {
-                  "task": "Monitorar o desempenho da rede após a implementação",
-                  "owner": "Otimização de rede"
-                },
-                {
-                  "task": "Realizar testes de garantia de qualidade da rede atualizada",
-                  "owner": "Otimização de rede"
-                },
-                {
-                  "task": "Fornecer treinamento para engenheiros de campo sobre novas tecnologias de rede",
+                  "task": "Desenvolver planos detalhados de design e engenharia para expansão de rede em sites prioritários",
                   "owner": "Rede de acesso via rádio (RAN)"
                 },
                 {
-                  "task": "Relatar progresso e resultados à alta administração",
+                  "task": "Procure os equipamentos necessários e atualizações tecnológicas para implantação",
+                  "owner": "Rede de acesso via rádio (RAN)"
+                },
+                {
+                  "task": "Coordenar com as autoridades locais e partes interessadas para obter as permissões e aprovações necessárias",
+                  "owner": "Operações de rede"
+                },
+                {
+                  "task": "Agendar e executar a instalação e atualização de infraestrutura em áreas prioritárias",
+                  "owner": "Rede de acesso via rádio (RAN)"
+                },
+                {
+                  "task": "Realizar integração e configuração de rede para garantir aprimoramento contínuo da cobertura",
+                  "owner": "Otimização de rede"
+                },
+                {
+                  "task": "Realizar testes rigorosos pós-implantação e otimização da nova cobertura de rede",
+                  "owner": "Otimização de rede"
+                },
+                {
+                  "task": "Monitorar métricas de desempenho da rede para validar melhorias e identificar aprimoramentos adicionais",
+                  "owner": "Otimização de rede"
+                },
+                {
+                  "task": "Prepare e envie relatórios de progresso à alta administração sobre o status da expansão e seu impacto",
                   "owner": "Operações de rede"
                 }
               ]
             },
             {
               "id": 2,
-              "recommendation": "Fortalecer Medidas de Estabilidade e Confiabilidade da Rede",
+              "recommendation": "Melhore a estabilidade e a confiabilidade da rede por meio de atualizações na infraestrutura",
               "severity": "high",
               "stakeholders": [
                 "Engenharia de Redes",
@@ -143,232 +143,236 @@
               ],
               "tasks": [
                 {
-                  "task": "Realizar auditoria abrangente de estabilidade da rede",
+                  "task": "Avaliar a infraestrutura de rede atual para identificar pontos fracos e necessidades de atualização",
                   "owner": "Engenharia de Redes"
                 },
                 {
-                  "task": "Identificar pontos-chave de falha e riscos de confiabilidade",
+                  "task": "Desenvolva um plano detalhado de atualização especificando os requisitos de hardware e software",
                   "owner": "Engenharia de Redes"
                 },
                 {
-                  "task": "Desenvolver protocolos aprimorados de monitoramento de rede",
-                  "owner": "Engenharia de Redes"
-                },
-                {
-                  "task": "Melhorias na redundância de design para elementos centrais da rede",
+                  "task": "Coordenar com fornecedores para a aquisição dos equipamentos necessários",
                   "owner": "Rede principal"
                 },
                 {
-                  "task": "Implemente mecanismos de failover e redirecionamento automático",
+                  "task": "Agende as atividades de atualização para minimizar a interrupção do serviço",
                   "owner": "Rede principal"
                 },
                 {
-                  "task": "Atualize os componentes de hardware para reduzir o risco de tempo de inatividade",
-                  "owner": "Rede principal"
-                },
-                {
-                  "task": "Otimizar rotas da rede de transporte para balanceamento de carga",
+                  "task": "Realizar instalação e configuração de hardware em segmentos de rede específicos",
                   "owner": "Rede de Transporte"
                 },
                 {
-                  "task": "Introduza análises de desempenho da rede de transporte em tempo real",
+                  "task": "Realizar atualizações de software e otimizar protocolos de rede",
+                  "owner": "Engenharia de Redes"
+                },
+                {
+                  "task": "Teste o desempenho da rede após a atualização para garantir estabilidade e confiabilidade",
+                  "owner": "Engenharia de Redes"
+                },
+                {
+                  "task": "Monitorar a rede continuamente para quaisquer problemas após as atualizações",
                   "owner": "Rede de Transporte"
                 },
                 {
-                  "task": "Teste a resiliência da rede com cenários simulados de falha",
-                  "owner": "Engenharia de Redes"
-                },
-                {
-                  "task": "Coordenar procedimentos de resposta entre equipes para interrupções",
-                  "owner": "Engenharia de Redes"
-                },
-                {
-                  "task": "Revisar e atualizar a segurança da rede para apoiar a confiabilidade",
-                  "owner": "Engenharia de Redes"
-                },
-                {
-                  "task": "Agende janelas regulares de manutenção para minimizar o impacto",
+                  "task": "Fornecer treinamento à equipe de operações de rede sobre novos componentes de infraestrutura",
                   "owner": "Rede principal"
                 },
                 {
-                  "task": "Treinar a equipe sobre novas ferramentas e processos de estabilidade de rede",
-                  "owner": "Engenharia de Redes"
-                },
-                {
-                  "task": "Monitorar métricas de desempenho pós-implementação",
-                  "owner": "Rede de Transporte"
-                },
-                {
-                  "task": "Relatar progresso e problemas à liderança executiva",
-                  "owner": "Engenharia de Redes"
+                  "task": "Documente todas as alterações e atualize os registros da infraestrutura de rede",
+                  "owner": "Rede principal"
                 }
               ]
             },
             {
               "id": 3,
-              "recommendation": "Estabelecer Equipe de Resposta Rápida para Quedas de Internet e Falhas de Sinal",
-              "severity": "high",
+              "recommendation": "Implemente Monitoramento Proativo para Reduzir Quedas e Flutuações da Internet",
+              "severity": "medium",
               "stakeholders": [
                 "Centro de Operações de Rede (NOC)",
-                "Atendimento ao Cliente",
-                "Experiência do Cliente (CX)"
+                "Dados & Análise",
+                "Otimização de Rede"
               ],
               "tasks": [
                 {
-                  "task": "Definir a estrutura da equipe e os papéis para resposta rápida",
+                  "task": "Realizar avaliação inicial dos dados atuais de queda e flutuação da internet",
+                  "owner": "Dados e Análises"
+                },
+                {
+                  "task": "Identificar indicadores-chave de desempenho (KPIs) para monitorar a estabilidade da internet",
+                  "owner": "Otimização de rede"
+                },
+                {
+                  "task": "Desenvolver estrutura de monitoramento e definir limites de alerta",
                   "owner": "Centro de Operações de Rede (NOC)"
                 },
                 {
-                  "task": "Desenvolver procedimentos operacionais padrão para quedas de internet e falhas de sinal",
+                  "task": "Implemente ferramentas e softwares de monitoramento proativo no ambiente de rede",
                   "owner": "Centro de Operações de Rede (NOC)"
                 },
                 {
-                  "task": "Identificar e alocar os recursos necessários para a equipe de resposta rápida",
+                  "task": "Integrar ferramentas de monitoramento com sistemas existentes de gerenciamento de rede",
                   "owner": "Centro de Operações de Rede (NOC)"
                 },
                 {
-                  "task": "Recrutar e treinar membros da equipe para a equipe de resposta rápida",
+                  "task": "Configure fluxos de trabalho automatizados de alerta e notificação",
                   "owner": "Centro de Operações de Rede (NOC)"
                 },
                 {
-                  "task": "Integrar protocolos de comunicação entre NOC, Atendimento ao Cliente e Experiência do Cliente",
-                  "owner": "atendimento ao Cliente"
-                },
-                {
-                  "task": "Estabelecer mecanismos de reporte e escalonamento de incidentes em tempo real",
-                  "owner": "atendimento ao Cliente"
-                },
-                {
-                  "task": "Desenvolver modelos de comunicação com clientes e diretrizes para notificações de interrupção",
-                  "owner": "Experiência do Cliente (CX)"
-                },
-                {
-                  "task": "Coordenar exercícios interfuncionais para simular quedas de internet e falhas de sinal",
+                  "task": "Treinar a equipe do NOC no uso das novas ferramentas de monitoramento e na interpretação de alertas",
                   "owner": "Centro de Operações de Rede (NOC)"
                 },
                 {
-                  "task": "Implemente ferramentas de monitoramento para detectar quedas de internet e falhas de sinal prontamente",
+                  "task": "Analise as tendências dos dados históricos para estabelecer o desempenho básico da rede",
+                  "owner": "Dados e Análises"
+                },
+                {
+                  "task": "Colabore com a Otimização de Rede para ajustar as configurações da rede",
+                  "owner": "Otimização de rede"
+                },
+                {
+                  "task": "Estabelecer uma cadência regular de relatórios sobre resultados de monitoramento e incidentes",
+                  "owner": "Dados e Análises"
+                },
+                {
+                  "task": "Realizar testes piloto do sistema de monitoramento e validar a precisão dos alertas",
                   "owner": "Centro de Operações de Rede (NOC)"
                 },
                 {
-                  "task": "Configurar um ciclo de feedback para melhoria contínua com base em revisões de incidentes",
-                  "owner": "Experiência do Cliente (CX)"
+                  "task": "Coletar feedback do piloto e fazer os ajustes necessários",
+                  "owner": "Centro de Operações de Rede (NOC)"
+                },
+                {
+                  "task": "Implantar o sistema de monitoramento em toda a rede",
+                  "owner": "Centro de Operações de Rede (NOC)"
+                },
+                {
+                  "task": "Monitorar o desempenho do sistema após a implantação e resolver problemas",
+                  "owner": "Otimização de rede"
+                },
+                {
+                  "task": "Revisar os resultados do monitoramento mensalmente para identificar oportunidades de melhoria",
+                  "owner": "Dados e Análises"
+                },
+                {
+                  "task": "Realizar reuniões trimestrais de revisão entre as partes interessadas para avaliar a eficácia",
+                  "owner": "Centro de Operações de Rede (NOC)"
                 }
               ]
             },
             {
               "id": 4,
-              "recommendation": "Lançar Campanha de Comunicação Direcionada Abordando Melhorias na Rede",
+              "recommendation": "Revisar Planos de Preços para Melhorar a Percepção Custo-Benefício entre os Clientes",
               "severity": "medium",
               "stakeholders": [
-                "Comunicação Corporativa",
-                "Marketing e Produto",
-                "Experiência do Cliente (CX)"
+                "Gestão de preços e receitas",
+                "marketing e produto",
+                "vendas e retenção"
               ],
               "tasks": [
                 {
-                  "task": "Defina os objetivos da campanha e as mensagens-chave destacando as melhorias na rede",
-                  "owner": "Comunicações Corporativas"
+                  "task": "Realizar análise de mercado para comparar os preços dos concorrentes e as expectativas dos clientes",
+                  "owner": "Gestão de Preços e Receitas"
                 },
                 {
-                  "task": "Desenvolva um cronograma detalhado da campanha e seus marcos",
-                  "owner": "Comunicações Corporativas"
-                },
-                {
-                  "task": "Identificar segmentos do público-alvo para comunicação",
+                  "task": "Coletar feedback dos clientes sobre os preços atuais e o valor percebido por meio de pesquisas e grupos focais",
                   "owner": "Marketing e Produto"
                 },
                 {
-                  "task": "Crie conteúdo e mensagens personalizados para cada segmento-alvo",
+                  "task": "Analisar estruturas internas de custos para identificar flexibilidade de preços e oportunidades de economia de custos",
+                  "owner": "Gestão de Preços e Receitas"
+                },
+                {
+                  "task": "Desenvolver modelos de precificação revisados com opções em níveis e recursos de valor agregado",
+                  "owner": "Gestão de Preços e Receitas"
+                },
+                {
+                  "task": "Colabore com Marketing e Produto para elaborar mensagens de comunicação destacando as melhorias nas características de custo-benefício",
                   "owner": "Marketing e Produto"
                 },
                 {
-                  "task": "Criar ativos visuais e multimídia que apoiem as mensagens da campanha",
+                  "task": "Criar materiais de capacitação de vendas para apoiar os novos planos de preços e o manejo de objeções dos clientes",
+                  "owner": "Vendas e Retenção"
+                },
+                {
+                  "task": "Piloto de planos de preços revisados com um segmento de clientes selecionado para avaliar o impacto e coletar dados",
+                  "owner": "Vendas e Retenção"
+                },
+                {
+                  "task": "Monitorar os resultados do piloto e coletar feedback para ajustes adicionais de preços",
+                  "owner": "Gestão de Preços e Receitas"
+                },
+                {
+                  "task": "Treine as equipes de vendas e suporte ao cliente sobre os novos planos de preços e propostas de valor",
+                  "owner": "Vendas e Retenção"
+                },
+                {
+                  "task": "Finalizar e lançar planos de preços revisados em toda a empresa com campanhas de marketing coordenadas",
                   "owner": "Marketing e Produto"
                 },
                 {
-                  "task": "Coordenar com a equipe de experiência do cliente para alinhar a comunicação com o feedback dos clientes",
-                  "owner": "Experiência do Cliente (CX)"
-                },
-                {
-                  "task": "Configure ferramentas de rastreamento e medição para monitorar a eficácia da campanha",
-                  "owner": "Experiência do Cliente (CX)"
-                },
-                {
-                  "task": "Lançar campanha nos canais de comunicação selecionados",
-                  "owner": "Comunicações Corporativas"
-                },
-                {
-                  "task": "Monitore o desempenho da campanha em tempo real e colete as respostas dos clientes",
-                  "owner": "Experiência do Cliente (CX)"
-                },
-                {
-                  "task": "Ajuste as estratégias da campanha com base nos dados de desempenho e feedback",
-                  "owner": "Marketing e Produto"
-                },
-                {
-                  "task": "Relatar o progresso e os resultados à liderança executiva",
-                  "owner": "Comunicações Corporativas"
+                  "task": "Avaliar o desempenho pós-lançamento e a satisfação do cliente para identificar melhorias contínuas",
+                  "owner": "Gestão de Preços e Receitas"
                 }
               ]
             },
             {
               "id": 5,
-              "recommendation": "Implementar Revisão e Ajuste do Plano de Custo-Benefício",
+              "recommendation": "Fortalecer o Treinamento de Suporte ao Cliente Focado na Resolução de Problemas de Rede",
               "severity": "medium",
               "stakeholders": [
-                "Gestão de Preços e Receitas",
-                "Estratégia de Marketing",
-                "Vendas e Retenção"
+                "Atendimento ao Cliente",
+                "Call Center",
+                "Aprendizagem e Desenvolvimento"
               ],
               "tasks": [
                 {
-                  "task": "Definir critérios de revisão custo-benefício com base em métricas financeiras e operacionais",
-                  "owner": "Gestão de Preços e Receitas"
+                  "task": "Avaliar os materiais de treinamento atuais e identificar lacunas no conteúdo de resolução de problemas de rede",
+                  "owner": "Aprendizagem e Desenvolvimento"
                 },
                 {
-                  "task": "Desenvolver cronograma para revisões periódicas do plano de custo-benefício",
-                  "owner": "Gestão de Preços e Receitas"
+                  "task": "Desenvolver módulos de treinamento atualizados focados em técnicas de solução de problemas de rede",
+                  "owner": "Aprendizagem e Desenvolvimento"
                 },
                 {
-                  "task": "Reúna dados históricos sobre preços, gastos com marketing e resultados de vendas",
-                  "owner": "Estratégia de Marketing"
+                  "task": "Crie cenários práticos e exercícios de simulação relevantes para problemas comuns de rede",
+                  "owner": "Aprendizagem e Desenvolvimento"
                 },
                 {
-                  "task": "Analisar dados para identificar os fatores que influenciam os custos e as tendências de benefícios",
-                  "owner": "Estratégia de Marketing"
+                  "task": "Agende sessões de treinamento para toda a equipe de suporte ao cliente e call center",
+                  "owner": "Aprendizagem e Desenvolvimento"
                 },
                 {
-                  "task": "Rascunho do relatório inicial de análise de custo-benefício para revisão",
-                  "owner": "Gestão de Preços e Receitas"
+                  "task": "Comunique o cronograma de treinamento e os objetivos às equipes de Atendimento ao Cliente e Call Center",
+                  "owner": "Aprendizagem e Desenvolvimento"
                 },
                 {
-                  "task": "Conduzir reunião multifuncional para discutir descobertas preliminares",
-                  "owner": "Vendas e Retenção"
+                  "task": "Conduza as sessões de treinamento com participação ativa das equipes de Atendimento ao Cliente e Call Center",
+                  "owner": "Aprendizagem e Desenvolvimento"
                 },
                 {
-                  "task": "Coletar feedback sobre os ajustes propostos no plano de custo-benefício",
-                  "owner": "Vendas e Retenção"
+                  "task": "Monitorar as taxas de presença e participação durante o treinamento",
+                  "owner": "atendimento ao Cliente"
                 },
                 {
-                  "task": "Revisar o plano de custo-benefício com base nas contribuições das partes interessadas",
-                  "owner": "Gestão de Preços e Receitas"
+                  "task": "Coletar feedback dos participantes sobre a eficácia do treinamento e áreas para melhoria",
+                  "owner": "atendimento ao Cliente"
                 },
                 {
-                  "task": "Comunicar o plano atualizado de custo-benefício às equipes de vendas e marketing",
-                  "owner": "Estratégia de Marketing"
+                  "task": "Avaliar o desempenho pós-treinamento por meio do monitoramento de chamadas e métricas de resolução de problemas",
+                  "owner": "Central de Atendimento"
                 },
                 {
-                  "task": "Implemente ajustes em preços, marketing e táticas de retenção",
-                  "owner": "Vendas e Retenção"
+                  "task": "Fornecer treinamento adicional aos membros da equipe que necessitam de suporte adicional",
+                  "owner": "atendimento ao Cliente"
                 },
                 {
-                  "task": "Monitore as métricas de desempenho pós-implementação",
-                  "owner": "Gestão de Preços e Receitas"
+                  "task": "Atualizar artigos da base de conhecimento para refletir diretrizes aprimoradas de resolução de problemas de rede",
+                  "owner": "atendimento ao Cliente"
                 },
                 {
-                  "task": "Prepare relatórios mensais sobre os resultados de custo-benefício e reporte à liderança executiva",
-                  "owner": "Gestão de Preços e Receitas"
+                  "task": "Relatar os resultados do treinamento e as melhorias de desempenho à liderança executiva",
+                  "owner": "Aprendizagem e Desenvolvimento"
                 }
               ]
             }
@@ -392,7 +396,7 @@
               "type": "card",
               "index": 0,
               "useDescription": true,
-              "text": "O serviço de rede é um ponto problemático significativo, com um sentimento negativo superando substancialmente o feedback positivo, impactando 48,6% dos entrevistados. O suporte ao cliente, embora tenha uma participação menor no total de menções, também representa um ponto problemático com mais sentimento negativo do que positivo. A equipe de suporte ao cliente deve priorizar a melhoria da capacidade de resposta e dos tempos de resolução para reduzir experiências negativas.",
+              "text": "O serviço de rede é um ponto crítico significativo, com um impacto líquido negativo impulsionado por 38,1% de sentimento negativo contra 10,5% positivo, abrangendo quase metade do feedback dos clientes. O suporte ao cliente apresenta um sentimento misto com proporções próximas de menções positivas (6,4%) e negativas (10,5%), mas representa uma parcela menor no geral. Para abordar o principal ponto crítico, a equipe de Suporte ao Cliente deve analisar e resolver sistematicamente os problemas comuns relatados para reduzir o sentimento negativo de 10,5%.",
               "cardStyleVariant": "default",
               "cardContentVariant": "with-description",
               "components": [
@@ -417,7 +421,7 @@
             {
               "type": "card",
               "index": 0,
-              "text": "Mais de um terço dos entrevistados (36%) provavelmente deixará de usar o serviço móvel, indicando um risco significativo de churn que requer intervenção urgente. Outros 34% pretendem permanecer, mas têm preocupações, sinalizando oportunidades para melhorar a satisfação e prevenir futuras deserções por meio de engajamento direcionado e aprimoramentos no serviço. Apenas 27% são promotores altamente satisfeitos, destacando a necessidade de fortalecer programas de fidelidade e a experiência do cliente para transferir mais usuários para esse segmento valioso.",
+              "text": "Os dados revelam uma tendência preocupante, com 36% dos entrevistados propensos a parar de usar o serviço e mais 34% pretendendo continuar, mas expressando preocupações, indicando riscos potenciais para a retenção de clientes que exigem atenção urgente. Apenas 27% estão muito satisfeitos e dispostos a promover o serviço, destacando espaço para melhorias na experiência do cliente e em iniciativas que promovam a fidelidade. A taxa muito baixa de satisfação estável (2%) sugere que poucos clientes se sentem seguros e satisfeitos a longo prazo, enfatizando a necessidade de estratégias direcionadas para abordar a insatisfação e fomentar um engajamento mais forte.",
               "cardStyleVariant": "default",
               "components": [
                 {
@@ -493,7 +497,7 @@
           },
           {
             "cluster": "Passivo — serviço de rede",
-            "description": "Indivíduos com uma postura passiva que interagem com ou dependem do serviço de rede sem envolvimento ativo.",
+            "description": "Indivíduos com uma postura passiva que interagem ou dependem do serviço de rede sem envolvimento ativo.",
             "percentage": "22.0",
             "id": 2
           },
@@ -511,7 +515,7 @@
           },
           {
             "cluster": "Passivo — outros",
-            "description": "Indivíduos com uma postura passiva influenciada por fatores categorizados como outros, sem engajamento ativo ou motivadores especificados.",
+            "description": "Indivíduos com uma postura passiva influenciada por fatores categorizados como outros, sem engajamento ativo ou motivações especificadas.",
             "percentage": "5.0",
             "id": 5
           },
@@ -552,10 +556,9 @@
           "question_id": "question01",
           "index": 0,
           "question": "Qual é a probabilidade de você recomendar nossa empresa a um amigo ou colega em uma escala de 0 a 10?",
-          "summary": "A distribuição atual mostra que 51% dos entrevistados são detratores e apenas 30% são promotores, indicando a necessidade de focar em melhorias direcionadas na experiência do cliente para aumentar a proporção de promotores e reduzir os detratores.",
+          "summary": "A empresa deve focar em converter os 51% dos entrevistados classificados como detratores, identificando os fatores específicos de insatisfação, já que apenas 30% dos clientes são promotores, provavelmente posicionados na extremidade superior da escala de recomendação.",
           "data": {
             "npsScore": -21.0,
-            "npsCategory": "",
             "npsStackedChart": [
               {
                 "option": "Detrator",
@@ -585,31 +588,31 @@
           "question_id": "question02",
           "index": 1,
           "question": "Quais são os principais pontos que impactam sua satisfação?",
-          "summary": "A satisfação do cliente em telefonia móvel é impactada principalmente por problemas no serviço de rede, com 51 menções negativas focando em cobertura, confiabilidade e estabilidade, superando as 16 menções positivas relacionadas à qualidade e velocidade do serviço de rede, indicando a necessidade de priorizar melhorias na cobertura e confiabilidade da rede.",
+          "summary": "A maior parte da insatisfação dos clientes decorre de problemas no serviço de rede, particularmente cobertura e confiabilidade da rede, que representam a maioria dos feedbacks negativos, enquanto os comentários positivos destacam principalmente a qualidade geral do serviço de rede.",
           "data": {
             "sentimentDivergentChart": [
               {
-                "category": "serviço de rede",
+                "value": "serviço de rede",
                 "positive": 10.5,
                 "negative": 38.1
               },
               {
-                "category": "suporte ao cliente",
+                "value": "suporte ao cliente",
                 "positive": 6.4,
                 "negative": 10.5
               },
               {
-                "category": "cobertura de rede",
+                "value": "cobertura de rede",
                 "positive": 1.8,
                 "negative": 13.6
               },
               {
-                "category": "oferta e preços",
+                "value": "oferta e preços",
                 "positive": 3.3,
                 "negative": 6.6
               },
               {
-                "category": "outro",
+                "value": "outro",
                 "positive": 2.8,
                 "negative": 6.4
               }
@@ -618,7 +621,7 @@
               {
                 "rank": 1,
                 "category": "serviço de rede",
-                "mentions": 6,
+                "mentions": 190,
                 "percentage": 100,
                 "topics": [
                   {
@@ -650,8 +653,8 @@
               {
                 "rank": 2,
                 "category": "suporte ao cliente",
-                "mentions": 6,
-                "percentage": 100,
+                "mentions": 66,
+                "percentage": 35,
                 "topics": [
                   {
                     "topic": "atenção ao cliente",
@@ -682,8 +685,8 @@
               {
                 "rank": 3,
                 "category": "cobertura de rede",
-                "mentions": 3,
-                "percentage": 50,
+                "mentions": 60,
+                "percentage": 32,
                 "topics": [
                   {
                     "topic": "cobertura de rede",
@@ -972,7 +975,7 @@
           "question_id": "question03",
           "index": 2,
           "question": "Dentre as opções qual é o principal ponto que impacta sua satisfação?",
-          "summary": "Os principais fatores que impactam a satisfação do cliente estão relacionados à confiabilidade da internet e problemas de sinal, com 25,9% das respostas citando quedas/instabilidade da internet (13,5%) e falta de sinal de internet (12,5%). Além disso, 23,5% das respostas referem-se a preocupações com a qualidade e cobertura do sinal, combinando “Qualidade do Sinal / Cobertura” e “Qualidade do Sinal / Cobertura Ruim.” A insatisfação com o custo-benefício representa 9,4%, enquanto as menções positivas ao custo-benefício são substancialmente menores (4,2%). A velocidade da internet e a suficiência do pacote são mencionadas com menos frequência, mas ainda são relevantes.\n\nFrase acionável: Priorize a melhoria da estabilidade da rede e da disponibilidade do sinal, pois 26% dos clientes identificam quedas de internet e falta de sinal como os principais fatores de insatisfação.",
+          "summary": "Os três principais fatores que impactam a satisfação do cliente são queda/instabilidade da internet (13,5%), falta de sinal de internet (12,5%) e percepção de baixo custo-benefício dos planos (9,4%), indicando que melhorar a confiabilidade da rede e revisar os preços dos planos poderia resolver quase 35% das principais preocupações dos clientes.",
           "data": {
             "barChart": [
               {
@@ -1108,25 +1111,19 @@
               "type": "card",
               "index": 0,
               "title": "Sumário",
-              "text": "O segmento pós-pago apresenta a menor lealdade e a maior insatisfação, impulsionadas principalmente por problemas de conectividade 5G e atrasos nas mensagens do aplicativo, sinalizando uma necessidade crítica de melhorias na rede e na experiência digital.  \nClientes pré-pagos mostram satisfação e potencial de retenção comparativamente maiores, beneficiando-se de forte cobertura de rede e sistemas de bônus atraentes, sugerindo oportunidades para aproveitar essas forças.  \nClientes Controle valorizam o suporte ao cliente e a acessibilidade, mas enfrentam preocupações significativas com a cobrança, destacando a importância de aprimorar a transparência e a comunicação da cobrança em todos os segmentos para melhorar a satisfação geral.",
+              "text": "O segmento pós-pago apresenta a maior insatisfação principalmente devido a lacunas na cobertura da rede e problemas de desempenho do aplicativo, impactando severamente sua lealdade e pontuações de NPS.  \nOs clientes Controle apreciam o suporte e os preços, mas enfrentam desafios notáveis com a precisão da cobrança e a qualidade do serviço 4G, o que reduz seus níveis de satisfação.  \nOs usuários Pré-pago, embora relativamente mais satisfeitos e valorizando a cobertura e os bônus, ainda enfrentam frustrações relacionadas ao aplicativo que precisam ser resolvidas para melhorar a experiência geral.",
               "cardStyleVariant": "default"
             },
             {
               "type": "card",
               "index": 1,
               "title": "Distribuição dos respondentes",
-              "cardStyleVariant": "flex-row",
+              "cardStyleVariant": "flex-column",
               "cardContentVariant": "with-charts",
               "components": [
                 {
                   "type": "barChart",
-                  "index": 0,
                   "dataPath": "sectionData.TipodeCliente.distributionChart"
-                },
-                {
-                  "type": "distributionTable",
-                  "index": 1,
-                  "dataPath": "sectionData.TipodeCliente.distributionTable"
                 }
               ]
             },
@@ -1141,35 +1138,42 @@
                   "type": "card",
                   "index": 0,
                   "title": "Sumário",
-                  "text": "Os Net Promoter Scores (NPS) em todos os tipos de clientes são negativos, indicando insatisfação geral, com os clientes pós-pago apresentando a menor lealdade, com -28,6. O segmento pré-pago tem um desempenho relativamente melhor, com uma proporção maior de promotores e o NPS menos negativo de -13,5, sugerindo algumas oportunidades de retenção. As altas proporções de detratores entre os clientes controle e pós-pago destacam necessidades urgentes de melhoria no serviço e estratégias direcionadas de experiência do cliente nesses segmentos.",
+                  "titleStyleVariant": "h3-style",
                   "cardStyleVariant": "flat",
-                  "titleStyleVariant": "h3-style"
+                  "text": "Os Net Promoter Scores (NPS) em todos os tipos de clientes na telefonia móvel são negativos, indicando insatisfação generalizada, com os clientes pré-pago apresentando o sentimento menos negativo (-13,5) em comparação aos segmentos controle (-22,8) e pós-pago (-28,6). A alta proporção de detratores, especialmente em pós-pago (53,6%) e controle (51,4%), sugere desafios significativos na retenção da lealdade e na promoção de recomendações positivas. Abordar questões específicas dos planos pós-pago e controle será fundamental para melhorar a satisfação geral do cliente e a defesa da marca."
                 },
                 {
-                  "type": "card",
-                  "cardStyleVariant": "flat",
-                  "index": 1,
-                  "title": "Respostas",
+                  "type": "container",
+                  "index": 0,
                   "components": [
                     {
                       "type": "h4",
-                      "index": 1,
+                      "index": 0,
                       "text": "Promotores, Neutros, Detratores"
                     },
                     {
                       "type": "npsDistributionTable",
-                      "index": 2,
+                      "index": 1,
                       "dataPath": "sectionData.TipodeCliente.questions.question01.npsDistributionTable",
-                      "categoryName": "Por Tipo de Cliente"
+                      "categoryName": "Tipo de Cliente",
+                      "config": {
+                        "yAxisDataKey": "Tipo de Cliente"
+                      }
                     },
-                    { "type": "h4", 
-                    "index": 3, 
-                    "text": "NPS" },
+                    {
+                      "type": "h4",
+                      "index": 2,
+                      "text": "NPS"
+                    },
                     {
                       "type": "npsTable",
-                      "index": 4,
+                      "index": 3,
                       "dataPath": "sectionData.TipodeCliente.questions.question01.npsTable",
-                      "categoryName": "Por Tipo de Cliente"
+                      "categoryName": "Tipo de Cliente",
+                      "config": {
+                        "dataKey": "NPS",
+                        "yAxisDataKey": "Tipo de Cliente"
+                      }
                     }
                   ]
                 }
@@ -1188,58 +1192,64 @@
                   "title": "Sumário",
                   "titleStyleVariant": "h3-style",
                   "cardStyleVariant": "flat",
-                  "text": "O segmento pós-pago apresenta a maior insatisfação (85,4% negativa), principalmente devido à conectividade 5G e atrasos nas mensagens do aplicativo, enquanto os clientes pré-pago têm uma negatividade relativamente menor (63,4%) e valorizam mais a cobertura da rede e os sistemas de bônus. Os clientes Controle, apesar de um sentimento negativo moderado (75,0%), valorizam muito o suporte ao cliente e os planos acessíveis, mas enfrentam problemas notáveis com faturamento e cobranças. Em todos os segmentos, a comunicação surge como um fator misto, mas seu impacto negativo supera os positivos, indicando a necessidade de interações mais claras e eficazes para aumentar a satisfação geral."
+                  "text": "A satisfação do cliente é mais baixa entre os clientes pós-pago, com um alto sentimento negativo (85,4%) principalmente impulsionado por problemas de cobertura de rede e relacionados ao aplicativo, como atrasos nas mensagens e problemas de conectividade 5G. Clientes pré-pago apresentam satisfação relativamente melhor, valorizando positivamente a cobertura de rede e os sistemas de bônus, embora o desempenho do aplicativo continue sendo um ponto problemático. Clientes controle destacam forte apreço pelo suporte ao cliente e planos acessíveis, mas relatam preocupações em relação à cobrança e problemas no serviço 4G."
                 },
                 {
                   "type": "container",
-                  "index": 1,
+                  "index": 0,
                   "components": [
                     {
-                      "type": "h3",
+                      "type": "container",
                       "index": 0,
-                      "text": "Análise de sentimento"
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Análise de Sentimento"
+                        },
+                        {
+                          "type": "sentimentThreeColorChart",
+                          "index": 1,
+                          "dataPath": "sectionData.TipodeCliente.questions.question02.satisfactionImpactSentimentChart"
+                        },
+                        {
+                          "type": "sentimentImpactTable",
+                          "index": 2,
+                          "dataPath": "sectionData.TipodeCliente.questions.question02.satisfactionImpactSentimentTable"
+                        }
+                      ]
                     },
                     {
-                      "type": "sentimentThreeColorChart",
+                      "type": "container",
                       "index": 1,
-                      "dataPath": "sectionData.TipodeCliente.questions.question02.satisfactionImpactSentimentChart"
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento positivo - Top 3"
+                        },
+                        {
+                          "type": "positiveCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.TipodeCliente.questions.question02.positiveCategoriesTable"
+                        }
+                      ]
                     },
                     {
-                      "type": "sentimentImpactTable",
-                      "index": 2,
-                      "dataPath": "sectionData.TipodeCliente.questions.question02.satisfactionImpactSentimentTable"
-                    }
-                  ]
-                },
-                {
-                  "type": "container",
-                  "index": 2,
-                  "components": [
-                    {
-                      "type": "h3",
-                      "index": 0,
-                      "text": "Categorias com sentimento positivo - Top 3"
-                    },
-                    {
-                      "type": "positiveCategoriesTable",
+                      "type": "container",
                       "index": 1,
-                      "dataPath": "sectionData.TipodeCliente.questions.question02.positiveCategoriesTable"
-                    }
-                  ]
-                },
-                {
-                  "type": "container",
-                  "index": 3,
-                  "components": [
-                    {
-                      "type": "h3",
-                      "index": 0,
-                      "text": "Categorias com sentimento negativo - Top 3"
-                    },
-                    {
-                      "type": "negativeCategoriesTable",
-                      "index": 1,
-                      "dataPath": "sectionData.TipodeCliente.questions.question02.negativeCategoriesTable"
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento negativo - Top 3"
+                        },
+                        {
+                          "type": "negativeCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.TipodeCliente.questions.question02.negativeCategoriesTable"
+                        }
+                      ]
                     }
                   ]
                 }
@@ -1285,19 +1295,19 @@
               "question01": {
                 "npsDistributionTable": [
                   {
-                    "segment": "controle",
+                    "Tipo de Cliente": "controle",
                     "promoters": 28.6,
                     "neutrals": 20.0,
                     "detractors": 51.4
                   },
                   {
-                    "segment": "pré-pago",
+                    "Tipo de Cliente": "pré-pago",
                     "promoters": 35.1,
                     "neutrals": 16.2,
                     "detractors": 48.6
                   },
                   {
-                    "segment": "pós-pago",
+                    "Tipo de Cliente": "pós-pago",
                     "promoters": 25.0,
                     "neutrals": 21.4,
                     "detractors": 53.6
@@ -1305,15 +1315,15 @@
                 ],
                 "npsTable": [
                   {
-                    "segment": "controle",
-                    "NPS": -22.799999999999997
+                    "Tipo de Cliente": "controle",
+                    "NPS": -22.8
                   },
                   {
-                    "segment": "pré-pago",
+                    "Tipo de Cliente": "pré-pago",
                     "NPS": -13.5
                   },
                   {
-                    "segment": "pós-pago",
+                    "Tipo de Cliente": "pós-pago",
                     "NPS": -28.6
                   }
                 ],
@@ -1423,8 +1433,8 @@
               "type": "card",
               "index": 0,
               "title": "Sumário",
-              "cardStyleVariant": "default",
-              "text": "O Estado CE demonstra forte satisfação do cliente com alto NPS impulsionado por excelente cobertura de rede e suporte ao cliente, estabelecendo um padrão para outras regiões.  \nEm contraste, SP, RJ e PR apresentam insatisfação significativa principalmente devido ao suporte ao cliente deficiente e problemas de usabilidade do aplicativo, o que prejudica diretamente a defesa e retenção do cliente.  \nPriorizar melhorias na qualidade do suporte ao cliente e no desempenho do aplicativo, especialmente em SP e RJ, será fundamental para reduzir os detratores e aumentar a satisfação geral no serviço de telefonia móvel da empresa."
+              "text": "A lealdade e satisfação do cliente variam significativamente por estado, com o Ceará liderando positivamente devido à forte cobertura de rede, enquanto São Paulo, Rio de Janeiro e Paraná enfrentam altas taxas de detratores relacionadas ao suporte ao cliente deficiente e problemas de usabilidade do aplicativo.  \nAbordar a capacidade de resposta do suporte ao cliente e resolver problemas relacionados ao aplicativo, especialmente em São Paulo e Rio de Janeiro, será fundamental para reduzir os detratores e aumentar a satisfação geral.  \nMelhorias direcionadas nessas áreas-chave de serviço nos estados com desempenho inferior podem transformar percepções negativas e impulsionar taxas mais altas de recomendação no competitivo mercado de telefonia móvel.",
+              "cardStyleVariant": "default"
             },
             {
               "type": "card",
@@ -1435,13 +1445,7 @@
               "components": [
                 {
                   "type": "barChart",
-                  "index": 0,
                   "dataPath": "sectionData.Estado.distributionChart"
-                },
-                {
-                  "type": "distributionTable",
-                  "index": 1,
-                  "dataPath": "sectionData.Estado.distributionTable"
                 }
               ]
             },
@@ -1456,32 +1460,42 @@
                   "type": "card",
                   "index": 0,
                   "title": "Sumário",
-                  "text": "O Estado CE apresenta uma forte satisfação positiva do cliente com o maior NPS de +9,1, impulsionado por uma alta proporção de promotores (45,5%) e relativamente menos detratores.  \nTodos os outros estados (PE, PR, RJ, SP) exibem pontuações NPS negativas, indicando insatisfação substancial, particularmente RJ com o menor NPS de -28,6 e participações iguais de 50% de detratores.  \nEsforços focados de melhoria são necessários nessas regiões com desempenho inferior, especialmente RJ e PR, para reduzir os detratores e converter neutros em promotores para aumentar a defesa geral do cliente.",
+                  "titleStyleVariant": "h3-style",
                   "cardStyleVariant": "flat",
-                  "titleStyleVariant": "h3-style"
+                  "text": "Os dados revelam disparidades regionais significativas na fidelidade do cliente, com o Ceará (CE) apresentando um NPS positivo forte de 9,1, impulsionado por uma alta taxa de promotores (45,5%), enquanto todos os outros estados registram pontuações negativas de NPS, indicando insatisfação generalizada. Rio de Janeiro (RJ) e Paraná (PR) exibem os níveis mais baixos de fidelidade, cada um com 50% de detratores, sugerindo que é necessária atenção urgente para resolver problemas de serviço ou experiência nesses mercados. Para a telefonia móvel, melhorar a experiência do cliente nesses estados com desempenho inferior é fundamental para aumentar a satisfação geral e transformar detratores em promotores."
                 },
                 {
                   "type": "container",
-                  "index": 1,
+                  "index": 0,
                   "components": [
-                    { "type": "h3", "index": 0, "text": "Respostas" },
                     {
                       "type": "h4",
-                      "index": 1,
+                      "index": 0,
                       "text": "Promotores, Neutros, Detratores"
                     },
                     {
                       "type": "npsDistributionTable",
-                      "index": 2,
+                      "index": 1,
                       "dataPath": "sectionData.Estado.questions.question01.npsDistributionTable",
-                      "categoryName": "Por Estado"
+                      "categoryName": "Estado",
+                      "config": {
+                        "yAxisDataKey": "Estado"
+                      }
                     },
-                    { "type": "h4", "index": 3, "text": "NPS" },
+                    {
+                      "type": "h4",
+                      "index": 2,
+                      "text": "NPS"
+                    },
                     {
                       "type": "npsTable",
-                      "index": 4,
+                      "index": 3,
                       "dataPath": "sectionData.Estado.questions.question01.npsTable",
-                      "categoryName": "Por Estado"
+                      "categoryName": "Estado",
+                      "config": {
+                        "dataKey": "NPS",
+                        "yAxisDataKey": "Estado"
+                      }
                     }
                   ]
                 }
@@ -1500,54 +1514,64 @@
                   "title": "Sumário",
                   "titleStyleVariant": "h3-style",
                   "cardStyleVariant": "flat",
-                  "text": "Os níveis de satisfação variam significativamente por região, com SP apresentando a maior negatividade (94,6%) principalmente devido ao suporte ao cliente deficiente e problemas de usabilidade do aplicativo, enquanto CE registra feedbacks mais positivos centrados na forte cobertura de rede e suporte ao cliente. Os clientes de PE destacam positivamente os planos acessíveis e o suporte ao cliente, mas estão preocupados com atrasos nas mensagens do aplicativo e a concorrência, indicando experiências mistas. No geral, melhorar a qualidade do suporte ao cliente e a funcionalidade do aplicativo em todas as regiões, especialmente em SP e RJ, provavelmente aumentaria a satisfação dos clientes com o serviço de telefonia móvel."
+                  "text": "A satisfação do cliente varia significativamente por região, com São Paulo apresentando o maior sentimento negativo (94,6%), em grande parte devido à insatisfação com o suporte ao cliente e problemas de usabilidade do aplicativo. No Ceará, a cobertura de rede é um fator positivo forte, enquanto os clientes de Pernambuco e Rio de Janeiro valorizam o suporte ao cliente, apesar de também relatarem preocupações com atrasos nas mensagens do aplicativo e organização do serviço. No geral, melhorar a capacidade de resposta do suporte ao cliente e resolver problemas relacionados ao aplicativo poderia aumentar significativamente a satisfação em vários estados."
                 },
                 {
                   "type": "container",
-                  "index": 1,
+                  "index": 0,
                   "components": [
                     {
-                      "type": "sentimentThreeColorChart",
-                      "index": 1,
-                      "dataPath": "sectionData.Estado.questions.question02.satisfactionImpactSentimentChart",
-                      "config": {}
-                    },
-                    {
-                      "type": "sentimentImpactTable",
-                      "index": 2,
-                      "dataPath": "sectionData.Estado.questions.question02.satisfactionImpactSentimentTable"
-                    }
-                  ]
-                },
-                {
-                  "type": "container",
-                  "index": 2,
-                  "components": [
-                    {
-                      "type": "h3",
+                      "type": "container",
                       "index": 0,
-                      "text": "Categorias com sentimento positivo - Top 3"
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Análise de Sentimento"
+                        },
+                        {
+                          "type": "sentimentThreeColorChart",
+                          "index": 1,
+                          "dataPath": "sectionData.Estado.questions.question02.satisfactionImpactSentimentChart"
+                        },
+                        {
+                          "type": "sentimentImpactTable",
+                          "index": 2,
+                          "dataPath": "sectionData.Estado.questions.question02.satisfactionImpactSentimentTable"
+                        }
+                      ]
                     },
                     {
-                      "type": "positiveCategoriesTable",
+                      "type": "container",
                       "index": 1,
-                      "dataPath": "sectionData.Estado.questions.question02.positiveCategoriesTable"
-                    }
-                  ]
-                },
-                {
-                  "type": "container",
-                  "index": 3,
-                  "components": [
-                    {
-                      "type": "h3",
-                      "index": 0,
-                      "text": "Categorias com sentimento negativo - Top 3"
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento positivo - Top 3"
+                        },
+                        {
+                          "type": "positiveCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.Estado.questions.question02.positiveCategoriesTable"
+                        }
+                      ]
                     },
                     {
-                      "type": "negativeCategoriesTable",
+                      "type": "container",
                       "index": 1,
-                      "dataPath": "sectionData.Estado.questions.question02.negativeCategoriesTable"
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento negativo - Top 3"
+                        },
+                        {
+                          "type": "negativeCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.Estado.questions.question02.negativeCategoriesTable"
+                        }
+                      ]
                     }
                   ]
                 }
@@ -1663,31 +1687,31 @@
               "question01": {
                 "npsDistributionTable": [
                   {
-                    "segment": "CE",
+                    "Estado": "CE",
                     "promoters": 45.5,
                     "neutrals": 18.2,
                     "detractors": 36.4
                   },
                   {
-                    "segment": "PE",
+                    "Estado": "PE",
                     "promoters": 38.5,
                     "neutrals": 15.4,
                     "detractors": 46.2
                   },
                   {
-                    "segment": "PR",
+                    "Estado": "PR",
                     "promoters": 35.7,
                     "neutrals": 14.3,
                     "detractors": 50.0
                   },
                   {
-                    "segment": "RJ",
+                    "Estado": "RJ",
                     "promoters": 21.4,
                     "neutrals": 28.6,
                     "detractors": 50.0
                   },
                   {
-                    "segment": "SP",
+                    "Estado": "SP",
                     "promoters": 27.3,
                     "neutrals": 27.3,
                     "detractors": 45.5
@@ -1695,23 +1719,23 @@
                 ],
                 "npsTable": [
                   {
-                    "segment": "CE",
-                    "NPS": 9.100000000000001
+                    "Estado": "CE",
+                    "NPS": 9.1
                   },
                   {
-                    "segment": "PE",
-                    "NPS": -7.700000000000003
+                    "Estado": "PE",
+                    "NPS": -7.7
                   },
                   {
-                    "segment": "PR",
-                    "NPS": -14.299999999999997
+                    "Estado": "PR",
+                    "NPS": -14.3
                   },
                   {
-                    "segment": "RJ",
+                    "Estado": "RJ",
                     "NPS": -28.6
                   },
                   {
-                    "segment": "SP",
+                    "Estado": "SP",
                     "NPS": -18.2
                   }
                 ],
@@ -1835,123 +1859,7 @@
             }
           }
         }
-      ],
-      "data": {
-        "estado": {
-          "distributionChart": [
-            {
-              "segment": "RJ",
-              "count": 14,
-              "percentage": 14.0
-            },
-            {
-              "segment": "PR",
-              "count": 14,
-              "percentage": 14.0
-            },
-            {
-              "segment": "PE",
-              "count": 13,
-              "percentage": 13.0
-            },
-            {
-              "segment": "SP",
-              "count": 11,
-              "percentage": 11.0
-            },
-            {
-              "segment": "CE",
-              "count": 11,
-              "percentage": 11.0
-            },
-            {
-              "segment": "DF",
-              "count": 9,
-              "percentage": 9.0
-            },
-            {
-              "segment": "SC",
-              "count": 9,
-              "percentage": 9.0
-            },
-            {
-              "segment": "BA",
-              "count": 9,
-              "percentage": 9.0
-            },
-            {
-              "segment": "RS",
-              "count": 5,
-              "percentage": 5.0
-            },
-            {
-              "segment": "MG",
-              "count": 5,
-              "percentage": 5.0
-            }
-          ],
-          "distributionTable": [
-            {
-              "segment": "RJ",
-              "count": 14,
-              "percentage": 14.0
-            },
-            {
-              "segment": "PR",
-              "count": 14,
-              "percentage": 14.0
-            },
-            {
-              "segment": "PE",
-              "count": 13,
-              "percentage": 13.0
-            },
-            {
-              "segment": "SP",
-              "count": 11,
-              "percentage": 11.0
-            },
-            {
-              "segment": "CE",
-              "count": 11,
-              "percentage": 11.0
-            },
-            {
-              "segment": "DF",
-              "count": 9,
-              "percentage": 9.0
-            },
-            {
-              "segment": "SC",
-              "count": 9,
-              "percentage": 9.0
-            },
-            {
-              "segment": "BA",
-              "count": 9,
-              "percentage": 9.0
-            },
-            {
-              "segment": "RS",
-              "count": 5,
-              "percentage": 5.0
-            },
-            {
-              "segment": "MG",
-              "count": 5,
-              "percentage": 5.0
-            }
-          ],
-          "sentimentChart": [],
-          "sentimentTable": [],
-          "npsDistributionTable": [],
-          "npsTable": [],
-          "satisfactionImpactSentimentChart": [],
-          "satisfactionImpactSentimentTable": [],
-          "positiveCategoriesTable": [],
-          "negativeCategoriesTable": []
-        }
-      }
+      ]
     }
   ],
   "uiTexts": {
