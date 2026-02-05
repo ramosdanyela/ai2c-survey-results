@@ -13,7 +13,7 @@ import {
 
 // Escolha os dois JSONs pelo relative path (edite só esta lista)
 const SOURCE_PATHS = [
-  "@/data/surveyDataFromDaniel.json",
+  "@/data/json_file_app_05-02.json",
   "@/data/surveyData.json",
 ];
 const jsonModules = import.meta.glob("@/data/*.json", { eager: true });
@@ -89,7 +89,7 @@ function JsonTreeItem({
         onToggle(path);
       }
     },
-    [isExpandable, path, onToggle],
+    [isExpandable, path, onToggle]
   );
 
   return (
@@ -210,7 +210,7 @@ function calculateInitialPaths(data) {
  */
 function JsonViewerPanel({ data, title, panelId }) {
   const [expandedPaths, setExpandedPaths] = useState(() =>
-    calculateInitialPaths(data),
+    calculateInitialPaths(data)
   );
 
   useEffect(() => {

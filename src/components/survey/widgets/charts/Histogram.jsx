@@ -12,13 +12,16 @@ import { CHART_COLORS } from "@/lib/colors";
 
 /**
  * Histogram / Distribution Chart Component
- * 
- * Displays statistical distribution of data as a histogram.
- * 
+ *
+ * Supports two data formats:
+ * 1) Pre-binned: array of { bin, value } — bin = faixa (eixo X), value = contagem (altura da barra).
+ * 2) Raw values: array of numbers or { value } — component computes bins automatically.
+ *
  * @param {Object} props
- * @param {Array} props.data - Array of values or objects with value key
- * @param {string} [props.valueKey="value"] - Key for value in data objects
- * @param {number} [props.bins] - Number of bins (auto-calculated if not provided)
+ * @param {Array} props.data - Pre-binned: [{ bin: "0-10", value: 5 }, ...]. Raw: [1, 2, 3] or [{ value: 1 }, ...]
+ * @param {string} [props.binKey="bin"] - Key for bin label in pre-binned data
+ * @param {string} [props.valueKey="value"] - Key for value/count in data objects
+ * @param {number} [props.bins] - Number of bins when using raw values (auto if not provided)
  * @param {boolean} [props.showDensity=false] - Show density instead of count
  * @param {number} [props.height=400] - Chart height
  * @param {Object} [props.margin] - Chart margins
@@ -27,6 +30,7 @@ import { CHART_COLORS } from "@/lib/colors";
  */
 export function Histogram({
   data = [],
+  binKey = "bin",
   valueKey = "value",
   bins,
   showDensity = false,
@@ -46,59 +50,85 @@ export function Histogram({
     );
   }
 
-  // Extract values
-  const values = data.map((item) => {
-    if (typeof item === "number") return item;
-    return item[valueKey] || 0;
-  }).filter((v) => typeof v === "number" && !isNaN(v));
-
-  if (values.length === 0) {
-    return (
-      <div
-        className="flex items-center justify-center p-8 text-muted-foreground"
-        style={{ height }}
-      >
-        <p>Nenhum valor numérico válido encontrado</p>
-      </div>
+  // Pre-binned: every item has binKey (faixa) and valueKey (contagem) — use as-is
+  const isPreBinned =
+    data.length > 0 &&
+    data.every(
+      (item) =>
+        typeof item === "object" &&
+        item != null &&
+        binKey in item &&
+        valueKey in item &&
+        typeof item[valueKey] === "number"
     );
+
+  let chartData;
+
+  if (isPreBinned) {
+    const total = data.reduce((acc, item) => acc + (item[valueKey] || 0), 0);
+    chartData = data.map((item) => {
+      const count = Number(item[valueKey]) || 0;
+      const pct = total > 0 ? (count / total) * 100 : 0;
+      return {
+        label: item[binKey] != null ? String(item[binKey]) : "",
+        value: showDensity && total > 0 ? count / total : count,
+        count,
+        displayValue: showDensity
+          ? (total > 0 ? count / total : 0).toFixed(4)
+          : `${count} (${pct.toFixed(1)}%)`,
+      };
+    });
+  } else {
+    // Raw values: extract numbers and compute bins
+    const values = data
+      .map((item) => {
+        if (typeof item === "number") return item;
+        return item[valueKey] != null ? item[valueKey] : 0;
+      })
+      .filter((v) => typeof v === "number" && !isNaN(v));
+
+    if (values.length === 0) {
+      return (
+        <div
+          className="flex items-center justify-center p-8 text-muted-foreground"
+          style={{ height }}
+        >
+          <p>Nenhum valor numérico válido encontrado</p>
+        </div>
+      );
+    }
+
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const range = max - min || 1;
+    const numBins = bins || Math.ceil(Math.sqrt(values.length)) || 1;
+    const binWidth = range / numBins;
+
+    const binData = Array.from({ length: numBins }, (_, i) => {
+      const binStart = min + i * binWidth;
+      const binEnd = binStart + binWidth;
+      const count = values.filter(
+        (v) => v >= binStart && (i === numBins - 1 ? v <= binEnd : v < binEnd)
+      ).length;
+      return {
+        label: `${binStart.toFixed(1)}-${binEnd.toFixed(1)}`,
+        count,
+        density:
+          values.length * binWidth > 0 ? count / (values.length * binWidth) : 0,
+      };
+    });
+
+    const total = values.length;
+    chartData = binData.map((b) => ({
+      ...b,
+      value: showDensity ? b.density : b.count,
+      displayValue: showDensity
+        ? b.density.toFixed(4)
+        : `${b.count} (${
+            total > 0 ? ((b.count / total) * 100).toFixed(1) : 0
+          }%)`,
+    }));
   }
-
-  // Calculate bins
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-  const range = max - min;
-  const numBins = bins || Math.ceil(Math.sqrt(values.length));
-  const binWidth = range / numBins;
-
-  // Create bins
-  const binData = Array.from({ length: numBins }, (_, i) => {
-    const binStart = min + i * binWidth;
-    const binEnd = binStart + binWidth;
-    const count = values.filter(
-      (v) => v >= binStart && (i === numBins - 1 ? v <= binEnd : v < binEnd)
-    ).length;
-
-    return {
-      bin: i,
-      binStart: binStart.toFixed(2),
-      binEnd: binEnd.toFixed(2),
-      label: `${binStart.toFixed(1)}-${binEnd.toFixed(1)}`,
-      count,
-      density: count / (values.length * binWidth),
-    };
-  });
-
-  // Calculate total for density normalization
-  const total = values.length;
-  const maxCount = Math.max(...binData.map((b) => b.count));
-
-  const chartData = binData.map((bin) => ({
-    ...bin,
-    value: showDensity ? bin.density : bin.count,
-    displayValue: showDensity
-      ? bin.density.toFixed(4)
-      : `${bin.count} (${((bin.count / total) * 100).toFixed(1)}%)`,
-  }));
 
   return (
     <div style={{ height }} role="img" aria-label="Histograma de distribuição">
@@ -129,9 +159,12 @@ export function Histogram({
             tick={{ fill: CHART_COLORS.foreground }}
           />
           <Tooltip
-            formatter={(value, name) => {
-              const item = name;
-              return [item.displayValue, showDensity ? "Densidade" : "Frequência"];
+            formatter={(value, name, props) => {
+              const display =
+                props?.payload?.displayValue != null
+                  ? props.payload.displayValue
+                  : value;
+              return [display, showDensity ? "Densidade" : "Frequência"];
             }}
             contentStyle={{
               backgroundColor: "hsl(var(--background))",
@@ -158,4 +191,3 @@ export function Histogram({
     </div>
   );
 }
-

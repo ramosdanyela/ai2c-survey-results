@@ -30,6 +30,7 @@ import {
   cardTitleVariants,
 } from "@/styles/variants";
 import { enrichComponentWithStyles } from "@/services/styleResolver";
+import { resolveDataPath } from "@/services/dataResolver";
 import { useSurveyData } from "@/hooks/useSurveyData";
 
 /**
@@ -68,6 +69,71 @@ export default function JsonReference() {
     }),
     [surveyDataJson, sectionData]
   );
+
+  // Dados de todas as seções merged para a aba Data Path (exemplos com dados reais)
+  const mergedSectionData = useMemo(() => {
+    const sections = surveyDataJson?.sections || [];
+    return Object.assign(
+      {},
+      ...sections
+        .filter((s) => s.data && typeof s.data === "object")
+        .map((s) => s.data)
+    );
+  }, [surveyDataJson]);
+
+  /** Scan completo do relatório: todas as seções, subseções e componentes (type + dataPath) */
+  const reportInventory = useMemo(() => {
+    const sections = surveyDataJson?.sections || [];
+    function collectComponents(items, out) {
+      if (!Array.isArray(items)) return;
+      items.forEach((item) => {
+        if (item.type) {
+          out.push({
+            type: item.type,
+            dataPath: item.dataPath || null,
+            index: item.index,
+          });
+        }
+        if (item.components && Array.isArray(item.components)) {
+          collectComponents(item.components, out);
+        }
+      });
+    }
+    return sections.map((section) => {
+      const sectionEntry = {
+        id: section.id,
+        name: section.name || section.id,
+        subsections: [],
+        questions: null,
+      };
+      if (section.subsections && Array.isArray(section.subsections)) {
+        sectionEntry.subsections = section.subsections.map((sub) => {
+          const comps = [];
+          if (sub.components) collectComponents(sub.components, comps);
+          return {
+            id: sub.id,
+            name: sub.name || sub.id,
+            components: comps,
+          };
+        });
+      } else if (section.components && Array.isArray(section.components)) {
+        const comps = [];
+        collectComponents(section.components, comps);
+        sectionEntry.subsections = [
+          { id: "_", name: "(seção)", components: comps },
+        ];
+      }
+      if (section.questions && Array.isArray(section.questions)) {
+        sectionEntry.questions = section.questions.map((q) => ({
+          question_id: q.question_id || q.id,
+          questionType: q.questionType,
+          dataKeys:
+            q.data && typeof q.data === "object" ? Object.keys(q.data) : [],
+        }));
+      }
+      return sectionEntry;
+    });
+  }, [surveyDataJson]);
 
   const extractSectionData = useMemo(() => {
     const sections = surveyDataJson?.sections || [];
@@ -182,10 +248,29 @@ export default function JsonReference() {
       ),
       Tables: types.filter((t) => t.includes("Table")),
       Headers: types.filter((t) => ["h3", "h4"].includes(t)),
-      Widgets: types.filter((t) =>
-        ["questionsList", "filterPills", "wordCloud", "accordion"].includes(t)
-      ),
+      Widgets: types.filter((t) => ["filterPills", "wordCloud"].includes(t)),
     };
+    // Tipos que têm dataPath no JSON atual (usados no relatório)
+    const usedDataPathTypes = [
+      ...new Set(
+        allComponents
+          .filter((c) => c.dataPath)
+          .map((c) => c.type)
+          .filter(Boolean)
+      ),
+    ];
+    const pathsByType = {};
+    const componentSpecByType = {};
+    allComponents
+      .filter((c) => c.dataPath)
+      .forEach((c) => {
+        if (!pathsByType[c.type]) {
+          pathsByType[c.type] = [];
+          componentSpecByType[c.type] = c;
+        }
+        if (!pathsByType[c.type].includes(c.dataPath))
+          pathsByType[c.type].push(c.dataPath);
+      });
     return {
       types,
       typeCategories,
@@ -196,8 +281,18 @@ export default function JsonReference() {
       titles,
       texts,
       dataPaths,
+      usedDataPathTypes,
+      pathsByType,
+      componentSpecByType,
     };
   }, [surveyDataJson]);
+
+  // Componentes do registry que têm dataPath mas NÃO estão no JSON atual (para seção "other")
+  const otherDataPathTypes = useMemo(() => {
+    const used = new Set(extractComponentData.usedDataPathTypes || []);
+    const registryTypes = Object.keys(componentRegistry);
+    return registryTypes.filter((t) => !used.has(t));
+  }, [extractComponentData.usedDataPathTypes]);
 
   const extractConfigData = useMemo(() => {
     const sections = surveyDataJson?.sections || [];
@@ -237,23 +332,6 @@ export default function JsonReference() {
     setCopiedCode(id);
     setTimeout(() => setCopiedCode(null), 2000);
   };
-
-  // Mostra loading enquanto os dados não carregam (depois de todos os hooks)
-  if (loading || !surveyDataJson) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-4">
-          <div className="relative w-16 h-16">
-            <div className="absolute top-0 left-0 w-full h-full border-4 border-primary/20 rounded-full"></div>
-            <div className="absolute top-0 left-0 w-full h-full border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-          </div>
-          <p className="text-sm text-muted-foreground animate-pulse">
-            Carregando referência...
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   // Estrutura básica do JSON
   const basicStructure = {
@@ -337,7 +415,7 @@ export default function JsonReference() {
       "negativeCategoriesTable",
       "analyticalTable",
     ],
-    Widgets: ["questionsList", "filterPills", "wordCloud", "accordion"],
+    Widgets: ["filterPills", "wordCloud"],
     Containers: ["container", "grid-container"],
   };
 
@@ -729,6 +807,416 @@ export default function JsonReference() {
     },
   };
 
+  /** Dados hipotéticos para renderizar componentes da aba Data Path (other) */
+  const otherComponentExampleData = useMemo(() => {
+    const lineChart = {
+      component: {
+        type: "lineChart",
+        index: 0,
+        dataPath: "sectionData.lineChart",
+        config: {
+          xAxisDataKey: "name",
+          lines: [{ dataKey: "value", stroke: "#8884d8" }],
+        },
+      },
+      data: {
+        sectionData: {
+          lineChart: [
+            { name: "Jan", value: 400 },
+            { name: "Fev", value: 300 },
+            { name: "Mar", value: 600 },
+          ],
+        },
+      },
+    };
+    const paretoChart = {
+      component: {
+        type: "paretoChart",
+        index: 0,
+        dataPath: "sectionData.paretoChart",
+        config: { categoryKey: "category", valueKey: "value" },
+      },
+      data: {
+        sectionData: {
+          paretoChart: [
+            { category: "A", value: 100 },
+            { category: "B", value: 80 },
+            { category: "C", value: 60 },
+          ],
+        },
+      },
+    };
+    const scatterPlot = {
+      component: {
+        type: "scatterPlot",
+        index: 0,
+        dataPath: "sectionData.scatterPlot",
+        config: { xAxisDataKey: "x", yAxisDataKey: "y" },
+      },
+      data: {
+        sectionData: {
+          scatterPlot: [
+            { x: 100, y: 200 },
+            { x: 120, y: 180 },
+            { x: 150, y: 150 },
+          ],
+        },
+      },
+    };
+    const histogram = {
+      component: {
+        type: "histogram",
+        index: 0,
+        dataPath: "sectionData.histogram",
+        config: { valueKey: "value" },
+      },
+      data: {
+        sectionData: {
+          histogram: [
+            { bin: "0-10", value: 5 },
+            { bin: "10-20", value: 12 },
+            { bin: "20-30", value: 8 },
+          ],
+        },
+      },
+    };
+    const quadrantChart = {
+      component: {
+        type: "quadrantChart",
+        index: 0,
+        dataPath: "sectionData.quadrantChart",
+        config: { xAxisDataKey: "x", yAxisDataKey: "y", labelKey: "label" },
+      },
+      data: {
+        sectionData: {
+          quadrantChart: [
+            { label: "A", x: 0.2, y: 0.8 },
+            { label: "B", x: 0.7, y: 0.3 },
+            { label: "C", x: 0.5, y: 0.5 },
+          ],
+        },
+      },
+    };
+    const heatmap = {
+      component: {
+        type: "heatmap",
+        index: 0,
+        dataPath: "sectionData.heatmap",
+        config: { xKey: "x", yKey: "y", valueKey: "value" },
+      },
+      data: {
+        sectionData: {
+          heatmap: [
+            { x: "A", y: "1", value: 10 },
+            { x: "B", y: "1", value: 20 },
+            { x: "A", y: "2", value: 15 },
+            { x: "B", y: "2", value: 25 },
+          ],
+        },
+      },
+    };
+    const sankeyDiagram = {
+      component: {
+        type: "sankeyDiagram",
+        index: 0,
+        dataPath: "sectionData.sankeyDiagram",
+        config: {},
+      },
+      data: {
+        sectionData: {
+          sankeyDiagram: {
+            nodes: [
+              { id: "A", label: "Origem" },
+              { id: "B", label: "Destino 1" },
+              { id: "C", label: "Destino 2" },
+            ],
+            links: [
+              { source: "A", target: "B", value: 10 },
+              { source: "A", target: "C", value: 5 },
+            ],
+          },
+        },
+      },
+    };
+    const stackedBarMECE = {
+      component: {
+        type: "stackedBarMECE",
+        index: 0,
+        dataPath: "sectionData.stackedBarMECE",
+        config: {
+          categoryKey: "category",
+          series: [
+            { dataKey: "a", name: "Série A", color: "#8884d8" },
+            { dataKey: "b", name: "Série B", color: "#82ca9d" },
+          ],
+        },
+      },
+      data: {
+        sectionData: {
+          stackedBarMECE: [
+            { category: "X", a: 10, b: 20 },
+            { category: "Y", a: 15, b: 25 },
+            { category: "Z", a: 12, b: 18 },
+          ],
+        },
+      },
+    };
+    const evolutionaryScorecard = {
+      component: {
+        type: "evolutionaryScorecard",
+        index: 0,
+        dataPath: "sectionData.evolutionaryScorecard",
+        config: {
+          valueKey: "value",
+          targetKey: "target",
+          deltaKey: "delta",
+          labelKey: "label",
+        },
+      },
+      data: {
+        sectionData: {
+          evolutionaryScorecard: {
+            value: 75,
+            target: 80,
+            delta: 5,
+            trend: "up",
+            label: "Evolução (exemplo)",
+          },
+        },
+      },
+    };
+    const slopeGraph = {
+      component: {
+        type: "slopeGraph",
+        index: 0,
+        dataPath: "sectionData.slopeGraph",
+        config: {
+          categoryKey: "category",
+          beforeKey: "before",
+          afterKey: "after",
+        },
+      },
+      data: {
+        sectionData: {
+          slopeGraph: [
+            { category: "A", before: 10, after: 20 },
+            { category: "B", before: 30, after: 25 },
+            { category: "C", before: 15, after: 35 },
+          ],
+        },
+      },
+    };
+    const waterfallChart = {
+      component: {
+        type: "waterfallChart",
+        index: 0,
+        dataPath: "sectionData.waterfallChart",
+        config: {
+          labelKey: "label",
+          valueKey: "value",
+          typeKey: "type",
+        },
+      },
+      data: {
+        sectionData: {
+          waterfallChart: [
+            { label: "Início", value: 100, type: "start" },
+            { label: "Variação", value: -20, type: "negative" },
+            { label: "Fim", value: 80, type: "end" },
+          ],
+        },
+      },
+    };
+    const npsScoreCard = {
+      component: {
+        type: "npsScoreCard",
+        index: 0,
+        dataPath: "sectionData.npsScore",
+        config: {},
+      },
+      data: {
+        sectionData: {
+          npsScore: { npsScore: 35 },
+        },
+      },
+    };
+    const topCategoriesCards = {
+      component: {
+        type: "topCategoriesCards",
+        index: 0,
+        dataPath: "sectionData.topCategoriesCards",
+        config: {},
+      },
+      data: {
+        sectionData: {
+          topCategoriesCards: [
+            {
+              rank: 1,
+              category: "Categoria A",
+              mentions: 100,
+              percentage: 100,
+              topics: [{ topic: "tema 1", sentiment: "positive" }],
+            },
+          ],
+        },
+      },
+    };
+    const kpiCard = {
+      component: {
+        type: "kpiCard",
+        index: 0,
+        dataPath: "sectionData.kpiCard",
+        config: { title: "KPI", valueKey: "value", labelKey: "label" },
+      },
+      data: {
+        sectionData: {
+          kpiCard: { label: "Meta", value: 85 },
+        },
+      },
+    };
+    const distributionTable = {
+      component: {
+        type: "distributionTable",
+        index: 0,
+        dataPath: "sectionData.distributionTable",
+        config: {},
+      },
+      data: {
+        sectionData: {
+          distributionTable: [
+            { segment: "Opção A", count: 100, percentage: 50 },
+            { segment: "Opção B", count: 100, percentage: 50 },
+          ],
+        },
+      },
+    };
+    const sentimentTable = {
+      component: {
+        type: "sentimentTable",
+        index: 0,
+        dataPath: "sectionData.sentimentTable",
+        config: {},
+      },
+      data: {
+        sectionData: {
+          sentimentTable: [
+            { segment: "Segmento", positive: 60, neutral: 25, negative: 15 },
+          ],
+        },
+      },
+    };
+    const analyticalTable = {
+      component: {
+        type: "analyticalTable",
+        index: 0,
+        dataPath: "sectionData.analyticalTable",
+        config: {},
+      },
+      data: {
+        sectionData: {
+          analyticalTable: [
+            { col1: "A", col2: "B", col3: 10 },
+            { col1: "C", col2: "D", col3: 20 },
+          ],
+        },
+      },
+    };
+    const filterPills = {
+      component: {
+        type: "filterPills",
+        index: 0,
+        dataPath: "sectionData.filterPills",
+        config: {},
+      },
+      data: {
+        sectionData: {
+          filterPills: [{ id: "f1", label: "Filtro 1" }],
+        },
+      },
+    };
+    const wordCloud = {
+      component: {
+        type: "wordCloud",
+        index: 0,
+        dataPath: "sectionData.wordCloud",
+        config: { title: "Nuvem de palavras" },
+      },
+      data: {
+        sectionData: {
+          wordCloud: [
+            { text: "palavra1", value: 50 },
+            { text: "palavra2", value: 30 },
+            { text: "palavra3", value: 20 },
+          ],
+        },
+      },
+    };
+    return {
+      lineChart,
+      paretoChart,
+      scatterPlot,
+      histogram,
+      quadrantChart,
+      heatmap,
+      sankeyDiagram,
+      stackedBarMECE,
+      evolutionaryScorecard,
+      slopeGraph,
+      waterfallChart,
+      npsScoreCard,
+      topCategoriesCards,
+      kpiCard,
+      distributionTable,
+      sentimentTable,
+      analyticalTable,
+      filterPills,
+      wordCloud,
+    };
+  }, []);
+
+  /** Exemplos de estrutura JSON para componentes no registry que não estão no JSON atual */
+  const getOtherComponentExample = (type) => {
+    const raw = otherComponentExampleData[type];
+    if (raw)
+      return JSON.stringify(
+        { component: raw.component, data: raw.data },
+        null,
+        2
+      );
+    return JSON.stringify(
+      {
+        component: {
+          type,
+          index: 0,
+          dataPath: `sectionData.${type}`,
+          config: {},
+        },
+        data: {
+          sectionData: { [type]: "array ou objeto conforme o componente" },
+        },
+      },
+      null,
+      2
+    );
+  };
+
+  // Mostra loading enquanto os dados não carregam (sempre depois de todos os hooks)
+  if (loading || !surveyDataJson) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-4">
+          <div className="relative w-16 h-16">
+            <div className="absolute top-0 left-0 w-full h-full border-4 border-primary/20 rounded-full"></div>
+            <div className="absolute top-0 left-0 w-full h-full border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+          </div>
+          <p className="text-sm text-muted-foreground animate-pulse">
+            Carregando referência...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   // Error Boundary wrapper para capturar erros de renderização
   const SafeRender = ({ children }) => {
     try {
@@ -781,7 +1269,10 @@ export default function JsonReference() {
               <CardTitle className="text-3xl">JSON Schema Reference</CardTitle>
               <CardDescription className="text-base mt-2">
                 Referência completa de todos os campos, estruturas e componentes
-                disponíveis no JSON
+                disponíveis no JSON. Baseado em:{" "}
+                <code className="bg-muted px-1.5 py-0.5 rounded text-xs">
+                  json_file_app_05-02.json
+                </code>
               </CardDescription>
             </div>
           </div>
@@ -789,8 +1280,16 @@ export default function JsonReference() {
       </Card>
 
       <SafeRender>
-        <Tabs defaultValue="structure" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-7">
+        <Tabs defaultValue="datapath" className="space-y-4">
+          <TabsList className="grid w-full grid-cols-8">
+            <TabsTrigger value="datapath">
+              <Code className="w-4 h-4 mr-2" />
+              Data Path
+            </TabsTrigger>
+            <TabsTrigger value="datapath-other">
+              <Code className="w-4 h-4 mr-2" />
+              Data Path (other)
+            </TabsTrigger>
             <TabsTrigger value="structure">
               <Code className="w-4 h-4 mr-2" />
               Estrutura
@@ -802,10 +1301,6 @@ export default function JsonReference() {
             <TabsTrigger value="tables">
               <TableIcon className="w-4 h-4 mr-2" />
               Tabelas
-            </TabsTrigger>
-            <TabsTrigger value="datapath">
-              <Code className="w-4 h-4 mr-2" />
-              Data Path
             </TabsTrigger>
             <TabsTrigger value="components">
               <Layout className="w-4 h-4 mr-2" />
@@ -2206,10 +2701,13 @@ export default function JsonReference() {
           <TabsContent value="datapath" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>Exemplos de Estruturas JSON com Dados</CardTitle>
+                <CardTitle>Data Path — Componentes usados no JSON</CardTitle>
                 <CardDescription>
-                  Exemplos práticos de JSON necessários para renderizar cada
-                  tipo de componente, incluindo os dados necessários
+                  Componentes e dataPaths que aparecem em{" "}
+                  <code className="bg-muted px-1.5 py-0.5 rounded text-xs">
+                    json_file_app_05-02.json
+                  </code>
+                  . Use como referência para estruturar o relatório.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -2296,7 +2794,7 @@ export default function JsonReference() {
                               {
                                 ...realData,
                                 sectionData: {
-                                  ...realData.sectionData,
+                                  ...mergedSectionData,
                                   barChart: [
                                     {
                                       option: "Muito bom",
@@ -2351,14 +2849,14 @@ export default function JsonReference() {
                                       type: "sentimentDivergentChart",
                                       index: 0,
                                       dataPath:
-                                        "sectionData.sentimentStackedChart",
+                                        "sectionData.sentimentDivergentChart",
                                       config: {
                                         yAxisDataKey: "category",
                                       },
                                     },
                                     data: {
                                       sectionData: {
-                                        sentimentStackedChart: [
+                                        sentimentDivergentChart: [
                                           {
                                             category: "Trabalho em Equipe",
                                             positive: 72.3,
@@ -2396,7 +2894,7 @@ export default function JsonReference() {
                               {
                                 type: "sentimentDivergentChart",
                                 index: 0,
-                                dataPath: "sectionData.sentimentStackedChart",
+                                dataPath: "sectionData.sentimentDivergentChart",
                                 config: {
                                   yAxisDataKey: "category",
                                 },
@@ -2404,8 +2902,8 @@ export default function JsonReference() {
                               {
                                 ...realData,
                                 sectionData: {
-                                  ...realData.sectionData,
-                                  sentimentStackedChart: [
+                                  ...mergedSectionData,
+                                  sentimentDivergentChart: [
                                     {
                                       category: "Trabalho em Equipe",
                                       positive: 72.3,
@@ -2425,97 +2923,6 @@ export default function JsonReference() {
                                       negative: 9.0,
                                     },
                                   ],
-                                },
-                              }
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* NPS Stacked Chart */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-lg">npsStackedChart</h4>
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">
-                            JSON necessário:
-                          </p>
-                          <div className="bg-muted/50 rounded-lg p-3">
-                            <pre className="text-xs overflow-x-auto">
-                              <code>
-                                {JSON.stringify(
-                                  {
-                                    component: {
-                                      type: "npsStackedChart",
-                                      index: 0,
-                                      dataPath: "question.data.npsStackedChart",
-                                      config: {},
-                                    },
-                                    data: {
-                                      question: {
-                                        data: {
-                                          npsStackedChart: [
-                                            {
-                                              option: "Promotor",
-                                              value: 493,
-                                              percentage: 58,
-                                            },
-                                            {
-                                              option: "Neutro",
-                                              value: 170,
-                                              percentage: 20,
-                                            },
-                                            {
-                                              option: "Detrator",
-                                              value: 187,
-                                              percentage: 22,
-                                            },
-                                          ],
-                                        },
-                                      },
-                                    },
-                                  },
-                                  null,
-                                  2
-                                )}
-                              </code>
-                            </pre>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">Renderizado:</p>
-                          <div className="border rounded-lg p-4 bg-background min-h-[200px]">
-                            {renderComponentExampleWithData(
-                              "npsStackedChart",
-                              {
-                                type: "npsStackedChart",
-                                index: 0,
-                                dataPath: "question.data.npsStackedChart",
-                                config: {},
-                              },
-                              {
-                                ...realData,
-                                question: {
-                                  data: {
-                                    npsStackedChart: [
-                                      {
-                                        option: "Promotor",
-                                        value: 493,
-                                        percentage: 58,
-                                      },
-                                      {
-                                        option: "Neutro",
-                                        value: 170,
-                                        percentage: 20,
-                                      },
-                                      {
-                                        option: "Detrator",
-                                        value: 187,
-                                        percentage: 22,
-                                      },
-                                    ],
-                                  },
                                 },
                               }
                             )}
@@ -2702,7 +3109,7 @@ export default function JsonReference() {
                               {
                                 ...realData,
                                 sectionData: {
-                                  ...realData.sectionData,
+                                  ...mergedSectionData,
                                   sentimentDivergentChart: [
                                     {
                                       category: "Trabalho em Equipe",
@@ -2788,212 +3195,6 @@ export default function JsonReference() {
                   {/* TABELAS */}
                   <div className="space-y-4">
                     <h3 className="font-semibold text-xl">Tabelas (Tables)</h3>
-
-                    {/* DistributionTable */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-lg">
-                        distributionTable
-                      </h4>
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">
-                            JSON necessário:
-                          </p>
-                          <div className="bg-muted/50 rounded-lg p-3">
-                            <pre className="text-xs overflow-x-auto">
-                              <code>
-                                {JSON.stringify(
-                                  {
-                                    component: {
-                                      type: "distributionTable",
-                                      index: 0,
-                                      dataPath: "sectionData.distributionTable",
-                                      config: {},
-                                    },
-                                    data: {
-                                      sectionData: {
-                                        distributionTable: [
-                                          {
-                                            segment: "Menos de 1 ano",
-                                            count: 170,
-                                            percentage: 20,
-                                          },
-                                          {
-                                            segment: "1-3 anos",
-                                            count: 298,
-                                            percentage: 35,
-                                          },
-                                          {
-                                            segment: "3-5 anos",
-                                            count: 213,
-                                            percentage: 25,
-                                          },
-                                          {
-                                            segment: "Mais de 5 anos",
-                                            count: 169,
-                                            percentage: 20,
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  },
-                                  null,
-                                  2
-                                )}
-                              </code>
-                            </pre>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">Renderizado:</p>
-                          <div className="border rounded-lg p-4 bg-background">
-                            {renderComponentExampleWithData(
-                              "distributionTable",
-                              {
-                                type: "distributionTable",
-                                index: 0,
-                                dataPath: "sectionData.distributionTable",
-                                config: {},
-                              },
-                              {
-                                ...realData,
-                                sectionData: {
-                                  ...realData.sectionData,
-                                  distributionTable: [
-                                    {
-                                      segment: "Menos de 1 ano",
-                                      count: 170,
-                                      percentage: 20,
-                                    },
-                                    {
-                                      segment: "1-3 anos",
-                                      count: 298,
-                                      percentage: 35,
-                                    },
-                                    {
-                                      segment: "3-5 anos",
-                                      count: 213,
-                                      percentage: 25,
-                                    },
-                                    {
-                                      segment: "Mais de 5 anos",
-                                      count: 169,
-                                      percentage: 20,
-                                    },
-                                  ],
-                                },
-                              }
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* SentimentTable */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-lg">sentimentTable</h4>
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">
-                            JSON necessário:
-                          </p>
-                          <div className="bg-muted/50 rounded-lg p-3">
-                            <pre className="text-xs overflow-x-auto">
-                              <code>
-                                {JSON.stringify(
-                                  {
-                                    component: {
-                                      type: "sentimentTable",
-                                      index: 0,
-                                      dataPath: "sectionData.sentimentTable",
-                                      config: {},
-                                    },
-                                    data: {
-                                      sectionData: {
-                                        sentimentTable: [
-                                          {
-                                            segment: "Mais de 5 anos",
-                                            positive: 78.5,
-                                            neutral: 15.5,
-                                            negative: 6,
-                                          },
-                                          {
-                                            segment: "3-5 anos",
-                                            positive: 72,
-                                            neutral: 20,
-                                            negative: 8,
-                                          },
-                                          {
-                                            segment: "1-3 anos",
-                                            positive: 65.5,
-                                            neutral: 25.5,
-                                            negative: 9,
-                                          },
-                                          {
-                                            segment: "Menos de 1 ano",
-                                            positive: 58,
-                                            neutral: 28,
-                                            negative: 14,
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  },
-                                  null,
-                                  2
-                                )}
-                              </code>
-                            </pre>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">Renderizado:</p>
-                          <div className="border rounded-lg p-4 bg-background">
-                            {renderComponentExampleWithData(
-                              "sentimentTable",
-                              {
-                                type: "sentimentTable",
-                                index: 0,
-                                dataPath: "sectionData.sentimentTable",
-                                config: {},
-                              },
-                              {
-                                ...realData,
-                                sectionData: {
-                                  ...realData.sectionData,
-                                  sentimentTable: [
-                                    {
-                                      segment: "Mais de 5 anos",
-                                      positive: 78.5,
-                                      neutral: 15.5,
-                                      negative: 6,
-                                    },
-                                    {
-                                      segment: "3-5 anos",
-                                      positive: 72,
-                                      neutral: 20,
-                                      negative: 8,
-                                    },
-                                    {
-                                      segment: "1-3 anos",
-                                      positive: 65.5,
-                                      neutral: 25.5,
-                                      negative: 9,
-                                    },
-                                    {
-                                      segment: "Menos de 1 ano",
-                                      positive: 58,
-                                      neutral: 28,
-                                      negative: 14,
-                                    },
-                                  ],
-                                },
-                              }
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
 
                     {/* RecommendationsTable */}
                     <div className="space-y-3">
@@ -3096,7 +3297,7 @@ export default function JsonReference() {
                               {
                                 ...realData,
                                 sectionData: {
-                                  ...realData.sectionData,
+                                  ...mergedSectionData,
                                   recommendationsTable: {
                                     config: {
                                       severityLabels: {
@@ -3159,6 +3360,74 @@ export default function JsonReference() {
                     </div>
                   </div>
 
+                  {/* SegmentationTable */}
+                  <div className="space-y-3">
+                    <h4 className="font-semibold text-lg">segmentationTable</h4>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium">JSON necessário:</p>
+                        <div className="bg-muted/50 rounded-lg p-3">
+                          <pre className="text-xs overflow-x-auto">
+                            <code>
+                              {JSON.stringify(
+                                {
+                                  component: {
+                                    type: "segmentationTable",
+                                    index: 0,
+                                    dataPath: "sectionData.segmentationTable",
+                                    config: {},
+                                  },
+                                  data: {
+                                    sectionData: {
+                                      segmentationTable: [
+                                        {
+                                          cluster: "Detrator — serviço de rede",
+                                          description:
+                                            "Detratores mencionando principalmente o serviço de rede",
+                                          percentage: "28.0",
+                                          id: 1,
+                                        },
+                                        {
+                                          cluster: "Promotor — serviço de rede",
+                                          description:
+                                            "Promotores mencionando principalmente o serviço de rede",
+                                          percentage: "15.0",
+                                          id: 2,
+                                        },
+                                      ],
+                                    },
+                                  },
+                                },
+                                null,
+                                2
+                              )}
+                            </code>
+                          </pre>
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium">Renderizado:</p>
+                        <div className="border rounded-lg p-4 bg-background">
+                          {renderComponentExampleWithData(
+                            "segmentationTable",
+                            {
+                              type: "segmentationTable",
+                              index: 0,
+                              dataPath: "sectionData.segmentationTable",
+                              config: {},
+                            },
+                            {
+                              ...realData,
+                              sectionData: {
+                                ...mergedSectionData,
+                              },
+                            }
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* QUESTÕES */}
                   <div className="space-y-4">
                     <h3 className="font-semibold text-xl">
@@ -3181,7 +3450,8 @@ export default function JsonReference() {
                       <h4 className="font-semibold text-lg">Questão NPS</h4>
                       <p className="text-sm text-muted-foreground mb-2">
                         Componentes gerados automaticamente:{" "}
-                        <code>npsScoreCard</code>, <code>npsStackedChart</code>
+                        <code>npsScoreCard</code> (<code>npsStackedChart</code>{" "}
+                        disponível em Data Path other)
                       </p>
                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         <div className="space-y-2">
@@ -3453,7 +3723,7 @@ export default function JsonReference() {
                                       summary:
                                         "As respostas abertas destacam trabalho em equipe, oportunidades de desenvolvimento e flexibilidade como os principais valores.",
                                       data: {
-                                        sentimentStackedChart: [
+                                        sentimentDivergentChart: [
                                           {
                                             category: "Trabalho em Equipe",
                                             positive: 72.3,
@@ -3567,14 +3837,15 @@ export default function JsonReference() {
                               {
                                 type: "sentimentDivergentChart",
                                 index: 0,
-                                dataPath: "question.data.sentimentStackedChart",
-                                config: {},
+                                dataPath:
+                                  "question.data.sentimentDivergentChart",
+                                config: { yAxisDataKey: "category" },
                               },
                               {
                                 ...realData,
                                 question: {
                                   data: {
-                                    sentimentStackedChart: [
+                                    sentimentDivergentChart: [
                                       {
                                         category: "Trabalho em Equipe",
                                         positive: 72.3,
@@ -3778,6 +4049,201 @@ export default function JsonReference() {
                       </div>
                     </div>
                   </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Inventário completo do relatório (scan de todas as seções/subseções/componentes) */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Inventário do relatório</CardTitle>
+                <CardDescription>
+                  Scan completo de seções, subseções e componentes em{" "}
+                  <code className="bg-muted px-1 rounded text-xs">
+                    json_file_app_05-02.json
+                  </code>
+                  . Inclui todas as tabelas e gráficos por seção.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {reportInventory.map((section) => (
+                    <div key={section.id} className="space-y-2">
+                      <h3 className="font-semibold text-lg flex items-center gap-2">
+                        <Badge variant="secondary">{section.id}</Badge>
+                        {section.name}
+                      </h3>
+                      {section.subsections.map((sub) => (
+                        <div
+                          key={sub.id}
+                          className="pl-4 border-l-2 border-muted space-y-2"
+                        >
+                          <h4 className="text-sm font-medium text-muted-foreground">
+                            {sub.name}
+                          </h4>
+                          {sub.components.length > 0 ? (
+                            <div className="overflow-x-auto">
+                              <Table>
+                                <TableHeader>
+                                  <TableRow>
+                                    <TableHead>Tipo</TableHead>
+                                    <TableHead>dataPath</TableHead>
+                                  </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                  {sub.components.map((c, i) => (
+                                    <TableRow key={`${c.type}-${i}`}>
+                                      <TableCell>
+                                        <code className="bg-muted px-1.5 py-0.5 rounded text-xs">
+                                          {c.type}
+                                        </code>
+                                      </TableCell>
+                                      <TableCell className="font-mono text-xs">
+                                        {c.dataPath || "—"}
+                                      </TableCell>
+                                    </TableRow>
+                                  ))}
+                                </TableBody>
+                              </Table>
+                            </div>
+                          ) : (
+                            <p className="text-xs text-muted-foreground">
+                              Sem componentes com type/dataPath
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                      {section.questions && section.questions.length > 0 && (
+                        <div className="pl-4 border-l-2 border-muted space-y-2">
+                          <h4 className="text-sm font-medium text-muted-foreground">
+                            Questões (dados gerados por tipo)
+                          </h4>
+                          <div className="overflow-x-auto">
+                            <Table>
+                              <TableHeader>
+                                <TableRow>
+                                  <TableHead>question_id</TableHead>
+                                  <TableHead>questionType</TableHead>
+                                  <TableHead>
+                                    dataKeys no question.data
+                                  </TableHead>
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                {section.questions.map((q) => (
+                                  <TableRow
+                                    key={q.question_id || q.questionType}
+                                  >
+                                    <TableCell className="font-mono text-xs">
+                                      {q.question_id}
+                                    </TableCell>
+                                    <TableCell>
+                                      <code className="bg-muted px-1.5 py-0.5 rounded text-xs">
+                                        {q.questionType}
+                                      </code>
+                                    </TableCell>
+                                    <TableCell className="font-mono text-xs">
+                                      {q.dataKeys.join(", ") || "—"}
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* DATA PATH (OTHER) - Componentes no registry não usados no JSON */}
+          <TabsContent value="datapath-other" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  Data Path (other) — Componentes não usados no JSON
+                </CardTitle>
+                <CardDescription>
+                  Gráficos e tabelas disponíveis no registry que não aparecem em{" "}
+                  <code className="bg-muted px-1 rounded text-xs">
+                    json_file_app_05-02.json
+                  </code>
+                  . Dados hipotéticos para visualização. Use as estruturas
+                  abaixo para montar o JSON se quiser incluí-los no relatório.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-8">
+                  {otherDataPathTypes
+                    .filter(
+                      (type) =>
+                        ![
+                          "npsStackedChart",
+                          "card",
+                          "accordion",
+                          "questionsList",
+                          "sentimentTable",
+                          "distributionTable",
+                          "topCategoriesCards",
+                          "npsScoreCard",
+                        ].includes(type)
+                    )
+                    .map((type) => {
+                      const exampleStr = getOtherComponentExample(type);
+                      const exampleData = otherComponentExampleData[type];
+                      const dataForRender =
+                        exampleData?.data?.sectionData != null
+                          ? {
+                              ...realData,
+                              sectionData: {
+                                ...mergedSectionData,
+                                ...exampleData.data.sectionData,
+                              },
+                            }
+                          : realData;
+                      return (
+                        <div key={type} className="space-y-3">
+                          <h4 className="font-semibold text-lg flex items-center gap-2">
+                            <code className="bg-muted px-2 py-0.5 rounded">
+                              {type}
+                            </code>
+                          </h4>
+                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <p className="text-sm font-medium">
+                                Estrutura JSON (componente + dados):
+                              </p>
+                              <div className="bg-muted/50 rounded-lg p-3 overflow-x-auto max-h-[320px] overflow-y-auto">
+                                <pre className="text-xs">
+                                  <code>{exampleStr}</code>
+                                </pre>
+                              </div>
+                            </div>
+                            <div className="space-y-2">
+                              <p className="text-sm font-medium">
+                                Renderizado (dados hipotéticos):
+                              </p>
+                              <div className="border rounded-lg p-4 bg-background min-h-[200px]">
+                                {exampleData ? (
+                                  renderComponentExampleWithData(
+                                    type,
+                                    exampleData.component,
+                                    dataForRender
+                                  )
+                                ) : (
+                                  <p className="text-sm text-muted-foreground">
+                                    Sem dados de exemplo para este tipo.
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                 </div>
               </CardContent>
             </Card>

@@ -167,6 +167,30 @@ export const renderComponent = (component, data, props = {}) => {
     );
   }
 
+  // Card com componentes aninhados: renderiza os filhos e passa como children ao SchemaCard
+  if (normalizedComponent.type === "card") {
+    const nested = normalizedComponent.components;
+    if (Array.isArray(nested) && nested.length > 0) {
+      const nestedRendered = nested
+        .sort((a, b) => (a.index ?? 999) - (b.index ?? 999))
+        .map((comp, idx) => {
+          const key = `card-nested-${normalizedComponent.index ?? 0}-${
+            comp.index ?? idx
+          }-${comp.type}-${idx}`;
+          const el = renderComponent(comp, data, props);
+          return el != null ? (
+            <React.Fragment key={key}>{el}</React.Fragment>
+          ) : null;
+        })
+        .filter(Boolean);
+      return (
+        <Component component={normalizedComponent} data={data} {...props}>
+          {nestedRendered}
+        </Component>
+      );
+    }
+  }
+
   // Renderização padrão para a maioria dos componentes
   try {
     const rendered = <Component {...componentProps} />;

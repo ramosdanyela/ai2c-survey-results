@@ -80,6 +80,8 @@ export function WaterfallChart({
       runningTotal = endValue;
     }
 
+    // Para tipo negative: barra abaixo do eixo x (base 0, barValue negativo)
+    const isNegative = type === "negative";
     return {
       ...item,
       label,
@@ -87,11 +89,24 @@ export function WaterfallChart({
       endValue,
       displayValue,
       type,
-      // For bar rendering - use startValue as base and barValue as height
-      base: type === "start" || type === "end" ? 0 : startValue,
-      barValue: type === "start" || type === "end" ? endValue : endValue - startValue,
+      base: type === "start" || type === "end" ? 0 : isNegative ? 0 : startValue,
+      barValue:
+        type === "start" || type === "end"
+          ? endValue
+          : isNegative
+            ? displayValue
+            : endValue - startValue,
     };
   });
+
+  // Domínio do eixo Y para incluir valores negativos (barras abaixo do eixo)
+  const allBarEnds = chartData.map((d) =>
+    d.type === "negative" ? d.barValue : d.base + d.barValue
+  );
+  const yMin = Math.min(0, ...allBarEnds);
+  const yMax = Math.max(...allBarEnds);
+  const yPadding = Math.max((yMax - yMin) * 0.05, 1);
+  const yDomain = [yMin - yPadding, yMax + yPadding];
 
   // Get color based on type
   const getColor = (type) => {
@@ -128,6 +143,7 @@ export function WaterfallChart({
             height={80}
           />
           <YAxis
+            domain={yDomain}
             stroke={CHART_COLORS.foreground}
             tick={{ fill: CHART_COLORS.foreground }}
           />

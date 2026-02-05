@@ -441,14 +441,45 @@ export function SchemaNegativeCategoriesTable({ component, data }) {
 }
 
 /**
+ * Extract array from resolved value: may be the array itself or inside an object (e.g. sectionData.ranking, component.data.analyticalTable).
+ */
+function getAnalyticalTableArray(raw) {
+  if (Array.isArray(raw)) return raw;
+  if (raw && typeof raw === "object") {
+    if (Array.isArray(raw.analyticalTable)) return raw.analyticalTable;
+    if (Array.isArray(raw.ranking)) return raw.ranking;
+    const firstArray = Object.values(raw).find((v) => Array.isArray(v));
+    if (firstArray) return firstArray;
+  }
+  return null;
+}
+
+/**
+ * Infer columns from first row keys when config.columns is missing.
+ */
+function inferAnalyticalColumns(rows) {
+  const first = rows && rows[0];
+  if (!first || typeof first !== "object") return [];
+  return Object.keys(first).map((key) => ({
+    key,
+    label: key,
+    sortable: true,
+  }));
+}
+
+/**
  * Render Analytical Table component based on schema
  */
 export function SchemaAnalyticalTable({ component, data }) {
   try {
-    const tableData = resolveDataPath(data, component.dataPath, component.data);
+    let raw = resolveDataPath(data, component.dataPath, component.data);
+    if (raw == null && data?.sectionData) {
+      raw = data.sectionData;
+    }
+    const tableData = getAnalyticalTableArray(raw);
     const config = component.config || {};
 
-    if (!tableData || !Array.isArray(tableData)) {
+    if (!tableData || tableData.length === 0) {
       return (
         <div className="p-4 text-center text-muted-foreground">
           <p>Nenhum dado analítico encontrado.</p>
@@ -456,10 +487,23 @@ export function SchemaAnalyticalTable({ component, data }) {
       );
     }
 
+    const columns =
+      config.columns && config.columns.length > 0
+        ? config.columns
+        : inferAnalyticalColumns(tableData);
+
+    if (columns.length === 0) {
+      return (
+        <div className="p-4 text-center text-muted-foreground">
+          <p>Nenhuma coluna disponível.</p>
+        </div>
+      );
+    }
+
     return (
       <AnalyticalTable
         data={tableData}
-        columns={config.columns || []}
+        columns={columns}
         showRanking={config.showRanking !== false}
         defaultSort={config.defaultSort}
         rankingKey={config.rankingKey}
