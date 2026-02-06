@@ -5,8 +5,10 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Função para carregar dependências com tratamento de erro
-async function loadDependencies() {
+/**
+ * Carrega schema, ajv e regras customizadas (para uso por validate-json e validate-all-jsons).
+ */
+export async function loadDependencies() {
   try {
     const ajvModule = await import("ajv");
     const Ajv = ajvModule.default;
@@ -66,8 +68,11 @@ async function loadDependencies() {
   }
 }
 
-// Função para validar arquivo
-function validateJSON(filePath, ajv, schema, validateCustomRules) {
+/**
+ * Valida um arquivo JSON (schema + regras customizadas).
+ * @returns {boolean} true se válido, false caso contrário
+ */
+export function validateJSON(filePath, ajv, schema, validateCustomRules) {
   console.log(`\n🔍 Validando: ${filePath}\n`);
 
   // Ler e parsear JSON
@@ -101,18 +106,21 @@ function validateJSON(filePath, ajv, schema, validateCustomRules) {
 
   if (!valid) {
     console.error("❌ ERROS DE VALIDAÇÃO (JSON Schema):\n");
-    validate.errors.forEach((error, index) => {
-      const errorPath = error.instancePath || "/";
-      console.error(`${index + 1}. ${errorPath || "(raiz)"}`);
-      console.error(`   ${error.message}`);
-      if (error.params) {
-        const paramsStr = Object.entries(error.params)
-          .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
-          .join(", ");
-        if (paramsStr) {
-          console.error(`   Parâmetros: ${paramsStr}`);
-        }
-      }
+    const schemaByMessage = new Map();
+    validate.errors.forEach((error) => {
+      const errorPath = error.instancePath || "/" || "(raiz)";
+      const paramsStr = error.params
+        ? Object.entries(error.params)
+            .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
+            .join(", ")
+        : "";
+      const key = paramsStr ? `${error.message} | Parâmetros: ${paramsStr}` : error.message;
+      if (!schemaByMessage.has(key)) schemaByMessage.set(key, []);
+      schemaByMessage.get(key).push(errorPath);
+    });
+    schemaByMessage.forEach((paths, message) => {
+      console.error(message);
+      [...new Set(paths)].forEach((p) => console.error(`   - ${p}`));
       console.error("");
     });
     return false;
@@ -125,17 +133,31 @@ function validateJSON(filePath, ajv, schema, validateCustomRules) {
 
   if (warningsList.length > 0) {
     console.error("⚠️  AVISOS (Regras Customizadas):\n");
-    warningsList.forEach((w, index) => {
-      console.error(`   ${index + 1}. ${w.path || "(raiz)"}`);
-      console.error(`      ${w.message}\n`);
+    const warningsByMessage = new Map();
+    warningsList.forEach((w) => {
+      const msg = w.message || "(sem mensagem)";
+      if (!warningsByMessage.has(msg)) warningsByMessage.set(msg, []);
+      warningsByMessage.get(msg).push(w.path || "(raiz)");
+    });
+    warningsByMessage.forEach((paths, message) => {
+      console.error(message);
+      [...new Set(paths)].forEach((p) => console.error(`   - ${p}`));
+      console.error("");
     });
   }
 
   if (errorsList.length > 0) {
     console.error("❌ ERROS DE VALIDAÇÃO (Regras Customizadas):\n");
-    errorsList.forEach((error, index) => {
-      console.error(`${index + 1}. ${error.path || "(raiz)"}`);
-      console.error(`   ${error.message}\n`);
+    const errorsByMessage = new Map();
+    errorsList.forEach((error) => {
+      const msg = error.message || "(sem mensagem)";
+      if (!errorsByMessage.has(msg)) errorsByMessage.set(msg, []);
+      errorsByMessage.get(msg).push(error.path || "(raiz)");
+    });
+    errorsByMessage.forEach((paths, message) => {
+      console.error(message);
+      [...new Set(paths)].forEach((p) => console.error(`   - ${p}`));
+      console.error("");
     });
     return false;
   }
@@ -175,8 +197,13 @@ async function main() {
   process.exit(isValid ? 0 : 1);
 }
 
-// Executar função principal
-main().catch((error) => {
-  console.error("❌ Erro inesperado:", error);
-  process.exit(1);
-});
+// Executar função principal apenas quando este script é o entry point
+const isMain =
+  process.argv[1] &&
+  path.resolve(__filename) === path.resolve(process.argv[1]);
+if (isMain) {
+  main().catch((error) => {
+    console.error("❌ Erro inesperado:", error);
+    process.exit(1);
+  });
+}

@@ -68,6 +68,42 @@ const VALID_NPS_OPTIONS = ["Detrator", "Promotor", "Neutro"];
 const VALID_SECTION_IDS_QUESTIONS = ["responses", "questions"];
 
 /**
+ * Mapeamento: último segmento do dataPath (chave dos dados) → tipos de componente que consomem esses dados.
+ * Usado para detectar incoerência (ex.: type "barChart" com dataPath "...distributionTable").
+ */
+const DATA_PATH_KEY_TO_EXPECTED_TYPES = {
+  distributionChart: ["barChart"],
+  distributionTable: ["distributionTable"],
+  sentimentTable: ["sentimentTable"],
+  sentimentImpactTable: ["sentimentImpactTable"],
+  satisfactionImpactSentimentChart: [
+    "sentimentDivergentChart",
+    "sentimentThreeColorChart",
+  ],
+  satisfactionImpactSentimentTable: ["sentimentImpactTable"],
+  positiveCategoriesTable: ["positiveCategoriesTable"],
+  negativeCategoriesTable: ["negativeCategoriesTable"],
+  recommendationsTable: ["recommendationsTable"],
+  segmentationTable: ["segmentationTable"],
+  npsDistributionTable: ["npsDistributionTable"],
+  npsTable: ["npsTable"],
+  npsStackedChart: ["npsStackedChart"],
+  wordCloud: ["wordCloud"],
+  analyticalTable: ["analyticalTable"],
+  lineChart: ["lineChart"],
+  paretoChart: ["paretoChart"],
+  scatterPlot: ["scatterPlot"],
+  histogram: ["histogram"],
+  quadrantChart: ["quadrantChart"],
+  heatmap: ["heatmap"],
+  stackedBarMECE: ["stackedBarMECE"],
+  slopeGraph: ["slopeGraph"],
+  waterfallChart: ["waterfallChart"],
+  evolutionaryScorecard: ["evolutionaryScorecard"],
+  respondentIntentChart: ["barChart", "lineChart"],
+};
+
+/**
  * Cria resultado de validação (erro ou aviso)
  * @param {string} path
  * @param {string} message
@@ -169,6 +205,33 @@ function resolveDataPath(obj, path, sectionId = null, sectionData = null) {
   }
 
   return current;
+}
+
+/**
+ * Valida coerência entre type do componente e a chave final do dataPath.
+ * Ex.: se dataPath termina em "distributionChart", o type deve ser um que consuma esses dados (ex.: barChart).
+ * Se dataPath termina em "distributionTable", o type deve ser "distributionTable".
+ * Detecta erros como type "barChart" com dataPath "...distributionTable" ou type "distributionTable" com dataPath "...distributionChart".
+ *
+ * @param {string} type - Tipo do componente
+ * @param {string} dataPath - Caminho dos dados (ex.: sectionData.estado.questions.pergunta3.distributionChart)
+ * @param {string} context - Caminho no JSON para mensagem de erro
+ * @returns {{ path: string, message: string } | null}
+ */
+function validateDataPathMatchesComponentType(type, dataPath, context) {
+  if (!type || !dataPath || typeof dataPath !== "string") return null;
+  const lastSegment = dataPath.split(".").pop();
+  if (!lastSegment) return null;
+
+  const expectedTypes = DATA_PATH_KEY_TO_EXPECTED_TYPES[lastSegment];
+  if (!expectedTypes) return null; // chave desconhecida, não validar
+
+  if (expectedTypes.includes(type)) return null;
+
+  return {
+    path: context,
+    message: `Incoerência type/dataPath: o dataPath aponta para "${lastSegment}" (dados de ${expectedTypes.join(" ou ")}), mas o tipo do componente é "${type}". Corrija o "type" para um dos esperados ou o dataPath para dados compatíveis.`,
+  };
 }
 
 /**
@@ -318,6 +381,509 @@ function validateTemplates(
 }
 
 /**
+ * Shape esperado pelo código: DistributionTable (Tables.jsx) usa item.segment, item.count.toLocaleString(), item.percentage.
+ * Se o JSON tiver formato alternativo (ex.: answer + colunas por estado), item.count é undefined → crash.
+ */
+function validateDistributionTableShape(resolved, context) {
+  const errors = [];
+  if (!Array.isArray(resolved)) return errors;
+  resolved.forEach((item, i) => {
+    const itemCtx = `${context}[${i}]`;
+    if (!item || typeof item !== "object") {
+      errors.push({
+        path: itemCtx,
+        message:
+          "distributionTable: cada item deve ser um objeto com segment, count, percentage",
+      });
+      return;
+    }
+    // Formato errado: usado em pergunta por atributo (answer + colunas dinâmicas) — o código não suporta
+    if ("answer" in item && !("segment" in item)) {
+      errors.push({
+        path: itemCtx,
+        message:
+          'distributionTable: formato com "answer" e colunas por segmento não é suportado pelo componente DistributionTable. Use itens com segment, count (number), percentage (number).',
+      });
+      return;
+    }
+    if (!("segment" in item)) {
+      errors.push({
+        path: itemCtx,
+        message: "distributionTable: item deve ter 'segment'",
+      });
+    }
+    if (!("count" in item)) {
+      errors.push({
+        path: itemCtx,
+        message:
+          "distributionTable: item deve ter 'count' (number). O código usa item.count.toLocaleString().",
+      });
+    } else if (typeof item.count !== "number") {
+      errors.push({
+        path: `${itemCtx}.count`,
+        message: "distributionTable: 'count' deve ser number",
+      });
+    }
+    if (!("percentage" in item)) {
+      errors.push({
+        path: itemCtx,
+        message: "distributionTable: item deve ter 'percentage' (number)",
+      });
+    } else if (typeof item.percentage !== "number") {
+      errors.push({
+        path: `${itemCtx}.percentage`,
+        message: "distributionTable: 'percentage' deve ser number",
+      });
+    }
+  });
+  return errors;
+}
+
+/**
+ * Shape esperado pelo barChart quando consome distributionChart (ChartRenderers.jsx):
+ * getBarChartConfig usa yAxisDataKey "segment" e dataKey "percentage".
+ * Se o JSON tiver formato com "answer" e colunas por estado, segment e percentage ficam undefined e o gráfico não renderiza.
+ */
+function validateDistributionChartShape(resolved, context) {
+  const errors = [];
+  if (!Array.isArray(resolved)) return errors;
+  resolved.forEach((item, i) => {
+    const itemCtx = `${context}[${i}]`;
+    if (!item || typeof item !== "object") {
+      errors.push({
+        path: itemCtx,
+        message:
+          "distributionChart (barChart): cada item deve ser um objeto com segment e percentage",
+      });
+      return;
+    }
+    if ("answer" in item && !("segment" in item)) {
+      errors.push({
+        path: itemCtx,
+        message:
+          'distributionChart (barChart): formato com "answer" e colunas por segmento não é suportado. Use itens com segment, percentage (number). O código usa item.segment e item.percentage.',
+      });
+      return;
+    }
+    if (!("segment" in item)) {
+      errors.push({
+        path: itemCtx,
+        message: "distributionChart (barChart): item deve ter 'segment'",
+      });
+    }
+    if (!("percentage" in item)) {
+      errors.push({
+        path: itemCtx,
+        message:
+          "distributionChart (barChart): item deve ter 'percentage' (number)",
+      });
+    } else if (typeof item.percentage !== "number") {
+      errors.push({
+        path: `${itemCtx}.percentage`,
+        message: "distributionChart (barChart): 'percentage' deve ser number",
+      });
+    }
+  });
+  return errors;
+}
+
+/**
+ * Shape esperado: SentimentTable (Tables.jsx) usa item.segment, item.positive%, item.negative%.
+ */
+function validateSentimentTableShape(resolved, context) {
+  const errors = [];
+  if (!Array.isArray(resolved)) return errors;
+  resolved.forEach((item, i) => {
+    const itemCtx = `${context}[${i}]`;
+    if (!item || typeof item !== "object") return;
+    if (!("segment" in item)) {
+      errors.push({
+        path: itemCtx,
+        message: "sentimentTable: item deve ter 'segment'",
+      });
+    }
+    if (!("positive" in item)) {
+      errors.push({
+        path: itemCtx,
+        message: "sentimentTable: item deve ter 'positive' (number)",
+      });
+    } else if (typeof item.positive !== "number") {
+      errors.push({
+        path: `${itemCtx}.positive`,
+        message: "sentimentTable: 'positive' deve ser number",
+      });
+    }
+    if (!("negative" in item)) {
+      errors.push({
+        path: itemCtx,
+        message: "sentimentTable: item deve ter 'negative' (number)",
+      });
+    } else if (typeof item.negative !== "number") {
+      errors.push({
+        path: `${itemCtx}.negative`,
+        message: "sentimentTable: 'negative' deve ser number",
+      });
+    }
+  });
+  return errors;
+}
+
+/**
+ * Shape esperado: NPSDistributionTable (Tables.jsx) usa item[segmentKey], item.promoters, item.neutrals, item.detractors.
+ */
+function validateNPSDistributionTableShape(resolved, context, component = {}) {
+  const errors = [];
+  if (!Array.isArray(resolved)) return errors;
+  const segmentKey =
+    component.config?.yAxisDataKey ?? component.config?.segmentKey ?? "segment";
+  resolved.forEach((item, i) => {
+    const itemCtx = `${context}[${i}]`;
+    if (!item || typeof item !== "object") {
+      errors.push({
+        path: itemCtx,
+        message: "npsDistributionTable: cada item deve ser um objeto",
+      });
+      return;
+    }
+    if (!(segmentKey in item)) {
+      errors.push({
+        path: itemCtx,
+        message: `npsDistributionTable: item deve ter '${segmentKey}' (segmento)`,
+      });
+    }
+    ["promoters", "neutrals", "detractors"].forEach((key) => {
+      if (!(key in item)) {
+        errors.push({
+          path: itemCtx,
+          message: `npsDistributionTable: item deve ter '${key}' (number)`,
+        });
+      } else if (typeof item[key] !== "number") {
+        errors.push({
+          path: `${itemCtx}.${key}`,
+          message: `npsDistributionTable: '${key}' deve ser number`,
+        });
+      }
+    });
+  });
+  return errors;
+}
+
+/**
+ * Shape esperado: NPSTable (Tables.jsx) usa item[segmentKey], item.NPS ?? item.nps.
+ */
+function validateNPSTableShape(resolved, context, component = {}) {
+  const errors = [];
+  if (!Array.isArray(resolved)) return errors;
+  const segmentKey =
+    component.config?.yAxisDataKey ?? component.config?.segmentKey ?? "segment";
+  resolved.forEach((item, i) => {
+    const itemCtx = `${context}[${i}]`;
+    if (!item || typeof item !== "object") {
+      errors.push({
+        path: itemCtx,
+        message: "npsTable: cada item deve ser um objeto",
+      });
+      return;
+    }
+    if (!(segmentKey in item)) {
+      errors.push({
+        path: itemCtx,
+        message: `npsTable: item deve ter '${segmentKey}' (segmento)`,
+      });
+    }
+    const nps = item.NPS ?? item.nps;
+    if (nps === undefined || nps === null) {
+      errors.push({
+        path: itemCtx,
+        message: "npsTable: item deve ter 'NPS' ou 'nps' (number)",
+      });
+    } else if (typeof nps !== "number") {
+      errors.push({
+        path: itemCtx,
+        message: "npsTable: NPS/nps deve ser number",
+      });
+    }
+  });
+  return errors;
+}
+
+/**
+ * Shape esperado: SentimentImpactTable (Tables.jsx) usa item.sentiment e item[segment] para cada segmento.
+ */
+function validateSentimentImpactTableShape(resolved, context) {
+  const errors = [];
+  if (!Array.isArray(resolved) || resolved.length === 0) return errors;
+  const first = resolved[0];
+  if (!first || typeof first !== "object") return errors;
+  const segments = Object.keys(first).filter((k) => k !== "sentiment");
+  resolved.forEach((item, i) => {
+    const itemCtx = `${context}[${i}]`;
+    if (!item || typeof item !== "object") {
+      errors.push({
+        path: itemCtx,
+        message: "sentimentImpactTable: cada item deve ser um objeto com sentiment e colunas numéricas",
+      });
+      return;
+    }
+    if (!("sentiment" in item)) {
+      errors.push({
+        path: itemCtx,
+        message: "sentimentImpactTable: item deve ter 'sentiment'",
+      });
+    }
+    segments.forEach((seg) => {
+      if (seg in item && typeof item[seg] !== "number") {
+        errors.push({
+          path: `${itemCtx}.${seg}`,
+          message: "sentimentImpactTable: valor por segmento deve ser number",
+        });
+      }
+    });
+  });
+  return errors;
+}
+
+/**
+ * Shape esperado: PositiveCategoriesTable / NegativeCategoriesTable (Tables.jsx) usa item.category e item[segment].
+ */
+function validateCategoriesTableShape(resolved, context, tableType) {
+  const errors = [];
+  if (!Array.isArray(resolved) || resolved.length === 0) return errors;
+  const first = resolved[0];
+  if (!first || typeof first !== "object") return errors;
+  const segments = Object.keys(first).filter((k) => k !== "category");
+  resolved.forEach((item, i) => {
+    const itemCtx = `${context}[${i}]`;
+    if (!item || typeof item !== "object") {
+      errors.push({
+        path: itemCtx,
+        message: `${tableType}: cada item deve ser um objeto com category e colunas numéricas`,
+      });
+      return;
+    }
+    if (!("category" in item)) {
+      errors.push({
+        path: itemCtx,
+        message: `${tableType}: item deve ter 'category'`,
+      });
+    }
+    segments.forEach((seg) => {
+      if (seg in item && typeof item[seg] !== "number") {
+        errors.push({
+          path: `${itemCtx}.${seg}`,
+          message: `${tableType}: valor por segmento deve ser number`,
+        });
+      }
+    });
+  });
+  return errors;
+}
+
+/**
+ * Shape esperado: SegmentationTable (Tables.jsx) usa cluster.cluster, cluster.description, cluster.percentage, cluster.id.
+ */
+function validateSegmentationTableShape(resolved, context) {
+  const errors = [];
+  if (!Array.isArray(resolved)) return errors;
+  resolved.forEach((item, i) => {
+    const itemCtx = `${context}[${i}]`;
+    if (!item || typeof item !== "object") {
+      errors.push({
+        path: itemCtx,
+        message: "segmentationTable: cada item deve ser um objeto com cluster, description, percentage",
+      });
+      return;
+    }
+    if (!("cluster" in item)) {
+      errors.push({ path: itemCtx, message: "segmentationTable: item deve ter 'cluster'" });
+    }
+    if (!("description" in item)) {
+      errors.push({ path: itemCtx, message: "segmentationTable: item deve ter 'description'" });
+    }
+    if (!("percentage" in item)) {
+      errors.push({ path: itemCtx, message: "segmentationTable: item deve ter 'percentage' (number)" });
+    } else if (typeof item.percentage !== "number") {
+      errors.push({
+        path: `${itemCtx}.percentage`,
+        message: "segmentationTable: 'percentage' deve ser number",
+      });
+    }
+  });
+  return errors;
+}
+
+/**
+ * Shape esperado: SentimentDivergentChart (Charts.jsx) usa item.positive, item.negative e item[yAxisDataKey].
+ */
+function validateSentimentDivergentChartShape(resolved, context, component = {}) {
+  const errors = [];
+  if (!Array.isArray(resolved)) return errors;
+  const yKey = component.config?.yAxisDataKey || "segment";
+  resolved.forEach((item, i) => {
+    const itemCtx = `${context}[${i}]`;
+    if (!item || typeof item !== "object") return;
+    if (typeof item.positive !== "number") {
+      errors.push({
+        path: itemCtx,
+        message: "sentimentDivergentChart: item deve ter 'positive' (number)",
+      });
+    }
+    if (typeof item.negative !== "number") {
+      errors.push({
+        path: itemCtx,
+        message: "sentimentDivergentChart: item deve ter 'negative' (number)",
+      });
+    }
+    if (!(yKey in item) && !("segment" in item) && !("category" in item)) {
+      errors.push({
+        path: itemCtx,
+        message: `sentimentDivergentChart: item deve ter '${yKey}' (ou segment/category) para rótulo`,
+      });
+    }
+  });
+  return errors;
+}
+
+/**
+ * Shape esperado: SentimentThreeColorChart (Charts.jsx) usa item.sentiment e item[segment] — mesmo formato que sentimentImpactTable.
+ */
+function validateSentimentThreeColorChartShape(resolved, context) {
+  return validateSentimentImpactTableShape(resolved, context);
+}
+
+/**
+ * Shape esperado: TopCategoriesCards (CardRenderers.jsx) usa cat.rank, cat.category, cat.mentions, cat.percentage, cat.topics (opcional).
+ */
+function validateTopCategoriesCardsShape(resolved, context) {
+  const errors = [];
+  if (!Array.isArray(resolved)) return errors;
+  resolved.forEach((item, i) => {
+    const itemCtx = `${context}[${i}]`;
+    if (!item || typeof item !== "object") {
+      errors.push({
+        path: itemCtx,
+        message: "topCategoriesCards: cada item deve ser um objeto com rank, category, mentions, percentage",
+      });
+      return;
+    }
+    if (!("rank" in item)) {
+      errors.push({ path: itemCtx, message: "topCategoriesCards: item deve ter 'rank'" });
+    }
+    if (!("category" in item)) {
+      errors.push({ path: itemCtx, message: "topCategoriesCards: item deve ter 'category'" });
+    }
+    if (!("mentions" in item)) {
+      errors.push({ path: itemCtx, message: "topCategoriesCards: item deve ter 'mentions'" });
+    }
+    if (!("percentage" in item)) {
+      errors.push({ path: itemCtx, message: "topCategoriesCards: item deve ter 'percentage' (number)" });
+    } else if (typeof item.percentage !== "number") {
+      errors.push({
+        path: `${itemCtx}.percentage`,
+        message: "topCategoriesCards: 'percentage' deve ser number",
+      });
+    }
+  });
+  return errors;
+}
+
+/**
+ * Shape esperado: KPICard (CardRenderers.jsx) usa objeto com value (ou config.valueKey); label, delta, trend opcionais.
+ */
+function validateKPICardShape(resolved, context, component = {}) {
+  const errors = [];
+  if (resolved == null) return errors;
+  if (typeof resolved === "object" && !Array.isArray(resolved)) {
+    const valueKey = component.config?.valueKey ?? "value";
+    if (!(valueKey in resolved)) {
+      errors.push({
+        path: context,
+        message: `kpiCard: dados devem ser objeto com '${valueKey}' (ou número primitivo)`,
+      });
+    } else if (
+      resolved[valueKey] !== null &&
+      resolved[valueKey] !== undefined &&
+      typeof resolved[valueKey] !== "number"
+    ) {
+      errors.push({
+        path: `${context}.${valueKey}`,
+        message: "kpiCard: value deve ser number",
+      });
+    }
+  }
+  return errors;
+}
+
+/**
+ * Shape esperado: WordCloud (WordCloud.jsx) usa word.text e word.value (number).
+ */
+function validateWordCloudShape(resolved, context) {
+  const errors = [];
+  if (!Array.isArray(resolved)) return errors;
+  resolved.forEach((item, i) => {
+    const itemCtx = `${context}[${i}]`;
+    if (!item || typeof item !== "object") {
+      errors.push({
+        path: itemCtx,
+        message: "wordCloud: cada item deve ser um objeto com text e value",
+      });
+      return;
+    }
+    if (!("text" in item)) {
+      errors.push({ path: itemCtx, message: "wordCloud: item deve ter 'text'" });
+    }
+    if (!("value" in item)) {
+      errors.push({ path: itemCtx, message: "wordCloud: item deve ter 'value' (number)" });
+    } else if (typeof item.value !== "number") {
+      errors.push({
+        path: `${itemCtx}.value`,
+        message: "wordCloud: 'value' deve ser number",
+      });
+    }
+  });
+  return errors;
+}
+
+/**
+ * Shape esperado: RecommendationsTable items — cada item com id, recommendation, severity, stakeholders (array), tasks (array opcional).
+ */
+function validateRecommendationsTableItemsShape(resolved, context) {
+  const errors = [];
+  const items = Array.isArray(resolved) ? resolved : resolved?.items;
+  if (!items || !Array.isArray(items)) return errors;
+  items.forEach((item, i) => {
+    const itemCtx = Array.isArray(resolved)
+      ? `${context}[${i}]`
+      : `${context}.items[${i}]`;
+    if (!item || typeof item !== "object") {
+      errors.push({
+        path: itemCtx,
+        message: "recommendationsTable: cada item deve ter id, recommendation, severity, stakeholders",
+      });
+      return;
+    }
+    if (!("id" in item)) {
+      errors.push({ path: itemCtx, message: "recommendationsTable: item deve ter 'id'" });
+    }
+    if (!("recommendation" in item)) {
+      errors.push({ path: itemCtx, message: "recommendationsTable: item deve ter 'recommendation'" });
+    }
+    if (!("severity" in item)) {
+      errors.push({ path: itemCtx, message: "recommendationsTable: item deve ter 'severity'" });
+    }
+    if (!("stakeholders" in item)) {
+      errors.push({ path: itemCtx, message: "recommendationsTable: item deve ter 'stakeholders' (array)" });
+    } else if (!Array.isArray(item.stakeholders)) {
+      errors.push({
+        path: `${itemCtx}.stakeholders`,
+        message: "recommendationsTable: 'stakeholders' deve ser array",
+      });
+    }
+  });
+  return errors;
+}
+
+/**
  * Valida estrutura de dados para cada tipo de componente
  */
 function validateComponentData(
@@ -395,6 +961,16 @@ function validateComponentData(
     });
   }
 
+  // Valida coerência type vs. chave do dataPath (ex.: type barChart com dataPath ...distributionTable)
+  if (dataPath) {
+    const coherenceError = validateDataPathMatchesComponentType(
+      type,
+      dataPath,
+      context
+    );
+    if (coherenceError) errors.push(coherenceError);
+  }
+
   // Valida dataPath existe e é array quando necessário
   if (dataPath) {
     const dataPathError = validateDataPath(
@@ -443,17 +1019,103 @@ function validateComponentData(
         "recommendationsTable", // Pode ser array direto ou objeto com items
       ];
 
+      // distributionTable: array vazio é permitido (código exibe "Nenhum dado"); shape validado abaixo
+      const allowsEmptyArray = ["distributionTable"];
+
       if (arrayComponents.includes(type)) {
         if (!Array.isArray(resolved)) {
           errors.push({
             path: context,
             message: `Componente "${type}" requer que dataPath "${dataPath}" aponte para um array`,
           });
-        } else if (resolved.length === 0) {
+        } else if (
+          resolved.length === 0 &&
+          !allowsEmptyArray.includes(type)
+        ) {
           errors.push({
             path: context,
             message: `Componente "${type}" requer que dataPath "${dataPath}" aponte para um array não vazio`,
           });
+        } else if (resolved.length > 0) {
+          // Validação de shape conforme contrato código (ESTRATEGIA_VALIDACAO_COMPONENTES.md)
+          if (type === "distributionTable") {
+            errors.push(
+              ...validateDistributionTableShape(resolved, context),
+            );
+          }
+          if (
+            type === "barChart" &&
+            dataPath.split(".").pop() === "distributionChart"
+          ) {
+            errors.push(
+              ...validateDistributionChartShape(resolved, context),
+            );
+          }
+          if (type === "sentimentTable") {
+            errors.push(
+              ...validateSentimentTableShape(resolved, context),
+            );
+          }
+          if (type === "npsDistributionTable") {
+            errors.push(
+              ...validateNPSDistributionTableShape(resolved, context, component),
+            );
+          }
+          if (type === "npsTable") {
+            errors.push(
+              ...validateNPSTableShape(resolved, context, component),
+            );
+          }
+          if (type === "sentimentImpactTable") {
+            errors.push(
+              ...validateSentimentImpactTableShape(resolved, context),
+            );
+          }
+          if (type === "positiveCategoriesTable") {
+            errors.push(
+              ...validateCategoriesTableShape(
+                resolved,
+                context,
+                "positiveCategoriesTable",
+              ),
+            );
+          }
+          if (type === "negativeCategoriesTable") {
+            errors.push(
+              ...validateCategoriesTableShape(
+                resolved,
+                context,
+                "negativeCategoriesTable",
+              ),
+            );
+          }
+          if (type === "segmentationTable") {
+            errors.push(
+              ...validateSegmentationTableShape(resolved, context),
+            );
+          }
+          if (type === "sentimentDivergentChart") {
+            errors.push(
+              ...validateSentimentDivergentChartShape(
+                resolved,
+                context,
+                component,
+              ),
+            );
+          }
+          if (type === "sentimentThreeColorChart") {
+            errors.push(
+              ...validateSentimentThreeColorChartShape(resolved, context),
+            );
+          }
+          if (type === "topCategoriesCards") {
+            errors.push(
+              ...validateTopCategoriesCardsShape(resolved, context),
+            );
+          }
+          if (type === "wordCloud") {
+            errors.push(...validateWordCloudShape(resolved, context));
+          }
         }
       } else if (flexibleArrayComponents.includes(type)) {
         // Valida estrutura flexível: pode ser array OU objeto com items (array)
@@ -477,6 +1139,10 @@ function validateComponentData(
               path: context,
               message: `Componente "${type}" requer que dataPath "${dataPath}.items" aponte para um array não vazio`,
             });
+          } else {
+            errors.push(
+              ...validateRecommendationsTableItemsShape(resolved, context),
+            );
           }
         } else {
           errors.push({
@@ -485,6 +1151,36 @@ function validateComponentData(
           });
         }
       }
+    }
+  }
+
+  // kpiCard: dados são objeto ou valor, não array
+  if (type === "kpiCard" && dataPath) {
+    const resolvedKpi = resolveDataPath(
+      data,
+      dataPath,
+      sectionId,
+      sectionData,
+    );
+    if (resolvedKpi !== null && resolvedKpi !== undefined) {
+      errors.push(
+        ...validateKPICardShape(resolvedKpi, context, component),
+      );
+    }
+  }
+
+  // recommendationsTable com array direto: validar shape dos itens
+  if (type === "recommendationsTable" && dataPath) {
+    const resolvedRec = resolveDataPath(
+      data,
+      dataPath,
+      sectionId,
+      sectionData,
+    );
+    if (Array.isArray(resolvedRec) && resolvedRec.length > 0) {
+      errors.push(
+        ...validateRecommendationsTableItemsShape(resolvedRec, context),
+      );
     }
   }
 

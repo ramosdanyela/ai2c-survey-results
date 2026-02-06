@@ -5,15 +5,17 @@ Esta pasta contém toda a estrutura de validação de JSONs de pesquisa. A valid
 ## 📁 Estrutura
 
 ```
-data/validation/
-├── README.md                    # Este arquivo
+docs/docs_json_tutorial/validation_scripts/
+├── README.md                              # Este arquivo
+├── ESTRATEGIA_VALIDACAO_ATUALIZADA.md     # Checklist e ajustes de validação
+├── ESTRATEGIA_VALIDACAO_COMPONENTES.md    # Contrato código ↔ JSON por componente
 ├── schema/
-│   └── surveyData.schema.json  # JSON Schema completo
+│   └── surveyData.schema.json             # JSON Schema completo
 ├── scripts/
-│   ├── validate-json.js        # Script principal de validação
-│   └── validate-all-jsons.js   # Script para validar múltiplos arquivos
+│   ├── validate-json.js                   # Script para um arquivo
+│   └── validate-all-jsons.js              # Script para validar todos os JSONs (ex.: src/data)
 └── rules/
-    └── custom-rules.js         # Regras customizadas de validação
+    └── custom-rules.js                    # Regras customizadas (dataPath, shape por tipo)
 ```
 
 ## 🎯 Objetivo
@@ -43,10 +45,10 @@ npm run validate:json src/data/surveyData.json
 npm run validate:all
 ```
 
-### Validar um arquivo na pasta validation:
+### Validar um arquivo com caminho absoluto ou relativo ao projeto:
 
 ```bash
-node data/validation/scripts/validate-json.js caminho/do/arquivo.json
+node docs/docs_json_tutorial/validation_scripts/scripts/validate-json.js src/data/meu-relatorio.json
 ```
 
 ## 📋 O que é Validado
@@ -72,7 +74,7 @@ node data/validation/scripts/validate-json.js caminho/do/arquivo.json
 - Tipos válidos (incluindo `card`, `barChart`, `sentimentDivergentChart`, `container`, `grid-container`, `h3`, `h4`, etc.)
 - `dataPath` deve apontar para dados que existem (quando necessário)
 - Arrays esperados devem ser arrays
-- Estrutura de dados correta para cada tipo
+- **Shape por tipo:** cada componente que usa dados (ex.: `distributionTable`, `sentimentTable`) é validado conforme o que o código espera (ver `ESTRATEGIA_VALIDACAO_COMPONENTES.md`). Ex.: `distributionTable` exige itens com `segment`, `count` (number), `percentage` (number); formato com `answer` e colunas por segmento gera erro.
 - Componentes estão diretamente em `subsections[].components` ou `components` na seção
 
 ### 4. Templates
@@ -99,7 +101,9 @@ node data/validation/scripts/validate-json.js caminho/do/arquivo.json
 
 ## 📐 Estratégia de validação
 
-O documento **`ESTRATEGIA_VALIDACAO_ATUALIZADA.md`** descreve:
+- **`ESTRATEGIA_VALIDACAO_COMPONENTES.md`** — Contrato entre código e JSON por tipo de componente (tabelas, gráficos). Garante que o validador falhe quando o formato dos dados causaria erro em runtime (ex.: `toLocaleString` em `undefined` em `DistributionTable`).
+
+- **`ESTRATEGIA_VALIDACAO_ATUALIZADA.md`** — Descreve:
 
 - Como a validação reflete as mudanças de código (attributes como seção normal).
 - Checklist de todos os pontos de validação (IDs, sectionData genérico, option vs label, numéricos, vazios, estruturas).
