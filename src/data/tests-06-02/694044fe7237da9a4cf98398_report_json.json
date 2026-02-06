@@ -1,0 +1,4514 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "language": "pt-BR",
+    "surveyId": "694044fe7237da9a4cf98398"
+  },
+  "sections": [
+    {
+      "id": "executive",
+      "index": 0,
+      "name": "Relatório Executivo",
+      "icon": "FileText",
+      "subsections": [
+        {
+          "id": "executive-summary",
+          "index": 0,
+          "name": "Sumário Executivo",
+          "icon": "ClipboardList",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Sobre o Estudo",
+              "text": "Esta pesquisa teve como objetivo avaliar a satisfação dos clientes com a telefonia móvel para identificar os principais fatores e áreas de melhoria na indústria de telecomunicações. Os dados foram coletados por meio de uma pesquisa respondida por 849 clientes de telefonia móvel em seis perguntas.",
+              "cardStyleVariant": "default"
+            },
+            {
+              "type": "grid-container",
+              "index": 1,
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Principais Descobertas",
+                  "text": "Quase metade dos entrevistados está muito satisfeita e recomendaria o serviço, enquanto uma minoria significativa pretende parar de usá-lo. O serviço de rede recebeu o maior impacto negativo devido a problemas de confiabilidade, ofuscando outras categorias; o suporte ao cliente apresentou um sentimento equilibrado, e as demais categorias foram mistas. Segmentos regionais e por tipo de SIM revelam que a insatisfação se concentra em áreas específicas e usuários de SIM físico enfrentam mais problemas técnicos e de cobrança.",
+                  "cardStyleVariant": "border-left"
+                },
+                {
+                  "type": "card",
+                  "index": 1,
+                  "title": "Conclusões",
+                  "text": "Falhas no serviço de rede limitam a fidelidade do cliente e exigem atualizações urgentes na infraestrutura. As polaridades do suporte ao cliente sugerem que ganhos de eficiência são necessários para reduzir a rotatividade. Abordar disparidades regionais e melhorias focadas para usuários de SIM físico fortalecerá a satisfação geral. Priorizar a transparência na cobrança e o acompanhamento proativo reduzirá preocupações e aumentará a retenção.",
+                  "cardStyleVariant": "border-left"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "executive-recommendations",
+          "index": 1,
+          "name": "Recomendações",
+          "icon": "AlertTriangle",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "",
+              "text": "",
+              "cardStyleVariant": "overflow-hidden",
+              "components": [
+                {
+                  "type": "recommendationsTable",
+                  "index": 0,
+                  "dataPath": "sectionData.recommendationsTable"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "data": {
+        "recommendationsTable": {
+          "config": {
+            "severityLabels": {
+              "high": "Alto",
+              "medium": "Médio",
+              "low": "Baixo",
+              "critical": "Crítico"
+            }
+          },
+          "items": [
+            {
+              "id": 1,
+              "recommendation": "Melhore a Cobertura e Confiabilidade da Rede por meio de Atualizações de Infraestrutura Direcionadas",
+              "severity": "high",
+              "stakeholders": [
+                "Operações de Rede",
+                "Rede de Acesso Rádio (RAN)",
+                "Engenharia de Rede"
+              ],
+              "tasks": [
+                {
+                  "task": "Realizar avaliação de desempenho da rede para identificar lacunas de cobertura",
+                  "owner": "Operações de rede"
+                },
+                {
+                  "task": "Priorize os locais de atualização da infraestrutura com base no impacto para o usuário e na análise de dados",
+                  "owner": "Operações de rede"
+                },
+                {
+                  "task": "Desenvolver especificações de design para atualização de melhorias de infraestrutura direcionadas",
+                  "owner": "Rede de acesso via rádio (RAN)"
+                },
+                {
+                  "task": "Procure os equipamentos e materiais necessários para as atualizações de infraestrutura",
+                  "owner": "Engenharia de Redes"
+                },
+                {
+                  "task": "Planejar e agendar a implantação de campo das atualizações de infraestrutura por área geográfica",
+                  "owner": "Engenharia de Redes"
+                },
+                {
+                  "task": "Coordenar com as autoridades locais e partes interessadas para acesso ao local e obtenção de permissões",
+                  "owner": "Operações de rede"
+                },
+                {
+                  "task": "Implemente melhorias na infraestrutura de acordo com o projeto técnico e o cronograma",
+                  "owner": "Rede de acesso via rádio (RAN)"
+                },
+                {
+                  "task": "Monitorar o progresso da atualização e resolver prontamente os problemas de implementação em campo",
+                  "owner": "Engenharia de Redes"
+                },
+                {
+                  "task": "Realize testes pós-atualização para verificar melhorias na cobertura e confiabilidade da rede",
+                  "owner": "Operações de rede"
+                },
+                {
+                  "task": "Analisar os dados pós-upgrade para garantir que os KPIs sejam alcançados e documentar os resultados",
+                  "owner": "Engenharia de Redes"
+                },
+                {
+                  "task": "Preparar relatórios de progresso e impacto para revisão da alta administração",
+                  "owner": "Operações de rede"
+                }
+              ]
+            },
+            {
+              "id": 2,
+              "recommendation": "Aumente a Resolução no Primeiro Contato e a Eficiência na Resolução de Problemas no Suporte ao Cliente",
+              "severity": "high",
+              "stakeholders": [
+                "Atendimento ao Cliente",
+                "Central de Atendimento",
+                "Experiência do Cliente (CX)"
+              ],
+              "tasks": [
+                {
+                  "task": "Analisar as métricas atuais de resolução no primeiro contato (FCR) e identificar os principais gargalos",
+                  "owner": "atendimento ao Cliente"
+                },
+                {
+                  "task": "Realizar pesquisa de feedback dos clientes para entender os desafios comuns na resolução de problemas",
+                  "owner": "Experiência do Cliente (CX)"
+                },
+                {
+                  "task": "Desenvolver programa de treinamento direcionado focado em habilidades de resolução de problemas e comunicação",
+                  "owner": "atendimento ao Cliente"
+                },
+                {
+                  "task": "Implemente uma base de conhecimento atualizada e ferramentas de autoatendimento para agentes de suporte",
+                  "owner": "Central de Atendimento"
+                },
+                {
+                  "task": "Integre plataformas de CRM e suporte para otimizar o acompanhamento e a resolução de problemas",
+                  "owner": "Central de Atendimento"
+                },
+                {
+                  "task": "Configure revisões regulares de desempenho e sessões de coaching para os agentes de suporte",
+                  "owner": "atendimento ao Cliente"
+                },
+                {
+                  "task": "Lançar programa piloto para testar melhorias de processo em equipes selecionadas do call center",
+                  "owner": "Central de Atendimento"
+                },
+                {
+                  "task": "Monitorar e relatar semanalmente os indicadores de FCR e eficiência na resolução de problemas",
+                  "owner": "Experiência do Cliente (CX)"
+                },
+                {
+                  "task": "Coletar feedback qualitativo de agentes de suporte e clientes após a implementação",
+                  "owner": "Experiência do Cliente (CX)"
+                },
+                {
+                  "task": "Aprimorar processos e treinamentos com base nos resultados do piloto e no feedback",
+                  "owner": "atendimento ao Cliente"
+                },
+                {
+                  "task": "Implantar mudanças de processo e ferramentas bem-sucedidas em todas as equipes de suporte",
+                  "owner": "atendimento ao Cliente"
+                },
+                {
+                  "task": "Comunique regularmente o progresso e as melhorias a todas as partes interessadas",
+                  "owner": "Experiência do Cliente (CX)"
+                }
+              ]
+            },
+            {
+              "id": 3,
+              "recommendation": "Analisar os Fatores de Baixa Satisfação entre Usuários de Suporte Técnico e Implementar Melhorias",
+              "severity": "medium",
+              "stakeholders": [
+                "Suporte ao Cliente",
+                "Experiência do Cliente (CX)",
+                "Aprendizado e Desenvolvimento"
+              ],
+              "tasks": [
+                {
+                  "task": "Coletar e analisar dados de feedback dos clientes relacionados às interações de suporte técnico",
+                  "owner": "suporte ao cliente"
+                },
+                {
+                  "task": "Identificar os principais fatores que contribuem para as baixas pontuações de satisfação",
+                  "owner": "suporte ao cliente"
+                },
+                {
+                  "task": "Colabore com a Experiência do Cliente (CX) para interpretar insights de feedback",
+                  "owner": "suporte ao cliente"
+                },
+                {
+                  "task": "Desenvolver estratégias de melhoria direcionadas com base nos fatores identificados",
+                  "owner": "Experiência do Cliente (CX)"
+                },
+                {
+                  "task": "Desenvolver módulos de treinamento abordando lacunas específicas identificadas",
+                  "owner": "Aprendizagem e Desenvolvimento"
+                },
+                {
+                  "task": "Revisar e aprovar o conteúdo de treinamento com a Experiência do Cliente (CX)",
+                  "owner": "Aprendizagem e Desenvolvimento"
+                },
+                {
+                  "task": "Implemente sessões de treinamento para a equipe de suporte técnico",
+                  "owner": "Aprendizagem e Desenvolvimento"
+                },
+                {
+                  "task": "Monitorar o desempenho pós-treinamento e as métricas de satisfação do cliente",
+                  "owner": "suporte ao cliente"
+                },
+                {
+                  "task": "Recolher feedback contínuo para melhoria constante",
+                  "owner": "suporte ao cliente"
+                },
+                {
+                  "task": "Relate o progresso e os resultados regularmente a todas as partes interessadas",
+                  "owner": "Experiência do Cliente (CX)"
+                }
+              ]
+            },
+            {
+              "id": 4,
+              "recommendation": "Acompanhar proativamente os clientes que concordam em prosseguir com os serviços de suporte",
+              "severity": "medium",
+              "stakeholders": [
+                "Atendimento ao Cliente",
+                "Operações de Cliente",
+                "Vendas e Retenção"
+              ],
+              "tasks": [
+                {
+                  "task": "Desenvolver um documento padrão de protocolo de acompanhamento para clientes que concordam com os serviços de suporte",
+                  "owner": "atendimento ao Cliente"
+                },
+                {
+                  "task": "Treinar a equipe de Atendimento ao Cliente no novo protocolo de acompanhamento e nas técnicas de comunicação",
+                  "owner": "atendimento ao Cliente"
+                },
+                {
+                  "task": "Integrar tarefas de acompanhamento ao sistema de Gestão de Relacionamento com o Cliente (CRM)",
+                  "owner": "Operações do Cliente"
+                },
+                {
+                  "task": "Defina lembretes automáticos para ações de acompanhamento dentro do CRM para execução oportuna",
+                  "owner": "Operações do Cliente"
+                },
+                {
+                  "task": "Atribua tarefas de acompanhamento aos membros designados da equipe com base na segmentação de clientes",
+                  "owner": "Operações do Cliente"
+                },
+                {
+                  "task": "Monitorar as taxas de conclusão de acompanhamento e o feedback dos clientes semanalmente",
+                  "owner": "Vendas e Retenção"
+                },
+                {
+                  "task": "Analise as respostas dos clientes e atualize as ofertas de serviços de suporte de acordo",
+                  "owner": "Vendas e Retenção"
+                },
+                {
+                  "task": "Relatar mensalmente aos líderes as métricas de desempenho do acompanhamento e os resultados da satisfação do cliente",
+                  "owner": "Operações do Cliente"
+                },
+                {
+                  "task": "Refine continuamente os processos de acompanhamento com base em insights de dados e feedback das partes interessadas",
+                  "owner": "atendimento ao Cliente"
+                }
+              ]
+            },
+            {
+              "id": 5,
+              "recommendation": "Realizar Análise de Causa Raiz em Interrupções de Serviço de Rede que Afetam a Velocidade da Internet",
+              "severity": "medium",
+              "stakeholders": [
+                "Centro de Operações de Rede (NOC)",
+                "Otimização de Rede",
+                "Rede Central"
+              ],
+              "tasks": [
+                {
+                  "task": "Definir o escopo e os objetivos da análise da causa raiz",
+                  "owner": "Centro de Operações de Rede (NOC)"
+                },
+                {
+                  "task": "Coletar e revisar dados históricos sobre interrupções no serviço de rede",
+                  "owner": "Centro de Operações de Rede (NOC)"
+                },
+                {
+                  "task": "Identificar padrões e tendências relacionados à degradação da velocidade da internet",
+                  "owner": "Otimização de rede"
+                },
+                {
+                  "task": "Realizar inspeções no local da infraestrutura crítica de rede",
+                  "owner": "Rede principal"
+                },
+                {
+                  "task": "Realizar análise aprofundada de logs de rede e métricas de desempenho",
+                  "owner": "Otimização de rede"
+                },
+                {
+                  "task": "Entrevistar a equipe técnica e as partes interessadas para coletar informações",
+                  "owner": "Centro de Operações de Rede (NOC)"
+                },
+                {
+                  "task": "Desenvolver hipóteses sobre as possíveis causas raiz das interrupções",
+                  "owner": "Otimização de rede"
+                },
+                {
+                  "task": "Teste hipóteses usando ferramentas de simulação e modelagem de rede",
+                  "owner": "Otimização de rede"
+                },
+                {
+                  "task": "Validar os resultados por meio de revisão e feedback interfuncional",
+                  "owner": "Rede principal"
+                },
+                {
+                  "task": "Relatório documentado de análise de causa raiz com descobertas detalhadas",
+                  "owner": "Centro de Operações de Rede (NOC)"
+                },
+                {
+                  "task": "Apresentar descobertas e recomendações à alta administração",
+                  "owner": "Centro de Operações de Rede (NOC)"
+                },
+                {
+                  "task": "Desenvolver plano de ação para abordar as causas raiz identificadas",
+                  "owner": "Otimização de rede"
+                },
+                {
+                  "task": "Implemente medidas corretivas e monitore o impacto na velocidade da internet",
+                  "owner": "Rede principal"
+                },
+                {
+                  "task": "Estabelecer protocolos de monitoramento contínuo para prevenir recorrências",
+                  "owner": "Centro de Operações de Rede (NOC)"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "support",
+      "index": 1,
+      "name": "Análises de Suporte",
+      "icon": "Heart",
+      "subsections": [
+        {
+          "id": "support-sentiment",
+          "index": 0,
+          "name": "Análise de Sentimento para Principais Categorias",
+          "icon": "Smile",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "useDescription": true,
+              "text": "O serviço de rede é um ponto crítico na satisfação dos clientes de telefonia móvel, com um índice de impacto negativo impulsionado por 30,48% de sentimento negativo e representando quase 48% das menções. O suporte ao cliente apresenta sentimento misto, com menções positivas e negativas próximas, cerca de 12% cada, e compreendendo 23% do feedback total. A equipe de suporte ao cliente deve implementar treinamentos direcionados para resolver problemas comuns e reduzir experiências negativas relatadas pelos clientes.",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-description",
+              "components": [
+                {
+                  "type": "sentimentDivergentChart",
+                  "index": 0,
+                  "dataPath": "sectionData.sentimentDivergentChart",
+                  "config": {
+                    "yAxisDataKey": "category"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "support-intent",
+          "index": 2,
+          "name": "Intenção de Respondentes",
+          "icon": "Target",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "text": "Quase metade dos entrevistados (48,28%) está altamente satisfeita e provavelmente promoverá ativamente o serviço móvel, indicando um forte potencial de defesa da marca. No entanto, uma parcela significativa (30,68%) pretende continuar como cliente, mas com preocupações expressas, destacando áreas que precisam de melhorias direcionadas para evitar o cancelamento. Os 12,25% que provavelmente deixarão de usar o serviço indicam uma necessidade urgente de estratégias de retenção, enquanto os 8,68% que estão satisfeitos, mas estáveis, representam uma oportunidade para converter usuários passivos em promotores.",
+              "cardStyleVariant": "default",
+              "components": [
+                {
+                  "type": "barChart",
+                  "index": 0,
+                  "dataPath": "sectionData.respondentIntentChart",
+                  "config": {
+                    "dataKey": "percentage",
+                    "yAxisDataKey": "intent"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "support-segmentation",
+          "index": 1,
+          "name": "Segmentação de Respondentes",
+          "icon": "Users2",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "",
+              "text": "",
+              "cardStyleVariant": "overflow-hidden",
+              "components": [
+                {
+                  "type": "segmentationTable",
+                  "index": 0,
+                  "dataPath": "sectionData.segmentationTable"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "data": {
+        "sentimentDivergentChart": [
+          {
+            "category": "serviço de rede",
+            "positive": 18.7,
+            "negative": 33.1
+          },
+          {
+            "category": "suporte ao cliente",
+            "positive": 9.8,
+            "negative": 6.9
+          },
+          {
+            "category": "cobertura de rede",
+            "positive": 4.2,
+            "negative": 10.7
+          },
+          {
+            "category": "oferta e preços",
+            "positive": 1.5,
+            "negative": 3.6
+          },
+          {
+            "category": "faturamento e cobranças",
+            "positive": 0.0,
+            "negative": 2.0
+          },
+          {
+            "category": "outro",
+            "positive": 7.5,
+            "negative": 1.9
+          }
+        ],
+        "segmentationTable": [
+          {
+            "cluster": "Passivo — serviço de rede",
+            "description": "Indivíduos com uma postura passiva que interagem ou dependem do serviço de rede sem envolvimento ativo.",
+            "percentage": "24.7",
+            "id": 1
+          },
+          {
+            "cluster": "Promotor — serviço de rede",
+            "description": "Promotores mencionando principalmente o serviço de rede",
+            "percentage": "23.3",
+            "id": 2
+          },
+          {
+            "cluster": "Promotor — outro",
+            "description": "Promotores mencionando principalmente outros",
+            "percentage": "15.1",
+            "id": 3
+          },
+          {
+            "cluster": "Detrator — serviço de rede",
+            "description": "Detratores mencionando principalmente o serviço de rede",
+            "percentage": "8.6",
+            "id": 4
+          },
+          {
+            "cluster": "Promotor — suporte ao cliente",
+            "description": "Promotores mencionando principalmente o suporte ao cliente",
+            "percentage": "7.4",
+            "id": 5
+          },
+          {
+            "cluster": "Outros",
+            "description": "Grupo de 12 pequenos segmentos que não são estatisticamente relevantes por si só.",
+            "percentage": "21.1",
+            "id": " "
+          }
+        ],
+        "respondentIntentChart": [
+          {
+            "intent": "Muito satisfeito e promoveria o produto/serviço",
+            "percentage": 48.28
+          },
+          {
+            "intent": "Pretende ficar, mas expressa preocupações",
+            "percentage": 30.68
+          },
+          {
+            "intent": "Provavelmente parará de usar o produto/serviço",
+            "percentage": 12.25
+          },
+          {
+            "intent": "Satisfeito e estável",
+            "percentage": 8.68
+          }
+        ]
+      }
+    },
+    {
+      "id": "questions",
+      "index": 2,
+      "name": "Análise por Questão",
+      "icon": "MessageSquare",
+      "questions": [
+        {
+          "question_id": "pergunta1",
+          "index": 0,
+          "question": "Descreva em poucas palavras de forma simples, a sua avaliação.",
+          "summary": "O suporte ao cliente é o principal fator de satisfação e insatisfação dos clientes em telefonia móvel, com 90 menções positivas contra 82 negativas, destacando a necessidade de melhorar a resolução de problemas e a confiabilidade do serviço para aumentar a satisfação geral do cliente.",
+          "data": {
+            "sentimentDivergentChart": [
+              {
+                "value": "suporte ao cliente",
+                "positive": 21.3,
+                "negative": 31.3
+              },
+              {
+                "value": "serviço de rede",
+                "positive": 12.1,
+                "negative": 18.9
+              },
+              {
+                "value": "cobertura de rede",
+                "positive": 0.8,
+                "negative": 3.1
+              },
+              {
+                "value": "comunicação",
+                "positive": 0.5,
+                "negative": 1.1
+              },
+              {
+                "value": "oferta e preços",
+                "positive": 0.3,
+                "negative": 0.3
+              },
+              {
+                "value": "faturamento e cobranças",
+                "positive": 0.0,
+                "negative": 0.6
+              },
+              {
+                "value": "outro",
+                "positive": 8.2,
+                "negative": 1.4
+              }
+            ],
+            "topCategoriesCards": [
+              {
+                "rank": 1,
+                "category": "suporte ao cliente",
+                "mentions": 620,
+                "percentage": 100,
+                "topics": [
+                  {
+                    "topic": "qualidade do atendimento ao cliente",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "atendimento ao Cliente",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "experiência de suporte ao cliente",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "resolução de problemas",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "Suporte técnico",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "suporte ao cliente",
+                    "sentiment": "negative"
+                  }
+                ]
+              },
+              {
+                "rank": 2,
+                "category": "serviço de rede",
+                "mentions": 365,
+                "percentage": 59,
+                "topics": [
+                  {
+                    "topic": "qualidade do atendimento ao cliente",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "velocidade da rede",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "velocidade de serviço",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "confiabilidade do serviço",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "Problemas de conectividade com a Internet",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "confiabilidade da rede",
+                    "sentiment": "negative"
+                  }
+                ]
+              },
+              {
+                "rank": 3,
+                "category": "cobertura de rede",
+                "mentions": 47,
+                "percentage": 8,
+                "topics": [
+                  {
+                    "topic": "Problemas de sinal de rede",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "Cobertura de rede (5G)",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "cobertura de rede",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "disponibilidade do serviço",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "Requisitos de localização do serviço",
+                    "sentiment": "negative"
+                  }
+                ]
+              }
+            ],
+            "wordCloud": [
+              {
+                "text": "Qualidade do atendimento ao cliente",
+                "value": 47
+              },
+              {
+                "text": "Resolução de problemas",
+                "value": 36
+              },
+              {
+                "text": "Atendimento ao cliente",
+                "value": 30
+              },
+              {
+                "text": "Suporte ao cliente",
+                "value": 20
+              },
+              {
+                "text": "Resolução de problemas",
+                "value": 16
+              },
+              {
+                "text": "Velocidade da rede",
+                "value": 14
+              },
+              {
+                "text": "Capacidade de resposta do suporte ao cliente",
+                "value": 12
+              },
+              {
+                "text": "Confiabilidade do serviço",
+                "value": 9
+              },
+              {
+                "text": "Qualidade do suporte ao cliente",
+                "value": 9
+              },
+              {
+                "text": "Velocidade de serviço",
+                "value": 8
+              },
+              {
+                "text": "Tempo de resposta",
+                "value": 8
+              },
+              {
+                "text": "Experiência de suporte ao cliente",
+                "value": 7
+              },
+              {
+                "text": "Suporte técnico",
+                "value": 7
+              },
+              {
+                "text": "Satisfação do cliente",
+                "value": 6
+              },
+              {
+                "text": "Qualidade da rede",
+                "value": 6
+              },
+              {
+                "text": "Atraso no serviço",
+                "value": 6
+              },
+              {
+                "text": "Confiabilidade da rede",
+                "value": 6
+              },
+              {
+                "text": "Facilidade de uso",
+                "value": 5
+              },
+              {
+                "text": "Cobertura de rede",
+                "value": 5
+              },
+              {
+                "text": "Problema de conectividade com a internet",
+                "value": 5
+              },
+              {
+                "text": "Acessibilidade de suporte ao cliente",
+                "value": 5
+              },
+              {
+                "text": "Conectividade de rede",
+                "value": 5
+              },
+              {
+                "text": "Velocidade da internet",
+                "value": 4
+              },
+              {
+                "text": "Resposta de suporte ao cliente",
+                "value": 4
+              },
+              {
+                "text": "Disponibilidade do serviço",
+                "value": 3
+              },
+              {
+                "text": "Qualidade da internet",
+                "value": 3
+              },
+              {
+                "text": "Atraso de rede",
+                "value": 3
+              },
+              {
+                "text": "Qualidade do serviço técnico",
+                "value": 3
+              },
+              {
+                "text": "Qualidade da chamada",
+                "value": 3
+              },
+              {
+                "text": "Atenção do técnico",
+                "value": 3
+              },
+              {
+                "text": "Problema de faturamento",
+                "value": 3
+              },
+              {
+                "text": "Problema na conclusão do serviço",
+                "value": 2
+              },
+              {
+                "text": "Recorrência do problema",
+                "value": 2
+              },
+              {
+                "text": "Responsividade do serviço",
+                "value": 2
+              },
+              {
+                "text": "Eficiência do serviço",
+                "value": 2
+              },
+              {
+                "text": "Problema de configuração do dispositivo",
+                "value": 2
+              },
+              {
+                "text": "Estabilidade de conexão",
+                "value": 2
+              },
+              {
+                "text": "Mal funcionamento do dispositivo",
+                "value": 2
+              },
+              {
+                "text": "Compatibilidade de dispositivos",
+                "value": 2
+              },
+              {
+                "text": "Desafio de serviço remoto",
+                "value": 2
+              },
+              {
+                "text": "Abordagem de resolução de problemas",
+                "value": 2
+              },
+              {
+                "text": "Clareza de comunicação",
+                "value": 2
+              },
+              {
+                "text": "Limitação do conhecimento de suporte",
+                "value": 2
+              },
+              {
+                "text": "Profissionalismo da equipe",
+                "value": 2
+              },
+              {
+                "text": "Atenção ao cliente",
+                "value": 2
+              },
+              {
+                "text": "Serviço na loja",
+                "value": 2
+              },
+              {
+                "text": "Automatizar problema de serviço",
+                "value": 2
+              },
+              {
+                "text": "Serviço lento",
+                "value": 2
+              },
+              {
+                "text": "Complexidade do sistema",
+                "value": 2
+              },
+              {
+                "text": "Problema de sinal de rede",
+                "value": 2
+              }
+            ],
+            "npsScore": null,
+            "sentimentCategories": [
+              {
+                "category": "suporte ao cliente",
+                "negative": 3.0,
+                "positive": 3.0,
+                "neutral": 0.0
+              },
+              {
+                "category": "serviço de rede",
+                "negative": 3.0,
+                "positive": 3.0,
+                "neutral": 0.0
+              },
+              {
+                "category": "cobertura de rede",
+                "negative": 3.0,
+                "positive": 2.0,
+                "neutral": 0.0
+              }
+            ],
+            "topicsByCategory": [
+              {
+                "category": "suporte ao cliente",
+                "positiveTopics": [
+                  "qualidade do atendimento ao cliente",
+                  "atendimento ao Cliente",
+                  "experiência de suporte ao cliente"
+                ],
+                "negativeTopics": [
+                  "resolução de problemas",
+                  "Suporte técnico",
+                  "suporte ao cliente"
+                ],
+                "neutralTopics": []
+              },
+              {
+                "category": "serviço de rede",
+                "positiveTopics": [
+                  "qualidade do atendimento ao cliente",
+                  "velocidade da rede",
+                  "velocidade de serviço"
+                ],
+                "negativeTopics": [
+                  "confiabilidade do serviço",
+                  "Problemas de conectividade com a Internet",
+                  "confiabilidade da rede"
+                ],
+                "neutralTopics": []
+              },
+              {
+                "category": "cobertura de rede",
+                "positiveTopics": [
+                  "Problemas de sinal de rede",
+                  "Cobertura de rede (5G)"
+                ],
+                "negativeTopics": [
+                  "cobertura de rede",
+                  "disponibilidade do serviço",
+                  "Requisitos de localização do serviço"
+                ],
+                "neutralTopics": []
+              }
+            ]
+          },
+          "wordCloud": [],
+          "id": 1,
+          "questionType": "open-ended"
+        },
+        {
+          "question_id": "pergunta2",
+          "index": 1,
+          "question": "Descreva em poucas palavras de forma simples, a sua avaliação.",
+          "summary": "A satisfação do cliente com o serviço de telefonia móvel é fortemente influenciada pelo serviço de rede, com 255 menções positivas principalmente sobre a qualidade do serviço e 272 menções negativas focadas na confiabilidade da rede e do serviço, especialmente na cobertura da rede, que representa 90 menções negativas e 42 positivas, indicando uma necessidade crítica de melhorar a cobertura consistente e a confiabilidade para aprimorar a experiência geral do cliente.",
+          "data": {
+            "sentimentDivergentChart": [
+              {
+                "value": "serviço de rede",
+                "positive": 18.7,
+                "negative": 33.1
+              },
+              {
+                "value": "suporte ao cliente",
+                "positive": 9.8,
+                "negative": 6.9
+              },
+              {
+                "value": "cobertura de rede",
+                "positive": 4.2,
+                "negative": 10.7
+              },
+              {
+                "value": "oferta e preços",
+                "positive": 1.5,
+                "negative": 3.6
+              },
+              {
+                "value": "faturamento e cobranças",
+                "positive": 0.0,
+                "negative": 2.0
+              },
+              {
+                "value": "outro",
+                "positive": 7.5,
+                "negative": 1.9
+              }
+            ],
+            "topCategoriesCards": [
+              {
+                "rank": 1,
+                "category": "serviço de rede",
+                "mentions": 2687,
+                "percentage": 100,
+                "topics": [
+                  {
+                    "topic": "qualidade de serviço",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "qualidade da rede",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "qualidade da internet",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "confiabilidade da rede",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "confiabilidade do serviço",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "Conectividade com a Internet",
+                    "sentiment": "negative"
+                  }
+                ]
+              },
+              {
+                "rank": 2,
+                "category": "suporte ao cliente",
+                "mentions": 869,
+                "percentage": 32,
+                "topics": [
+                  {
+                    "topic": "Satisfação do cliente",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "suporte ao cliente",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "atendimento ao Cliente",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "processo de cancelamento",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "capacidade de resposta do suporte ao cliente",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "Insatisfação com o suporte ao cliente",
+                    "sentiment": "negative"
+                  }
+                ]
+              },
+              {
+                "rank": 3,
+                "category": "cobertura de rede",
+                "mentions": 778,
+                "percentage": 29,
+                "topics": [
+                  {
+                    "topic": "acessibilidade à internet",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "Disponibilidade de internet",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "Cobertura do serviço",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "cobertura de rede",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "intensidade do sinal",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "qualidade do sinal",
+                    "sentiment": "negative"
+                  }
+                ]
+              }
+            ],
+            "wordCloud": [
+              {
+                "text": "Cobertura de rede",
+                "value": 165
+              },
+              {
+                "text": "Qualidade de serviço",
+                "value": 85
+              },
+              {
+                "text": "Confiabilidade da rede",
+                "value": 76
+              },
+              {
+                "text": "Satisfação do cliente",
+                "value": 73
+              },
+              {
+                "text": "Confiabilidade do serviço",
+                "value": 68
+              },
+              {
+                "text": "Qualidade da rede",
+                "value": 57
+              },
+              {
+                "text": "Qualidade da internet",
+                "value": 43
+              },
+              {
+                "text": "Velocidade da internet",
+                "value": 33
+              },
+              {
+                "text": "Estabilidade da rede",
+                "value": 32
+              },
+              {
+                "text": "Velocidade da rede",
+                "value": 29
+              },
+              {
+                "text": "Conectividade com a internet",
+                "value": 28
+              },
+              {
+                "text": "Desempenho da rede",
+                "value": 23
+              },
+              {
+                "text": "Conectividade de rede",
+                "value": 22
+              },
+              {
+                "text": "Qualidade do sinal",
+                "value": 20
+              },
+              {
+                "text": "Suporte ao cliente",
+                "value": 20
+              },
+              {
+                "text": "Problema de conectividade de chamada",
+                "value": 20
+              },
+              {
+                "text": "Qualidade da internet móvel",
+                "value": 19
+              },
+              {
+                "text": "Satisfação com o serviço",
+                "value": 18
+              },
+              {
+                "text": "Satisfação geral",
+                "value": 17
+              },
+              {
+                "text": "Atendimento ao cliente",
+                "value": 17
+              },
+              {
+                "text": "Qualidade da chamada",
+                "value": 13
+              },
+              {
+                "text": "Intensidade do sinal",
+                "value": 13
+              },
+              {
+                "text": "Estabilidade na internet",
+                "value": 12
+              },
+              {
+                "text": "Velocidade de conexão",
+                "value": 10
+              },
+              {
+                "text": "Preços",
+                "value": 10
+              },
+              {
+                "text": "Confiabilidade da internet",
+                "value": 10
+              },
+              {
+                "text": "Problema de faturamento",
+                "value": 10
+              },
+              {
+                "text": "Eficiência do serviço",
+                "value": 10
+              },
+              {
+                "text": "Confiabilidade do sinal",
+                "value": 9
+              },
+              {
+                "text": "Capacidade de resposta do suporte ao cliente",
+                "value": 8
+              },
+              {
+                "text": "Atraso no serviço",
+                "value": 7
+              },
+              {
+                "text": "Subsídio de referência",
+                "value": 7
+              },
+              {
+                "text": "Estabilidade de conexão",
+                "value": 6
+              },
+              {
+                "text": "Problema de conectividade",
+                "value": 6
+              },
+              {
+                "text": "Recomendação do cliente",
+                "value": 5
+              },
+              {
+                "text": "Queda de chamada",
+                "value": 5
+              },
+              {
+                "text": "Disponibilidade do serviço",
+                "value": 5
+              },
+              {
+                "text": "Fidelidade à marca",
+                "value": 5
+              },
+              {
+                "text": "Qualidade da conexão de rede",
+                "value": 5
+              },
+              {
+                "text": "Problema de sinal de rede",
+                "value": 5
+              },
+              {
+                "text": "Problema de rede",
+                "value": 5
+              },
+              {
+                "text": "Velocidade de resolução de problemas",
+                "value": 5
+              },
+              {
+                "text": "Problema de cobertura",
+                "value": 5
+              },
+              {
+                "text": "Desempenho da internet",
+                "value": 5
+              },
+              {
+                "text": "Facilidade de uso",
+                "value": 5
+              },
+              {
+                "text": "Interrupção da rede",
+                "value": 5
+              },
+              {
+                "text": "Estabilidade do sinal",
+                "value": 5
+              },
+              {
+                "text": "Flutuação da internet",
+                "value": 4
+              },
+              {
+                "text": "Conectividade de internet móvel",
+                "value": 4
+              },
+              {
+                "text": "Interrupção do serviço",
+                "value": 4
+              }
+            ],
+            "npsScore": null,
+            "sentimentCategories": [
+              {
+                "category": "serviço de rede",
+                "negative": 3.0,
+                "positive": 3.0,
+                "neutral": 0.0
+              },
+              {
+                "category": "suporte ao cliente",
+                "negative": 3.0,
+                "positive": 3.0,
+                "neutral": 0.0
+              },
+              {
+                "category": "cobertura de rede",
+                "negative": 3.0,
+                "positive": 3.0,
+                "neutral": 0.0
+              }
+            ],
+            "topicsByCategory": [
+              {
+                "category": "serviço de rede",
+                "positiveTopics": [
+                  "qualidade de serviço",
+                  "qualidade da rede",
+                  "qualidade da internet"
+                ],
+                "negativeTopics": [
+                  "confiabilidade da rede",
+                  "confiabilidade do serviço",
+                  "Conectividade com a Internet"
+                ],
+                "neutralTopics": []
+              },
+              {
+                "category": "suporte ao cliente",
+                "positiveTopics": [
+                  "Satisfação do cliente",
+                  "suporte ao cliente",
+                  "atendimento ao Cliente"
+                ],
+                "negativeTopics": [
+                  "processo de cancelamento",
+                  "capacidade de resposta do suporte ao cliente",
+                  "Insatisfação com o suporte ao cliente"
+                ],
+                "neutralTopics": []
+              },
+              {
+                "category": "cobertura de rede",
+                "positiveTopics": [
+                  "acessibilidade à internet",
+                  "Disponibilidade de internet",
+                  "Cobertura do serviço"
+                ],
+                "negativeTopics": [
+                  "cobertura de rede",
+                  "intensidade do sinal",
+                  "qualidade do sinal"
+                ],
+                "neutralTopics": []
+              }
+            ]
+          },
+          "wordCloud": [],
+          "id": 2,
+          "questionType": "open-ended"
+        },
+        {
+          "question_id": "pergunta3",
+          "index": 2,
+          "question": "De 1 a 5 avalie o quão satisfeito está com o serviço que contratou. ",
+          "summary": "A maioria dos clientes (cerca de 70%) avaliou sua satisfação na faixa superior da escala (pontuações 4 ou 5), com quase metade selecionando a avaliação mais alta (5); para melhorar a satisfação geral, investigue as preocupações dos aproximadamente 15% que avaliaram na faixa inferior (pontuações 1 ou 2) e aborde suas questões específicas.",
+          "data": {
+            "barChart": [
+              {
+                "option": "5",
+                "value": 545,
+                "percentage": 49.5
+              },
+              {
+                "option": "4",
+                "value": 230,
+                "percentage": 20.9
+              },
+              {
+                "option": "3",
+                "value": 157,
+                "percentage": 14.3
+              },
+              {
+                "option": "1",
+                "value": 91,
+                "percentage": 8.3
+              },
+              {
+                "option": "2",
+                "value": 77,
+                "percentage": 7.0
+              }
+            ],
+            "npsScore": null,
+            "wordCloud": [],
+            "sentimentCategories": [],
+            "topicsByCategory": []
+          },
+          "id": 3,
+          "questionType": "single-choice"
+        },
+        {
+          "question_id": "pergunta4",
+          "index": 3,
+          "question": "Lamentamos a situação e gostaríamos de melhorar sua experiência. Nossos especialistas estão prontos para ajudar, gostaria de seguir com o atendimento?",
+          "summary": "58,4% dos clientes concordaram em prosseguir com o serviço, indicando que quase três em cada cinco entrevistados estão abertos ao suporte; priorize as interações de acompanhamento com esse segmento para melhorar a experiência geral do cliente.",
+          "data": {
+            "barChart": [
+              {
+                "option": "Sim",
+                "value": 101,
+                "percentage": 58.4
+              },
+              {
+                "option": "Não",
+                "value": 72,
+                "percentage": 41.6
+              }
+            ],
+            "npsScore": null,
+            "wordCloud": [],
+            "sentimentCategories": [],
+            "topicsByCategory": []
+          },
+          "id": 4,
+          "questionType": "single-choice"
+        },
+        {
+          "question_id": "pergunta5",
+          "index": 4,
+          "question": "Em algum momento você precisou entrar em contato com nosso suporte técnico?",
+          "summary": "Aproximadamente 47% dos clientes contataram o suporte técnico, indicando que quase metade dos usuários enfrentou problemas que exigiram assistência; a empresa deve investigar os problemas comuns e melhorar a resolução no primeiro contato para reduzir essa taxa.",
+          "data": {
+            "barChart": [
+              {
+                "option": "Não",
+                "value": 569,
+                "percentage": 53.1
+              },
+              {
+                "option": "Sim",
+                "value": 503,
+                "percentage": 46.9
+              }
+            ],
+            "npsScore": null,
+            "wordCloud": [],
+            "sentimentCategories": [],
+            "topicsByCategory": []
+          },
+          "id": 5,
+          "questionType": "multiple-choice"
+        },
+        {
+          "question_id": "pergunta6",
+          "index": 5,
+          "question": "De 1 a 5 avalie a sua experiência com o nosso suporte técnico. ",
+          "summary": "A maioria dos clientes avaliou sua experiência com o suporte técnico na faixa superior da escala, com 70,3% selecionando 4 ou 5 e uma média observada de aproximadamente 3,92. No entanto, 16,2% dos entrevistados avaliaram sua experiência na faixa inferior (1 ou 2). Para resolver isso, a empresa deve analisar os problemas comuns relatados pelos avaliadores da faixa inferior e desenvolver melhorias direcionadas nessas áreas.",
+          "data": {
+            "barChart": [
+              {
+                "option": "5",
+                "value": 222,
+                "percentage": 46.7
+              },
+              {
+                "option": "4",
+                "value": 112,
+                "percentage": 23.6
+              },
+              {
+                "option": "3",
+                "value": 64,
+                "percentage": 13.5
+              },
+              {
+                "option": "1",
+                "value": 42,
+                "percentage": 8.8
+              },
+              {
+                "option": "2",
+                "value": 35,
+                "percentage": 7.4
+              }
+            ],
+            "npsScore": null,
+            "wordCloud": [],
+            "sentimentCategories": [],
+            "topicsByCategory": []
+          },
+          "id": 6,
+          "questionType": "single-choice"
+        }
+      ],
+      "components": [],
+      "data": {
+        "config": {
+          "npsCategories": {
+            "detractor": "Detrator",
+            "promoter": "Promotor",
+            "neutral": "Neutro",
+            "labels": {
+              "detractors": "Detratores",
+              "neutrals": "Neutros",
+              "promoters": "Promotores"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "attributes",
+      "index": 3,
+      "name": "Análise por Atributos",
+      "icon": "Layers",
+      "defaultIcon": "Building",
+      "subsections": [
+        {
+          "id": "attributes-estado",
+          "index": 0,
+          "name": "estado",
+          "icon": "Layers",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Sumário",
+              "text": "Os desafios de satisfação do cliente em telefonia móvel são mais agudos em SC e RS, onde predominam problemas com suporte ao cliente, comunicação e faturamento, enquanto PR apresenta maior satisfação, mas também contatos mais frequentes com suporte técnico. Melhorar a qualidade e a capacidade de resposta do suporte técnico em SC, onde as avaliações e o sentimento são mais fracos, juntamente com a resolução de preocupações relacionadas à automação e faturamento, será fundamental para aumentar a satisfação geral. Aproveitar a disposição demonstrada dos clientes em interagir com especialistas em RS e SC oferece uma oportunidade estratégica para resolver problemas e aumentar a fidelidade.",
+              "cardStyleVariant": "default"
+            },
+            {
+              "type": "card",
+              "index": 1,
+              "title": "Distribuição dos respondentes",
+              "cardStyleVariant": "flex-column",
+              "cardContentVariant": "with-charts",
+              "components": [
+                {
+                  "type": "barChart",
+                  "dataPath": "sectionData.estado.distributionChart"
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 2,
+              "title": "Descreva em poucas palavras de forma simples, a sua avaliação.",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "O suporte ao cliente é o fator dominante que influencia a satisfação do cliente nos estados do RS e SC, com uma alta proporção de sentimento negativo vinculada a essa área. O feedback positivo no RS está notavelmente associado ao suporte ao cliente e à comunicação, enquanto os clientes de SC destacam a cobertura da rede juntamente com o suporte ao cliente. As principais questões negativas em SC incluem problemas de comunicação e faturamento, enquanto questões relacionadas à automação, como acesso ao aplicativo e mensagens de serviço automatizadas, também são uma preocupação, particularmente em SC."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "container",
+                      "index": 0,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Análise de Sentimento"
+                        },
+                        {
+                          "type": "sentimentThreeColorChart",
+                          "index": 1,
+                          "dataPath": "sectionData.estado.questions.pergunta1.satisfactionImpactSentimentChart"
+                        },
+                        {
+                          "type": "sentimentImpactTable",
+                          "index": 2,
+                          "dataPath": "sectionData.estado.questions.pergunta1.satisfactionImpactSentimentTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento positivo - Top 3"
+                        },
+                        {
+                          "type": "positiveCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.estado.questions.pergunta1.positiveCategoriesTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento negativo - Top 3"
+                        },
+                        {
+                          "type": "negativeCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.estado.questions.pergunta1.negativeCategoriesTable"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 3,
+              "title": "Descreva em poucas palavras de forma simples, a sua avaliação.",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A satisfação do cliente com a telefonia móvel apresenta um sentimento predominantemente negativo em todos os estados, com a negatividade mais alta no PR (61,9%) e a mais baixa em SC (57,5%). As principais preocupações estão relacionadas a faturamento e cobranças, bem como a problemas de comunicação, especialmente pronunciados em SC, onde as menções negativas ao faturamento atingem 4,0%. O feedback positivo tende a se concentrar na concorrência e comunicação, particularmente em SC, enquanto o desempenho do 5G e a disponibilidade do serviço aparecem de forma mais positiva no RS, mas são marginais no geral."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "container",
+                      "index": 0,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Análise de Sentimento"
+                        },
+                        {
+                          "type": "sentimentThreeColorChart",
+                          "index": 1,
+                          "dataPath": "sectionData.estado.questions.pergunta2.satisfactionImpactSentimentChart"
+                        },
+                        {
+                          "type": "sentimentImpactTable",
+                          "index": 2,
+                          "dataPath": "sectionData.estado.questions.pergunta2.satisfactionImpactSentimentTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento positivo - Top 3"
+                        },
+                        {
+                          "type": "positiveCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.estado.questions.pergunta2.positiveCategoriesTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento negativo - Top 3"
+                        },
+                        {
+                          "type": "negativeCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.estado.questions.pergunta2.negativeCategoriesTable"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 4,
+              "title": "De 1 a 5 avalie o quão satisfeito está com o serviço que contratou. ",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A satisfação do cliente com o serviço de telefonia móvel é mais alta no PR, onde 75% dos entrevistados avaliaram sua experiência com nota 5, indicando forte aprovação. Em contraste, a satisfação no RS e SC é mais moderada, com apenas cerca de metade dos clientes dando a nota máxima e uma presença notável de notas mais baixas (1 a 3), especialmente no RS. Isso sugere que esforços de melhoria direcionados no RS e SC poderiam ajudar a elevar a satisfação geral com o serviço nesses estados."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.estado.questions.pergunta3.distributionChart"
+                    },
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.estado.questions.pergunta3.distributionTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 5,
+              "title": "Lamentamos a situação e gostaríamos de melhorar sua experiência. Nossos especialistas estão prontos para ajudar, gostaria de seguir com o atendimento?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A maioria dos clientes nos estados do RS e SC está disposta a prosseguir com a assistência de um especialista, indicando uma forte abertura para resolver problemas e melhorar sua experiência com telefonia móvel. A resposta positiva ligeiramente maior no RS (60%) em comparação com o SC (58,4%) sugere um engajamento ou satisfação marginalmente maior com os serviços de suporte nessa região. Esses insights destacam uma oportunidade valiosa para um acompanhamento direcionado pela equipe de atendimento ao cliente da empresa, a fim de aumentar a satisfação e a fidelidade em ambos os estados."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.estado.questions.pergunta4.distributionChart"
+                    },
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.estado.questions.pergunta4.distributionTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 6,
+              "title": "Em algum momento você precisou entrar em contato com nosso suporte técnico?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "Uma maioria significativa de clientes no PR (71,4%) relatou a necessidade de contatar o suporte técnico, em comparação com cerca de metade ou menos no RS (51,7%) e SC (46,0%). Essa taxa mais alta de contato no PR pode indicar maiores problemas de serviço ou técnicos que afetam a satisfação do cliente naquele estado. Atender a essas necessidades de suporte de forma eficaz no PR pode ser crucial para melhorar a satisfação geral do cliente com o serviço de telefonia móvel."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.estado.questions.pergunta5.distributionChart"
+                    },
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.estado.questions.pergunta5.distributionTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 7,
+              "title": "De 1 a 5 avalie a sua experiência com o nosso suporte técnico. ",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "Clientes no RS apresentam um nível mais alto de satisfação com o suporte técnico, com 53,7% avaliando sua experiência como 5, em comparação com 46,9% em SC. Ambos os estados mostram uma maioria de avaliações positivas (4 e 5), indicando percepções gerais favoráveis, mas SC possui uma parcela visivelmente maior de avaliações neutras (3) e baixas (1 e 2). Isso sugere que a eficácia do suporte técnico pode ser percebida como mais forte ou mais consistente no RS, destacando uma oportunidade para investigar e melhorar a qualidade do suporte em SC para aumentar a satisfação dos clientes em telefonia móvel."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.estado.questions.pergunta6.distributionChart"
+                    },
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.estado.questions.pergunta6.distributionTable"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "data": {
+            "distributionChart": [
+              {
+                "segment": "SC",
+                "count": 663,
+                "percentage": 78.3
+              },
+              {
+                "segment": "RS",
+                "count": 180,
+                "percentage": 21.3
+              },
+              {
+                "segment": "PR",
+                "count": 4,
+                "percentage": 0.5
+              }
+            ],
+            "distributionTable": [
+              {
+                "segment": "SC",
+                "count": 663,
+                "percentage": 78.3
+              },
+              {
+                "segment": "RS",
+                "count": 180,
+                "percentage": 21.3
+              },
+              {
+                "segment": "PR",
+                "count": 4,
+                "percentage": 0.5
+              }
+            ],
+            "questions": {
+              "pergunta1": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "satisfactionImpactSentimentChart": [
+                  {
+                    "sentiment": "negativo",
+                    "RS": 54.0,
+                    "SC": 57.3
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "RS": 0.0,
+                    "SC": 0.3
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "RS": 46.0,
+                    "SC": 42.4
+                  }
+                ],
+                "satisfactionImpactSentimentTable": [
+                  {
+                    "sentiment": "negativo",
+                    "RS": 54.0,
+                    "SC": 57.3
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "RS": 0.0,
+                    "SC": 0.3
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "RS": 46.0,
+                    "SC": 42.4
+                  }
+                ],
+                "positiveCategoriesTable": [
+                  {
+                    "category": "suporte ao cliente",
+                    "RS": 65.4,
+                    "SC": 45.3
+                  },
+                  {
+                    "category": "serviço de rede",
+                    "RS": 20.2,
+                    "SC": 30.0
+                  },
+                  {
+                    "category": "outro",
+                    "RS": 10.6,
+                    "SC": 21.0
+                  }
+                ],
+                "negativeCategoriesTable": [
+                  {
+                    "category": "suporte ao cliente",
+                    "RS": 59.8,
+                    "SC": 54.2
+                  },
+                  {
+                    "category": "serviço de rede",
+                    "RS": 36.9,
+                    "SC": 32.6
+                  },
+                  {
+                    "category": "cobertura de rede",
+                    "RS": 3.3,
+                    "SC": 6.0
+                  }
+                ]
+              },
+              "pergunta2": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "satisfactionImpactSentimentChart": [
+                  {
+                    "sentiment": "negativo",
+                    "PR": 61.9,
+                    "RS": 60.8,
+                    "SC": 57.5
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "PR": 0.0,
+                    "RS": 0.1,
+                    "SC": 0.2
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "PR": 38.1,
+                    "RS": 39.1,
+                    "SC": 42.3
+                  }
+                ],
+                "satisfactionImpactSentimentTable": [
+                  {
+                    "sentiment": "negativo",
+                    "PR": 61.9,
+                    "RS": 60.8,
+                    "SC": 57.5
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "PR": 0.0,
+                    "RS": 0.1,
+                    "SC": 0.2
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "PR": 38.1,
+                    "RS": 39.1,
+                    "SC": 42.3
+                  }
+                ],
+                "positiveCategoriesTable": [
+                  {
+                    "category": "serviço de rede",
+                    "PR": 0.0,
+                    "RS": 42.0,
+                    "SC": 45.6
+                  },
+                  {
+                    "category": "suporte ao cliente",
+                    "PR": 100.0,
+                    "RS": 28.0,
+                    "SC": 22.1
+                  },
+                  {
+                    "category": "outro",
+                    "PR": 0.0,
+                    "RS": 15.9,
+                    "SC": 13.3
+                  }
+                ],
+                "negativeCategoriesTable": [
+                  {
+                    "category": "serviço de rede",
+                    "PR": 100.0,
+                    "RS": 59.0,
+                    "SC": 56.0
+                  },
+                  {
+                    "category": "cobertura de rede",
+                    "PR": 0.0,
+                    "RS": 21.4,
+                    "SC": 17.7
+                  },
+                  {
+                    "category": "suporte ao cliente",
+                    "PR": 0.0,
+                    "RS": 8.5,
+                    "SC": 12.8
+                  }
+                ]
+              },
+              "pergunta3": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [
+                  {
+                    "answer": "1",
+                    "PR": 0.0,
+                    "RS": 10.6,
+                    "SC": 6.7
+                  },
+                  {
+                    "answer": "2",
+                    "PR": 0.0,
+                    "RS": 7.4,
+                    "SC": 7.2
+                  },
+                  {
+                    "answer": "3",
+                    "PR": 0.0,
+                    "RS": 13.6,
+                    "SC": 15.4
+                  },
+                  {
+                    "answer": "4",
+                    "PR": 25.0,
+                    "RS": 18.0,
+                    "SC": 21.5
+                  },
+                  {
+                    "answer": "5",
+                    "PR": 75.0,
+                    "RS": 50.4,
+                    "SC": 49.3
+                  }
+                ],
+                "distributionTable": [
+                  {
+                    "answer": "1",
+                    "PR": 0.0,
+                    "RS": 10.6,
+                    "SC": 6.7
+                  },
+                  {
+                    "answer": "2",
+                    "PR": 0.0,
+                    "RS": 7.4,
+                    "SC": 7.2
+                  },
+                  {
+                    "answer": "3",
+                    "PR": 0.0,
+                    "RS": 13.6,
+                    "SC": 15.4
+                  },
+                  {
+                    "answer": "4",
+                    "PR": 25.0,
+                    "RS": 18.0,
+                    "SC": 21.5
+                  },
+                  {
+                    "answer": "5",
+                    "PR": 75.0,
+                    "RS": 50.4,
+                    "SC": 49.3
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "pergunta4": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [
+                  {
+                    "answer": "Não",
+                    "RS": 40.0,
+                    "SC": 41.6
+                  },
+                  {
+                    "answer": "Sim",
+                    "RS": 60.0,
+                    "SC": 58.4
+                  }
+                ],
+                "distributionTable": [
+                  {
+                    "answer": "Não",
+                    "RS": 40.0,
+                    "SC": 41.6
+                  },
+                  {
+                    "answer": "Sim",
+                    "RS": 60.0,
+                    "SC": 58.4
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "pergunta5": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [
+                  {
+                    "answer": "Não",
+                    "PR": 28.6,
+                    "RS": 48.3,
+                    "SC": 54.0
+                  },
+                  {
+                    "answer": "Sim",
+                    "PR": 71.4,
+                    "RS": 51.7,
+                    "SC": 46.0
+                  }
+                ],
+                "distributionTable": [
+                  {
+                    "answer": "Não",
+                    "PR": 28.6,
+                    "RS": 48.3,
+                    "SC": 54.0
+                  },
+                  {
+                    "answer": "Sim",
+                    "PR": 71.4,
+                    "RS": 51.7,
+                    "SC": 46.0
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "pergunta6": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [
+                  {
+                    "answer": "1",
+                    "RS": 9.6,
+                    "SC": 7.0
+                  },
+                  {
+                    "answer": "2",
+                    "RS": 5.1,
+                    "SC": 6.7
+                  },
+                  {
+                    "answer": "3",
+                    "RS": 9.6,
+                    "SC": 14.7
+                  },
+                  {
+                    "answer": "4",
+                    "RS": 22.1,
+                    "SC": 24.8
+                  },
+                  {
+                    "answer": "5",
+                    "RS": 53.7,
+                    "SC": 46.9
+                  }
+                ],
+                "distributionTable": [
+                  {
+                    "answer": "1",
+                    "RS": 9.6,
+                    "SC": 7.0
+                  },
+                  {
+                    "answer": "2",
+                    "RS": 5.1,
+                    "SC": 6.7
+                  },
+                  {
+                    "answer": "3",
+                    "RS": 9.6,
+                    "SC": 14.7
+                  },
+                  {
+                    "answer": "4",
+                    "RS": 22.1,
+                    "SC": 24.8
+                  },
+                  {
+                    "answer": "5",
+                    "RS": 53.7,
+                    "SC": 46.9
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              }
+            }
+          }
+        },
+        {
+          "id": "attributes-regional",
+          "index": 1,
+          "name": "regional",
+          "icon": "Layers",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Sumário",
+              "text": "A satisfação do cliente em telefonia móvel é maior em SC - Vale Europeu e SC - Planalto Norte, enquanto SC - Norte e SC - Vale do Itajaí enfrentam desafios significativos com sentimento negativo, problemas técnicos e menor satisfação com o suporte. Pontos críticos incluem suporte ao cliente e problemas de faturamento, impactando particularmente SC - Norte e SC - Grande Florianópolis, exigindo melhorias direcionadas e estratégias regionais de suporte aprimoradas. Priorizar suporte técnico proativo e acompanhamento personalizado nas regiões com desempenho inferior será fundamental para aumentar a experiência geral do cliente e reduzir a insatisfação.",
+              "cardStyleVariant": "default"
+            },
+            {
+              "type": "card",
+              "index": 1,
+              "title": "Distribuição dos respondentes",
+              "cardStyleVariant": "flex-column",
+              "cardContentVariant": "with-charts",
+              "components": [
+                {
+                  "type": "barChart",
+                  "dataPath": "sectionData.regional.distributionChart"
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 2,
+              "title": "Descreva em poucas palavras de forma simples, a sua avaliação.",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A satisfação do cliente varia significativamente por região, com SC - Vale Europeu e SC - Grande Florianópolis apresentando maior sentimento positivo (61,1% e 52,9%, respectivamente), enquanto SC - Norte tem o maior sentimento negativo, com 77,8%. O suporte ao cliente é o tópico mais mencionado e é percebido predominantemente de forma negativa em todas as regiões, indicando uma área crítica para melhoria. Além disso, problemas de faturamento são um fator negativo notável em SC - Grande Florianópolis, e problemas de serviço relacionados à automação estão impactando especificamente SC - Vale do Itajaí, sugerindo a necessidade de melhorias operacionais direcionadas."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "container",
+                      "index": 0,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Análise de Sentimento"
+                        },
+                        {
+                          "type": "sentimentThreeColorChart",
+                          "index": 1,
+                          "dataPath": "sectionData.regional.questions.pergunta1.satisfactionImpactSentimentChart"
+                        },
+                        {
+                          "type": "sentimentImpactTable",
+                          "index": 2,
+                          "dataPath": "sectionData.regional.questions.pergunta1.satisfactionImpactSentimentTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento positivo - Top 3"
+                        },
+                        {
+                          "type": "positiveCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.regional.questions.pergunta1.positiveCategoriesTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento negativo - Top 3"
+                        },
+                        {
+                          "type": "negativeCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.regional.questions.pergunta1.negativeCategoriesTable"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 3,
+              "title": "Descreva em poucas palavras de forma simples, a sua avaliação.",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A satisfação do cliente varia significativamente por região, com SC - Norte apresentando o maior sentimento negativo (74,9%) e SC - Planalto Norte e Vale Europeu exibindo avaliações mais equilibradas ou positivas em torno de 50%. Questões relacionadas a faturamento e cobranças são um dos principais fatores negativos, especialmente em Grande Florianópolis (7,1%) e Vale Europeu (5,0%), enquanto a concorrência é destacada positivamente, especialmente em SC - Norte (6,6%) e Vale do Itajaí (9,2%). Tópicos emergentes, como qualidade e disponibilidade do serviço 5G, recebem menções mistas, mas geralmente baixas, indicando áreas potenciais para melhoria, mas que ainda não são grandes motivadores de insatisfação."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "container",
+                      "index": 0,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Análise de Sentimento"
+                        },
+                        {
+                          "type": "sentimentThreeColorChart",
+                          "index": 1,
+                          "dataPath": "sectionData.regional.questions.pergunta2.satisfactionImpactSentimentChart"
+                        },
+                        {
+                          "type": "sentimentImpactTable",
+                          "index": 2,
+                          "dataPath": "sectionData.regional.questions.pergunta2.satisfactionImpactSentimentTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento positivo - Top 3"
+                        },
+                        {
+                          "type": "positiveCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.regional.questions.pergunta2.positiveCategoriesTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento negativo - Top 3"
+                        },
+                        {
+                          "type": "negativeCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.regional.questions.pergunta2.negativeCategoriesTable"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 4,
+              "title": "De 1 a 5 avalie o quão satisfeito está com o serviço que contratou. ",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A satisfação do cliente com o serviço de telefonia móvel é geralmente alta, com a maioria dos entrevistados em todas as regiões avaliando sua satisfação como 4 ou 5, especialmente notável em SC - Planalto Norte (55,7% avaliando 5) e SC - Vale Europeu (51,2% avaliando 5). No entanto, regiões como SC - Norte e SC - Vale do Itajaí apresentam uma concentração relativamente maior de avaliações de satisfação em nível médio (notas 2 e 3), indicando áreas potenciais para melhoria do serviço a fim de aumentar a experiência geral do cliente. As notas de satisfação mais baixas (notas 1 e 2) são mais pronunciadas em SC - Planalto Norte e SC - Vale do Itajaí, sugerindo que a empresa deve priorizar a resolução de problemas específicos de serviço nessas regiões para reduzir a insatisfação."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.regional.questions.pergunta3.distributionChart"
+                    },
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.regional.questions.pergunta3.distributionTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 5,
+              "title": "Lamentamos a situação e gostaríamos de melhorar sua experiência. Nossos especialistas estão prontos para ajudar, gostaria de seguir com o atendimento?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A disposição para prosseguir com o suporte especializado varia significativamente por região, com SC - Planalto Norte apresentando a maior aceitação, de 88,9%, indicando um forte engajamento ou necessidade de assistência nessa área.  \nPor outro lado, regiões como SC - Norte e SC - Vale do Itajaí exibem taxas de aceitação mais baixas (45,3% e 50,0%, respectivamente), sugerindo possível resistência ou satisfação com os níveis atuais de serviço.  \nEssas percepções destacam a importância de adaptar as estratégias de suporte pós-interação regionalmente para melhorar a satisfação geral do cliente e a retenção na telefonia móvel."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.regional.questions.pergunta4.distributionChart"
+                    },
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.regional.questions.pergunta4.distributionTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 6,
+              "title": "Em algum momento você precisou entrar em contato com nosso suporte técnico?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "Os dados revelam uma variação regional significativa na necessidade de contatar o suporte técnico, com a região do Vale do Itajaí apresentando a maior taxa, de 57%, indicando potencialmente mais problemas técnicos ou menor resolução no primeiro contato nessa área. Por outro lado, regiões como SC - Grande Florianópolis e SC - Planalto Norte têm taxas notavelmente mais baixas, em torno de 39-38%, sugerindo melhor estabilidade da rede ou maior autossuficiência dos clientes nessas localidades. Essas diferenças destacam oportunidades para ajustar os recursos de suporte técnico e os esforços de manutenção proativa regionalmente, a fim de melhorar a satisfação geral dos clientes na telefonia móvel."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.regional.questions.pergunta5.distributionChart"
+                    },
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.regional.questions.pergunta5.distributionTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 7,
+              "title": "De 1 a 5 avalie a sua experiência com o nosso suporte técnico. ",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "Os dados indicam uma forte variação regional na satisfação dos clientes com o suporte técnico, com SC - Planalto Norte e SC - Vale do Itajaí apresentando as maiores avaliações positivas (5) com mais de 60%, refletindo experiências de suporte eficazes nessas áreas. Por outro lado, SC - Norte possui uma proporção notavelmente maior de avaliações baixas (1 e 2), totalizando mais de 20%, sugerindo insatisfação que pode indicar problemas regionais no serviço ou expectativas dos clientes não atendidas. No geral, a maioria dos clientes avalia sua experiência de forma positiva (4 ou 5) na maioria das regiões, destacando um desempenho geralmente bom, mas com claras oportunidades para melhorias direcionadas em áreas com desempenho inferior."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.regional.questions.pergunta6.distributionChart"
+                    },
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.regional.questions.pergunta6.distributionTable"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "data": {
+            "distributionChart": [
+              {
+                "segment": "SC - Vale Europeu",
+                "count": 203,
+                "percentage": 24.0
+              },
+              {
+                "segment": "SC - Norte",
+                "count": 154,
+                "percentage": 18.2
+              },
+              {
+                "segment": "SC - Vale do Itajaí",
+                "count": 79,
+                "percentage": 9.3
+              },
+              {
+                "segment": "SC - Grande Florianópolis",
+                "count": 54,
+                "percentage": 6.4
+              },
+              {
+                "segment": "SC - Planalto Norte",
+                "count": 52,
+                "percentage": 6.1
+              },
+              {
+                "segment": "SC - Centro Serra",
+                "count": 51,
+                "percentage": 6.0
+              },
+              {
+                "segment": "RS - Serra",
+                "count": 47,
+                "percentage": 5.5
+              },
+              {
+                "segment": "RS - Metropolitana",
+                "count": 39,
+                "percentage": 4.6
+              },
+              {
+                "segment": "SC - Sul",
+                "count": 39,
+                "percentage": 4.6
+              },
+              {
+                "segment": "SC - Oeste",
+                "count": 35,
+                "percentage": 4.1
+              },
+              {
+                "segment": "RS - Noroeste",
+                "count": 32,
+                "percentage": 3.8
+              },
+              {
+                "segment": "RS - Norte",
+                "count": 27,
+                "percentage": 3.2
+              },
+              {
+                "segment": "RS - Centro",
+                "count": 20,
+                "percentage": 2.4
+              },
+              {
+                "segment": "RS - Vale dos Sinos",
+                "count": 15,
+                "percentage": 1.8
+              }
+            ],
+            "distributionTable": [
+              {
+                "segment": "SC - Vale Europeu",
+                "count": 203,
+                "percentage": 24.0
+              },
+              {
+                "segment": "SC - Norte",
+                "count": 154,
+                "percentage": 18.2
+              },
+              {
+                "segment": "SC - Vale do Itajaí",
+                "count": 79,
+                "percentage": 9.3
+              },
+              {
+                "segment": "SC - Grande Florianópolis",
+                "count": 54,
+                "percentage": 6.4
+              },
+              {
+                "segment": "SC - Planalto Norte",
+                "count": 52,
+                "percentage": 6.1
+              },
+              {
+                "segment": "SC - Centro Serra",
+                "count": 51,
+                "percentage": 6.0
+              },
+              {
+                "segment": "RS - Serra",
+                "count": 47,
+                "percentage": 5.5
+              },
+              {
+                "segment": "RS - Metropolitana",
+                "count": 39,
+                "percentage": 4.6
+              },
+              {
+                "segment": "SC - Sul",
+                "count": 39,
+                "percentage": 4.6
+              },
+              {
+                "segment": "SC - Oeste",
+                "count": 35,
+                "percentage": 4.1
+              },
+              {
+                "segment": "RS - Noroeste",
+                "count": 32,
+                "percentage": 3.8
+              },
+              {
+                "segment": "RS - Norte",
+                "count": 27,
+                "percentage": 3.2
+              },
+              {
+                "segment": "RS - Centro",
+                "count": 20,
+                "percentage": 2.4
+              },
+              {
+                "segment": "RS - Vale dos Sinos",
+                "count": 15,
+                "percentage": 1.8
+              }
+            ],
+            "questions": {
+              "pergunta1": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "satisfactionImpactSentimentChart": [
+                  {
+                    "sentiment": "negativo",
+                    "SC - Grande Florian�polis": 47.1,
+                    "SC - Norte": 77.8,
+                    "SC - Planalto Norte": 53.2,
+                    "SC - Vale Europeu": 37.8,
+                    "SC - Vale do Itaja�": 61.3
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "SC - Grande Florian�polis": 0.0,
+                    "SC - Norte": 0.0,
+                    "SC - Planalto Norte": 0.0,
+                    "SC - Vale Europeu": 1.1,
+                    "SC - Vale do Itaja�": 0.0
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "SC - Grande Florian�polis": 52.9,
+                    "SC - Norte": 22.2,
+                    "SC - Planalto Norte": 46.8,
+                    "SC - Vale Europeu": 61.1,
+                    "SC - Vale do Itaja�": 38.7
+                  }
+                ],
+                "satisfactionImpactSentimentTable": [
+                  {
+                    "sentiment": "negativo",
+                    "SC - Grande Florian�polis": 47.1,
+                    "SC - Norte": 77.8,
+                    "SC - Planalto Norte": 53.2,
+                    "SC - Vale Europeu": 37.8,
+                    "SC - Vale do Itaja�": 61.3
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "SC - Grande Florian�polis": 0.0,
+                    "SC - Norte": 0.0,
+                    "SC - Planalto Norte": 0.0,
+                    "SC - Vale Europeu": 1.1,
+                    "SC - Vale do Itaja�": 0.0
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "SC - Grande Florian�polis": 52.9,
+                    "SC - Norte": 22.2,
+                    "SC - Planalto Norte": 46.8,
+                    "SC - Vale Europeu": 61.1,
+                    "SC - Vale do Itaja�": 38.7
+                  }
+                ],
+                "positiveCategoriesTable": [
+                  {
+                    "category": "suporte ao cliente",
+                    "SC - Grande Florian�polis": 38.9,
+                    "SC - Norte": 50.7,
+                    "SC - Planalto Norte": 55.2,
+                    "SC - Vale Europeu": 38.2,
+                    "SC - Vale do Itaja�": 56.1
+                  },
+                  {
+                    "category": "serviço de rede",
+                    "SC - Grande Florian�polis": 16.7,
+                    "SC - Norte": 30.1,
+                    "SC - Planalto Norte": 37.9,
+                    "SC - Vale Europeu": 43.6,
+                    "SC - Vale do Itaja�": 14.6
+                  },
+                  {
+                    "category": "outro",
+                    "SC - Grande Florian�polis": 22.2,
+                    "SC - Norte": 19.2,
+                    "SC - Planalto Norte": 6.9,
+                    "SC - Vale Europeu": 15.8,
+                    "SC - Vale do Itaja�": 22.0
+                  }
+                ],
+                "negativeCategoriesTable": [
+                  {
+                    "category": "suporte ao cliente",
+                    "SC - Grande Florian�polis": 56.2,
+                    "SC - Norte": 64.8,
+                    "SC - Planalto Norte": 39.4,
+                    "SC - Vale Europeu": 41.2,
+                    "SC - Vale do Itaja�": 60.0
+                  },
+                  {
+                    "category": "serviço de rede",
+                    "SC - Grande Florian�polis": 15.6,
+                    "SC - Norte": 27.0,
+                    "SC - Planalto Norte": 48.5,
+                    "SC - Vale Europeu": 38.2,
+                    "SC - Vale do Itaja�": 35.4
+                  },
+                  {
+                    "category": "cobertura de rede",
+                    "SC - Grande Florian�polis": 0.0,
+                    "SC - Norte": 3.9,
+                    "SC - Planalto Norte": 0.0,
+                    "SC - Vale Europeu": 17.6,
+                    "SC - Vale do Itaja�": 0.0
+                  }
+                ]
+              },
+              "pergunta2": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "satisfactionImpactSentimentChart": [
+                  {
+                    "sentiment": "negativo",
+                    "SC - Grande Florian�polis": 65.6,
+                    "SC - Norte": 74.9,
+                    "SC - Planalto Norte": 50.0,
+                    "SC - Vale Europeu": 48.4,
+                    "SC - Vale do Itaja�": 54.6
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "SC - Grande Florian�polis": 0.0,
+                    "SC - Norte": 0.2,
+                    "SC - Planalto Norte": 0.0,
+                    "SC - Vale Europeu": 0.6,
+                    "SC - Vale do Itaja�": 0.0
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "SC - Grande Florian�polis": 34.4,
+                    "SC - Norte": 24.9,
+                    "SC - Planalto Norte": 50.0,
+                    "SC - Vale Europeu": 51.0,
+                    "SC - Vale do Itaja�": 45.4
+                  }
+                ],
+                "satisfactionImpactSentimentTable": [
+                  {
+                    "sentiment": "negativo",
+                    "SC - Grande Florian�polis": 65.6,
+                    "SC - Norte": 74.9,
+                    "SC - Planalto Norte": 50.0,
+                    "SC - Vale Europeu": 48.4,
+                    "SC - Vale do Itaja�": 54.6
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "SC - Grande Florian�polis": 0.0,
+                    "SC - Norte": 0.2,
+                    "SC - Planalto Norte": 0.0,
+                    "SC - Vale Europeu": 0.6,
+                    "SC - Vale do Itaja�": 0.0
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "SC - Grande Florian�polis": 34.4,
+                    "SC - Norte": 24.9,
+                    "SC - Planalto Norte": 50.0,
+                    "SC - Vale Europeu": 51.0,
+                    "SC - Vale do Itaja�": 45.4
+                  }
+                ],
+                "positiveCategoriesTable": [
+                  {
+                    "category": "serviço de rede",
+                    "SC - Grande Florian�polis": 46.4,
+                    "SC - Norte": 47.2,
+                    "SC - Planalto Norte": 42.6,
+                    "SC - Vale Europeu": 48.7,
+                    "SC - Vale do Itaja�": 52.7
+                  },
+                  {
+                    "category": "suporte ao cliente",
+                    "SC - Grande Florian�polis": 32.8,
+                    "SC - Norte": 21.5,
+                    "SC - Planalto Norte": 28.4,
+                    "SC - Vale Europeu": 12.6,
+                    "SC - Vale do Itaja�": 23.8
+                  },
+                  {
+                    "category": "outro",
+                    "SC - Grande Florian�polis": 12.0,
+                    "SC - Norte": 16.5,
+                    "SC - Planalto Norte": 10.3,
+                    "SC - Vale Europeu": 12.4,
+                    "SC - Vale do Itaja�": 7.1
+                  }
+                ],
+                "negativeCategoriesTable": [
+                  {
+                    "category": "serviço de rede",
+                    "SC - Grande Florian�polis": 52.9,
+                    "SC - Norte": 51.8,
+                    "SC - Planalto Norte": 56.1,
+                    "SC - Vale Europeu": 58.5,
+                    "SC - Vale do Itaja�": 64.1
+                  },
+                  {
+                    "category": "cobertura de rede",
+                    "SC - Grande Florian�polis": 18.9,
+                    "SC - Norte": 12.3,
+                    "SC - Planalto Norte": 27.1,
+                    "SC - Vale Europeu": 27.2,
+                    "SC - Vale do Itaja�": 17.4
+                  },
+                  {
+                    "category": "suporte ao cliente",
+                    "SC - Grande Florian�polis": 14.7,
+                    "SC - Norte": 20.8,
+                    "SC - Planalto Norte": 0.0,
+                    "SC - Vale Europeu": 5.2,
+                    "SC - Vale do Itaja�": 8.4
+                  }
+                ]
+              },
+              "pergunta3": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [
+                  {
+                    "answer": "1",
+                    "SC - Grande Florian�polis": 7.8,
+                    "SC - Norte": 6.2,
+                    "SC - Planalto Norte": 8.9,
+                    "SC - Vale Europeu": 4.1,
+                    "SC - Vale do Itaja�": 8.9
+                  },
+                  {
+                    "answer": "2",
+                    "SC - Grande Florian�polis": 5.9,
+                    "SC - Norte": 7.9,
+                    "SC - Planalto Norte": 13.9,
+                    "SC - Vale Europeu": 6.9,
+                    "SC - Vale do Itaja�": 8.9
+                  },
+                  {
+                    "answer": "3",
+                    "SC - Grande Florian�polis": 24.5,
+                    "SC - Norte": 21.4,
+                    "SC - Planalto Norte": 3.8,
+                    "SC - Vale Europeu": 15.9,
+                    "SC - Vale do Itaja�": 10.8
+                  },
+                  {
+                    "answer": "4",
+                    "SC - Grande Florian�polis": 14.7,
+                    "SC - Norte": 25.7,
+                    "SC - Planalto Norte": 17.7,
+                    "SC - Vale Europeu": 21.9,
+                    "SC - Vale do Itaja�": 20.4
+                  },
+                  {
+                    "answer": "5",
+                    "SC - Grande Florian�polis": 47.1,
+                    "SC - Norte": 38.8,
+                    "SC - Planalto Norte": 55.7,
+                    "SC - Vale Europeu": 51.2,
+                    "SC - Vale do Itaja�": 51.0
+                  }
+                ],
+                "distributionTable": [
+                  {
+                    "answer": "1",
+                    "SC - Grande Florian�polis": 7.8,
+                    "SC - Norte": 6.2,
+                    "SC - Planalto Norte": 8.9,
+                    "SC - Vale Europeu": 4.1,
+                    "SC - Vale do Itaja�": 8.9
+                  },
+                  {
+                    "answer": "2",
+                    "SC - Grande Florian�polis": 5.9,
+                    "SC - Norte": 7.9,
+                    "SC - Planalto Norte": 13.9,
+                    "SC - Vale Europeu": 6.9,
+                    "SC - Vale do Itaja�": 8.9
+                  },
+                  {
+                    "answer": "3",
+                    "SC - Grande Florian�polis": 24.5,
+                    "SC - Norte": 21.4,
+                    "SC - Planalto Norte": 3.8,
+                    "SC - Vale Europeu": 15.9,
+                    "SC - Vale do Itaja�": 10.8
+                  },
+                  {
+                    "answer": "4",
+                    "SC - Grande Florian�polis": 14.7,
+                    "SC - Norte": 25.7,
+                    "SC - Planalto Norte": 17.7,
+                    "SC - Vale Europeu": 21.9,
+                    "SC - Vale do Itaja�": 20.4
+                  },
+                  {
+                    "answer": "5",
+                    "SC - Grande Florian�polis": 47.1,
+                    "SC - Norte": 38.8,
+                    "SC - Planalto Norte": 55.7,
+                    "SC - Vale Europeu": 51.2,
+                    "SC - Vale do Itaja�": 51.0
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "pergunta4": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [
+                  {
+                    "answer": "Não",
+                    "SC - Grande Florian�polis": 45.5,
+                    "SC - Norte": 54.7,
+                    "SC - Planalto Norte": 11.1,
+                    "SC - Vale Europeu": 42.1,
+                    "SC - Vale do Itaja�": 50.0
+                  },
+                  {
+                    "answer": "Sim",
+                    "SC - Grande Florian�polis": 54.5,
+                    "SC - Norte": 45.3,
+                    "SC - Planalto Norte": 88.9,
+                    "SC - Vale Europeu": 57.9,
+                    "SC - Vale do Itaja�": 50.0
+                  }
+                ],
+                "distributionTable": [
+                  {
+                    "answer": "Não",
+                    "SC - Grande Florian�polis": 45.5,
+                    "SC - Norte": 54.7,
+                    "SC - Planalto Norte": 11.1,
+                    "SC - Vale Europeu": 42.1,
+                    "SC - Vale do Itaja�": 50.0
+                  },
+                  {
+                    "answer": "Sim",
+                    "SC - Grande Florian�polis": 54.5,
+                    "SC - Norte": 45.3,
+                    "SC - Planalto Norte": 88.9,
+                    "SC - Vale Europeu": 57.9,
+                    "SC - Vale do Itaja�": 50.0
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "pergunta5": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [
+                  {
+                    "answer": "Não",
+                    "SC - Grande Florian�polis": 60.8,
+                    "SC - Norte": 49.5,
+                    "SC - Planalto Norte": 61.4,
+                    "SC - Vale Europeu": 56.2,
+                    "SC - Vale do Itaja�": 43.0
+                  },
+                  {
+                    "answer": "Sim",
+                    "SC - Grande Florian�polis": 39.2,
+                    "SC - Norte": 50.5,
+                    "SC - Planalto Norte": 38.6,
+                    "SC - Vale Europeu": 43.8,
+                    "SC - Vale do Itaja�": 57.0
+                  }
+                ],
+                "distributionTable": [
+                  {
+                    "answer": "Não",
+                    "SC - Grande Florian�polis": 60.8,
+                    "SC - Norte": 49.5,
+                    "SC - Planalto Norte": 61.4,
+                    "SC - Vale Europeu": 56.2,
+                    "SC - Vale do Itaja�": 43.0
+                  },
+                  {
+                    "answer": "Sim",
+                    "SC - Grande Florian�polis": 39.2,
+                    "SC - Norte": 50.5,
+                    "SC - Planalto Norte": 38.6,
+                    "SC - Vale Europeu": 43.8,
+                    "SC - Vale do Itaja�": 57.0
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "pergunta6": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [
+                  {
+                    "answer": "1",
+                    "SC - Grande Florian�polis": 14.0,
+                    "SC - Norte": 10.2,
+                    "SC - Planalto Norte": 3.4,
+                    "SC - Vale Europeu": 3.3,
+                    "SC - Vale do Itaja�": 6.5
+                  },
+                  {
+                    "answer": "2",
+                    "SC - Grande Florian�polis": 2.3,
+                    "SC - Norte": 10.2,
+                    "SC - Planalto Norte": 17.2,
+                    "SC - Vale Europeu": 3.3,
+                    "SC - Vale do Itaja�": 1.3
+                  },
+                  {
+                    "answer": "3",
+                    "SC - Grande Florian�polis": 14.0,
+                    "SC - Norte": 24.1,
+                    "SC - Planalto Norte": 6.9,
+                    "SC - Vale Europeu": 16.6,
+                    "SC - Vale do Itaja�": 3.9
+                  },
+                  {
+                    "answer": "4",
+                    "SC - Grande Florian�polis": 30.2,
+                    "SC - Norte": 21.2,
+                    "SC - Planalto Norte": 10.3,
+                    "SC - Vale Europeu": 30.5,
+                    "SC - Vale do Itaja�": 27.3
+                  },
+                  {
+                    "answer": "5",
+                    "SC - Grande Florian�polis": 39.5,
+                    "SC - Norte": 34.3,
+                    "SC - Planalto Norte": 62.1,
+                    "SC - Vale Europeu": 46.4,
+                    "SC - Vale do Itaja�": 61.0
+                  }
+                ],
+                "distributionTable": [
+                  {
+                    "answer": "1",
+                    "SC - Grande Florian�polis": 14.0,
+                    "SC - Norte": 10.2,
+                    "SC - Planalto Norte": 3.4,
+                    "SC - Vale Europeu": 3.3,
+                    "SC - Vale do Itaja�": 6.5
+                  },
+                  {
+                    "answer": "2",
+                    "SC - Grande Florian�polis": 2.3,
+                    "SC - Norte": 10.2,
+                    "SC - Planalto Norte": 17.2,
+                    "SC - Vale Europeu": 3.3,
+                    "SC - Vale do Itaja�": 1.3
+                  },
+                  {
+                    "answer": "3",
+                    "SC - Grande Florian�polis": 14.0,
+                    "SC - Norte": 24.1,
+                    "SC - Planalto Norte": 6.9,
+                    "SC - Vale Europeu": 16.6,
+                    "SC - Vale do Itaja�": 3.9
+                  },
+                  {
+                    "answer": "4",
+                    "SC - Grande Florian�polis": 30.2,
+                    "SC - Norte": 21.2,
+                    "SC - Planalto Norte": 10.3,
+                    "SC - Vale Europeu": 30.5,
+                    "SC - Vale do Itaja�": 27.3
+                  },
+                  {
+                    "answer": "5",
+                    "SC - Grande Florian�polis": 39.5,
+                    "SC - Norte": 34.3,
+                    "SC - Planalto Norte": 62.1,
+                    "SC - Vale Europeu": 46.4,
+                    "SC - Vale do Itaja�": 61.0
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              }
+            }
+          }
+        },
+        {
+          "id": "attributes-tipodechip",
+          "index": 2,
+          "name": "tipo_de _chip",
+          "icon": "Layers",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Sumário",
+              "text": "Clientes que utilizam cartões SIM virtuais relatam consistentemente maior satisfação e experiências mais positivas, especialmente com suporte ao cliente e serviço técnico, em comparação com aqueles que usam cartões SIM físicos.  \nUsuários de SIM físico enfrentam mais problemas técnicos, avaliações de satisfação mais baixas e estão menos dispostos a buscar assistência especializada, indicando a necessidade de melhorias direcionadas na confiabilidade da rede, acessibilidade do suporte e comunicação proativa.  \nPara aumentar a satisfação geral dos clientes, a empresa deve priorizar a melhoria da experiência dos usuários de SIM físico, aprimorando a capacidade de resposta do suporte técnico e resolvendo questões de conectividade e faturamento específicas desse segmento.",
+              "cardStyleVariant": "default"
+            },
+            {
+              "type": "card",
+              "index": 1,
+              "title": "Distribuição dos respondentes",
+              "cardStyleVariant": "flex-column",
+              "cardContentVariant": "with-charts",
+              "components": [
+                {
+                  "type": "barChart",
+                  "dataPath": "sectionData.tipodechip.distributionChart"
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 2,
+              "title": "Descreva em poucas palavras de forma simples, a sua avaliação.",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "Clientes que utilizam chips Virtuais relatam um sentimento positivo consideravelmente maior (60,6%) em comparação com aqueles que utilizam chips Físicos (42,0%), indicando maior satisfação com os serviços Virtuais.  \nO suporte ao cliente é o tema mais proeminente que afeta o sentimento em ambos os segmentos, com feedback negativo significativo entre os usuários de chips Físicos (55,5%) e feedback positivo entre os usuários de chips Virtuais (52,5%), sugerindo experiências de serviço diferentes.  \nQuestões técnicas relacionadas à automação e ao acesso 5G aparecem predominantemente como preocupações negativas para os usuários de chips Físicos, destacando áreas para melhoria na confiabilidade da rede e do serviço."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "container",
+                      "index": 0,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Análise de Sentimento"
+                        },
+                        {
+                          "type": "sentimentThreeColorChart",
+                          "index": 1,
+                          "dataPath": "sectionData.tipodechip.questions.pergunta1.satisfactionImpactSentimentChart"
+                        },
+                        {
+                          "type": "sentimentImpactTable",
+                          "index": 2,
+                          "dataPath": "sectionData.tipodechip.questions.pergunta1.satisfactionImpactSentimentTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento positivo - Top 3"
+                        },
+                        {
+                          "type": "positiveCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.tipodechip.questions.pergunta1.positiveCategoriesTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento negativo - Top 3"
+                        },
+                        {
+                          "type": "negativeCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.tipodechip.questions.pergunta1.negativeCategoriesTable"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 3,
+              "title": "Descreva em poucas palavras de forma simples, a sua avaliação.",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "As percepções sobre a satisfação do cliente revelam uma divisão quase igual entre o sentimento negativo para usuários de chip físico (58,1%) e virtual (59,0%), sendo a comunicação um fator chave de insatisfação entre os usuários de chip virtual e as preocupações com a concorrência mais relevantes para os usuários de chip físico. O feedback positivo é modestamente maior em relação à concorrência para usuários de chip físico e à comunicação para usuários virtuais, enquanto tópicos relacionados à disponibilidade do serviço 5G e à qualidade do sinal são mais positivamente observados pelos clientes de chip virtual. Questões relacionadas a faturamento e cobranças, bem como conectividade e qualidade do serviço nas redes 4G e 5G, afetam particularmente os usuários de chip físico, destacando áreas específicas para melhoria do serviço."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "container",
+                      "index": 0,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Análise de Sentimento"
+                        },
+                        {
+                          "type": "sentimentThreeColorChart",
+                          "index": 1,
+                          "dataPath": "sectionData.tipodechip.questions.pergunta2.satisfactionImpactSentimentChart"
+                        },
+                        {
+                          "type": "sentimentImpactTable",
+                          "index": 2,
+                          "dataPath": "sectionData.tipodechip.questions.pergunta2.satisfactionImpactSentimentTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento positivo - Top 3"
+                        },
+                        {
+                          "type": "positiveCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.tipodechip.questions.pergunta2.positiveCategoriesTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento negativo - Top 3"
+                        },
+                        {
+                          "type": "negativeCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.tipodechip.questions.pergunta2.negativeCategoriesTable"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 4,
+              "title": "De 1 a 5 avalie o quão satisfeito está com o serviço que contratou. ",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "Clientes que utilizam cartões SIM virtuais apresentam maior satisfação geral, com 63,6% avaliando seu serviço com nota 5, em comparação com 48,4% entre os usuários de SIM físico.  \nClientes de SIM físico mostram uma distribuição de satisfação mais dispersa, incluindo uma proporção notavelmente maior de avaliações baixas (1 e 2), indicando possíveis inconsistências no serviço ou na experiência.  \nIsso sugere que as ofertas de SIM virtual podem estar proporcionando uma experiência de serviço mais fluida ou preferida, destacando uma oportunidade para analisar e possivelmente melhorar a satisfação dos usuários de SIM físico."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.tipodechip.questions.pergunta3.distributionChart"
+                    },
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.tipodechip.questions.pergunta3.distributionTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 5,
+              "title": "Lamentamos a situação e gostaríamos de melhorar sua experiência. Nossos especialistas estão prontos para ajudar, gostaria de seguir com o atendimento?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "Clientes que utilizam chips virtuais mostram uma disposição significativamente maior para prosseguir com assistência especializada (75%) em comparação com aqueles que possuem chips físicos (57,7%).  \nIsso sugere que os usuários de chips virtuais podem estar mais engajados ou abertos a intervenções de suporte, refletindo potencialmente um segmento mais familiarizado com tecnologia ou orientado ao serviço.  \nPara melhorar a satisfação geral do cliente, estratégias de acompanhamento personalizadas poderiam focar em aumentar o engajamento entre os usuários de chips físicos, que são menos inclinados a aceitar ajuda."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.tipodechip.questions.pergunta4.distributionChart"
+                    },
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.tipodechip.questions.pergunta4.distributionTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 6,
+              "title": "Em algum momento você precisou entrar em contato com nosso suporte técnico?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "Clientes com um cartão SIM físico ('Fisico') têm maior probabilidade de ter contatado o suporte técnico (48,1%) em comparação com aqueles com um cartão SIM virtual ('Virtual'), que é de 37,6%.  \nIsso sugere que os usuários de SIMs físicos podem enfrentar mais problemas técnicos ou ter menos familiaridade com as opções de suporte digital, o que pode impactar sua satisfação geral.  \nFocar na melhoria da acessibilidade do suporte técnico e na resolução proativa de problemas para usuários de SIM físico pode aumentar a satisfação do cliente nos serviços de telefonia móvel."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.tipodechip.questions.pergunta5.distributionChart"
+                    },
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.tipodechip.questions.pergunta5.distributionTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 7,
+              "title": "De 1 a 5 avalie a sua experiência com o nosso suporte técnico. ",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "Clientes que utilizam cartões SIM virtuais apresentam satisfação significativamente maior com o suporte técnico, com 71,1% avaliando sua experiência como 5, em comparação com 46,9% dos usuários de SIM físico.  \nClientes de SIM físico exibem um padrão de avaliação mais disperso, incluindo insatisfação notável, já que 14,6% deram notas 1 ou 2, enquanto usuários de SIM virtual relatam poucas notas baixas.  \nIsso sugere que a empresa deve priorizar a melhoria do suporte técnico direcionado aos usuários de SIM físico para aumentar a satisfação geral dos clientes em telefonia móvel."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.tipodechip.questions.pergunta6.distributionChart"
+                    },
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.tipodechip.questions.pergunta6.distributionTable"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "data": {
+            "distributionChart": [
+              {
+                "segment": "Físico",
+                "count": 790,
+                "percentage": 93.3
+              },
+              {
+                "segment": "Virtual",
+                "count": 57,
+                "percentage": 6.7
+              }
+            ],
+            "distributionTable": [
+              {
+                "segment": "Físico",
+                "count": 790,
+                "percentage": 93.3
+              },
+              {
+                "segment": "Virtual",
+                "count": 57,
+                "percentage": 6.7
+              }
+            ],
+            "questions": {
+              "pergunta1": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "satisfactionImpactSentimentChart": [
+                  {
+                    "sentiment": "negativo",
+                    "Fisico": 57.7,
+                    "Virtual": 39.4
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "Fisico": 0.3,
+                    "Virtual": 0.0
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "Fisico": 42.0,
+                    "Virtual": 60.6
+                  }
+                ],
+                "satisfactionImpactSentimentTable": [
+                  {
+                    "sentiment": "negativo",
+                    "Fisico": 57.7,
+                    "Virtual": 39.4
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "Fisico": 0.3,
+                    "Virtual": 0.0
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "Fisico": 42.0,
+                    "Virtual": 60.6
+                  }
+                ],
+                "positiveCategoriesTable": [
+                  {
+                    "category": "suporte ao cliente",
+                    "Fisico": 49.1,
+                    "Virtual": 52.5
+                  },
+                  {
+                    "category": "serviço de rede",
+                    "Fisico": 28.2,
+                    "Virtual": 25.0
+                  },
+                  {
+                    "category": "outro",
+                    "Fisico": 18.6,
+                    "Virtual": 22.5
+                  }
+                ],
+                "negativeCategoriesTable": [
+                  {
+                    "category": "suporte ao cliente",
+                    "Fisico": 55.5,
+                    "Virtual": 50.0
+                  },
+                  {
+                    "category": "serviço de rede",
+                    "Fisico": 32.9,
+                    "Virtual": 46.2
+                  },
+                  {
+                    "category": "cobertura de rede",
+                    "Fisico": 5.8,
+                    "Virtual": 0.0
+                  }
+                ]
+              },
+              "pergunta2": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "satisfactionImpactSentimentChart": [
+                  {
+                    "sentiment": "negativo",
+                    "Fisico": 58.1,
+                    "Virtual": 59.0
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "Fisico": 0.2,
+                    "Virtual": 0.0
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "Fisico": 41.7,
+                    "Virtual": 41.0
+                  }
+                ],
+                "satisfactionImpactSentimentTable": [
+                  {
+                    "sentiment": "negativo",
+                    "Fisico": 58.1,
+                    "Virtual": 59.0
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "Fisico": 0.2,
+                    "Virtual": 0.0
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "Fisico": 41.7,
+                    "Virtual": 41.0
+                  }
+                ],
+                "positiveCategoriesTable": [
+                  {
+                    "category": "serviço de rede",
+                    "Fisico": 42.7,
+                    "Virtual": 63.1
+                  },
+                  {
+                    "category": "suporte ao cliente",
+                    "Fisico": 25.7,
+                    "Virtual": 5.0
+                  },
+                  {
+                    "category": "outro",
+                    "Fisico": 14.4,
+                    "Virtual": 8.1
+                  }
+                ],
+                "negativeCategoriesTable": [
+                  {
+                    "category": "serviço de rede",
+                    "Fisico": 57.3,
+                    "Virtual": 52.5
+                  },
+                  {
+                    "category": "cobertura de rede",
+                    "Fisico": 18.4,
+                    "Virtual": 18.8
+                  },
+                  {
+                    "category": "suporte ao cliente",
+                    "Fisico": 11.6,
+                    "Virtual": 13.8
+                  }
+                ]
+              },
+              "pergunta3": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [
+                  {
+                    "answer": "1",
+                    "Fisico": 7.8,
+                    "Virtual": 4.5
+                  },
+                  {
+                    "answer": "2",
+                    "Fisico": 6.9,
+                    "Virtual": 10.6
+                  },
+                  {
+                    "answer": "3",
+                    "Fisico": 15.7,
+                    "Virtual": 6.8
+                  },
+                  {
+                    "answer": "4",
+                    "Fisico": 21.3,
+                    "Virtual": 14.4
+                  },
+                  {
+                    "answer": "5",
+                    "Fisico": 48.4,
+                    "Virtual": 63.6
+                  }
+                ],
+                "distributionTable": [
+                  {
+                    "answer": "1",
+                    "Fisico": 7.8,
+                    "Virtual": 4.5
+                  },
+                  {
+                    "answer": "2",
+                    "Fisico": 6.9,
+                    "Virtual": 10.6
+                  },
+                  {
+                    "answer": "3",
+                    "Fisico": 15.7,
+                    "Virtual": 6.8
+                  },
+                  {
+                    "answer": "4",
+                    "Fisico": 21.3,
+                    "Virtual": 14.4
+                  },
+                  {
+                    "answer": "5",
+                    "Fisico": 48.4,
+                    "Virtual": 63.6
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "pergunta4": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [
+                  {
+                    "answer": "Não",
+                    "Fisico": 42.3,
+                    "Virtual": 25.0
+                  },
+                  {
+                    "answer": "Sim",
+                    "Fisico": 57.7,
+                    "Virtual": 75.0
+                  }
+                ],
+                "distributionTable": [
+                  {
+                    "answer": "Não",
+                    "Fisico": 42.3,
+                    "Virtual": 25.0
+                  },
+                  {
+                    "answer": "Sim",
+                    "Fisico": 57.7,
+                    "Virtual": 75.0
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "pergunta5": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [
+                  {
+                    "answer": "Não",
+                    "Fisico": 51.9,
+                    "Virtual": 62.4
+                  },
+                  {
+                    "answer": "Sim",
+                    "Fisico": 48.1,
+                    "Virtual": 37.6
+                  }
+                ],
+                "distributionTable": [
+                  {
+                    "answer": "Não",
+                    "Fisico": 51.9,
+                    "Virtual": 62.4
+                  },
+                  {
+                    "answer": "Sim",
+                    "Fisico": 48.1,
+                    "Virtual": 37.6
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "pergunta6": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [
+                  {
+                    "answer": "1",
+                    "Fisico": 8.0,
+                    "Virtual": 0.0
+                  },
+                  {
+                    "answer": "2",
+                    "Fisico": 6.6,
+                    "Virtual": 2.6
+                  },
+                  {
+                    "answer": "3",
+                    "Fisico": 14.3,
+                    "Virtual": 2.6
+                  },
+                  {
+                    "answer": "4",
+                    "Fisico": 24.2,
+                    "Virtual": 23.7
+                  },
+                  {
+                    "answer": "5",
+                    "Fisico": 46.9,
+                    "Virtual": 71.1
+                  }
+                ],
+                "distributionTable": [
+                  {
+                    "answer": "1",
+                    "Fisico": 8.0,
+                    "Virtual": 0.0
+                  },
+                  {
+                    "answer": "2",
+                    "Fisico": 6.6,
+                    "Virtual": 2.6
+                  },
+                  {
+                    "answer": "3",
+                    "Fisico": 14.3,
+                    "Virtual": 2.6
+                  },
+                  {
+                    "answer": "4",
+                    "Fisico": 24.2,
+                    "Virtual": 23.7
+                  },
+                  {
+                    "answer": "5",
+                    "Fisico": 46.9,
+                    "Virtual": 71.1
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              }
+            }
+          }
+        },
+        {
+          "id": "attributes-servico",
+          "index": 3,
+          "name": "servico",
+          "icon": "Layers",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Sumário",
+              "text": "A satisfação do cliente com a internet móvel está polarizada, com quase metade dos clientes altamente satisfeitos, mas mais de 40% expressando insatisfação principalmente devido a problemas de faturamento e suporte ao cliente. Embora as avaliações do suporte técnico sejam geralmente positivas, uma parte significativa dos clientes ainda enfrenta problemas técnicos não resolvidos, indicando a necessidade de melhorar a resolução no primeiro contato e a eficácia do suporte. Priorizar melhorias na transparência do faturamento, na gestão proativa de problemas técnicos e na comunicação poderia melhorar significativamente a experiência geral do cliente e reduzir a rotatividade.",
+              "cardStyleVariant": "default"
+            },
+            {
+              "type": "card",
+              "index": 1,
+              "title": "Distribuição dos respondentes",
+              "cardStyleVariant": "flex-column",
+              "cardContentVariant": "with-charts",
+              "components": [
+                {
+                  "type": "barChart",
+                  "dataPath": "sectionData.servico.distributionChart"
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 2,
+              "title": "Descreva em poucas palavras de forma simples, a sua avaliação.",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A satisfação do cliente com o Internet Móvel apresenta um sentimento predominantemente negativo (56,6%), impulsionado principalmente por problemas relacionados ao suporte ao cliente (55,2% negativo) e faturamento e cobranças. O feedback positivo, embora menor (43,1%), destaca principalmente o suporte ao cliente, indicando experiências mistas nessa área que apresentam uma oportunidade para melhorias direcionadas. Além disso, desafios tecnológicos, como problemas de acesso ao 5G e questões com serviços automatizados, contribuem significativamente para a insatisfação do cliente e devem ser priorizados para resolução."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "container",
+                      "index": 0,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Análise de Sentimento"
+                        },
+                        {
+                          "type": "sentimentThreeColorChart",
+                          "index": 1,
+                          "dataPath": "sectionData.servico.questions.pergunta1.satisfactionImpactSentimentChart"
+                        },
+                        {
+                          "type": "sentimentImpactTable",
+                          "index": 2,
+                          "dataPath": "sectionData.servico.questions.pergunta1.satisfactionImpactSentimentTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento positivo - Top 3"
+                        },
+                        {
+                          "type": "positiveCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.servico.questions.pergunta1.positiveCategoriesTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento negativo - Top 3"
+                        },
+                        {
+                          "type": "negativeCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.servico.questions.pergunta1.negativeCategoriesTable"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 3,
+              "title": "Descreva em poucas palavras de forma simples, a sua avaliação.",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A análise de sentimento revela que a satisfação do cliente com o Internet Móvel é predominantemente negativa, com 58,2% das respostas expressando insatisfação, principalmente centradas em questões de faturamento e cobranças. O feedback positivo é escasso e está principalmente relacionado à concorrência e comunicação, embora representem uma pequena fração do sentimento geral. Tópicos técnicos específicos como experiências com 4G e 5G mostram impacto mínimo no sentimento, indicando que as preocupações com a qualidade do serviço são ofuscadas por questões administrativas."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "container",
+                      "index": 0,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Análise de Sentimento"
+                        },
+                        {
+                          "type": "sentimentThreeColorChart",
+                          "index": 1,
+                          "dataPath": "sectionData.servico.questions.pergunta2.satisfactionImpactSentimentChart"
+                        },
+                        {
+                          "type": "sentimentImpactTable",
+                          "index": 2,
+                          "dataPath": "sectionData.servico.questions.pergunta2.satisfactionImpactSentimentTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento positivo - Top 3"
+                        },
+                        {
+                          "type": "positiveCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.servico.questions.pergunta2.positiveCategoriesTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento negativo - Top 3"
+                        },
+                        {
+                          "type": "negativeCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.servico.questions.pergunta2.negativeCategoriesTable"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 4,
+              "title": "De 1 a 5 avalie o quão satisfeito está com o serviço que contratou. ",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A maioria dos clientes (49,7%) avaliou sua satisfação com o serviço de internet móvel no nível mais alto, indicando uma forte satisfação geral. No entanto, há um segmento notável (22,7%) que expressa baixa satisfação (avaliações 1 e 2), destacando áreas para melhoria. Os esforços devem se concentrar em entender e abordar as preocupações desse grupo insatisfeito para aumentar a retenção e a lealdade dos clientes."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.servico.questions.pergunta3.distributionChart"
+                    },
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.servico.questions.pergunta3.distributionTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 5,
+              "title": "Lamentamos a situação e gostaríamos de melhorar sua experiência. Nossos especialistas estão prontos para ajudar, gostaria de seguir com o atendimento?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A maioria dos clientes (58,8%) que utilizam o serviço de internet móvel está disposta a prosseguir com o acompanhamento dos especialistas, indicando um engajamento proativo para resolver problemas. No entanto, uma parcela significativa (41,2%) recusou, sugerindo que ainda há espaço para melhorar a satisfação e a confiança do cliente no primeiro contato. Focar em aprimorar a resolução na primeira interação e a comunicação pode aumentar a aceitação do suporte e a experiência geral do cliente."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.servico.questions.pergunta4.distributionChart"
+                    },
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.servico.questions.pergunta4.distributionTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 6,
+              "title": "Em algum momento você precisou entrar em contato com nosso suporte técnico?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "Quase metade dos clientes com serviços de internet móvel (47,3%) relatou a necessidade de contatar o suporte técnico, indicando uma dependência significativa de assistência para este produto. Essa alta taxa de contato sugere possíveis problemas ou complexidades com o serviço de telefonia móvel que podem estar impactando a satisfação do cliente. Abordar esses desafios técnicos de forma proativa poderia melhorar a experiência geral do cliente e reduzir a demanda por suporte."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.servico.questions.pergunta5.distributionChart"
+                    },
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.servico.questions.pergunta5.distributionTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 7,
+              "title": "De 1 a 5 avalie a sua experiência com o nosso suporte técnico. ",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A maioria dos clientes que utilizam o serviço de internet móvel avalia sua experiência com o suporte técnico de forma positiva, com 48,3% dando uma nota 5 e 24,2% avaliando com 4.  \nNo entanto, permanece um segmento notável (27,5%) que está menos satisfeito, dando notas entre 1 e 3, indicando espaço para melhorias na resolução eficaz de problemas técnicos.  \nFocar em aprimorar a capacidade de resposta e a qualidade do suporte pode ajudar a aumentar a satisfação geral dos clientes e reduzir a insatisfação neste mercado competitivo de telecomunicações."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.servico.questions.pergunta6.distributionChart"
+                    },
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.servico.questions.pergunta6.distributionTable"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "data": {
+            "distributionChart": [
+              {
+                "segment": "Internet Móvel",
+                "count": 848,
+                "percentage": 100.0
+              }
+            ],
+            "distributionTable": [
+              {
+                "segment": "Internet Móvel",
+                "count": 848,
+                "percentage": 100.0
+              }
+            ],
+            "questions": {
+              "pergunta1": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "satisfactionImpactSentimentChart": [
+                  {
+                    "sentiment": "negativo",
+                    "Internet Movel": 56.6
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "Internet Movel": 0.3
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "Internet Movel": 43.1
+                  }
+                ],
+                "satisfactionImpactSentimentTable": [
+                  {
+                    "sentiment": "negativo",
+                    "Internet Movel": 56.6
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "Internet Movel": 0.3
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "Internet Movel": 43.1
+                  }
+                ],
+                "positiveCategoriesTable": [
+                  {
+                    "category": "suporte ao cliente",
+                    "Internet Movel": 49.3
+                  },
+                  {
+                    "category": "serviço de rede",
+                    "Internet Movel": 27.9
+                  },
+                  {
+                    "category": "outro",
+                    "Internet Movel": 19.1
+                  }
+                ],
+                "negativeCategoriesTable": [
+                  {
+                    "category": "suporte ao cliente",
+                    "Internet Movel": 55.2
+                  },
+                  {
+                    "category": "serviço de rede",
+                    "Internet Movel": 33.4
+                  },
+                  {
+                    "category": "cobertura de rede",
+                    "Internet Movel": 5.5
+                  }
+                ]
+              },
+              "pergunta2": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "satisfactionImpactSentimentChart": [
+                  {
+                    "sentiment": "negativo",
+                    "Internet Movel": 58.2
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "Internet Movel": 0.2
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "Internet Movel": 41.7
+                  }
+                ],
+                "satisfactionImpactSentimentTable": [
+                  {
+                    "sentiment": "negativo",
+                    "Internet Movel": 58.2
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "Internet Movel": 0.2
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "Internet Movel": 41.7
+                  }
+                ],
+                "positiveCategoriesTable": [
+                  {
+                    "category": "serviço de rede",
+                    "Internet Movel": 44.7
+                  },
+                  {
+                    "category": "suporte ao cliente",
+                    "Internet Movel": 23.5
+                  },
+                  {
+                    "category": "outro",
+                    "Internet Movel": 13.8
+                  }
+                ],
+                "negativeCategoriesTable": [
+                  {
+                    "category": "serviço de rede",
+                    "Internet Movel": 56.8
+                  },
+                  {
+                    "category": "cobertura de rede",
+                    "Internet Movel": 18.5
+                  },
+                  {
+                    "category": "suporte ao cliente",
+                    "Internet Movel": 11.9
+                  }
+                ]
+              },
+              "pergunta3": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [
+                  {
+                    "answer": "1",
+                    "Internet Movel": 7.5
+                  },
+                  {
+                    "answer": "2",
+                    "Internet Movel": 7.2
+                  },
+                  {
+                    "answer": "3",
+                    "Internet Movel": 14.9
+                  },
+                  {
+                    "answer": "4",
+                    "Internet Movel": 20.7
+                  },
+                  {
+                    "answer": "5",
+                    "Internet Movel": 49.7
+                  }
+                ],
+                "distributionTable": [
+                  {
+                    "answer": "1",
+                    "Internet Movel": 7.5
+                  },
+                  {
+                    "answer": "2",
+                    "Internet Movel": 7.2
+                  },
+                  {
+                    "answer": "3",
+                    "Internet Movel": 14.9
+                  },
+                  {
+                    "answer": "4",
+                    "Internet Movel": 20.7
+                  },
+                  {
+                    "answer": "5",
+                    "Internet Movel": 49.7
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "pergunta4": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [
+                  {
+                    "answer": "Não",
+                    "Internet Movel": 41.2
+                  },
+                  {
+                    "answer": "Sim",
+                    "Internet Movel": 58.8
+                  }
+                ],
+                "distributionTable": [
+                  {
+                    "answer": "Não",
+                    "Internet Movel": 41.2
+                  },
+                  {
+                    "answer": "Sim",
+                    "Internet Movel": 58.8
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "pergunta5": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [
+                  {
+                    "answer": "Não",
+                    "Internet Movel": 52.7
+                  },
+                  {
+                    "answer": "Sim",
+                    "Internet Movel": 47.3
+                  }
+                ],
+                "distributionTable": [
+                  {
+                    "answer": "Não",
+                    "Internet Movel": 52.7
+                  },
+                  {
+                    "answer": "Sim",
+                    "Internet Movel": 47.3
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "pergunta6": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [
+                  {
+                    "answer": "1",
+                    "Internet Movel": 7.6
+                  },
+                  {
+                    "answer": "2",
+                    "Internet Movel": 6.3
+                  },
+                  {
+                    "answer": "3",
+                    "Internet Movel": 13.6
+                  },
+                  {
+                    "answer": "4",
+                    "Internet Movel": 24.2
+                  },
+                  {
+                    "answer": "5",
+                    "Internet Movel": 48.3
+                  }
+                ],
+                "distributionTable": [
+                  {
+                    "answer": "1",
+                    "Internet Movel": 7.6
+                  },
+                  {
+                    "answer": "2",
+                    "Internet Movel": 6.3
+                  },
+                  {
+                    "answer": "3",
+                    "Internet Movel": 13.6
+                  },
+                  {
+                    "answer": "4",
+                    "Internet Movel": 24.2
+                  },
+                  {
+                    "answer": "5",
+                    "Internet Movel": 48.3
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "uiTexts": {
+    "filterPanel": {
+      "all": "Todas",
+      "open-ended": "Campo Aberto",
+      "multiple-choice": "Múltipla Escolha",
+      "single-choice": "Escolha única",
+      "nps": "NPS"
+    },
+    "export": {
+      "title": "Export de Dados",
+      "description": "Exporte os dados da pesquisa em diferentes formatos",
+      "exportFullReport": "Exportar Relatório Completo",
+      "selectSpecificSections": "Selecionar Seções Específicas",
+      "exportAsPDF": "Exportar como PDF",
+      "selectAtLeastOneSection": "Selecione pelo menos uma seção"
+    },
+    "common": {
+      "loading": {
+        "loadingQuestions": "Carregando questões..."
+      },
+      "errors": {
+        "dataNotFound": "Dados não encontrados."
+      }
+    }
+  },
+  "surveyInfo": {
+    "title": "CSAT 60 dias Móvel - Janeiro",
+    "company": "Satisfação do cliente",
+    "period": "Data",
+    "totalRespondents": 849,
+    "responseRate": 100.0,
+    "questions": 6,
+    "nps": 0,
+    "npsCategory": "Bom"
+  }
+}

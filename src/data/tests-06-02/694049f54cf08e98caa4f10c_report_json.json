@@ -1,0 +1,1820 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "language": "pt-BR",
+    "surveyId": "694049f54cf08e98caa4f10c"
+  },
+  "sections": [
+    {
+      "id": "executive",
+      "index": 0,
+      "name": "Relatório Executivo",
+      "icon": "FileText",
+      "subsections": [
+        {
+          "id": "executive-summary",
+          "index": 0,
+          "name": "Sumário Executivo",
+          "icon": "ClipboardList",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Sobre o Estudo",
+              "text": "Avaliar a satisfação do cliente e identificar os principais fatores que impactam a lealdade para internet banda larga na indústria de telecomunicações. As respostas da pesquisa foram coletadas de 543 clientes de banda larga por meio de três perguntas direcionadas.",
+              "cardStyleVariant": "default"
+            },
+            {
+              "type": "grid-container",
+              "index": 1,
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Principais Descobertas",
+                  "text": "O Net Promoter Score mostra lealdade moderada, com 58% de promotores superando 24% de detratores. O serviço de rede é o principal fator negativo, impulsionado pela instabilidade que afeta 61% dos clientes, enquanto outras categorias apresentam sentimentos mistos. A segmentação regional revela forte lealdade no Rio Grande do Sul, em contraste com insatisfação e problemas de confiança em Santa Catarina e Paraná.",
+                  "cardStyleVariant": "border-left"
+                },
+                {
+                  "type": "card",
+                  "index": 1,
+                  "title": "Conclusões",
+                  "text": "Resolver problemas de rede e otimizar o suporte especializado são prioridades para reduzir a insatisfação. Níveis divergentes de confiança dos clientes exigem engajamento personalizado em regiões-chave. Abordar preocupações com faturamento e comunicação proativa aumentará a lealdade e o posicionamento competitivo.",
+                  "cardStyleVariant": "border-left"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "executive-recommendations",
+          "index": 1,
+          "name": "Recomendações",
+          "icon": "AlertTriangle",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "",
+              "text": "",
+              "cardStyleVariant": "overflow-hidden",
+              "components": [
+                {
+                  "type": "recommendationsTable",
+                  "index": 0,
+                  "dataPath": "sectionData.recommendationsTable"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "data": {
+        "recommendationsTable": {
+          "config": {
+            "severityLabels": {
+              "high": "Alto",
+              "medium": "Médio",
+              "low": "Baixo",
+              "critical": "Crítico"
+            }
+          },
+          "items": [
+            {
+              "id": 1,
+              "recommendation": "Priorize a resolução de problemas de velocidade, confiabilidade e estabilidade da internet",
+              "severity": "high",
+              "stakeholders": [
+                "Operações de Rede",
+                "Engenharia de Rede",
+                "Serviços de Internet e Banda Larga"
+              ],
+              "tasks": [
+                {
+                  "task": "Realize uma auditoria abrangente de desempenho da rede para identificar problemas de velocidade, confiabilidade e estabilidade",
+                  "owner": "Operações de rede"
+                },
+                {
+                  "task": "Analise os dados da auditoria para identificar áreas problemáticas específicas que afetam a velocidade e a estabilidade da internet",
+                  "owner": "Engenharia de Redes"
+                },
+                {
+                  "task": "Desenvolva uma lista priorizada de problemas com base na gravidade e no impacto para o cliente",
+                  "owner": "Operações de rede"
+                },
+                {
+                  "task": "Projetar soluções técnicas para gargalos de rede identificados e problemas de confiabilidade",
+                  "owner": "Engenharia de Redes"
+                },
+                {
+                  "task": "Coordenar com os Serviços de Internet e Banda Larga para avaliar acordos de nível de serviço e capacidades da infraestrutura",
+                  "owner": "Serviços de Internet e Banda Larga"
+                },
+                {
+                  "task": "Implemente atualizações e configurações de rede para melhorar a velocidade e a estabilidade",
+                  "owner": "Engenharia de Redes"
+                },
+                {
+                  "task": "Implemente ferramentas de monitoramento para acompanhar continuamente os métricas de desempenho da internet após a implementação",
+                  "owner": "Operações de rede"
+                },
+                {
+                  "task": "Fornecer relatórios regulares de progresso e atualizações a todas as partes interessadas",
+                  "owner": "Operações de rede"
+                },
+                {
+                  "task": "Estabeleça um mecanismo de feedback do cliente para coletar dados sobre melhorias no desempenho da internet",
+                  "owner": "Serviços de Internet e Banda Larga"
+                },
+                {
+                  "task": "Revisar e ajustar os protocolos de operações de rede com base nos dados de monitoramento e feedback",
+                  "owner": "Engenharia de Redes"
+                }
+              ]
+            },
+            {
+              "id": 2,
+              "recommendation": "Simplificar o acompanhamento do suporte especializado para reduzir o tempo de resposta",
+              "severity": "high",
+              "stakeholders": [
+                "Operações de Clientes",
+                "Atendimento ao Cliente",
+                "Central de Atendimento"
+              ],
+              "tasks": [
+                {
+                  "task": "Analisar os procedimentos atuais de acompanhamento para identificar gargalos",
+                  "owner": "Operações do Cliente"
+                },
+                {
+                  "task": "Desenvolver protocolos padronizados de acompanhamento para suporte especializado",
+                  "owner": "Operações do Cliente"
+                },
+                {
+                  "task": "Criar materiais de treinamento sobre novos protocolos de acompanhamento",
+                  "owner": "atendimento ao Cliente"
+                },
+                {
+                  "task": "Conduzir sessões de treinamento para representantes de Atendimento ao Cliente",
+                  "owner": "atendimento ao Cliente"
+                },
+                {
+                  "task": "Implemente um sistema centralizado de rastreamento para solicitações de acompanhamento",
+                  "owner": "Central de Atendimento"
+                },
+                {
+                  "task": "Integrar sistema de rastreamento com ferramentas de CRM existentes",
+                  "owner": "Central de Atendimento"
+                },
+                {
+                  "task": "Monitorar os tempos de resposta de acompanhamento diariamente e gerar relatórios",
+                  "owner": "Operações do Cliente"
+                },
+                {
+                  "task": "Revisar relatórios semanalmente para avaliar melhorias e ajustar protocolos",
+                  "owner": "Operações do Cliente"
+                },
+                {
+                  "task": "Coletar feedback de especialistas e clientes sobre o processo de acompanhamento",
+                  "owner": "atendimento ao Cliente"
+                },
+                {
+                  "task": "Aprimorar os protocolos de acompanhamento com base no feedback e nos dados de desempenho",
+                  "owner": "Operações do Cliente"
+                },
+                {
+                  "task": "Comunicar os procedimentos atualizados de acompanhamento para todas as equipes",
+                  "owner": "Operações do Cliente"
+                },
+                {
+                  "task": "Estabeleça procedimentos de escalonamento para acompanhamentos atrasados",
+                  "owner": "atendimento ao Cliente"
+                },
+                {
+                  "task": "Realizar auditorias trimestrais para garantir a conformidade com os padrões de acompanhamento",
+                  "owner": "Central de Atendimento"
+                }
+              ]
+            },
+            {
+              "id": 3,
+              "recommendation": "Aprimorar o monitoramento proativo da rede para prevenir interrupções no serviço",
+              "severity": "medium",
+              "stakeholders": [
+                "Otimização de Rede",
+                "Centro de Operações de Rede (NOC)"
+              ],
+              "tasks": [
+                {
+                  "task": "Avaliar as ferramentas atuais de monitoramento de rede e identificar lacunas",
+                  "owner": "Otimização de rede"
+                },
+                {
+                  "task": "Pesquise tecnologias e soluções avançadas de monitoramento proativo",
+                  "owner": "Otimização de rede"
+                },
+                {
+                  "task": "Desenvolva um documento detalhado de requisitos para monitoramento aprimorado",
+                  "owner": "Otimização de rede"
+                },
+                {
+                  "task": "Selecione ferramentas e fornecedores de monitoramento apropriados com base nos requisitos",
+                  "owner": "Otimização de rede"
+                },
+                {
+                  "task": "Desenvolver cronograma de implementação e plano de alocação de recursos",
+                  "owner": "Otimização de rede"
+                },
+                {
+                  "task": "Coordenar com o Centro de Operações de Rede para integrar novas ferramentas",
+                  "owner": "Otimização de rede"
+                },
+                {
+                  "task": "Configure e personalize as ferramentas de monitoramento para se adequar à arquitetura da rede",
+                  "owner": "Centro de Operações de Rede (NOC)"
+                },
+                {
+                  "task": "Realizar testes piloto de ferramentas de monitoramento aprimoradas em ambiente controlado",
+                  "owner": "Centro de Operações de Rede (NOC)"
+                },
+                {
+                  "task": "Analisar os resultados do teste piloto e fazer os ajustes necessários",
+                  "owner": "Centro de Operações de Rede (NOC)"
+                },
+                {
+                  "task": "Treinar o pessoal do NOC em novas tecnologias e protocolos de monitoramento",
+                  "owner": "Centro de Operações de Rede (NOC)"
+                },
+                {
+                  "task": "Implemente ferramentas de monitoramento aprimoradas em toda a rede",
+                  "owner": "Centro de Operações de Rede (NOC)"
+                },
+                {
+                  "task": "Estabelecer métricas de desempenho contínuas e relatórios para ferramentas de monitoramento",
+                  "owner": "Otimização de rede"
+                },
+                {
+                  "task": "Agendar reuniões regulares de revisão entre Otimização de Rede e NOC",
+                  "owner": "Otimização de rede"
+                },
+                {
+                  "task": "Implemente um protocolo de resposta a incidentes baseado em alertas proativos",
+                  "owner": "Centro de Operações de Rede (NOC)"
+                },
+                {
+                  "task": "Monitorar e otimizar o sistema de monitoramento de rede após a implantação",
+                  "owner": "Otimização de rede"
+                }
+              ]
+            },
+            {
+              "id": 4,
+              "recommendation": "Implemente treinamento direcionado de suporte ao cliente focado na resolução de reclamações",
+              "severity": "medium",
+              "stakeholders": [
+                "Atendimento ao Cliente",
+                "Recursos Humanos",
+                "Aprendizagem e Desenvolvimento"
+              ],
+              "tasks": [
+                {
+                  "task": "Desenvolver currículo de treinamento focado na resolução de reclamações",
+                  "owner": "Aprendizagem e Desenvolvimento"
+                },
+                {
+                  "task": "Identificar cenários-chave de reclamações e técnicas de resolução",
+                  "owner": "atendimento ao Cliente"
+                },
+                {
+                  "task": "Elaborar materiais e recursos de treinamento",
+                  "owner": "Aprendizagem e Desenvolvimento"
+                },
+                {
+                  "task": "Revisar e aprovar o conteúdo do treinamento",
+                  "owner": "atendimento ao Cliente"
+                },
+                {
+                  "task": "Agende sessões de treinamento para representantes de atendimento ao cliente",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Comunicar o cronograma de treinamento aos funcionários",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Conduzir sessões de treinamento",
+                  "owner": "Aprendizagem e Desenvolvimento"
+                },
+                {
+                  "task": "Monitorar as taxas de participação e conclusão do treinamento",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Coletar feedback dos participantes sobre a eficácia do treinamento",
+                  "owner": "atendimento ao Cliente"
+                },
+                {
+                  "task": "Analisar feedback e identificar áreas para melhoria",
+                  "owner": "Aprendizagem e Desenvolvimento"
+                },
+                {
+                  "task": "Atualizar o conteúdo do treinamento com base no feedback",
+                  "owner": "Aprendizagem e Desenvolvimento"
+                },
+                {
+                  "task": "Implementar cursos de reciclagem contínuos",
+                  "owner": "Aprendizagem e Desenvolvimento"
+                },
+                {
+                  "task": "Avaliar o impacto do treinamento nas métricas de resolução de reclamações",
+                  "owner": "atendimento ao Cliente"
+                },
+                {
+                  "task": "Relatar os resultados do treinamento e recomendações de melhoria à liderança",
+                  "owner": "atendimento ao Cliente"
+                }
+              ]
+            },
+            {
+              "id": 5,
+              "recommendation": "Desenvolver estratégia de comunicação para gerenciar as expectativas dos clientes sobre a qualidade do serviço",
+              "severity": "low",
+              "stakeholders": [
+                "Comunicações Corporativas",
+                "Experiência do Cliente (CX)",
+                "Marketing e Produto"
+              ],
+              "tasks": [
+                {
+                  "task": "Realizar análise de stakeholders para identificar os principais segmentos de clientes e necessidades de comunicação",
+                  "owner": "Comunicações Corporativas"
+                },
+                {
+                  "task": "Definir objetivos de comunicação alinhados com a gestão das expectativas dos clientes sobre a qualidade do serviço",
+                  "owner": "Comunicações Corporativas"
+                },
+                {
+                  "task": "Colabore com a Experiência do Cliente para coletar informações sobre problemas comuns de qualidade do serviço",
+                  "owner": "Experiência do Cliente (CX)"
+                },
+                {
+                  "task": "Desenvolver mensagens-chave abordando padrões realistas de qualidade de serviço e melhorias",
+                  "owner": "Comunicações Corporativas"
+                },
+                {
+                  "task": "Projete canais e formatos de comunicação para alcançar diferentes segmentos de clientes de forma eficaz",
+                  "owner": "Marketing e Produto"
+                },
+                {
+                  "task": "Criar um calendário de conteúdo para o lançamento da comunicação em fases",
+                  "owner": "Marketing e Produto"
+                },
+                {
+                  "task": "Desenvolver conteúdo incluindo FAQs, modelos de e-mail, postagens em redes sociais e atualizações de site",
+                  "owner": "Marketing e Produto"
+                },
+                {
+                  "task": "Revisar materiais de comunicação com a Customer Experience para garantir precisão e consistência",
+                  "owner": "Experiência do Cliente (CX)"
+                },
+                {
+                  "task": "Mensagens de comunicação piloto com grupos de clientes selecionados e coleta de feedback",
+                  "owner": "Experiência do Cliente (CX)"
+                },
+                {
+                  "task": "Aprimorar a estratégia de comunicação com base no feedback do piloto",
+                  "owner": "Comunicações Corporativas"
+                },
+                {
+                  "task": "Treinar as equipes de atendimento ao cliente na nova estratégia de comunicação e nas mensagens-chave",
+                  "owner": "Experiência do Cliente (CX)"
+                },
+                {
+                  "task": "Lançar estratégia de comunicação em todos os canais selecionados",
+                  "owner": "Marketing e Produto"
+                },
+                {
+                  "task": "Monitorar o feedback dos clientes e a percepção da qualidade do serviço após a implementação",
+                  "owner": "Experiência do Cliente (CX)"
+                },
+                {
+                  "task": "Relatório sobre a eficácia da comunicação e ajuste da estratégia conforme necessário",
+                  "owner": "Comunicações Corporativas"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "support",
+      "index": 1,
+      "name": "Análises de Suporte",
+      "icon": "Heart",
+      "subsections": [
+        {
+          "id": "support-sentiment",
+          "index": 0,
+          "name": "Análise de Sentimento para Principais Categorias",
+          "icon": "Smile",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "useDescription": true,
+              "text": "O serviço de rede é o principal ponto problemático, com um impacto líquido negativo impulsionado por 39,3% de sentimento negativo contra 21,7% positivo em 61,0% das menções. O suporte ao cliente apresenta sentimento misto, pois as participações positiva e negativa estão mais próximas (10,3% positivo, 13,3% negativo), mas permanecem significativas dentro de 23,6% do total de menções. A equipe de suporte ao cliente deve priorizar a resolução de problemas recorrentes para melhorar a satisfação e reduzir o feedback negativo.",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-description",
+              "components": [
+                {
+                  "type": "sentimentDivergentChart",
+                  "index": 0,
+                  "dataPath": "sectionData.sentimentDivergentChart",
+                  "config": {
+                    "yAxisDataKey": "category"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "support-intent",
+          "index": 2,
+          "name": "Intenção de Respondentes",
+          "icon": "Target",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "text": "A maioria dos clientes (55,22%) está muito satisfeita e provavelmente promoverá ativamente o serviço de banda larga, indicando um forte potencial de promotor líquido. No entanto, uma parcela significativa (27,99%) pretende permanecer apenas enquanto expressa preocupações, destacando áreas para melhorias direcionadas a fim de evitar o aumento da insatisfação. Além disso, os 13,43% que provavelmente deixarão de usar o serviço representam um segmento crítico para esforços de retenção por meio de intervenções personalizadas e melhoria da qualidade do serviço.",
+              "cardStyleVariant": "default",
+              "components": [
+                {
+                  "type": "barChart",
+                  "index": 0,
+                  "dataPath": "sectionData.respondentIntentChart",
+                  "config": {
+                    "dataKey": "percentage",
+                    "yAxisDataKey": "intent"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "support-segmentation",
+          "index": 1,
+          "name": "Segmentação de Respondentes",
+          "icon": "Users2",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "",
+              "text": "",
+              "cardStyleVariant": "overflow-hidden",
+              "components": [
+                {
+                  "type": "segmentationTable",
+                  "index": 0,
+                  "dataPath": "sectionData.segmentationTable"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "data": {
+        "sentimentDivergentChart": [
+          {
+            "category": "serviço de rede",
+            "positive": 21.7,
+            "negative": 39.3
+          },
+          {
+            "category": "suporte ao cliente",
+            "positive": 10.3,
+            "negative": 13.3
+          },
+          {
+            "category": "faturamento e cobranças",
+            "positive": 0.2,
+            "negative": 2.6
+          },
+          {
+            "category": "oferta e preços",
+            "positive": 1.0,
+            "negative": 1.6
+          },
+          {
+            "category": "cobertura de rede",
+            "positive": 0.5,
+            "negative": 1.7
+          },
+          {
+            "category": "outro",
+            "positive": 5.5,
+            "negative": 2.4
+          }
+        ],
+        "segmentationTable": [
+          {
+            "cluster": "Promotor — serviço de rede",
+            "description": "Promotores mencionando principalmente o serviço de rede",
+            "percentage": "30.4",
+            "id": 1
+          },
+          {
+            "cluster": "Passivo — serviço de rede",
+            "description": "Indivíduos com uma postura passiva que utilizam ou dependem do serviço de rede sem envolvimento ativo ou iniciativa.",
+            "percentage": "25.2",
+            "id": 2
+          },
+          {
+            "cluster": "Promotor — outro",
+            "description": "Promotores mencionando principalmente outros",
+            "percentage": "17.1",
+            "id": 3
+          },
+          {
+            "cluster": "Detrator — serviço de rede",
+            "description": "Detratores mencionando principalmente o serviço de rede",
+            "percentage": "12.0",
+            "id": 4
+          },
+          {
+            "cluster": "Promotor — suporte ao cliente",
+            "description": "Promotores mencionando principalmente o suporte ao cliente",
+            "percentage": "6.6",
+            "id": 5
+          },
+          {
+            "cluster": "Outros",
+            "description": "Grupo de 7 pequenos segmentos que não são estatisticamente relevantes por si só.",
+            "percentage": "8.7",
+            "id": " "
+          }
+        ],
+        "respondentIntentChart": [
+          {
+            "intent": "Muito satisfeito e promoveria o produto/serviço",
+            "percentage": 55.22
+          },
+          {
+            "intent": "Pretende ficar, mas expressa preocupações",
+            "percentage": 27.99
+          },
+          {
+            "intent": "Provavelmente parará de usar o produto/serviço",
+            "percentage": 13.43
+          },
+          {
+            "intent": "Satisfeito e estável",
+            "percentage": 3.17
+          }
+        ]
+      }
+    },
+    {
+      "id": "questions",
+      "index": 2,
+      "name": "Análise por Questão",
+      "icon": "MessageSquare",
+      "questions": [
+        {
+          "question_id": "pergunta1",
+          "index": 0,
+          "question": "Em uma escala de 0 a 10 qual a probabilidade de você indicar a unifique para um familiar ou amigo?",
+          "summary": "A distribuição mostra que 57,7% dos clientes são promotores, propensos a recomendar a Unifique, enquanto 24,2% são detratores, menos propensos a recomendá-la; focar na redução dos detratores, abordando seus principais pontos problemáticos, pode melhorar a satisfação geral dos clientes.",
+          "data": {
+            "npsScore": 33.51,
+            "npsStackedChart": [
+              {
+                "option": "Promotor",
+                "value": 436,
+                "percentage": 57.7
+              },
+              {
+                "option": "Detrator",
+                "value": 183,
+                "percentage": 24.2
+              },
+              {
+                "option": "Neutro",
+                "value": 136,
+                "percentage": 18.0
+              }
+            ],
+            "wordCloud": [],
+            "sentimentCategories": [],
+            "topicsByCategory": []
+          },
+          "npsScore": null,
+          "id": 1,
+          "questionType": "nps"
+        },
+        {
+          "question_id": "pergunta2",
+          "index": 1,
+          "question": "Descreva em poucas palavras de forma simples, a sua avaliação.",
+          "summary": "A satisfação do cliente com a internet banda larga é principalmente impulsionada pelas percepções da qualidade do serviço de rede, com 201 menções positivas contrapostas por 190 menções negativas focadas na velocidade, confiabilidade e estabilidade da internet, indicando que melhorias direcionadas nessas áreas técnicas são críticas para aprimorar a experiência geral do cliente.",
+          "data": {
+            "sentimentDivergentChart": [
+              {
+                "value": "serviço de rede",
+                "positive": 21.7,
+                "negative": 39.3
+              },
+              {
+                "value": "suporte ao cliente",
+                "positive": 10.3,
+                "negative": 13.3
+              },
+              {
+                "value": "faturamento e cobranças",
+                "positive": 0.2,
+                "negative": 2.6
+              },
+              {
+                "value": "oferta e preços",
+                "positive": 1.0,
+                "negative": 1.6
+              },
+              {
+                "value": "cobertura de rede",
+                "positive": 0.5,
+                "negative": 1.7
+              },
+              {
+                "value": "outro",
+                "positive": 5.5,
+                "negative": 2.4
+              }
+            ],
+            "topCategoriesCards": [
+              {
+                "rank": 1,
+                "category": "serviço de rede",
+                "mentions": 2772,
+                "percentage": 100,
+                "topics": [
+                  {
+                    "topic": "qualidade de serviço",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "qualidade da internet",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "confiabilidade da rede",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "Velocidade da internet",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "confiabilidade do serviço",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "Estabilidade na internet",
+                    "sentiment": "negative"
+                  }
+                ]
+              },
+              {
+                "rank": 2,
+                "category": "suporte ao cliente",
+                "mentions": 1072,
+                "percentage": 39,
+                "topics": [
+                  {
+                    "topic": "Satisfação do cliente",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "atendimento ao Cliente",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "capacidade de resposta do suporte ao cliente",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "suporte ao cliente",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "risco de retenção de clientes",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "tempo de resposta",
+                    "sentiment": "negative"
+                  }
+                ]
+              },
+              {
+                "rank": 3,
+                "category": "faturamento e cobranças",
+                "mentions": 129,
+                "percentage": 5,
+                "topics": [
+                  {
+                    "topic": "Lembretes de cobrança",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "As forma de pagamento",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "Problemas de faturamento",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "processo de pagamento",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "Impacto do ciclo de faturamento",
+                    "sentiment": "negative"
+                  }
+                ]
+              }
+            ],
+            "wordCloud": [
+              {
+                "text": "Velocidade da internet",
+                "value": 101
+              },
+              {
+                "text": "Qualidade de serviço",
+                "value": 91
+              },
+              {
+                "text": "Confiabilidade do serviço",
+                "value": 75
+              },
+              {
+                "text": "Qualidade da internet",
+                "value": 56
+              },
+              {
+                "text": "Estabilidade na internet",
+                "value": 48
+              },
+              {
+                "text": "Satisfação do cliente",
+                "value": 40
+              },
+              {
+                "text": "Confiabilidade da internet",
+                "value": 34
+              },
+              {
+                "text": "Estabilidade de conexão",
+                "value": 34
+              },
+              {
+                "text": "Suporte ao cliente",
+                "value": 26
+              },
+              {
+                "text": "Confiabilidade da rede",
+                "value": 26
+              },
+              {
+                "text": "Problema de conectividade com a internet",
+                "value": 19
+              },
+              {
+                "text": "Confiabilidade da conexão",
+                "value": 16
+              },
+              {
+                "text": "Capacidade de resposta do suporte ao cliente",
+                "value": 15
+              },
+              {
+                "text": "Qualidade da rede",
+                "value": 14
+              },
+              {
+                "text": "Atendimento ao cliente",
+                "value": 14
+              },
+              {
+                "text": "Qualidade de conexão",
+                "value": 13
+              },
+              {
+                "text": "Qualidade do sinal",
+                "value": 13
+              },
+              {
+                "text": "Recomendação do cliente",
+                "value": 12
+              },
+              {
+                "text": "Velocidade de conexão",
+                "value": 11
+              },
+              {
+                "text": "Estabilidade da rede",
+                "value": 11
+              },
+              {
+                "text": "Velocidade de serviço",
+                "value": 10
+              },
+              {
+                "text": "Intensidade do sinal",
+                "value": 10
+              },
+              {
+                "text": "Problema de faturamento",
+                "value": 10
+              },
+              {
+                "text": "Preços",
+                "value": 9
+              },
+              {
+                "text": "Problema de streaming de vídeo",
+                "value": 9
+              },
+              {
+                "text": "Estabilidade do sinal",
+                "value": 9
+              },
+              {
+                "text": "Problema de conexão",
+                "value": 7
+              },
+              {
+                "text": "Tempo de resposta",
+                "value": 6
+              },
+              {
+                "text": "Problema de conectividade wifi",
+                "value": 6
+              },
+              {
+                "text": "Satisfação geral",
+                "value": 6
+              },
+              {
+                "text": "Satisfação com o serviço",
+                "value": 6
+              },
+              {
+                "text": "Serviço pós-venda",
+                "value": 6
+              },
+              {
+                "text": "Qualidade do serviço técnico",
+                "value": 6
+              },
+              {
+                "text": "Confiabilidade do sinal",
+                "value": 6
+              },
+              {
+                "text": "Qualidade do suporte ao cliente",
+                "value": 5
+              },
+              {
+                "text": "Suporte técnico",
+                "value": 5
+              },
+              {
+                "text": "Processo de instalação",
+                "value": 5
+              },
+              {
+                "text": "Oscilacao do sinal",
+                "value": 5
+              },
+              {
+                "text": "Risco de retenção de clientes",
+                "value": 5
+              },
+              {
+                "text": "Cobertura de rede",
+                "value": 4
+              },
+              {
+                "text": "Estabilidade do serviço",
+                "value": 4
+              },
+              {
+                "text": "Velocidade de resolução de problemas",
+                "value": 4
+              },
+              {
+                "text": "Velocidade do wifi",
+                "value": 4
+              },
+              {
+                "text": "Desempenho da internet",
+                "value": 4
+              },
+              {
+                "text": "Desempenho",
+                "value": 4
+              },
+              {
+                "text": "Interrupção do serviço",
+                "value": 4
+              },
+              {
+                "text": "Desempenho da rede",
+                "value": 4
+              },
+              {
+                "text": "Melhoria de serviço",
+                "value": 4
+              },
+              {
+                "text": "Disponibilidade do serviço",
+                "value": 3
+              },
+              {
+                "text": "Velocidade da rede",
+                "value": 3
+              }
+            ],
+            "npsScore": null,
+            "sentimentCategories": [
+              {
+                "category": "serviço de rede",
+                "negative": 3.0,
+                "positive": 3.0,
+                "neutral": 0.0
+              },
+              {
+                "category": "suporte ao cliente",
+                "negative": 3.0,
+                "positive": 3.0,
+                "neutral": 0.0
+              },
+              {
+                "category": "faturamento e cobranças",
+                "negative": 3.0,
+                "positive": 2.0,
+                "neutral": 0.0
+              }
+            ],
+            "topicsByCategory": [
+              {
+                "category": "serviço de rede",
+                "positiveTopics": [
+                  "qualidade de serviço",
+                  "qualidade da internet",
+                  "confiabilidade da rede"
+                ],
+                "negativeTopics": [
+                  "Velocidade da internet",
+                  "confiabilidade do serviço",
+                  "Estabilidade na internet"
+                ],
+                "neutralTopics": []
+              },
+              {
+                "category": "suporte ao cliente",
+                "positiveTopics": [
+                  "Satisfação do cliente",
+                  "atendimento ao Cliente",
+                  "capacidade de resposta do suporte ao cliente"
+                ],
+                "negativeTopics": [
+                  "suporte ao cliente",
+                  "risco de retenção de clientes",
+                  "tempo de resposta"
+                ],
+                "neutralTopics": []
+              },
+              {
+                "category": "faturamento e cobranças",
+                "positiveTopics": [
+                  "Lembretes de cobrança",
+                  "As forma de pagamento"
+                ],
+                "negativeTopics": [
+                  "Problemas de faturamento",
+                  "processo de pagamento",
+                  "Impacto do ciclo de faturamento"
+                ],
+                "neutralTopics": []
+              }
+            ]
+          },
+          "wordCloud": [],
+          "id": 2,
+          "questionType": "open-ended"
+        },
+        {
+          "question_id": "pergunta4",
+          "index": 2,
+          "question": "Lamentamos a situação e gostaríamos de melhorar sua experiência. Nossos especialistas estão prontos para ajudar, gostaria de seguir com o atendimento?",
+          "summary": "Cerca de 57% dos clientes expressaram disposição para prosseguir com o suporte especializado, indicando uma oportunidade para priorizar e agilizar o processo de serviço de acompanhamento para melhorar a satisfação geral.",
+          "data": {
+            "barChart": [
+              {
+                "option": "Sim",
+                "value": 103,
+                "percentage": 56.9
+              },
+              {
+                "option": "Não",
+                "value": 78,
+                "percentage": 43.1
+              }
+            ],
+            "npsScore": null,
+            "wordCloud": [],
+            "sentimentCategories": [],
+            "topicsByCategory": []
+          },
+          "id": 3,
+          "questionType": "single-choice"
+        }
+      ],
+      "components": [],
+      "data": {
+        "config": {
+          "npsCategories": {
+            "detractor": "Detrator",
+            "promoter": "Promotor",
+            "neutral": "Neutro",
+            "labels": {
+              "detractors": "Detratores",
+              "neutrals": "Neutros",
+              "promoters": "Promotores"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "attributes",
+      "index": 3,
+      "name": "Análise por Atributos",
+      "icon": "Layers",
+      "defaultIcon": "Building",
+      "subsections": [
+        {
+          "id": "attributes-estado",
+          "index": 0,
+          "name": "estado",
+          "icon": "Layers",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Sumário",
+              "text": "O Rio Grande do Sul demonstra a maior fidelidade do cliente e um sentimento equilibrado, indicando uma entrega eficaz do serviço de banda larga, enquanto Santa Catarina e Paraná enfrentam insatisfação substancial e taxas mais altas de detratores. A alta aceitação do suporte especializado em Santa Catarina sugere uma oportunidade para resolver problemas por meio de engajamento proativo, enquanto a rejeição de assistência no Paraná aponta para uma necessidade crítica de melhorar a comunicação e a construção de confiança. Esforços direcionados na qualidade do serviço, transparência na cobrança e alcance ao cliente em Santa Catarina e Paraná são essenciais para aumentar a satisfação e as pontuações do NPS.",
+              "cardStyleVariant": "default"
+            },
+            {
+              "type": "card",
+              "index": 1,
+              "title": "Distribuição dos respondentes",
+              "cardStyleVariant": "flex-column",
+              "cardContentVariant": "with-charts",
+              "components": [
+                {
+                  "type": "barChart",
+                  "dataPath": "sectionData.estado.distributionChart"
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 2,
+              "title": "Em uma escala de 0 a 10 qual a probabilidade de você indicar a unifique para um familiar ou amigo?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "O Net Promoter Score (NPS) varia significativamente entre os estados, com o Rio Grande do Sul liderando com 52,4, indicando maior lealdade dos clientes e maior satisfação com os serviços de banda larga naquela região. Paraná e Santa Catarina apresentam pontuações de NPS mais baixas, de 36,8 e 29,4 respectivamente, impulsionadas por uma proporção maior de detratores, especialmente em Santa Catarina, onde os detratores chegam a 25,9%. Isso sugere que esforços direcionados para melhorar a qualidade do serviço e a experiência do cliente são especialmente necessários em Santa Catarina e Paraná para aumentar a probabilidade de recomendação e reduzir a insatisfação."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "h4",
+                      "index": 0,
+                      "text": "Promotores, Neutros, Detratores"
+                    },
+                    {
+                      "type": "npsDistributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.estado.questions.pergunta1.npsDistributionTable",
+                      "categoryName": "estado",
+                      "config": {
+                        "yAxisDataKey": "estado"
+                      }
+                    },
+                    {
+                      "type": "h4",
+                      "index": 2,
+                      "text": "NPS"
+                    },
+                    {
+                      "type": "npsTable",
+                      "index": 3,
+                      "dataPath": "sectionData.estado.questions.pergunta1.npsTable",
+                      "categoryName": "estado",
+                      "config": {
+                        "dataKey": "NPS",
+                        "yAxisDataKey": "estado"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 3,
+              "title": "Descreva em poucas palavras de forma simples, a sua avaliação.",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A análise de sentimento revela menor satisfação do cliente em Santa Catarina e Paraná, com sentimentos negativos ultrapassando 58%, enquanto o Rio Grande do Sul apresenta uma distribuição de sentimento mais equilibrada e ligeiramente positiva. Faturamento e cobranças, juntamente com problemas de comunicação, são pontos críticos que impactam negativamente os clientes principalmente no Rio Grande do Sul e Santa Catarina. O feedback positivo no Paraná destaca fortemente a satisfação geral com o serviço, embora essa região não apresente menções a tópicos positivos específicos, como serviço pós-venda ou melhorias no faturamento."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "container",
+                      "index": 0,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Análise de Sentimento"
+                        },
+                        {
+                          "type": "sentimentThreeColorChart",
+                          "index": 1,
+                          "dataPath": "sectionData.estado.questions.pergunta2.satisfactionImpactSentimentChart"
+                        },
+                        {
+                          "type": "sentimentImpactTable",
+                          "index": 2,
+                          "dataPath": "sectionData.estado.questions.pergunta2.satisfactionImpactSentimentTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento positivo - Top 3"
+                        },
+                        {
+                          "type": "positiveCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.estado.questions.pergunta2.positiveCategoriesTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento negativo - Top 3"
+                        },
+                        {
+                          "type": "negativeCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.estado.questions.pergunta2.negativeCategoriesTable"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 4,
+              "title": "Lamentamos a situação e gostaríamos de melhorar sua experiência. Nossos especialistas estão prontos para ajudar, gostaria de seguir com o atendimento?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A disposição para prosseguir com o suporte especializado varia significativamente por estado, com Santa Catarina apresentando a maior aceitação, de 60%, indicando maior engajamento ou confiança nos esforços de resolução. Por outro lado, os clientes do Paraná recusaram o suporte unanimemente, destacando uma área crítica para melhorar o alcance do serviço ou a comunicação nessa região. O Rio Grande do Sul apresenta uma divisão equilibrada, sugerindo níveis mistos de satisfação e uma oportunidade para ajustar as estratégias de intervenção."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.estado.questions.pergunta4.distributionChart"
+                    },
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.estado.questions.pergunta4.distributionTable"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "data": {
+            "distributionChart": [
+              {
+                "segment": "Santa Catarina",
+                "count": 454,
+                "percentage": 83.6
+              },
+              {
+                "segment": "Rio Grande do Sul",
+                "count": 82,
+                "percentage": 15.1
+              },
+              {
+                "segment": "Paraná",
+                "count": 7,
+                "percentage": 1.3
+              }
+            ],
+            "distributionTable": [
+              {
+                "segment": "Santa Catarina",
+                "count": 454,
+                "percentage": 83.6
+              },
+              {
+                "segment": "Rio Grande do Sul",
+                "count": 82,
+                "percentage": 15.1
+              },
+              {
+                "segment": "Paraná",
+                "count": 7,
+                "percentage": 1.3
+              }
+            ],
+            "questions": {
+              "pergunta1": {
+                "npsDistributionTable": [
+                  {
+                    "estado": "Paraná",
+                    "promoters": 57.9,
+                    "neutrals": 21.1,
+                    "detractors": 21.1
+                  },
+                  {
+                    "estado": "Rio Grande do Sul",
+                    "promoters": 69.0,
+                    "neutrals": 14.4,
+                    "detractors": 16.6
+                  },
+                  {
+                    "estado": "Santa Catarina",
+                    "promoters": 55.3,
+                    "neutrals": 18.8,
+                    "detractors": 25.9
+                  }
+                ],
+                "npsTable": [
+                  {
+                    "estado": "Paraná",
+                    "NPS": 36.8
+                  },
+                  {
+                    "estado": "Rio Grande do Sul",
+                    "NPS": 52.4
+                  },
+                  {
+                    "estado": "Santa Catarina",
+                    "NPS": 29.4
+                  }
+                ],
+                "distributionChart": [],
+                "distributionTable": [],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "pergunta2": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "satisfactionImpactSentimentChart": [
+                  {
+                    "sentiment": "negativo",
+                    "Paran�": 58.8,
+                    "Rio Grande do Sul": 49.4,
+                    "Santa Catarina": 62.6
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "Paran�": 0.0,
+                    "Rio Grande do Sul": 0.0,
+                    "Santa Catarina": 0.3
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "Paran�": 41.2,
+                    "Rio Grande do Sul": 50.6,
+                    "Santa Catarina": 37.1
+                  }
+                ],
+                "satisfactionImpactSentimentTable": [
+                  {
+                    "sentiment": "negativo",
+                    "Paran�": 58.8,
+                    "Rio Grande do Sul": 49.4,
+                    "Santa Catarina": 62.6
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "Paran�": 0.0,
+                    "Rio Grande do Sul": 0.0,
+                    "Santa Catarina": 0.3
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "Paran�": 41.2,
+                    "Rio Grande do Sul": 50.6,
+                    "Santa Catarina": 37.1
+                  }
+                ],
+                "positiveCategoriesTable": [
+                  {
+                    "category": "serviço de rede",
+                    "Paran�": 50.0,
+                    "Rio Grande do Sul": 62.8,
+                    "Santa Catarina": 53.5
+                  },
+                  {
+                    "category": "suporte ao cliente",
+                    "Paran�": 14.3,
+                    "Rio Grande do Sul": 19.3,
+                    "Santa Catarina": 28.1
+                  },
+                  {
+                    "category": "outro",
+                    "Paran�": 35.7,
+                    "Rio Grande do Sul": 10.4,
+                    "Santa Catarina": 12.9
+                  }
+                ],
+                "negativeCategoriesTable": [
+                  {
+                    "category": "serviço de rede",
+                    "Paran�": 80.0,
+                    "Rio Grande do Sul": 31.9,
+                    "Santa Catarina": 69.1
+                  },
+                  {
+                    "category": "suporte ao cliente",
+                    "Paran�": 0.0,
+                    "Rio Grande do Sul": 49.9,
+                    "Santa Catarina": 18.1
+                  },
+                  {
+                    "category": "faturamento e cobranças",
+                    "Paran�": 0.0,
+                    "Rio Grande do Sul": 7.7,
+                    "Santa Catarina": 3.9
+                  }
+                ]
+              },
+              "pergunta4": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [
+                  {
+                    "answer": "Não",
+                    "Paran�": 100.0,
+                    "Rio Grande do Sul": 53.1,
+                    "Santa Catarina": 40.0
+                  },
+                  {
+                    "answer": "Sim",
+                    "Paran�": 0.0,
+                    "Rio Grande do Sul": 46.9,
+                    "Santa Catarina": 60.0
+                  }
+                ],
+                "distributionTable": [
+                  {
+                    "answer": "Não",
+                    "Paran�": 100.0,
+                    "Rio Grande do Sul": 53.1,
+                    "Santa Catarina": 40.0
+                  },
+                  {
+                    "answer": "Sim",
+                    "Paran�": 0.0,
+                    "Rio Grande do Sul": 46.9,
+                    "Santa Catarina": 60.0
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              }
+            }
+          }
+        },
+        {
+          "id": "attributes-servio",
+          "index": 1,
+          "name": "serviço",
+          "icon": "Layers",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Sumário",
+              "text": "O serviço de internet banda larga apresenta lealdade moderada com um Net Promoter Score de 33,2, mas uma insatisfação generalizada é evidente, pois 60,6% dos clientes expressam sentimentos negativos, principalmente relacionados a faturamento e ofertas competitivas.  \nEnquanto 58,4% estão abertos a receber suporte, um significativo 41,6% recusam assistência, indicando a necessidade de reconstruir a confiança e melhorar a percepção da eficácia do serviço.  \nPriorizar a resolução de problemas de faturamento, aprimorar a comunicação com o cliente e engajar proativamente os detratores pode aumentar a satisfação e reduzir a rotatividade neste mercado competitivo de Telecom.",
+              "cardStyleVariant": "default"
+            },
+            {
+              "type": "card",
+              "index": 1,
+              "title": "Distribuição dos respondentes",
+              "cardStyleVariant": "flex-column",
+              "cardContentVariant": "with-charts",
+              "components": [
+                {
+                  "type": "barChart",
+                  "dataPath": "sectionData.servio.distributionChart"
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 2,
+              "title": "Em uma escala de 0 a 10 qual a probabilidade de você indicar a unifique para um familiar ou amigo?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "O Net Promoter Score (NPS) de 33,2 para o serviço de Internet Fixa indica um nível moderado de satisfação e lealdade dos clientes dentro do segmento de internet banda larga. Com 57,5% de promotores, a empresa possui uma base sólida de clientes satisfeitos dispostos a recomendar o serviço, mas os 24,3% de detratores destacam áreas significativas para melhoria a fim de reduzir a insatisfação. Focar na conversão dos neutros (18,2%) e detratores por meio de aprimoramentos direcionados no serviço e no suporte ao cliente pode impulsionar uma satisfação geral maior e aumentar as recomendações."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "h4",
+                      "index": 0,
+                      "text": "Promotores, Neutros, Detratores"
+                    },
+                    {
+                      "type": "npsDistributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.servio.questions.pergunta1.npsDistributionTable",
+                      "categoryName": "serviço",
+                      "config": {
+                        "yAxisDataKey": "serviço"
+                      }
+                    },
+                    {
+                      "type": "h4",
+                      "index": 2,
+                      "text": "NPS"
+                    },
+                    {
+                      "type": "npsTable",
+                      "index": 3,
+                      "dataPath": "sectionData.servio.questions.pergunta1.npsTable",
+                      "categoryName": "serviço",
+                      "config": {
+                        "dataKey": "NPS",
+                        "yAxisDataKey": "serviço"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 3,
+              "title": "Descreva em poucas palavras de forma simples, a sua avaliação.",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "O sentimento do cliente para Internet Fixa mostra uma proporção significativa de feedback negativo em 60,6%, indicando insatisfação geral com o serviço de banda larga. As principais questões identificadas incluem faturamento e cobranças, bem como preocupações relacionadas à concorrência, que dominam as categorias e tópicos negativos. O feedback positivo é relativamente limitado, com pequena apreciação pela comunicação e pelo serviço pós-venda, mas estes não compensam as frustrações predominantes dos clientes."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "container",
+                      "index": 0,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Análise de Sentimento"
+                        },
+                        {
+                          "type": "sentimentThreeColorChart",
+                          "index": 1,
+                          "dataPath": "sectionData.servio.questions.pergunta2.satisfactionImpactSentimentChart"
+                        },
+                        {
+                          "type": "sentimentImpactTable",
+                          "index": 2,
+                          "dataPath": "sectionData.servio.questions.pergunta2.satisfactionImpactSentimentTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento positivo - Top 3"
+                        },
+                        {
+                          "type": "positiveCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.servio.questions.pergunta2.positiveCategoriesTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento negativo - Top 3"
+                        },
+                        {
+                          "type": "negativeCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.servio.questions.pergunta2.negativeCategoriesTable"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 4,
+              "title": "Lamentamos a situação e gostaríamos de melhorar sua experiência. Nossos especialistas estão prontos para ajudar, gostaria de seguir com o atendimento?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A maioria dos clientes (58,4%) expressou disposição para prosseguir com a assistência oferecida para melhorar sua experiência com a internet banda larga, indicando abertura para resolução. No entanto, uma parcela significativa (41,6%) recusou suporte adicional, o que pode evidenciar lacunas na confiança, satisfação ou percepção da eficácia do serviço. Focar em aumentar o engajamento com clientes insatisfeitos pode melhorar a satisfação geral do cliente e reduzir a rotatividade no setor de Telecomunicações."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "barChart",
+                      "index": 0,
+                      "dataPath": "sectionData.servio.questions.pergunta4.distributionChart"
+                    },
+                    {
+                      "type": "distributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.servio.questions.pergunta4.distributionTable"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "data": {
+            "distributionChart": [
+              {
+                "segment": "Internet Fixa",
+                "count": 543,
+                "percentage": 100.0
+              }
+            ],
+            "distributionTable": [
+              {
+                "segment": "Internet Fixa",
+                "count": 543,
+                "percentage": 100.0
+              }
+            ],
+            "questions": {
+              "pergunta1": {
+                "npsDistributionTable": [
+                  {
+                    "serviço": "Internet Fixa",
+                    "promoters": 57.5,
+                    "neutrals": 18.2,
+                    "detractors": 24.3
+                  }
+                ],
+                "npsTable": [
+                  {
+                    "serviço": "Internet Fixa",
+                    "NPS": 33.2
+                  }
+                ],
+                "distributionChart": [],
+                "distributionTable": [],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "pergunta2": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "satisfactionImpactSentimentChart": [
+                  {
+                    "sentiment": "negativo",
+                    "Internet Fixa": 60.6
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "Internet Fixa": 0.3
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "Internet Fixa": 39.2
+                  }
+                ],
+                "satisfactionImpactSentimentTable": [
+                  {
+                    "sentiment": "negativo",
+                    "Internet Fixa": 60.6
+                  },
+                  {
+                    "sentiment": "não aplicável",
+                    "Internet Fixa": 0.3
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "Internet Fixa": 39.2
+                  }
+                ],
+                "positiveCategoriesTable": [
+                  {
+                    "category": "serviço de rede",
+                    "Internet Fixa": 55.3
+                  },
+                  {
+                    "category": "suporte ao cliente",
+                    "Internet Fixa": 26.3
+                  },
+                  {
+                    "category": "outro",
+                    "Internet Fixa": 12.6
+                  }
+                ],
+                "negativeCategoriesTable": [
+                  {
+                    "category": "serviço de rede",
+                    "Internet Fixa": 64.6
+                  },
+                  {
+                    "category": "suporte ao cliente",
+                    "Internet Fixa": 21.8
+                  },
+                  {
+                    "category": "faturamento e cobranças",
+                    "Internet Fixa": 4.3
+                  }
+                ]
+              },
+              "pergunta4": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [
+                  {
+                    "answer": "Não",
+                    "Internet Fixa": 41.6
+                  },
+                  {
+                    "answer": "Sim",
+                    "Internet Fixa": 58.4
+                  }
+                ],
+                "distributionTable": [
+                  {
+                    "answer": "Não",
+                    "Internet Fixa": 41.6
+                  },
+                  {
+                    "answer": "Sim",
+                    "Internet Fixa": 58.4
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "uiTexts": {
+    "filterPanel": {
+      "all": "Todas",
+      "open-ended": "Campo Aberto",
+      "multiple-choice": "Múltipla Escolha",
+      "single-choice": "Escolha única",
+      "nps": "NPS"
+    },
+    "export": {
+      "title": "Export de Dados",
+      "description": "Exporte os dados da pesquisa em diferentes formatos",
+      "exportFullReport": "Exportar Relatório Completo",
+      "selectSpecificSections": "Selecionar Seções Específicas",
+      "exportAsPDF": "Exportar como PDF",
+      "selectAtLeastOneSection": "Selecione pelo menos uma seção"
+    },
+    "common": {
+      "loading": {
+        "loadingQuestions": "Carregando questões..."
+      },
+      "errors": {
+        "dataNotFound": "Dados não encontrados."
+      }
+    }
+  },
+  "surveyInfo": {
+    "title": "NPS 180 dias Fixa - Janeiro",
+    "company": "Satisfação do cliente",
+    "period": "Data",
+    "totalRespondents": 543,
+    "responseRate": 100.0,
+    "questions": 3,
+    "nps": 0,
+    "npsCategory": "Bom"
+  }
+}
