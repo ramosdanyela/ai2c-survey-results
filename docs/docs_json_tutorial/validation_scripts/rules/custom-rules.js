@@ -845,6 +845,128 @@ function validateWordCloudShape(resolved, context) {
 }
 
 /**
+ * Shape esperado pelo StackedBarMECE (StackedBarMECE.jsx + ChartRenderers SchemaStackedBarMECE):
+ * - data: array de objetos; cada item = uma barra (categoria no eixo Y).
+ * - Cada item deve ter a chave do eixo Y (yAxisDataKey ou categoryKey ou "option") e uma chave por série.
+ * - config.series é obrigatório e não vazio: [{ dataKey, name, color? }]; cada dataKey deve existir em todo item e ser number (percentual).
+ */
+function validateStackedBarMECEShape(resolved, context, component = {}) {
+  const errors = [];
+  if (!Array.isArray(resolved)) return errors;
+  const config = component.config || {};
+  const series = config.series;
+  const axisKey = config.yAxisDataKey ?? config.categoryKey ?? "option";
+
+  if (!series || !Array.isArray(series) || series.length === 0) {
+    errors.push({
+      path: context,
+      message:
+        "stackedBarMECE: config.series é obrigatório e deve ser um array não vazio (ex.: [{ dataKey, name }, ...]). O componente exibe 'Nenhuma série configurada' quando series está vazio.",
+    });
+    return errors;
+  }
+
+  resolved.forEach((item, i) => {
+    const itemCtx = `${context}[${i}]`;
+    if (!item || typeof item !== "object") {
+      errors.push({
+        path: itemCtx,
+        message: "stackedBarMECE: cada item deve ser um objeto com a chave do eixo Y e as chaves das séries (numbers)",
+      });
+      return;
+    }
+    if (!(axisKey in item)) {
+      errors.push({
+        path: itemCtx,
+        message: `stackedBarMECE: item deve ter '${axisKey}' (eixo Y / categoria). Use config.yAxisDataKey ou config.categoryKey para definir.`,
+      });
+    }
+    series.forEach((serie, sIdx) => {
+      const dataKey = serie?.dataKey;
+      if (!dataKey || typeof dataKey !== "string") {
+        errors.push({
+          path: context,
+          message: `stackedBarMECE: config.series[${sIdx}] deve ter 'dataKey' (string)`,
+        });
+        return;
+      }
+      if (!(dataKey in item)) {
+        errors.push({
+          path: itemCtx,
+          message: `stackedBarMECE: item deve ter '${dataKey}' (série configurada em config.series)`,
+        });
+      } else if (typeof item[dataKey] !== "number") {
+        errors.push({
+          path: `${itemCtx}.${dataKey}`,
+          message: `stackedBarMECE: '${dataKey}' deve ser number (percentual). O gráfico usa domain [0,100] e formata como "%".`,
+        });
+      }
+    });
+  });
+  return errors;
+}
+
+/**
+ * Shape esperado pela AnalyticalTable (AnalyticalTable.jsx + TableRenderers SchemaAnalyticalTable):
+ * - data: array de objetos (linhas). Colunas podem vir de config.columns ou ser inferidas do primeiro item.
+ * - config opcional: columns ([{ key, label?, sortable?, formatter? }]), showRanking, defaultSort ({ key, direction }), rankingKey.
+ * - Cada linha deve ser objeto; se config.columns existir, cada row deve ter as chaves column.key.
+ */
+function validateAnalyticalTableShape(resolved, context, component = {}) {
+  const errors = [];
+  if (!Array.isArray(resolved)) return errors;
+  const config = component.config || {};
+  const columns = config.columns;
+
+  resolved.forEach((item, i) => {
+    const itemCtx = `${context}[${i}]`;
+    if (!item || typeof item !== "object") {
+      errors.push({
+        path: itemCtx,
+        message: "analyticalTable: cada item deve ser um objeto (linha da tabela)",
+      });
+      return;
+    }
+    if (columns && Array.isArray(columns) && columns.length > 0) {
+      columns.forEach((col, cIdx) => {
+        const key = col?.key;
+        if (!key || typeof key !== "string") {
+          errors.push({
+            path: context,
+            message: `analyticalTable: config.columns[${cIdx}] deve ter 'key' (string)`,
+          });
+          return;
+        }
+        if (!(key in item)) {
+          errors.push({
+            path: itemCtx,
+            message: `analyticalTable: item deve ter a chave '${key}' (definida em config.columns)`,
+          });
+        }
+      });
+    }
+  });
+
+  const ds = config.defaultSort;
+  if (ds != null && typeof ds === "object") {
+    if (!ds.key || typeof ds.key !== "string") {
+      errors.push({
+        path: context,
+        message: "analyticalTable: config.defaultSort deve ter 'key' (string)",
+      });
+    }
+    if (ds.direction != null && !["asc", "desc"].includes(ds.direction)) {
+      errors.push({
+        path: context,
+        message: "analyticalTable: config.defaultSort.direction deve ser 'asc' ou 'desc'",
+      });
+    }
+  }
+
+  return errors;
+}
+
+/**
  * Shape esperado: RecommendationsTable items — cada item com id, recommendation, severity, stakeholders (array), tasks (array opcional).
  */
 function validateRecommendationsTableItemsShape(resolved, context) {
@@ -1115,6 +1237,16 @@ function validateComponentData(
           }
           if (type === "wordCloud") {
             errors.push(...validateWordCloudShape(resolved, context));
+          }
+          if (type === "stackedBarMECE") {
+            errors.push(
+              ...validateStackedBarMECEShape(resolved, context, component),
+            );
+          }
+          if (type === "analyticalTable") {
+            errors.push(
+              ...validateAnalyticalTableShape(resolved, context, component),
+            );
           }
         }
       } else if (flexibleArrayComponents.includes(type)) {

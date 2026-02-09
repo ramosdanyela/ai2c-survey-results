@@ -639,7 +639,8 @@ export function SchemaStackedBarMECE({ component, data }) {
   return (
     <StackedBarMECE
       data={chartData}
-      categoryKey={config.categoryKey || "category"}
+      yAxisDataKey={config.yAxisDataKey ?? config.categoryKey ?? "option"}
+      {...(config.categoryKey != null && { categoryKey: config.categoryKey })}
       series={config.series || []}
       height={config.height || 400}
       margin={config.margin}

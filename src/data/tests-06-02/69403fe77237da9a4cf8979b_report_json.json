@@ -456,13 +456,13 @@
         "sentimentDivergentChart": [
           {
             "category": "serviço de rede",
-            "positive": 25.0,
-            "negative": 43.0
+            "positive": 25,
+            "negative": 43
           },
           {
             "category": "suporte ao cliente",
             "positive": 7.5,
-            "negative": 7.0
+            "negative": 7
           },
           {
             "category": "cobertura de rede",
@@ -471,8 +471,8 @@
           },
           {
             "category": "oferta e preços",
-            "positive": 1.0,
-            "negative": 2.0
+            "positive": 1,
+            "negative": 2
           },
           {
             "category": "faturamento e cobranças",
@@ -482,7 +482,7 @@
           {
             "category": "outro",
             "positive": 6.5,
-            "negative": 2.0
+            "negative": 2
           }
         ],
         "segmentationTable": [
@@ -570,11 +570,11 @@
               {
                 "value": "suporte ao cliente",
                 "positive": 13.5,
-                "negative": 28.0
+                "negative": 28
               },
               {
                 "value": "faturamento e cobranças",
-                "positive": 0.0,
+                "positive": 0,
                 "negative": 3.4
               },
               {
@@ -885,21 +885,21 @@
             "sentimentCategories": [
               {
                 "category": "serviço de rede",
-                "negative": 3.0,
-                "positive": 3.0,
-                "neutral": 0.0
+                "negative": 3,
+                "positive": 3,
+                "neutral": 0
               },
               {
                 "category": "suporte ao cliente",
-                "negative": 3.0,
-                "positive": 3.0,
-                "neutral": 0.0
+                "negative": 3,
+                "positive": 3,
+                "neutral": 0
               },
               {
                 "category": "faturamento e cobranças",
-                "negative": 3.0,
-                "positive": 0.0,
-                "neutral": 0.0
+                "negative": 3,
+                "positive": 0,
+                "neutral": 0
               }
             ],
             "topicsByCategory": [
@@ -956,13 +956,13 @@
             "sentimentDivergentChart": [
               {
                 "value": "serviço de rede",
-                "positive": 25.0,
-                "negative": 43.0
+                "positive": 25,
+                "negative": 43
               },
               {
                 "value": "suporte ao cliente",
                 "positive": 7.5,
-                "negative": 7.0
+                "negative": 7
               },
               {
                 "value": "cobertura de rede",
@@ -971,8 +971,8 @@
               },
               {
                 "value": "oferta e preços",
-                "positive": 1.0,
-                "negative": 2.0
+                "positive": 1,
+                "negative": 2
               },
               {
                 "value": "faturamento e cobranças",
@@ -982,7 +982,7 @@
               {
                 "value": "outro",
                 "positive": 6.5,
-                "negative": 2.0
+                "negative": 2
               }
             ],
             "topCategoriesCards": [
@@ -1289,21 +1289,21 @@
             "sentimentCategories": [
               {
                 "category": "serviço de rede",
-                "negative": 3.0,
-                "positive": 3.0,
-                "neutral": 0.0
+                "negative": 3,
+                "positive": 3,
+                "neutral": 0
               },
               {
                 "category": "suporte ao cliente",
-                "negative": 3.0,
-                "positive": 3.0,
-                "neutral": 0.0
+                "negative": 3,
+                "positive": 3,
+                "neutral": 0
               },
               {
                 "category": "cobertura de rede",
-                "negative": 3.0,
-                "positive": 3.0,
-                "neutral": 0.0
+                "negative": 3,
+                "positive": 3,
+                "neutral": 0
               }
             ],
             "topicsByCategory": [
@@ -1711,14 +1711,31 @@
                   "index": 0,
                   "components": [
                     {
-                      "type": "barChart",
+                      "type": "stackedBarMECE",
                       "index": 0,
-                      "dataPath": "sectionData.estado.questions.pergunta3.distributionChart"
+                      "dataPath": "sectionData.estado.questions.pergunta3.stackedBarMECE",
+                      "config": {
+                        "yAxisDataKey": "option",
+                        "series": [
+                          {
+                            "dataKey": "Paran�",
+                            "name": "Paran� (%)"
+                          },
+                          {
+                            "dataKey": "Rio Grande do Sul",
+                            "name": "Rio Grande do Sul (%)"
+                          },
+                          {
+                            "dataKey": "Santa Catarina",
+                            "name": "Santa Catarina (%)"
+                          }
+                        ]
+                      }
                     },
                     {
-                      "type": "distributionTable",
+                      "type": "analyticalTable",
                       "index": 1,
-                      "dataPath": "sectionData.estado.questions.pergunta3.distributionTable"
+                      "dataPath": "sectionData.estado.questions.pergunta3.analyticalTable"
                     }
                   ]
                 }
@@ -1744,14 +1761,27 @@
                   "index": 0,
                   "components": [
                     {
-                      "type": "barChart",
+                      "type": "stackedBarMECE",
                       "index": 0,
-                      "dataPath": "sectionData.estado.questions.pergunta4.distributionChart"
+                      "dataPath": "sectionData.estado.questions.pergunta4.stackedBarMECE",
+                      "config": {
+                        "yAxisDataKey": "option",
+                        "series": [
+                          {
+                            "dataKey": "Rio Grande do Sul",
+                            "name": "Rio Grande do Sul (%)"
+                          },
+                          {
+                            "dataKey": "Santa Catarina",
+                            "name": "Santa Catarina (%)"
+                          }
+                        ]
+                      }
                     },
                     {
-                      "type": "distributionTable",
+                      "type": "analyticalTable",
                       "index": 1,
-                      "dataPath": "sectionData.estado.questions.pergunta4.distributionTable"
+                      "dataPath": "sectionData.estado.questions.pergunta4.analyticalTable"
                     }
                   ]
                 }
@@ -1777,14 +1807,31 @@
                   "index": 0,
                   "components": [
                     {
-                      "type": "barChart",
+                      "type": "stackedBarMECE",
                       "index": 0,
-                      "dataPath": "sectionData.estado.questions.pergunta5.distributionChart"
+                      "dataPath": "sectionData.estado.questions.pergunta5.stackedBarMECE",
+                      "config": {
+                        "yAxisDataKey": "option",
+                        "series": [
+                          {
+                            "dataKey": "Paran�",
+                            "name": "Paran� (%)"
+                          },
+                          {
+                            "dataKey": "Rio Grande do Sul",
+                            "name": "Rio Grande do Sul (%)"
+                          },
+                          {
+                            "dataKey": "Santa Catarina",
+                            "name": "Santa Catarina (%)"
+                          }
+                        ]
+                      }
                     },
                     {
-                      "type": "distributionTable",
+                      "type": "analyticalTable",
                       "index": 1,
-                      "dataPath": "sectionData.estado.questions.pergunta5.distributionTable"
+                      "dataPath": "sectionData.estado.questions.pergunta5.analyticalTable"
                     }
                   ]
                 }
@@ -1810,14 +1857,31 @@
                   "index": 0,
                   "components": [
                     {
-                      "type": "barChart",
+                      "type": "stackedBarMECE",
                       "index": 0,
-                      "dataPath": "sectionData.estado.questions.pergunta6.distributionChart"
+                      "dataPath": "sectionData.estado.questions.pergunta6.stackedBarMECE",
+                      "config": {
+                        "yAxisDataKey": "option",
+                        "series": [
+                          {
+                            "dataKey": "Paran�",
+                            "name": "Paran� (%)"
+                          },
+                          {
+                            "dataKey": "Rio Grande do Sul",
+                            "name": "Rio Grande do Sul (%)"
+                          },
+                          {
+                            "dataKey": "Santa Catarina",
+                            "name": "Santa Catarina (%)"
+                          }
+                        ]
+                      }
                     },
                     {
-                      "type": "distributionTable",
+                      "type": "analyticalTable",
                       "index": 1,
-                      "dataPath": "sectionData.estado.questions.pergunta6.distributionTable"
+                      "dataPath": "sectionData.estado.questions.pergunta6.analyticalTable"
                     }
                   ]
                 }
@@ -1868,19 +1932,19 @@
                 "satisfactionImpactSentimentChart": [
                   {
                     "sentiment": "negativo",
-                    "Paran�": 100.0,
+                    "Paran�": 100,
                     "Rio Grande do Sul": 67.8,
                     "Santa Catarina": 71.4
                   },
                   {
                     "sentiment": "não aplicável",
-                    "Paran�": 0.0,
+                    "Paran�": 0,
                     "Rio Grande do Sul": 0.8,
                     "Santa Catarina": 0.2
                   },
                   {
                     "sentiment": "positivo",
-                    "Paran�": 0.0,
+                    "Paran�": 0,
                     "Rio Grande do Sul": 31.4,
                     "Santa Catarina": 28.5
                   }
@@ -1888,19 +1952,19 @@
                 "satisfactionImpactSentimentTable": [
                   {
                     "sentiment": "negativo",
-                    "Paran�": 100.0,
+                    "Paran�": 100,
                     "Rio Grande do Sul": 67.8,
                     "Santa Catarina": 71.4
                   },
                   {
                     "sentiment": "não aplicável",
-                    "Paran�": 0.0,
+                    "Paran�": 0,
                     "Rio Grande do Sul": 0.8,
                     "Santa Catarina": 0.2
                   },
                   {
                     "sentiment": "positivo",
-                    "Paran�": 0.0,
+                    "Paran�": 0,
                     "Rio Grande do Sul": 31.4,
                     "Santa Catarina": 28.5
                   }
@@ -1914,7 +1978,7 @@
                   {
                     "category": "serviço de rede",
                     "Rio Grande do Sul": 24.3,
-                    "Santa Catarina": 42.0
+                    "Santa Catarina": 42
                   },
                   {
                     "category": "outro",
@@ -1926,22 +1990,23 @@
                   {
                     "category": "serviço de rede",
                     "Paran�": 55.6,
-                    "Rio Grande do Sul": 60.0,
+                    "Rio Grande do Sul": 60,
                     "Santa Catarina": 39.7
                   },
                   {
                     "category": "suporte ao cliente",
                     "Paran�": 44.4,
                     "Rio Grande do Sul": 22.5,
-                    "Santa Catarina": 42.0
+                    "Santa Catarina": 42
                   },
                   {
                     "category": "faturamento e cobranças",
-                    "Paran�": 0.0,
+                    "Paran�": 0,
                     "Rio Grande do Sul": 7.5,
                     "Santa Catarina": 4.5
                   }
-                ]
+                ],
+                "stackedBarMECE": []
               },
               "pergunta2": {
                 "npsDistributionTable": [],
@@ -1951,19 +2016,19 @@
                 "satisfactionImpactSentimentChart": [
                   {
                     "sentiment": "negativo",
-                    "Paran�": 56.0,
+                    "Paran�": 56,
                     "Rio Grande do Sul": 57.6,
                     "Santa Catarina": 57.8
                   },
                   {
                     "sentiment": "não aplicável",
-                    "Paran�": 0.0,
-                    "Rio Grande do Sul": 0.0,
+                    "Paran�": 0,
+                    "Rio Grande do Sul": 0,
                     "Santa Catarina": 0.1
                   },
                   {
                     "sentiment": "positivo",
-                    "Paran�": 44.0,
+                    "Paran�": 44,
                     "Rio Grande do Sul": 42.4,
                     "Santa Catarina": 42.1
                   }
@@ -1971,19 +2036,19 @@
                 "satisfactionImpactSentimentTable": [
                   {
                     "sentiment": "negativo",
-                    "Paran�": 56.0,
+                    "Paran�": 56,
                     "Rio Grande do Sul": 57.6,
                     "Santa Catarina": 57.8
                   },
                   {
                     "sentiment": "não aplicável",
-                    "Paran�": 0.0,
-                    "Rio Grande do Sul": 0.0,
+                    "Paran�": 0,
+                    "Rio Grande do Sul": 0,
                     "Santa Catarina": 0.1
                   },
                   {
                     "sentiment": "positivo",
-                    "Paran�": 44.0,
+                    "Paran�": 44,
                     "Rio Grande do Sul": 42.4,
                     "Santa Catarina": 42.1
                   }
@@ -1991,9 +2056,9 @@
                 "positiveCategoriesTable": [
                   {
                     "category": "serviço de rede",
-                    "Paran�": 0.0,
+                    "Paran�": 0,
                     "Rio Grande do Sul": 46.2,
-                    "Santa Catarina": 62.0
+                    "Santa Catarina": 62
                   },
                   {
                     "category": "suporte ao cliente",
@@ -2005,7 +2070,7 @@
                     "category": "outro",
                     "Paran�": 18.2,
                     "Rio Grande do Sul": 23.8,
-                    "Santa Catarina": 12.0
+                    "Santa Catarina": 12
                   }
                 ],
                 "negativeCategoriesTable": [
@@ -2017,229 +2082,410 @@
                   },
                   {
                     "category": "suporte ao cliente",
-                    "Paran�": 0.0,
+                    "Paran�": 0,
                     "Rio Grande do Sul": 10.8,
                     "Santa Catarina": 12.5
                   },
                   {
                     "category": "cobertura de rede",
-                    "Paran�": 0.0,
+                    "Paran�": 0,
                     "Rio Grande do Sul": 3.1,
                     "Santa Catarina": 4.8
                   }
-                ]
+                ],
+                "stackedBarMECE": []
               },
               "pergunta3": {
                 "npsDistributionTable": [],
                 "npsTable": [],
                 "distributionChart": [
                   {
-                    "answer": "1",
-                    "Paran�": 0.0,
+                    "Paran�": 0,
                     "Rio Grande do Sul": 11.9,
-                    "Santa Catarina": 6.4
+                    "Santa Catarina": 6.4,
+                    "option": "1"
                   },
                   {
-                    "answer": "2",
-                    "Paran�": 0.0,
+                    "Paran�": 0,
                     "Rio Grande do Sul": 3.1,
-                    "Santa Catarina": 8.9
+                    "Santa Catarina": 8.9,
+                    "option": "2"
                   },
                   {
-                    "answer": "3",
                     "Paran�": 7.1,
                     "Rio Grande do Sul": 8.8,
-                    "Santa Catarina": 13.2
+                    "Santa Catarina": 13.2,
+                    "option": "3"
                   },
                   {
-                    "answer": "4",
                     "Paran�": 42.9,
                     "Rio Grande do Sul": 16.4,
-                    "Santa Catarina": 19.0
+                    "Santa Catarina": 19,
+                    "option": "4"
                   },
                   {
-                    "answer": "5",
-                    "Paran�": 50.0,
+                    "Paran�": 50,
                     "Rio Grande do Sul": 59.7,
-                    "Santa Catarina": 52.5
+                    "Santa Catarina": 52.5,
+                    "option": "5"
                   }
                 ],
                 "distributionTable": [
                   {
-                    "answer": "1",
-                    "Paran�": 0.0,
+                    "Paran�": 0,
                     "Rio Grande do Sul": 11.9,
-                    "Santa Catarina": 6.4
+                    "Santa Catarina": 6.4,
+                    "segment": "1"
                   },
                   {
-                    "answer": "2",
-                    "Paran�": 0.0,
+                    "Paran�": 0,
                     "Rio Grande do Sul": 3.1,
-                    "Santa Catarina": 8.9
+                    "Santa Catarina": 8.9,
+                    "segment": "2"
                   },
                   {
-                    "answer": "3",
                     "Paran�": 7.1,
                     "Rio Grande do Sul": 8.8,
-                    "Santa Catarina": 13.2
+                    "Santa Catarina": 13.2,
+                    "segment": "3"
                   },
                   {
-                    "answer": "4",
                     "Paran�": 42.9,
                     "Rio Grande do Sul": 16.4,
-                    "Santa Catarina": 19.0
+                    "Santa Catarina": 19,
+                    "segment": "4"
                   },
                   {
-                    "answer": "5",
-                    "Paran�": 50.0,
+                    "Paran�": 50,
                     "Rio Grande do Sul": 59.7,
-                    "Santa Catarina": 52.5
+                    "Santa Catarina": 52.5,
+                    "segment": "5"
                   }
                 ],
                 "satisfactionImpactSentimentChart": [],
                 "satisfactionImpactSentimentTable": [],
                 "positiveCategoriesTable": [],
-                "negativeCategoriesTable": []
+                "negativeCategoriesTable": [],
+                "analyticalTable": [
+                  {
+                    "segment": "5",
+                    "Paran�": 50,
+                    "Rio Grande do Sul": 59.7,
+                    "Santa Catarina": 52.5
+                  },
+                  {
+                    "segment": "4",
+                    "Paran�": 42.9,
+                    "Rio Grande do Sul": 16.4,
+                    "Santa Catarina": 19
+                  },
+                  {
+                    "segment": "3",
+                    "Paran�": 7.1,
+                    "Rio Grande do Sul": 8.8,
+                    "Santa Catarina": 13.2
+                  },
+                  {
+                    "segment": "2",
+                    "Paran�": 0,
+                    "Rio Grande do Sul": 3.1,
+                    "Santa Catarina": 8.9
+                  },
+                  {
+                    "segment": "1",
+                    "Paran�": 0,
+                    "Rio Grande do Sul": 11.9,
+                    "Santa Catarina": 6.4
+                  }
+                ],
+                "stackedBarMECE": [
+                  {
+                    "Paran�": 0,
+                    "Rio Grande do Sul": 11.9,
+                    "Santa Catarina": 6.4,
+                    "option": "1"
+                  },
+                  {
+                    "Paran�": 0,
+                    "Rio Grande do Sul": 3.1,
+                    "Santa Catarina": 8.9,
+                    "option": "2"
+                  },
+                  {
+                    "Paran�": 7.1,
+                    "Rio Grande do Sul": 8.8,
+                    "Santa Catarina": 13.2,
+                    "option": "3"
+                  },
+                  {
+                    "Paran�": 42.9,
+                    "Rio Grande do Sul": 16.4,
+                    "Santa Catarina": 19,
+                    "option": "4"
+                  },
+                  {
+                    "Paran�": 50,
+                    "Rio Grande do Sul": 59.7,
+                    "Santa Catarina": 52.5,
+                    "option": "5"
+                  }
+                ]
               },
               "pergunta4": {
                 "npsDistributionTable": [],
                 "npsTable": [],
                 "distributionChart": [
                   {
-                    "answer": "Não",
                     "Rio Grande do Sul": 33.3,
-                    "Santa Catarina": 35.9
+                    "Santa Catarina": 35.9,
+                    "option": "Não"
                   },
                   {
-                    "answer": "Sim",
                     "Rio Grande do Sul": 66.7,
-                    "Santa Catarina": 64.1
+                    "Santa Catarina": 64.1,
+                    "option": "Sim"
+                  }
+                ],
+                "stackedBarMECE": [
+                  {
+                    "Rio Grande do Sul": 33.3,
+                    "Santa Catarina": 35.9,
+                    "option": "Não"
+                  },
+                  {
+                    "Rio Grande do Sul": 66.7,
+                    "Santa Catarina": 64.1,
+                    "option": "Sim"
                   }
                 ],
                 "distributionTable": [
                   {
-                    "answer": "Não",
                     "Rio Grande do Sul": 33.3,
-                    "Santa Catarina": 35.9
+                    "Santa Catarina": 35.9,
+                    "segment": "Não"
                   },
                   {
-                    "answer": "Sim",
                     "Rio Grande do Sul": 66.7,
-                    "Santa Catarina": 64.1
+                    "Santa Catarina": 64.1,
+                    "segment": "Sim"
                   }
                 ],
                 "satisfactionImpactSentimentChart": [],
                 "satisfactionImpactSentimentTable": [],
                 "positiveCategoriesTable": [],
-                "negativeCategoriesTable": []
+                "negativeCategoriesTable": [],
+                "analyticalTable": [
+                  {
+                    "segment": "Sim",
+                    "Rio Grande do Sul": 66.7,
+                    "Santa Catarina": 64.1
+                  },
+                  {
+                    "segment": "Não",
+                    "Rio Grande do Sul": 33.3,
+                    "Santa Catarina": 35.9
+                  }
+                ]
               },
               "pergunta5": {
                 "npsDistributionTable": [],
                 "npsTable": [],
                 "distributionChart": [
                   {
-                    "answer": "Não",
                     "Paran�": 36.4,
                     "Rio Grande do Sul": 63.3,
-                    "Santa Catarina": 56.7
+                    "Santa Catarina": 56.7,
+                    "option": "Não"
                   },
                   {
-                    "answer": "Sim",
                     "Paran�": 63.6,
                     "Rio Grande do Sul": 36.7,
-                    "Santa Catarina": 43.3
+                    "Santa Catarina": 43.3,
+                    "option": "Sim"
                   }
                 ],
                 "distributionTable": [
                   {
-                    "answer": "Não",
                     "Paran�": 36.4,
                     "Rio Grande do Sul": 63.3,
-                    "Santa Catarina": 56.7
+                    "Santa Catarina": 56.7,
+                    "segment": "Não"
                   },
                   {
-                    "answer": "Sim",
                     "Paran�": 63.6,
                     "Rio Grande do Sul": 36.7,
-                    "Santa Catarina": 43.3
+                    "Santa Catarina": 43.3,
+                    "segment": "Sim"
                   }
                 ],
                 "satisfactionImpactSentimentChart": [],
                 "satisfactionImpactSentimentTable": [],
                 "positiveCategoriesTable": [],
-                "negativeCategoriesTable": []
+                "negativeCategoriesTable": [],
+                "analyticalTable": [
+                  {
+                    "segment": "Sim",
+                    "Paran�": 63.6,
+                    "Rio Grande do Sul": 36.7,
+                    "Santa Catarina": 43.3
+                  },
+                  {
+                    "segment": "Não",
+                    "Paran�": 36.4,
+                    "Rio Grande do Sul": 63.3,
+                    "Santa Catarina": 56.7
+                  }
+                ],
+                "stackedBarMECE": [
+                  {
+                    "Paran�": 36.4,
+                    "Rio Grande do Sul": 63.3,
+                    "Santa Catarina": 56.7,
+                    "option": "Não"
+                  },
+                  {
+                    "Paran�": 63.6,
+                    "Rio Grande do Sul": 36.7,
+                    "Santa Catarina": 43.3,
+                    "option": "Sim"
+                  }
+                ]
               },
               "pergunta6": {
                 "npsDistributionTable": [],
                 "npsTable": [],
                 "distributionChart": [
                   {
-                    "answer": "1",
-                    "Paran�": 0.0,
+                    "Paran�": 0,
                     "Rio Grande do Sul": 19.6,
-                    "Santa Catarina": 9.6
+                    "Santa Catarina": 9.6,
+                    "option": "1"
                   },
                   {
-                    "answer": "2",
-                    "Paran�": 0.0,
+                    "Paran�": 0,
                     "Rio Grande do Sul": 1.8,
-                    "Santa Catarina": 10.4
+                    "Santa Catarina": 10.4,
+                    "option": "2"
                   },
                   {
-                    "answer": "3",
                     "Paran�": 57.1,
                     "Rio Grande do Sul": 7.1,
-                    "Santa Catarina": 18.9
+                    "Santa Catarina": 18.9,
+                    "option": "3"
                   },
                   {
-                    "answer": "4",
                     "Paran�": 42.9,
                     "Rio Grande do Sul": 17.9,
-                    "Santa Catarina": 23.6
+                    "Santa Catarina": 23.6,
+                    "option": "4"
                   },
                   {
-                    "answer": "5",
-                    "Paran�": 0.0,
+                    "Paran�": 0,
                     "Rio Grande do Sul": 53.6,
-                    "Santa Catarina": 37.5
+                    "Santa Catarina": 37.5,
+                    "option": "5"
                   }
                 ],
                 "distributionTable": [
                   {
-                    "answer": "1",
-                    "Paran�": 0.0,
+                    "Paran�": 0,
                     "Rio Grande do Sul": 19.6,
-                    "Santa Catarina": 9.6
+                    "Santa Catarina": 9.6,
+                    "segment": "1"
                   },
                   {
-                    "answer": "2",
-                    "Paran�": 0.0,
+                    "Paran�": 0,
                     "Rio Grande do Sul": 1.8,
-                    "Santa Catarina": 10.4
+                    "Santa Catarina": 10.4,
+                    "segment": "2"
                   },
                   {
-                    "answer": "3",
                     "Paran�": 57.1,
                     "Rio Grande do Sul": 7.1,
-                    "Santa Catarina": 18.9
+                    "Santa Catarina": 18.9,
+                    "segment": "3"
                   },
                   {
-                    "answer": "4",
                     "Paran�": 42.9,
                     "Rio Grande do Sul": 17.9,
-                    "Santa Catarina": 23.6
+                    "Santa Catarina": 23.6,
+                    "segment": "4"
                   },
                   {
-                    "answer": "5",
-                    "Paran�": 0.0,
+                    "Paran�": 0,
                     "Rio Grande do Sul": 53.6,
-                    "Santa Catarina": 37.5
+                    "Santa Catarina": 37.5,
+                    "segment": "5"
                   }
                 ],
                 "satisfactionImpactSentimentChart": [],
                 "satisfactionImpactSentimentTable": [],
                 "positiveCategoriesTable": [],
-                "negativeCategoriesTable": []
+                "negativeCategoriesTable": [],
+                "analyticalTable": [
+                  {
+                    "segment": "5",
+                    "Paran�": 0,
+                    "Rio Grande do Sul": 53.6,
+                    "Santa Catarina": 37.5
+                  },
+                  {
+                    "segment": "4",
+                    "Paran�": 42.9,
+                    "Rio Grande do Sul": 17.9,
+                    "Santa Catarina": 23.6
+                  },
+                  {
+                    "segment": "3",
+                    "Paran�": 57.1,
+                    "Rio Grande do Sul": 7.1,
+                    "Santa Catarina": 18.9
+                  },
+                  {
+                    "segment": "2",
+                    "Paran�": 0,
+                    "Rio Grande do Sul": 1.8,
+                    "Santa Catarina": 10.4
+                  },
+                  {
+                    "segment": "1",
+                    "Paran�": 0,
+                    "Rio Grande do Sul": 19.6,
+                    "Santa Catarina": 9.6
+                  }
+                ],
+                "stackedBarMECE": [
+                  {
+                    "Paran�": 0,
+                    "Rio Grande do Sul": 19.6,
+                    "Santa Catarina": 9.6,
+                    "option": "1"
+                  },
+                  {
+                    "Paran�": 0,
+                    "Rio Grande do Sul": 1.8,
+                    "Santa Catarina": 10.4,
+                    "option": "2"
+                  },
+                  {
+                    "Paran�": 57.1,
+                    "Rio Grande do Sul": 7.1,
+                    "Santa Catarina": 18.9,
+                    "option": "3"
+                  },
+                  {
+                    "Paran�": 42.9,
+                    "Rio Grande do Sul": 17.9,
+                    "Santa Catarina": 23.6,
+                    "option": "4"
+                  },
+                  {
+                    "Paran�": 0,
+                    "Rio Grande do Sul": 53.6,
+                    "Santa Catarina": 37.5,
+                    "option": "5"
+                  }
+                ]
               }
             }
           }
@@ -2442,14 +2688,23 @@
                   "index": 0,
                   "components": [
                     {
-                      "type": "barChart",
+                      "type": "stackedBarMECE",
                       "index": 0,
-                      "dataPath": "sectionData.servio.questions.pergunta3.distributionChart"
+                      "dataPath": "sectionData.servio.questions.pergunta3.stackedBarMECE",
+                      "config": {
+                        "yAxisDataKey": "option",
+                        "series": [
+                          {
+                            "dataKey": "Internet Fixa",
+                            "name": "Internet Fixa (%)"
+                          }
+                        ]
+                      }
                     },
                     {
-                      "type": "distributionTable",
+                      "type": "analyticalTable",
                       "index": 1,
-                      "dataPath": "sectionData.servio.questions.pergunta3.distributionTable"
+                      "dataPath": "sectionData.servio.questions.pergunta3.analyticalTable"
                     }
                   ]
                 }
@@ -2475,14 +2730,23 @@
                   "index": 0,
                   "components": [
                     {
-                      "type": "barChart",
+                      "type": "stackedBarMECE",
                       "index": 0,
-                      "dataPath": "sectionData.servio.questions.pergunta4.distributionChart"
+                      "dataPath": "sectionData.servio.questions.pergunta4.stackedBarMECE",
+                      "config": {
+                        "yAxisDataKey": "option",
+                        "series": [
+                          {
+                            "dataKey": "Internet Fixa",
+                            "name": "Internet Fixa (%)"
+                          }
+                        ]
+                      }
                     },
                     {
-                      "type": "distributionTable",
+                      "type": "analyticalTable",
                       "index": 1,
-                      "dataPath": "sectionData.servio.questions.pergunta4.distributionTable"
+                      "dataPath": "sectionData.servio.questions.pergunta4.analyticalTable"
                     }
                   ]
                 }
@@ -2508,14 +2772,23 @@
                   "index": 0,
                   "components": [
                     {
-                      "type": "barChart",
+                      "type": "stackedBarMECE",
                       "index": 0,
-                      "dataPath": "sectionData.servio.questions.pergunta5.distributionChart"
+                      "dataPath": "sectionData.servio.questions.pergunta5.stackedBarMECE",
+                      "config": {
+                        "yAxisDataKey": "option",
+                        "series": [
+                          {
+                            "dataKey": "Internet Fixa",
+                            "name": "Internet Fixa (%)"
+                          }
+                        ]
+                      }
                     },
                     {
-                      "type": "distributionTable",
+                      "type": "analyticalTable",
                       "index": 1,
-                      "dataPath": "sectionData.servio.questions.pergunta5.distributionTable"
+                      "dataPath": "sectionData.servio.questions.pergunta5.analyticalTable"
                     }
                   ]
                 }
@@ -2541,14 +2814,23 @@
                   "index": 0,
                   "components": [
                     {
-                      "type": "barChart",
+                      "type": "stackedBarMECE",
                       "index": 0,
-                      "dataPath": "sectionData.servio.questions.pergunta6.distributionChart"
+                      "dataPath": "sectionData.servio.questions.pergunta6.stackedBarMECE",
+                      "config": {
+                        "yAxisDataKey": "option",
+                        "series": [
+                          {
+                            "dataKey": "Internet Fixa",
+                            "name": "Internet Fixa (%)"
+                          }
+                        ]
+                      }
                     },
                     {
-                      "type": "distributionTable",
+                      "type": "analyticalTable",
                       "index": 1,
-                      "dataPath": "sectionData.servio.questions.pergunta6.distributionTable"
+                      "dataPath": "sectionData.servio.questions.pergunta6.analyticalTable"
                     }
                   ]
                 }
@@ -2560,14 +2842,14 @@
               {
                 "segment": "Internet Fixa",
                 "count": 710,
-                "percentage": 100.0
+                "percentage": 100
               }
             ],
             "distributionTable": [
               {
                 "segment": "Internet Fixa",
                 "count": 710,
-                "percentage": 100.0
+                "percentage": 100
               }
             ],
             "questions": {
@@ -2631,7 +2913,8 @@
                     "category": "faturamento e cobranças",
                     "Internet Fixa": 4.8
                   }
-                ]
+                ],
+                "stackedBarMECE": []
               },
               "pergunta2": {
                 "npsDistributionTable": [],
@@ -2693,167 +2976,296 @@
                     "category": "cobertura de rede",
                     "Internet Fixa": 4.5
                   }
-                ]
+                ],
+                "stackedBarMECE": []
               },
               "pergunta3": {
                 "npsDistributionTable": [],
                 "npsTable": [],
                 "distributionChart": [
                   {
-                    "answer": "1",
-                    "Internet Fixa": 7.4
+                    "Internet Fixa": 7.4,
+                    "option": "1"
                   },
                   {
-                    "answer": "2",
-                    "Internet Fixa": 7.8
+                    "Internet Fixa": 7.8,
+                    "option": "2"
                   },
                   {
-                    "answer": "3",
-                    "Internet Fixa": 12.4
+                    "Internet Fixa": 12.4,
+                    "option": "3"
                   },
                   {
-                    "answer": "4",
-                    "Internet Fixa": 18.9
+                    "Internet Fixa": 18.9,
+                    "option": "4"
                   },
                   {
-                    "answer": "5",
-                    "Internet Fixa": 53.6
+                    "Internet Fixa": 53.6,
+                    "option": "5"
                   }
                 ],
                 "distributionTable": [
                   {
-                    "answer": "1",
-                    "Internet Fixa": 7.4
+                    "Internet Fixa": 7.4,
+                    "segment": "1"
                   },
                   {
-                    "answer": "2",
-                    "Internet Fixa": 7.8
+                    "Internet Fixa": 7.8,
+                    "segment": "2"
                   },
                   {
-                    "answer": "3",
-                    "Internet Fixa": 12.4
+                    "Internet Fixa": 12.4,
+                    "segment": "3"
                   },
                   {
-                    "answer": "4",
-                    "Internet Fixa": 18.9
+                    "Internet Fixa": 18.9,
+                    "segment": "4"
                   },
                   {
-                    "answer": "5",
-                    "Internet Fixa": 53.6
+                    "Internet Fixa": 53.6,
+                    "segment": "5"
                   }
                 ],
                 "satisfactionImpactSentimentChart": [],
                 "satisfactionImpactSentimentTable": [],
                 "positiveCategoriesTable": [],
-                "negativeCategoriesTable": []
+                "negativeCategoriesTable": [],
+                "analyticalTable": [
+                  {
+                    "segment": "5",
+                    "Internet Fixa": 53.6
+                  },
+                  {
+                    "segment": "4",
+                    "Internet Fixa": 18.9
+                  },
+                  {
+                    "segment": "3",
+                    "Internet Fixa": 12.4
+                  },
+                  {
+                    "segment": "2",
+                    "Internet Fixa": 7.8
+                  },
+                  {
+                    "segment": "1",
+                    "Internet Fixa": 7.4
+                  }
+                ],
+                "stackedBarMECE": [
+                  {
+                    "Internet Fixa": 7.4,
+                    "option": "1"
+                  },
+                  {
+                    "Internet Fixa": 7.8,
+                    "option": "2"
+                  },
+                  {
+                    "Internet Fixa": 12.4,
+                    "option": "3"
+                  },
+                  {
+                    "Internet Fixa": 18.9,
+                    "option": "4"
+                  },
+                  {
+                    "Internet Fixa": 53.6,
+                    "option": "5"
+                  }
+                ]
               },
               "pergunta4": {
                 "npsDistributionTable": [],
                 "npsTable": [],
                 "distributionChart": [
                   {
-                    "answer": "Não",
-                    "Internet Fixa": 35.3
+                    "Internet Fixa": 35.3,
+                    "option": "Não"
                   },
                   {
-                    "answer": "Sim",
-                    "Internet Fixa": 64.7
+                    "Internet Fixa": 64.7,
+                    "option": "Sim"
                   }
                 ],
                 "distributionTable": [
                   {
-                    "answer": "Não",
-                    "Internet Fixa": 35.3
+                    "Internet Fixa": 35.3,
+                    "segment": "Não"
                   },
                   {
-                    "answer": "Sim",
-                    "Internet Fixa": 64.7
+                    "Internet Fixa": 64.7,
+                    "segment": "Sim"
                   }
                 ],
                 "satisfactionImpactSentimentChart": [],
                 "satisfactionImpactSentimentTable": [],
                 "positiveCategoriesTable": [],
-                "negativeCategoriesTable": []
+                "negativeCategoriesTable": [],
+                "analyticalTable": [
+                  {
+                    "segment": "Sim",
+                    "Internet Fixa": 64.7
+                  },
+                  {
+                    "segment": "Não",
+                    "Internet Fixa": 35.3
+                  }
+                ],
+                "stackedBarMECE": [
+                  {
+                    "Internet Fixa": 35.3,
+                    "option": "Não"
+                  },
+                  {
+                    "Internet Fixa": 64.7,
+                    "option": "Sim"
+                  }
+                ]
               },
               "pergunta5": {
                 "npsDistributionTable": [],
                 "npsTable": [],
                 "distributionChart": [
                   {
-                    "answer": "Não",
-                    "Internet Fixa": 57.5
+                    "Internet Fixa": 57.5,
+                    "option": "Não"
                   },
                   {
-                    "answer": "Sim",
-                    "Internet Fixa": 42.5
+                    "Internet Fixa": 42.5,
+                    "option": "Sim"
                   }
                 ],
                 "distributionTable": [
                   {
-                    "answer": "Não",
-                    "Internet Fixa": 57.5
+                    "Internet Fixa": 57.5,
+                    "segment": "Não"
                   },
                   {
-                    "answer": "Sim",
-                    "Internet Fixa": 42.5
+                    "Internet Fixa": 42.5,
+                    "segment": "Sim"
                   }
                 ],
                 "satisfactionImpactSentimentChart": [],
                 "satisfactionImpactSentimentTable": [],
                 "positiveCategoriesTable": [],
-                "negativeCategoriesTable": []
+                "negativeCategoriesTable": [],
+                "analyticalTable": [
+                  {
+                    "segment": "Sim",
+                    "Internet Fixa": 42.5
+                  },
+                  {
+                    "segment": "Não",
+                    "Internet Fixa": 57.5
+                  }
+                ],
+                "stackedBarMECE": [
+                  {
+                    "Internet Fixa": 57.5,
+                    "option": "Não"
+                  },
+                  {
+                    "Internet Fixa": 42.5,
+                    "option": "Sim"
+                  }
+                ]
               },
               "pergunta6": {
                 "npsDistributionTable": [],
                 "npsTable": [],
                 "distributionChart": [
                   {
-                    "answer": "1",
-                    "Internet Fixa": 11.3
+                    "Internet Fixa": 11.3,
+                    "option": "1"
                   },
                   {
-                    "answer": "2",
-                    "Internet Fixa": 8.7
+                    "Internet Fixa": 8.7,
+                    "option": "2"
                   },
                   {
-                    "answer": "3",
-                    "Internet Fixa": 17.7
+                    "Internet Fixa": 17.7,
+                    "option": "3"
                   },
                   {
-                    "answer": "4",
-                    "Internet Fixa": 23.0
+                    "Internet Fixa": 23,
+                    "option": "4"
                   },
                   {
-                    "answer": "5",
-                    "Internet Fixa": 39.2
+                    "Internet Fixa": 39.2,
+                    "option": "5"
                   }
                 ],
                 "distributionTable": [
                   {
-                    "answer": "1",
-                    "Internet Fixa": 11.3
+                    "Internet Fixa": 11.3,
+                    "segment": "1"
                   },
                   {
-                    "answer": "2",
-                    "Internet Fixa": 8.7
+                    "Internet Fixa": 8.7,
+                    "segment": "2"
                   },
                   {
-                    "answer": "3",
-                    "Internet Fixa": 17.7
+                    "Internet Fixa": 17.7,
+                    "segment": "3"
                   },
                   {
-                    "answer": "4",
-                    "Internet Fixa": 23.0
+                    "Internet Fixa": 23,
+                    "segment": "4"
                   },
                   {
-                    "answer": "5",
-                    "Internet Fixa": 39.2
+                    "Internet Fixa": 39.2,
+                    "segment": "5"
                   }
                 ],
                 "satisfactionImpactSentimentChart": [],
                 "satisfactionImpactSentimentTable": [],
                 "positiveCategoriesTable": [],
-                "negativeCategoriesTable": []
+                "negativeCategoriesTable": [],
+                "analyticalTable": [
+                  {
+                    "segment": "5",
+                    "Internet Fixa": 39.2
+                  },
+                  {
+                    "segment": "4",
+                    "Internet Fixa": 23
+                  },
+                  {
+                    "segment": "3",
+                    "Internet Fixa": 17.7
+                  },
+                  {
+                    "segment": "2",
+                    "Internet Fixa": 8.7
+                  },
+                  {
+                    "segment": "1",
+                    "Internet Fixa": 11.3
+                  }
+                ],
+                "stackedBarMECE": [
+                  {
+                    "Internet Fixa": 11.3,
+                    "option": "1"
+                  },
+                  {
+                    "Internet Fixa": 8.7,
+                    "option": "2"
+                  },
+                  {
+                    "Internet Fixa": 17.7,
+                    "option": "3"
+                  },
+                  {
+                    "Internet Fixa": 23,
+                    "option": "4"
+                  },
+                  {
+                    "Internet Fixa": 39.2,
+                    "option": "5"
+                  }
+                ]
               }
             }
           }
@@ -2891,7 +3303,7 @@
     "company": "Satisfação do cliente",
     "period": "Data",
     "totalRespondents": 711,
-    "responseRate": 100.0,
+    "responseRate": 100,
     "questions": 6,
     "nps": 0,
     "npsCategory": "Bom"

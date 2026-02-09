@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Export from "./pages/Export";
 import ExportPreview from "./pages/ExportPreview";
 import Charts from "./pages/Charts";
+import MockMECEPage from "./pages/MockMECEPage";
 import JsonReference from "./pages/JsonReference";
 import NotFound from "./pages/NotFound";
 import JsonViewer from "./pages/JsonViewer";
@@ -28,6 +29,7 @@ const App = () => (
             <Route path="/json-reference" element={<JsonReference />} />
             <Route path="/json-viewer" element={<JsonViewer />} />
             <Route path="/charts" element={<Charts />} />
+            <Route path="/mock-mece" element={<MockMECEPage />} />
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

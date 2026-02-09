@@ -9,7 +9,17 @@ import {
   ResponsiveContainer,
   LabelList,
 } from "recharts";
-import { CHART_COLORS } from "@/lib/colors";
+import { CHART_COLORS, COLOR_ORANGE_PRIMARY, COLOR_BLUE_TITLE } from "@/lib/colors";
+
+/** Paleta padrão de cores do StackedBarMECE (usada quando series[].color não vem no config) */
+const STACKED_BAR_MECE_COLORS = [
+  CHART_COLORS.primary,
+  COLOR_ORANGE_PRIMARY,
+  COLOR_BLUE_TITLE,
+  CHART_COLORS.positive,
+  CHART_COLORS.negative,
+  CHART_COLORS.neutral,
+];
 
 /**
  * Stacked Bar MECE Chart (Generic)
@@ -18,22 +28,34 @@ import { CHART_COLORS } from "@/lib/colors";
  *
  * @param {Object} props
  * @param {Array} props.data - Array of data objects
- * @param {string} props.categoryKey - Key for category name
+ * @param {string} [props.yAxisDataKey="option"] - Key for category/option on Y axis (aligned with barChart)
+ * @param {string} [props.categoryKey] - Fallback for Y axis key (use yAxisDataKey when from JSON config)
  * @param {Array} props.series - Array of series configs: [{ dataKey, name, color }]
- * @param {number} [props.height=400] - Chart height
- * @param {Object} [props.margin] - Chart margins
+ * @param {number} [props.height=320] - Chart height
+ * @param {Object} [props.margin] - Chart margins (default: extra right for labels, padding-friendly)
  * @param {boolean} [props.showGrid=true] - Show grid
  * @param {boolean} [props.showLegend=true] - Show legend
  */
+const DEFAULT_MARGIN = {
+  top: 16,
+  right: 80,
+  left: 12,
+  bottom: 56,
+};
+
 export function StackedBarMECE({
   data = [],
-  categoryKey = "category",
+  yAxisDataKey,
+  categoryKey,
   series = [],
-  height = 400,
-  margin = { top: 20, right: 30, left: 20, bottom: 60 },
+  height = 320,
+  margin,
   showGrid = true,
   showLegend = true,
 }) {
+  const axisKey = yAxisDataKey ?? categoryKey ?? "option";
+  const chartMargin = { ...DEFAULT_MARGIN, ...margin };
+
   if (!data || data.length === 0) {
     return (
       <div
@@ -58,12 +80,13 @@ export function StackedBarMECE({
 
   return (
     <div
+      className="min-w-0 overflow-hidden p-2"
       style={{ height }}
       role="img"
       aria-label="Gráfico de barras empilhadas MECE"
     >
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} margin={margin} layout="vertical">
+        <BarChart data={data} margin={chartMargin} layout="vertical">
           {showGrid && (
             <CartesianGrid
               strokeDasharray="3 3"
@@ -81,7 +104,7 @@ export function StackedBarMECE({
           />
           <YAxis
             type="category"
-            dataKey={categoryKey}
+            dataKey={axisKey}
             stroke={CHART_COLORS.foreground}
             tick={{ fill: CHART_COLORS.foreground }}
           />
@@ -99,7 +122,7 @@ export function StackedBarMECE({
               key={serie.dataKey || index}
               dataKey={serie.dataKey}
               stackId="a"
-              fill={serie.color || CHART_COLORS.primary}
+              fill={serie.color ?? STACKED_BAR_MECE_COLORS[index % STACKED_BAR_MECE_COLORS.length]}
               name={serie.name}
               radius={index === series.length - 1 ? [4, 4, 4, 4] : [0, 0, 0, 0]}
             >

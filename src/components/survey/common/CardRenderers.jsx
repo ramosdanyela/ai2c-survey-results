@@ -169,8 +169,9 @@ export function SchemaNPSScoreCard({ component, data }) {
 /**
  * Render top categories cards component based on schema
  * All styling is hardcoded - no config needed
+ * @param {boolean} isExport - When true, uses fixed layout and print-friendly styles (no hover, stable grid)
  */
-export function SchemaTopCategoriesCards({ component, data }) {
+export function SchemaTopCategoriesCards({ component, data, isExport = false }) {
   const categoriesData = resolveDataPath(
     data,
     component.dataPath,
@@ -195,7 +196,13 @@ export function SchemaTopCategoriesCards({ component, data }) {
           uiTexts?.responseDetails?.top3Categories ||
           "Top 3 Categories"}
       </h4>
-      <div className="grid md:grid-cols-3 gap-4">
+      <div
+        className={
+          isExport
+            ? "grid grid-cols-3 gap-4"
+            : "grid md:grid-cols-3 gap-4"
+        }
+      >
         {categoriesData.map((cat) => {
           // Separate topics by sentiment
           const positiveTopics = (cat.topics || [])
@@ -224,12 +231,19 @@ export function SchemaTopCategoriesCards({ component, data }) {
               className="p-4 rounded-lg bg-muted/10 border-0 transition-all duration-300"
               style={{
                 boxShadow: `0 4px 16px ${RGBA_BLACK_SHADOW_30}`,
+                ...(isExport && { breakInside: "avoid", minWidth: 0 }),
               }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.boxShadow = `0 8px 32px ${RGBA_ORANGE_SHADOW_20}`)
+              onMouseEnter={
+                isExport
+                  ? undefined
+                  : (e) =>
+                      (e.currentTarget.style.boxShadow = `0 8px 32px ${RGBA_ORANGE_SHADOW_20}`)
               }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.boxShadow = `0 4px 16px ${RGBA_BLACK_SHADOW_30}`)
+              onMouseLeave={
+                isExport
+                  ? undefined
+                  : (e) =>
+                      (e.currentTarget.style.boxShadow = `0 4px 16px ${RGBA_BLACK_SHADOW_30}`)
               }
             >
               <div className="flex items-center gap-2 mb-3">

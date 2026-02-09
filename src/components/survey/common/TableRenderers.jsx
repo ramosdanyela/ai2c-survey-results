@@ -489,7 +489,10 @@ export function SchemaAnalyticalTable({ component, data }) {
 
     const columns =
       config.columns && config.columns.length > 0
-        ? config.columns
+        ? config.columns.map((col) => ({
+            ...col,
+            sortable: col.sortable !== false,
+          }))
         : inferAnalyticalColumns(tableData);
 
     if (columns.length === 0) {
@@ -504,9 +507,9 @@ export function SchemaAnalyticalTable({ component, data }) {
       <AnalyticalTable
         data={tableData}
         columns={columns}
-        showRanking={config.showRanking !== false}
-        defaultSort={config.defaultSort}
-        rankingKey={config.rankingKey}
+        showRanking={config.showRanking === true}
+        {...(config.defaultSort != null && { defaultSort: config.defaultSort })}
+        {...(config.rankingKey != null && { rankingKey: config.rankingKey })}
       />
     );
   } catch (error) {

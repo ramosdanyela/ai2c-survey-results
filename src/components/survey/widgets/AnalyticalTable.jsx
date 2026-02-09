@@ -11,36 +11,42 @@ import {
 
 /**
  * Analytical Table Component (Ranking Table)
- * 
- * Displays data in a sortable table format with ranking support.
- * 
+ *
+ * Displays data in a sortable table format with optional ranking column.
+ *
  * @param {Object} props
  * @param {Array} props.data - Array of data objects
  * @param {Array} props.columns - Column configurations: [{ key, label, sortable, formatter }]
- * @param {boolean} [props.showRanking=true] - Show ranking column
- * @param {Object} [props.defaultSort] - Default sort: { key, direction: "asc" | "desc" }
- * @param {string} [props.rankingKey] - Key to use for ranking (defaults to first sortable column)
+ * @param {boolean} [props.showRanking=false] - Show ranking column (default false; set true in config when needed)
+ * @param {Object} [props.defaultSort] - Optional override; default in code is percentage desc (fallback: first sortable column desc)
+ * @param {string} [props.rankingKey] - Key to use for ranking column value when showRanking is true
  */
 export function AnalyticalTable({
   data = [],
   columns = [],
-  showRanking = true,
+  showRanking = false,
   defaultSort,
   rankingKey,
 }) {
-  const [sortConfig, setSortConfig] = useState(
-    defaultSort || (columns.find((c) => c.sortable) 
-      ? { key: columns.find((c) => c.sortable).key, direction: "desc" }
-      : null)
-  );
+  const effectiveDefaultSort = useMemo(() => {
+    if (defaultSort) return defaultSort;
+    if (!columns?.length) return null;
+    const hasPercentage = columns.some((c) => c.key === "percentage" && c.sortable);
+    if (hasPercentage) return { key: "percentage", direction: "desc" };
+    const first = columns.find((c) => c.sortable);
+    return first ? { key: first.key, direction: "desc" } : null;
+  }, [defaultSort, columns]);
+
+  const [sortConfig, setSortConfig] = useState(null);
+  const effectiveSort = sortConfig ?? effectiveDefaultSort;
 
   // Sort data
   const sortedData = useMemo(() => {
-    if (!sortConfig) return data;
+    if (!effectiveSort) return data;
 
     const sorted = [...data].sort((a, b) => {
-      const aVal = a[sortConfig.key];
-      const bVal = b[sortConfig.key];
+      const aVal = a[effectiveSort.key];
+      const bVal = b[effectiveSort.key];
 
       // Handle null/undefined
       if (aVal == null && bVal == null) return 0;
@@ -55,11 +61,11 @@ export function AnalyticalTable({
         comparison = String(aVal).localeCompare(String(bVal));
       }
 
-      return sortConfig.direction === "asc" ? comparison : -comparison;
+      return effectiveSort.direction === "asc" ? comparison : -comparison;
     });
 
     return sorted;
-  }, [data, sortConfig]);
+  }, [data, effectiveSort]);
 
   // Handle sort
   const handleSort = (key) => {
@@ -80,10 +86,10 @@ export function AnalyticalTable({
 
   // Get sort icon
   const getSortIcon = (key) => {
-    if (sortConfig?.key !== key) {
+    if (effectiveSort?.key !== key) {
       return <ArrowUpDown className="w-4 h-4 opacity-50" />;
     }
-    return sortConfig.direction === "asc" ? (
+    return effectiveSort.direction === "asc" ? (
       <ArrowUp className="w-4 h-4" />
     ) : (
       <ArrowDown className="w-4 h-4" />

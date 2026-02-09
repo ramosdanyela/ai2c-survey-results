@@ -944,19 +944,22 @@ export default function JsonReference() {
         index: 0,
         dataPath: "sectionData.stackedBarMECE",
         config: {
-          categoryKey: "category",
+          yAxisDataKey: "option",
           series: [
-            { dataKey: "a", name: "Série A", color: "#8884d8" },
-            { dataKey: "b", name: "Série B", color: "#82ca9d" },
+            { dataKey: "Paraná", name: "Paraná (%)" },
+            { dataKey: "Rio Grande do Sul", name: "Rio Grande do Sul (%)" },
+            { dataKey: "Santa Catarina", name: "Santa Catarina (%)" },
           ],
         },
       },
       data: {
         sectionData: {
           stackedBarMECE: [
-            { category: "X", a: 10, b: 20 },
-            { category: "Y", a: 15, b: 25 },
-            { category: "Z", a: 12, b: 18 },
+            { option: "5", Paraná: 50.0, "Rio Grande do Sul": 59.7, "Santa Catarina": 52.5 },
+            { option: "4", Paraná: 42.9, "Rio Grande do Sul": 16.4, "Santa Catarina": 19.0 },
+            { option: "3", Paraná: 7.1, "Rio Grande do Sul": 8.8, "Santa Catarina": 13.2 },
+            { option: "2", Paraná: 0.0, "Rio Grande do Sul": 3.1, "Santa Catarina": 8.9 },
+            { option: "1", Paraná: 0.0, "Rio Grande do Sul": 11.9, "Santa Catarina": 6.4 },
           ],
         },
       },
@@ -1115,8 +1118,11 @@ export default function JsonReference() {
       data: {
         sectionData: {
           analyticalTable: [
-            { col1: "A", col2: "B", col3: 10 },
-            { col1: "C", col2: "D", col3: 20 },
+            { segment: "5", Paraná: 50.0, "Rio Grande do Sul": 59.7, "Santa Catarina": 52.5 },
+            { segment: "4", Paraná: 42.9, "Rio Grande do Sul": 16.4, "Santa Catarina": 19.0 },
+            { segment: "3", Paraná: 7.1, "Rio Grande do Sul": 8.8, "Santa Catarina": 13.2 },
+            { segment: "2", Paraná: 0.0, "Rio Grande do Sul": 3.1, "Santa Catarina": 8.9 },
+            { segment: "1", Paraná: 0.0, "Rio Grande do Sul": 11.9, "Santa Catarina": 6.4 },
           ],
         },
       },
@@ -2930,6 +2936,98 @@ export default function JsonReference() {
                         </div>
                       </div>
                     </div>
+
+                    {/* StackedBarMECE */}
+                    <div className="space-y-3">
+                      <h4 className="font-semibold text-lg">stackedBarMECE</h4>
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <p className="text-sm font-medium">
+                            JSON necessário:
+                          </p>
+                          <div className="bg-muted/50 rounded-lg p-3">
+                            <pre className="text-xs overflow-x-auto">
+                              <code>
+                                {JSON.stringify(
+                                  otherComponentExampleData.stackedBarMECE
+                                    ? {
+                                        component:
+                                          otherComponentExampleData
+                                            .stackedBarMECE.component,
+                                        data: otherComponentExampleData
+                                          .stackedBarMECE.data,
+                                      }
+                                    : {
+                                        component: {
+                                          type: "stackedBarMECE",
+                                          index: 0,
+                                          dataPath:
+                                            "sectionData.stackedBarMECE",
+                                          config: {
+                                            yAxisDataKey: "option",
+                                            series: [
+                                              {
+                                                dataKey: "Paraná",
+                                                name: "Paraná (%)",
+                                              },
+                                              {
+                                                dataKey: "Rio Grande do Sul",
+                                                name: "Rio Grande do Sul (%)",
+                                              },
+                                              {
+                                                dataKey: "Santa Catarina",
+                                                name: "Santa Catarina (%)",
+                                              },
+                                            ],
+                                          },
+                                        },
+                                        data: {
+                                          sectionData: {
+                                            stackedBarMECE: [
+                                              {
+                                                option: "5",
+                                                Paraná: 50.0,
+                                                "Rio Grande do Sul": 59.7,
+                                                "Santa Catarina": 52.5,
+                                              },
+                                              {
+                                                option: "4",
+                                                Paraná: 42.9,
+                                                "Rio Grande do Sul": 16.4,
+                                                "Santa Catarina": 19.0,
+                                              },
+                                            ],
+                                          },
+                                        },
+                                      },
+                                  null,
+                                  2
+                                )}
+                              </code>
+                            </pre>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm font-medium">Renderizado:</p>
+                          <div className="border rounded-lg p-4 bg-background min-h-[200px]">
+                            {otherComponentExampleData.stackedBarMECE &&
+                              renderComponentExampleWithData(
+                                "stackedBarMECE",
+                                otherComponentExampleData.stackedBarMECE
+                                  .component,
+                                {
+                                  ...realData,
+                                  sectionData: {
+                                    ...mergedSectionData,
+                                    ...otherComponentExampleData.stackedBarMECE
+                                      .data.sectionData,
+                                  },
+                                }
+                              )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   {/* CARDS */}
@@ -3423,6 +3521,82 @@ export default function JsonReference() {
                               },
                             }
                           )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* analyticalTable */}
+                  <div className="space-y-3">
+                    <h4 className="font-semibold text-lg">analyticalTable</h4>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium">
+                          JSON necessário:
+                        </p>
+                        <div className="bg-muted/50 rounded-lg p-3">
+                          <pre className="text-xs overflow-x-auto">
+                            <code>
+                              {JSON.stringify(
+                                otherComponentExampleData.analyticalTable
+                                  ? {
+                                      component:
+                                        otherComponentExampleData.analyticalTable
+                                          .component,
+                                      data: otherComponentExampleData
+                                        .analyticalTable.data,
+                                    }
+                                    : {
+                                      component: {
+                                        type: "analyticalTable",
+                                        index: 0,
+                                        dataPath:
+                                          "sectionData.analyticalTable",
+                                        config: {},
+                                      },
+                                      data: {
+                                        sectionData: {
+                                          analyticalTable: [
+                                            {
+                                              segment: "5",
+                                              Paraná: 50.0,
+                                              "Rio Grande do Sul": 59.7,
+                                              "Santa Catarina": 52.5,
+                                            },
+                                            {
+                                              segment: "4",
+                                              Paraná: 42.9,
+                                              "Rio Grande do Sul": 16.4,
+                                              "Santa Catarina": 19.0,
+                                            },
+                                          ],
+                                        },
+                                      },
+                                    },
+                                null,
+                                2
+                              )}
+                            </code>
+                          </pre>
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium">Renderizado:</p>
+                        <div className="border rounded-lg p-4 bg-background min-h-[200px]">
+                          {otherComponentExampleData.analyticalTable &&
+                            renderComponentExampleWithData(
+                              "analyticalTable",
+                              otherComponentExampleData.analyticalTable
+                                .component,
+                              {
+                                ...realData,
+                                sectionData: {
+                                  ...mergedSectionData,
+                                  ...otherComponentExampleData.analyticalTable
+                                    .data.sectionData,
+                                },
+                              }
+                            )}
                         </div>
                       </div>
                     </div>
@@ -4189,6 +4363,8 @@ export default function JsonReference() {
                           "distributionTable",
                           "topCategoriesCards",
                           "npsScoreCard",
+                          "stackedBarMECE",
+                          "analyticalTable",
                         ].includes(type)
                     )
                     .map((type) => {
