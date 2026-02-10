@@ -15,7 +15,6 @@ import {
 } from "@/services/dataResolver";
 import { forwardRef, useState, useMemo, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { resolveDataPath } from "@/services/dataResolver";
 import {
   RGBA_BLACK_SHADOW_20,
@@ -322,9 +321,6 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
           </button>
         </div>
         <div className="pt-2 sm:pt-3 mb-3 sm:mb-4 pb-3 sm:pb-4">
-          <div className="flex items-start justify-end gap-2 mb-3">
-            <ThemeToggle className="shrink-0 hidden" />
-          </div>
           {/* Survey Info Card */}
           <div
             className="rounded-lg p-2 sm:p-3 border border-border/50"
