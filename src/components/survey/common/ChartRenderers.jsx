@@ -75,8 +75,9 @@ export function getBarChartConfig(component, isMobile, isExport = false) {
     dataPath.includes("Intent");
 
   // Determine defaults based on preset (from JSON) or fallback to defaults
+  // Right margin kept minimal (no extra recuo for legend) so bar charts stay centered
   let height = config.height || 256;
-  let margin = config.margin || { top: 10, right: 80, left: 120, bottom: 10 };
+  let margin = config.margin || { top: 10, right: 50, left: 120, bottom: 10 };
   let yAxisWidth = config.yAxisWidth || 110;
 
   // dataKey: explicit config wins; distribution charts default to "percentage"; others to "value"
@@ -92,19 +93,19 @@ export function getBarChartConfig(component, isMobile, isExport = false) {
     // Intention-style charts: long Y-axis labels need more space so legendas don't overlap
     height = isMobile ? 400 : 256;
     if (isExport) {
-      // Export: tighter left margin so bars are not "jogadas para a direita"
-      margin = { top: 10, right: 60, left: 140, bottom: 10 };
+      // Export: tighter margins, no extra recuo for legend so bars stay centered
+      margin = { top: 10, right: 50, left: 140, bottom: 10 };
       yAxisWidth = 130;
     } else if (isMobile) {
-      margin = { top: 10, right: 50, left: 12, bottom: 10 };
+      margin = { top: 10, right: 44, left: 12, bottom: 10 };
       yAxisWidth = 160;
     } else {
-      margin = { top: 10, right: 80, left: 260, bottom: 10 };
+      margin = { top: 10, right: 50, left: 260, bottom: 10 };
       yAxisWidth = 250;
     }
   } else if (preset === "distribution") {
     height = 400;
-    margin = { top: 10, right: 80, left: 120, bottom: 10 };
+    margin = { top: 10, right: 50, left: 120, bottom: 10 };
     yAxisWidth = config.yAxisWidth || 110;
   }
 
@@ -186,7 +187,13 @@ export function SchemaBarChart({ component, data, isExport = false }) {
     : chartData;
 
   const chart = (
-    <div style={{ height }}>
+    <div
+      style={{
+        height,
+        width: "100%",
+        minWidth: 0,
+      }}
+    >
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={sortedData}

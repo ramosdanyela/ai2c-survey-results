@@ -181,15 +181,17 @@ export default function ExportPreview() {
         .export-preview-a4-wrapper .export-subsection-title > div {
           padding: 0 !important;
         }
-        /* Center bar charts on the page (they were shifting right) */
+        /* Center bar charts on the page (they were shifting right); ensure width for mobile/ResponsiveContainer */
         .export-preview-a4-wrapper .export-bar-chart-wrapper {
           width: 100%;
           max-width: 180mm;
+          min-width: 0;
           margin-left: auto;
           margin-right: auto;
         }
         .export-preview-a4-wrapper .export-bar-chart-wrapper > div {
           width: 100%;
+          min-width: 0;
         }
         /* Card "Sobre o Estudo": no margins/padding in ExportPreview; no top padding */
         .export-preview-a4-wrapper .export-card-sobre-estudo {
@@ -460,7 +462,7 @@ export default function ExportPreview() {
                 return (
                   <div
                     key={sectionId}
-                    className={`mb-8 export-avoid-break ${sectionIndex === 0 ? "export-first-section" : ""}`}
+                    className={`w-full mb-8 export-avoid-break ${sectionIndex === 0 ? "export-first-section" : ""}`}
                   >
                     {/* Section Header (only show if section has multiple subsections) - same static style as Export Preview badge */}
                     {subsections.length > 1 && (
