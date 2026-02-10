@@ -9,17 +9,7 @@ import {
   ResponsiveContainer,
   LabelList,
 } from "recharts";
-import { CHART_COLORS, COLOR_ORANGE_PRIMARY, COLOR_BLUE_TITLE } from "@/lib/colors";
-
-/** Paleta padrão de cores do StackedBarMECE (usada quando series[].color não vem no config) */
-const STACKED_BAR_MECE_COLORS = [
-  CHART_COLORS.primary,
-  COLOR_ORANGE_PRIMARY,
-  COLOR_BLUE_TITLE,
-  CHART_COLORS.positive,
-  CHART_COLORS.negative,
-  CHART_COLORS.neutral,
-];
+import { CHART_COLORS, CHART_PALETTE_MECE } from "@/lib/colors";
 
 /**
  * Stacked Bar MECE Chart (Generic)
@@ -122,7 +112,7 @@ export function StackedBarMECE({
               key={serie.dataKey || index}
               dataKey={serie.dataKey}
               stackId="a"
-              fill={serie.color ?? STACKED_BAR_MECE_COLORS[index % STACKED_BAR_MECE_COLORS.length]}
+              fill={serie.color ?? CHART_PALETTE_MECE[index % CHART_PALETTE_MECE.length]}
               name={serie.name}
               radius={index === series.length - 1 ? [4, 4, 4, 4] : [0, 0, 0, 0]}
             >

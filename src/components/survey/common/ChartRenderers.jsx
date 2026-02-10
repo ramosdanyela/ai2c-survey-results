@@ -51,8 +51,11 @@ export function getBarChartHeightFromCount(barCount, config = {}) {
 /**
  * Get bar chart config defaults based on context
  * All styling/config is determined programmatically
+ * @param {Object} component - Chart component config
+ * @param {boolean} isMobile - Mobile viewport
+ * @param {boolean} isExport - Export/print mode; when true uses tighter left margin so bars are not pushed right
  */
-export function getBarChartConfig(component, isMobile) {
+export function getBarChartConfig(component, isMobile, isExport = false) {
   const config = component.config || {};
   const preset = config.preset; // Use preset from JSON instead of checking dataPath
   const dataPath = component.dataPath || "";
@@ -88,10 +91,17 @@ export function getBarChartConfig(component, isMobile) {
   if (isIntentChart) {
     // Intention-style charts: long Y-axis labels need more space so legendas don't overlap
     height = isMobile ? 400 : 256;
-    margin = isMobile
-      ? { top: 10, right: 50, left: 12, bottom: 10 }
-      : { top: 10, right: 80, left: 260, bottom: 10 };
-    yAxisWidth = isMobile ? 160 : 250;
+    if (isExport) {
+      // Export: tighter left margin so bars are not "jogadas para a direita"
+      margin = { top: 10, right: 60, left: 140, bottom: 10 };
+      yAxisWidth = 130;
+    } else if (isMobile) {
+      margin = { top: 10, right: 50, left: 12, bottom: 10 };
+      yAxisWidth = 160;
+    } else {
+      margin = { top: 10, right: 80, left: 260, bottom: 10 };
+      yAxisWidth = 250;
+    }
   } else if (preset === "distribution") {
     height = 400;
     margin = { top: 10, right: 80, left: 120, bottom: 10 };
@@ -143,7 +153,7 @@ export function getBarChartConfig(component, isMobile) {
 /**
  * Render a bar chart component based on schema
  */
-export function SchemaBarChart({ component, data }) {
+export function SchemaBarChart({ component, data, isExport = false }) {
   const chartData = resolveDataPath(data, component.dataPath, component.data);
   const isMobile = useIsMobile();
 
@@ -151,7 +161,7 @@ export function SchemaBarChart({ component, data }) {
     return null;
   }
 
-  const chartConfig = getBarChartConfig(component, isMobile);
+  const chartConfig = getBarChartConfig(component, isMobile, isExport);
   const barCount = chartData.length;
 
   // Flexible height: few bars = compact, many bars = more space so labels don't overlap
@@ -251,12 +261,11 @@ export function SchemaBarChart({ component, data }) {
 
   // Use wrapperClassName from component config or preset-based wrapper (bar chart centered vertically in wrapper)
   const wrapperClassName = component.wrapperClassName;
+  const exportWrapperClass = isExport ? "export-bar-chart-wrapper" : "";
   if (wrapperClassName || component.config?.preset === "distribution") {
     const centerClass = "flex items-center justify-center";
     const baseClass = "flex-shrink-0 mb-4";
-    const finalClassName = wrapperClassName
-      ? `${centerClass} ${baseClass} ${wrapperClassName}`.trim()
-      : `${centerClass} ${baseClass}`.trim();
+    const finalClassName = [centerClass, baseClass, wrapperClassName, exportWrapperClass].filter(Boolean).join(" ");
     const wrapperStyle =
       component.wrapperStyle ||
       (component.config?.preset === "distribution"
@@ -269,6 +278,9 @@ export function SchemaBarChart({ component, data }) {
     );
   }
 
+  if (isExport) {
+    return <div className={`export-bar-chart-wrapper mb-4`}>{chart}</div>;
+  }
   return chart;
 }
 

@@ -92,22 +92,89 @@ export default function ExportPreview() {
 
   return (
     <>
-      {/* Print styles */}
+      {/* A4 preview + print styles */}
       <style>{`
+        /* A4 dimensions: 210mm x 297mm. Margins: 10mm top/bottom, 5mm left/right */
+        .export-preview-a4-wrapper {
+          width: 210mm;
+          min-height: 297mm;
+          margin: 0 auto;
+          padding: 10mm 5mm;
+          background: white;
+          box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+          box-sizing: border-box;
+          overflow: visible;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .export-preview-screen-bg {
+          min-height: 100vh;
+          background: #e5e7eb;
+          padding: 1.5rem 1rem 2rem;
+          overflow: visible;
+        }
+        .export-preview-screen-bg .export-preview-a4-wrapper {
+          margin-bottom: 2rem;
+        }
+        /* Remove elevated (shadow) from cards on this page only */
+        .export-preview-screen-bg .card-elevated,
+        .export-preview-a4-wrapper .card-elevated {
+          box-shadow: none !important;
+          transition: none;
+        }
+        .export-preview-screen-bg .card-elevated:hover,
+        .export-preview-a4-wrapper .card-elevated:hover {
+          box-shadow: none !important;
+        }
+        /* Center bar charts on the page (they were shifting right) */
+        .export-preview-a4-wrapper .export-bar-chart-wrapper {
+          width: 100%;
+          max-width: 180mm;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .export-preview-a4-wrapper .export-bar-chart-wrapper > div {
+          width: 100%;
+        }
+        /* Card "Sobre o Estudo": no margins/padding only in ExportPreview */
+        .export-preview-a4-wrapper .export-card-sobre-estudo {
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+        .export-preview-a4-wrapper .export-card-sobre-estudo > div {
+          padding: 0 !important;
+        }
         @media print {
           .no-print {
             display: none !important;
           }
-          body {
-            background: white;
+          body, html, .export-preview-screen-bg, .export-preview-a4-wrapper {
+            overflow: visible !important;
           }
-          .bg-background {
-            background: white;
+          body, .export-preview-screen-bg {
+            background: white !important;
+            padding: 0 !important;
+          }
+          .export-preview-a4-wrapper {
+            width: 100% !important;
+            min-height: auto !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+          }
+          @page {
+            size: A4;
+            margin: 10mm 5mm;
           }
           header {
             page-break-after: avoid;
           }
-          .mb-8 {
+          .mb-8, .export-avoid-break {
+            page-break-inside: avoid;
+          }
+          /* Top 3 Categorias: keep block together so cards are not cut */
+          .export-top3-categories {
             page-break-inside: avoid;
           }
         }
@@ -180,22 +247,30 @@ export default function ExportPreview() {
           </div>
         </header>
 
-        {/* Main Content */}
-        <main className="px-6 sm:px-8 lg:px-24 py-6 lg:py-8">
-          <div className="max-w-full xl:max-w-[98%] 2xl:max-w-[96%] mx-auto">
+        {/* Main Content: A4 sheet(s) */}
+        <main className="export-preview-screen-bg">
+          <div className="export-preview-a4-wrapper">
             {/* Render each section group */}
             {Object.entries(groupedSections).map(
               ([sectionId, subsections], sectionIndex, sectionsArray) => {
                 const isLastSection = sectionIndex === sectionsArray.length - 1;
 
                 return (
-                  <div key={sectionId} className="mb-8">
-                    {/* Section Header (only show if section has multiple subsections) */}
+                  <div key={sectionId} className="mb-8 export-avoid-break">
+                    {/* Section Header (only show if section has multiple subsections) - same static style as Export Preview badge */}
                     {subsections.length > 1 && (
-                      <div className="mb-6">
-                        <h2 className="text-2xl font-bold text-foreground mb-2 text-center">
-                          {getSectionName(sectionId)}
-                        </h2>
+                      <div className="mb-6 flex justify-center">
+                        <div
+                          className="px-4 py-2 rounded-lg inline-flex items-center justify-center"
+                          style={{
+                            backgroundColor: COLOR_ORANGE_PRIMARY,
+                            boxShadow: `0 4px 16px ${COLOR_ORANGE_PRIMARY}40`,
+                          }}
+                        >
+                          <h2 className="text-2xl font-bold text-white">
+                            {getSectionName(sectionId)}
+                          </h2>
+                        </div>
                       </div>
                     )}
 

@@ -22,7 +22,7 @@ import { resolveDataPath } from "@/services/dataResolver";
  * Render a card component based on schema
  * Usa cardStyleVariant do JSON para aplicar estilos do código
  */
-export function SchemaCard({ component, data, children }) {
+export function SchemaCard({ component, data, children, isExport = false }) {
   // Use title and text directly (no template resolution needed)
   const title = component.title || "";
   const rawText = component.text || component.content || "";
@@ -32,8 +32,13 @@ export function SchemaCard({ component, data, children }) {
 
   // Usa className do componente enriquecido (resolvido de cardStyleVariant)
   // Quando cardStyleVariant é "flat", className pode ser ""; não usar fallback nesse caso
-  const styleClass =
-    component.className !== undefined ? component.className : "card-elevated";
+  const isSobreEstudo = isExport && title.trim() === "Sobre o Estudo";
+  const styleClass = [
+    component.className !== undefined ? component.className : "card-elevated",
+    isSobreEstudo ? "export-card-sobre-estudo" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   // Build style object - adiciona cor da borda para variante border-left
   // Remove sombra para variante flat
@@ -189,7 +194,7 @@ export function SchemaTopCategoriesCards({ component, data, isExport = false }) 
     "Top 3 Categories";
 
   return (
-    <div className="mb-6">
+    <div className={isExport ? "mb-6 export-top3-categories" : "mb-6"}>
       <h4 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
         <Award className="w-4 h-4" style={{ color: COLOR_ORANGE_PRIMARY }} />
         {title ||

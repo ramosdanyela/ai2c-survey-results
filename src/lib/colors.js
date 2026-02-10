@@ -245,6 +245,22 @@ export const getBlueButtonShadow = () => {
 };
 
 // ============================================================================
+// Chart Palettes (for stacked bar, series, etc.)
+// ============================================================================
+
+/**
+ * Paleta MECE para gráficos (barras empilhadas, séries).
+ * Usar por índice: palette[index % palette.length] para repetir se houver mais de 5 cores.
+ */
+export const CHART_PALETTE_MECE = [
+  "#F59E0B", // 
+  "#D97706", // 
+  "#E8A25C", // 
+  "#4A6FA5", // 
+  "#5F7F6B", // 
+];
+
+// ============================================================================
 // Chart Color Mappings
 // ============================================================================
 
