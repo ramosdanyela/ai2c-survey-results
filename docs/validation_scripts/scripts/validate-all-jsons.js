@@ -4,8 +4,8 @@
  * Saída: exit 0 se todos válidos, exit 1 se algum falhar.
  *
  * Uso: npm run validate:all
- *      node docs/docs_json_tutorial/validation_scripts/scripts/validate-all-jsons.js
- *      node docs/docs_json_tutorial/validation_scripts/scripts/validate-all-jsons.js [dir1] [dir2]
+ *      node docs/validation_scripts/scripts/validate-all-jsons.js
+ *      node docs/validation_scripts/scripts/validate-all-jsons.js [dir1] [dir2]
  *
  * Por padrão procura em: src/data (relativo ao cwd do processo).
  * Opcional: passar diretórios como argumentos para validar apenas esses.

@@ -17,8 +17,8 @@
     "analyze:deps": "npx depcheck || true",
     "analyze:all": "node scripts/analyze-all.js",
     "validate": "npm run validate:all",
-    "validate:json": "node docs/docs_json_tutorial/validation_scripts/scripts/validate-json.js",
-    "validate:all": "node docs/docs_json_tutorial/validation_scripts/scripts/validate-all-jsons.js"
+    "validate:json": "node docs/validation_scripts/scripts/validate-json.js",
+    "validate:all": "node docs/validation_scripts/scripts/validate-all-jsons.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

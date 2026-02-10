@@ -159,7 +159,7 @@ Para ver **um exemplo completo** de estrutura (tudo opcional exceto `metadata` e
    mostra um relatório completo (várias seções, componentes, dados). O backend pode devolver algo mais simples (só metadata + sections com poucas seções) ou tão rico quanto esse arquivo; o importante é respeitar o mínimo (metadata + sections) e a convenção de `dataPath` / `section.data` quando houver componentes que consomem dados.
 
 2. **Documentação no frontend (uso como contexto no Cursor):**
-   - `docs/docs_json_tutorial/Doc_how-to_json.md` — estrutura detalhada do JSON, seções, componentes, questões.
+   - `docs/validation_scripts/schema/surveyData.schema.json` — schema da estrutura do JSON (metadata, sections, componentes, questões).
    - `docs/ESTRATEGIA_ATUALIZACAO_DOCS_JSON.md` — resumo da estrutura atual (metadata, sections, uiTexts, surveyInfo; ids das seções; dataPaths; questões e atributos).
 
 Você pode copiar este documento para o repositório do backend e, no Cursor do backend, usar como contexto adicional o próprio `json_file_app_05-02.json` (ou os trechos relevantes) e, se tiver acesso ao repo do frontend, os docs acima.
