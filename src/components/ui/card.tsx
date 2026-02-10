@@ -16,33 +16,43 @@ const mergeStyles = (
   return { ...base, ...override };
 };
 
-const Card = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
-  const defaultShadow = `0 6px 24px ${RGBA_BLACK_SHADOW_40}, 0 2px 6px ${RGBA_ORANGE_SHADOW_10}`;
-  const hoverShadow = `0 8px 32px ${RGBA_BLACK_SHADOW_60}, 0 3px 12px ${RGBA_ORANGE_SHADOW_20}`;
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** When true, no hover shadow is applied (e.g. export/print preview) */
+  disableHover?: boolean;
+}
 
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        "rounded-lg border-0 bg-card text-card-foreground transition-all duration-300",
-        className
-      )}
-      style={mergeStyles({ boxShadow: defaultShadow }, props.style)}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.boxShadow = hoverShadow;
-        props.onMouseEnter?.(e as any);
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.boxShadow = defaultShadow;
-        props.onMouseLeave?.(e as any);
-      }}
-      {...props}
-    />
-  );
-});
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, disableHover, ...props }, ref) => {
+    const defaultShadow = `0 6px 24px ${RGBA_BLACK_SHADOW_40}, 0 2px 6px ${RGBA_ORANGE_SHADOW_10}`;
+    const hoverShadow = `0 8px 32px ${RGBA_BLACK_SHADOW_60}, 0 3px 12px ${RGBA_ORANGE_SHADOW_20}`;
+
+    const style = mergeStyles(
+      { boxShadow: disableHover ? "none" : defaultShadow },
+      props.style
+    );
+
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "rounded-lg border-0 bg-card text-card-foreground transition-all duration-300",
+          disableHover && "transition-none",
+          className
+        )}
+        style={style}
+        onMouseEnter={disableHover ? props.onMouseEnter : (e) => {
+          e.currentTarget.style.boxShadow = hoverShadow;
+          props.onMouseEnter?.(e as any);
+        }}
+        onMouseLeave={disableHover ? props.onMouseLeave : (e) => {
+          e.currentTarget.style.boxShadow = defaultShadow;
+          props.onMouseLeave?.(e as any);
+        }}
+        {...props}
+      />
+    );
+  }
+);
 Card.displayName = "Card";
 
 const CardHeader = React.forwardRef<

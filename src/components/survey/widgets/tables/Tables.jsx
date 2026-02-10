@@ -612,6 +612,14 @@ export function SegmentationTable({ data }) {
       <TableBody>
         {[...data]
           .sort((a, b) => {
+            const hasId = (x) =>
+              x.id != null &&
+              x.id !== "" &&
+              String(x.id).trim() !== "";
+            const aHasId = hasId(a);
+            const bHasId = hasId(b);
+            if (aHasId && !bHasId) return -1;
+            if (!aHasId && bHasId) return 1;
             const aIdx = a.index;
             const bIdx = b.index;
             if (aIdx != null && bIdx != null)

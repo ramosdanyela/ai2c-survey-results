@@ -87,6 +87,7 @@ export function SchemaCard({ component, data, children, isExport = false }) {
     <Card
       className={styleClass}
       style={Object.keys(styleObj).length > 0 ? styleObj : undefined}
+      disableHover={isExport}
       onMouseEnter={
         isFlat
           ? (e) => {

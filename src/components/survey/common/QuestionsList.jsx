@@ -285,6 +285,21 @@ export function QuestionsList({
     return filtered;
   }, [questionTypeFilter, initialQuestionId, data]);
 
+  // In export mode, question badge number = position in full list (1-based). Map question.id -> displayNumber.
+  const exportQuestionDisplayNumber = useMemo(() => {
+    if (!data?._exportMode) return null;
+    const questionsArray = getQuestionsFromData(data);
+    if (!questionsArray?.length) return null;
+    const sorted = [...questionsArray].sort(
+      (a, b) => (a.index ?? 0) - (b.index ?? 0),
+    );
+    const map = {};
+    sorted.forEach((q, idx) => {
+      map[q.id] = idx + 1;
+    });
+    return map;
+  }, [data]);
+
   // Effect to scroll to specific question when questionId is provided - MUST be before early returns
   // This handles navigation from sidebar clicks and navigation buttons
   useEffect(() => {
@@ -625,7 +640,8 @@ export function QuestionsList({
             const questionValue = `${question.questionType}-${question.id}`;
             const isHighlighted = highlightedQuestionId === question.id;
             const isOpen = openAccordionValue === questionValue;
-            const displayNumber = index + 1;
+            const displayNumber =
+              exportQuestionDisplayNumber?.[question.id] ?? index + 1;
 
             return (
               <div

@@ -197,7 +197,12 @@ export function SchemaFilterPills({ component, data }) {
  * Render word cloud component based on schema
  * All styling is hardcoded - only data path and title from config
  */
-export function SchemaWordCloud({ component, data, exportWordCloud = true }) {
+export function SchemaWordCloud({
+  component,
+  data,
+  exportWordCloud = true,
+  isExport = false,
+}) {
   // Use unified hook for word cloud state
   const { showWordCloud } = useQuestionTypeFilter({
     data,
@@ -247,7 +252,9 @@ export function SchemaWordCloud({ component, data, exportWordCloud = true }) {
           {title}
         </h4>
       )}
-      <div className="flex justify-center items-center p-6 bg-muted/30 rounded-lg min-h-[200px]">
+      <div
+        className={`flex justify-center items-center p-6 bg-muted/30 rounded-lg min-h-[200px] ${isExport ? "export-word-cloud-wrapper" : ""}`.trim()}
+      >
         <WordCloud
           words={wordCloudData}
           maxWords={config.maxWords || 15}

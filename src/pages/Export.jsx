@@ -29,6 +29,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { COLOR_ORANGE_PRIMARY, RGBA_BLACK_SHADOW_20 } from "@/lib/colors";
+import { capitalizeTitle } from "@/lib/utils";
 import { getAllSubsectionsForSection } from "@/utils/exportHelpers";
 import { useSurveyData } from "@/hooks/useSurveyData";
 
@@ -115,12 +116,12 @@ export default function Export() {
 
         const subsections = subsectionsData.map((sub) => ({
           id: sub.subsectionId,
-          label: sub.label,
+          label: capitalizeTitle(sub.label),
         }));
 
         return {
           id: section.id,
-          label: section.name,
+          label: capitalizeTitle(section.name),
           subsections,
         };
       });

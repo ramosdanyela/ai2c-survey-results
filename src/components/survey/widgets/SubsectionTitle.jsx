@@ -5,7 +5,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { getIcon } from "@/lib/icons";
-import { breakLinesAfterPeriod } from "@/lib/utils";
+import { breakLinesAfterPeriod, capitalizeTitle } from "@/lib/utils";
 
 /**
  * Reusable component for section and subsection titles
@@ -15,18 +15,28 @@ import { breakLinesAfterPeriod } from "@/lib/utils";
  * @param {React.Component|string} icon - Icon component or icon name string
  * @param {string} summary - Optional summary text to display below the title
  * @param {string} className - Additional CSS classes for the Card
+ * @param {boolean} isExport - When true, card has no hover (static styles for export/print)
  */
-export function SubsectionTitle({ title, icon, summary, className = "" }) {
+export function SubsectionTitle({
+  title,
+  icon,
+  summary,
+  className = "",
+  isExport = false,
+}) {
   // Get icon component if icon is a string
   const IconComponent = typeof icon === "string" ? getIcon(icon) : icon;
 
   return (
-    <Card className={`card-elevated ${className}`}>
+    <Card
+      className={`card-elevated ${isExport ? "export-subsection-title" : ""} ${className}`.trim()}
+      disableHover={isExport}
+    >
       <CardHeader className="py-6">
         <div className="flex items-center justify-center gap-2 mb-2">
           {IconComponent && <IconComponent className="w-6 h-6" />}
           <CardTitle className="text-2xl font-bold text-card-foreground">
-            {title}
+            {capitalizeTitle(title)}
           </CardTitle>
         </div>
         {summary && (

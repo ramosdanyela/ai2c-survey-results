@@ -6,6 +6,7 @@ import {
   RGBA_WHITE_20,
 } from "@/lib/colors";
 import { useSurveyData } from "@/hooks/useSurveyData";
+import { capitalizeTitle } from "@/lib/utils";
 import {
   getQuestionsFromData,
   getQuestionsSection,
@@ -134,16 +135,18 @@ function getSectionTitleFromData(sectionId, data) {
   if (data?.sections) {
     const section = data.sections.find((s) => s.id === sectionId);
     if (section?.name) {
-      return section.name;
+      return capitalizeTitle(section.name);
     }
   }
 
   // Fallback: format sectionId nicely instead of returning raw ID
   if (typeof sectionId === "string") {
-    return sectionId
-      .split("-")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
+    return capitalizeTitle(
+      sectionId
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ")
+    );
   }
 
   return sectionId;
@@ -374,7 +377,7 @@ function getSubsectionTitle(sectionId, data, maxLength = 40) {
           (sub) => sub.id === sectionId,
         );
         if (subsection?.name) {
-          return subsection.name;
+          return capitalizeTitle(subsection.name);
         }
       }
     }
@@ -403,10 +406,12 @@ function getSubsectionTitle(sectionId, data, maxLength = 40) {
 
   // Fallback: format ID nicely (e.g., "executive-summary" -> "Executive Summary")
   if (!sectionId || typeof sectionId !== "string") return sectionId;
-  return sectionId
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+  return capitalizeTitle(
+    sectionId
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ")
+  );
 }
 
 /**
@@ -449,7 +454,7 @@ function getSectionAndSubsection(sectionId, data, maxLength = 40) {
   if (actualSectionId) {
     const section = data?.sections?.find((s) => s.id === actualSectionId);
     if (section?.name) {
-      sectionTitle = section.name;
+      sectionTitle = capitalizeTitle(section.name);
     }
   }
 
@@ -458,7 +463,7 @@ function getSectionAndSubsection(sectionId, data, maxLength = 40) {
     sectionTitle = getSectionTitleFromData(sectionIdToUse, data);
   }
 
-  // Get subsection title - always use the subsection name from data
+  // Get subsection title - always use the subsection name from data (already capitalized in getSubsectionTitle)
   let subsectionTitle = getSubsectionTitle(sectionId, data, maxLength);
 
   // Special adjustment: for "Attribute Deep Dive", show only "Deep Dive"
@@ -471,7 +476,7 @@ function getSectionAndSubsection(sectionId, data, maxLength = 40) {
       typeof sectionTitle === "string" &&
       sectionTitle.includes("Atributos"))
   ) {
-    sectionTitle = uiTexts.deepDive || "Aprofundamento";
+    sectionTitle = capitalizeTitle(uiTexts.deepDive || "Aprofundamento");
   }
 
   // Special adjustment: for "Question Analysis", show question number as subtitle

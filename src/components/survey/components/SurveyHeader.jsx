@@ -7,6 +7,7 @@ import {
   RGBA_BLACK_SHADOW_20,
 } from "@/lib/colors";
 import { useSurveyData } from "@/hooks/useSurveyData";
+import { capitalizeTitle } from "@/lib/utils";
 import { NavigationButtons } from "@/components/survey/components/NavigationButtons";
 import {
   getQuestionsSection,
@@ -100,7 +101,7 @@ function getSectionTitleFromData(activeSection, data) {
   if (sectionId && data?.sections) {
     const section = data.sections.find((s) => s.id === sectionId);
     if (section?.name) {
-      return section.name;
+      return capitalizeTitle(section.name);
     }
   }
 
@@ -114,12 +115,12 @@ function getSectionTitleFromData(activeSection, data) {
   if (data?.sections) {
     const section = data.sections.find((s) => s.id === baseSectionId);
     if (section?.name) {
-      return section.name;
+      return capitalizeTitle(section.name);
     }
   }
 
   // Fallback: return formatted sectionId
-  return activeSection;
+  return capitalizeTitle(activeSection);
 }
 
 /**

@@ -7,7 +7,7 @@ import {
   X,
   getIcon,
 } from "@/lib/icons";
-import { cn } from "@/lib/utils";
+import { cn, capitalizeTitle } from "@/lib/utils";
 import { useSurveyData } from "@/hooks/useSurveyData";
 import {
   getQuestionsFromData,
@@ -518,7 +518,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                               <item.icon className="w-4 h-4 flex-shrink-0" />
                             )}
                             <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
-                              {item.name}
+                              {capitalizeTitle(item.name)}
                             </span>
                             {isExpanded ? (
                               <ChevronDown className="w-4 h-4 flex-shrink-0" />
@@ -555,7 +555,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                                     <Tooltip>
                                       <TooltipTrigger asChild>
                                         <span className="flex-1 line-clamp-2">
-                                          {sub.name.substring(0, 60) + "..."}
+                                          {capitalizeTitle(sub.name).substring(0, 60) + "..."}
                                         </span>
                                       </TooltipTrigger>
                                       <TooltipContent
@@ -563,13 +563,13 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                                         className="max-w-xs p-3 text-sm"
                                       >
                                         <p className="whitespace-normal">
-                                          {sub.name}
+                                          {capitalizeTitle(sub.name)}
                                         </p>
                                       </TooltipContent>
                                     </Tooltip>
                                   ) : (
                                     <span className="flex-1 line-clamp-2">
-                                      {sub.name}
+                                      {capitalizeTitle(sub.name)}
                                     </span>
                                   )}
                                 </button>
@@ -605,7 +605,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                             <item.icon className="w-4 h-4 flex-shrink-0" />
                           )}
                           <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
-                            {item.name}
+                            {capitalizeTitle(item.name)}
                           </span>
                           {isExpanded ? (
                             <ChevronDown className="w-4 h-4 flex-shrink-0" />
@@ -638,7 +638,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                                 {SubIcon && (
                                   <SubIcon className="w-4 h-4 shrink-0" />
                                 )}
-                                <span className="flex-1">{sub.name}</span>
+                                <span className="flex-1">{capitalizeTitle(sub.name)}</span>
                               </button>
                             );
                           })}
@@ -686,7 +686,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                           <item.icon className="w-4 h-4 flex-shrink-0" />
                         )}
                         <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
-                          {item.name}
+                          {capitalizeTitle(item.name)}
                         </span>
                         {isExpanded ? (
                           <ChevronDown className="w-4 h-4 flex-shrink-0" />
@@ -720,7 +720,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                               {SubsectionIcon && (
                                 <SubsectionIcon className="w-4 h-4 shrink-0" />
                               )}
-                              <span className="flex-1">{subsection.name}</span>
+                              <span className="flex-1">{capitalizeTitle(subsection.name)}</span>
                             </button>
                           );
                         })}
@@ -753,7 +753,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                       <item.icon className="w-4 h-4 flex-shrink-0" />
                     )}
                     <span className="text-lg font-bold whitespace-nowrap flex-1">
-                      {item.name}
+                      {capitalizeTitle(item.name)}
                     </span>
                   </button>
                 );
@@ -783,7 +783,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                 >
                   {item.icon && <item.icon className="w-4 h-4 flex-shrink-0" />}
                   <span className="text-lg font-bold whitespace-nowrap flex-1">
-                    {item.name}
+                    {capitalizeTitle(item.name)}
                   </span>
                 </button>
               );

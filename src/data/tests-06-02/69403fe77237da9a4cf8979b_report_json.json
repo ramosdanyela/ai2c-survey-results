@@ -3300,8 +3300,8 @@
   },
   "surveyInfo": {
     "title": "CSAT 60 dias Fixa - Janeiro",
-    "company": "Satisfação do cliente",
-    "period": "Data",
+    "company": "Company X",
+    "period": "07/08/25-19/08/25",
     "totalRespondents": 711,
     "responseRate": 100,
     "questions": 6,

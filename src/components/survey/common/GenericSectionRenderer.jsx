@@ -957,7 +957,11 @@ export function GenericSectionRenderer({
   return (
     <div className="space-y-8 animate-fade-in">
       <section>
-        <div className="space-y-6">
+        <div
+          className={
+            isExport ? "space-y-3" : "space-y-6"
+          }
+        >
           {/* Subsection Title - show only if has subsections and activeSubsection exists */}
           {/* For responses section with individual question: use old question structure (no SubsectionTitle) */}
           {/* For other sections or responses without question: use SubsectionTitle */}
@@ -966,6 +970,7 @@ export function GenericSectionRenderer({
               title={activeSubsection?.name || "Subseção"}
               icon={SubsectionIcon}
               summary={activeSubsection?.summary}
+              isExport={isExport}
             />
           ) : null}
 
