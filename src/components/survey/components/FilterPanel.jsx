@@ -31,6 +31,8 @@ import { useMemo } from "react";
 
 export function FilterPanel({
   onFiltersChange,
+  onApplyFilters,
+  filterDefinitions = [],
   questionFilter,
   onQuestionFilterChange,
   selectedQuestionId,
@@ -51,47 +53,43 @@ export function FilterPanel({
     return uiTexts?.filterPanel?.[key] || fallback;
   };
 
-  const attributes = useMemo(() => {
-    const section = data?.sections?.find((s) => s.id === "attributes");
-    if (!section?.subsections?.length) return [];
-    const prefix = "attributes-";
-    return section.subsections.map((sub) => ({
-      id: sub.id?.startsWith(prefix) ? sub.id.replace(prefix, "") : sub.id,
-      name: sub.name,
-      icon: sub.icon,
-      index: sub.index,
-    }));
-  }, [data]);
-
-  // Build filter options dynamically from attributes
+  // Build filter options from filterDefinitions (programmatic, from API 1)
   const filterOptions = useMemo(() => {
-    if (!attributes.length || !uiTexts?.filterPanel) return [];
-
-    return attributes.map((attr) => ({
-      value: attr.id,
-      label: uiTexts?.filterPanel?.[attr.id] || attr.name || attr.id,
+    if (!filterDefinitions || filterDefinitions.length === 0) return [];
+    return filterDefinitions.map((f) => ({
+      value: f.filter_id,
+      label: f.label,
     }));
-  }, [attributes, uiTexts]);
+  }, [filterDefinitions]);
 
-  // Build valid filter types dynamically
+  // Build valid filter types from filterDefinitions
   const VALID_FILTER_TYPES = useMemo(() => {
-    const types = attributes.map((attr) => attr.id);
+    const types = filterDefinitions.map((f) => f.filter_id);
     types.push(null);
     return types;
-  }, [attributes]);
+  }, [filterDefinitions]);
+
+  // Get available values for a filter type from filterDefinitions
+  const getFilterValues = (filterType) => {
+    if (!filterType || !filterDefinitions.length) return [];
+    const definition = filterDefinitions.find((f) => f.filter_id === filterType);
+    if (!definition || !definition.values) return [];
+    return definition.values.map((v) => v.label);
+  };
+
+  // Get count for a filter value (optional display)
+  const getFilterValueCount = (filterType, valueLabel) => {
+    if (!filterType || !filterDefinitions.length) return null;
+    const definition = filterDefinitions.find((f) => f.filter_id === filterType);
+    if (!definition || !definition.values) return null;
+    const val = definition.values.find((v) => v.label === valueLabel);
+    return val?.count ?? null;
+  };
 
   // Sync activeFilters with initialFilters when they change
   useEffect(() => {
     setActiveFilters(initialFilters);
   }, [initialFilters]);
-
-  // Get available values for a filter type
-  const getFilterValues = (filterType) => {
-    if (!filterType || !attributes.length) return [];
-    const attribute = attributes.find((attr) => attr.id === filterType);
-    if (!attribute || !attribute.distribution) return [];
-    return attribute.distribution.map((item) => item.segment);
-  };
 
   // Handle filter type selection
   const handleFilterTypeSelect = (value) => {
@@ -101,7 +99,6 @@ export function FilterPanel({
     }
     // Validate that the value is a valid FilterType
     if (!VALID_FILTER_TYPES.includes(value)) {
-      // Invalid filterType - ignore silently (invalid input from user)
       return;
     }
     const filterType = value;
@@ -140,7 +137,6 @@ export function FilterPanel({
 
       if (existingFilter) {
         if (checked) {
-          // Add value if not already present
           if (!existingFilter.values.includes(value)) {
             newFilters = prev.map((f) =>
               f.filterType === filterType
@@ -151,12 +147,10 @@ export function FilterPanel({
             newFilters = prev;
           }
         } else {
-          // Remove value
           const updatedValues = existingFilter.values.filter(
             (v) => v !== value,
           );
           if (updatedValues.length === 0) {
-            // Remove filter if no values left
             newFilters = prev.filter((f) => f.filterType !== filterType);
           } else {
             newFilters = prev.map((f) =>
@@ -165,7 +159,6 @@ export function FilterPanel({
           }
         }
       } else {
-        // Create new filter
         if (checked) {
           newFilters = [...prev, { filterType, values: [value] }];
         } else {
@@ -173,7 +166,7 @@ export function FilterPanel({
         }
       }
 
-      // Notify parent component
+      // Notify parent component of filter state changes
       if (onFiltersChange) {
         onFiltersChange(newFilters);
       }
@@ -215,6 +208,27 @@ export function FilterPanel({
   // Check if a value is selected
   const isValueSelected = (filterType, value) => {
     return getSelectedValues(filterType).includes(value);
+  };
+
+  // Handle OK button - apply filters via API 2
+  const handleOkClick = () => {
+    if (onApplyFilters) {
+      onApplyFilters(activeFilters);
+    }
+    setIsPanelOpen(false);
+  };
+
+  // Handle clear all - also triggers apply with empty filters
+  const handleClearAll = () => {
+    setActiveFilters([]);
+    setSelectedFilterType(null);
+    setOpenFilters(new Set());
+    if (onFiltersChange) {
+      onFiltersChange([]);
+    }
+    if (onApplyFilters) {
+      onApplyFilters([]);
+    }
   };
 
   const availableValues = selectedFilterType
@@ -346,7 +360,6 @@ export function FilterPanel({
                       q.question.length > 80
                         ? q.question.substring(0, 80) + "..."
                         : q.question;
-                    // Renumber questions: index + 1 (excluding Q3)
                     const displayNumber = index + 1;
 
                     return (
@@ -382,16 +395,18 @@ export function FilterPanel({
             <Select
               value={selectedFilterType || "none"}
               onValueChange={handleFilterTypeSelect}
+              disabled={filterOptions.length === 0}
             >
               <SelectTrigger
                 id="filter-type"
                 className="w-auto border-[hsl(var(--custom-blue))] focus:ring-[hsl(var(--custom-blue))]"
               >
                 <SelectValue
-                  placeholder={getFilterText(
-                    "selectFilterType",
-                    "Selecione um tipo de filtro",
-                  )}
+                  placeholder={
+                    filterOptions.length === 0
+                      ? getFilterText("filtersUnavailable", "Filtros indisponíveis")
+                      : getFilterText("selectFilterType", "Selecione um tipo de filtro")
+                  }
                 />
               </SelectTrigger>
               <SelectContent>
@@ -417,14 +432,7 @@ export function FilterPanel({
           {/* Clear All Filters Button - Always visible when there are active filters */}
           {activeFilters.length > 0 && (
             <button
-              onClick={() => {
-                setActiveFilters([]);
-                setSelectedFilterType(null);
-                setOpenFilters(new Set());
-                if (onFiltersChange) {
-                  onFiltersChange([]);
-                }
-              }}
+              onClick={handleClearAll}
               className="text-xs text-muted-foreground hover:text-foreground hover:underline transition-colors ml-auto"
             >
               {getFilterText("clearAll", "Limpar todos")}
@@ -545,34 +553,42 @@ export function FilterPanel({
                               )}
                             </Label>
                             <div className="space-y-2 max-h-48 overflow-y-auto">
-                              {filterValues.map((value) => (
-                                <div
-                                  key={value}
-                                  className="flex items-center space-x-2"
-                                >
-                                  <Checkbox
-                                    id={`${filter.filterType}-${value}`}
-                                    checked={isValueSelected(
-                                      filter.filterType,
-                                      value,
-                                    )}
-                                    onCheckedChange={(checked) =>
-                                      handleValueToggle(
+                              {filterValues.map((value) => {
+                                const count = getFilterValueCount(filter.filterType, value);
+                                return (
+                                  <div
+                                    key={value}
+                                    className="flex items-center space-x-2"
+                                  >
+                                    <Checkbox
+                                      id={`${filter.filterType}-${value}`}
+                                      checked={isValueSelected(
                                         filter.filterType,
                                         value,
-                                        checked,
-                                      )
-                                    }
-                                    className="border-[hsl(var(--custom-blue))] data-[state=checked]:bg-[hsl(var(--custom-blue))] data-[state=checked]:text-white focus-visible:ring-[hsl(var(--custom-blue))]"
-                                  />
-                                  <Label
-                                    htmlFor={`${filter.filterType}-${value}`}
-                                    className="text-sm font-normal cursor-pointer flex-1"
-                                  >
-                                    {value}
-                                  </Label>
-                                </div>
-                              ))}
+                                      )}
+                                      onCheckedChange={(checked) =>
+                                        handleValueToggle(
+                                          filter.filterType,
+                                          value,
+                                          checked,
+                                        )
+                                      }
+                                      className="border-[hsl(var(--custom-blue))] data-[state=checked]:bg-[hsl(var(--custom-blue))] data-[state=checked]:text-white focus-visible:ring-[hsl(var(--custom-blue))]"
+                                    />
+                                    <Label
+                                      htmlFor={`${filter.filterType}-${value}`}
+                                      className="text-sm font-normal cursor-pointer flex-1"
+                                    >
+                                      {value}
+                                      {count !== null && (
+                                        <span className="text-muted-foreground ml-1">
+                                          ({count})
+                                        </span>
+                                      )}
+                                    </Label>
+                                  </div>
+                                );
+                              })}
                             </div>
                             {/* Selected values as pills */}
                             {filter.values.length > 0 && (
@@ -607,14 +623,7 @@ export function FilterPanel({
                   })}
                 </div>
                 <button
-                  onClick={() => {
-                    setActiveFilters([]);
-                    setSelectedFilterType(null);
-                    setOpenFilters(new Set());
-                    if (onFiltersChange) {
-                      onFiltersChange([]);
-                    }
-                  }}
+                  onClick={handleClearAll}
                   className="text-xs text-muted-foreground hover:text-foreground underline"
                 >
                   {getFilterText("clearAllFilters", "Limpar todos os filtros")}
@@ -638,28 +647,36 @@ export function FilterPanel({
                     - {getFilterText("selectValues", "Selecione os valores")}
                   </Label>
                   <div className="space-y-2 max-h-48 overflow-y-auto">
-                    {availableValues.map((value) => (
-                      <div key={value} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`${selectedFilterType}-${value}`}
-                          checked={isValueSelected(selectedFilterType, value)}
-                          onCheckedChange={(checked) =>
-                            handleValueToggle(
-                              selectedFilterType,
-                              value,
-                              checked,
-                            )
-                          }
-                          className="border-[hsl(var(--custom-blue))] data-[state=checked]:bg-[hsl(var(--custom-blue))] data-[state=checked]:text-white focus-visible:ring-[hsl(var(--custom-blue))]"
-                        />
-                        <Label
-                          htmlFor={`${selectedFilterType}-${value}`}
-                          className="text-sm font-normal cursor-pointer flex-1"
-                        >
-                          {value}
-                        </Label>
-                      </div>
-                    ))}
+                    {availableValues.map((value) => {
+                      const count = getFilterValueCount(selectedFilterType, value);
+                      return (
+                        <div key={value} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={`${selectedFilterType}-${value}`}
+                            checked={isValueSelected(selectedFilterType, value)}
+                            onCheckedChange={(checked) =>
+                              handleValueToggle(
+                                selectedFilterType,
+                                value,
+                                checked,
+                              )
+                            }
+                            className="border-[hsl(var(--custom-blue))] data-[state=checked]:bg-[hsl(var(--custom-blue))] data-[state=checked]:text-white focus-visible:ring-[hsl(var(--custom-blue))]"
+                          />
+                          <Label
+                            htmlFor={`${selectedFilterType}-${value}`}
+                            className="text-sm font-normal cursor-pointer flex-1"
+                          >
+                            {value}
+                            {count !== null && (
+                              <span className="text-muted-foreground ml-1">
+                                ({count})
+                              </span>
+                            )}
+                          </Label>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -667,7 +684,7 @@ export function FilterPanel({
             {/* OK Button */}
             <div className="flex justify-end pt-4 border-t">
               <Button
-                onClick={() => setIsPanelOpen(false)}
+                onClick={handleOkClick}
                 className="min-w-20 bg-[hsl(var(--custom-blue))] text-white hover:bg-[hsl(var(--custom-blue))]/80"
               >
                 {getFilterText("ok", "OK")}

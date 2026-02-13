@@ -1718,8 +1718,8 @@
                         "yAxisDataKey": "option",
                         "series": [
                           {
-                            "dataKey": "Paran�",
-                            "name": "Paran� (%)"
+                            "dataKey": "Paraná",
+                            "name": "Paraná (%)"
                           },
                           {
                             "dataKey": "Rio Grande do Sul",
@@ -1814,8 +1814,8 @@
                         "yAxisDataKey": "option",
                         "series": [
                           {
-                            "dataKey": "Paran�",
-                            "name": "Paran� (%)"
+                            "dataKey": "Paraná",
+                            "name": "Paraná (%)"
                           },
                           {
                             "dataKey": "Rio Grande do Sul",
@@ -1864,8 +1864,8 @@
                         "yAxisDataKey": "option",
                         "series": [
                           {
-                            "dataKey": "Paran�",
-                            "name": "Paran� (%)"
+                            "dataKey": "Paraná",
+                            "name": "Paraná (%)"
                           },
                           {
                             "dataKey": "Rio Grande do Sul",
@@ -1901,7 +1901,7 @@
                 "percentage": 16.5
               },
               {
-                "segment": "Paranã",
+                "segment": "Paraná",
                 "count": 8,
                 "percentage": 1.1
               }
@@ -1918,7 +1918,7 @@
                 "percentage": 16.5
               },
               {
-                "segment": "Paranã",
+                "segment": "Paraná",
                 "count": 8,
                 "percentage": 1.1
               }
@@ -1932,19 +1932,19 @@
                 "satisfactionImpactSentimentChart": [
                   {
                     "sentiment": "negativo",
-                    "Paran�": 100,
+                    "Paraná": 100,
                     "Rio Grande do Sul": 67.8,
                     "Santa Catarina": 71.4
                   },
                   {
                     "sentiment": "não aplicável",
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 0.8,
                     "Santa Catarina": 0.2
                   },
                   {
                     "sentiment": "positivo",
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 31.4,
                     "Santa Catarina": 28.5
                   }
@@ -1952,19 +1952,19 @@
                 "satisfactionImpactSentimentTable": [
                   {
                     "sentiment": "negativo",
-                    "Paran�": 100,
+                    "Paraná": 100,
                     "Rio Grande do Sul": 67.8,
                     "Santa Catarina": 71.4
                   },
                   {
                     "sentiment": "não aplicável",
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 0.8,
                     "Santa Catarina": 0.2
                   },
                   {
                     "sentiment": "positivo",
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 31.4,
                     "Santa Catarina": 28.5
                   }
@@ -1989,19 +1989,19 @@
                 "negativeCategoriesTable": [
                   {
                     "category": "serviço de rede",
-                    "Paran�": 55.6,
+                    "Paraná": 55.6,
                     "Rio Grande do Sul": 60,
                     "Santa Catarina": 39.7
                   },
                   {
                     "category": "suporte ao cliente",
-                    "Paran�": 44.4,
+                    "Paraná": 44.4,
                     "Rio Grande do Sul": 22.5,
                     "Santa Catarina": 42
                   },
                   {
                     "category": "faturamento e cobranças",
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 7.5,
                     "Santa Catarina": 4.5
                   }
@@ -2016,19 +2016,19 @@
                 "satisfactionImpactSentimentChart": [
                   {
                     "sentiment": "negativo",
-                    "Paran�": 56,
+                    "Paraná": 56,
                     "Rio Grande do Sul": 57.6,
                     "Santa Catarina": 57.8
                   },
                   {
                     "sentiment": "não aplicável",
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 0,
                     "Santa Catarina": 0.1
                   },
                   {
                     "sentiment": "positivo",
-                    "Paran�": 44,
+                    "Paraná": 44,
                     "Rio Grande do Sul": 42.4,
                     "Santa Catarina": 42.1
                   }
@@ -2036,19 +2036,19 @@
                 "satisfactionImpactSentimentTable": [
                   {
                     "sentiment": "negativo",
-                    "Paran�": 56,
+                    "Paraná": 56,
                     "Rio Grande do Sul": 57.6,
                     "Santa Catarina": 57.8
                   },
                   {
                     "sentiment": "não aplicável",
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 0,
                     "Santa Catarina": 0.1
                   },
                   {
                     "sentiment": "positivo",
-                    "Paran�": 44,
+                    "Paraná": 44,
                     "Rio Grande do Sul": 42.4,
                     "Santa Catarina": 42.1
                   }
@@ -2056,19 +2056,19 @@
                 "positiveCategoriesTable": [
                   {
                     "category": "serviço de rede",
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 46.2,
                     "Santa Catarina": 62
                   },
                   {
                     "category": "suporte ao cliente",
-                    "Paran�": 54.5,
+                    "Paraná": 54.5,
                     "Rio Grande do Sul": 22.4,
                     "Santa Catarina": 16.5
                   },
                   {
                     "category": "outro",
-                    "Paran�": 18.2,
+                    "Paraná": 18.2,
                     "Rio Grande do Sul": 23.8,
                     "Santa Catarina": 12
                   }
@@ -2076,19 +2076,19 @@
                 "negativeCategoriesTable": [
                   {
                     "category": "serviço de rede",
-                    "Paran�": 78.6,
+                    "Paraná": 78.6,
                     "Rio Grande do Sul": 73.2,
                     "Santa Catarina": 74.6
                   },
                   {
                     "category": "suporte ao cliente",
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 10.8,
                     "Santa Catarina": 12.5
                   },
                   {
                     "category": "cobertura de rede",
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 3.1,
                     "Santa Catarina": 4.8
                   }
@@ -2100,31 +2100,31 @@
                 "npsTable": [],
                 "distributionChart": [
                   {
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 11.9,
                     "Santa Catarina": 6.4,
                     "option": "1"
                   },
                   {
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 3.1,
                     "Santa Catarina": 8.9,
                     "option": "2"
                   },
                   {
-                    "Paran�": 7.1,
+                    "Paraná": 7.1,
                     "Rio Grande do Sul": 8.8,
                     "Santa Catarina": 13.2,
                     "option": "3"
                   },
                   {
-                    "Paran�": 42.9,
+                    "Paraná": 42.9,
                     "Rio Grande do Sul": 16.4,
                     "Santa Catarina": 19,
                     "option": "4"
                   },
                   {
-                    "Paran�": 50,
+                    "Paraná": 50,
                     "Rio Grande do Sul": 59.7,
                     "Santa Catarina": 52.5,
                     "option": "5"
@@ -2132,31 +2132,31 @@
                 ],
                 "distributionTable": [
                   {
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 11.9,
                     "Santa Catarina": 6.4,
                     "segment": "1"
                   },
                   {
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 3.1,
                     "Santa Catarina": 8.9,
                     "segment": "2"
                   },
                   {
-                    "Paran�": 7.1,
+                    "Paraná": 7.1,
                     "Rio Grande do Sul": 8.8,
                     "Santa Catarina": 13.2,
                     "segment": "3"
                   },
                   {
-                    "Paran�": 42.9,
+                    "Paraná": 42.9,
                     "Rio Grande do Sul": 16.4,
                     "Santa Catarina": 19,
                     "segment": "4"
                   },
                   {
-                    "Paran�": 50,
+                    "Paraná": 50,
                     "Rio Grande do Sul": 59.7,
                     "Santa Catarina": 52.5,
                     "segment": "5"
@@ -2169,62 +2169,62 @@
                 "analyticalTable": [
                   {
                     "segment": "5",
-                    "Paran�": 50,
+                    "Paraná": 50,
                     "Rio Grande do Sul": 59.7,
                     "Santa Catarina": 52.5
                   },
                   {
                     "segment": "4",
-                    "Paran�": 42.9,
+                    "Paraná": 42.9,
                     "Rio Grande do Sul": 16.4,
                     "Santa Catarina": 19
                   },
                   {
                     "segment": "3",
-                    "Paran�": 7.1,
+                    "Paraná": 7.1,
                     "Rio Grande do Sul": 8.8,
                     "Santa Catarina": 13.2
                   },
                   {
                     "segment": "2",
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 3.1,
                     "Santa Catarina": 8.9
                   },
                   {
                     "segment": "1",
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 11.9,
                     "Santa Catarina": 6.4
                   }
                 ],
                 "stackedBarMECE": [
                   {
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 11.9,
                     "Santa Catarina": 6.4,
                     "option": "1"
                   },
                   {
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 3.1,
                     "Santa Catarina": 8.9,
                     "option": "2"
                   },
                   {
-                    "Paran�": 7.1,
+                    "Paraná": 7.1,
                     "Rio Grande do Sul": 8.8,
                     "Santa Catarina": 13.2,
                     "option": "3"
                   },
                   {
-                    "Paran�": 42.9,
+                    "Paraná": 42.9,
                     "Rio Grande do Sul": 16.4,
                     "Santa Catarina": 19,
                     "option": "4"
                   },
                   {
-                    "Paran�": 50,
+                    "Paraná": 50,
                     "Rio Grande do Sul": 59.7,
                     "Santa Catarina": 52.5,
                     "option": "5"
@@ -2292,13 +2292,13 @@
                 "npsTable": [],
                 "distributionChart": [
                   {
-                    "Paran�": 36.4,
+                    "Paraná": 36.4,
                     "Rio Grande do Sul": 63.3,
                     "Santa Catarina": 56.7,
                     "option": "Não"
                   },
                   {
-                    "Paran�": 63.6,
+                    "Paraná": 63.6,
                     "Rio Grande do Sul": 36.7,
                     "Santa Catarina": 43.3,
                     "option": "Sim"
@@ -2306,13 +2306,13 @@
                 ],
                 "distributionTable": [
                   {
-                    "Paran�": 36.4,
+                    "Paraná": 36.4,
                     "Rio Grande do Sul": 63.3,
                     "Santa Catarina": 56.7,
                     "segment": "Não"
                   },
                   {
-                    "Paran�": 63.6,
+                    "Paraná": 63.6,
                     "Rio Grande do Sul": 36.7,
                     "Santa Catarina": 43.3,
                     "segment": "Sim"
@@ -2325,26 +2325,26 @@
                 "analyticalTable": [
                   {
                     "segment": "Sim",
-                    "Paran�": 63.6,
+                    "Paraná": 63.6,
                     "Rio Grande do Sul": 36.7,
                     "Santa Catarina": 43.3
                   },
                   {
                     "segment": "Não",
-                    "Paran�": 36.4,
+                    "Paraná": 36.4,
                     "Rio Grande do Sul": 63.3,
                     "Santa Catarina": 56.7
                   }
                 ],
                 "stackedBarMECE": [
                   {
-                    "Paran�": 36.4,
+                    "Paraná": 36.4,
                     "Rio Grande do Sul": 63.3,
                     "Santa Catarina": 56.7,
                     "option": "Não"
                   },
                   {
-                    "Paran�": 63.6,
+                    "Paraná": 63.6,
                     "Rio Grande do Sul": 36.7,
                     "Santa Catarina": 43.3,
                     "option": "Sim"
@@ -2356,31 +2356,31 @@
                 "npsTable": [],
                 "distributionChart": [
                   {
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 19.6,
                     "Santa Catarina": 9.6,
                     "option": "1"
                   },
                   {
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 1.8,
                     "Santa Catarina": 10.4,
                     "option": "2"
                   },
                   {
-                    "Paran�": 57.1,
+                    "Paraná": 57.1,
                     "Rio Grande do Sul": 7.1,
                     "Santa Catarina": 18.9,
                     "option": "3"
                   },
                   {
-                    "Paran�": 42.9,
+                    "Paraná": 42.9,
                     "Rio Grande do Sul": 17.9,
                     "Santa Catarina": 23.6,
                     "option": "4"
                   },
                   {
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 53.6,
                     "Santa Catarina": 37.5,
                     "option": "5"
@@ -2388,31 +2388,31 @@
                 ],
                 "distributionTable": [
                   {
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 19.6,
                     "Santa Catarina": 9.6,
                     "segment": "1"
                   },
                   {
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 1.8,
                     "Santa Catarina": 10.4,
                     "segment": "2"
                   },
                   {
-                    "Paran�": 57.1,
+                    "Paraná": 57.1,
                     "Rio Grande do Sul": 7.1,
                     "Santa Catarina": 18.9,
                     "segment": "3"
                   },
                   {
-                    "Paran�": 42.9,
+                    "Paraná": 42.9,
                     "Rio Grande do Sul": 17.9,
                     "Santa Catarina": 23.6,
                     "segment": "4"
                   },
                   {
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 53.6,
                     "Santa Catarina": 37.5,
                     "segment": "5"
@@ -2425,62 +2425,62 @@
                 "analyticalTable": [
                   {
                     "segment": "5",
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 53.6,
                     "Santa Catarina": 37.5
                   },
                   {
                     "segment": "4",
-                    "Paran�": 42.9,
+                    "Paraná": 42.9,
                     "Rio Grande do Sul": 17.9,
                     "Santa Catarina": 23.6
                   },
                   {
                     "segment": "3",
-                    "Paran�": 57.1,
+                    "Paraná": 57.1,
                     "Rio Grande do Sul": 7.1,
                     "Santa Catarina": 18.9
                   },
                   {
                     "segment": "2",
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 1.8,
                     "Santa Catarina": 10.4
                   },
                   {
                     "segment": "1",
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 19.6,
                     "Santa Catarina": 9.6
                   }
                 ],
                 "stackedBarMECE": [
                   {
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 19.6,
                     "Santa Catarina": 9.6,
                     "option": "1"
                   },
                   {
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 1.8,
                     "Santa Catarina": 10.4,
                     "option": "2"
                   },
                   {
-                    "Paran�": 57.1,
+                    "Paraná": 57.1,
                     "Rio Grande do Sul": 7.1,
                     "Santa Catarina": 18.9,
                     "option": "3"
                   },
                   {
-                    "Paran�": 42.9,
+                    "Paraná": 42.9,
                     "Rio Grande do Sul": 17.9,
                     "Santa Catarina": 23.6,
                     "option": "4"
                   },
                   {
-                    "Paran�": 0,
+                    "Paraná": 0,
                     "Rio Grande do Sul": 53.6,
                     "Santa Catarina": 37.5,
                     "option": "5"

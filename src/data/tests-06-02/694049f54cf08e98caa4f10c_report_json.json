@@ -1343,19 +1343,19 @@
                 "satisfactionImpactSentimentChart": [
                   {
                     "sentiment": "negativo",
-                    "Paran�": 58.8,
+                    "Paraná": 58.8,
                     "Rio Grande do Sul": 49.4,
                     "Santa Catarina": 62.6
                   },
                   {
                     "sentiment": "não aplicável",
-                    "Paran�": 0.0,
+                    "Paraná": 0.0,
                     "Rio Grande do Sul": 0.0,
                     "Santa Catarina": 0.3
                   },
                   {
                     "sentiment": "positivo",
-                    "Paran�": 41.2,
+                    "Paraná": 41.2,
                     "Rio Grande do Sul": 50.6,
                     "Santa Catarina": 37.1
                   }
@@ -1363,19 +1363,19 @@
                 "satisfactionImpactSentimentTable": [
                   {
                     "sentiment": "negativo",
-                    "Paran�": 58.8,
+                    "Paraná": 58.8,
                     "Rio Grande do Sul": 49.4,
                     "Santa Catarina": 62.6
                   },
                   {
                     "sentiment": "não aplicável",
-                    "Paran�": 0.0,
+                    "Paraná": 0.0,
                     "Rio Grande do Sul": 0.0,
                     "Santa Catarina": 0.3
                   },
                   {
                     "sentiment": "positivo",
-                    "Paran�": 41.2,
+                    "Paraná": 41.2,
                     "Rio Grande do Sul": 50.6,
                     "Santa Catarina": 37.1
                   }
@@ -1383,19 +1383,19 @@
                 "positiveCategoriesTable": [
                   {
                     "category": "serviço de rede",
-                    "Paran�": 50.0,
+                    "Paraná": 50.0,
                     "Rio Grande do Sul": 62.8,
                     "Santa Catarina": 53.5
                   },
                   {
                     "category": "suporte ao cliente",
-                    "Paran�": 14.3,
+                    "Paraná": 14.3,
                     "Rio Grande do Sul": 19.3,
                     "Santa Catarina": 28.1
                   },
                   {
                     "category": "outro",
-                    "Paran�": 35.7,
+                    "Paraná": 35.7,
                     "Rio Grande do Sul": 10.4,
                     "Santa Catarina": 12.9
                   }
@@ -1403,19 +1403,19 @@
                 "negativeCategoriesTable": [
                   {
                     "category": "serviço de rede",
-                    "Paran�": 80.0,
+                    "Paraná": 80.0,
                     "Rio Grande do Sul": 31.9,
                     "Santa Catarina": 69.1
                   },
                   {
                     "category": "suporte ao cliente",
-                    "Paran�": 0.0,
+                    "Paraná": 0.0,
                     "Rio Grande do Sul": 49.9,
                     "Santa Catarina": 18.1
                   },
                   {
                     "category": "faturamento e cobranças",
-                    "Paran�": 0.0,
+                    "Paraná": 0.0,
                     "Rio Grande do Sul": 7.7,
                     "Santa Catarina": 3.9
                   }
@@ -1427,13 +1427,13 @@
                 "distributionChart": [
                   {
                     "answer": "Não",
-                    "Paran�": 100.0,
+                    "Paraná": 100.0,
                     "Rio Grande do Sul": 53.1,
                     "Santa Catarina": 40.0
                   },
                   {
                     "answer": "Sim",
-                    "Paran�": 0.0,
+                    "Paraná": 0.0,
                     "Rio Grande do Sul": 46.9,
                     "Santa Catarina": 60.0
                   }
@@ -1441,13 +1441,13 @@
                 "distributionTable": [
                   {
                     "answer": "Não",
-                    "Paran�": 100.0,
+                    "Paraná": 100.0,
                     "Rio Grande do Sul": 53.1,
                     "Santa Catarina": 40.0
                   },
                   {
                     "answer": "Sim",
-                    "Paran�": 0.0,
+                    "Paraná": 0.0,
                     "Rio Grande do Sul": 46.9,
                     "Santa Catarina": 60.0
                   }

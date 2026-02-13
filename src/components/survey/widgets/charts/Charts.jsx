@@ -66,14 +66,14 @@ export function SentimentDivergentChart({
     legendWrapperStyle === null
       ? undefined
       : legendWrapperStyle !== undefined
-      ? legendWrapperStyle
-      : { paddingTop: "20px" };
+        ? legendWrapperStyle
+        : { paddingTop: "20px" };
   const finalLegendIconType =
     legendIconType === null
       ? undefined
       : legendIconType !== undefined
-      ? legendIconType
-      : "square";
+        ? legendIconType
+        : "square";
   // Transform data: negative values become negative for divergent display
   // Only plot positive and negative, ignore neutral completely
   const transformedData = data.map((item) => {
@@ -92,7 +92,7 @@ export function SentimentDivergentChart({
     ...transformedData.flatMap((item) => [
       Math.abs(item.positive),
       Math.abs(item.negative),
-    ])
+    ]),
   );
   const domain = xAxisDomain || [
     -Math.ceil(maxValue * 1.1),
@@ -158,8 +158,8 @@ export function SentimentDivergentChart({
                 return value === "negative" || value === "Negative"
                   ? chartLabels.negative
                   : value === "positive" || value === "Positive"
-                  ? chartLabels.positive
-                  : "";
+                    ? chartLabels.positive
+                    : "";
               }}
             />
           )}
@@ -309,6 +309,25 @@ export function SentimentThreeColorChart({
 // ============================================================
 // NPS stacked chart (Detractors/Neutrals/Promoters)
 // Used in: SupportAnalysis - NPS Distribution
+// Render order is always: Detrator, Neutro, Promotor (data may be sent in any order).
+
+const NPS_DISPLAY_ORDER = [
+  "Detrator",
+  "Neutro",
+  "Promotor",
+  "Detratores",
+  "Neutros",
+  "Promotores",
+];
+
+function sortNpsKeys(keys) {
+  const orderMap = new Map(NPS_DISPLAY_ORDER.map((k, i) => [k, i]));
+  return [...keys].sort((a, b) => {
+    const ia = orderMap.get(a) ?? 999;
+    const ib = orderMap.get(b) ?? 999;
+    return ia - ib;
+  });
+}
 
 export function NPSStackedChart({
   data,
@@ -321,10 +340,11 @@ export function NPSStackedChart({
   chartName = "NPS",
   ranges,
 }) {
-  // Extract keys dynamically from data object
-  const dataKeys = Object.keys(data).filter(
-    (key) => typeof data[key] === "number"
+  // Extract keys from data; order always Detrator → Neutro → Promotor for rendering
+  const rawKeys = Object.keys(data).filter(
+    (key) => typeof data[key] === "number",
   );
+  const dataKeys = sortNpsKeys(rawKeys);
 
   // Create chart data dynamically from data keys
   const chartData = [

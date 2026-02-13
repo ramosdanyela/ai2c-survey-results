@@ -1,51 +1,71 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
+import {
+  fetchFilterDefinitions,
+  fetchFilteredQuestionData,
+} from "@/services/filterService";
 
 /**
- * Hook to manage dynamic filters per question (state, customerType, education, etc.)
- * Currently manages local state, but prepared for API integration
- * 
+ * Hook to manage dynamic filters per question.
+ * Integrates with filterService for programmatic filter definitions (API 1)
+ * and filtered question data (API 2).
+ *
  * @param {Object} options
- * @param {string} options.surveyId - Survey ID (required for API mode)
- * @param {boolean} options.apiMode - Whether to use API (default: false)
+ * @param {string} options.surveyId - Survey ID (used for API calls)
  * @param {Object} options.data - Data object (for local mode, to get attributes)
  * @param {Object} options.initialFilters - Initial filters per question { questionId: [{ filterType, values }] }
- * @returns {Object} { questionFilters, setQuestionFilters, availableFilters, appliedFilters, isLoading, error }
+ * @returns {Object}
  */
 export function useQuestionFilters({
   surveyId = null,
-  apiMode = false,
   data = null,
   initialFilters = {},
 }) {
-  // State: filters per question { questionId: [{ filterType: "state", values: ["SP", "RJ"] }] }
+  // State: filters per question { questionId: [{ filterType: "TipodeCliente", values: ["pré-pago"] }] }
   const [questionFilters, setQuestionFiltersInternal] = useState(initialFilters);
-  
-  // API state (for future integration)
-  const [availableFilters, setAvailableFilters] = useState([]); // [{ id, label, type, values: [{ value, label, count }] }]
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
 
-  // Get available filters from API
+  // Filter definitions from API 1
+  const [filterDefinitions, setFilterDefinitions] = useState([]);
+  const [isLoadingDefinitions, setIsLoadingDefinitions] = useState(false);
+  const [definitionsError, setDefinitionsError] = useState(null);
+
+  // Filtered data per question from API 2
+  // { [questionId]: { data: {...}, loading: false, error: null, appliedFilters: [...] } }
+  const [filteredData, setFilteredData] = useState({});
+
+  // Resolve surveyId from data if not provided
+  const resolvedSurveyId = surveyId || data?.metadata?.surveyId || "telmob";
+
+  // Load filter definitions on mount (API 1)
   useEffect(() => {
-    if (apiMode && surveyId) {
-      setIsLoading(true);
-      setError(null);
-      
-      // TODO: Replace with actual API call when ready
-      // fetch(`/api/surveys/${surveyId}/filters`)
-      //   .then(res => res.json())
-      //   .then(result => {
-      //     if (result.success) {
-      //       setAvailableFilters(result.data.filters || []);
-      //     }
-      //   })
-      //   .catch(err => setError(err))
-      //   .finally(() => setIsLoading(false));
-      
-      // For now, just set loading to false
-      setIsLoading(false);
-    }
-  }, [apiMode, surveyId]);
+    let cancelled = false;
+
+    const loadDefinitions = async () => {
+      setIsLoadingDefinitions(true);
+      setDefinitionsError(null);
+
+      try {
+        const result = await fetchFilterDefinitions(resolvedSurveyId);
+        if (!cancelled) {
+          if (result?.success && result?.data?.filters) {
+            setFilterDefinitions(result.data.filters);
+          } else {
+            setDefinitionsError("Failed to load filter definitions");
+          }
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setDefinitionsError(err?.message || "Error loading filter definitions");
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoadingDefinitions(false);
+        }
+      }
+    };
+
+    loadDefinitions();
+    return () => { cancelled = true; };
+  }, [resolvedSurveyId]);
 
   // Get filters for a specific question
   const getQuestionFilters = useCallback((questionId) => {
@@ -59,7 +79,7 @@ export function useQuestionFilters({
       [questionId]: filters,
     }));
   }, []);
-  
+
   // Set all filters at once (for backward compatibility)
   const setAllQuestionFilters = useCallback((filters) => {
     setQuestionFiltersInternal(filters);
@@ -75,19 +95,15 @@ export function useQuestionFilters({
 
       let newFilters;
       if (existingFilterIndex >= 0) {
-        // Update existing filter
         if (values.length === 0) {
-          // Remove filter if no values
           newFilters = currentFilters.filter(
             (f) => f.filterType !== filterType
           );
         } else {
-          // Update values
           newFilters = [...currentFilters];
           newFilters[existingFilterIndex] = { filterType, values };
         }
       } else {
-        // Add new filter
         if (values.length > 0) {
           newFilters = [...currentFilters, { filterType, values }];
         } else {
@@ -111,7 +127,7 @@ export function useQuestionFilters({
           if (filter.filterType === filterType && filter.values) {
             const updatedValues = filter.values.filter((v) => v !== value);
             if (updatedValues.length === 0) {
-              return null; // Remove filter if no values left
+              return null;
             }
             return { ...filter, values: updatedValues };
           }
@@ -133,11 +149,22 @@ export function useQuestionFilters({
       delete newFilters[questionId];
       return newFilters;
     });
+    // Also clear filtered data for this question
+    setFilteredData((prev) => {
+      const newData = { ...prev };
+      delete newData[questionId];
+      return newData;
+    });
   }, []);
 
   // Clear all filters for all questions
   const clearAllFilters = useCallback(() => {
     setQuestionFiltersInternal({});
+  }, []);
+
+  // Clear all filtered data (restores original data for all questions)
+  const clearFilteredData = useCallback(() => {
+    setFilteredData({});
   }, []);
 
   // Check if a question has active filters
@@ -146,83 +173,113 @@ export function useQuestionFilters({
     return filters.some((f) => f.values && f.values.length > 0);
   }, [questionFilters]);
 
-  // Get applied filters in API format
-  // Converts { questionId: [{ filterType, values }] } to { filterType: [values] }
-  // For API: filters are global, not per question
-  const appliedFilters = useMemo(() => {
-    if (!apiMode) {
-      // In local mode, return empty (filters are per question)
-      return {};
-    }
-
-    // In API mode, aggregate all question filters into a single applied filters object
-    // This assumes that in API mode, filters are global (not per question)
-    const aggregated = {};
-    Object.values(questionFilters).forEach((filters) => {
-      filters.forEach((filter) => {
-        if (!aggregated[filter.filterType]) {
-          aggregated[filter.filterType] = [];
-        }
-        // Merge values (avoid duplicates)
-        filter.values.forEach((value) => {
-          if (!aggregated[filter.filterType].includes(value)) {
-            aggregated[filter.filterType].push(value);
-          }
-        });
-      });
+  // Check if any question has active filters
+  const hasAnyActiveFilters = useMemo(() => {
+    return Object.keys(questionFilters).some((questionId) => {
+      const filters = questionFilters[questionId] || [];
+      return filters.some((f) => f.values && f.values.length > 0);
     });
-    return aggregated;
-  }, [apiMode, questionFilters]);
+  }, [questionFilters]);
 
-  // Get filter options for local mode (from data attributes)
-  const localFilterOptions = useMemo(() => {
-    if (apiMode || !data) return [];
-
-    // Get attributes from data (similar to FilterPanel)
-    // This would need to be implemented based on your data structure
-    // For now, return empty array - can be extended later
-    return [];
-  }, [apiMode, data]);
-
-  // Get available filter options (from API or local)
-  const filterOptions = useMemo(() => {
-    if (apiMode) {
-      // Return API filters
-      return availableFilters.map((filter) => ({
-        value: filter.id,
-        label: filter.label,
-        type: filter.type,
-        values: filter.values || [],
+  /**
+   * Apply filters for a specific question (calls API 2)
+   * Converts internal filter format { filterType, values } to API format { filter_id, values }
+   */
+  const applyFilters = useCallback(async (questionId, filters) => {
+    // Convert from internal format to API format
+    const apiFilters = filters
+      .filter((f) => f.values && f.values.length > 0)
+      .map((f) => ({
+        filter_id: f.filterType,
+        values: f.values,
       }));
-    } else {
-      // Return local filter options (from data attributes)
-      return localFilterOptions;
+
+    if (apiFilters.length === 0) {
+      // No filters to apply - clear filtered data for this question
+      setFilteredData((prev) => {
+        const newData = { ...prev };
+        delete newData[questionId];
+        return newData;
+      });
+      return;
     }
-  }, [apiMode, availableFilters, localFilterOptions]);
+
+    // Set loading state
+    setFilteredData((prev) => ({
+      ...prev,
+      [questionId]: {
+        ...prev[questionId],
+        loading: true,
+        error: null,
+      },
+    }));
+
+    try {
+      const result = await fetchFilteredQuestionData(
+        resolvedSurveyId,
+        questionId,
+        apiFilters,
+      );
+
+      if (result.success && result.data) {
+        setFilteredData((prev) => ({
+          ...prev,
+          [questionId]: {
+            data: result.data.data,
+            loading: false,
+            error: null,
+            appliedFilters: apiFilters,
+          },
+        }));
+      } else {
+        setFilteredData((prev) => ({
+          ...prev,
+          [questionId]: {
+            data: null,
+            loading: false,
+            error: result.error || "Erro ao carregar dados filtrados",
+            appliedFilters: apiFilters,
+          },
+        }));
+      }
+    } catch (err) {
+      setFilteredData((prev) => ({
+        ...prev,
+        [questionId]: {
+          data: null,
+          loading: false,
+          error: err?.message || "Erro ao carregar dados filtrados",
+          appliedFilters: apiFilters,
+        },
+      }));
+    }
+  }, [resolvedSurveyId]);
 
   return {
     // State (backward compatibility - direct access to object)
     questionFilters,
-    setQuestionFilters, // (questionId, filters) => void
-    setAllQuestionFilters, // (allFilters) => void
-    
+    setQuestionFilters,
+    setAllQuestionFilters,
+
     // Per-question operations
     getQuestionFilters,
     updateQuestionFilter,
     removeFilterValue,
     clearQuestionFilters,
     hasActiveFilters,
-    
+
     // Global operations
     clearAllFilters,
-    
-    // API-related (for future)
-    availableFilters: filterOptions,
-    appliedFilters,
-    isLoading,
-    error,
-    
-    // Mode
-    apiMode,
+    hasAnyActiveFilters,
+
+    // Filter definitions (API 1)
+    filterDefinitions,
+    isLoadingDefinitions,
+    definitionsError,
+
+    // Filtered data (API 2)
+    filteredData,
+    applyFilters,
+    clearFilteredData,
   };
 }

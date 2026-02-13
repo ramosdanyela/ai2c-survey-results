@@ -21,13 +21,13 @@ Este documento descreve como estruturar cada tipo de componente no JSON do relat
 
 Todo componente no JSON deve ter pelo menos:
 
-| Campo        | Tipo   | Obrigatório | Descrição                                                                                                     |
-| ------------ | ------ | ----------- | ------------------------------------------------------------------------------------------------------------- |
-| `type`       | string | Sim         | Identificador do tipo do componente (ex.: `card`, `barChart`).                                                |
-| `index`      | number | Recomendado | Ordem de renderização (menor = primeiro).                                                                     |
-| `dataPath`   | string | Condicional | Caminho para os dados no objeto da seção/subseção. Obrigatório para componentes que consomem dados dinâmicos. |
-| `config`     | object | Não         | Configurações específicas do componente (chaves do eixo, cores, etc.).                                        |
-| `components` | array  | Não         | Componentes aninhados (para `card`, `container`, `grid-container`, `accordion`).                              |
+| Campo      | Tipo    | Obrigatório | Descrição |
+|-----------|---------|-------------|-----------|
+| `type`    | string  | Sim         | Identificador do tipo do componente (ex.: `card`, `barChart`). |
+| `index`   | number  | Recomendado | Ordem de renderização (menor = primeiro). |
+| `dataPath`| string  | Condicional | Caminho para os dados no objeto da seção/subseção. Obrigatório para componentes que consomem dados dinâmicos. |
+| `config`  | object  | Não         | Configurações específicas do componente (chaves do eixo, cores, etc.). |
+| `components` | array | Não      | Componentes aninhados (para `card`, `container`, `grid-container`, `accordion`). |
 
 Exemplo mínimo:
 
@@ -476,24 +476,9 @@ Barras empilhadas MECE (segmentos que somam 100%).
 ```json
 {
   "stackedBarMECE": [
-    {
-      "option": "5",
-      "Paraná": 50.0,
-      "Rio Grande do Sul": 59.7,
-      "Santa Catarina": 52.5
-    },
-    {
-      "option": "4",
-      "Paraná": 42.9,
-      "Rio Grande do Sul": 16.4,
-      "Santa Catarina": 19.0
-    },
-    {
-      "option": "3",
-      "Paraná": 7.1,
-      "Rio Grande do Sul": 8.8,
-      "Santa Catarina": 13.2
-    }
+    { "option": "5", "Paraná": 50.0, "Rio Grande do Sul": 59.7, "Santa Catarina": 52.5 },
+    { "option": "4", "Paraná": 42.9, "Rio Grande do Sul": 16.4, "Santa Catarina": 19.0 },
+    { "option": "3", "Paraná": 7.1, "Rio Grande do Sul": 8.8, "Santa Catarina": 13.2 }
   ]
 }
 ```
@@ -1025,18 +1010,8 @@ Tabela analítica (múltiplas colunas numéricas por linha).
 ```json
 {
   "analyticalTable": [
-    {
-      "segment": "5",
-      "Paraná": 50.0,
-      "Rio Grande do Sul": 59.7,
-      "Santa Catarina": 52.5
-    },
-    {
-      "segment": "4",
-      "Paraná": 42.9,
-      "Rio Grande do Sul": 16.4,
-      "Santa Catarina": 19.0
-    }
+    { "segment": "5", "Paraná": 50.0, "Rio Grande do Sul": 59.7, "Santa Catarina": 52.5 },
+    { "segment": "4", "Paraná": 42.9, "Rio Grande do Sul": 16.4, "Santa Catarina": 19.0 }
   ]
 }
 ```

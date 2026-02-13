@@ -253,11 +253,11 @@ export const getBlueButtonShadow = () => {
  * Usar por índice: palette[index % palette.length] para repetir se houver mais de 5 cores.
  */
 export const CHART_PALETTE_MECE = [
-  "#F59E0B", // 
-  "#D97706", // 
-  "#E8A25C", // 
-  "#4A6FA5", // 
-  "#5F7F6B", // 
+  "#F59E0B", //
+  "#D97706", //
+  "#E8A25C", //
+  "#4A6FA5", //
+  "#5F7F6B", //
 ];
 
 // ============================================================================
@@ -278,12 +278,16 @@ export const CHART_COLORS = {
 
 /**
  * NPS Chart Color Mapping
- * Maps NPS category keys to their corresponding CSS variable colors
+ * Maps NPS category keys to their corresponding CSS variable colors.
+ * Supports both singular (API: Detrator, Neutro, Promotor) and plural keys.
  */
 export const NPS_COLOR_MAP = {
   Detratores: CHART_COLORS.negative,
   Neutros: CHART_COLORS.neutral,
   Promotores: CHART_COLORS.positive,
+  Detrator: CHART_COLORS.negative,
+  Neutro: CHART_COLORS.neutral,
+  Promotor: CHART_COLORS.positive,
 };
 
 /**
@@ -321,4 +325,3 @@ export const severityClassNames = {
   medium: "badge-medium",
   low: "badge-low",
 };
-

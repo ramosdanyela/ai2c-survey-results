@@ -52,7 +52,7 @@ export const SURVEY_DATA_QUERY_KEY = ["surveyData"];
  * const sectionData = secao?.data;
  */
 export const useSurveyData = () => {
-  const { data, isLoading, isError, error, isFetching, isSuccess, refetch } =
+  const { data: raw, isLoading, isError, error, isFetching, isSuccess, refetch } =
     useQuery({
       queryKey: SURVEY_DATA_QUERY_KEY,
       queryFn: fetchSurveyData,
@@ -62,8 +62,11 @@ export const useSurveyData = () => {
       retryDelay: 1000, // 1 segundo entre tentativas
     });
 
+  // Suporta resposta { data, source } (novo) ou JSON direto (legado)
+  const data = raw?.data ?? raw;
+  const source = raw?.source ?? data?.metadata?.surveyId ?? null;
+
   // Função genérica para buscar seção por ID no sections
-  // Funciona com qualquer ID, não assume nomes específicos
   const getSectionById = useMemo(() => {
     return (sectionId) => {
       if (!data?.sections || !sectionId) return null;
@@ -76,7 +79,6 @@ export const useSurveyData = () => {
   }, [data]);
 
   // Função genérica para resolver caminhos de dados
-  // Suporta: "propriedade.subpropriedade", "array[0]", "sectionData.caminho", etc.
   const resolvePath = useMemo(() => {
     return (path) => {
       if (!data || !path) return null;
@@ -85,18 +87,14 @@ export const useSurveyData = () => {
   }, [data]);
 
   return {
-    // Dados completos - Acesse qualquer propriedade diretamente
-    // Ex: data.surveyInfo, data.executiveReport, data.minhaSecaoCustomizada
     data,
-    // Estados do React Query
+    source,
     loading: isLoading,
     isFetching,
     error: isError ? error : null,
     isSuccess,
-    // Função para refetch manual
     refetch,
-    // Funções genéricas - funcionam com qualquer estrutura
-    getSectionById, // Busca seção por ID no sections
-    resolvePath, // Resolve caminhos dinâmicos (ex: "secao.subsecao.dados[0]")
+    getSectionById,
+    resolvePath,
   };
 };

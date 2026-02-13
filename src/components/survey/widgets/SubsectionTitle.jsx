@@ -40,7 +40,7 @@ export function SubsectionTitle({
           </CardTitle>
         </div>
         {summary && (
-          <CardDescription className="text-base leading-relaxed space-y-3 mt-4 text-center">
+          <CardDescription className="text-base leading-relaxed space-y-3 mt-4 pt-5 text-center">
             {breakLinesAfterPeriod(summary)
               .split("\n")
               .map((line, index) => (

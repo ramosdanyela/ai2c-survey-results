@@ -111,7 +111,7 @@ export function SchemaCard({ component, data, children, isExport = false }) {
       <CardContent className={finalTextClassName}>
         {/* Render text first if it exists */}
         {hasText && (
-          <ContentWrapper className={textBaseClassName.trim()}>
+          <ContentWrapper className={`pt-5 ${textBaseClassName}`.trim()}>
             {text.split("\n").map((line, index) => (
               <p key={index} className={line.trim() ? "" : "h-3"}>
                 {line}

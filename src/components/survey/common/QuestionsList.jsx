@@ -50,7 +50,7 @@ export function QuestionsList({
   // Use external data if provided (from schema context with sectionData), otherwise use hook data
   const data = externalData || hookData;
 
-  // Use unified hook for dynamic question filters (replaces local state)
+  // Use unified hook for dynamic question filters with programmatic API integration
   const {
     questionFilters,
     setQuestionFilters,
@@ -59,9 +59,16 @@ export function QuestionsList({
     removeFilterValue,
     clearQuestionFilters,
     hasActiveFilters,
+    clearAllFilters,
+    hasAnyActiveFilters,
+    filterDefinitions,
+    isLoadingDefinitions,
+    definitionsError,
+    filteredData,
+    applyFilters,
+    clearFilteredData,
   } = useQuestionFilters({
     data,
-    apiMode: false, // TODO: Enable when API is ready
   });
 
   const [questionFilterOpen, setQuestionFilterOpen] = useState({});
@@ -176,52 +183,100 @@ export function QuestionsList({
     (question) => {
       if (!question || !question.questionType) return null;
 
+      const questionId = question.question_id || question.id;
+      const qFilteredData = filteredData[questionId];
+
+      // Loading state: show spinner
+      if (qFilteredData?.loading) {
+        return (
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[hsl(var(--custom-blue))]" />
+            <span className="ml-3 text-muted-foreground text-sm">
+              Carregando dados filtrados...
+            </span>
+          </div>
+        );
+      }
+
+      // Error state: show error message
+      if (qFilteredData?.error) {
+        return (
+          <div className="flex items-center justify-center py-12 text-destructive">
+            <span className="text-sm">{qFilteredData.error}</span>
+          </div>
+        );
+      }
+
       // Obtém o template para o tipo da questão
       const template = getQuestionTemplate(question.questionType);
       if (!template || !Array.isArray(template) || template.length === 0) {
-        // No template found - expected for unsupported question types
         return null;
       }
 
+      // If filtered data exists, use it to override question.data
+      const effectiveQuestion = qFilteredData?.data
+        ? { ...question, data: { ...question.data, ...qFilteredData.data } }
+        : question;
+
       // Prepara o contexto de dados para os componentes
-      // Os componentes esperam que o data tenha question, surveyInfo, etc. no contexto
       const componentData = {
         ...data,
-        question, // Adiciona a questão no contexto
-        surveyInfo, // Adiciona surveyInfo no contexto
-        showWordCloud, // Adiciona showWordCloud no contexto
-        uiTexts: safeUiTexts, // Adiciona uiTexts no contexto
+        question: effectiveQuestion,
+        surveyInfo,
+        showWordCloud,
+        uiTexts: safeUiTexts,
       };
 
-      // Renderiza cada componente do template
-      return template.map((componentConfig, index) => {
-        // Renderiza o componente usando o ComponentRegistry
-        // O ComponentRegistry vai usar resolveDataPath para acessar os dados
-        return (
-          <div
-            key={`question-${question.id}-component-${componentConfig.index !== undefined ? componentConfig.index : index}`}
-          >
-            {renderComponent(
-              {
-                ...componentConfig,
-                // Garante que o index está definido
-                index:
-                  componentConfig.index !== undefined
-                    ? componentConfig.index
-                    : index,
-              },
-              componentData,
-              {
-                subSection: `responses-${question.id}`,
-                isExport: false,
-                exportWordCloud: showWordCloud,
-              },
-            )}
-          </div>
-        );
-      });
+      // Renderiza cada componente do template (skip se dados ausentes ou vazios)
+      return template
+        .map((componentConfig, index) => {
+          // Resolve o dataPath para verificar se os dados do componente existem
+          const resolvedData = resolveDataPath(
+            componentData,
+            componentConfig.dataPath,
+          );
+
+          // Nao renderiza se dados nulos/undefined
+          if (resolvedData === null || resolvedData === undefined) return null;
+
+          // Nao renderiza se array vazio
+          if (Array.isArray(resolvedData) && resolvedData.length === 0)
+            return null;
+
+          // npsScoreCard tem dataPath "question.data" (objeto inteiro) -
+          // verificar se npsScore especificamente existe
+          if (
+            componentConfig.type === "npsScoreCard" &&
+            (resolvedData.npsScore === null ||
+              resolvedData.npsScore === undefined)
+          )
+            return null;
+
+          return (
+            <div
+              key={`question-${question.id}-component-${componentConfig.index !== undefined ? componentConfig.index : index}`}
+            >
+              {renderComponent(
+                {
+                  ...componentConfig,
+                  index:
+                    componentConfig.index !== undefined
+                      ? componentConfig.index
+                      : index,
+                },
+                componentData,
+                {
+                  subSection: `responses-${question.id}`,
+                  isExport: false,
+                  exportWordCloud: showWordCloud,
+                },
+              )}
+            </div>
+          );
+        })
+        .filter(Boolean);
     },
-    [data, surveyInfo, showWordCloud, safeUiTexts],
+    [data, surveyInfo, showWordCloud, safeUiTexts, filteredData],
   );
 
   // Get all available questions filtered by selected type - MUST be before early returns
@@ -389,6 +444,42 @@ export function QuestionsList({
     }
   }, [selectedQuestionId, allAvailableQuestions]);
 
+  // Resolve question_id for API calls (questions have numeric .id and string .question_id)
+  const resolveApiQuestionId = useCallback((questionId) => {
+    const question = allAvailableQuestions.find(q => q.id === questionId);
+    return question?.question_id || questionId;
+  }, [allAvailableQuestions]);
+
+  // Handle apply filters - calls API 2 for filtered data
+  const handleApplyFilters = useCallback((questionId, filters) => {
+    const apiQuestionId = resolveApiQuestionId(questionId);
+    applyFilters(apiQuestionId, filters);
+  }, [resolveApiQuestionId, applyFilters]);
+
+  // Handle removing a filter value pill - remove from state and re-apply
+  const handleRemoveFilterValue = useCallback((questionId, filterType, value) => {
+    removeFilterValue(questionId, filterType, value);
+    // After removing, re-apply remaining filters
+    const currentFilters = (questionFilters[questionId] || [])
+      .map(f => {
+        if (f.filterType === filterType) {
+          const newValues = f.values.filter(v => v !== value);
+          return newValues.length > 0 ? { ...f, values: newValues } : null;
+        }
+        return f;
+      })
+      .filter(Boolean);
+
+    const apiQuestionId = resolveApiQuestionId(questionId);
+    applyFilters(apiQuestionId, currentFilters);
+  }, [questionFilters, removeFilterValue, resolveApiQuestionId, applyFilters]);
+
+  // Handle clearing all filters globally
+  const handleClearAllFilters = useCallback(() => {
+    clearAllFilters();
+    clearFilteredData();
+  }, [clearAllFilters, clearFilteredData]);
+
   // Loading state - AFTER all hooks
   if (loading) {
     const loadingText =
@@ -400,7 +491,6 @@ export function QuestionsList({
   const questionsFromDetails = getQuestionsFromResponseDetails();
 
   if (questionsFromDetails.length === 0 && !surveyInfo) {
-    // Missing required data - expected in some cases (e.g., loading state)
     return null;
   }
 
@@ -429,7 +519,6 @@ export function QuestionsList({
   }
 
   const handleQuestionFiltersChange = (questionId, newFilters) => {
-    // Directly set filters for the question (simpler approach)
     setQuestionFilters(questionId, newFilters);
   };
 
@@ -447,18 +536,11 @@ export function QuestionsList({
     }));
   };
 
-  // Filter options to get labels
-  const filterOptions = [
-    { value: "state", label: safeUiTexts.filterPanel.state || "Estado" },
-    {
-      value: "customerType",
-      label: safeUiTexts.filterPanel.customerType || "Tipo de Cliente",
-    },
-    {
-      value: "education",
-      label: safeUiTexts.filterPanel.education || "Educação",
-    },
-  ];
+  // Filter options derived from filterDefinitions (programmatic, from API 1)
+  const filterOptions = filterDefinitions.map((f) => ({
+    value: f.filter_id,
+    label: f.label,
+  }));
 
   // Map question types to labels using type from JSON (types: nps, open-ended, multiple-choice, single-choice)
   const questionTypeMap = {
@@ -518,8 +600,6 @@ export function QuestionsList({
     return 0;
   };
 
-  // hasActiveFilters and handleRemoveFilterValue are now provided by the hook
-
   const QuestionTypePill = ({ question }) => {
     const questionType = question.questionType || "multiple-choice";
 
@@ -566,7 +646,7 @@ export function QuestionsList({
         {filters.map((filter) => {
           const filterLabel = filterOptions.find(
             (opt) => opt.value === filter.filterType,
-          )?.label;
+          )?.label || filter.filterType;
 
           if (!filter.values || filter.values.length === 0) {
             return null;
@@ -598,6 +678,18 @@ export function QuestionsList({
 
   return (
     <div className="space-y-8 animate-fade-in">
+      {/* "Eliminar filtros" button - visible when any question has active filters */}
+      {hasAnyActiveFilters && (
+        <div className="flex justify-end">
+          <button
+            onClick={handleClearAllFilters}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium text-muted-foreground hover:text-foreground border border-border hover:border-foreground/30 transition-colors"
+          >
+            <X className="w-3.5 h-3.5" />
+            Eliminar filtros
+          </button>
+        </div>
+      )}
       <div className="grid grid-cols-1 gap-6">
         {allAvailableQuestions.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
@@ -709,13 +801,22 @@ export function QuestionsList({
                                         );
                                       }
                                     }}
-                                    className={`shrink-0 p-1.5 rounded-md transition-colors cursor-pointer ${
-                                      hasActiveFilters(question.id)
-                                        ? "bg-[hsl(var(--custom-blue))]/20 text-[hsl(var(--custom-blue))]"
-                                        : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                                    className={`shrink-0 p-1.5 rounded-md transition-colors ${
+                                      isLoadingDefinitions || definitionsError
+                                        ? "text-muted-foreground/40 cursor-not-allowed"
+                                        : hasActiveFilters(question.id)
+                                          ? "bg-[hsl(var(--custom-blue))]/20 text-[hsl(var(--custom-blue))] cursor-pointer"
+                                          : "text-muted-foreground hover:text-foreground hover:bg-muted/50 cursor-pointer"
                                     }`}
                                     aria-label={
-                                      safeUiTexts.responseDetails.filterQuestion
+                                      definitionsError
+                                        ? "Filtros indisponíveis"
+                                        : safeUiTexts.responseDetails.filterQuestion
+                                    }
+                                    title={
+                                      definitionsError
+                                        ? "Filtros indisponíveis"
+                                        : undefined
                                     }
                                   >
                                     <Filter className="w-4 h-4" />
@@ -727,12 +828,18 @@ export function QuestionsList({
                                   onClick={(e) => e.stopPropagation()}
                                 >
                                   <FilterPanel
+                                    filterDefinitions={filterDefinitions}
                                     onFiltersChange={(newFilters) =>
                                       handleQuestionFiltersChange(
                                         question.id,
                                         newFilters,
                                       )
                                     }
+                                    onApplyFilters={(filters) => {
+                                      handleQuestionFiltersChange(question.id, filters);
+                                      handleApplyFilters(question.id, filters);
+                                      handleQuestionFilterOpenChange(question.id, false);
+                                    }}
                                     questionFilter={undefined}
                                     onQuestionFilterChange={undefined}
                                     selectedQuestionId={undefined}

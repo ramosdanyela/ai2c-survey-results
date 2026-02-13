@@ -67,8 +67,8 @@ export function getBarChartConfig(component, isMobile, isExport = false) {
     config.yAxisDataKey !== undefined && config.yAxisDataKey !== ""
       ? config.yAxisDataKey
       : isDistributionChart
-      ? "segment"
-      : "label";
+        ? "segment"
+        : "label";
   const isIntentChart =
     preset === "respondentIntent" ||
     yAxisDataKey === "intent" ||
@@ -85,8 +85,8 @@ export function getBarChartConfig(component, isMobile, isExport = false) {
     config.dataKey !== undefined && config.dataKey !== ""
       ? config.dataKey
       : isDistributionChart
-      ? "percentage"
-      : "value";
+        ? "percentage"
+        : "value";
 
   // Use preset to determine chart configuration
   if (isIntentChart) {
@@ -226,7 +226,7 @@ export function SchemaBarChart({ component, data, isExport = false }) {
                       const result = chartConfig.tooltipFormatter(
                         value,
                         name,
-                        props
+                        props,
                       );
                       if (Array.isArray(result)) return result;
                       return [result, name || ""];
@@ -272,7 +272,14 @@ export function SchemaBarChart({ component, data, isExport = false }) {
   if (wrapperClassName || component.config?.preset === "distribution") {
     const centerClass = "flex items-center justify-center";
     const baseClass = "flex-shrink-0 mb-4";
-    const finalClassName = [centerClass, baseClass, wrapperClassName, exportWrapperClass].filter(Boolean).join(" ");
+    const finalClassName = [
+      centerClass,
+      baseClass,
+      wrapperClassName,
+      exportWrapperClass,
+    ]
+      .filter(Boolean)
+      .join(" ");
     const wrapperStyle =
       component.wrapperStyle ||
       (component.config?.preset === "distribution"
@@ -407,19 +414,38 @@ export function getNPSStackedChartConfig(component) {
 
 /**
  * Render an NPS stacked chart component based on schema
+ * Accepts: array from API [{ option, value, percentage }, ...] or object { Detrator: %, Neutro: %, Promotor: % }
  */
 export function SchemaNPSStackedChart({ component, data }) {
-  const chartData = resolveDataPath(data, component.dataPath, component.data);
+  const rawData = resolveDataPath(data, component.dataPath, component.data);
 
-  if (!chartData) {
+  if (!rawData) {
     return null;
   }
 
   const chartConfig = getNPSStackedChartConfig(component);
 
-  // Data format: object with Detratores/Neutros/Promotores
-  // If data is not in the expected format, return null
-  if (!chartData || typeof chartData !== "object" || Array.isArray(chartData)) {
+  // Normalize: API sends array; widget expects object { categoryName: percentage }
+  let chartData = null;
+  if (Array.isArray(rawData) && rawData.length > 0) {
+    chartData = rawData.reduce((acc, item) => {
+      const option = item?.option;
+      const pct = item?.percentage;
+      if (option != null && typeof pct === "number") {
+        acc[option] = pct;
+      }
+      return acc;
+    }, {});
+    if (Object.keys(chartData).length === 0) chartData = null;
+  } else if (
+    typeof rawData === "object" &&
+    !Array.isArray(rawData) &&
+    Object.values(rawData).some((v) => typeof v === "number")
+  ) {
+    chartData = rawData;
+  }
+
+  if (!chartData) {
     return null;
   }
 
@@ -676,7 +702,7 @@ export function SchemaEvolutionaryScorecard({ component, data }) {
   const scorecardData = resolveDataPath(
     data,
     component.dataPath,
-    component.data
+    component.data,
   );
   const config = component.config || {};
 

@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import React from "react";
 import {
   Card,
@@ -18,7 +18,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Copy, Check, BookOpen, Code, Layout, Palette } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Copy, Check, BookOpen, Code, Layout, Palette, X, List } from "lucide-react";
 import { Table as TableIcon } from "@/lib/icons";
 import {
   componentRegistry,
@@ -32,6 +34,21 @@ import {
 import { enrichComponentWithStyles } from "@/services/styleResolver";
 import { resolveDataPath } from "@/services/dataResolver";
 import { useSurveyData } from "@/hooks/useSurveyData";
+import {
+  getSupportedQuestionTypes,
+  questionTypeTemplates,
+} from "@/config/questionTemplates";
+import { componentCategories } from "@/config/componentCategories";
+import { basicStructure } from "@/config/jsonStructureSchema";
+import { cardExamples } from "@/config/cardExamples";
+import {
+  metadataFields,
+  componentFields,
+  sectionFields,
+  subsectionFields,
+  questionFields,
+  surveyInfoFields,
+} from "@/config/fieldsReference";
 
 /**
  * Página de Referência do JSON Schema
@@ -39,7 +56,7 @@ import { useSurveyData } from "@/hooks/useSurveyData";
  */
 export default function JsonReference() {
   const [copiedCode, setCopiedCode] = useState(null);
-  const { data: surveyDataJson, loading } = useSurveyData();
+  const { data: surveyDataJson, loading, source: dataSourceLabel } = useSurveyData();
 
   // Hooks precisam ser chamados antes de qualquer return condicional (Rules of Hooks)
   // sectionData pode vir de section.data e/ou de subsection.data; sempre procurar primeiro em sectionData
@@ -294,6 +311,12 @@ export default function JsonReference() {
     return registryTypes.filter((t) => !used.has(t));
   }, [extractComponentData.usedDataPathTypes]);
 
+  // Estado dos filtros da aba Data Path unificada
+  // Tipo = categoria (Charts, Cards, Tables, Widgets, Containers, Outros)
+  // Nome = tipo do componente (barChart, card, recommendationsTable, ...)
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedNames, setSelectedNames] = useState([]);
+
   const extractConfigData = useMemo(() => {
     const sections = surveyDataJson?.sections || [];
     const allConfigs = [];
@@ -327,168 +350,49 @@ export default function JsonReference() {
     };
   }, [surveyDataJson]);
 
+  /** Campos de componente enriquecidos com valores dos extract* (aba Campos) */
+  const enrichedComponentFields = useMemo(() => {
+    return componentFields.map((field) => {
+      const f = { ...field };
+      if (field.name === "type") {
+        f.values = extractComponentData.types.length > 0 ? extractComponentData.types : null;
+        f.valuesByCategory = extractComponentData.typeCategories;
+      } else if (field.name === "index") {
+        f.values = extractComponentData.indexes.length > 0 ? extractComponentData.indexes : null;
+      } else if (field.name === "dataPath") {
+        f.values = extractComponentData.dataPaths.length > 0 ? extractComponentData.dataPaths : null;
+      } else if (field.name === "config") {
+        f.configValues = extractConfigData;
+      } else if (field.name === "title") {
+        f.values = extractComponentData.titles.length > 0 ? extractComponentData.titles.slice(0, 10) : null;
+        f.hasMore = extractComponentData.titles.length > 10;
+      } else if (field.name === "text") {
+        f.values = extractComponentData.texts.length > 0 ? extractComponentData.texts : null;
+      } else if (field.name === "cardStyleVariant") {
+        f.values = extractComponentData.cardStyleVariants.length > 0 ? extractComponentData.cardStyleVariants : null;
+      } else if (field.name === "cardContentVariant") {
+        f.values = extractComponentData.cardContentVariantsList.length > 0 ? extractComponentData.cardContentVariantsList : null;
+      } else if (field.name === "titleStyleVariant") {
+        f.values = null;
+      } else if (field.name === "useDescription") {
+        f.values = extractComponentData.useDescription.length > 0 ? extractComponentData.useDescription : [false];
+      } else if (field.name === "components") {
+        f.values = null;
+      }
+      return f;
+    });
+  }, [extractComponentData, extractConfigData]);
+
   const copyToClipboard = (text, id) => {
     navigator.clipboard.writeText(text);
     setCopiedCode(id);
     setTimeout(() => setCopiedCode(null), 2000);
   };
 
-  // Estrutura básica do JSON
-  const basicStructure = {
-    metadata: {
-      version: "string",
-      language: "string",
-      surveyId: "string",
-    },
-    sections: [
-      {
-        id: "string (único)",
-        index: "number",
-        name: "string",
-        icon: "string (nome do ícone)",
-        subsections: [
-          {
-            id: "string (único)",
-            index: "number",
-            name: "string",
-            icon: "string",
-            components: [],
-            data: {
-              // Dados específicos da subseção (opcional)
-            },
-          },
-        ],
-        components: [],
-        questions: [],
-        data: {
-          // Dados específicos da seção (opcional)
-        },
-      },
-    ],
-    uiTexts: {
-      filterPanel: {},
-      export: {},
-      common: {},
-    },
-    surveyInfo: {
-      title: "string",
-      company: "string",
-      period: "string",
-      totalRespondents: "number",
-      responseRate: "number",
-      questions: "number",
-    },
-  };
-
-  // Todos os componentes disponíveis
+  // Todos os componentes disponíveis (registry é a fonte única)
   const allComponents = Object.keys(componentRegistry);
 
-  // Categorias de componentes
-  const componentCategories = {
-    Charts: [
-      "barChart",
-      "sentimentDivergentChart",
-      "sentimentThreeColorChart",
-      "npsStackedChart",
-      "lineChart",
-      "paretoChart",
-      "scatterPlot",
-      "histogram",
-      "quadrantChart",
-      "heatmap",
-      "sankeyDiagram",
-      "stackedBarMECE",
-      "evolutionaryScorecard",
-      "slopeGraph",
-      "waterfallChart",
-    ],
-    Cards: ["card", "npsScoreCard", "topCategoriesCards", "kpiCard"],
-    Tables: [
-      "recommendationsTable",
-      "segmentationTable",
-      "distributionTable",
-      "sentimentTable",
-      "npsDistributionTable",
-      "npsTable",
-      "sentimentImpactTable",
-      "positiveCategoriesTable",
-      "negativeCategoriesTable",
-      "analyticalTable",
-    ],
-    Widgets: ["filterPills", "wordCloud"],
-    Containers: ["container", "grid-container"],
-  };
-
-  // Exemplos de cards
-  const cardExamples = {
-    basic: {
-      type: "card",
-      index: 0,
-      title: "Título do Card",
-      text: "Texto do card com suporte a quebras de linha.\nSegunda linha.",
-      cardStyleVariant: "default",
-    },
-    withDescription: {
-      type: "card",
-      index: 0,
-      useDescription: true,
-      text: "Texto usando CardDescription component",
-      cardStyleVariant: "default",
-      cardContentVariant: "with-description",
-    },
-    borderLeft: {
-      type: "card",
-      index: 0,
-      title: "Card com Borda",
-      text: "Card com borda laranja à esquerda",
-      cardStyleVariant: "border-left",
-    },
-    withNested: {
-      type: "card",
-      index: 0,
-      title: "Card com Componentes",
-      text: "Card que contém outros componentes",
-      cardStyleVariant: "default",
-      components: [
-        {
-          type: "barChart",
-          index: 0,
-          dataPath: "sectionData.data",
-          config: {},
-        },
-      ],
-    },
-    overflowHidden: {
-      type: "card",
-      index: 0,
-      title: "",
-      text: "",
-      cardStyleVariant: "overflow-hidden",
-      components: [
-        {
-          type: "recommendationsTable",
-          index: 0,
-          dataPath: "sectionData.recommendationsTable",
-        },
-      ],
-    },
-    flexColumn: {
-      type: "card",
-      index: 0,
-      title: "Card Flex Column",
-      cardStyleVariant: "flex-column",
-      cardContentVariant: "with-charts",
-      components: [
-        {
-          type: "barChart",
-          index: 0,
-          dataPath: "sectionData.data",
-        },
-      ],
-    },
-  };
-
-  // StyleVariants disponíveis
+  // StyleVariants disponíveis (variants.js é a fonte única)
   const cardStyleVariants = Object.keys(cardVariants);
   const cardContentVariantsList = Object.keys(cardContentVariants);
   const titleStyleVariants = Object.keys(cardTitleVariants);
@@ -809,6 +713,83 @@ export default function JsonReference() {
 
   /** Dados hipotéticos para renderizar componentes da aba Data Path (other) */
   const otherComponentExampleData = useMemo(() => {
+    // barChart: array com label/option e value/percentage
+    const barChart = {
+      component: {
+        type: "barChart",
+        index: 0,
+        dataPath: "sectionData.barChart",
+        config: { dataKey: "percentage", yAxisDataKey: "option" },
+      },
+      data: {
+        sectionData: {
+          barChart: [
+            { option: "Muito bom", value: 221, percentage: 26 },
+            { option: "Bom", value: 221, percentage: 26 },
+            { option: "Regular", value: 238, percentage: 28 },
+            { option: "Ruim", value: 136, percentage: 16 },
+            { option: "Muito ruim", value: 34, percentage: 4 },
+          ],
+        },
+      },
+    };
+    // sentimentDivergentChart: array de { category, positive, negative } — estrutura esperada no JSON
+    const sentimentDivergentChart = {
+      component: {
+        type: "sentimentDivergentChart",
+        index: 0,
+        dataPath: "sectionData.sentimentDivergentChart",
+        config: { yAxisDataKey: "category" },
+      },
+      data: {
+        sectionData: {
+          sentimentDivergentChart: [
+            { category: "serviço de rede", positive: 10.5, negative: 38.1 },
+            { category: "suporte ao cliente", positive: 6.4, negative: 10.5 },
+            { category: "cobertura de rede", positive: 1.8, negative: 13.6 },
+            { category: "oferta e preços", positive: 3.3, negative: 6.6 },
+          ],
+        },
+      },
+    };
+
+    // sentimentThreeColorChart: sentimentes com chaves do SENTIMENT_COLOR_MAP para cores padrão (Negativo, Não aplicável, Positivo)
+    const sentimentThreeColorChart = {
+      component: {
+        type: "sentimentThreeColorChart",
+        index: 0,
+        dataPath: "sectionData.sentimentThreeColorChart",
+        config: {},
+      },
+      data: {
+        sectionData: {
+          sentimentThreeColorChart: [
+            { sentiment: "Negativo", "Segmento A": 35, "Segmento B": 42, "Segmento C": 28 },
+            { sentiment: "Não aplicável", "Segmento A": 30, "Segmento B": 25, "Segmento C": 40 },
+            { sentiment: "Positivo", "Segmento A": 35, "Segmento B": 33, "Segmento C": 32 },
+          ],
+        },
+      },
+    };
+    // npsStackedChart: array de { option, value, percentage } (Detrator, Neutro, Promotor)
+    const npsStackedChart = {
+      component: {
+        type: "npsStackedChart",
+        index: 0,
+        dataPath: "sectionData.npsStackedChart",
+        config: {},
+      },
+      data: {
+        sectionData: {
+          npsStackedChart: [
+            { option: "Detrator", value: 51, percentage: 51.0 },
+            { option: "Neutro", value: 19, percentage: 19.0 },
+            { option: "Promotor", value: 30, percentage: 30.0 },
+          ],
+        },
+      },
+    };
+
     const lineChart = {
       component: {
         type: "lineChart",
@@ -1157,7 +1138,154 @@ export default function JsonReference() {
         },
       },
     };
+
+    // Tables que faltavam: mocks para aba Data Path (cabeçalho + section data)
+    const recommendationsTable = {
+      component: {
+        type: "recommendationsTable",
+        index: 0,
+        dataPath: "sectionData.recommendationsTable",
+        config: {
+          severityLabels: { high: "Alto", medium: "Médio", low: "Baixo", critical: "Crítico" },
+        },
+      },
+      data: {
+        sectionData: {
+          recommendationsTable: {
+            config: {
+              severityLabels: { high: "Alto", medium: "Médio", low: "Baixo", critical: "Crítico" },
+            },
+            items: [
+              {
+                id: "rec1",
+                recommendation: "Priorize a resolução de problemas de velocidade e estabilidade da rede",
+                severity: "high",
+                stakeholders: ["Operações de Rede", "Engenharia"],
+                tasks: [
+                  { task: "Auditoria de desempenho da rede", owner: "Operações" },
+                  { task: "Implementar melhorias identificadas", owner: "Engenharia" },
+                ],
+              },
+              {
+                id: "rec2",
+                recommendation: "Reforce o suporte ao cliente nos canais digitais",
+                severity: "medium",
+                stakeholders: ["Atendimento"],
+                tasks: [{ task: "Capacitar equipe em novos canais", owner: "Atendimento" }],
+              },
+            ],
+          },
+        },
+      },
+    };
+    const segmentationTable = {
+      component: {
+        type: "segmentationTable",
+        index: 0,
+        dataPath: "sectionData.segmentationTable",
+        config: {},
+      },
+      data: {
+        sectionData: {
+          segmentationTable: [
+            { cluster: "Passivo — serviço de rede", percent: 25, description: "Clientes insatisfeitos com a rede" },
+            { cluster: "Neutro — preço", percent: 40, description: "Avaliam preço como regular" },
+            { cluster: "Promotor — atendimento", percent: 35, description: "Satisfeitos com o suporte" },
+          ],
+        },
+      },
+    };
+    const npsDistributionTable = {
+      component: {
+        type: "npsDistributionTable",
+        index: 0,
+        dataPath: "sectionData.npsDistributionTable",
+        config: { yAxisDataKey: "segment" },
+      },
+      data: {
+        sectionData: {
+          npsDistributionTable: [
+            { segment: "Paraná", promoters: 57.9, neutrals: 21.1, detractors: 21.1 },
+            { segment: "Rio Grande do Sul", promoters: 69.0, neutrals: 14.4, detractors: 16.6 },
+            { segment: "Santa Catarina", promoters: 55.3, neutrals: 22.4, detractors: 22.4 },
+          ],
+        },
+      },
+    };
+    const npsTable = {
+      component: {
+        type: "npsTable",
+        index: 0,
+        dataPath: "sectionData.npsTable",
+        config: { dataKey: "NPS", yAxisDataKey: "segment" },
+      },
+      data: {
+        sectionData: {
+          npsTable: [
+            { segment: "Paraná", NPS: 36.8 },
+            { segment: "Rio Grande do Sul", NPS: 52.4 },
+            { segment: "Santa Catarina", NPS: 29.4 },
+          ],
+        },
+      },
+    };
+    const sentimentImpactTable = {
+      component: {
+        type: "sentimentImpactTable",
+        index: 0,
+        dataPath: "sectionData.satisfactionImpactSentimentTable",
+        config: {},
+      },
+      data: {
+        sectionData: {
+          satisfactionImpactSentimentTable: [
+            { sentiment: "negativo", "Segmento A": 58.8, "Segmento B": 49.4, "Segmento C": 62.6 },
+            { sentiment: "não aplicável", "Segmento A": 0.0, "Segmento B": 0.0, "Segmento C": 0.3 },
+            { sentiment: "positivo", "Segmento A": 41.2, "Segmento B": 50.6, "Segmento C": 37.1 },
+          ],
+        },
+      },
+    };
+    const positiveCategoriesTable = {
+      component: {
+        type: "positiveCategoriesTable",
+        index: 0,
+        dataPath: "sectionData.positiveCategoriesTable",
+        config: {},
+      },
+      data: {
+        sectionData: {
+          positiveCategoriesTable: [
+            { category: "suporte ao cliente", mentions: 50, percentage: 47.1 },
+            { category: "atendimento", mentions: 35, percentage: 32.9 },
+            { category: "resolução de problemas", mentions: 21, percentage: 19.8 },
+          ],
+        },
+      },
+    };
+    const negativeCategoriesTable = {
+      component: {
+        type: "negativeCategoriesTable",
+        index: 0,
+        dataPath: "sectionData.negativeCategoriesTable",
+        config: {},
+      },
+      data: {
+        sectionData: {
+          negativeCategoriesTable: [
+            { category: "serviço de rede", mentions: 30, percentage: 35.0 },
+            { category: "preço", mentions: 22, percentage: 25.6 },
+            { category: "cobertura", mentions: 18, percentage: 20.9 },
+          ],
+        },
+      },
+    };
+
     return {
+      barChart,
+      sentimentDivergentChart,
+      sentimentThreeColorChart,
+      npsStackedChart,
       lineChart,
       paretoChart,
       scatterPlot,
@@ -1177,6 +1305,13 @@ export default function JsonReference() {
       analyticalTable,
       filterPills,
       wordCloud,
+      recommendationsTable,
+      segmentationTable,
+      npsDistributionTable,
+      npsTable,
+      sentimentImpactTable,
+      positiveCategoriesTable,
+      negativeCategoriesTable,
     };
   }, []);
 
@@ -1204,6 +1339,126 @@ export default function JsonReference() {
       null,
       2
     );
+  };
+
+  // Mapa: tipo do componente → categoria (Tipo no filtro = chart, card, table, ...)
+  const getCategoryForComponentType = (componentType) => {
+    for (const [cat, types] of Object.entries(componentCategories)) {
+      if (types.includes(componentType)) return cat;
+    }
+    return "Outros";
+  };
+
+  // Lista unificada para aba Data Path (used + other): um único modelo por tipo de componente
+  const unifiedList = useMemo(() => {
+    const items = [];
+    const seenTypes = new Set();
+    const { pathsByType = {}, componentSpecByType = {} } = extractComponentData;
+    // Used: um item por tipo de componente (primeiro dataPath como modelo)
+    // Sempre que existir mock em otherComponentExampleData, usar para exibir JSON completo (cabeçalho + section data)
+    Object.keys(pathsByType || {}).forEach((componentType) => {
+      const paths = pathsByType[componentType] || [];
+      const dataPath = paths[0] || "—";
+      const spec = componentSpecByType[componentType];
+      const category = getCategoryForComponentType(componentType);
+      const exampleData = otherComponentExampleData[componentType];
+      const hasMock = exampleData?.data?.sectionData != null;
+      const component = hasMock
+        ? { ...exampleData.component, dataPath: exampleData.component.dataPath }
+        : spec
+          ? { ...spec, dataPath }
+          : { type: componentType, index: 0, dataPath };
+      const dataForRender = hasMock
+        ? { ...realData, sectionData: { ...mergedSectionData, ...exampleData.data.sectionData } }
+        : { ...realData, sectionData: { ...mergedSectionData } };
+      items.push({
+        type: componentType,
+        category,
+        dataPath,
+        origin: "used",
+        component,
+        dataForRender,
+        exampleStr: hasMock && exampleData
+          ? JSON.stringify(
+              { component: exampleData.component, data: exampleData.data },
+              null,
+              2
+            )
+          : JSON.stringify(
+              { component, data: { sectionData: "(dados da seção/subseção)" } },
+              null,
+              2
+            ),
+      });
+      seenTypes.add(componentType);
+    });
+    // Other: excluir apenas tipos que não são Chart/Table/Card (ex.: Widgets sem modelo dataPath simples)
+    // Assim todos os Charts, Tables e Cards do registry aparecem na aba Data Path (used ou other).
+    const otherFilterExclude = new Set(["accordion", "questionsList"]);
+    otherDataPathTypes.forEach((componentType) => {
+      if (otherFilterExclude.has(componentType) || seenTypes.has(componentType)) return;
+      seenTypes.add(componentType);
+      const exampleData = otherComponentExampleData[componentType];
+      const dataPath = exampleData?.component?.dataPath || `sectionData.${componentType}`;
+      const category = getCategoryForComponentType(componentType);
+      const dataForRender = exampleData?.data?.sectionData != null
+        ? { ...realData, sectionData: { ...mergedSectionData, ...exampleData.data.sectionData } }
+        : realData;
+      items.push({
+        type: componentType,
+        category,
+        dataPath,
+        origin: "other",
+        component: exampleData?.component || { type: componentType, index: 0, dataPath, config: {} },
+        dataForRender,
+        exampleStr: getOtherComponentExample(componentType),
+      });
+    });
+    return items;
+  }, [extractComponentData, otherDataPathTypes, otherComponentExampleData, realData, mergedSectionData]);
+
+  // Opções do dropdown Tipo (categorias: Charts, Cards, Tables, ...) presentes na lista
+  const categoriesForDropdown = useMemo(() => {
+    const order = ["Charts", "Cards", "Tables", "Widgets", "Containers", "Outros"];
+    const present = [...new Set(unifiedList.map((i) => i.category))];
+    return order.filter((c) => present.includes(c));
+  }, [unifiedList]);
+
+  // Opções do dropdown Nome (nomes dos componentes: barChart, card, ...); filtradas por categorias selecionadas
+  const namesForDropdown = useMemo(() => {
+    if (selectedCategories.length === 0) {
+      return [...new Set(unifiedList.map((i) => i.type))].sort();
+    }
+    const catSet = new Set(selectedCategories);
+    return [...new Set(unifiedList.filter((i) => catSet.has(i.category)).map((i) => i.type))].sort();
+  }, [unifiedList, selectedCategories]);
+
+  // Sincronizar selectedNames ao desmarcar categoria
+  useEffect(() => {
+    if (selectedCategories.length === 0) return;
+    const validNames = new Set(
+      unifiedList.filter((i) => selectedCategories.includes(i.category)).map((i) => i.type)
+    );
+    setSelectedNames((prev) => prev.filter((n) => validNames.has(n)));
+  }, [selectedCategories, unifiedList]);
+
+  // Lista filtrada: por Tipo (categoria) e por Nome (tipo do componente)
+  const filteredList = useMemo(() => {
+    let list = unifiedList;
+    if (selectedCategories.length > 0) {
+      const catSet = new Set(selectedCategories);
+      list = list.filter((i) => catSet.has(i.category));
+    }
+    if (selectedNames.length > 0) {
+      const nameSet = new Set(selectedNames);
+      list = list.filter((i) => nameSet.has(i.type));
+    }
+    return list;
+  }, [unifiedList, selectedCategories, selectedNames]);
+
+  const clearDataPathFilters = () => {
+    setSelectedCategories([]);
+    setSelectedNames([]);
   };
 
   // Mostra loading enquanto os dados não carregam (sempre depois de todos os hooks)
@@ -1277,7 +1532,7 @@ export default function JsonReference() {
                 Referência completa de todos os campos, estruturas e componentes
                 disponíveis no JSON. Baseado em:{" "}
                 <code className="bg-muted px-1.5 py-0.5 rounded text-xs">
-                  json_file_app_05-02.json
+                  {dataSourceLabel ?? "—"}
                 </code>
               </CardDescription>
             </div>
@@ -1292,9 +1547,9 @@ export default function JsonReference() {
               <Code className="w-4 h-4 mr-2" />
               Data Path
             </TabsTrigger>
-            <TabsTrigger value="datapath-other">
-              <Code className="w-4 h-4 mr-2" />
-              Data Path (other)
+            <TabsTrigger value="inventario">
+              <List className="w-4 h-4 mr-2" />
+              Inventário
             </TabsTrigger>
             <TabsTrigger value="structure">
               <Code className="w-4 h-4 mr-2" />
@@ -1643,123 +1898,37 @@ export default function JsonReference() {
               <CardHeader>
                 <CardTitle>Campos e Propriedades</CardTitle>
                 <CardDescription>
-                  Referência completa de todos os campos disponíveis
+                  Referência dos campos que o código aceita (metadata, sections, components, questions, uiTexts, surveyInfo).
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
-                  {/* Campos de Componente */}
+                  {/* Campos de metadata */}
                   <div className="space-y-3">
+                    <h3 className="font-semibold text-lg">Campos de metadata (raiz)</h3>
+                    <div className="space-y-2">
+                      {metadataFields.map((field) => (
+                        <div key={field.name} className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg">
+                          <div className="flex flex-col gap-1 min-w-[120px]">
+                            <code className="text-sm font-mono font-semibold">{field.name}</code>
+                            <Badge variant="destructive" className="text-xs w-fit">Obrigatório</Badge>
+                          </div>
+                          <div className="flex-1">
+                            <Badge variant="secondary" className="text-xs">{field.type}</Badge>
+                            <p className="text-sm text-muted-foreground mt-1">{field.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Campos de Componente */}
+                    <div className="space-y-3">
                     <h3 className="font-semibold text-lg">
                       Campos Comuns de Componentes
                     </h3>
                     <div className="space-y-2">
-                      {[
-                        {
-                          name: "type",
-                          required: true,
-                          type: "string",
-                          desc: "Tipo do componente (obrigatório)",
-                          values:
-                            extractComponentData.types.length > 0
-                              ? extractComponentData.types
-                              : null,
-                          valuesByCategory: extractComponentData.typeCategories,
-                        },
-                        {
-                          name: "index",
-                          required: false,
-                          type: "number",
-                          desc: "Ordem de renderização",
-                          values:
-                            extractComponentData.indexes.length > 0
-                              ? extractComponentData.indexes
-                              : null,
-                        },
-                        {
-                          name: "dataPath",
-                          required: false,
-                          type: "string",
-                          desc: "Caminho para os dados (ex: 'sectionData.data')",
-                          values:
-                            extractComponentData.dataPaths.length > 0
-                              ? extractComponentData.dataPaths
-                              : null,
-                        },
-                        {
-                          name: "config",
-                          required: false,
-                          type: "object",
-                          desc: "Configurações específicas do componente",
-                          configValues: extractConfigData,
-                        },
-                        {
-                          name: "title",
-                          required: false,
-                          type: "string",
-                          desc: "Título do componente",
-                          values:
-                            extractComponentData.titles.length > 0
-                              ? extractComponentData.titles.slice(0, 10)
-                              : null,
-                          hasMore: extractComponentData.titles.length > 10,
-                        },
-                        {
-                          name: "text",
-                          required: false,
-                          type: "string",
-                          desc: "Texto do componente (suporta \\n para quebras)",
-                          values:
-                            extractComponentData.texts.length > 0
-                              ? extractComponentData.texts
-                              : null,
-                        },
-                        {
-                          name: "cardStyleVariant",
-                          required: false,
-                          type: "string",
-                          desc: "Variante de estilo do card",
-                          values:
-                            extractComponentData.cardStyleVariants.length > 0
-                              ? extractComponentData.cardStyleVariants
-                              : null,
-                        },
-                        {
-                          name: "cardContentVariant",
-                          required: false,
-                          type: "string",
-                          desc: "Variante de estilo do conteúdo",
-                          values:
-                            extractComponentData.cardContentVariantsList
-                              .length > 0
-                              ? extractComponentData.cardContentVariantsList
-                              : null,
-                        },
-                        {
-                          name: "titleStyleVariant",
-                          required: false,
-                          type: "string",
-                          desc: "Variante de estilo do título",
-                          values: null,
-                        },
-                        {
-                          name: "useDescription",
-                          required: false,
-                          type: "boolean",
-                          desc: "Usar CardDescription ao invés de div",
-                          values:
-                            extractComponentData.useDescription.length > 0
-                              ? extractComponentData.useDescription
-                              : [false],
-                        },
-                        {
-                          name: "components",
-                          required: false,
-                          type: "array",
-                          desc: "Componentes aninhados",
-                          values: null,
-                        },
-                      ].map((field) => (
+                      {enrichedComponentFields.map((field) => (
                         <div
                           key={field.name}
                           className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg"
@@ -1951,62 +2120,10 @@ export default function JsonReference() {
                   <div className="space-y-3">
                     <h3 className="font-semibold text-lg">Campos de Seção</h3>
                     <div className="space-y-2">
-                      {[
-                        {
-                          name: "id",
-                          required: true,
-                          type: "string",
-                          desc: "Identificador único da seção",
-                          values:
-                            extractSectionData.ids.length > 0
-                              ? extractSectionData.ids
-                              : null,
-                        },
-                        {
-                          name: "index",
-                          required: false,
-                          type: "number",
-                          desc: "Ordem de exibição",
-                          values:
-                            extractSectionData.indexes.length > 0
-                              ? extractSectionData.indexes
-                              : null,
-                        },
-                        {
-                          name: "name",
-                          required: false,
-                          type: "string",
-                          desc: "Nome exibido da seção",
-                          values:
-                            extractSectionData.names.length > 0
-                              ? extractSectionData.names
-                              : null,
-                        },
-                        {
-                          name: "icon",
-                          required: false,
-                          type: "string",
-                          desc: "Nome do ícone (lucide-react)",
-                          values:
-                            extractSectionData.icons.length > 0
-                              ? extractSectionData.icons
-                              : null,
-                        },
-                        {
-                          name: "subsections",
-                          required: false,
-                          type: "array",
-                          desc: "Array de subseções",
-                          values: null,
-                        },
-                        {
-                          name: "data",
-                          required: false,
-                          type: "object",
-                          desc: "Dados específicos da seção",
-                          values: null,
-                        },
-                      ].map((field) => (
+                      {sectionFields.map((field) => ({
+                        ...field,
+                        values: field.valuesKey ? extractSectionData[field.valuesKey] : null,
+                      })).map((field) => (
                         <div
                           key={field.name}
                           className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg"
@@ -2092,62 +2209,10 @@ export default function JsonReference() {
                       Campos de Subseção
                     </h3>
                     <div className="space-y-2">
-                      {[
-                        {
-                          name: "id",
-                          required: true,
-                          type: "string",
-                          desc: "Identificador único da subseção",
-                          values:
-                            extractSubsectionData.ids.length > 0
-                              ? extractSubsectionData.ids
-                              : null,
-                        },
-                        {
-                          name: "index",
-                          required: false,
-                          type: "number",
-                          desc: "Ordem de exibição",
-                          values:
-                            extractSubsectionData.indexes.length > 0
-                              ? extractSubsectionData.indexes
-                              : null,
-                        },
-                        {
-                          name: "name",
-                          required: false,
-                          type: "string",
-                          desc: "Nome exibido da subseção",
-                          values:
-                            extractSubsectionData.names.length > 0
-                              ? extractSubsectionData.names
-                              : null,
-                        },
-                        {
-                          name: "icon",
-                          required: false,
-                          type: "string",
-                          desc: "Nome do ícone (lucide-react)",
-                          values:
-                            extractSubsectionData.icons.length > 0
-                              ? extractSubsectionData.icons
-                              : null,
-                        },
-                        {
-                          name: "components",
-                          required: false,
-                          type: "array",
-                          desc: "Array de componentes",
-                          values: null,
-                        },
-                        {
-                          name: "data",
-                          required: false,
-                          type: "object",
-                          desc: "Dados específicos da subseção",
-                          values: null,
-                        },
-                      ].map((field) => (
+                      {subsectionFields.map((field) => ({
+                        ...field,
+                        values: field.valuesKey ? extractSubsectionData[field.valuesKey] : null,
+                      })).map((field) => (
                         <div
                           key={field.name}
                           className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg"
@@ -2226,6 +2291,51 @@ export default function JsonReference() {
                       ))}
                     </div>
                   </div>
+
+                  {/* Campos de Questão (seção responses) */}
+                  <div className="space-y-3">
+                    <h3 className="font-semibold text-lg">Campos de Questão (section.questions[])</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Tipos aceitos: <code className="bg-muted px-1 rounded text-xs">{getSupportedQuestionTypes().join(", ")}</code> (definidos em <code className="bg-muted px-1 rounded text-xs">questionTemplates.js</code>).
+                    </p>
+                    <div className="space-y-2">
+                      {questionFields.map((field) => (
+                        <div key={field.name} className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg">
+                          <div className="flex flex-col gap-1 min-w-[120px]">
+                            <code className="text-sm font-mono font-semibold">{field.name}</code>
+                            <Badge variant={field.required ? "destructive" : "outline"} className="text-xs w-fit">
+                              {field.required ? "Obrigatório" : "Opcional"}
+                            </Badge>
+                          </div>
+                          <div className="flex-1">
+                            <Badge variant="secondary" className="text-xs">{field.type}</Badge>
+                            <p className="text-sm text-muted-foreground mt-1">{field.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Campos de surveyInfo e uiTexts */}
+                  <div className="space-y-3">
+                    <h3 className="font-semibold text-lg">surveyInfo e uiTexts (raiz)</h3>
+                    <div className="space-y-2">
+                      <div className="p-3 bg-muted/30 rounded-lg">
+                        <code className="text-sm font-mono font-semibold">surveyInfo</code>
+                        <Badge variant="outline" className="text-xs ml-2">object</Badge>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          title, company, period, totalRespondents, responseRate, questions, nps, npsCategory. Usado em cabeçalhos e export.
+                        </p>
+                      </div>
+                      <div className="p-3 bg-muted/30 rounded-lg">
+                        <code className="text-sm font-mono font-semibold">uiTexts</code>
+                        <Badge variant="outline" className="text-xs ml-2">object</Badge>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          Textos da interface: filterPanel, export, common, responseDetails, attributeDeepDive, etc. Resolvidos via <code className="bg-muted px-0.5 rounded text-xs">uiTexts.*</code> no dataResolver.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -2233,12 +2343,81 @@ export default function JsonReference() {
 
           {/* TABELAS DE VALORES */}
           <TabsContent value="tables" className="space-y-6">
+            {/* Tipos aceitos pelo código */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Tipos de componente aceitos pelo código (registry)</CardTitle>
+                <CardDescription>
+                  Lista canônica do <code className="bg-muted px-1 rounded text-xs">ComponentRegistry</code>. O JSON pode usar qualquer um destes tipos.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Categoria</TableHead>
+                        <TableHead>Tipos</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {Object.entries(componentCategories).map(([cat, types]) => (
+                        <TableRow key={cat}>
+                          <TableCell><Badge variant="secondary">{cat}</Badge></TableCell>
+                          <TableCell>
+                            <div className="flex flex-wrap gap-1">
+                              {types.map((t) => (
+                                <code key={t} className="bg-muted px-1.5 py-0.5 rounded text-xs">{t}</code>
+                              ))}
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Tipos de questão aceitos (questionTemplates)</CardTitle>
+                <CardDescription>
+                  <code className="bg-muted px-1 rounded text-xs">questionType</code> em <code className="bg-muted px-1 rounded text-xs">section.questions[]</code> deve ser um destes valores.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>questionType</TableHead>
+                        <TableHead>Componentes do template</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {getSupportedQuestionTypes().map((qt) => {
+                        const template = questionTypeTemplates[qt] || [];
+                        const comps = template.map((c) => c.type).join(", ");
+                        return (
+                          <TableRow key={qt}>
+                            <TableCell><code className="bg-muted px-1.5 py-0.5 rounded text-xs">{qt}</code></TableCell>
+                            <TableCell className="text-sm text-muted-foreground">{comps || "—"}</TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Tabela de Campos de Seção */}
             <Card>
               <CardHeader>
                 <CardTitle>Campos de Seção - Valores no JSON</CardTitle>
                 <CardDescription>
-                  Todos os valores únicos encontrados para campos de seção
+                  Valores únicos encontrados no JSON carregado para campos de seção
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -2329,7 +2508,7 @@ export default function JsonReference() {
               <CardHeader>
                 <CardTitle>Campos de Subseção - Valores no JSON</CardTitle>
                 <CardDescription>
-                  Todos os valores únicos encontrados para campos de subseção
+                  Valores únicos encontrados no JSON carregado para campos de subseção
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -2418,7 +2597,7 @@ export default function JsonReference() {
               <CardHeader>
                 <CardTitle>Campos de Componente - Valores no JSON</CardTitle>
                 <CardDescription>
-                  Todos os valores únicos encontrados para campos de componentes
+                  Valores únicos encontrados no JSON carregado para campos de componentes
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -2703,1540 +2882,209 @@ export default function JsonReference() {
             </Card>
           </TabsContent>
 
-          {/* DATA PATH - EXEMPLOS DE ESTRUTURAS */}
+          {/* DATA PATH - Unificado (used + other) com filtros */}
           <TabsContent value="datapath" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>Data Path — Componentes usados no JSON</CardTitle>
+                <CardTitle>Data Path</CardTitle>
                 <CardDescription>
-                  Componentes e dataPaths que aparecem em{" "}
-                  <code className="bg-muted px-1.5 py-0.5 rounded text-xs">
-                    json_file_app_05-02.json
-                  </code>
-                  . Use como referência para estruturar o relatório.
+                  Componentes e dataPaths usados no JSON e disponíveis no registry.
+                  Filtre por tipo e nome.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-8">
-                  {/* GRÁFICOS */}
-                  <div className="space-y-4">
-                    <h3 className="font-semibold text-xl">Gráficos (Charts)</h3>
-
-                    {/* BarChart */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-lg">barChart</h4>
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="space-y-4">
+                  {/* Filtros: Tipo e Nome com pills */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button variant="outline" size="sm" className="h-9">
+                          Tipo {selectedCategories.length > 0 ? `(${selectedCategories.length})` : ""}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-48 max-h-80 overflow-y-auto" align="start">
                         <div className="space-y-2">
-                          <p className="text-sm font-medium">
-                            JSON necessário:
-                          </p>
-                          <div className="bg-muted/50 rounded-lg p-3">
-                            <pre className="text-xs overflow-x-auto">
-                              <code>
-                                {JSON.stringify(
-                                  {
-                                    component: {
-                                      type: "barChart",
-                                      index: 0,
-                                      dataPath: "sectionData.barChart",
-                                      config: {
-                                        dataKey: "percentage",
-                                        yAxisDataKey: "option",
-                                      },
-                                    },
-                                    data: {
-                                      sectionData: {
-                                        barChart: [
-                                          {
-                                            option: "Muito bom",
-                                            value: 221,
-                                            percentage: 26,
-                                          },
-                                          {
-                                            option: "Bom",
-                                            value: 221,
-                                            percentage: 26,
-                                          },
-                                          {
-                                            option: "Regular",
-                                            value: 238,
-                                            percentage: 28,
-                                          },
-                                          {
-                                            option: "Ruim",
-                                            value: 136,
-                                            percentage: 16,
-                                          },
-                                          {
-                                            option: "Muito ruim",
-                                            value: 34,
-                                            percentage: 4,
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  },
-                                  null,
-                                  2
-                                )}
-                              </code>
-                            </pre>
-                          </div>
+                          {categoriesForDropdown.map((cat) => (
+                            <label
+                              key={cat}
+                              className="flex items-center gap-2 cursor-pointer text-sm"
+                            >
+                              <Checkbox
+                                checked={selectedCategories.includes(cat)}
+                                onCheckedChange={(checked) => {
+                                  setSelectedCategories((prev) =>
+                                    checked ? [...prev, cat] : prev.filter((c) => c !== cat)
+                                  );
+                                }}
+                              />
+                              <span>{cat}</span>
+                            </label>
+                          ))}
                         </div>
+                      </PopoverContent>
+                    </Popover>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button variant="outline" size="sm" className="h-9">
+                          Nome {selectedNames.length > 0 ? `(${selectedNames.length})` : ""}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-72 max-h-80 overflow-y-auto" align="start">
                         <div className="space-y-2">
-                          <p className="text-sm font-medium">Renderizado:</p>
-                          <div className="border rounded-lg p-4 bg-background min-h-[200px]">
-                            {renderComponentExampleWithData(
-                              "barChart",
-                              {
-                                type: "barChart",
-                                index: 0,
-                                dataPath: "sectionData.barChart",
-                                config: {
-                                  dataKey: "percentage",
-                                  yAxisDataKey: "option",
-                                },
-                              },
-                              {
-                                ...realData,
-                                sectionData: {
-                                  ...mergedSectionData,
-                                  barChart: [
-                                    {
-                                      option: "Muito bom",
-                                      value: 221,
-                                      percentage: 26,
-                                    },
-                                    {
-                                      option: "Bom",
-                                      value: 221,
-                                      percentage: 26,
-                                    },
-                                    {
-                                      option: "Regular",
-                                      value: 238,
-                                      percentage: 28,
-                                    },
-                                    {
-                                      option: "Ruim",
-                                      value: 136,
-                                      percentage: 16,
-                                    },
-                                    {
-                                      option: "Muito ruim",
-                                      value: 34,
-                                      percentage: 4,
-                                    },
-                                  ],
-                                },
-                              }
-                            )}
-                          </div>
+                          {namesForDropdown.map((name) => (
+                            <label
+                              key={name}
+                              className="flex items-center gap-2 cursor-pointer text-sm"
+                            >
+                              <Checkbox
+                                checked={selectedNames.includes(name)}
+                                onCheckedChange={(checked) => {
+                                  setSelectedNames((prev) =>
+                                    checked ? [...prev, name] : prev.filter((n) => n !== name)
+                                  );
+                                }}
+                              />
+                              <code className="bg-muted px-1.5 py-0.5 rounded text-xs">{name}</code>
+                            </label>
+                          ))}
                         </div>
-                      </div>
-                    </div>
-
-                    {/* SentimentDivergentChart */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-lg">
-                        sentimentDivergentChart
-                      </h4>
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">
-                            JSON necessário:
-                          </p>
-                          <div className="bg-muted/50 rounded-lg p-3">
-                            <pre className="text-xs overflow-x-auto">
-                              <code>
-                                {JSON.stringify(
-                                  {
-                                    component: {
-                                      type: "sentimentDivergentChart",
-                                      index: 0,
-                                      dataPath:
-                                        "sectionData.sentimentDivergentChart",
-                                      config: {
-                                        yAxisDataKey: "category",
-                                      },
-                                    },
-                                    data: {
-                                      sectionData: {
-                                        sentimentDivergentChart: [
-                                          {
-                                            category: "Trabalho em Equipe",
-                                            positive: 72.3,
-                                            neutral: 18.5,
-                                            negative: 9.2,
-                                          },
-                                          {
-                                            category: "Desenvolvimento",
-                                            positive: 68.1,
-                                            neutral: 22.4,
-                                            negative: 9.5,
-                                          },
-                                          {
-                                            category: "Flexibilidade",
-                                            positive: 65.2,
-                                            neutral: 25.8,
-                                            negative: 9.0,
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  },
-                                  null,
-                                  2
-                                )}
-                              </code>
-                            </pre>
+                      </PopoverContent>
+                    </Popover>
+                    {(selectedCategories.length > 0 || selectedNames.length > 0) && (
+                      <Button variant="ghost" size="sm" onClick={clearDataPathFilters}>
+                        Limpar filtros
+                      </Button>
+                    )}
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {selectedCategories.map((cat) => (
+                      <Badge key={cat} variant="secondary" className="gap-1 pr-1">
+                        {cat}
+                        <button
+                          type="button"
+                          aria-label={`Remover ${cat}`}
+                          className="rounded-full hover:bg-muted-foreground/20 p-0.5"
+                          onClick={() => setSelectedCategories((prev) => prev.filter((x) => x !== cat))}
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </Badge>
+                    ))}
+                    {selectedNames.map((n) => (
+                      <Badge key={n} variant="outline" className="gap-1 pr-1 font-mono text-xs">
+                        {n}
+                        <button
+                          type="button"
+                          aria-label={`Remover ${n}`}
+                          className="rounded-full hover:bg-muted-foreground/20 p-0.5 shrink-0"
+                          onClick={() => setSelectedNames((prev) => prev.filter((x) => x !== n))}
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+                <div className="space-y-8 mt-6">
+                  {filteredList.length === 0 ? (
+                    <p className="text-sm text-muted-foreground py-6">
+                      Nenhum componente encontrado. Ajuste os filtros.
+                    </p>
+                  ) : (
+                    filteredList.map((item) => (
+                      <div key={item.type} className="space-y-3">
+                        <h4 className="font-semibold text-lg flex items-center gap-2">
+                          <code className="bg-muted px-2 py-0.5 rounded">{item.type}</code>
+                        </h4>
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <p className="text-sm font-medium">Estrutura JSON (componente + dados):</p>
+                            <div className="bg-muted/50 rounded-lg p-3 overflow-x-auto max-h-[320px] overflow-y-auto">
+                              <pre className="text-xs">
+                                <code>{item.exampleStr ?? JSON.stringify({ component: item.component, data: { sectionData: "(dados da seção)" } }, null, 2)}</code>
+                              </pre>
+                            </div>
                           </div>
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">Renderizado:</p>
-                          <div className="border rounded-lg p-4 bg-background min-h-[200px]">
-                            {renderComponentExampleWithData(
-                              "sentimentDivergentChart",
-                              {
-                                type: "sentimentDivergentChart",
-                                index: 0,
-                                dataPath: "sectionData.sentimentDivergentChart",
-                                config: {
-                                  yAxisDataKey: "category",
-                                },
-                              },
-                              {
-                                ...realData,
-                                sectionData: {
-                                  ...mergedSectionData,
-                                  sentimentDivergentChart: [
-                                    {
-                                      category: "Trabalho em Equipe",
-                                      positive: 72.3,
-                                      neutral: 18.5,
-                                      negative: 9.2,
-                                    },
-                                    {
-                                      category: "Desenvolvimento",
-                                      positive: 68.1,
-                                      neutral: 22.4,
-                                      negative: 9.5,
-                                    },
-                                    {
-                                      category: "Flexibilidade",
-                                      positive: 65.2,
-                                      neutral: 25.8,
-                                      negative: 9.0,
-                                    },
-                                  ],
-                                },
-                              }
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* StackedBarMECE */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-lg">stackedBarMECE</h4>
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">
-                            JSON necessário:
-                          </p>
-                          <div className="bg-muted/50 rounded-lg p-3">
-                            <pre className="text-xs overflow-x-auto">
-                              <code>
-                                {JSON.stringify(
-                                  otherComponentExampleData.stackedBarMECE
-                                    ? {
-                                        component:
-                                          otherComponentExampleData
-                                            .stackedBarMECE.component,
-                                        data: otherComponentExampleData
-                                          .stackedBarMECE.data,
-                                      }
-                                    : {
-                                        component: {
-                                          type: "stackedBarMECE",
-                                          index: 0,
-                                          dataPath:
-                                            "sectionData.stackedBarMECE",
-                                          config: {
-                                            yAxisDataKey: "option",
-                                            series: [
-                                              {
-                                                dataKey: "Paraná",
-                                                name: "Paraná (%)",
-                                              },
-                                              {
-                                                dataKey: "Rio Grande do Sul",
-                                                name: "Rio Grande do Sul (%)",
-                                              },
-                                              {
-                                                dataKey: "Santa Catarina",
-                                                name: "Santa Catarina (%)",
-                                              },
-                                            ],
-                                          },
-                                        },
-                                        data: {
-                                          sectionData: {
-                                            stackedBarMECE: [
-                                              {
-                                                option: "5",
-                                                Paraná: 50.0,
-                                                "Rio Grande do Sul": 59.7,
-                                                "Santa Catarina": 52.5,
-                                              },
-                                              {
-                                                option: "4",
-                                                Paraná: 42.9,
-                                                "Rio Grande do Sul": 16.4,
-                                                "Santa Catarina": 19.0,
-                                              },
-                                            ],
-                                          },
-                                        },
-                                      },
-                                  null,
-                                  2
-                                )}
-                              </code>
-                            </pre>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">Renderizado:</p>
-                          <div className="border rounded-lg p-4 bg-background min-h-[200px]">
-                            {otherComponentExampleData.stackedBarMECE &&
-                              renderComponentExampleWithData(
-                                "stackedBarMECE",
-                                otherComponentExampleData.stackedBarMECE
-                                  .component,
-                                {
-                                  ...realData,
-                                  sectionData: {
-                                    ...mergedSectionData,
-                                    ...otherComponentExampleData.stackedBarMECE
-                                      .data.sectionData,
-                                  },
-                                }
+                          <div className="space-y-2">
+                            <p className="text-sm font-medium">Renderizado:</p>
+                            <div className="border rounded-lg p-4 bg-background min-h-[200px]">
+                              {renderComponentExampleWithData(
+                                item.type,
+                                item.component,
+                                item.dataForRender
                               )}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
+                    ))
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-                  {/* CARDS */}
-                  <div className="space-y-4">
-                    <h3 className="font-semibold text-xl">Cards</h3>
-
-                    {/* Card Básico */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-lg">card (básico)</h4>
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">
-                            JSON necessário:
-                          </p>
-                          <div className="bg-muted/50 rounded-lg p-3">
-                            <pre className="text-xs overflow-x-auto">
-                              <code>
-                                {JSON.stringify(
-                                  {
-                                    component: {
-                                      type: "card",
-                                      index: 0,
-                                      title: "Sobre o Estudo",
-                                      text: "Esta pesquisa de satisfação foi conduzida entre janeiro e março de 2025, envolvendo 850 colaboradores.\nO objetivo principal é avaliar o nível de engajamento e identificar áreas de melhoria.",
-                                      cardStyleVariant: "default",
-                                    },
-                                  },
-                                  null,
-                                  2
-                                )}
-                              </code>
-                            </pre>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">Renderizado:</p>
-                          <div className="border rounded-lg p-4 bg-background">
-                            {renderComponentExample("card", {
-                              type: "card",
-                              index: 0,
-                              title: "Sobre o Estudo",
-                              text: "Esta pesquisa de satisfação foi conduzida entre janeiro e março de 2025, envolvendo 850 colaboradores.\nO objetivo principal é avaliar o nível de engajamento e identificar áreas de melhoria.",
-                              cardStyleVariant: "default",
-                            })}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Card com Borda */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-lg">
-                        card (border-left)
-                      </h4>
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">
-                            JSON necessário:
-                          </p>
-                          <div className="bg-muted/50 rounded-lg p-3">
-                            <pre className="text-xs overflow-x-auto">
-                              <code>
-                                {JSON.stringify(
-                                  {
-                                    component: {
-                                      type: "card",
-                                      index: 0,
-                                      title: "Principais Descobertas",
-                                      text: "O NPS organizacional é de 35 pontos, classificado como 'Bom'.\nPrincipais pontos positivos incluem: qualidade do trabalho em equipe (72% positivo).",
-                                      cardStyleVariant: "border-left",
-                                    },
-                                  },
-                                  null,
-                                  2
-                                )}
-                              </code>
-                            </pre>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">Renderizado:</p>
-                          <div className="border rounded-lg p-4 bg-background">
-                            {renderComponentExample("card", {
-                              type: "card",
-                              index: 0,
-                              title: "Principais Descobertas",
-                              text: "O NPS organizacional é de 35 pontos, classificado como 'Bom'.\nPrincipais pontos positivos incluem: qualidade do trabalho em equipe (72% positivo).",
-                              cardStyleVariant: "border-left",
-                            })}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Card com Componentes Aninhados */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-lg">
-                        card (com componentes aninhados)
-                      </h4>
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">
-                            JSON necessário:
-                          </p>
-                          <div className="bg-muted/50 rounded-lg p-3">
-                            <pre className="text-xs overflow-x-auto">
-                              <code>
-                                {JSON.stringify(
-                                  {
-                                    component: {
-                                      type: "card",
-                                      index: 0,
-                                      title: "Análise de Sentimento",
-                                      text: "A análise de sentimento foi realizada com base nas respostas dos funcionários.",
-                                      cardStyleVariant: "default",
-                                      components: [
-                                        {
-                                          type: "sentimentDivergentChart",
-                                          index: 0,
-                                          dataPath:
-                                            "sectionData.sentimentDivergentChart",
-                                          config: {
-                                            yAxisDataKey: "category",
-                                          },
-                                        },
-                                      ],
-                                    },
-                                    data: {
-                                      sectionData: {
-                                        sentimentDivergentChart: [
-                                          {
-                                            category: "Trabalho em Equipe",
-                                            positive: 72.3,
-                                            neutral: 18.5,
-                                            negative: 9.2,
-                                          },
-                                          {
-                                            category: "Desenvolvimento",
-                                            positive: 68.1,
-                                            neutral: 22.4,
-                                            negative: 9.5,
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  },
-                                  null,
-                                  2
-                                )}
-                              </code>
-                            </pre>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">Renderizado:</p>
-                          <div className="border rounded-lg p-4 bg-background">
-                            {renderComponentExampleWithData(
-                              "card",
-                              {
-                                type: "card",
-                                index: 0,
-                                title: "Análise de Sentimento",
-                                text: "A análise de sentimento foi realizada com base nas respostas dos funcionários.",
-                                cardStyleVariant: "default",
-                                components: [
-                                  {
-                                    type: "sentimentDivergentChart",
-                                    index: 0,
-                                    dataPath:
-                                      "sectionData.sentimentDivergentChart",
-                                    config: {
-                                      yAxisDataKey: "category",
-                                    },
-                                  },
-                                ],
-                              },
-                              {
-                                ...realData,
-                                sectionData: {
-                                  ...mergedSectionData,
-                                  sentimentDivergentChart: [
-                                    {
-                                      category: "Trabalho em Equipe",
-                                      positive: 72.3,
-                                      neutral: 18.5,
-                                      negative: 9.2,
-                                    },
-                                    {
-                                      category: "Desenvolvimento",
-                                      positive: 68.1,
-                                      neutral: 22.4,
-                                      negative: 9.5,
-                                    },
-                                  ],
-                                },
-                              }
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* NPS Score Card */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-lg">npsScoreCard</h4>
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">
-                            JSON necessário:
-                          </p>
-                          <div className="bg-muted/50 rounded-lg p-3">
-                            <pre className="text-xs overflow-x-auto">
-                              <code>
-                                {JSON.stringify(
-                                  {
-                                    component: {
-                                      type: "npsScoreCard",
-                                      index: 0,
-                                      dataPath: "question.data",
-                                      config: {},
-                                    },
-                                    data: {
-                                      question: {
-                                        data: {
-                                          npsScore: 35,
-                                        },
-                                      },
-                                    },
-                                  },
-                                  null,
-                                  2
-                                )}
-                              </code>
-                            </pre>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">Renderizado:</p>
-                          <div className="border rounded-lg p-4 bg-background">
-                            {renderComponentExampleWithData(
-                              "npsScoreCard",
-                              {
-                                type: "npsScoreCard",
-                                index: 0,
-                                dataPath: "question.data",
-                                config: {},
-                              },
-                              {
-                                ...realData,
-                                question: {
-                                  data: {
-                                    npsScore: 35,
-                                  },
-                                },
-                              }
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* TABELAS */}
-                  <div className="space-y-4">
-                    <h3 className="font-semibold text-xl">Tabelas (Tables)</h3>
-
-                    {/* RecommendationsTable */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-lg">
-                        recommendationsTable
-                      </h4>
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">
-                            JSON necessário:
-                          </p>
-                          <div className="bg-muted/50 rounded-lg p-3">
-                            <pre className="text-xs overflow-x-auto">
-                              <code>
-                                {JSON.stringify(
-                                  {
-                                    component: {
-                                      type: "recommendationsTable",
-                                      index: 0,
-                                      dataPath:
-                                        "sectionData.recommendationsTable",
-                                      config: {},
-                                    },
-                                    data: {
-                                      sectionData: {
-                                        recommendationsTable: {
-                                          config: {
-                                            severityLabels: {
-                                              high: "Alto",
-                                              medium: "Médio",
-                                              low: "Baixo",
-                                              critical: "Crítico",
-                                            },
-                                          },
-                                          items: [
-                                            {
-                                              id: 1,
-                                              recommendation:
-                                                "Implementar Sistema de Comunicação Interna Mais Eficiente",
-                                              severity: "high",
-                                              stakeholders: [
-                                                "Comunicação Corporativa",
-                                                "TI",
-                                                "RH",
-                                              ],
-                                              tasks: [
-                                                {
-                                                  task: "Avaliar ferramentas de comunicação",
-                                                  owner: "TI",
-                                                },
-                                                {
-                                                  task: "Definir estratégia de comunicação",
-                                                  owner: "Comunicação",
-                                                },
-                                              ],
-                                            },
-                                            {
-                                              id: 2,
-                                              recommendation:
-                                                "Reduzir Processos Burocráticos",
-                                              severity: "high",
-                                              stakeholders: [
-                                                "Operações",
-                                                "Processos",
-                                              ],
-                                              tasks: [
-                                                {
-                                                  task: "Mapear processos atuais",
-                                                  owner: "Processos",
-                                                },
-                                                {
-                                                  task: "Priorizar processos",
-                                                  owner: "Liderança",
-                                                },
-                                              ],
-                                            },
-                                          ],
-                                        },
-                                      },
-                                    },
-                                  },
-                                  null,
-                                  2
-                                )}
-                              </code>
-                            </pre>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">Renderizado:</p>
-                          <div className="border rounded-lg p-4 bg-background">
-                            {renderComponentExampleWithData(
-                              "recommendationsTable",
-                              {
-                                type: "recommendationsTable",
-                                index: 0,
-                                dataPath: "sectionData.recommendationsTable",
-                                config: {},
-                              },
-                              {
-                                ...realData,
-                                sectionData: {
-                                  ...mergedSectionData,
-                                  recommendationsTable: {
-                                    config: {
-                                      severityLabels: {
-                                        high: "Alto",
-                                        medium: "Médio",
-                                        low: "Baixo",
-                                        critical: "Crítico",
-                                      },
-                                    },
-                                    items: [
-                                      {
-                                        id: 1,
-                                        recommendation:
-                                          "Implementar Sistema de Comunicação Interna Mais Eficiente",
-                                        severity: "high",
-                                        stakeholders: [
-                                          "Comunicação Corporativa",
-                                          "TI",
-                                          "RH",
-                                        ],
-                                        tasks: [
-                                          {
-                                            task: "Avaliar ferramentas de comunicação",
-                                            owner: "TI",
-                                          },
-                                          {
-                                            task: "Definir estratégia de comunicação",
-                                            owner: "Comunicação",
-                                          },
-                                        ],
-                                      },
-                                      {
-                                        id: 2,
-                                        recommendation:
-                                          "Reduzir Processos Burocráticos",
-                                        severity: "high",
-                                        stakeholders: [
-                                          "Operações",
-                                          "Processos",
-                                        ],
-                                        tasks: [
-                                          {
-                                            task: "Mapear processos atuais",
-                                            owner: "Processos",
-                                          },
-                                          {
-                                            task: "Priorizar processos",
-                                            owner: "Liderança",
-                                          },
-                                        ],
-                                      },
-                                    ],
-                                  },
-                                },
-                              }
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* SegmentationTable */}
-                  <div className="space-y-3">
-                    <h4 className="font-semibold text-lg">segmentationTable</h4>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <p className="text-sm font-medium">JSON necessário:</p>
-                        <div className="bg-muted/50 rounded-lg p-3">
-                          <pre className="text-xs overflow-x-auto">
-                            <code>
-                              {JSON.stringify(
-                                {
-                                  component: {
-                                    type: "segmentationTable",
-                                    index: 0,
-                                    dataPath: "sectionData.segmentationTable",
-                                    config: {},
-                                  },
-                                  data: {
-                                    sectionData: {
-                                      segmentationTable: [
-                                        {
-                                          cluster: "Detrator — serviço de rede",
-                                          description:
-                                            "Detratores mencionando principalmente o serviço de rede",
-                                          percentage: "28.0",
-                                          id: 1,
-                                        },
-                                        {
-                                          cluster: "Promotor — serviço de rede",
-                                          description:
-                                            "Promotores mencionando principalmente o serviço de rede",
-                                          percentage: "15.0",
-                                          id: 2,
-                                        },
-                                      ],
-                                    },
-                                  },
-                                },
-                                null,
-                                2
-                              )}
-                            </code>
-                          </pre>
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <p className="text-sm font-medium">Renderizado:</p>
-                        <div className="border rounded-lg p-4 bg-background">
-                          {renderComponentExampleWithData(
-                            "segmentationTable",
-                            {
-                              type: "segmentationTable",
-                              index: 0,
-                              dataPath: "sectionData.segmentationTable",
-                              config: {},
-                            },
-                            {
-                              ...realData,
-                              sectionData: {
-                                ...mergedSectionData,
-                              },
-                            }
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* analyticalTable */}
-                  <div className="space-y-3">
-                    <h4 className="font-semibold text-lg">analyticalTable</h4>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <p className="text-sm font-medium">
-                          JSON necessário:
-                        </p>
-                        <div className="bg-muted/50 rounded-lg p-3">
-                          <pre className="text-xs overflow-x-auto">
-                            <code>
-                              {JSON.stringify(
-                                otherComponentExampleData.analyticalTable
-                                  ? {
-                                      component:
-                                        otherComponentExampleData.analyticalTable
-                                          .component,
-                                      data: otherComponentExampleData
-                                        .analyticalTable.data,
-                                    }
-                                    : {
-                                      component: {
-                                        type: "analyticalTable",
-                                        index: 0,
-                                        dataPath:
-                                          "sectionData.analyticalTable",
-                                        config: {},
-                                      },
-                                      data: {
-                                        sectionData: {
-                                          analyticalTable: [
-                                            {
-                                              segment: "5",
-                                              Paraná: 50.0,
-                                              "Rio Grande do Sul": 59.7,
-                                              "Santa Catarina": 52.5,
-                                            },
-                                            {
-                                              segment: "4",
-                                              Paraná: 42.9,
-                                              "Rio Grande do Sul": 16.4,
-                                              "Santa Catarina": 19.0,
-                                            },
-                                          ],
-                                        },
-                                      },
-                                    },
-                                null,
-                                2
-                              )}
-                            </code>
-                          </pre>
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <p className="text-sm font-medium">Renderizado:</p>
-                        <div className="border rounded-lg p-4 bg-background min-h-[200px]">
-                          {otherComponentExampleData.analyticalTable &&
-                            renderComponentExampleWithData(
-                              "analyticalTable",
-                              otherComponentExampleData.analyticalTable
-                                .component,
-                              {
-                                ...realData,
-                                sectionData: {
-                                  ...mergedSectionData,
-                                  ...otherComponentExampleData.analyticalTable
-                                    .data.sectionData,
-                                },
-                              }
-                            )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* QUESTÕES */}
-                  <div className="space-y-4">
-                    <h3 className="font-semibold text-xl">
-                      Questões (Responses Section)
-                    </h3>
-                    <div className="bg-blue-50 dark:bg-blue-950/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800 mb-4">
-                      <p className="text-sm text-blue-900 dark:text-blue-100">
-                        <strong>Importante:</strong> As questões{" "}
-                        <strong>não possuem</strong> um campo{" "}
-                        <code>components</code> no JSON. Os componentes são{" "}
-                        <strong>gerados automaticamente</strong> baseados no{" "}
-                        <code>questionType</code> usando templates
-                        pré-definidos. Cada tipo de questão sempre renderiza os
-                        mesmos componentes na mesma ordem.
-                      </p>
-                    </div>
-
-                    {/* Questão NPS */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-lg">Questão NPS</h4>
-                      <p className="text-sm text-muted-foreground mb-2">
-                        Componentes gerados automaticamente:{" "}
-                        <code>npsScoreCard</code> (<code>npsStackedChart</code>{" "}
-                        disponível em Data Path other)
-                      </p>
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">
-                            JSON necessário:
-                          </p>
-                          <div className="bg-muted/50 rounded-lg p-3">
-                            <pre className="text-xs overflow-x-auto">
-                              <code>
-                                {JSON.stringify(
-                                  {
-                                    question: {
-                                      id: 1,
-                                      index: 1,
-                                      questionType: "nps",
-                                      question:
-                                        "Em uma escala de 0 a 10, qual a probabilidade de você recomendar nossa empresa?",
-                                      summary:
-                                        "O NPS organizacional é de 35 pontos, indicando uma base sólida de promotores.",
-                                      data: {
-                                        npsScore: 35,
-                                        npsStackedChart: [
-                                          {
-                                            option: "Promotor",
-                                            value: 493,
-                                            percentage: 58,
-                                          },
-                                          {
-                                            option: "Neutro",
-                                            value: 170,
-                                            percentage: 20,
-                                          },
-                                          {
-                                            option: "Detrator",
-                                            value: 187,
-                                            percentage: 22,
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  },
-                                  null,
-                                  2
-                                )}
-                              </code>
-                            </pre>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">Renderizado:</p>
-                          <div className="border rounded-lg p-4 bg-background space-y-4">
-                            {renderComponentExampleWithData(
-                              "npsScoreCard",
-                              {
-                                type: "npsScoreCard",
-                                index: 0,
-                                dataPath: "question.data",
-                                config: {},
-                              },
-                              {
-                                ...realData,
-                                question: {
-                                  data: {
-                                    npsScore: 35,
-                                    npsStackedChart: [
-                                      {
-                                        option: "Promotor",
-                                        value: 493,
-                                        percentage: 58,
-                                      },
-                                      {
-                                        option: "Neutro",
-                                        value: 170,
-                                        percentage: 20,
-                                      },
-                                      {
-                                        option: "Detrator",
-                                        value: 187,
-                                        percentage: 22,
-                                      },
-                                    ],
-                                  },
-                                },
-                              }
-                            )}
-                            {renderComponentExampleWithData(
-                              "npsStackedChart",
-                              {
-                                type: "npsStackedChart",
-                                index: 1,
-                                dataPath: "question.data.npsStackedChart",
-                                config: {},
-                              },
-                              {
-                                ...realData,
-                                question: {
-                                  data: {
-                                    npsScore: 35,
-                                    npsStackedChart: [
-                                      {
-                                        option: "Promotor",
-                                        value: 493,
-                                        percentage: 58,
-                                      },
-                                      {
-                                        option: "Neutro",
-                                        value: 170,
-                                        percentage: 20,
-                                      },
-                                      {
-                                        option: "Detrator",
-                                        value: 187,
-                                        percentage: 22,
-                                      },
-                                    ],
-                                  },
-                                },
-                              }
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Questão Multiple Choice */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-lg">
-                        Questão Multiple Choice
-                      </h4>
-                      <p className="text-sm text-muted-foreground mb-2">
-                        Componente gerado automaticamente: <code>barChart</code>
-                      </p>
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">
-                            JSON necessário:
-                          </p>
-                          <div className="bg-muted/50 rounded-lg p-3">
-                            <pre className="text-xs overflow-x-auto">
-                              <code>
-                                {JSON.stringify(
-                                  {
-                                    question: {
-                                      id: 2,
-                                      index: 2,
-                                      questionType: "multiple-choice",
-                                      question:
-                                        "Como você avalia o equilíbrio entre vida pessoal e profissional?",
-                                      summary:
-                                        "A maioria dos funcionários (52%) avalia o equilíbrio como bom ou muito bom.",
-                                      data: {
-                                        barChart: [
-                                          {
-                                            option: "Muito bom",
-                                            value: 221,
-                                            percentage: 26,
-                                          },
-                                          {
-                                            option: "Bom",
-                                            value: 221,
-                                            percentage: 26,
-                                          },
-                                          {
-                                            option: "Regular",
-                                            value: 238,
-                                            percentage: 28,
-                                          },
-                                          {
-                                            option: "Ruim",
-                                            value: 136,
-                                            percentage: 16,
-                                          },
-                                          {
-                                            option: "Muito ruim",
-                                            value: 34,
-                                            percentage: 4,
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  },
-                                  null,
-                                  2
-                                )}
-                              </code>
-                            </pre>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">Renderizado:</p>
-                          <div className="border rounded-lg p-4 bg-background min-h-[200px]">
-                            {renderComponentExampleWithData(
-                              "barChart",
-                              {
-                                type: "barChart",
-                                index: 0,
-                                dataPath: "question.data.barChart",
-                                config: {
-                                  dataKey: "percentage",
-                                  yAxisDataKey: "option",
-                                },
-                              },
-                              {
-                                ...realData,
-                                question: {
-                                  data: {
-                                    barChart: [
-                                      {
-                                        option: "Muito bom",
-                                        value: 221,
-                                        percentage: 26,
-                                      },
-                                      {
-                                        option: "Bom",
-                                        value: 221,
-                                        percentage: 26,
-                                      },
-                                      {
-                                        option: "Regular",
-                                        value: 238,
-                                        percentage: 28,
-                                      },
-                                      {
-                                        option: "Ruim",
-                                        value: 136,
-                                        percentage: 16,
-                                      },
-                                      {
-                                        option: "Muito ruim",
-                                        value: 34,
-                                        percentage: 4,
-                                      },
-                                    ],
-                                  },
-                                },
-                              }
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Questão Open-Ended */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-lg">
-                        Questão Open-Ended
-                      </h4>
-                      <p className="text-sm text-muted-foreground mb-2">
-                        Componentes gerados automaticamente:{" "}
-                        <code>sentimentDivergentChart</code>,{" "}
-                        <code>topCategoriesCards</code>, <code>wordCloud</code>
-                      </p>
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">
-                            JSON necessário:
-                          </p>
-                          <div className="bg-muted/50 rounded-lg p-3">
-                            <pre className="text-xs overflow-x-auto">
-                              <code>
-                                {JSON.stringify(
-                                  {
-                                    question: {
-                                      id: 4,
-                                      index: 4,
-                                      questionType: "open-ended",
-                                      question:
-                                        "O que você mais valoriza na empresa?",
-                                      summary:
-                                        "As respostas abertas destacam trabalho em equipe, oportunidades de desenvolvimento e flexibilidade como os principais valores.",
-                                      data: {
-                                        sentimentDivergentChart: [
-                                          {
-                                            category: "Trabalho em Equipe",
-                                            positive: 72.3,
-                                            neutral: 18.5,
-                                            negative: 9.2,
-                                          },
-                                          {
-                                            category:
-                                              "Desenvolvimento Profissional",
-                                            positive: 68.1,
-                                            neutral: 22.4,
-                                            negative: 9.5,
-                                          },
-                                          {
-                                            category: "Flexibilidade",
-                                            positive: 65.2,
-                                            neutral: 25.8,
-                                            negative: 9.0,
-                                          },
-                                        ],
-                                        topCategoriesCards: [
-                                          {
-                                            rank: 1,
-                                            category: "Trabalho em Equipe",
-                                            mentions: 425,
-                                            percentage: 100,
-                                            topics: [
-                                              {
-                                                topic: "colaboração eficiente",
-                                                sentiment: "positive",
-                                              },
-                                              {
-                                                topic: "ambiente colaborativo",
-                                                sentiment: "positive",
-                                              },
-                                              {
-                                                topic: "suporte entre colegas",
-                                                sentiment: "positive",
-                                              },
-                                            ],
-                                          },
-                                          {
-                                            rank: 2,
-                                            category:
-                                              "Desenvolvimento Profissional",
-                                            mentions: 312,
-                                            percentage: 73,
-                                            topics: [
-                                              {
-                                                topic:
-                                                  "oportunidades de crescimento",
-                                                sentiment: "positive",
-                                              },
-                                              {
-                                                topic:
-                                                  "treinamentos relevantes",
-                                                sentiment: "positive",
-                                              },
-                                              {
-                                                topic: "mentoria",
-                                                sentiment: "positive",
-                                              },
-                                            ],
-                                          },
-                                          {
-                                            rank: 3,
-                                            category: "Flexibilidade",
-                                            mentions: 285,
-                                            percentage: 67,
-                                            topics: [
-                                              {
-                                                topic: "horário flexível",
-                                                sentiment: "positive",
-                                              },
-                                              {
-                                                topic: "trabalho remoto",
-                                                sentiment: "positive",
-                                              },
-                                              {
-                                                topic: "autonomia",
-                                                sentiment: "positive",
-                                              },
-                                            ],
-                                          },
-                                        ],
-                                        wordCloud: [
-                                          { text: "equipe", value: 425 },
-                                          {
-                                            text: "desenvolvimento",
-                                            value: 312,
-                                          },
-                                          { text: "flexibilidade", value: 285 },
-                                          { text: "colaboração", value: 198 },
-                                          { text: "crescimento", value: 156 },
-                                        ],
-                                      },
-                                    },
-                                  },
-                                  null,
-                                  2
-                                )}
-                              </code>
-                            </pre>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium">Renderizado:</p>
-                          <div className="border rounded-lg p-4 bg-background space-y-4">
-                            {renderComponentExampleWithData(
-                              "sentimentDivergentChart",
-                              {
-                                type: "sentimentDivergentChart",
-                                index: 0,
-                                dataPath:
-                                  "question.data.sentimentDivergentChart",
-                                config: { yAxisDataKey: "category" },
-                              },
-                              {
-                                ...realData,
-                                question: {
-                                  data: {
-                                    sentimentDivergentChart: [
-                                      {
-                                        category: "Trabalho em Equipe",
-                                        positive: 72.3,
-                                        neutral: 18.5,
-                                        negative: 9.2,
-                                      },
-                                      {
-                                        category:
-                                          "Desenvolvimento Profissional",
-                                        positive: 68.1,
-                                        neutral: 22.4,
-                                        negative: 9.5,
-                                      },
-                                      {
-                                        category: "Flexibilidade",
-                                        positive: 65.2,
-                                        neutral: 25.8,
-                                        negative: 9.0,
-                                      },
-                                    ],
-                                    topCategoriesCards: [
-                                      {
-                                        rank: 1,
-                                        category: "Trabalho em Equipe",
-                                        mentions: 425,
-                                        percentage: 100,
-                                        topics: [
-                                          {
-                                            topic: "colaboração eficiente",
-                                            sentiment: "positive",
-                                          },
-                                          {
-                                            topic: "ambiente colaborativo",
-                                            sentiment: "positive",
-                                          },
-                                          {
-                                            topic: "suporte entre colegas",
-                                            sentiment: "positive",
-                                          },
-                                        ],
-                                      },
-                                      {
-                                        rank: 2,
-                                        category:
-                                          "Desenvolvimento Profissional",
-                                        mentions: 312,
-                                        percentage: 73,
-                                        topics: [
-                                          {
-                                            topic:
-                                              "oportunidades de crescimento",
-                                            sentiment: "positive",
-                                          },
-                                          {
-                                            topic: "treinamentos relevantes",
-                                            sentiment: "positive",
-                                          },
-                                          {
-                                            topic: "mentoria",
-                                            sentiment: "positive",
-                                          },
-                                        ],
-                                      },
-                                      {
-                                        rank: 3,
-                                        category: "Flexibilidade",
-                                        mentions: 285,
-                                        percentage: 67,
-                                        topics: [
-                                          {
-                                            topic: "horário flexível",
-                                            sentiment: "positive",
-                                          },
-                                          {
-                                            topic: "trabalho remoto",
-                                            sentiment: "positive",
-                                          },
-                                          {
-                                            topic: "autonomia",
-                                            sentiment: "positive",
-                                          },
-                                        ],
-                                      },
-                                    ],
-                                    wordCloud: [
-                                      { text: "equipe", value: 425 },
-                                      { text: "desenvolvimento", value: 312 },
-                                      { text: "flexibilidade", value: 285 },
-                                      { text: "colaboração", value: 198 },
-                                      { text: "crescimento", value: 156 },
-                                    ],
-                                  },
-                                },
-                              }
-                            )}
-                            {renderComponentExampleWithData(
-                              "topCategoriesCards",
-                              {
-                                type: "topCategoriesCards",
-                                index: 1,
-                                dataPath: "question.data.topCategoriesCards",
-                                config: { title: "Top 3 Categorias" },
-                              },
-                              {
-                                ...realData,
-                                question: {
-                                  data: {
-                                    topCategoriesCards: [
-                                      {
-                                        rank: 1,
-                                        category: "Trabalho em Equipe",
-                                        mentions: 425,
-                                        percentage: 100,
-                                        topics: [
-                                          {
-                                            topic: "colaboração eficiente",
-                                            sentiment: "positive",
-                                          },
-                                          {
-                                            topic: "ambiente colaborativo",
-                                            sentiment: "positive",
-                                          },
-                                          {
-                                            topic: "suporte entre colegas",
-                                            sentiment: "positive",
-                                          },
-                                        ],
-                                      },
-                                      {
-                                        rank: 2,
-                                        category:
-                                          "Desenvolvimento Profissional",
-                                        mentions: 312,
-                                        percentage: 73,
-                                        topics: [
-                                          {
-                                            topic:
-                                              "oportunidades de crescimento",
-                                            sentiment: "positive",
-                                          },
-                                          {
-                                            topic: "treinamentos relevantes",
-                                            sentiment: "positive",
-                                          },
-                                          {
-                                            topic: "mentoria",
-                                            sentiment: "positive",
-                                          },
-                                        ],
-                                      },
-                                      {
-                                        rank: 3,
-                                        category: "Flexibilidade",
-                                        mentions: 285,
-                                        percentage: 67,
-                                        topics: [
-                                          {
-                                            topic: "horário flexível",
-                                            sentiment: "positive",
-                                          },
-                                          {
-                                            topic: "trabalho remoto",
-                                            sentiment: "positive",
-                                          },
-                                          {
-                                            topic: "autonomia",
-                                            sentiment: "positive",
-                                          },
-                                        ],
-                                      },
-                                    ],
-                                  },
-                                },
-                              }
-                            )}
-                            {renderComponentExampleWithData(
-                              "wordCloud",
-                              {
-                                type: "wordCloud",
-                                index: 2,
-                                dataPath: "question.data.wordCloud",
-                                config: { title: "Nuvem de Palavras" },
-                              },
-                              {
-                                ...realData,
-                                question: {
-                                  data: {
-                                    wordCloud: [
-                                      { text: "equipe", value: 425 },
-                                      { text: "desenvolvimento", value: 312 },
-                                      { text: "flexibilidade", value: 285 },
-                                      { text: "colaboração", value: 198 },
-                                      { text: "crescimento", value: 156 },
-                                    ],
-                                  },
-                                },
-                              }
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+          {/* INVENTÁRIO DO RELATÓRIO */}
+          <TabsContent value="inventario" className="space-y-4">
+            {/* Tipos aceitos pelo código (registry) */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Tipos aceitos pelo código (registry)</CardTitle>
+                <CardDescription>
+                  Todos os tipos de componente que o código reconhece (
+                  <code className="bg-muted px-1 rounded text-xs">ComponentRegistry</code>
+                  ). O JSON pode usar qualquer um destes tipos em seções/subseções ou nos templates de questão.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Categoria</TableHead>
+                        <TableHead>Tipos de componente</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {Object.entries(componentCategories).map(([cat, types]) => (
+                        <TableRow key={cat}>
+                          <TableCell>
+                            <Badge variant="secondary">{cat}</Badge>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex flex-wrap gap-1">
+                              {types.map((t) => (
+                                <code key={t} className="bg-muted px-1.5 py-0.5 rounded text-xs">
+                                  {t}
+                                </code>
+                              ))}
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                      <TableRow>
+                        <TableCell>
+                          <Badge variant="outline">Registry (total)</Badge>
+                        </TableCell>
+                        <TableCell className="text-muted-foreground text-sm">
+                          {allComponents.length} tipos registrados
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Inventário completo do relatório (scan de todas as seções/subseções/componentes) */}
             <Card>
               <CardHeader>
-                <CardTitle>Inventário do relatório</CardTitle>
+                <CardTitle>Inventário do relatório (JSON carregado)</CardTitle>
                 <CardDescription>
-                  Scan completo de seções, subseções e componentes em{" "}
+                  Scan completo de seções, subseções e componentes no JSON carregado (
                   <code className="bg-muted px-1 rounded text-xs">
-                    json_file_app_05-02.json
+                    {dataSourceLabel ?? "—"}
                   </code>
-                  . Inclui todas as tabelas e gráficos por seção.
+                  ). Inclui componentes por seção/subseção e questões por tipo.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -4328,98 +3176,6 @@ export default function JsonReference() {
                       )}
                     </div>
                   ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* DATA PATH (OTHER) - Componentes no registry não usados no JSON */}
-          <TabsContent value="datapath-other" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>
-                  Data Path (other) — Componentes não usados no JSON
-                </CardTitle>
-                <CardDescription>
-                  Gráficos e tabelas disponíveis no registry que não aparecem em{" "}
-                  <code className="bg-muted px-1 rounded text-xs">
-                    json_file_app_05-02.json
-                  </code>
-                  . Dados hipotéticos para visualização. Use as estruturas
-                  abaixo para montar o JSON se quiser incluí-los no relatório.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-8">
-                  {otherDataPathTypes
-                    .filter(
-                      (type) =>
-                        ![
-                          "npsStackedChart",
-                          "card",
-                          "accordion",
-                          "questionsList",
-                          "sentimentTable",
-                          "distributionTable",
-                          "topCategoriesCards",
-                          "npsScoreCard",
-                          "stackedBarMECE",
-                          "analyticalTable",
-                        ].includes(type)
-                    )
-                    .map((type) => {
-                      const exampleStr = getOtherComponentExample(type);
-                      const exampleData = otherComponentExampleData[type];
-                      const dataForRender =
-                        exampleData?.data?.sectionData != null
-                          ? {
-                              ...realData,
-                              sectionData: {
-                                ...mergedSectionData,
-                                ...exampleData.data.sectionData,
-                              },
-                            }
-                          : realData;
-                      return (
-                        <div key={type} className="space-y-3">
-                          <h4 className="font-semibold text-lg flex items-center gap-2">
-                            <code className="bg-muted px-2 py-0.5 rounded">
-                              {type}
-                            </code>
-                          </h4>
-                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <p className="text-sm font-medium">
-                                Estrutura JSON (componente + dados):
-                              </p>
-                              <div className="bg-muted/50 rounded-lg p-3 overflow-x-auto max-h-[320px] overflow-y-auto">
-                                <pre className="text-xs">
-                                  <code>{exampleStr}</code>
-                                </pre>
-                              </div>
-                            </div>
-                            <div className="space-y-2">
-                              <p className="text-sm font-medium">
-                                Renderizado (dados hipotéticos):
-                              </p>
-                              <div className="border rounded-lg p-4 bg-background min-h-[200px]">
-                                {exampleData ? (
-                                  renderComponentExampleWithData(
-                                    type,
-                                    exampleData.component,
-                                    dataForRender
-                                  )
-                                ) : (
-                                  <p className="text-sm text-muted-foreground">
-                                    Sem dados de exemplo para este tipo.
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
                 </div>
               </CardContent>
             </Card>

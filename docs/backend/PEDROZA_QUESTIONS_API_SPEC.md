@@ -245,6 +245,7 @@ A estrutura de `data` deve ser **idêntica** ao JSON atual para manter compatibi
   - `option` (string) - Nome da categoria: "Promotor", "Neutro", "Detrator"
   - `value` (number) - Quantidade de respostas
   - `percentage` (number) - Percentual
+  - A ordem dos itens no array é livre; o frontend renderiza sempre na ordem **Detrator → Neutro → Promotor**.
 
 **Nota sobre renderização**: O frontend usa templates pré-definidos (`questionTemplates.js`) que renderizam:
 

@@ -1,0 +1,24 @@
+{
+  "success": true,
+  "data": {
+    "survey_id": "69403fe77237da9a4cf8979b",
+    "filters": [
+      {
+        "filter_id": "estado",
+        "label": "Estado",
+        "values": [
+          { "value": "Santa Catarina", "label": "Santa Catarina", "count": 584 },
+          { "value": "Rio Grande do Sul", "label": "Rio Grande do Sul", "count": 117 },
+          { "value": "Paraná", "label": "Paraná", "count": 10 }
+        ]
+      },
+      {
+        "filter_id": "servio",
+        "label": "Serviço",
+        "values": [
+          { "value": "Internet Fixa", "label": "Internet Fixa", "count": 711 }
+        ]
+      }
+    ]
+  }
+}
