@@ -12,6 +12,9 @@ import {
 } from "recharts";
 import { CHART_COLORS } from "@/lib/colors";
 
+const EXPORT_IMAGE_WIDTH = 800;
+const EXPORT_IMAGE_HEIGHT = 400;
+
 /**
  * Pareto Chart Component
  * 
@@ -38,6 +41,7 @@ export function ParetoChart({
   cumulativeThreshold = 80,
   showGrid = true,
   showLegend = true,
+  isExportImage = false,
 }) {
   if (!data || data.length === 0) {
     return (
@@ -82,10 +86,15 @@ export function ParetoChart({
     (item) => item.cumulativePercentage >= cumulativeThreshold
   );
 
+  const chartHeight = isExportImage ? EXPORT_IMAGE_HEIGHT : height;
+
   return (
-    <div style={{ height }} role="img" aria-label="Gráfico de Pareto">
-      <ResponsiveContainer width="100%" height="100%">
-        <ComposedChart data={chartData} margin={margin}>
+    <div style={{ height: chartHeight, width: isExportImage ? EXPORT_IMAGE_WIDTH : undefined }} role="img" aria-label="Gráfico de Pareto">
+      <ResponsiveContainer
+        width={isExportImage ? EXPORT_IMAGE_WIDTH : "100%"}
+        height={isExportImage ? EXPORT_IMAGE_HEIGHT : "100%"}
+      >
+        <ComposedChart data={chartData} margin={margin} isAnimationActive={!isExportImage}>
           {showGrid && (
             <CartesianGrid
               strokeDasharray="3 3"
@@ -117,6 +126,7 @@ export function ParetoChart({
               domain={[0, 100]}
             />
           )}
+          {!isExportImage && (
           <Tooltip
             formatter={(value, name) => {
               if (name === "cumulativePercentage") {
@@ -130,6 +140,7 @@ export function ParetoChart({
               borderRadius: "4px",
             }}
           />
+          )}
           {showLegend && <Legend />}
           <Bar
             yAxisId="left"

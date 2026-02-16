@@ -31,6 +31,9 @@ import { NPS_COLOR_MAP, SENTIMENT_COLOR_MAP, CHART_COLORS } from "@/lib/colors";
 //           AttributeDeepDive - Sentiment by Segment
 //           ResponseDetails - Sentiment Analysis
 
+const EXPORT_IMAGE_WIDTH = 800;
+const EXPORT_IMAGE_HEIGHT = 400;
+
 export function SentimentDivergentChart({
   data,
   height = 320,
@@ -47,6 +50,7 @@ export function SentimentDivergentChart({
   legendWrapperStyle,
   legendIconType,
   labels,
+  isExportImage = false,
 }) {
   // Extract labels from data or use provided labels
   // Try to get labels from first data item if available
@@ -99,10 +103,21 @@ export function SentimentDivergentChart({
     Math.ceil(maxValue * 1.1),
   ];
 
+  const chartHeight = isExportImage ? EXPORT_IMAGE_HEIGHT : height;
+  const chartWidth = isExportImage ? EXPORT_IMAGE_WIDTH : "100%";
+
   return (
-    <div style={{ height }}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={transformedData} layout="vertical" margin={margin}>
+    <div style={{ height: chartHeight, width: isExportImage ? EXPORT_IMAGE_WIDTH : undefined }}>
+      <ResponsiveContainer
+        width={isExportImage ? EXPORT_IMAGE_WIDTH : "100%"}
+        height={isExportImage ? EXPORT_IMAGE_HEIGHT : "100%"}
+      >
+        <BarChart
+          data={transformedData}
+          layout="vertical"
+          margin={margin}
+          isAnimationActive={!isExportImage}
+        >
           {/* Dashed line only at the 0 mark */}
           <ReferenceLine
             x={0}
@@ -130,6 +145,7 @@ export function SentimentDivergentChart({
             axisLine={axisLine}
             tickLine={tickLine}
           />
+          {!isExportImage && (
           <Tooltip
             formatter={(value, name) => {
               if (name === "neutral") return null;
@@ -142,6 +158,7 @@ export function SentimentDivergentChart({
             }}
             filterNull={true}
           />
+          )}
           {showLegend && (
             <Legend
               {...(finalLegendWrapperStyle !== undefined && {
@@ -224,6 +241,7 @@ export function SentimentThreeColorChart({
   margin = { top: 10, right: 30, left: 20, bottom: 10 },
   showGrid = false,
   showLegend = true,
+  isExportImage = false,
 }) {
   // Colors for each sentiment (from centralized color config)
   const sentimentColors = SENTIMENT_COLOR_MAP;
@@ -252,23 +270,38 @@ export function SentimentThreeColorChart({
     return { segment, chartData, sentiments: uniqueSentiments };
   });
 
+  const chartHeight = isExportImage ? EXPORT_IMAGE_HEIGHT : height;
+  const segmentHeight = isExportImage ? EXPORT_IMAGE_HEIGHT : height;
+
   return (
     <div className="space-y-6">
       {chartDataBySegment.map(({ segment, chartData, sentiments }) => (
         <div key={segment} className="space-y-2">
+          {!isExportImage && (
           <div className="font-semibold text-sm mb-2">{segment}</div>
-          <div style={{ height }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} layout="vertical" margin={margin}>
+          )}
+          <div style={{ height: segmentHeight, width: isExportImage ? EXPORT_IMAGE_WIDTH : undefined }}>
+            <ResponsiveContainer
+              width={isExportImage ? EXPORT_IMAGE_WIDTH : "100%"}
+              height={isExportImage ? EXPORT_IMAGE_HEIGHT : "100%"}
+            >
+              <BarChart
+                data={chartData}
+                layout="vertical"
+                margin={margin}
+                isAnimationActive={!isExportImage}
+              >
                 {showGrid && (
                   <CartesianGrid strokeDasharray="3 3" horizontal={false} />
                 )}
                 <XAxis type="number" domain={[0, 100]} hide />
                 <YAxis type="category" dataKey="name" width={120} hide />
+                {!isExportImage && (
                 <Tooltip
                   formatter={(value, name) => [`${value}%`, name]}
                   filterNull={true}
                 />
+                )}
                 {sentiments.map((sentiment, index) => (
                   <Bar
                     key={sentiment}
@@ -287,6 +320,7 @@ export function SentimentThreeColorChart({
             </ResponsiveContainer>
           </div>
           {/* Labels with values - dynamically generated from sentiments */}
+          {!isExportImage && (
           <div
             className="grid gap-2 text-xs text-center"
             style={{ gridTemplateColumns: `repeat(${sentiments.length}, 1fr)` }}
@@ -298,6 +332,7 @@ export function SentimentThreeColorChart({
               </div>
             ))}
           </div>
+          )}
         </div>
       ))}
     </div>
@@ -339,6 +374,7 @@ export function NPSStackedChart({
   showPercentagesInLegend = false,
   chartName = "NPS",
   ranges,
+  isExportImage = false,
 }) {
   // Extract keys from data; order always Detrator → Neutro → Promotor for rendering
   const rawKeys = Object.keys(data).filter(
@@ -367,10 +403,20 @@ export function NPSStackedChart({
   // Get range for a key, return empty string if not in map
   const getRange = (key) => defaultRanges[key] || "";
 
+  const chartHeight = isExportImage ? EXPORT_IMAGE_HEIGHT : height;
+
   return (
-    <div style={{ height }}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={chartData} layout="vertical" margin={margin}>
+    <div style={{ height: chartHeight, width: isExportImage ? EXPORT_IMAGE_WIDTH : undefined }}>
+      <ResponsiveContainer
+        width={isExportImage ? EXPORT_IMAGE_WIDTH : "100%"}
+        height={isExportImage ? EXPORT_IMAGE_HEIGHT : "100%"}
+      >
+        <BarChart
+          data={chartData}
+          layout="vertical"
+          margin={margin}
+          isAnimationActive={!isExportImage}
+        >
           {showGrid && (
             <CartesianGrid strokeDasharray="3 3" horizontal={false} />
           )}
@@ -381,7 +427,9 @@ export function NPSStackedChart({
             hide={hideXAxis}
           />
           <YAxis type="category" dataKey="name" width={60} hide />
+          {!isExportImage && (
           <Tooltip formatter={(value, name) => [`${value}%`, name || ""]} />
+          )}
           {showLegend && (
             <Legend
               formatter={(value) => {

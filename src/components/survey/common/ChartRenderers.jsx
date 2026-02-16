@@ -27,6 +27,10 @@ import { WaterfallChart } from "../widgets/WaterfallChart";
 import { resolveDataPath } from "@/services/dataResolver";
 import { useIsMobile } from "@/hooks/use-mobile";
 
+// Fixed size when rendering chart for export image (PNG capture)
+export const EXPORT_IMAGE_WIDTH = 800;
+export const EXPORT_IMAGE_HEIGHT = 400;
+
 // Defaults for dynamic bar chart height (few bars = compact, many bars = more space for labels)
 const BAR_CHART_HEIGHT_PER_BAR = 32;
 const BAR_CHART_MIN_HEIGHT = 200;
@@ -154,7 +158,7 @@ export function getBarChartConfig(component, isMobile, isExport = false) {
 /**
  * Render a bar chart component based on schema
  */
-export function SchemaBarChart({ component, data, isExport = false }) {
+export function SchemaBarChart({ component, data, isExport = false, isExportImage = false }) {
   const chartData = resolveDataPath(data, component.dataPath, component.data);
   const isMobile = useIsMobile();
 
@@ -165,15 +169,18 @@ export function SchemaBarChart({ component, data, isExport = false }) {
   const chartConfig = getBarChartConfig(component, isMobile, isExport);
   const barCount = chartData.length;
 
-  // Flexible height: few bars = compact, many bars = more space so labels don't overlap
-  const height = chartConfig.dynamicHeight
-    ? getBarChartHeightFromCount(barCount, {
-        heightPerBar: chartConfig.heightPerBar,
-        minHeight: chartConfig.minHeight,
-        maxHeight: chartConfig.maxHeight,
-        margin: chartConfig.margin,
-      })
-    : chartConfig.height;
+  // When isExportImage: fixed size for PNG capture; otherwise flexible
+  const height = isExportImage
+    ? EXPORT_IMAGE_HEIGHT
+    : chartConfig.dynamicHeight
+      ? getBarChartHeightFromCount(barCount, {
+          heightPerBar: chartConfig.heightPerBar,
+          minHeight: chartConfig.minHeight,
+          maxHeight: chartConfig.maxHeight,
+          margin: chartConfig.margin,
+        })
+      : chartConfig.height;
+  const width = isExportImage ? EXPORT_IMAGE_WIDTH : "100%";
 
   const manyBarsThreshold = chartConfig.manyBarsThreshold ?? 8;
   const barSizeWhenMany = 28;
@@ -190,15 +197,19 @@ export function SchemaBarChart({ component, data, isExport = false }) {
     <div
       style={{
         height,
-        width: "100%",
-        minWidth: 0,
+        width,
+        minWidth: isExportImage ? EXPORT_IMAGE_WIDTH : 0,
       }}
     >
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer
+        width={isExportImage ? EXPORT_IMAGE_WIDTH : "100%"}
+        height={isExportImage ? EXPORT_IMAGE_HEIGHT : "100%"}
+      >
         <BarChart
           data={sortedData}
           layout="vertical"
           margin={chartConfig.margin}
+          isAnimationActive={!isExportImage}
         >
           <XAxis
             type="number"
@@ -217,6 +228,7 @@ export function SchemaBarChart({ component, data, isExport = false }) {
             tickLine={false}
             interval={0}
           />
+          {!isExportImage && (
           <Tooltip
             formatter={
               chartConfig.tooltipFormatter &&
@@ -237,6 +249,7 @@ export function SchemaBarChart({ component, data, isExport = false }) {
                 : (value, name) => [`${value}%`, name || ""]
             }
           />
+          )}
           <Bar
             dataKey={chartConfig.dataKey}
             fill={chartConfig.fillColor || CHART_COLORS.primary}
@@ -325,7 +338,7 @@ export function getSentimentDivergentChartConfig(component) {
 /**
  * Render a sentiment divergent chart component based on schema
  */
-export function SchemaSentimentDivergentChart({ component, data }) {
+export function SchemaSentimentDivergentChart({ component, data, isExportImage = false }) {
   const chartData = resolveDataPath(data, component.dataPath, component.data);
 
   if (!chartData || !Array.isArray(chartData)) {
@@ -337,13 +350,13 @@ export function SchemaSentimentDivergentChart({ component, data }) {
   return (
     <SentimentDivergentChart
       data={chartData}
-      height={chartConfig.height}
+      height={isExportImage ? EXPORT_IMAGE_HEIGHT : chartConfig.height}
       margin={chartConfig.margin}
       xAxisDomain={chartConfig.xAxisDomain}
       yAxisDataKey={chartConfig.yAxisDataKey}
       yAxisWidth={chartConfig.yAxisWidth}
       showGrid={chartConfig.showGrid}
-      showLegend={chartConfig.showLegend}
+      showLegend={!isExportImage && chartConfig.showLegend}
       axisLine={chartConfig.axisLine}
       tickLine={chartConfig.tickLine}
       barSize={chartConfig.barSize}
@@ -351,6 +364,7 @@ export function SchemaSentimentDivergentChart({ component, data }) {
       legendWrapperStyle={chartConfig.legendWrapperStyle}
       legendIconType={chartConfig.legendIconType}
       labels={chartConfig.labels}
+      isExportImage={isExportImage}
     />
   );
 }
@@ -374,7 +388,7 @@ export function getSentimentThreeColorChartConfig(component) {
 /**
  * Render a sentiment three color chart component based on schema
  */
-export function SchemaSentimentThreeColorChart({ component, data }) {
+export function SchemaSentimentThreeColorChart({ component, data, isExportImage = false }) {
   const chartData = resolveDataPath(data, component.dataPath, component.data);
 
   if (!chartData || !Array.isArray(chartData)) {
@@ -386,10 +400,11 @@ export function SchemaSentimentThreeColorChart({ component, data }) {
   return (
     <SentimentThreeColorChart
       data={chartData}
-      height={chartConfig.height}
+      height={isExportImage ? EXPORT_IMAGE_HEIGHT : chartConfig.height}
       margin={chartConfig.margin}
       showGrid={chartConfig.showGrid}
-      showLegend={chartConfig.showLegend}
+      showLegend={!isExportImage && chartConfig.showLegend}
+      isExportImage={isExportImage}
     />
   );
 }
@@ -416,7 +431,7 @@ export function getNPSStackedChartConfig(component) {
  * Render an NPS stacked chart component based on schema
  * Accepts: array from API [{ option, value, percentage }, ...] or object { Detrator: %, Neutro: %, Promotor: % }
  */
-export function SchemaNPSStackedChart({ component, data }) {
+export function SchemaNPSStackedChart({ component, data, isExportImage = false }) {
   const rawData = resolveDataPath(data, component.dataPath, component.data);
 
   if (!rawData) {
@@ -452,14 +467,15 @@ export function SchemaNPSStackedChart({ component, data }) {
   return (
     <NPSStackedChart
       data={chartData}
-      height={chartConfig.height}
+      height={isExportImage ? EXPORT_IMAGE_HEIGHT : chartConfig.height}
       margin={chartConfig.margin}
       showGrid={chartConfig.showGrid}
-      showLegend={chartConfig.showLegend}
+      showLegend={!isExportImage && chartConfig.showLegend}
       hideXAxis={chartConfig.hideXAxis}
       showPercentagesInLegend={chartConfig.showPercentagesInLegend}
       chartName={chartConfig.chartName}
       ranges={chartConfig.ranges}
+      isExportImage={isExportImage}
     />
   );
 }
@@ -467,7 +483,7 @@ export function SchemaNPSStackedChart({ component, data }) {
 /**
  * Render Line Chart component based on schema
  */
-export function SchemaLineChart({ component, data }) {
+export function SchemaLineChart({ component, data, isExportImage = false }) {
   const chartData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
@@ -480,14 +496,15 @@ export function SchemaLineChart({ component, data }) {
       data={chartData}
       xAxisDataKey={config.xAxisDataKey || "x"}
       lines={config.lines || []}
-      height={config.height || 400}
+      height={isExportImage ? EXPORT_IMAGE_HEIGHT : (config.height || 400)}
       margin={config.margin}
       showGrid={config.showGrid !== false}
-      showLegend={config.showLegend !== false}
-      showTooltip={config.showTooltip !== false}
+      showLegend={!isExportImage && (config.showLegend !== false)}
+      showTooltip={!isExportImage && (config.showTooltip !== false)}
       xAxisFormatter={config.xAxisFormatter}
       yAxisFormatter={config.yAxisFormatter}
       tooltipFormatter={config.tooltipFormatter}
+      isExportImage={isExportImage}
     />
   );
 }
@@ -495,7 +512,7 @@ export function SchemaLineChart({ component, data }) {
 /**
  * Render Pareto Chart component based on schema
  */
-export function SchemaParetoChart({ component, data }) {
+export function SchemaParetoChart({ component, data, isExportImage = false }) {
   const chartData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
@@ -508,12 +525,13 @@ export function SchemaParetoChart({ component, data }) {
       data={chartData}
       categoryKey={config.categoryKey || "category"}
       valueKey={config.valueKey || "value"}
-      height={config.height || 400}
+      height={isExportImage ? EXPORT_IMAGE_HEIGHT : (config.height || 400)}
       margin={config.margin}
       showCumulative={config.showCumulative !== false}
       cumulativeThreshold={config.cumulativeThreshold || 80}
       showGrid={config.showGrid !== false}
-      showLegend={config.showLegend !== false}
+      showLegend={!isExportImage && (config.showLegend !== false)}
+      isExportImage={isExportImage}
     />
   );
 }
@@ -521,7 +539,7 @@ export function SchemaParetoChart({ component, data }) {
 /**
  * Render Scatter Plot component based on schema
  */
-export function SchemaScatterPlot({ component, data }) {
+export function SchemaScatterPlot({ component, data, isExportImage = false }) {
   const chartData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
@@ -536,13 +554,14 @@ export function SchemaScatterPlot({ component, data }) {
       yAxisDataKey={config.yAxisDataKey || "y"}
       sizeKey={config.sizeKey}
       colorKey={config.colorKey}
-      height={config.height || 400}
+      height={isExportImage ? EXPORT_IMAGE_HEIGHT : (config.height || 400)}
       margin={config.margin}
       showGrid={config.showGrid !== false}
-      showLegend={config.showLegend !== false}
+      showLegend={!isExportImage && (config.showLegend !== false)}
       xAxisFormatter={config.xAxisFormatter}
       yAxisFormatter={config.yAxisFormatter}
       colorMap={config.colorMap}
+      isExportImage={isExportImage}
     />
   );
 }
@@ -550,7 +569,7 @@ export function SchemaScatterPlot({ component, data }) {
 /**
  * Render Histogram component based on schema
  */
-export function SchemaHistogram({ component, data }) {
+export function SchemaHistogram({ component, data, isExportImage = false }) {
   const chartData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
@@ -564,10 +583,11 @@ export function SchemaHistogram({ component, data }) {
       valueKey={config.valueKey || "value"}
       bins={config.bins}
       showDensity={config.showDensity || false}
-      height={config.height || 400}
+      height={isExportImage ? EXPORT_IMAGE_HEIGHT : (config.height || 400)}
       margin={config.margin}
       showLabels={config.showLabels !== false}
       showGrid={config.showGrid !== false}
+      isExportImage={isExportImage}
     />
   );
 }
@@ -575,7 +595,7 @@ export function SchemaHistogram({ component, data }) {
 /**
  * Render Quadrant Chart component based on schema
  */
-export function SchemaQuadrantChart({ component, data }) {
+export function SchemaQuadrantChart({ component, data, isExportImage = false }) {
   const chartData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
@@ -592,9 +612,10 @@ export function SchemaQuadrantChart({ component, data }) {
       sizeKey={config.sizeKey}
       quadrants={config.quadrants}
       showQuadrantLabels={config.showQuadrantLabels !== false}
-      height={config.height || 400}
+      height={isExportImage ? EXPORT_IMAGE_HEIGHT : (config.height || 400)}
       margin={config.margin}
       showGrid={config.showGrid !== false}
+      isExportImage={isExportImage}
     />
   );
 }
@@ -602,7 +623,7 @@ export function SchemaQuadrantChart({ component, data }) {
 /**
  * Render Heatmap component based on schema
  */
-export function SchemaHeatmap({ component, data }) {
+export function SchemaHeatmap({ component, data, isExportImage = false }) {
   const chartData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
@@ -619,9 +640,10 @@ export function SchemaHeatmap({ component, data }) {
       xCategories={config.xCategories}
       yCategories={config.yCategories}
       colorScale={config.colorScale || "viridis"}
-      height={config.height || 400}
+      height={isExportImage ? EXPORT_IMAGE_HEIGHT : (config.height || 400)}
       showValues={config.showValues !== false}
       valueFormatter={config.valueFormatter}
+      isExportImage={isExportImage}
     />
   );
 }
@@ -629,7 +651,7 @@ export function SchemaHeatmap({ component, data }) {
 /**
  * Render Sankey Diagram component based on schema
  */
-export function SchemaSankeyDiagram({ component, data }) {
+export function SchemaSankeyDiagram({ component, data, isExportImage = false }) {
   const sankeyData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
@@ -662,10 +684,11 @@ export function SchemaSankeyDiagram({ component, data }) {
       linkSource={config.linkSource || "source"}
       linkTarget={config.linkTarget || "target"}
       linkValue={config.linkValue || "value"}
-      height={config.height || 400}
-      width={config.width}
+      height={isExportImage ? EXPORT_IMAGE_HEIGHT : (config.height || 400)}
+      width={isExportImage ? EXPORT_IMAGE_WIDTH : config.width}
       nodeWidth={config.nodeWidth}
       nodePadding={config.nodePadding}
+      isExportImage={isExportImage}
     />
   );
 }
@@ -673,7 +696,7 @@ export function SchemaSankeyDiagram({ component, data }) {
 /**
  * Render Stacked Bar MECE component based on schema
  */
-export function SchemaStackedBarMECE({ component, data }) {
+export function SchemaStackedBarMECE({ component, data, isExportImage = false }) {
   const chartData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
@@ -687,10 +710,11 @@ export function SchemaStackedBarMECE({ component, data }) {
       yAxisDataKey={config.yAxisDataKey ?? config.categoryKey ?? "option"}
       {...(config.categoryKey != null && { categoryKey: config.categoryKey })}
       series={config.series || []}
-      height={config.height || 400}
+      height={isExportImage ? EXPORT_IMAGE_HEIGHT : (config.height || 400)}
       margin={config.margin}
       showGrid={config.showGrid !== false}
-      showLegend={config.showLegend !== false}
+      showLegend={!isExportImage && (config.showLegend !== false)}
+      isExportImage={isExportImage}
     />
   );
 }
@@ -698,7 +722,7 @@ export function SchemaStackedBarMECE({ component, data }) {
 /**
  * Render Evolutionary Scorecard component based on schema
  */
-export function SchemaEvolutionaryScorecard({ component, data }) {
+export function SchemaEvolutionaryScorecard({ component, data, isExportImage = false }) {
   const scorecardData = resolveDataPath(
     data,
     component.dataPath,
@@ -741,6 +765,7 @@ export function SchemaEvolutionaryScorecard({ component, data }) {
       label={label}
       format={config.format}
       className={config.className}
+      isExportImage={isExportImage}
     />
   );
 }
@@ -748,7 +773,7 @@ export function SchemaEvolutionaryScorecard({ component, data }) {
 /**
  * Render Slope Graph component based on schema
  */
-export function SchemaSlopeGraph({ component, data }) {
+export function SchemaSlopeGraph({ component, data, isExportImage = false }) {
   const chartData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
@@ -762,11 +787,12 @@ export function SchemaSlopeGraph({ component, data }) {
       categoryKey={config.categoryKey || "category"}
       beforeKey={config.beforeKey || "before"}
       afterKey={config.afterKey || "after"}
-      height={config.height || 400}
+      height={isExportImage ? EXPORT_IMAGE_HEIGHT : (config.height || 400)}
       margin={config.margin}
       showLabels={config.showLabels !== false}
       showDelta={config.showDelta !== false}
       showGrid={config.showGrid !== false}
+      isExportImage={isExportImage}
     />
   );
 }
@@ -774,7 +800,7 @@ export function SchemaSlopeGraph({ component, data }) {
 /**
  * Render Waterfall Chart component based on schema
  */
-export function SchemaWaterfallChart({ component, data }) {
+export function SchemaWaterfallChart({ component, data, isExportImage = false }) {
   const chartData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
@@ -788,10 +814,11 @@ export function SchemaWaterfallChart({ component, data }) {
       labelKey={config.labelKey || "label"}
       valueKey={config.valueKey || "value"}
       typeKey={config.typeKey || "type"}
-      height={config.height || 400}
+      height={isExportImage ? EXPORT_IMAGE_HEIGHT : (config.height || 400)}
       margin={config.margin}
       showLabels={config.showLabels !== false}
       showGrid={config.showGrid !== false}
+      isExportImage={isExportImage}
     />
   );
 }

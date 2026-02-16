@@ -242,7 +242,9 @@ export function SchemaWordCloud({
 
   const config = component.config || {};
   const title =
-    config.title || uiTexts?.responseDetails?.wordCloud || "Word Cloud";
+    uiTexts?.responseDetails?.wordCloud ||
+    config.title ||
+    "Nuvem de Palavras";
 
   return (
     <div>

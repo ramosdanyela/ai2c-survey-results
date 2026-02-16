@@ -48,6 +48,7 @@ export function QuadrantChart({
   height = 400,
   margin = { top: 20, right: 30, left: 20, bottom: 60 },
   showGrid = true,
+  isExportImage = false,
 }) {
   if (!data || data.length === 0) {
     return (
@@ -94,10 +95,18 @@ export function QuadrantChart({
   const yMin = Math.min(...yValues, 0);
   const yMax = Math.max(...yValues, 100);
 
+  const EXPORT_W = 800;
+  const EXPORT_H = 400;
+  const chartHeight = isExportImage ? EXPORT_H : height;
+  const chartWidth = isExportImage ? EXPORT_W : "100%";
+
   return (
-    <div role="img" aria-label="Gráfico de quadrantes">
-      <ResponsiveContainer width="100%" height={height}>
-        <ScatterChart data={data} margin={margin}>
+    <div style={isExportImage ? { width: EXPORT_W, height: EXPORT_H } : undefined} role="img" aria-label="Gráfico de quadrantes">
+      <ResponsiveContainer
+        width={isExportImage ? EXPORT_W : "100%"}
+        height={isExportImage ? EXPORT_H : height}
+      >
+        <ScatterChart data={data} margin={margin} isAnimationActive={!isExportImage}>
           {/* Quadrant background colors using ReferenceArea */}
           {showQuadrantColors && (
             <>
@@ -205,6 +214,7 @@ export function QuadrantChart({
             </>
           )}
 
+          {!isExportImage && (
           <Tooltip
             cursor={{ strokeDasharray: "3 3" }}
             formatter={(value, name, props) => {
@@ -226,6 +236,7 @@ export function QuadrantChart({
               borderRadius: "4px",
             }}
           />
+          )}
 
           <Scatter data={data} fill={CHART_COLORS.primary}>
             {data.map((entry, index) => (

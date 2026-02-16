@@ -43,6 +43,7 @@ export function QuestionsList({
   questionId: initialQuestionId,
   dataPath = "responseDetails",
   hideFilterPills = false,
+  hidePerQuestionFilters = true,
   externalFilterState = null,
   data: externalData = null, // Allow external data to be passed (with sectionData injected)
 }) {
@@ -130,8 +131,8 @@ export function QuestionsList({
         summary: "Sumário",
         responses: "Respostas",
         npsScore: "NPS Score",
-        top3Categories: "Top 3 Categorias",
-        top3CategoriesTopics: "Top 3 categorias e principais tópicos",
+        topCategories: "Top Categorias",
+        topCategoriesTopics: "Top categorias e principais tópicos",
         wordCloud: "Nuvem de Palavras",
         mentions: "menções",
         positive: "Positivo",
@@ -445,34 +446,43 @@ export function QuestionsList({
   }, [selectedQuestionId, allAvailableQuestions]);
 
   // Resolve question_id for API calls (questions have numeric .id and string .question_id)
-  const resolveApiQuestionId = useCallback((questionId) => {
-    const question = allAvailableQuestions.find(q => q.id === questionId);
-    return question?.question_id || questionId;
-  }, [allAvailableQuestions]);
+  const resolveApiQuestionId = useCallback(
+    (questionId) => {
+      const question = allAvailableQuestions.find((q) => q.id === questionId);
+      return question?.question_id || questionId;
+    },
+    [allAvailableQuestions],
+  );
 
   // Handle apply filters - calls API 2 for filtered data
-  const handleApplyFilters = useCallback((questionId, filters) => {
-    const apiQuestionId = resolveApiQuestionId(questionId);
-    applyFilters(apiQuestionId, filters);
-  }, [resolveApiQuestionId, applyFilters]);
+  const handleApplyFilters = useCallback(
+    (questionId, filters) => {
+      const apiQuestionId = resolveApiQuestionId(questionId);
+      applyFilters(apiQuestionId, filters);
+    },
+    [resolveApiQuestionId, applyFilters],
+  );
 
   // Handle removing a filter value pill - remove from state and re-apply
-  const handleRemoveFilterValue = useCallback((questionId, filterType, value) => {
-    removeFilterValue(questionId, filterType, value);
-    // After removing, re-apply remaining filters
-    const currentFilters = (questionFilters[questionId] || [])
-      .map(f => {
-        if (f.filterType === filterType) {
-          const newValues = f.values.filter(v => v !== value);
-          return newValues.length > 0 ? { ...f, values: newValues } : null;
-        }
-        return f;
-      })
-      .filter(Boolean);
+  const handleRemoveFilterValue = useCallback(
+    (questionId, filterType, value) => {
+      removeFilterValue(questionId, filterType, value);
+      // After removing, re-apply remaining filters
+      const currentFilters = (questionFilters[questionId] || [])
+        .map((f) => {
+          if (f.filterType === filterType) {
+            const newValues = f.values.filter((v) => v !== value);
+            return newValues.length > 0 ? { ...f, values: newValues } : null;
+          }
+          return f;
+        })
+        .filter(Boolean);
 
-    const apiQuestionId = resolveApiQuestionId(questionId);
-    applyFilters(apiQuestionId, currentFilters);
-  }, [questionFilters, removeFilterValue, resolveApiQuestionId, applyFilters]);
+      const apiQuestionId = resolveApiQuestionId(questionId);
+      applyFilters(apiQuestionId, currentFilters);
+    },
+    [questionFilters, removeFilterValue, resolveApiQuestionId, applyFilters],
+  );
 
   // Handle clearing all filters globally
   const handleClearAllFilters = useCallback(() => {
@@ -644,9 +654,9 @@ export function QuestionsList({
     return (
       <>
         {filters.map((filter) => {
-          const filterLabel = filterOptions.find(
-            (opt) => opt.value === filter.filterType,
-          )?.label || filter.filterType;
+          const filterLabel =
+            filterOptions.find((opt) => opt.value === filter.filterType)
+              ?.label || filter.filterType;
 
           if (!filter.values || filter.values.length === 0) {
             return null;
@@ -678,8 +688,8 @@ export function QuestionsList({
 
   return (
     <div className="space-y-8 animate-fade-in">
-      {/* "Eliminar filtros" button - visible when any question has active filters */}
-      {hasAnyActiveFilters && (
+      {/* "Eliminar filtros" button - visible when any question has active filters (hidden when per-question filters are disabled) */}
+      {!hidePerQuestionFilters && hasAnyActiveFilters && (
         <div className="flex justify-end">
           <button
             onClick={handleClearAllFilters}
@@ -770,88 +780,97 @@ export function QuestionsList({
                               {question.question}
                             </span>
                             <div className="flex items-center gap-1 shrink-0">
-                              {/* Filter Icon */}
-                              <Popover
-                                open={questionFilterOpen[question.id] || false}
-                                onOpenChange={(open) =>
-                                  handleQuestionFilterOpenChange(
-                                    question.id,
-                                    open,
-                                  )
-                                }
-                              >
-                                <PopoverTrigger asChild>
-                                  <div
-                                    role="button"
-                                    tabIndex={0}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      handleQuestionFilterOpenChange(
-                                        question.id,
-                                        !questionFilterOpen[question.id],
-                                      );
-                                    }}
-                                    onKeyDown={(e) => {
-                                      if (e.key === "Enter" || e.key === " ") {
-                                        e.preventDefault();
+                              {/* Filter Icon - hidden when hidePerQuestionFilters is true */}
+                              {!hidePerQuestionFilters && (
+                                <Popover
+                                  open={questionFilterOpen[question.id] || false}
+                                  onOpenChange={(open) =>
+                                    handleQuestionFilterOpenChange(
+                                      question.id,
+                                      open,
+                                    )
+                                  }
+                                >
+                                  <PopoverTrigger asChild>
+                                    <div
+                                      role="button"
+                                      tabIndex={0}
+                                      onClick={(e) => {
                                         e.stopPropagation();
                                         handleQuestionFilterOpenChange(
                                           question.id,
                                           !questionFilterOpen[question.id],
                                         );
+                                      }}
+                                      onKeyDown={(e) => {
+                                        if (e.key === "Enter" || e.key === " ") {
+                                          e.preventDefault();
+                                          e.stopPropagation();
+                                          handleQuestionFilterOpenChange(
+                                            question.id,
+                                            !questionFilterOpen[question.id],
+                                          );
+                                        }
+                                      }}
+                                      className={`shrink-0 p-1.5 rounded-md transition-colors ${
+                                        isLoadingDefinitions || definitionsError
+                                          ? "text-muted-foreground/40 cursor-not-allowed"
+                                          : hasActiveFilters(question.id)
+                                            ? "bg-[hsl(var(--custom-blue))]/20 text-[hsl(var(--custom-blue))] cursor-pointer"
+                                            : "text-muted-foreground hover:text-foreground hover:bg-muted/50 cursor-pointer"
+                                      }`}
+                                      aria-label={
+                                        definitionsError
+                                          ? "Filtros indisponíveis"
+                                          : safeUiTexts.responseDetails
+                                              .filterQuestion
                                       }
-                                    }}
-                                    className={`shrink-0 p-1.5 rounded-md transition-colors ${
-                                      isLoadingDefinitions || definitionsError
-                                        ? "text-muted-foreground/40 cursor-not-allowed"
-                                        : hasActiveFilters(question.id)
-                                          ? "bg-[hsl(var(--custom-blue))]/20 text-[hsl(var(--custom-blue))] cursor-pointer"
-                                          : "text-muted-foreground hover:text-foreground hover:bg-muted/50 cursor-pointer"
-                                    }`}
-                                    aria-label={
-                                      definitionsError
-                                        ? "Filtros indisponíveis"
-                                        : safeUiTexts.responseDetails.filterQuestion
-                                    }
-                                    title={
-                                      definitionsError
-                                        ? "Filtros indisponíveis"
-                                        : undefined
-                                    }
+                                      title={
+                                        definitionsError
+                                          ? "Filtros indisponíveis"
+                                          : undefined
+                                      }
+                                    >
+                                      <Filter className="w-4 h-4" />
+                                    </div>
+                                  </PopoverTrigger>
+                                  <PopoverContent
+                                    className="w-80 p-0"
+                                    align="end"
+                                    onClick={(e) => e.stopPropagation()}
                                   >
-                                    <Filter className="w-4 h-4" />
-                                  </div>
-                                </PopoverTrigger>
-                                <PopoverContent
-                                  className="w-80 p-0"
-                                  align="end"
-                                  onClick={(e) => e.stopPropagation()}
-                                >
-                                  <FilterPanel
-                                    filterDefinitions={filterDefinitions}
-                                    onFiltersChange={(newFilters) =>
-                                      handleQuestionFiltersChange(
+                                    <FilterPanel
+                                      filterDefinitions={filterDefinitions}
+                                      onFiltersChange={(newFilters) =>
+                                        handleQuestionFiltersChange(
+                                          question.id,
+                                          newFilters,
+                                        )
+                                      }
+                                      onApplyFilters={(filters) => {
+                                        handleQuestionFiltersChange(
+                                          question.id,
+                                          filters,
+                                        );
+                                        handleApplyFilters(question.id, filters);
+                                        handleQuestionFilterOpenChange(
+                                          question.id,
+                                          false,
+                                        );
+                                      }}
+                                      questionFilter={undefined}
+                                      onQuestionFilterChange={undefined}
+                                      selectedQuestionId={undefined}
+                                      onSelectedQuestionIdChange={undefined}
+                                      questions={[]}
+                                      hideQuestionFilters={true}
+                                      initialFilters={getQuestionFilters(
                                         question.id,
-                                        newFilters,
-                                      )
-                                    }
-                                    onApplyFilters={(filters) => {
-                                      handleQuestionFiltersChange(question.id, filters);
-                                      handleApplyFilters(question.id, filters);
-                                      handleQuestionFilterOpenChange(question.id, false);
-                                    }}
-                                    questionFilter={undefined}
-                                    onQuestionFilterChange={undefined}
-                                    selectedQuestionId={undefined}
-                                    onSelectedQuestionIdChange={undefined}
-                                    questions={[]}
-                                    hideQuestionFilters={true}
-                                    initialFilters={getQuestionFilters(
-                                      question.id,
-                                    )}
-                                  />
-                                </PopoverContent>
-                              </Popover>
+                                      )}
+                                    />
+                                  </PopoverContent>
+                                </Popover>
+                              )}
                               {/* Download PDF - Preparado para implementação futura */}
                               {/* <Popover
                                 open={
@@ -920,7 +939,9 @@ export function QuestionsList({
                           <div className="flex items-center gap-2 mt-2 flex-wrap">
                             <QuestionTypePill question={question} />
                             <ResponseCountPill question={question} />
-                            <ActiveFiltersPills questionId={question.id} />
+                            {!hidePerQuestionFilters && (
+                              <ActiveFiltersPills questionId={question.id} />
+                            )}
                           </div>
                         </div>
                       </div>

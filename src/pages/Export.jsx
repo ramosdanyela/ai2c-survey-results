@@ -6,6 +6,7 @@ import {
   FileText,
   ChevronDown,
   ChevronRight,
+  ArrowLeft,
 } from "@/lib/icons";
 import * as React from "react";
 import {
@@ -79,6 +80,7 @@ export default function Export() {
       currentUiTexts?.export?.selectSpecificSections ||
       "Select Specific Sections",
     exportAsPDF: currentUiTexts?.export?.exportAsPDF || "Export as PDF",
+    exportAsWord: currentUiTexts?.export?.exportAsWord || "Export as Word",
     exportAsPPT: currentUiTexts?.export?.exportAsPPT || "Export as PPT",
     selectAtLeastOneSection:
       currentUiTexts?.export?.selectAtLeastOneSection ||
@@ -306,9 +308,17 @@ export default function Export() {
             boxShadow: `0 2px 8px ${RGBA_BLACK_SHADOW_20}`,
           }}
         >
-          <div className="px-3 sm:px-4 lg:px-6 py-4 flex items-center">
+          <div className="px-3 sm:px-4 lg:px-6 py-4 flex items-center gap-2">
+            <Button
+              onClick={() => navigate("/")}
+              variant="outline"
+              className="h-10 px-4 shrink-0"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar
+            </Button>
             {/* Hamburger Menu - Visible only on smaller screens */}
-            <div className="lg:hidden mr-3">
+            <div className="lg:hidden mr-1">
               <Button
                 onClick={() => setIsMobileMenuOpen(true)}
                 variant="ghost"
@@ -524,6 +534,21 @@ export default function Export() {
                       >
                         <FileText className="w-5 h-5 mr-2" />
                         {exportTexts.exportAsPDF}
+                      </Button>
+                      <Button
+                        onClick={() => handleExport("Word")}
+                        disabled={
+                          !exportFullReport && selectedSections.size === 0
+                        }
+                        className="flex-1 h-12 text-base font-semibold"
+                        variant="outline"
+                        style={{
+                          borderColor: COLOR_ORANGE_PRIMARY,
+                          color: COLOR_ORANGE_PRIMARY,
+                        }}
+                      >
+                        <Download className="w-5 h-5 mr-2" />
+                        {exportTexts.exportAsWord}
                       </Button>
                     </div>
 

@@ -221,7 +221,7 @@ export function SurveyHeader({
             }}
           >
             <div className="px-2 sm:px-4 lg:px-6 py-2 sm:py-4 flex items-center gap-1 sm:gap-0">
-              <div className="lg:hidden mr-2 sm:mr-3">
+              <div className="min-[1480px]:hidden mr-2 sm:mr-3">
                 <Button
                   onClick={onMenuClick}
                   variant="ghost"
@@ -270,7 +270,7 @@ export function SurveyHeader({
     >
       <div className="px-2 sm:px-4 lg:px-6 py-2 sm:py-4 flex items-center gap-1 sm:gap-0">
         {/* Hamburger Menu - Visible only on smaller screens */}
-        <div className="lg:hidden mr-2 sm:mr-3">
+        <div className="min-[1480px]:hidden mr-2 sm:mr-3">
           <Button
             onClick={onMenuClick}
             variant="ghost"

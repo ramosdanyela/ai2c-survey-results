@@ -14,6 +14,7 @@ Este documento descreve como estruturar cada tipo de componente no JSON do relat
 6. [Widgets](#6-widgets)
 7. [Containers e headings](#7-containers-e-headings)
 8. [Regras gerais (dataPath e dados)](#8-regras-gerais-datapath-e-dados)
+9. [uiTexts (textos da interface)](#9-uitexts-textos-da-interface)
 
 ---
 
@@ -21,13 +22,13 @@ Este documento descreve como estruturar cada tipo de componente no JSON do relat
 
 Todo componente no JSON deve ter pelo menos:
 
-| Campo      | Tipo    | Obrigatório | Descrição |
-|-----------|---------|-------------|-----------|
-| `type`    | string  | Sim         | Identificador do tipo do componente (ex.: `card`, `barChart`). |
-| `index`   | number  | Recomendado | Ordem de renderização (menor = primeiro). |
-| `dataPath`| string  | Condicional | Caminho para os dados no objeto da seção/subseção. Obrigatório para componentes que consomem dados dinâmicos. |
-| `config`  | object  | Não         | Configurações específicas do componente (chaves do eixo, cores, etc.). |
-| `components` | array | Não      | Componentes aninhados (para `card`, `container`, `grid-container`, `accordion`). |
+| Campo        | Tipo   | Obrigatório | Descrição                                                                                                     |
+| ------------ | ------ | ----------- | ------------------------------------------------------------------------------------------------------------- |
+| `type`       | string | Sim         | Identificador do tipo do componente (ex.: `card`, `barChart`).                                                |
+| `index`      | number | Recomendado | Ordem de renderização (menor = primeiro).                                                                     |
+| `dataPath`   | string | Condicional | Caminho para os dados no objeto da seção/subseção. Obrigatório para componentes que consomem dados dinâmicos. |
+| `config`     | object | Não         | Configurações específicas do componente (chaves do eixo, cores, etc.).                                        |
+| `components` | array  | Não         | Componentes aninhados (para `card`, `container`, `grid-container`, `accordion`).                              |
 
 Exemplo mínimo:
 
@@ -476,9 +477,24 @@ Barras empilhadas MECE (segmentos que somam 100%).
 ```json
 {
   "stackedBarMECE": [
-    { "option": "5", "Paraná": 50.0, "Rio Grande do Sul": 59.7, "Santa Catarina": 52.5 },
-    { "option": "4", "Paraná": 42.9, "Rio Grande do Sul": 16.4, "Santa Catarina": 19.0 },
-    { "option": "3", "Paraná": 7.1, "Rio Grande do Sul": 8.8, "Santa Catarina": 13.2 }
+    {
+      "option": "5",
+      "Paraná": 50.0,
+      "Rio Grande do Sul": 59.7,
+      "Santa Catarina": 52.5
+    },
+    {
+      "option": "4",
+      "Paraná": 42.9,
+      "Rio Grande do Sul": 16.4,
+      "Santa Catarina": 19.0
+    },
+    {
+      "option": "3",
+      "Paraná": 7.1,
+      "Rio Grande do Sul": 8.8,
+      "Santa Catarina": 13.2
+    }
   ]
 }
 ```
@@ -1010,8 +1026,18 @@ Tabela analítica (múltiplas colunas numéricas por linha).
 ```json
 {
   "analyticalTable": [
-    { "segment": "5", "Paraná": 50.0, "Rio Grande do Sul": 59.7, "Santa Catarina": 52.5 },
-    { "segment": "4", "Paraná": 42.9, "Rio Grande do Sul": 16.4, "Santa Catarina": 19.0 }
+    {
+      "segment": "5",
+      "Paraná": 50.0,
+      "Rio Grande do Sul": 59.7,
+      "Santa Catarina": 52.5
+    },
+    {
+      "segment": "4",
+      "Paraná": 42.9,
+      "Rio Grande do Sul": 16.4,
+      "Santa Catarina": 19.0
+    }
   ]
 }
 ```
@@ -1220,3 +1246,89 @@ Opcional: `wrapperProps` com `className` para estilizar o título.
 - **Tipos válidos:** a lista de tipos aceitos está em `VALID_COMPONENT_TYPES` nas regras de validação e no `componentRegistry` no frontend. Use apenas esses tipos em `type`.
 
 Para validar o JSON do relatório, use os scripts em `docs/validation_scripts/` (ex.: `validate-json.js` / `validate-all-jsons.js`).
+
+---
+
+## 9. uiTexts (textos da interface)
+
+O objeto **`uiTexts`** fica na **raiz** do JSON e concentra os textos da interface (rótulos, mensagens de loading, empty states, filtros). Assim evita-se texto hardcoded no código e permite personalizar ou traduzir por pesquisa. O frontend usa esses valores quando presentes; caso contrário, aplica fallbacks internos.
+
+### Onde fica no JSON
+
+```json
+{
+  "metadata": { ... },
+  "sections": [ ... ],
+  "uiTexts": {
+    "responseDetails": { ... },
+    "filterPanel": { ... },
+    "common": { ... },
+    "surveySidebar": { ... }
+  }
+}
+```
+
+Todas as chaves são **opcionais**. A referência completa de chaves (árvore e descrição) está em **[REFERENCIA_UITEXTS_JSON.md](./REFERENCIA_UITEXTS_JSON.md)**.
+
+### responseDetails (questões e respostas)
+
+Usado na lista de questões, nos badges de tipo (Campo Aberto, Múltipla Escolha, etc.), no card de NPS e no Top 3. Essas chaves afetam diretamente a área de **questões**.
+
+Exemplo mínimo:
+
+```json
+"uiTexts": {
+  "responseDetails": {
+    "all": "Todas",
+    "open-ended": "Campo Aberto",
+    "multiple-choice": "Múltipla Escolha",
+    "single-choice": "Escolha única",
+    "nps": "NPS",
+    "npsScore": "NPS Score",
+    "top3Categories": "Top 3 Categories",
+    "mentions": "menções",
+    "positive": "Positivo",
+    "negative": "Negativo",
+    "noPositiveTopics": "Nenhum tópico positivo",
+    "noNegativeTopics": "Nenhum tópico negativo",
+    "filterQuestion": "Filtrar questão",
+    "questionPrefix": "Q"
+  }
+}
+```
+
+### filterPanel (filtros e questões)
+
+Usado no painel de filtros (FilterPanel), incluindo o dropdown **"Filtrar por questão"** e os rótulos dos tipos de questão no painel.
+
+Exemplo:
+
+```json
+"uiTexts": {
+  "filterPanel": {
+    "filterByQuestion": "Filtrar por questão:",
+    "selectQuestion": "Selecione uma questão",
+    "allQuestions": "Todas as questões",
+    "questionPrefix": "Q",
+    "all": "Todas",
+    "open-ended": "Campo Aberto",
+    "multiple-choice": "Múltipla Escolha",
+    "single-choice": "Escolha única",
+    "nps": "NPS",
+    "filters": "Filtros",
+    "selectFilterType": "Selecione um tipo de filtro",
+    "activeFilters": "Filtros Ativos",
+    "selectValues": "Selecione os valores",
+    "clearAllFilters": "Limpar todos os filtros",
+    "ok": "OK"
+  }
+}
+```
+
+### Outros nós (common, surveySidebar, etc.)
+
+- **common:** mensagens de loading (`loadingQuestions`, `loadingFilteredData`), erros (`questionsNotFound`) e empty states genéricos (`noData`, `noComponentsForSection`). Ver referência completa em [REFERENCIA_UITEXTS_JSON.md](./REFERENCIA_UITEXTS_JSON.md).
+- **surveySidebar:** rótulos como "Respondentes", "Taxa de resposta", "Questões" no sidebar e no bloco de export.
+- **surveyHeader:** textos do cabeçalho e navegação (conforme uso no código).
+
+Para a lista completa de chaves e fallbacks, consulte **[REFERENCIA_UITEXTS_JSON.md](./REFERENCIA_UITEXTS_JSON.md)**.

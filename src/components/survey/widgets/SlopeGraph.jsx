@@ -36,6 +36,7 @@ export function SlopeGraph({
   showLabels = true,
   showDelta = true,
   showGrid = true,
+  isExportImage = false,
 }) {
   if (!data || data.length === 0) {
     return (
@@ -70,12 +71,20 @@ export function SlopeGraph({
   const maxValue = Math.max(...allValues);
   const padding = (maxValue - minValue) * 0.1;
 
+  const EXPORT_W = 800;
+  const EXPORT_H = 400;
+  const chartHeight = isExportImage ? EXPORT_H : height;
+
   return (
-    <div role="img" aria-label="Gráfico de comparação antes e depois">
-      <ResponsiveContainer width="100%" height={height}>
+    <div style={isExportImage ? { width: EXPORT_W, height: EXPORT_H } : undefined} role="img" aria-label="Gráfico de comparação antes e depois">
+      <ResponsiveContainer
+        width={isExportImage ? EXPORT_W : "100%"}
+        height={isExportImage ? EXPORT_H : height}
+      >
         <LineChart
           data={chartData}
           margin={margin}
+          isAnimationActive={!isExportImage}
         >
           {showGrid && (
             <CartesianGrid
@@ -94,6 +103,7 @@ export function SlopeGraph({
             stroke={CHART_COLORS.foreground}
             tick={{ fill: CHART_COLORS.foreground }}
           />
+          {!isExportImage && (
           <Tooltip
             formatter={(value, name) => {
               if (name === "delta") {
@@ -107,6 +117,7 @@ export function SlopeGraph({
               borderRadius: "4px",
             }}
           />
+          )}
           
           {/* Before points */}
           <Line

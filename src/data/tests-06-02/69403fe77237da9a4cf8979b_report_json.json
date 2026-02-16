@@ -3274,6 +3274,17 @@
     }
   ],
   "uiTexts": {
+    "responseDetails": {
+      "topCategories": "Top categorias",
+      "topCategoriesTopics": "Top categorias e principais tópicos",
+      "wordCloud": "Nuvem de Palavras",
+      "npsScore": "NPS Score",
+      "mentions": "menções",
+      "positive": "Positivo",
+      "negative": "Negativo",
+      "noPositiveTopics": "Nenhum tópico positivo",
+      "noNegativeTopics": "Nenhum tópico negativo"
+    },
     "filterPanel": {
       "all": "Todas",
       "open-ended": "Campo Aberto",
@@ -3294,7 +3305,17 @@
         "loadingQuestions": "Carregando questões..."
       },
       "errors": {
-        "dataNotFound": "Dados não encontrados."
+        "dataNotFound": "Dados não encontrados.",
+        "responseDetails": {
+          "topCategories": "Top categorias",
+          "topCategoriesTopics": "Top categorias e principais tópicos",
+          "npsScore": "NPS Score",
+          "mentions": "menções",
+          "positive": "Positivo",
+          "negative": "Negativo",
+          "noPositiveTopics": "Nenhum tópico positivo",
+          "noNegativeTopics": "Nenhum tópico negativo"
+        }
       }
     }
   },

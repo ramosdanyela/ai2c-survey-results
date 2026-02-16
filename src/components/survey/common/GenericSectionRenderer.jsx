@@ -243,13 +243,13 @@ function ComponentRenderer({
             }
             logger.warnCritical(
               `ComponentRenderer retornou valor inválido para ${comp.type} no heading:`,
-              rendered
+              rendered,
             );
             return null;
           } catch (err) {
             logger.error(
               `Erro ao renderizar componente ${comp.type} no heading:`,
-              err
+              err,
             );
             return null;
           }
@@ -327,13 +327,13 @@ function ComponentRenderer({
           }
           logger.warnCritical(
             `ComponentRenderer retornou valor inválido para ${comp.type}:`,
-            rendered
+            rendered,
           );
           return null;
         } catch (err) {
           logger.error(
             `Erro ao renderizar componente ${comp.type} no grid-container:`,
-            err
+            err,
           );
           return null;
         }
@@ -399,13 +399,13 @@ function ComponentRenderer({
           }
           logger.warnCritical(
             `ComponentRenderer retornou valor inválido para ${comp.type}:`,
-            rendered
+            rendered,
           );
           return null;
         } catch (err) {
           logger.error(
             `Erro ao renderizar componente ${comp.type} no container:`,
-            err
+            err,
           );
           return null;
         }
@@ -496,7 +496,7 @@ function ComponentRenderer({
       if (rendered !== null && rendered !== undefined) {
         logger.warnCritical(
           `Component ${component.type} retornou valor inválido:`,
-          rendered
+          rendered,
         );
       }
       // Retorna null se não houver dados (comportamento esperado para tabelas sem dados)
@@ -640,7 +640,7 @@ export function GenericSectionRenderer({
     // This matches the behavior in SurveySidebar.getDynamicSubsections
     if (isQuestionsSectionId(sectionId)) {
       const questions = getQuestionsFromData(data).sort(
-        (a, b) => (a.index || 0) - (b.index || 0)
+        (a, b) => (a.index || 0) - (b.index || 0),
       );
 
       // Use components from section
@@ -726,12 +726,12 @@ export function GenericSectionRenderer({
     if (isQuestionsSectionId(sectionId)) {
       // Filter out any existing filterPills from JSON to avoid duplicates
       rawComponents = rawComponents.filter(
-        (comp) => comp.type !== "filterPills"
+        (comp) => comp.type !== "filterPills",
       );
 
       // Find the index of the first questionsList component
       const questionsListIndex = rawComponents.findIndex(
-        (comp) => comp.type === "questionsList"
+        (comp) => comp.type === "questionsList",
       );
 
       // Create filterPills component
@@ -957,11 +957,7 @@ export function GenericSectionRenderer({
   return (
     <div className="space-y-8 animate-fade-in">
       <section>
-        <div
-          className={
-            isExport ? "space-y-3" : "space-y-6"
-          }
-        >
+        <div className={isExport ? "space-y-3" : "space-y-6"}>
           {/* Subsection Title - show only if has subsections and activeSubsection exists */}
           {/* For responses section with individual question: use old question structure (no SubsectionTitle) */}
           {/* For other sections or responses without question: use SubsectionTitle */}
@@ -985,7 +981,7 @@ export function GenericSectionRenderer({
             !isExport &&
             (() => {
               const hasFilterPills = components.some(
-                (c) => c.type === "filterPills"
+                (c) => c.type === "filterPills",
               );
               if (!hasFilterPills) {
                 const filterPillsComponent = {
@@ -1048,7 +1044,7 @@ export function GenericSectionRenderer({
                 !isExport &&
                 (() => {
                   const hasQuestionsList = components.some(
-                    (c) => c.type === "questionsList"
+                    (c) => c.type === "questionsList",
                   );
                   const questions = getQuestionsFromData(data);
 

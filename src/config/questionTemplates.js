@@ -90,17 +90,13 @@ export const questionTypeTemplates = {
       type: "topCategoriesCards",
       index: 1,
       dataPath: "question.data.topCategoriesCards",
-      config: {
-        title: "Top 3 Categorias",
-      },
+      config: {},
     },
     {
       type: "wordCloud",
       index: 2,
       dataPath: "question.data.wordCloud",
-      config: {
-        title: "Nuvem de Palavras",
-      },
+      config: {},
     },
   ],
 

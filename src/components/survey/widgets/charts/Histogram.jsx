@@ -10,6 +10,9 @@ import {
 } from "recharts";
 import { CHART_COLORS } from "@/lib/colors";
 
+const EXPORT_IMAGE_WIDTH = 800;
+const EXPORT_IMAGE_HEIGHT = 400;
+
 /**
  * Histogram / Distribution Chart Component
  *
@@ -38,6 +41,7 @@ export function Histogram({
   margin = { top: 20, right: 30, left: 20, bottom: 60 },
   showLabels = true,
   showGrid = true,
+  isExportImage = false,
 }) {
   if (!data || data.length === 0) {
     return (
@@ -130,10 +134,15 @@ export function Histogram({
     }));
   }
 
+  const chartHeight = isExportImage ? EXPORT_IMAGE_HEIGHT : height;
+
   return (
-    <div style={{ height }} role="img" aria-label="Histograma de distribuição">
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={chartData} margin={margin}>
+    <div style={{ height: chartHeight, width: isExportImage ? EXPORT_IMAGE_WIDTH : undefined }} role="img" aria-label="Histograma de distribuição">
+      <ResponsiveContainer
+        width={isExportImage ? EXPORT_IMAGE_WIDTH : "100%"}
+        height={isExportImage ? EXPORT_IMAGE_HEIGHT : "100%"}
+      >
+        <BarChart data={chartData} margin={margin} isAnimationActive={!isExportImage}>
           {showGrid && (
             <CartesianGrid
               strokeDasharray="3 3"
@@ -158,6 +167,7 @@ export function Histogram({
             stroke={CHART_COLORS.foreground}
             tick={{ fill: CHART_COLORS.foreground }}
           />
+          {!isExportImage && (
           <Tooltip
             formatter={(value, name, props) => {
               const display =
@@ -172,6 +182,7 @@ export function Histogram({
               borderRadius: "4px",
             }}
           />
+          )}
           <Bar
             dataKey="value"
             fill={CHART_COLORS.primary}

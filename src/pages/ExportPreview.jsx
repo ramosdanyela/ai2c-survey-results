@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { GenericSectionRenderer } from "@/components/survey/common/GenericSectionRenderer";
 import { ExportTimestamp } from "@/components/export/ExportTimestamp";
-import { parseSelectedSections } from "@/utils/exportHelpers";
+import { parseSelectedSections, handleStructuredDocxExport } from "@/utils/exportHelpers";
 import { capitalizeTitle } from "@/lib/utils";
 import { useSurveyData } from "@/hooks/useSurveyData";
 import { Separator } from "@/components/ui/separator";
@@ -20,13 +20,15 @@ import {
 } from "@/lib/colors";
 import { Download, Users, TrendingUp, ClipboardList } from "@/lib/icons";
 import { getQuestionsFromData } from "@/services/dataResolver";
-import { Printer, Cloud, ArrowLeft } from "lucide-react";
+import { Printer, Cloud, ArrowLeft, FileText, Loader2 } from "lucide-react";
 
 export default function ExportPreview() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { data, loading } = useSurveyData();
   const [showWordCloud, setShowWordCloud] = useState(true);
+  const [isExportingWord, setIsExportingWord] = useState(false);
+  const a4WrapperRef = useRef(null);
 
   // Parse URL parameters
   const exportFullReport = searchParams.get("fullReport") === "true";
@@ -98,6 +100,21 @@ export default function ExportPreview() {
   const handleExportPDF = () => {
     window.print();
   };
+
+  const handleExportWord = useCallback(async () => {
+    if (!data || isExportingWord) return;
+    setIsExportingWord(true);
+    try {
+      const fileName = data?.surveyInfo?.title
+        ? data.surveyInfo.title.replace(/[^a-zA-Z0-9\s]/g, "").trim()
+        : "export";
+      await handleStructuredDocxExport(data, sectionsToRender, fileName);
+    } catch (err) {
+      console.error("Word export failed:", err);
+    } finally {
+      setIsExportingWord(false);
+    }
+  }, [data, sectionsToRender, isExportingWord]);
 
   // Show loading state
   if (loading || !data) {
@@ -325,13 +342,32 @@ export default function ExportPreview() {
                 <Printer className="w-4 h-4 mr-2" />
                 Save as PDF
               </Button>
+
+              {/* Export Word Button */}
+              <Button
+                onClick={handleExportWord}
+                disabled={isExportingWord}
+                variant="outline"
+                className="h-10 px-4"
+                style={{
+                  borderColor: COLOR_ORANGE_PRIMARY,
+                  color: COLOR_ORANGE_PRIMARY,
+                }}
+              >
+                {isExportingWord ? (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                ) : (
+                  <FileText className="w-4 h-4 mr-2" />
+                )}
+                {isExportingWord ? "Exporting..." : "Save as Word"}
+              </Button>
             </div>
           </div>
         </header>
 
         {/* Main Content: A4 sheet(s) */}
         <main className="export-preview-screen-bg">
-          <div className="export-preview-a4-wrapper">
+          <div className="export-preview-a4-wrapper" ref={a4WrapperRef}>
             {/* SurveyInfo card – above everything, centered */}
             {data?.surveyInfo && (
               <div className="export-survey-info-block w-full flex justify-center mb-5 export-avoid-break">

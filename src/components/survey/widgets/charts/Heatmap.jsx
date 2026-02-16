@@ -39,6 +39,7 @@ export function Heatmap({
   height = 400,
   showValues = true,
   valueFormatter,
+  isExportImage = false,
 }) {
   // Extract categories if not provided
   const xCats = useMemo(() => {
@@ -137,11 +138,16 @@ export function Heatmap({
     return typeof value === "number" ? value.toFixed(1) : value;
   };
 
+  const EXPORT_W = 800;
+  const EXPORT_H = 400;
+  const chartHeight = isExportImage ? EXPORT_H : height;
+  const chartWidth = isExportImage ? EXPORT_W : undefined;
+
   if (!data || data.length === 0) {
     return (
       <div
         className="flex items-center justify-center p-8 text-muted-foreground"
-        style={{ height }}
+        style={{ height: chartHeight, width: chartWidth }}
       >
         <p>Nenhum dado disponível</p>
       </div>
@@ -149,7 +155,7 @@ export function Heatmap({
   }
 
   return (
-    <div style={{ height }} role="img" aria-label="Mapa de calor">
+    <div style={{ height: chartHeight, width: chartWidth }} role="img" aria-label="Mapa de calor">
       <div className="relative w-full h-full">
         {/* Y axis labels */}
         <div className="absolute left-0 top-0 h-full flex flex-col justify-around pr-2">

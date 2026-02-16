@@ -22,6 +22,7 @@ export function EvolutionaryScorecard({
   label = "KPI",
   format = (val) => val?.toLocaleString("pt-BR") || "0",
   className = "",
+  isExportImage = false,
 }) {
   // Determine trend icon and color
   const getTrendDisplay = () => {

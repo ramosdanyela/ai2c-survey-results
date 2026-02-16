@@ -42,6 +42,7 @@ export function StackedBarMECE({
   margin,
   showGrid = true,
   showLegend = true,
+  isExportImage = false,
 }) {
   const axisKey = yAxisDataKey ?? categoryKey ?? "option";
   const chartMargin = { ...DEFAULT_MARGIN, ...margin };
@@ -68,15 +69,22 @@ export function StackedBarMECE({
     );
   }
 
+  const EXPORT_W = 800;
+  const EXPORT_H = 400;
+  const chartHeight = isExportImage ? EXPORT_H : height;
+
   return (
     <div
       className="min-w-0 overflow-hidden p-2"
-      style={{ height }}
+      style={{ height: chartHeight, width: isExportImage ? EXPORT_W : undefined }}
       role="img"
       aria-label="Gráfico de barras empilhadas MECE"
     >
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} margin={chartMargin} layout="vertical">
+      <ResponsiveContainer
+        width={isExportImage ? EXPORT_W : "100%"}
+        height={isExportImage ? EXPORT_H : "100%"}
+      >
+        <BarChart data={data} margin={chartMargin} layout="vertical" isAnimationActive={!isExportImage}>
           {showGrid && (
             <CartesianGrid
               strokeDasharray="3 3"
@@ -98,6 +106,7 @@ export function StackedBarMECE({
             stroke={CHART_COLORS.foreground}
             tick={{ fill: CHART_COLORS.foreground }}
           />
+          {!isExportImage && (
           <Tooltip
             formatter={(value) => [`${value}%`, ""]}
             contentStyle={{
@@ -106,6 +115,7 @@ export function StackedBarMECE({
               borderRadius: "4px",
             }}
           />
+          )}
           {showLegend && <Legend />}
           {series.map((serie, index) => (
             <Bar

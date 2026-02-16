@@ -312,7 +312,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
     <TooltipProvider>
       <div className="flex flex-col h-full px-2 sm:px-3 w-full overflow-x-hidden">
         {/* Close button on mobile */}
-        <div className="lg:hidden flex justify-end pt-2 sm:pt-3 pb-1.5 sm:pb-2">
+        <div className="min-[1480px]:hidden flex justify-end pt-2 sm:pt-3 pb-1.5 sm:pb-2">
           <button
             onClick={onItemClick}
             className="rounded-lg p-1.5 sm:p-2 text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 transition-all duration-200"
@@ -801,7 +801,7 @@ export const SurveySidebar = forwardRef(
     return (
       <aside
         ref={ref}
-        className="hidden lg:flex fixed left-0 top-0 h-full bg-sidebar z-20 overflow-y-auto"
+        className="hidden min-[1480px]:flex fixed left-0 top-0 h-full bg-sidebar z-20 overflow-y-auto"
         style={{
           width: "auto",
           minWidth: "fit-content",

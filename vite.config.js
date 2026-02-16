@@ -16,4 +16,8 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  optimizeDeps: {
+    // Pré-empacota o módulo docx para evitar 504 (Outdated Optimize Dep) no export Word
+    include: ["docx"],
+  },
 }));

@@ -138,7 +138,7 @@ export function SchemaNPSScoreCard({ component, data }) {
   const npsData = resolveDataPath(
     data,
     component.dataPath || "surveyInfo",
-    component.data
+    component.data,
   );
   const uiTexts = resolveDataPath(data, "uiTexts");
 
@@ -177,11 +177,15 @@ export function SchemaNPSScoreCard({ component, data }) {
  * All styling is hardcoded - no config needed
  * @param {boolean} isExport - When true, uses fixed layout and print-friendly styles (no hover, stable grid)
  */
-export function SchemaTopCategoriesCards({ component, data, isExport = false }) {
+export function SchemaTopCategoriesCards({
+  component,
+  data,
+  isExport = false,
+}) {
   const categoriesData = resolveDataPath(
     data,
     component.dataPath,
-    component.data
+    component.data,
   );
   const uiTexts = resolveDataPath(data, "uiTexts");
 
@@ -190,23 +194,19 @@ export function SchemaTopCategoriesCards({ component, data, isExport = false }) 
   }
 
   const title =
+    uiTexts?.responseDetails?.topCategories ||
     component.config?.title ||
-    uiTexts?.responseDetails?.top3Categories ||
-    "Top 3 Categories";
+    "Top Categorias";
 
   return (
     <div className={isExport ? "mb-6 export-top3-categories" : "mb-6"}>
       <h4 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
         <Award className="w-4 h-4" style={{ color: COLOR_ORANGE_PRIMARY }} />
-        {title ||
-          uiTexts?.responseDetails?.top3Categories ||
-          "Top 3 Categories"}
+        {title}
       </h4>
       <div
         className={
-          isExport
-            ? "grid grid-cols-3 gap-4"
-            : "grid md:grid-cols-3 gap-4"
+          isExport ? "grid grid-cols-3 gap-4" : "grid grid-cols-1 sm:grid-cols-3 gap-4"
         }
       >
         {categoriesData.map((cat) => {
@@ -234,7 +234,7 @@ export function SchemaTopCategoriesCards({ component, data, isExport = false }) 
           return (
             <div
               key={cat.rank}
-              className="p-4 rounded-lg bg-muted/10 border-0 transition-all duration-300"
+              className="p-4 rounded-lg bg-muted/10 border-0 transition-all duration-300 min-w-0"
               style={{
                 boxShadow: `0 4px 16px ${RGBA_BLACK_SHADOW_30}`,
                 ...(isExport && { breakInside: "avoid", minWidth: 0 }),
@@ -264,7 +264,7 @@ export function SchemaTopCategoriesCards({ component, data, isExport = false }) 
                 {cat.percentage}%)
               </div>
               {cat.topics && (
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 top3:grid-cols-2 gap-4">
                   {/* Positive Column */}
                   <div className="space-y-1.5">
                     <div className="text-xs font-semibold text-blue-600 dark:text-blue-400 mb-2">

@@ -11,12 +11,12 @@ import {
   Minimize2,
 } from "lucide-react";
 
-// Escolha os dois JSONs pelo relative path (edite só esta lista)
+// Escolha os JSONs pelo path (edite só esta lista). Inclui arquivos em subpastas de src/data.
 const SOURCE_PATHS = [
   "@/data/json_file_app_05-02.json",
   "@/data/surveyData.json",
 ];
-const jsonModules = import.meta.glob("@/data/*.json", { eager: true });
+const jsonModules = import.meta.glob("@/data/**/*.json", { eager: true });
 const globKeys = Object.keys(jsonModules);
 // Vite pode expor chaves como "src/data/arquivo.json" (sem @) — normalizar e buscar
 const getDataByPath = (path) => {

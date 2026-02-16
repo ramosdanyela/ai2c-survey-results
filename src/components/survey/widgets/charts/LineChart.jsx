@@ -28,6 +28,9 @@ import { CHART_COLORS } from "@/lib/colors";
  * @param {Function} [props.yAxisFormatter] - Y axis tick formatter
  * @param {Function} [props.tooltipFormatter] - Tooltip formatter
  */
+const EXPORT_IMAGE_WIDTH = 800;
+const EXPORT_IMAGE_HEIGHT = 400;
+
 export function LineChart({
   data = [],
   xAxisDataKey = "x",
@@ -40,6 +43,7 @@ export function LineChart({
   xAxisFormatter,
   yAxisFormatter,
   tooltipFormatter,
+  isExportImage = false,
 }) {
   if (!data || data.length === 0) {
     return (
@@ -73,10 +77,15 @@ export function LineChart({
       return [value, line?.name || name];
     });
 
+  const chartHeight = isExportImage ? EXPORT_IMAGE_HEIGHT : height;
+
   return (
-    <div style={{ height }} role="img" aria-label="Gráfico de linha">
-      <ResponsiveContainer width="100%" height="100%">
-        <RechartsLineChart data={data} margin={margin}>
+    <div style={{ height: chartHeight, width: isExportImage ? EXPORT_IMAGE_WIDTH : undefined }} role="img" aria-label="Gráfico de linha">
+      <ResponsiveContainer
+        width={isExportImage ? EXPORT_IMAGE_WIDTH : "100%"}
+        height={isExportImage ? EXPORT_IMAGE_HEIGHT : "100%"}
+      >
+        <RechartsLineChart data={data} margin={margin} isAnimationActive={!isExportImage}>
           {showGrid && (
             <CartesianGrid
               strokeDasharray="3 3"
@@ -95,7 +104,7 @@ export function LineChart({
             stroke={CHART_COLORS.foreground}
             tick={{ fill: CHART_COLORS.foreground }}
           />
-          {showTooltip && (
+          {showTooltip && !isExportImage && (
             <Tooltip
               formatter={defaultTooltipFormatter}
               contentStyle={{
@@ -118,6 +127,7 @@ export function LineChart({
               dataKey={line.dataKey}
               name={line.name}
               stroke={line.color || CHART_COLORS.primary}
+              isAnimationActive={!isExportImage}
               strokeWidth={line.strokeWidth || 2}
               dot={{ r: 4 }}
               activeDot={{ r: 6 }}

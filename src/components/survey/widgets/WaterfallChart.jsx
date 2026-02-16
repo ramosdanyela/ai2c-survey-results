@@ -35,6 +35,7 @@ export function WaterfallChart({
   margin = { top: 20, right: 30, left: 20, bottom: 60 },
   showLabels = true,
   showGrid = true,
+  isExportImage = false,
 }) {
   if (!data || data.length === 0) {
     return (
@@ -123,10 +124,17 @@ export function WaterfallChart({
     }
   };
 
+  const EXPORT_W = 800;
+  const EXPORT_H = 400;
+  const chartHeight = isExportImage ? EXPORT_H : height;
+
   return (
-    <div style={{ height }} role="img" aria-label="Gráfico de cascata">
-      <ResponsiveContainer width="100%" height="100%">
-        <ComposedChart data={chartData} margin={margin}>
+    <div style={{ height: chartHeight, width: isExportImage ? EXPORT_W : undefined }} role="img" aria-label="Gráfico de cascata">
+      <ResponsiveContainer
+        width={isExportImage ? EXPORT_W : "100%"}
+        height={isExportImage ? EXPORT_H : "100%"}
+      >
+        <ComposedChart data={chartData} margin={margin} isAnimationActive={!isExportImage}>
           {showGrid && (
             <CartesianGrid
               strokeDasharray="3 3"
@@ -147,6 +155,7 @@ export function WaterfallChart({
             stroke={CHART_COLORS.foreground}
             tick={{ fill: CHART_COLORS.foreground }}
           />
+          {!isExportImage && (
           <Tooltip
             formatter={(value, name, props) => {
               const item = props.payload;
@@ -170,6 +179,7 @@ export function WaterfallChart({
               borderRadius: "4px",
             }}
           />
+          )}
           {/* Base bars (invisible) for intermediate values to create suspended effect */}
           <Bar dataKey="base" stackId="base" fill="transparent" />
           {/* Actual change bars */}

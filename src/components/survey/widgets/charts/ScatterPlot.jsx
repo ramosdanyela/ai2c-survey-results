@@ -11,6 +11,9 @@ import {
 } from "recharts";
 import { CHART_COLORS } from "@/lib/colors";
 
+const EXPORT_IMAGE_WIDTH = 800;
+const EXPORT_IMAGE_HEIGHT = 400;
+
 /**
  * Scatter Plot Component
  * 
@@ -43,6 +46,7 @@ export function ScatterPlot({
   xAxisFormatter,
   yAxisFormatter,
   colorMap,
+  isExportImage = false,
 }) {
   if (!data || data.length === 0) {
     return (
@@ -98,10 +102,15 @@ export function ScatterPlot({
     return Math.max(5, Math.min(30, normalized));
   };
 
+  const chartHeight = isExportImage ? EXPORT_IMAGE_HEIGHT : height;
+
   return (
-    <div style={{ height }} role="img" aria-label="Gráfico de dispersão">
-      <ResponsiveContainer width="100%" height="100%">
-        <ScatterChart data={data} margin={margin}>
+    <div style={{ height: chartHeight, width: isExportImage ? EXPORT_IMAGE_WIDTH : undefined }} role="img" aria-label="Gráfico de dispersão">
+      <ResponsiveContainer
+        width={isExportImage ? EXPORT_IMAGE_WIDTH : "100%"}
+        height={isExportImage ? EXPORT_IMAGE_HEIGHT : "100%"}
+      >
+        <ScatterChart data={data} margin={margin} isAnimationActive={!isExportImage}>
           {showGrid && (
             <CartesianGrid
               strokeDasharray="3 3"
@@ -123,6 +132,7 @@ export function ScatterPlot({
             stroke={CHART_COLORS.foreground}
             tick={{ fill: CHART_COLORS.foreground }}
           />
+          {!isExportImage && (
           <Tooltip
             cursor={{ strokeDasharray: "3 3" }}
             formatter={(value, name, props) => {
@@ -141,6 +151,7 @@ export function ScatterPlot({
               borderRadius: "4px",
             }}
           />
+          )}
           {showLegend && categories.length > 0 && <Legend />}
           
           {colorKey && categories.length > 0 ? (

@@ -32,6 +32,7 @@ export function SankeyDiagram({
   width,
   nodeWidth = 15,
   nodePadding = 10,
+  isExportImage = false,
 }) {
   const chartWidth = width || 800;
 

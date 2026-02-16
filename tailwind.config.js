@@ -16,6 +16,9 @@ export default {
       },
     },
     extend: {
+      screens: {
+        top3: "1360px", // Top Categories: 2 cols (Positive|Negative) inside each card above this
+      },
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
         heading: ["Poppins", "system-ui", "sans-serif"],
