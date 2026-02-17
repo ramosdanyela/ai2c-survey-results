@@ -211,6 +211,13 @@ function ComponentRenderer({
       finalWrapperProps.style = wrapperProps.style;
     }
 
+    // Word export: mark heading with data attribute for clean text extraction
+    if (isExport) {
+      const plainText = (component.text || component.content || "").replace(/\n/g, " ").trim();
+      finalWrapperProps["data-word-export"] = component.type; // "h3" or "h4"
+      if (plainText) finalWrapperProps["data-word-text"] = plainText;
+    }
+
     // If wrapper has nested components, render them
     if (component.components && Array.isArray(component.components)) {
       const nestedComponents = component.components
@@ -459,12 +466,12 @@ function ComponentRenderer({
           );
         });
       return (
-        <SchemaCard component={component} data={data}>
+        <SchemaCard component={component} data={data} isExport={isExport}>
           {nestedComponents}
         </SchemaCard>
       );
     }
-    return <SchemaCard component={component} data={data} />;
+    return <SchemaCard component={component} data={data} isExport={isExport} />;
   }
 
   // Usa o Component Registry para todos os outros tipos

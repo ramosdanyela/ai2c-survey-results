@@ -104,14 +104,25 @@ export function SchemaCard({ component, data, children, isExport = false }) {
       }
     >
       {title && (
-        <CardHeader>
+        <CardHeader
+          {...(isExport && {
+            "data-word-export": "h3",
+            "data-word-text": title,
+          })}
+        >
           <CardTitle className={titleClassName}>{title}</CardTitle>
         </CardHeader>
       )}
       <CardContent className={finalTextClassName}>
         {/* Render text first if it exists */}
         {hasText && (
-          <ContentWrapper className={`pt-5 ${textBaseClassName}`.trim()}>
+          <ContentWrapper
+            className={`pt-5 ${textBaseClassName}`.trim()}
+            {...(isExport && {
+              "data-word-export": "text",
+              "data-word-text": text.replace(/\n/g, " ").trim(),
+            })}
+          >
             {text.split("\n").map((line, index) => (
               <p key={index} className={line.trim() ? "" : "h-3"}>
                 {line}

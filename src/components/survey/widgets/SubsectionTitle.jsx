@@ -31,6 +31,10 @@ export function SubsectionTitle({
     <Card
       className={`card-elevated ${isExport ? "export-subsection-title" : ""} ${className}`.trim()}
       disableHover={isExport}
+      {...(isExport && {
+        "data-word-export": "h2",
+        "data-word-text": capitalizeTitle(title),
+      })}
     >
       <CardHeader className="py-6">
         <div className="flex items-center justify-center gap-2 mb-2">
@@ -40,7 +44,13 @@ export function SubsectionTitle({
           </CardTitle>
         </div>
         {summary && (
-          <CardDescription className="text-base leading-relaxed space-y-3 mt-4 pt-5 text-center">
+          <CardDescription
+            className="text-base leading-relaxed space-y-3 mt-4 pt-5 text-center"
+            {...(isExport && {
+              "data-word-export": "text",
+              "data-word-text": breakLinesAfterPeriod(summary).replace(/\n/g, " ").trim(),
+            })}
+          >
             {breakLinesAfterPeriod(summary)
               .split("\n")
               .map((line, index) => (

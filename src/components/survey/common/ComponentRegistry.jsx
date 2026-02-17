@@ -57,6 +57,25 @@ import {
 } from "./WidgetRenderers";
 
 /**
+ * Component types that should be captured as PNG images in Word export.
+ * Used by renderComponent to wrap these with data-word-export="image".
+ */
+const IMAGE_EXPORT_TYPES = new Set([
+  // Charts
+  "barChart", "sentimentDivergentChart", "sentimentThreeColorChart",
+  "npsStackedChart", "lineChart", "paretoChart", "scatterPlot",
+  "histogram", "quadrantChart", "heatmap", "sankeyDiagram",
+  "stackedBarMECE", "evolutionaryScorecard", "slopeGraph", "waterfallChart",
+  // Tables
+  "recommendationsTable", "segmentationTable", "distributionTable",
+  "sentimentTable", "npsDistributionTable", "npsTable",
+  "sentimentImpactTable", "positiveCategoriesTable", "negativeCategoriesTable",
+  "analyticalTable",
+  // Visual cards/widgets
+  "npsScoreCard", "topCategoriesCards", "kpiCard", "wordCloud",
+]);
+
+/**
  * Registry de componentes por tipo
  * Facilita adicionar novos tipos sem modificar switch/case
  */
@@ -211,6 +230,10 @@ export const renderComponent = (component, data, props = {}) => {
     }
 
     if (React.isValidElement(rendered)) {
+      // In export mode, wrap visual components with data-word-export="image"
+      if (isExport && IMAGE_EXPORT_TYPES.has(normalizedComponent.type)) {
+        return <div data-word-export="image">{rendered}</div>;
+      }
       return rendered;
     }
 

@@ -17,8 +17,12 @@ export function ExportTimestamp() {
 
   return (
     <div className="mt-12 pt-8">
-      <Separator className="mb-6" />
-      <div className="text-center text-sm text-muted-foreground">
+      <Separator className="mb-6" data-word-export="separator" />
+      <div
+        className="text-center text-sm text-muted-foreground"
+        data-word-export="timestamp"
+        data-word-text={`Relatório extraído em: ${formattedDate}`}
+      >
         <p className="font-medium">Relatório extraído em: {formattedDate}</p>
       </div>
     </div>

@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { GenericSectionRenderer } from "@/components/survey/common/GenericSectionRenderer";
 import { ExportTimestamp } from "@/components/export/ExportTimestamp";
-import { parseSelectedSections, handleStructuredDocxExport } from "@/utils/exportHelpers";
+import { parseSelectedSections } from "@/utils/exportHelpers";
+import { exportToWord } from "@/utils/wordExport";
 import { capitalizeTitle } from "@/lib/utils";
 import { useSurveyData } from "@/hooks/useSurveyData";
 import { Separator } from "@/components/ui/separator";
@@ -28,6 +29,7 @@ export default function ExportPreview() {
   const { data, loading } = useSurveyData();
   const [showWordCloud, setShowWordCloud] = useState(true);
   const [isExportingWord, setIsExportingWord] = useState(false);
+  const [exportProgress, setExportProgress] = useState({ current: 0, total: 0 });
   const a4WrapperRef = useRef(null);
 
   // Parse URL parameters
@@ -102,19 +104,23 @@ export default function ExportPreview() {
   };
 
   const handleExportWord = useCallback(async () => {
-    if (!data || isExportingWord) return;
+    if (!a4WrapperRef.current || !data || isExportingWord) return;
     setIsExportingWord(true);
+    setExportProgress({ current: 0, total: 0 });
     try {
       const fileName = data?.surveyInfo?.title
         ? data.surveyInfo.title.replace(/[^a-zA-Z0-9\s]/g, "").trim()
         : "export";
-      await handleStructuredDocxExport(data, sectionsToRender, fileName);
+      await exportToWord(a4WrapperRef.current, fileName, (current, total) => {
+        setExportProgress({ current, total });
+      });
     } catch (err) {
       console.error("Word export failed:", err);
     } finally {
       setIsExportingWord(false);
+      setExportProgress({ current: 0, total: 0 });
     }
-  }, [data, sectionsToRender, isExportingWord]);
+  }, [data, isExportingWord]);
 
   // Show loading state
   if (loading || !data) {
@@ -359,7 +365,11 @@ export default function ExportPreview() {
                 ) : (
                   <FileText className="w-4 h-4 mr-2" />
                 )}
-                {isExportingWord ? "Exporting..." : "Save as Word"}
+                {isExportingWord
+                  ? exportProgress.total > 0
+                    ? `Capturing ${exportProgress.current}/${exportProgress.total}...`
+                    : "Preparing..."
+                  : "Save as Word"}
               </Button>
             </div>
           </div>
@@ -370,7 +380,7 @@ export default function ExportPreview() {
           <div className="export-preview-a4-wrapper" ref={a4WrapperRef}>
             {/* SurveyInfo card – above everything, centered */}
             {data?.surveyInfo && (
-              <div className="export-survey-info-block w-full flex justify-center mb-5 export-avoid-break">
+              <div className="export-survey-info-block w-full flex justify-center mb-5 export-avoid-break" data-word-export="image">
                 <div
                   className="w-full max-w-xl rounded-lg p-4 border border-border/50 text-center"
                   style={{
@@ -509,6 +519,8 @@ export default function ExportPreview() {
                             backgroundColor: COLOR_ORANGE_PRIMARY,
                             boxShadow: COLOR_ORANGE_PRIMARY,
                           }}
+                          data-word-export="h1"
+                          data-word-text={getSectionName(sectionId)}
                         >
                           <h2 className="text-2xl font-bold text-white">
                             {getSectionName(sectionId)}
@@ -536,7 +548,7 @@ export default function ExportPreview() {
 
                     {/* Section divider at the end (except for last section) */}
                     {!isLastSection && (
-                      <div className="mt-8">
+                      <div className="mt-8" data-word-export="separator">
                         <Separator />
                       </div>
                     )}
