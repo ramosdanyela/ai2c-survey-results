@@ -461,6 +461,8 @@ export function SchemaQuestionsList({
       hideFilterPills={isExport}
       externalFilterState={filterState}
       data={data} // Pass enhancedData (with sectionData injected)
+      isExport={isExport}
+      exportWordCloud={exportWordCloud}
     />
   );
 }

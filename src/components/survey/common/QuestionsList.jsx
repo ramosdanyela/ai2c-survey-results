@@ -46,6 +46,8 @@ export function QuestionsList({
   hidePerQuestionFilters = true,
   externalFilterState = null,
   data: externalData = null, // Allow external data to be passed (with sectionData injected)
+  isExport = false,
+  exportWordCloud = true,
 }) {
   const { data: hookData, loading } = useSurveyData();
   // Use external data if provided (from schema context with sectionData), otherwise use hook data
@@ -268,8 +270,8 @@ export function QuestionsList({
                 componentData,
                 {
                   subSection: `responses-${question.id}`,
-                  isExport: false,
-                  exportWordCloud: showWordCloud,
+                  isExport,
+                  exportWordCloud: isExport ? exportWordCloud : showWordCloud,
                 },
               )}
             </div>
@@ -277,7 +279,7 @@ export function QuestionsList({
         })
         .filter(Boolean);
     },
-    [data, surveyInfo, showWordCloud, safeUiTexts, filteredData],
+    [data, surveyInfo, showWordCloud, safeUiTexts, filteredData, isExport, exportWordCloud],
   );
 
   // Get all available questions filtered by selected type - MUST be before early returns
@@ -744,6 +746,55 @@ export function QuestionsList({
             const isOpen = openAccordionValue === questionValue;
             const displayNumber =
               exportQuestionDisplayNumber?.[question.id] ?? index + 1;
+
+            const questionTitle = `${safeUiTexts.responseDetails.questionPrefix || "Q"}${displayNumber} - ${question.question}`;
+            const summaryText = question.summary ? breakLinesAfterPeriod(question.summary) : "";
+
+            // In export mode, render expanded without accordion
+            if (isExport) {
+              return (
+                <div key={question.id}>
+                  {/* Question title as H3 */}
+                  <div
+                    data-word-export="h3"
+                    data-word-text={questionTitle}
+                  >
+                    <h3 className="text-lg font-bold text-foreground mb-3">
+                      {questionTitle}
+                    </h3>
+                  </div>
+
+                  {/* Summary as text */}
+                  {summaryText && (
+                    <div
+                      data-word-export="text"
+                      data-word-text={summaryText}
+                      className="text-muted-foreground mb-6 space-y-3"
+                    >
+                      {summaryText
+                        .split("\n")
+                        .map((line, i) => (
+                          <p
+                            key={i}
+                            className={line.trim() ? "" : "h-3"}
+                          >
+                            {line}
+                          </p>
+                        ))}
+                    </div>
+                  )}
+
+                  {/* Render question components */}
+                  {(() => {
+                    const components = renderQuestionComponents(question);
+                    if (components) {
+                      return <div className="space-y-4">{components}</div>;
+                    }
+                    return null;
+                  })()}
+                </div>
+              );
+            }
 
             return (
               <div
