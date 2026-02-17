@@ -59,10 +59,11 @@ JSON do relatório (surveyDataService / API)
 
 ```
 ├── docs/
-│   ├── backend/                    # Documentação de API e integração
-│   │   ├── INSTRUCOES_BACKEND_GET_RELATORIO_JSON.md
-│   │   ├── PEDROZA_QUESTIONS_API_SPEC.md
-│   │   └── Replace_mock_to_api.md
+│   ├── official_docs/              # Documentação oficial (estrutura JSON, uiTexts, migração API)
+│   │   ├── ESTRUTURA_COMPONENTES_JSON.md
+│   │   ├── REFERENCIA_UITEXTS_JSON.md
+│   │   ├── MIGRACAO_MOCKS_PARA_API_REAL.md
+│   │   └── ESTRATEGIA_VERIFICACAO_DOCS_ATUALIZADOS.md
 │   └── validation_scripts/         # Validação de JSON de relatório
 │       ├── rules/
 │       │   └── custom-rules.js
@@ -192,7 +193,7 @@ Os scripts `validate-json.js` e `validate-all-jsons.js` carregam schema e regras
 ## Dados e integração com API
 
 - **Origem dos dados:** O hook `useSurveyData()` chama `fetchSurveyData()` do **surveyDataService** (`src/services/surveyDataService.js`). Hoje o serviço retorna um JSON estático (ex.: `src/data/tests-06-02/json_file_app.json`).
-- **Integração com API real:** Ajustar `surveyDataService.js` para fazer `fetch` à API (por exemplo usando `VITE_API_URL` e `VITE_SURVEY_DATA_ENDPOINT`). Documentação passo a passo em **`docs/backend/Replace_mock_to_api.md`** (variáveis de ambiente, autenticação, tratamento de erros).
+- **Integração com API real:** Ajustar `surveyDataService.js` para fazer `fetch` à API (por exemplo usando `VITE_API_URL` e `VITE_SURVEY_DATA_ENDPOINT`). Documentação passo a passo em **`docs/official_docs/MIGRACAO_MOCKS_PARA_API_REAL.md`** (variáveis de ambiente, autenticação, tratamento de erros).
 
 Variáveis de ambiente úteis (prefixo `VITE_` para expor no front):
 
@@ -232,8 +233,11 @@ Variáveis de ambiente úteis (prefixo `VITE_` para expor no front):
 
 ## Documentação adicional
 
-- **Backend / API:** `docs/backend/`  
-  - Instruções de backend, especificação de perguntas, guia **Replace_mock_to_api.md**.
+- **Documentação oficial:** `docs/official_docs/`  
+  - **ESTRUTURA_COMPONENTES_JSON.md** – Estrutura de componentes no JSON (charts, cards, tabelas, widgets, uiTexts).  
+  - **REFERENCIA_UITEXTS_JSON.md** – Árvore completa de chaves `uiTexts` e fallbacks.  
+  - **MIGRACAO_MOCKS_PARA_API_REAL.md** – Passo a passo para trocar mocks por APIs reais.  
+  - **ESTRATEGIA_VERIFICACAO_DOCS_ATUALIZADOS.md** – Estratégia para manter README e docs alinhados ao código.
 - **Validação de JSON:**  
   - Schema: `docs/validation_scripts/schema/surveyData.schema.json`  
   - Regras: `docs/validation_scripts/rules/custom-rules.js`

@@ -1,7 +1,7 @@
 /**
  * Referência de campos do JSON para a aba Campos do Json Reference.
  * Valores "encontrados no JSON" são injetados na página a partir dos extract* (extractSectionData, etc.).
- * Atualizar quando backend_api_specification ou ESTRUTURA_COMPONENTES_JSON mudar.
+ * Atualizar quando docs/official_docs/ESTRUTURA_COMPONENTES_JSON.md ou schema de validação mudar.
  */
 
 export const metadataFields = [

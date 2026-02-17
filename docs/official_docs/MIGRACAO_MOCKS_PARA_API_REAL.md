@@ -23,7 +23,7 @@ Nenhum componente chama a API diretamente: tudo passa por esses serviços e hook
 
 - **Arquivo:** `src/services/surveyDataService.js`
 - **Comportamento:** Importa um JSON estático e o devolve como se fosse a resposta da API.
-- **Origem do mock:** `src/data/tests-06-02/69403fe77237da9a4cf8979b_report_json.json`
+- **Origem do mock:** `src/data/tests-06-02/json_file_app.json`
 
 ### Passo 1.1 – Definir URL da API do relatório
 
@@ -42,10 +42,12 @@ Substitua o corpo da função para usar `fetch` (ou seu cliente HTTP) na URL rea
 **Antes (mock):**
 
 ```javascript
-import surveyDataJson from "../data/tests-06-02/69403fe77237da9a4cf8979b_report_json.json";
+import surveyDataJson from "../data/tests-06-02/json_file_app.json";
 
 export const fetchSurveyData = async () => {
-  return Promise.resolve(surveyDataJson);
+  const data = surveyDataJson;
+  const source = data?.metadata?.surveyId ?? "json_file_app.json";
+  return { data, source };
 };
 ```
 
@@ -80,7 +82,7 @@ Se passar a usar `surveyId` na URL:
 1. Onde a aplicação sabe o `surveyId` (rota, config, etc.), chame o hook com esse valor (se o hook for estendido para aceitar parâmetro) ou
 2. Altere `surveyDataService.js` para ler `surveyId` de um módulo de config/ambiente, como no exemplo acima.
 
-O formato esperado pelo frontend para o payload do relatório está em **`docs/backend/INSTRUCOES_BACKEND_GET_RELATORIO_JSON.md`** (obrigatório: `metadata` e `sections`; o resto é flexível).
+O formato esperado pelo frontend para o payload do relatório (obrigatório: `metadata` e `sections`; o resto é flexível) está descrito em **`docs/official_docs/ESTRUTURA_COMPONENTES_JSON.md`**.
 
 ---
 
@@ -194,7 +196,7 @@ Remova o `import` do `filterDefinitions.json` quando deixar de usar o mock.
 }
 ```
 
-A estrutura interna de `data` deve seguir os formatos por tipo de questão (NPS, múltipla escolha, aberta, etc.) descritos em **`docs/backend/PEDROZA_QUESTIONS_API_SPEC.md`**.
+A estrutura interna de `data` deve seguir os formatos por tipo de questão (NPS, múltipla escolha, aberta, etc.) descritos em **`docs/official_docs/ESTRUTURA_COMPONENTES_JSON.md`** (seções de componentes e dados).
 
 Substitua em `filterService.js` a implementação de **`fetchFilteredQuestionData`**:
 
@@ -247,7 +249,7 @@ Não é necessário alterar o hook ao trocar mocks por API, desde que o backend 
 
 ### URL base da API
 
-- Defina uma variável de ambiente para a URL base (ex.: `VITE_API_BASE_URL`) e use-a em ambos os serviços, como nos exemplos.
+- Defina uma variável de ambiente para a URL base (ex.: `VITE_API_BASE_URL` ou `VITE_API_URL`, conforme o README) e use-a em ambos os serviços, como nos exemplos.
 - Exemplo em **`.env`** (ou `.env.production`):
 
 ```env
@@ -294,8 +296,8 @@ Repita o padrão em `fetchSurveyData`, `fetchFilterDefinitions` e `fetchFiltered
 
 ## Referências no repositório
 
-- Contrato do relatório (estrutura do JSON): **`docs/backend/INSTRUCOES_BACKEND_GET_RELATORIO_JSON.md`**
-- Contrato de questões e filtros (endpoints e formatos): **`docs/backend/PEDROZA_QUESTIONS_API_SPEC.md`**
+- Estrutura do JSON do relatório (metadata, sections, componentes): **`docs/official_docs/ESTRUTURA_COMPONENTES_JSON.md`**
+- Chaves de interface (uiTexts): **`docs/official_docs/REFERENCIA_UITEXTS_JSON.md`**
 - Consumidores dos serviços: **`src/hooks/useSurveyData.js`**, **`src/hooks/useQuestionFilters.js`**
 
 Com isso, o cliente que receber o código tem um roteiro objetivo para trocar os mocks pelas APIs reais sem precisar alterar componentes ou hooks.

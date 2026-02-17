@@ -1,6 +1,6 @@
 /**
  * Estrutura básica do JSON do relatório (fonte única para aba Estrutura do Json Reference).
- * Atualizar quando docs/ESTRUTURA_COMPONENTES_JSON.md ou backend schema mudar.
+ * Atualizar quando docs/official_docs/ESTRUTURA_COMPONENTES_JSON.md ou schema de validação mudar.
  */
 export const basicStructure = {
   metadata: {
