@@ -15,7 +15,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { KPICard } from "../widgets/KPICard";
-import { breakLinesAfterPeriod } from "@/lib/utils";
+import { breakLinesAfterPeriod, parseBulletItems } from "@/lib/utils";
 import { resolveDataPath } from "@/services/dataResolver";
 
 /**
@@ -71,6 +71,8 @@ export function SchemaCard({ component, data, children, isExport = false }) {
   // If children are provided, render them instead of text
   const hasChildren = children && React.Children.count(children) > 0;
   const hasText = text && text.trim() !== "";
+  const bulletItems = hasText ? parseBulletItems(text) : null;
+  const isBulletList = bulletItems && bulletItems.length > 0;
 
   // Text resolution - silently handle missing text (expected in some cases)
 
@@ -118,16 +120,32 @@ export function SchemaCard({ component, data, children, isExport = false }) {
         {hasText && (
           <ContentWrapper
             className={`pt-5 ${textBaseClassName}`.trim()}
-            {...(isExport && {
-              "data-word-export": "text",
-              "data-word-text": text.replace(/\n/g, " ").trim(),
-            })}
+            {...(isExport &&
+              (isBulletList
+                ? {
+                    "data-word-export": "list",
+                    "data-word-list": JSON.stringify(bulletItems),
+                  }
+                : {
+                    "data-word-export": "text",
+                    "data-word-text": text.replace(/\n/g, " ").trim(),
+                  }))}
           >
-            {text.split("\n").map((line, index) => (
-              <p key={index} className={line.trim() ? "" : "h-3"}>
-                {line}
-              </p>
-            ))}
+            {isBulletList ? (
+              <ul className="list-disc pl-6 space-y-1.5">
+                {bulletItems.map((item, index) => (
+                  <li key={index} className="leading-relaxed">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              text.split("\n").map((line, index) => (
+                <p key={index} className={line.trim() ? "" : "h-3"}>
+                  {line}
+                </p>
+              ))
+            )}
           </ContentWrapper>
         )}
         {/* Then render children if they exist - wrap in div with spacing so nested cards/layout render correctly */}

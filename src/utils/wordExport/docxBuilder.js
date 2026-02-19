@@ -48,6 +48,9 @@ export function buildDocxDocument(blocks) {
       case "text":
         children.push(buildTextParagraph(block));
         break;
+      case "list":
+        children.push(...buildListParagraphs(block));
+        break;
       case "spacer":
         children.push(buildSpacerParagraph());
         break;
@@ -142,6 +145,29 @@ function buildTextParagraph(block) {
       }),
     ],
   });
+}
+
+/**
+ * Build one paragraph per list item with Word bullet formatting.
+ * @param {{ type: 'list', items: string[] }} block
+ * @returns {Paragraph[]}
+ */
+function buildListParagraphs(block) {
+  const { items } = block;
+  if (!items || items.length === 0) return [];
+  return items.map((item) =>
+    new Paragraph({
+      bullet: { level: 0 },
+      spacing: { after: 120 },
+      children: [
+        new TextRun({
+          text: item,
+          font: "Arial",
+          size: 22,
+        }),
+      ],
+    }),
+  );
 }
 
 function buildSpacerParagraph() {

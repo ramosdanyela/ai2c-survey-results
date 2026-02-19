@@ -6,7 +6,7 @@ import { renderComponent } from "./ComponentRegistry";
 import { getIcon } from "@/lib/icons";
 import { useSurveyData } from "@/hooks/useSurveyData";
 import { enrichComponentWithStyles } from "@/services/styleResolver";
-import { breakLinesAfterPeriod } from "@/lib/utils";
+import { breakLinesAfterPeriod, parseBulletItems } from "@/lib/utils";
 import {
   resolveDataPath,
   getQuestionsFromData,
@@ -283,21 +283,67 @@ function ComponentRenderer({
     if (component.text || component.content) {
       const rawText = component.text || component.content || "";
       const resolvedText = breakLinesAfterPeriod(rawText);
-      // Handle multi-line text like summary
-      if (resolvedText.includes("\n")) {
+      const bulletItems = parseBulletItems(resolvedText);
+      const isBulletList = bulletItems && bulletItems.length > 0;
+
+      if (isBulletList) {
+        const listContent = (
+          <ul className="list-disc pl-6 space-y-1.5">
+            {bulletItems.map((item, index) => (
+              <li key={index} className="leading-relaxed">
+                {item}
+              </li>
+            ))}
+          </ul>
+        );
         return (
           <ComponentWrapper {...finalWrapperProps}>
-            {resolvedText.split("\n").map((line, index) => (
-              <p key={index} className={line.trim() ? "" : "h-3"}>
-                {line}
-              </p>
-            ))}
+            {isExport ? (
+              <div
+                data-word-export="list"
+                data-word-list={JSON.stringify(bulletItems)}
+              >
+                {listContent}
+              </div>
+            ) : (
+              listContent
+            )}
           </ComponentWrapper>
         );
       }
+
+      // Handle multi-line text like summary
+      if (resolvedText.includes("\n")) {
+        const textContent = resolvedText.split("\n").map((line, index) => (
+          <p key={index} className={line.trim() ? "" : "h-3"}>
+            {line}
+          </p>
+        ));
+        return (
+          <ComponentWrapper {...finalWrapperProps}>
+            {isExport ? (
+              <div
+                data-word-export="text"
+                data-word-text={resolvedText.replace(/\n/g, " ").trim()}
+              >
+                {textContent}
+              </div>
+            ) : (
+              textContent
+            )}
+          </ComponentWrapper>
+        );
+      }
+      const plainText = resolvedText;
       return (
         <ComponentWrapper {...finalWrapperProps}>
-          {resolvedText}
+          {isExport ? (
+            <div data-word-export="text" data-word-text={plainText.trim()}>
+              {plainText}
+            </div>
+          ) : (
+            plainText
+          )}
         </ComponentWrapper>
       );
     }
