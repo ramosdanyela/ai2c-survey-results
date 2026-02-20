@@ -87,6 +87,18 @@ function classify(el, exportType) {
       return text ? { type: "text", text } : null;
     }
 
+    case "list": {
+      const listJson = el.getAttribute("data-word-list");
+      if (!listJson) return null;
+      try {
+        const items = JSON.parse(listJson);
+        if (!Array.isArray(items) || items.length === 0) return null;
+        return { type: "list", items: items.map((i) => String(i).trim()).filter(Boolean) };
+      } catch {
+        return null;
+      }
+    }
+
     case "separator":
       return { type: "separator" };
 
