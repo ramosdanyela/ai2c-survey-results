@@ -283,13 +283,13 @@ function ComponentRenderer({
     if (component.text || component.content) {
       const rawText = component.text || component.content || "";
       const resolvedText = breakLinesAfterPeriod(rawText);
-      const bulletItems = parseBulletItems(resolvedText);
-      const isBulletList = bulletItems && bulletItems.length > 0;
+      const bulletData = parseBulletItems(resolvedText);
+      const isBulletList = bulletData && bulletData.items.length > 0;
 
       if (isBulletList) {
         const listContent = (
           <ul className="list-disc pl-6 space-y-1.5">
-            {bulletItems.map((item, index) => (
+            {bulletData.items.map((item, index) => (
               <li key={index} className="leading-relaxed">
                 {item}
               </li>
@@ -298,10 +298,40 @@ function ComponentRenderer({
         );
         return (
           <ComponentWrapper {...finalWrapperProps}>
-            {isExport ? (
+            {bulletData.intro ? (
+              isExport ? (
+                <>
+                  <div
+                    data-word-export="text"
+                    data-word-text={bulletData.intro.replace(/\n/g, " ").trim()}
+                  >
+                    {bulletData.intro.split("\n").map((line, index) => (
+                      <p key={index} className={line.trim() ? "" : "h-3"}>
+                        {line}
+                      </p>
+                    ))}
+                  </div>
+                  <div
+                    data-word-export="list"
+                    data-word-list={JSON.stringify(bulletData.items)}
+                  >
+                    {listContent}
+                  </div>
+                </>
+              ) : (
+                <>
+                  {bulletData.intro.split("\n").map((line, index) => (
+                    <p key={index} className={line.trim() ? "" : "h-3"}>
+                      {line}
+                    </p>
+                  ))}
+                  {listContent}
+                </>
+              )
+            ) : isExport ? (
               <div
                 data-word-export="list"
-                data-word-list={JSON.stringify(bulletItems)}
+                data-word-list={JSON.stringify(bulletData.items)}
               >
                 {listContent}
               </div>

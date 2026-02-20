@@ -17,19 +17,23 @@ export function breakLinesAfterPeriod(str) {
 }
 
 /**
- * Parseia texto que contém marcadores [*] e retorna array de itens para lista com bullets.
- * Usado na UI (renderizar <ul><li>) e no export Word (parágrafos com bullet).
- * @param {string} str - Texto com [*] como separador de itens
- * @returns {string[] | null} Itens não vazios, ou null se não houver [*]
+ * Parseia texto que contém marcadores [*].
+ * Apenas o texto que vem depois de cada [*] é considerado item da lista;
+ * texto antes do primeiro [*] é intro (parágrafo normal).
+ * Usado na UI (renderizar intro + <ul><li>) e no export Word.
+ * @param {string} str - Texto com [*] antes de cada item de lista
+ * @returns {{ intro: string, items: string[] } | null} intro + itens, ou null se não houver [*]
  */
 export function parseBulletItems(str) {
   if (str == null || typeof str !== "string") return null;
   if (!str.includes("[*]")) return null;
-  const items = str
-    .split("[*]")
+  const parts = str.split("[*]");
+  const intro = (parts[0] || "").trim();
+  const items = parts
+    .slice(1)
     .map((s) => s.trim())
     .filter(Boolean);
-  return items.length > 0 ? items : null;
+  return { intro, items };
 }
 
 /**

@@ -71,8 +71,8 @@ export function SchemaCard({ component, data, children, isExport = false }) {
   // If children are provided, render them instead of text
   const hasChildren = children && React.Children.count(children) > 0;
   const hasText = text && text.trim() !== "";
-  const bulletItems = hasText ? parseBulletItems(text) : null;
-  const isBulletList = bulletItems && bulletItems.length > 0;
+  const bulletData = hasText ? parseBulletItems(text) : null;
+  const isBulletList = bulletData && bulletData.items.length > 0;
 
   // Text resolution - silently handle missing text (expected in some cases)
 
@@ -121,24 +121,56 @@ export function SchemaCard({ component, data, children, isExport = false }) {
           <ContentWrapper
             className={`pt-5 ${textBaseClassName}`.trim()}
             {...(isExport &&
-              (isBulletList
-                ? {
-                    "data-word-export": "list",
-                    "data-word-list": JSON.stringify(bulletItems),
-                  }
-                : {
-                    "data-word-export": "text",
-                    "data-word-text": text.replace(/\n/g, " ").trim(),
-                  }))}
+              !isBulletList && {
+                "data-word-export": "text",
+                "data-word-text": text.replace(/\n/g, " ").trim(),
+              })}
           >
             {isBulletList ? (
-              <ul className="list-disc pl-6 space-y-1.5">
-                {bulletItems.map((item, index) => (
-                  <li key={index} className="leading-relaxed">
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              <>
+                {bulletData.intro ? (
+                  isExport ? (
+                    <div
+                      data-word-export="text"
+                      data-word-text={bulletData.intro.replace(/\n/g, " ").trim()}
+                    >
+                      {bulletData.intro.split("\n").map((line, index) => (
+                        <p key={index} className={line.trim() ? "" : "h-3"}>
+                          {line}
+                        </p>
+                      ))}
+                    </div>
+                  ) : (
+                    bulletData.intro.split("\n").map((line, index) => (
+                      <p key={index} className={line.trim() ? "" : "h-3"}>
+                        {line}
+                      </p>
+                    ))
+                  )
+                ) : null}
+                {isExport ? (
+                  <div
+                    data-word-export="list"
+                    data-word-list={JSON.stringify(bulletData.items)}
+                  >
+                    <ul className="list-disc pl-6 space-y-1.5">
+                      {bulletData.items.map((item, index) => (
+                        <li key={index} className="leading-relaxed">
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  <ul className="list-disc pl-6 space-y-1.5">
+                    {bulletData.items.map((item, index) => (
+                      <li key={index} className="leading-relaxed">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
             ) : (
               text.split("\n").map((line, index) => (
                 <p key={index} className={line.trim() ? "" : "h-3"}>
