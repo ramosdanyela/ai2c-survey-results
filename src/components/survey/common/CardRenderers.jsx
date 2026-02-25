@@ -36,6 +36,7 @@ export function SchemaCard({ component, data, children, isExport = false }) {
   const styleClass = [
     component.className !== undefined ? component.className : "card-elevated",
     isSobreEstudo ? "export-card-sobre-estudo" : "",
+    isExport ? "min-w-0" : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -260,14 +261,14 @@ export function SchemaTopCategoriesCards({
     "Top Categorias";
 
   return (
-    <div className={isExport ? "mb-6 export-top3-categories" : "mb-6"}>
+    <div className={isExport ? "mb-6 export-top3-categories min-w-0" : "mb-6 min-w-0"}>
       <h4 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
         <Award className="w-4 h-4" style={{ color: COLOR_ORANGE_PRIMARY }} />
         {title}
       </h4>
       <div
         className={
-          isExport ? "grid grid-cols-3 gap-4" : "grid grid-cols-1 sm:grid-cols-3 gap-4"
+          isExport ? "grid grid-cols-3 gap-4 min-w-0" : "grid grid-cols-1 sm:grid-cols-3 gap-4 min-w-0"
         }
       >
         {categoriesData.map((cat) => {
@@ -313,11 +314,11 @@ export function SchemaTopCategoriesCards({
                       (e.currentTarget.style.boxShadow = `0 4px 16px ${RGBA_BLACK_SHADOW_30}`)
               }
             >
-              <div className="flex items-center gap-2 mb-3">
-                <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold bg-primary text-primary-foreground">
+              <div className="flex items-center gap-2 mb-3 min-w-0">
+                <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold bg-primary text-primary-foreground shrink-0">
                   {cat.rank}
                 </span>
-                <span className="font-bold text-sm">{cat.category}</span>
+                <span className="font-bold text-sm break-words min-w-0">{cat.category}</span>
               </div>
               <div className="text-sm text-muted-foreground mb-3">
                 {cat.mentions}{" "}
@@ -325,9 +326,9 @@ export function SchemaTopCategoriesCards({
                 {cat.percentage}%)
               </div>
               {cat.topics && (
-                <div className="grid grid-cols-1 top3:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 top3:grid-cols-2 gap-4 min-w-0">
                   {/* Positive Column */}
-                  <div className="space-y-1.5">
+                  <div className="space-y-1.5 min-w-0">
                     <div className="text-xs font-semibold text-blue-600 dark:text-blue-400 mb-2">
                       {uiTexts?.responseDetails?.positive || "Positive"}
                     </div>
@@ -335,12 +336,12 @@ export function SchemaTopCategoriesCards({
                       positiveTopics.map((item, index) => (
                         <div
                           key={index}
-                          className="text-sm flex items-start gap-1.5"
+                          className="text-sm flex items-start gap-1.5 min-w-0"
                         >
-                          <span className="text-blue-600 dark:text-blue-400 mt-0.5">
+                          <span className="text-blue-600 dark:text-blue-400 mt-0.5 shrink-0">
                             •
                           </span>
-                          <span className="text-foreground">{item.topic}</span>
+                          <span className="text-foreground break-words min-w-0">{item.topic}</span>
                         </div>
                       ))
                     ) : (
@@ -352,7 +353,7 @@ export function SchemaTopCategoriesCards({
                   </div>
 
                   {/* Negative Column */}
-                  <div className="space-y-1.5">
+                  <div className="space-y-1.5 min-w-0">
                     <div className="text-xs font-semibold text-red-600 dark:text-red-400 mb-2">
                       {uiTexts?.responseDetails?.negative || "Negative"}
                     </div>
@@ -360,12 +361,12 @@ export function SchemaTopCategoriesCards({
                       negativeTopics.map((item, index) => (
                         <div
                           key={index}
-                          className="text-sm flex items-start gap-1.5"
+                          className="text-sm flex items-start gap-1.5 min-w-0"
                         >
-                          <span className="text-red-600 dark:text-red-400 mt-0.5">
+                          <span className="text-red-600 dark:text-red-400 mt-0.5 shrink-0">
                             •
                           </span>
-                          <span className="text-foreground">{item.topic}</span>
+                          <span className="text-foreground break-words min-w-0">{item.topic}</span>
                         </div>
                       ))
                     ) : (

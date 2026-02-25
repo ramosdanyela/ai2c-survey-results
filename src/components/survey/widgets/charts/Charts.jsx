@@ -37,10 +37,10 @@ const EXPORT_IMAGE_HEIGHT = 400;
 export function SentimentDivergentChart({
   data,
   height = 320,
-  margin = { top: 20, right: 30, left: 100, bottom: 20 },
+  margin = { top: 20, right: 55, left: 50, bottom: 20 },
   xAxisDomain,
   yAxisDataKey = "category",
-  yAxisWidth = 90,
+  yAxisWidth = 160,
   showGrid = false,
   showLegend = true,
   axisLine = false,
@@ -51,6 +51,7 @@ export function SentimentDivergentChart({
   legendIconType,
   labels,
   isExportImage = false,
+  tickFontSize = 12,
 }) {
   // Extract labels from data or use provided labels
   // Try to get labels from first data item if available
@@ -103,7 +104,14 @@ export function SentimentDivergentChart({
     Math.ceil(maxValue * 1.1),
   ];
 
-  const chartHeight = isExportImage ? EXPORT_IMAGE_HEIGHT : height;
+  // Dynamic height: each category needs 2 bars + gap.
+  // With barSize=40, two bars per row = ~95px per category + overhead (margins + legend).
+  // Using Math.max ensures the chart never shrinks below the caller's preferred height.
+  const effectiveBarSize = finalBarSize !== undefined ? finalBarSize : 40;
+  const PER_CATEGORY_H = effectiveBarSize * 2 + 16;
+  const OVERHEAD_H = margin.top + margin.bottom + (showLegend ? 60 : 10);
+  const minH = transformedData.length * PER_CATEGORY_H + OVERHEAD_H;
+  const chartHeight = isExportImage ? EXPORT_IMAGE_HEIGHT : Math.max(height, minH);
   const chartWidth = isExportImage ? EXPORT_IMAGE_WIDTH : "100%";
 
   return (
@@ -144,19 +152,17 @@ export function SentimentDivergentChart({
             width={yAxisWidth}
             axisLine={axisLine}
             tickLine={tickLine}
+            interval={0}
+            tick={{ fontSize: tickFontSize }}
           />
           {!isExportImage && (
           <Tooltip
             formatter={(value, name) => {
-              if (name === "neutral") return null;
-              return [
-                `${Math.abs(value)}%`,
-                name === "negative"
-                  ? chartLabels.negative
-                  : chartLabels.positive,
-              ];
+              if (name === chartLabels.negative || name === "negative") {
+                return [`${Math.abs(value)}%`, chartLabels.negative];
+              }
+              return [`${Math.abs(value)}%`, chartLabels.positive];
             }}
-            filterNull={true}
           />
           )}
           {showLegend && (

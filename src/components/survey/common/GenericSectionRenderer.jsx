@@ -1032,6 +1032,10 @@ export function GenericSectionRenderer({
     containerClassName = "space-y-6";
   }
 
+  if (isExport) {
+    containerClassName = `${containerClassName} min-w-0 [&>*]:min-w-0`;
+  }
+
   // Special handling for responses section: when showing an individual question,
   // don't use SubsectionTitle - use the old question structure instead
   const isResponsesQuestion =

@@ -8,6 +8,11 @@ export const USABLE_WIDTH_EMU = Math.round(
   ((PAGE_WIDTH - 2 * PAGE_MARGIN) / 1440) * 914400
 );
 
+// Usable height in EMU (page height minus top + bottom margins)
+export const USABLE_HEIGHT_EMU = Math.round(
+  ((PAGE_HEIGHT - 2 * PAGE_MARGIN) / 1440) * 914400
+);
+
 // html2canvas options
 export const HTML2CANVAS_OPTIONS = {
   scale: 2,

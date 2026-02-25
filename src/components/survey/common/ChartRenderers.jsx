@@ -34,7 +34,7 @@ export const EXPORT_IMAGE_HEIGHT = 400;
 // Defaults for dynamic bar chart height (few bars = compact, many bars = more space for labels)
 const BAR_CHART_HEIGHT_PER_BAR = 32;
 const BAR_CHART_MIN_HEIGHT = 200;
-const BAR_CHART_MAX_HEIGHT = 720;
+const BAR_CHART_MAX_HEIGHT = 900;
 const BAR_CHART_MANY_BARS_THRESHOLD = 8;
 
 /**
@@ -81,7 +81,7 @@ export function getBarChartConfig(component, isMobile, isExport = false) {
   // Determine defaults based on preset (from JSON) or fallback to defaults
   // Right margin kept minimal (no extra recuo for legend) so bar charts stay centered
   let height = config.height || 256;
-  let margin = config.margin || { top: 10, right: 50, left: 120, bottom: 10 };
+  let margin = config.margin || { top: 10, right: 60, left: 120, bottom: 10 };
   let yAxisWidth = config.yAxisWidth || 110;
 
   // dataKey: explicit config wins; distribution charts default to "percentage"; others to "value"
@@ -98,18 +98,21 @@ export function getBarChartConfig(component, isMobile, isExport = false) {
     height = isMobile ? 400 : 256;
     if (isExport) {
       // Export: tighter margins, no extra recuo for legend so bars stay centered
-      margin = { top: 10, right: 50, left: 140, bottom: 10 };
+      margin = { top: 10, right: 60, left: 140, bottom: 10 };
       yAxisWidth = 130;
     } else if (isMobile) {
-      margin = { top: 10, right: 44, left: 12, bottom: 10 };
+      margin = { top: 10, right: 50, left: 12, bottom: 10 };
       yAxisWidth = 160;
     } else {
-      margin = { top: 10, right: 50, left: 260, bottom: 10 };
+      margin = { top: 10, right: 60, left: 260, bottom: 10 };
       yAxisWidth = 250;
     }
   } else if (preset === "distribution") {
     height = 400;
-    margin = { top: 10, right: 50, left: 120, bottom: 10 };
+    // In export mode use a minimal left margin; the yAxisWidth handles label space
+    margin = isExport
+      ? { top: 10, right: 40, left: 5, bottom: 10 }
+      : { top: 10, right: 60, left: 120, bottom: 10 };
     yAxisWidth = config.yAxisWidth || 110;
   }
 
@@ -169,12 +172,37 @@ export function SchemaBarChart({ component, data, isExport = false, isExportImag
   const chartConfig = getBarChartConfig(component, isMobile, isExport);
   const barCount = chartData.length;
 
+  // Dynamic yAxisWidth and heightPerBar based on actual label lengths.
+  // Recharts wraps long Y-axis labels at word boundaries; if heightPerBar is too
+  // small for 2-line labels they overlap adjacent bars.
+  // Use the longest *word* (not total label length) to size the Y-axis, since
+  // recharts wraps at word boundaries — "Vice-Presidência de Sustentabilidade"
+  // only needs space for "Vice-Presidência" or "Sustentabilidade" (~16 chars).
+  const maxLabelLen = Math.max(
+    0,
+    ...chartData.map((d) => String(d[chartConfig.yAxisDataKey] || "").length),
+  );
+  const longestWordLen = Math.max(
+    0,
+    ...chartData.map((d) => {
+      const label = String(d[chartConfig.yAxisDataKey] || "");
+      return Math.max(0, ...label.split(/\s+/).map((w) => w.length));
+    }),
+  );
+  const hasLongLabels = !isMobile && maxLabelLen > 20;
+  const effectiveYAxisWidth = hasLongLabels
+    ? Math.max(chartConfig.yAxisWidth, Math.min(160, Math.ceil(longestWordLen * 6.5) + 16))
+    : chartConfig.yAxisWidth;
+  const effectiveHeightPerBar = hasLongLabels
+    ? Math.max(chartConfig.heightPerBar, 52)
+    : chartConfig.heightPerBar;
+
   // When isExportImage: fixed size for PNG capture; otherwise flexible
   const height = isExportImage
     ? EXPORT_IMAGE_HEIGHT
     : chartConfig.dynamicHeight
       ? getBarChartHeightFromCount(barCount, {
-          heightPerBar: chartConfig.heightPerBar,
+          heightPerBar: effectiveHeightPerBar,
           minHeight: chartConfig.minHeight,
           maxHeight: chartConfig.maxHeight,
           margin: chartConfig.margin,
@@ -223,10 +251,11 @@ export function SchemaBarChart({ component, data, isExport = false, isExportImag
           <YAxis
             type="category"
             dataKey={chartConfig.yAxisDataKey}
-            width={chartConfig.yAxisWidth}
+            width={effectiveYAxisWidth}
             axisLine={false}
             tickLine={false}
             interval={0}
+            tick={{ fill: CHART_COLORS.foreground, fontSize: 11 }}
           />
           {!isExportImage && (
           <Tooltip
@@ -282,6 +311,11 @@ export function SchemaBarChart({ component, data, isExport = false, isExportImag
   // Use wrapperClassName from component config or preset-based wrapper (bar chart centered vertically in wrapper)
   const wrapperClassName = component.wrapperClassName;
   const exportWrapperClass = isExport ? "export-bar-chart-wrapper" : "";
+  // In export mode, distribution charts use a plain block wrapper (no flex centering) to
+  // prevent the fixed-height flex container from overflowing the A4 container.
+  if (isExport && !wrapperClassName && component.config?.preset === "distribution") {
+    return <div className="export-bar-chart-wrapper mb-4">{chart}</div>;
+  }
   if (wrapperClassName || component.config?.preset === "distribution") {
     const centerClass = "flex items-center justify-center";
     const baseClass = "flex-shrink-0 mb-4";
@@ -319,10 +353,10 @@ export function getSentimentDivergentChartConfig(component) {
 
   return {
     height: 320,
-    margin: { top: 20, right: 30, left: 100, bottom: 20 },
+    margin: { top: 20, right: 55, left: 50, bottom: 20 },
     xAxisDomain: config.xAxisDomain,
     yAxisDataKey: config.yAxisDataKey || "category",
-    yAxisWidth: config.yAxisWidth || 90,
+    yAxisWidth: config.yAxisWidth || 160,
     showGrid: false,
     showLegend: config.showLegend !== false,
     axisLine: false,
@@ -339,6 +373,7 @@ export function getSentimentDivergentChartConfig(component) {
  * Render a sentiment divergent chart component based on schema
  */
 export function SchemaSentimentDivergentChart({ component, data, isExportImage = false }) {
+  const isMobile = useIsMobile();
   const chartData = resolveDataPath(data, component.dataPath, component.data);
 
   if (!chartData || !Array.isArray(chartData)) {
@@ -347,6 +382,20 @@ export function SchemaSentimentDivergentChart({ component, data, isExportImage =
 
   const chartConfig = getSentimentDivergentChartConfig(component);
 
+  // Dynamic yAxisWidth: base on longest single word across all category labels
+  // (recharts wraps at word boundaries, so the longest word determines minimum width needed)
+  const tickFontSize = isMobile ? 10 : 12;
+  const PX_PER_CHAR = tickFontSize * 0.65; // approx char width at given font size
+  const longestWordLen = chartData.reduce((max, item) => {
+    const label = String(item[chartConfig.yAxisDataKey] || "");
+    const words = label.split(/\s+/);
+    return Math.max(max, ...words.map((w) => w.length));
+  }, 0);
+  const effectiveYAxisWidth = Math.max(
+    chartConfig.yAxisWidth,
+    Math.min(240, Math.ceil(longestWordLen * PX_PER_CHAR) + 16),
+  );
+
   return (
     <SentimentDivergentChart
       data={chartData}
@@ -354,7 +403,7 @@ export function SchemaSentimentDivergentChart({ component, data, isExportImage =
       margin={chartConfig.margin}
       xAxisDomain={chartConfig.xAxisDomain}
       yAxisDataKey={chartConfig.yAxisDataKey}
-      yAxisWidth={chartConfig.yAxisWidth}
+      yAxisWidth={effectiveYAxisWidth}
       showGrid={chartConfig.showGrid}
       showLegend={!isExportImage && chartConfig.showLegend}
       axisLine={chartConfig.axisLine}
@@ -365,6 +414,7 @@ export function SchemaSentimentDivergentChart({ component, data, isExportImage =
       legendIconType={chartConfig.legendIconType}
       labels={chartConfig.labels}
       isExportImage={isExportImage}
+      tickFontSize={tickFontSize}
     />
   );
 }
@@ -376,8 +426,8 @@ export function getSentimentThreeColorChartConfig(component) {
   const config = component.config || {};
 
   return {
-    height: 192,
-    margin: { top: 10, right: 30, left: 20, bottom: 10 },
+    height: 70,
+    margin: { top: 5, right: 20, left: 20, bottom: 0 },
     showGrid: false,
     showLegend: false,
     axisLine: false,
@@ -696,7 +746,8 @@ export function SchemaSankeyDiagram({ component, data, isExportImage = false }) 
 /**
  * Render Stacked Bar MECE component based on schema
  */
-export function SchemaStackedBarMECE({ component, data, isExportImage = false }) {
+export function SchemaStackedBarMECE({ component, data, isExportImage = false, isExport = false }) {
+  const isMobile = useIsMobile();
   const chartData = resolveDataPath(data, component.dataPath, component.data);
   const config = component.config || {};
 
@@ -704,7 +755,21 @@ export function SchemaStackedBarMECE({ component, data, isExportImage = false })
     return null;
   }
 
-  return (
+  // Dynamic yAxisWidth: compute from longest single word across all category labels.
+  // Long labels like "Vice-Presidência de Comercialização" wrap at word boundaries;
+  // the longest word determines the minimum width needed to avoid SVG overflow.
+  const axisKey = config.yAxisDataKey ?? config.categoryKey ?? "option";
+  const PX_PER_CHAR = isMobile ? 6.5 : 7.2;
+  const longestWordLen = chartData.reduce((max, item) => {
+    const label = String(item[axisKey] || "");
+    const words = label.split(/\s+/);
+    return Math.max(max, ...words.map((w) => w.length));
+  }, 0);
+  const effectiveYAxisWidth = config.yAxisWidth != null
+    ? config.yAxisWidth
+    : Math.max(130, Math.min(200, Math.ceil(longestWordLen * PX_PER_CHAR) + 16));
+
+  const chart = (
     <StackedBarMECE
       data={chartData}
       yAxisDataKey={config.yAxisDataKey ?? config.categoryKey ?? "option"}
@@ -714,9 +779,15 @@ export function SchemaStackedBarMECE({ component, data, isExportImage = false })
       margin={config.margin}
       showGrid={config.showGrid !== false}
       showLegend={!isExportImage && (config.showLegend !== false)}
+      yAxisWidth={effectiveYAxisWidth}
       isExportImage={isExportImage}
     />
   );
+
+  if (isExport) {
+    return <div className="export-bar-chart-wrapper mb-4">{chart}</div>;
+  }
+  return chart;
 }
 
 /**

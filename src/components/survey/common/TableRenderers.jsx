@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { resolveDataPath } from "@/services/dataResolver";
 import {
   RecommendationsTable,
@@ -42,9 +42,10 @@ function inferSegmentKeyFromData(tableData, valueKeys) {
  * Render a recommendations table component based on schema
  * This component needs state management for expand/collapse
  */
-export function SchemaRecommendationsTable({ component, data }) {
+export function SchemaRecommendationsTable({ component, data, isExport = false }) {
   // Hooks DEVEM ser chamados antes de qualquer return condicional
-  const [expandedRecs, setExpandedRecs] = useState(new Set());
+  // No export, começa tudo aberto. Na app, começa fechado (null = não inicializado)
+  const [userExpandedRecs, setUserExpandedRecs] = useState(isExport ? "all" : null);
   const [checkedTasks, setCheckedTasks] = useState({});
 
   try {
@@ -79,9 +80,15 @@ export function SchemaRecommendationsTable({ component, data }) {
     const recommendations = recommendationsData.items;
     const severityLabels = recommendationsData.config?.severityLabels || null;
 
+    const allRecIds = new Set(recommendations.map((r) => r.id));
+    // "all" = export default (tudo aberto); null = app default (tudo fechado); Set = interação do usuário
+    const expandedRecs =
+      userExpandedRecs === "all" ? allRecIds : userExpandedRecs ?? new Set();
+
     const toggleRecExpansion = (recId) => {
-      setExpandedRecs((prev) => {
-        const newSet = new Set(prev);
+      setUserExpandedRecs((prev) => {
+        const base = prev === "all" ? allRecIds : prev ?? new Set();
+        const newSet = new Set(base);
         if (newSet.has(recId)) {
           newSet.delete(recId);
         } else {
@@ -103,6 +110,38 @@ export function SchemaRecommendationsTable({ component, data }) {
       const rec = recommendations.find((r) => r.id === recId);
       return rec?.tasks || [];
     };
+
+    // Word export: one image per recommendation so each block fits and stays readable
+    if (isExport && recommendations.length > 0) {
+      return (
+        <Fragment>
+          {recommendations.map((rec) => (
+            <div
+              key={rec.id}
+              data-word-export="image"
+              className="min-w-0 w-full"
+            >
+              <RecommendationsTable
+                recommendations={[rec]}
+                severityColors={severityColors}
+                severityLabels={severityLabels}
+                expandedRecs={new Set([rec.id])}
+                onToggleRec={() => {}}
+                getRecTasks={getRecTasks}
+                renderTasksTable={(recId, tasks) => (
+                  <TasksTable
+                    tasks={tasks}
+                    recId={recId}
+                    checkedTasks={checkedTasks}
+                    onToggleTask={toggleTask}
+                  />
+                )}
+              />
+            </div>
+          ))}
+        </Fragment>
+      );
+    }
 
     return (
       <RecommendationsTable

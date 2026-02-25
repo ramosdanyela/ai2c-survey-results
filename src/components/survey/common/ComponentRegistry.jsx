@@ -230,9 +230,26 @@ export const renderComponent = (component, data, props = {}) => {
     }
 
     if (React.isValidElement(rendered)) {
-      // In export mode, wrap visual components with data-word-export="image"
+      // In export mode, wrap visual components with data-word-export="image".
+      // min-w-0 + w-full ensure the wrapper never expands a CSS grid/flex parent
+      // beyond the A4 container width, preventing horizontal overflow for all chart types.
+      // recommendationsTable in export already outputs N image divs (one per recommendation).
       if (isExport && IMAGE_EXPORT_TYPES.has(normalizedComponent.type)) {
-        return <div data-word-export="image">{rendered}</div>;
+        if (normalizedComponent.type === "recommendationsTable") {
+          return rendered;
+        }
+        // sentimentThreeColorChart: extra vertical padding so Word export doesn't clip top/bottom legends
+        if (normalizedComponent.type === "sentimentThreeColorChart") {
+          return (
+            <div
+              data-word-export="image"
+              className="min-w-0 w-full py-5"
+            >
+              {rendered}
+            </div>
+          );
+        }
+        return <div data-word-export="image" className="min-w-0 w-full">{rendered}</div>;
       }
       return rendered;
     }

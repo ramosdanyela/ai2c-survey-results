@@ -81,7 +81,9 @@ export function getAllSubsections(data) {
 
 /**
  * Parse selected sections from URL params or array
- * Returns array of { sectionId, subsectionId } objects
+ * Returns array of { sectionId, subsectionId, label } objects ordered by:
+ * 1. Section index (ascending)
+ * 2. Subsection index within section (ascending)
  */
 export function parseSelectedSections(
   selectedSectionsArray,
@@ -130,12 +132,21 @@ export function parseSelectedSections(
     }
   });
 
-  // Sort by section order and subsection order
+  // Ordenação das subseções selecionadas (garantir mesma ordem na Export e no Export Preview):
+  // 1. Pelo índice da seção (section index) de forma ascendente.
+  // 2. Pelo índice da subseção (subsection index) dentro da respectiva seção, de forma ascendente.
+  // Ex.: seleção [q4, sumário executivo, q2] → ordem final: sumário executivo (sec 0, sub 0), q2 (sec 1, sub 1), q4 (sec 1, sub 3).
   return parsed.sort((a, b) => {
     const sectionA = data.sections.find((s) => s.id === a.sectionId);
     const sectionB = data.sections.find((s) => s.id === b.sectionId);
-    const sectionOrderA = sectionA?.index || 999;
-    const sectionOrderB = sectionB?.index || 999;
+    const sectionOrderA =
+      sectionA != null
+        ? (sectionA.index ?? data.sections.indexOf(sectionA))
+        : 999;
+    const sectionOrderB =
+      sectionB != null
+        ? (sectionB.index ?? data.sections.indexOf(sectionB))
+        : 999;
 
     if (sectionOrderA !== sectionOrderB) {
       return sectionOrderA - sectionOrderB;
@@ -150,22 +161,42 @@ export function parseSelectedSections(
     let subOrderA = subsectionA?.index;
     let subOrderB = subsectionB?.index;
 
+    if (subOrderA === undefined && subsectionA != null && sectionA?.subsections) {
+      subOrderA = sectionA.subsections.indexOf(subsectionA);
+    }
+    if (subOrderB === undefined && subsectionB != null && sectionB?.subsections) {
+      subOrderB = sectionB.subsections.indexOf(subsectionB);
+    }
+
     if (subOrderA === undefined && isQuestionsSectionId(a.sectionId)) {
-      // Extract question ID and find its index from data
       const questionId = parseInt(a.subsectionId.replace("responses-", ""), 10);
       const allQuestions = getQuestionsFromData(data);
       const question = allQuestions.find((q) => q.id === questionId);
-      subOrderA = question?.index || 999;
+      subOrderA = question?.index ?? 999;
     }
-
     if (subOrderB === undefined && isQuestionsSectionId(b.sectionId)) {
       const questionId = parseInt(b.subsectionId.replace("responses-", ""), 10);
       const allQuestions = getQuestionsFromData(data);
       const question = allQuestions.find((q) => q.id === questionId);
-      subOrderB = question?.index || 999;
+      subOrderB = question?.index ?? 999;
     }
 
-    return (subOrderA || 999) - (subOrderB || 999);
+    return (subOrderA ?? 999) - (subOrderB ?? 999);
   });
+}
+
+/**
+ * Returns the given subsection IDs in export order: first by section index (asc),
+ * then by subsection index within section (asc). Use when building export URL so
+ * preview and export use the same order.
+ */
+export function getOrderedSelectedSubsectionIds(subsectionIds, data) {
+  if (!data?.sections?.length || !subsectionIds?.length) return subsectionIds;
+  const parsed = parseSelectedSections(
+    Array.isArray(subsectionIds) ? subsectionIds : Array.from(subsectionIds),
+    false,
+    data,
+  );
+  return parsed.map((p) => p.subsectionId);
 }
 

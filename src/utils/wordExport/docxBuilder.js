@@ -13,6 +13,7 @@ import {
   PAGE_HEIGHT,
   PAGE_MARGIN,
   USABLE_WIDTH_EMU,
+  USABLE_HEIGHT_EMU,
 } from "./constants";
 
 /**
@@ -90,15 +91,22 @@ function buildImageParagraph(block) {
   const { base64, widthPx, heightPx } = block.imageData;
   const data = base64ToUint8Array(base64);
 
-  // Scale to fit usable page width, maintaining aspect ratio
-  const usableWidthPx = (USABLE_WIDTH_EMU / 914400) * 96; // convert EMU -> inches -> px at 96dpi
-  const scale = Math.min(1, usableWidthPx / widthPx);
+  // Scale to fit within both usable width AND height, maintaining aspect ratio.
+  // Using the smallest scale factor ensures the image never overflows the page
+  // in either dimension, which is required for keepLines to work correctly.
+  const usableWidthPx = (USABLE_WIDTH_EMU / 914400) * 96;  // EMU -> inches -> px at 96dpi
+  const usableHeightPx = (USABLE_HEIGHT_EMU / 914400) * 96;
+  const scale = Math.min(1, usableWidthPx / widthPx, usableHeightPx / heightPx);
   const finalWidthEmu = Math.round(widthPx * scale * (914400 / 96));
   const finalHeightEmu = Math.round(heightPx * scale * (914400 / 96));
 
   return new Paragraph({
     alignment: AlignmentType.CENTER,
     spacing: { after: 200 },
+    // keepLines: prevents Word from splitting the image across two pages.
+    // If the image doesn't fit on the current page, Word moves it entirely
+    // to the next page instead of cutting it at the page boundary.
+    keepLines: true,
     children: [
       new ImageRun({
         data,

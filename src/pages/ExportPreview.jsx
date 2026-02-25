@@ -146,7 +146,7 @@ export default function ExportPreview() {
           background: white;
           box-shadow: 0 2px 12px rgba(0,0,0,0.08);
           box-sizing: border-box;
-          overflow: visible;
+          overflow: hidden;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -228,6 +228,27 @@ export default function ExportPreview() {
         .export-preview-a4-wrapper div:has(> .export-card-sobre-estudo) {
           margin-top: 0 !important;
           padding-top: 0 !important;
+        }
+        /* Principais categorias (topCategoriesCards): allow text to wrap, do not clip */
+        .export-preview-a4-wrapper .card-elevated:has(.export-top3-categories) {
+          overflow: visible !important;
+        }
+        /* Tables in export: no horizontal scroll so Word/PDF capture shows full content */
+        .export-preview-a4-wrapper div.relative.w-full.overflow-auto:has(> table) {
+          overflow: visible !important;
+        }
+        .export-preview-a4-wrapper div.relative.w-full.overflow-auto:has(> table) table {
+          table-layout: fixed;
+          width: 100%;
+          font-size: 0.75rem;
+          min-width: 0;
+        }
+        .export-preview-a4-wrapper div.relative.w-full.overflow-auto:has(> table) th,
+        .export-preview-a4-wrapper div.relative.w-full.overflow-auto:has(> table) td {
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+          word-break: break-word;
+          padding: 0.375rem 0.5rem;
         }
         @media print {
           .no-print {
@@ -508,7 +529,7 @@ export default function ExportPreview() {
                 return (
                   <div
                     key={sectionId}
-                    className={`w-full mb-8 export-avoid-break ${sectionIndex === 0 ? "export-first-section" : ""}`}
+                    className={`w-full min-w-0 mb-8 export-avoid-break ${sectionIndex === 0 ? "export-first-section" : ""}`}
                   >
                     {/* Section Header (only show if section has multiple subsections) - same static style as Export Preview badge */}
                     {subsections.length > 1 && (
@@ -533,7 +554,7 @@ export default function ExportPreview() {
                     {subsections.map((item, subsectionIndex) => (
                       <div
                         key={`${item.sectionId}-${item.subsectionId}`}
-                        className={subsectionIndex > 0 ? "mt-8" : ""}
+                        className={`min-w-0 ${subsectionIndex > 0 ? "mt-8" : ""}`.trim()}
                       >
                         {/* Render the subsection content */}
                         <GenericSectionRenderer

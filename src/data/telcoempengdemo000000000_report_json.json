@@ -1,0 +1,3582 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "language": "pt-BR",
+    "surveyId": "telcoempengdemo000000000"
+  },
+  "sections": [
+    {
+      "id": "executive",
+      "index": 0,
+      "name": "Relatório Executivo",
+      "icon": "FileText",
+      "subsections": [
+        {
+          "id": "executive-summary",
+          "index": 0,
+          "name": "Sumário Executivo",
+          "icon": "ClipboardList",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Principais insights",
+              "text": "O engajamento dos funcionários está em risco devido a valores organizacionais fracos e comunicação deficiente, ameaçando a retenção e o desempenho operacional em um mercado de telecomunicações competitivo.\n[*] 22% dos funcionários provavelmente sairão, motivados pela desmotivação, apesar de 76% pretendem ficar, mas se sentem desengajados.  \n[*] Valores organizacionais e cultura mostram o maior impacto negativo, afetando 24% dos funcionários e minando a confiança.  \n[*] Transparência na comunicação e oportunidades de desenvolvimento de carreira são criticamente fracas, impactando negativamente mais de 11% dos entrevistados em cada aspecto.  \n[*] O engajamento varia por unidade: Operações apresenta maior satisfação, enquanto Inovação, Pessoas & Cultura e Comercialização enfrentam grandes lacunas de moral e reconhecimento.",
+              "cardStyleVariant": "default"
+            },
+            {
+              "type": "card",
+              "index": 1,
+              "title": "Principais implicações",
+              "text": "[*] O desengajamento persistente aumenta os riscos de rotatividade e perda de talentos críticos em áreas-chave de inovação e comercial.\n[*] Comunicação fraca da liderança e caminhos de carreira pouco claros reduzem a motivação dos funcionários e o alinhamento com os objetivos estratégicos.\n[*] Abordar essas lacunas pode melhorar a retenção, fomentar a inovação e fortalecer o posicionamento competitivo.",
+              "cardStyleVariant": "default"
+            },
+            {
+              "type": "grid-container",
+              "index": 2,
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Pontos de destaque",
+                  "text": "[*] Processos organizacionais.  \n[*] Liderança e gestão.  \n[*] Reconhecimento e apreciação (levemente positivo).",
+                  "cardStyleVariant": "default"
+                },
+                {
+                  "type": "card",
+                  "index": 1,
+                  "title": "Oportunidades de melhoria",
+                  "text": "[*] Valores organizacionais e cultura.  \n[*] Comunicação e transparência.  \n[*] Oportunidades de desenvolvimento e carreira.",
+                  "cardStyleVariant": "default"
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 3,
+              "title": "Diretrizes estratégicas",
+              "text": "[*] Lançar um programa de alinhamento de valores em toda a empresa para reconstruir a confiança e reforçar a cultura.  \n[*] Expandir o desenvolvimento profissional e treinamento direcionados, focando nas unidades com desempenho abaixo do esperado.  \n[*] Melhorar a transparência na comunicação da liderança com atualizações regulares e sistemas estruturados de reconhecimento.",
+              "cardStyleVariant": "default"
+            }
+          ]
+        },
+        {
+          "id": "executive-recommendations",
+          "index": 1,
+          "name": "Recomendações",
+          "icon": "AlertTriangle",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "",
+              "text": "",
+              "cardStyleVariant": "overflow-hidden",
+              "components": [
+                {
+                  "type": "recommendationsTable",
+                  "index": 0,
+                  "dataPath": "sectionData.recommendationsTable"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "data": {
+        "recommendationsTable": {
+          "config": {
+            "severityLabels": {
+              "high": "Alto",
+              "medium": "Médio",
+              "low": "Baixo",
+              "critical": "Crítico"
+            }
+          },
+          "items": [
+            {
+              "id": 1,
+              "recommendation": "Lançar um programa de alinhamento de valores em toda a empresa para reconstruir a confiança",
+              "severity": "high",
+              "stakeholders": [
+                "Escritório Executivo",
+                "Comunicação Corporativa",
+                "Recursos Humanos"
+              ],
+              "tasks": [
+                {
+                  "task": "Definir objetivos do programa e métricas de sucesso",
+                  "owner": "Escritório Executivo"
+                },
+                {
+                  "task": "Desenvolver estratégia de comunicação e mensagens-chave",
+                  "owner": "Comunicações Corporativas"
+                },
+                {
+                  "task": "Projetar módulos de treinamento e materiais para workshops",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Agendar e organizar sessões de treinamento iniciais",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Criar campanha interna para promover a participação no programa",
+                  "owner": "Comunicações Corporativas"
+                },
+                {
+                  "task": "Conduzir sessões de treinamento em todos os departamentos",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Coletar feedback dos participantes para avaliar o engajamento",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Analisar o impacto do programa e preparar relatório de progresso",
+                  "owner": "Escritório Executivo"
+                },
+                {
+                  "task": "Comunique os resultados do programa e os próximos passos a todos os funcionários",
+                  "owner": "Comunicações Corporativas"
+                },
+                {
+                  "task": "Ajustar os componentes do programa com base no feedback e nas métricas",
+                  "owner": "Escritório Executivo"
+                }
+              ]
+            },
+            {
+              "id": 2,
+              "recommendation": "Expandir e promover programas direcionados de desenvolvimento profissional e treinamento",
+              "severity": "high",
+              "stakeholders": [
+                "Recursos Humanos",
+                "Aprendizado & Desenvolvimento",
+                "Tecnologia & TI"
+              ],
+              "tasks": [
+                {
+                  "task": "Avaliar as ofertas atuais de desenvolvimento profissional para identificar lacunas e áreas para melhoria",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Realizar análise de necessidades coletando informações dos principais departamentos sobre os requisitos de treinamento",
+                  "owner": "Aprendizagem e Desenvolvimento"
+                },
+                {
+                  "task": "Pesquise as melhores práticas do setor e faça benchmarking com os programas de treinamento dos concorrentes",
+                  "owner": "Aprendizagem e Desenvolvimento"
+                },
+                {
+                  "task": "Desenvolver novos módulos de treinamento direcionados focados nas lacunas de habilidades identificadas",
+                  "owner": "Aprendizagem e Desenvolvimento"
+                },
+                {
+                  "task": "Desenvolver conteúdo relevante para módulos de treinamento, incluindo materiais multimídia",
+                  "owner": "Aprendizagem e Desenvolvimento"
+                },
+                {
+                  "task": "Selecione plataformas tecnológicas apropriadas para oferecer programas de treinamento de forma eficaz",
+                  "owner": "Tecnologia e TI"
+                },
+                {
+                  "task": "Pilote os novos programas de treinamento com um pequeno grupo de funcionários para coletar feedback",
+                  "owner": "Aprendizagem e Desenvolvimento"
+                },
+                {
+                  "task": "Implemente modificações com base no feedback do piloto para melhorar a qualidade do programa",
+                  "owner": "Aprendizagem e Desenvolvimento"
+                },
+                {
+                  "task": "Lance uma campanha de marketing para promover os novos programas de treinamento internamente",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Agende sessões de treinamento e abertura de inscrições para todos os funcionários relevantes",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Configure um sistema amigável de registro e acompanhamento para a participação em treinamentos",
+                  "owner": "Tecnologia e TI"
+                },
+                {
+                  "task": "Fornecer suporte técnico e solução de problemas durante a entrega do treinamento",
+                  "owner": "Tecnologia e TI"
+                },
+                {
+                  "task": "Monitorar mensalmente a frequência e as taxas de conclusão do treinamento",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Coletar feedback dos participantes por meio de pesquisas após cada sessão de treinamento",
+                  "owner": "Aprendizagem e Desenvolvimento"
+                },
+                {
+                  "task": "Analisar a eficácia do treinamento por meio de avaliações pós-treinamento e métricas de desempenho",
+                  "owner": "Aprendizagem e Desenvolvimento"
+                },
+                {
+                  "task": "Relatar o progresso e os resultados à liderança sênior trimestralmente",
+                  "owner": "recursos Humanos"
+                }
+              ]
+            },
+            {
+              "id": 3,
+              "recommendation": "Implemente um sistema estruturado e frequente de reconhecimento de funcionários",
+              "severity": "medium",
+              "stakeholders": [
+                "Recursos Humanos",
+                "Comunicação Corporativa",
+                "Aquisição de Talentos"
+              ],
+              "tasks": [
+                {
+                  "task": "Definir objetivos e critérios para o sistema de reconhecimento de funcionários",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Desenvolver uma estrutura de reconhecimento e categorias de premiação",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Desenvolver materiais de comunicação para promover o programa de reconhecimento",
+                  "owner": "Comunicações Corporativas"
+                },
+                {
+                  "task": "Criar um cronograma de implementação e agendamento para eventos de reconhecimento",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Coordenar com a Aquisição de Talentos para alinhar o reconhecimento com os processos de contratação e integração",
+                  "owner": "Aquisição de Talentos"
+                },
+                {
+                  "task": "Construa uma plataforma digital ou selecione ferramentas para rastreamento e gerenciamento de reconhecimento",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Treinar gerentes e líderes de equipe sobre como dar reconhecimento eficaz",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Lance uma campanha interna para apresentar e explicar o sistema de reconhecimento",
+                  "owner": "Comunicações Corporativas"
+                },
+                {
+                  "task": "Monitore a participação no programa e colete feedback dos funcionários",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Ajustar critérios e processos de reconhecimento com base no feedback e nos dados de desempenho",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Fornecer relatórios mensais de progresso à alta liderança",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Celebre os principais funcionários reconhecidos nas comunicações em toda a empresa",
+                  "owner": "Comunicações Corporativas"
+                }
+              ]
+            },
+            {
+              "id": 4,
+              "recommendation": "Aprimore a transparência na comunicação da liderança com atualizações regulares e sessões de perguntas e respostas",
+              "severity": "medium",
+              "stakeholders": [
+                "Escritório do CEO",
+                "Comunicações Corporativas",
+                "Escritório Executivo"
+              ],
+              "tasks": [
+                {
+                  "task": "Definir o escopo e a frequência do conteúdo de atualização",
+                  "owner": "Escritório do CEO"
+                },
+                {
+                  "task": "Desenvolver materiais de comunicação e modelos de perguntas e respostas",
+                  "owner": "Comunicações Corporativas"
+                },
+                {
+                  "task": "Agende reuniões recorrentes de atualização e sessões de perguntas e respostas",
+                  "owner": "Escritório Executivo"
+                },
+                {
+                  "task": "Conduzir briefing inicial para a equipe de liderança sobre a abordagem de comunicação",
+                  "owner": "Escritório do CEO"
+                },
+                {
+                  "task": "Distribuir comunicação inicial e convidar para perguntas",
+                  "owner": "Comunicações Corporativas"
+                },
+                {
+                  "task": "Realize sessão de perguntas e respostas ao vivo e capture feedback",
+                  "owner": "Escritório Executivo"
+                },
+                {
+                  "task": "Coletar e analisar o feedback dos funcionários para melhorias",
+                  "owner": "Comunicações Corporativas"
+                },
+                {
+                  "task": "Aprimorar o processo de comunicação com base no feedback",
+                  "owner": "Escritório do CEO"
+                },
+                {
+                  "task": "Publicar resumo de perguntas e respostas e atualizações para toda a empresa",
+                  "owner": "Comunicações Corporativas"
+                },
+                {
+                  "task": "Monitorar métricas de engajamento e reportar à liderança",
+                  "owner": "Escritório Executivo"
+                }
+              ]
+            },
+            {
+              "id": 5,
+              "recommendation": "Desenvolver iniciativas de saúde mental e políticas de trabalho flexíveis para melhorar o bem-estar",
+              "severity": "medium",
+              "stakeholders": [
+                "Recursos Humanos",
+                "Relações com Funcionários",
+                "Comunicação Corporativa"
+              ],
+              "tasks": [
+                {
+                  "task": "Realizar pesquisa de avaliação de necessidades sobre saúde mental dos funcionários e requisitos de flexibilidade no trabalho",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Analisar os resultados da pesquisa e identificar áreas-chave para iniciativas de saúde mental",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Pesquise as melhores práticas e faça benchmarking das políticas de trabalho flexível no setor",
+                  "owner": "Relações com Funcionários"
+                },
+                {
+                  "task": "Elaborar projetos de programas de saúde mental e propostas de políticas de trabalho flexível",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Colabore com Relações com Funcionários para revisar e aprimorar as iniciativas e políticas propostas",
+                  "owner": "Relações com Funcionários"
+                },
+                {
+                  "task": "Preparar estratégia de comunicação e materiais para apresentar as iniciativas aos funcionários",
+                  "owner": "Comunicações Corporativas"
+                },
+                {
+                  "task": "Coordenar sessões de feedback com grupos focais de funcionários para validar os programas propostos",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Incorporar feedback e finalizar iniciativas de saúde mental e políticas de trabalho flexível",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Obtenha aprovação da liderança executiva para as iniciativas e políticas finais",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Lançar campanha de comunicação interna explicando novas iniciativas e políticas",
+                  "owner": "Comunicações Corporativas"
+                },
+                {
+                  "task": "Treinar gerentes e supervisores na implementação e suporte às políticas de saúde mental e trabalho flexível",
+                  "owner": "Relações com Funcionários"
+                },
+                {
+                  "task": "Implementar programas de apoio à saúde mental e arranjos de trabalho flexíveis em toda a organização",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Monitorar e avaliar trimestralmente a eficácia do programa e o engajamento dos funcionários",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Relatar progresso e impacto à liderança executiva e recomendar ajustes",
+                  "owner": "recursos Humanos"
+                },
+                {
+                  "task": "Recolher feedback contínuo dos funcionários para a melhoria constante de iniciativas e políticas",
+                  "owner": "recursos Humanos"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "support",
+      "index": 1,
+      "name": "Análises de Suporte",
+      "icon": "Heart",
+      "subsections": [
+        {
+          "id": "support-sentiment",
+          "index": 0,
+          "name": "Análise de Sentimento para Principais Categorias",
+          "icon": "Smile",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "useDescription": true,
+              "text": "O principal ponto crítico na Pesquisa de Clima Organizacional é \"valores e cultura organizacionais\", com uma pontuação líquida negativa significativa impulsionada por 16,1% de sentimento negativo sobre 24,1% do total de menções. \"Processos organizacionais\" surgem como um ponto forte, apresentando uma pontuação líquida positiva apoiada por uma proporção maior de feedback positivo em relação ao negativo. Para abordar o ponto crítico, o RH deve implementar iniciativas direcionadas para esclarecer e reforçar os valores organizacionais por meio de workshops e campanhas de comunicação interna.",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-description",
+              "components": [
+                {
+                  "type": "sentimentDivergentChart",
+                  "index": 0,
+                  "dataPath": "sectionData.sentimentDivergentChart",
+                  "config": {
+                    "yAxisDataKey": "category"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "support-intent",
+          "index": 1,
+          "name": "Intenção de Respondentes",
+          "icon": "Target",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "text": "A grande maioria dos funcionários (75,83%) pretende permanecer, mas se sente desmotivada, indicando um problema significativo de engajamento e moral que pode impactar a produtividade e a retenção se não for tratado. Além disso, com mais de um quinto (21,67%) provavelmente saindo, há um risco claro de aumento da rotatividade que a empresa deve mitigar por meio de intervenções direcionadas. As porcentagens muito baixas de funcionários altamente satisfeitos e engajados (apenas 2,5% combinados) destacam uma necessidade urgente de melhorias em reconhecimento, comunicação e iniciativas de desenvolvimento de carreira para promover um clima organizacional mais positivo.",
+              "cardStyleVariant": "default",
+              "components": [
+                {
+                  "type": "barChart",
+                  "index": 0,
+                  "dataPath": "sectionData.respondentIntentChart",
+                  "config": {
+                    "dataKey": "percentage",
+                    "yAxisDataKey": "intent"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "support-segmentation",
+          "index": 2,
+          "name": "Segmentação de Respondentes",
+          "icon": "Users2",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "",
+              "text": "",
+              "cardStyleVariant": "overflow-hidden",
+              "components": [
+                {
+                  "type": "segmentationTable",
+                  "index": 0,
+                  "dataPath": "sectionData.segmentationTable"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "data": {
+        "sentimentDivergentChart": [
+          {
+            "category": "valores e cultura organizacional",
+            "positive": 8.0,
+            "negative": 16.1
+          },
+          {
+            "category": "processos organizacionais",
+            "positive": 8.6,
+            "negative": 4.0
+          },
+          {
+            "category": "comunicação e transparência",
+            "positive": 0.0,
+            "negative": 12.1
+          },
+          {
+            "category": "oportunidades de desenvolvimento e carreira",
+            "positive": 0.0,
+            "negative": 11.5
+          },
+          {
+            "category": "colaboração e respeito em equipe",
+            "positive": 2.3,
+            "negative": 8.0
+          },
+          {
+            "category": "reconhecimento e apreciação",
+            "positive": 4.3,
+            "negative": 4.0
+          },
+          {
+            "category": "liderança e gestão",
+            "positive": 5.7,
+            "negative": 2.6
+          },
+          {
+            "category": "equilíbrio entre vida profissional e pessoal e flexibilidade",
+            "positive": 2.6,
+            "negative": 2.0
+          },
+          {
+            "category": "outro",
+            "positive": 0.0,
+            "negative": 8.0
+          }
+        ],
+        "segmentationTable": [
+          {
+            "cluster": "Passivo — valores organizacionais e cultura",
+            "description": "Passivos mencionando principalmente valores organizacionais e cultura",
+            "percentage": 24.2,
+            "id": 1
+          },
+          {
+            "cluster": "Passivo — oportunidades de desenvolvimento e carreira",
+            "description": "Indivíduos com uma postura passiva que focam em oportunidades de desenvolvimento e avanço na carreira.",
+            "percentage": 13.3,
+            "id": 2
+          },
+          {
+            "cluster": "Passiva — comunicação e transparência",
+            "description": "Mostra uma postura passiva focada na comunicação e transparência, sem engajamento ativo ou intervenção.",
+            "percentage": 9.2,
+            "id": 3
+          },
+          {
+            "cluster": "Passivo — reconhecimento e apreciação",
+            "description": "Indivíduos que são passivos e motivados pela necessidade de reconhecimento e valorização.",
+            "percentage": 9.2,
+            "id": 4
+          },
+          {
+            "cluster": "Passivo — segurança e saúde no trabalho",
+            "description": "Indivíduos com uma postura passiva em relação à segurança e saúde no trabalho demonstram envolvimento ou ação limitados nessa área.",
+            "percentage": 5.8,
+            "id": 5
+          },
+          {
+            "cluster": "Detrator — valores organizacionais e cultura",
+            "description": "Detratores mencionando principalmente valores organizacionais e cultura",
+            "percentage": 5.8,
+            "id": 6
+          },
+          {
+            "cluster": "Passivo — colaboração e respeito em equipe",
+            "description": "Apresenta uma postura passiva focada em manter a colaboração e o respeito da equipe sem iniciar ações.",
+            "percentage": 5.0,
+            "id": 7
+          },
+          {
+            "cluster": "Detrator — comunicação e transparência",
+            "description": "Detratores mencionando principalmente comunicação e transparência",
+            "percentage": 5.0,
+            "id": 8
+          },
+          {
+            "cluster": "Outros",
+            "description": "Grupo de 12 pequenos segmentos que não são estatisticamente relevantes por si só.",
+            "percentage": 22.3,
+            "id": " "
+          }
+        ],
+        "respondentIntentChart": [
+          {
+            "intent": "Pretende ficar, mas está desmotivado",
+            "percentage": 75.83
+          },
+          {
+            "intent": "Provavelmente sairá da empresa",
+            "percentage": 21.67
+          },
+          {
+            "intent": "Muito satisfeito e recomendaria trabalhar na empresa",
+            "percentage": 1.67
+          },
+          {
+            "intent": "Satisfeito e engajado",
+            "percentage": 0.83
+          }
+        ]
+      }
+    },
+    {
+      "id": "questions",
+      "index": 2,
+      "name": "Análise por Questão",
+      "icon": "MessageSquare",
+      "questions": [
+        {
+          "question_id": "quest01",
+          "index": 0,
+          "question": "Quão satisfeito você está em trabalhar nesta empresa?",
+          "summary": "Aproximadamente 47% dos funcionários selecionaram opções na extremidade inferior da escala de satisfação (“Insatisfeito” ou “Muito insatisfeito”), indicando que quase metade da força de trabalho pode ter preocupações que devem ser exploradas por meio de iniciativas de engajamento direcionadas.",
+          "data": {
+            "barChart": [
+              {
+                "option": "Insatisfeito",
+                "value": 38,
+                "percentage": 31.7
+              },
+              {
+                "option": "Neutro",
+                "value": 23,
+                "percentage": 19.2
+              },
+              {
+                "option": "Satisfeito",
+                "value": 23,
+                "percentage": 19.2
+              },
+              {
+                "option": "Muito insatisfeito",
+                "value": 18,
+                "percentage": 15.0
+              },
+              {
+                "option": "Muito satisfeito",
+                "value": 18,
+                "percentage": 15.0
+              }
+            ],
+            "npsScore": null,
+            "wordCloud": [],
+            "sentimentCategories": [],
+            "topicsByCategory": []
+          },
+          "id": 1,
+          "questionType": "single-choice"
+        },
+        {
+          "question_id": "quest02",
+          "index": 1,
+          "question": "Você sente que o seu trabalho contribui para um propósito maior?",
+          "summary": "Cerca de 37,5% dos funcionários selecionaram \"Nunca\" ou \"Raramente\" em relação a sentir que seu trabalho contribui para um propósito maior; considere iniciativas para fortalecer a conexão entre os papéis individuais e a missão da empresa para melhorar o engajamento.",
+          "data": {
+            "barChart": [
+              {
+                "option": "Às vezes",
+                "value": 34,
+                "percentage": 28.3
+              },
+              {
+                "option": "Frequentemente",
+                "value": 26,
+                "percentage": 21.7
+              },
+              {
+                "option": "Nunca",
+                "value": 21,
+                "percentage": 17.5
+              },
+              {
+                "option": "Raramente",
+                "value": 20,
+                "percentage": 16.7
+              },
+              {
+                "option": "Sempre",
+                "value": 19,
+                "percentage": 15.8
+              }
+            ],
+            "npsScore": null,
+            "wordCloud": [],
+            "sentimentCategories": [],
+            "topicsByCategory": []
+          },
+          "id": 2,
+          "questionType": "single-choice"
+        },
+        {
+          "question_id": "quest03",
+          "index": 2,
+          "question": "Com que frequência você se sente reconhecido pelo seu trabalho?",
+          "summary": "Cerca de 45 por cento dos funcionários indicaram que se sentem reconhecidos pelo seu trabalho \"Nunca\" ou \"Raramente\", sugerindo uma clara oportunidade para aprimorar os programas de reconhecimento.",
+          "data": {
+            "barChart": [
+              {
+                "option": "Sempre",
+                "value": 31,
+                "percentage": 25.8
+              },
+              {
+                "option": "Nunca",
+                "value": 27,
+                "percentage": 22.5
+              },
+              {
+                "option": "Raramente",
+                "value": 26,
+                "percentage": 21.7
+              },
+              {
+                "option": "Às vezes",
+                "value": 22,
+                "percentage": 18.3
+              },
+              {
+                "option": "Frequentemente",
+                "value": 14,
+                "percentage": 11.7
+              }
+            ],
+            "npsScore": null,
+            "wordCloud": [],
+            "sentimentCategories": [],
+            "topicsByCategory": []
+          },
+          "id": 3,
+          "questionType": "single-choice"
+        },
+        {
+          "question_id": "quest04",
+          "index": 3,
+          "question": "A empresa oferece oportunidades adequadas para o seu desenvolvimento e crescimento profissional?",
+          "summary": "Aproximadamente 43% dos funcionários selecionaram opções na extremidade superior da escala (\"Concordo totalmente\" ou \"Concordo\"), enquanto 39% escolheram opções na extremidade inferior (\"Discordo totalmente\" ou \"Discordo\"), indicando uma divisão quase igual nas percepções sobre oportunidades de desenvolvimento profissional; considere realizar grupos focais para identificar barreiras e facilitadores específicos para o crescimento dentro da empresa.",
+          "data": {
+            "barChart": [
+              {
+                "option": "Totalmente concordo",
+                "value": 28,
+                "percentage": 23.3
+              },
+              {
+                "option": "Totalmente discordo",
+                "value": 26,
+                "percentage": 21.7
+              },
+              {
+                "option": "Concordo",
+                "value": 24,
+                "percentage": 20.0
+              },
+              {
+                "option": "Discordo",
+                "value": 21,
+                "percentage": 17.5
+              },
+              {
+                "option": "Neutro",
+                "value": 21,
+                "percentage": 17.5
+              }
+            ],
+            "npsScore": null,
+            "wordCloud": [],
+            "sentimentCategories": [],
+            "topicsByCategory": []
+          },
+          "id": 4,
+          "questionType": "single-choice"
+        },
+        {
+          "question_id": "quest05",
+          "index": 4,
+          "question": "Como você avalia a clareza e a transparência da comunicação por parte da liderança da empresa?",
+          "summary": "As respostas sobre a clareza e transparência da comunicação da liderança da empresa estão distribuídas de forma bastante equilibrada, com um total combinado de 44,1% dos funcionários selecionando opções na extremidade inferior da escala (\"Ruim\" ou \"Terrível\") e 44,1% selecionando opções na extremidade superior (\"Bom\" ou \"Excelente\"). 18,3% avaliaram a comunicação como \"Regular\", indicando uma percepção moderada. Para melhorar o engajamento, concentre-se em abordar preocupações específicas levantadas pelos aproximadamente 42% dos funcionários que percebem a comunicação de forma negativa.",
+          "data": {
+            "barChart": [
+              {
+                "option": "Boa",
+                "value": 28,
+                "percentage": 23.3
+              },
+              {
+                "option": "Ruim",
+                "value": 26,
+                "percentage": 21.7
+              },
+              {
+                "option": "Excelente",
+                "value": 25,
+                "percentage": 20.8
+              },
+              {
+                "option": "Regular",
+                "value": 22,
+                "percentage": 18.3
+              },
+              {
+                "option": "Péssima",
+                "value": 19,
+                "percentage": 15.8
+              }
+            ],
+            "npsScore": null,
+            "wordCloud": [],
+            "sentimentCategories": [],
+            "topicsByCategory": []
+          },
+          "id": 5,
+          "questionType": "single-choice"
+        },
+        {
+          "question_id": "quest06",
+          "index": 5,
+          "question": "Você se sente à vontade para expressar suas ideias e opiniões ao seu gestor direto?",
+          "summary": "Aproximadamente 40% dos funcionários selecionaram \"Nunca\" ou \"Raramente\" confortáveis em expressar ideias ao seu gerente direto, indicando uma oportunidade significativa para melhorar os canais de comunicação aberta entre gerentes e suas equipes.",
+          "data": {
+            "barChart": [
+              {
+                "option": "Às vezes",
+                "value": 34,
+                "percentage": 28.3
+              },
+              {
+                "option": "Frequentemente",
+                "value": 27,
+                "percentage": 22.5
+              },
+              {
+                "option": "Nunca",
+                "value": 23,
+                "percentage": 19.2
+              },
+              {
+                "option": "Sempre",
+                "value": 18,
+                "percentage": 15.0
+              },
+              {
+                "option": "Raramente",
+                "value": 18,
+                "percentage": 15.0
+              }
+            ],
+            "npsScore": null,
+            "wordCloud": [],
+            "sentimentCategories": [],
+            "topicsByCategory": []
+          },
+          "id": 6,
+          "questionType": "single-choice"
+        },
+        {
+          "question_id": "quest07",
+          "index": 6,
+          "question": "Quais valores você considera mais presentes na cultura da empresa?",
+          "summary": "Cerca de 21% dos funcionários identificam a orientação para resultados como o valor mais presente na cultura da empresa, seguida de perto pela responsabilidade ambiental com 20%; para fortalecer o engajamento, considere iniciativas direcionadas que vinculem esses valores às práticas diárias de trabalho.",
+          "data": {
+            "barChart": [
+              {
+                "option": "Orientação para resultados",
+                "value": 25,
+                "percentage": 20.8
+              },
+              {
+                "option": "Responsabilidade ambiental",
+                "value": 24,
+                "percentage": 20.0
+              },
+              {
+                "option": "Diversidade e inclusão",
+                "value": 21,
+                "percentage": 17.5
+              },
+              {
+                "option": "Colaboração",
+                "value": 18,
+                "percentage": 15.0
+              },
+              {
+                "option": "Transparência",
+                "value": 17,
+                "percentage": 14.2
+              },
+              {
+                "option": "Inovação",
+                "value": 15,
+                "percentage": 12.5
+              }
+            ],
+            "npsScore": null,
+            "wordCloud": [],
+            "sentimentCategories": [],
+            "topicsByCategory": []
+          },
+          "id": 7,
+          "questionType": "multiple-choice"
+        },
+        {
+          "question_id": "quest08",
+          "index": 7,
+          "question": "Como você avalia seu equilíbrio entre vida pessoal e profissional?",
+          "summary": "Aproximadamente 41% dos funcionários avaliaram seu equilíbrio entre vida profissional e pessoal na extremidade inferior da escala (\"Ruim\" ou \"Terrível\"), indicando a necessidade de explorar intervenções direcionadas, como horários flexíveis ou ajustes na carga de trabalho, para melhorar o bem-estar dos funcionários.",
+          "data": {
+            "barChart": [
+              {
+                "option": "Ruim",
+                "value": 27,
+                "percentage": 22.5
+              },
+              {
+                "option": "Boa",
+                "value": 27,
+                "percentage": 22.5
+              },
+              {
+                "option": "Regular",
+                "value": 24,
+                "percentage": 20.0
+              },
+              {
+                "option": "Péssima",
+                "value": 22,
+                "percentage": 18.3
+              },
+              {
+                "option": "Excelente",
+                "value": 20,
+                "percentage": 16.7
+              }
+            ],
+            "npsScore": null,
+            "wordCloud": [],
+            "sentimentCategories": [],
+            "topicsByCategory": []
+          },
+          "id": 8,
+          "questionType": "single-choice"
+        },
+        {
+          "question_id": "quest09",
+          "index": 8,
+          "question": "Você sente orgulho em dizer que trabalha nesta empresa?",
+          "summary": "A distribuição mostra que 43% dos funcionários selecionaram opções na extremidade superior da escala (\"Sempre\" ou \"Frequentemente\"), enquanto 40,8% escolheram opções na extremidade inferior (\"Raramente\" ou \"Nunca\"); a empresa deve investigar os fatores que influenciam o orgulho no trabalho e direcionar iniciativas para abordar as preocupações dos quase 41% que expressam baixo orgulho.",
+          "data": {
+            "barChart": [
+              {
+                "option": "Raramente",
+                "value": 30,
+                "percentage": 25.0
+              },
+              {
+                "option": "Sempre",
+                "value": 28,
+                "percentage": 23.3
+              },
+              {
+                "option": "Frequentemente",
+                "value": 23,
+                "percentage": 19.2
+              },
+              {
+                "option": "Às vezes",
+                "value": 20,
+                "percentage": 16.7
+              },
+              {
+                "option": "Nunca",
+                "value": 19,
+                "percentage": 15.8
+              }
+            ],
+            "npsScore": null,
+            "wordCloud": [],
+            "sentimentCategories": [],
+            "topicsByCategory": []
+          },
+          "id": 9,
+          "questionType": "single-choice"
+        },
+        {
+          "question_id": "quest10",
+          "index": 9,
+          "question": "O que você sugeriria para melhorar o engajamento dos colaboradores na empresa?",
+          "summary": "A pesquisa revela que quase metade dos funcionários expressa sentimentos negativos principalmente sobre os valores e a cultura organizacional, as oportunidades de desenvolvimento e a transparência na comunicação, indicando que melhorias direcionadas no alinhamento dos valores da empresa, nos programas de crescimento profissional e na comunicação interna poderiam aumentar significativamente o engajamento dos funcionários no contexto das telecomunicações.",
+          "data": {
+            "sentimentDivergentChart": [
+              {
+                "value": "valores e cultura organizacional",
+                "positive": 8.0,
+                "negative": 16.1
+              },
+              {
+                "value": "processos organizacionais",
+                "positive": 8.6,
+                "negative": 4.0
+              },
+              {
+                "value": "comunicação e transparência",
+                "positive": 0.0,
+                "negative": 12.1
+              },
+              {
+                "value": "oportunidades de desenvolvimento e carreira",
+                "positive": 0.0,
+                "negative": 11.5
+              },
+              {
+                "value": "colaboração e respeito em equipe",
+                "positive": 2.3,
+                "negative": 8.0
+              },
+              {
+                "value": "reconhecimento e apreciação",
+                "positive": 4.3,
+                "negative": 4.0
+              },
+              {
+                "value": "liderança e gestão",
+                "positive": 5.7,
+                "negative": 2.6
+              },
+              {
+                "value": "equilíbrio entre vida profissional e pessoal e flexibilidade",
+                "positive": 2.6,
+                "negative": 2.0
+              },
+              {
+                "value": "outro",
+                "positive": 0.0,
+                "negative": 8.0
+              }
+            ],
+            "topCategoriesCards": [
+              {
+                "rank": 1,
+                "category": "valores e cultura organizacional",
+                "mentions": 84,
+                "percentage": 100,
+                "topics": [
+                  {
+                    "topic": "incentivo à inovação",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "Alinhamento com o trabalho diário",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "Expectativas realistas",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "Valores da empresa",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "Cultura organizacional",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": " Diversidade e inclusão",
+                    "sentiment": "negative"
+                  }
+                ]
+              },
+              {
+                "rank": 2,
+                "category": "processos organizacionais",
+                "mentions": 44,
+                "percentage": 52,
+                "topics": [
+                  {
+                    "topic": "Melhoria dos sistemas internos",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "melhoria de produtividade",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "Processos estruturados",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "novas tecnologias",
+                    "sentiment": "negative"
+                  }
+                ]
+              },
+              {
+                "rank": 3,
+                "category": "comunicação e transparência",
+                "mentions": 42,
+                "percentage": 50,
+                "topics": [
+                  {
+                    "topic": "Canais de comunicação",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "Escuta dos funcionários",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "comunicação interdepartamental",
+                    "sentiment": "negative"
+                  }
+                ]
+              }
+            ],
+            "wordCloud": [
+              {
+                "text": "Valor da empresa",
+                "value": 9
+              },
+              {
+                "text": "Iniciativa de saúde mental",
+                "value": 8
+              },
+              {
+                "text": "Treinamento técnico",
+                "value": 7
+              },
+              {
+                "text": "Incentivo à inovação",
+                "value": 7
+              },
+              {
+                "text": "Canal de comunicação",
+                "value": 7
+              },
+              {
+                "text": "Reconhecimento de boas práticas",
+                "value": 7
+              },
+              {
+                "text": "Reconhecimento de liderança",
+                "value": 7
+              },
+              {
+                "text": "Nova tecnologia",
+                "value": 7
+              },
+              {
+                "text": "Oportunidade de treinamento",
+                "value": 7
+              },
+              {
+                "text": "Transparência do plano de carreira",
+                "value": 7
+              },
+              {
+                "text": "Evento de engajamento de funcionários",
+                "value": 7
+              },
+              {
+                "text": "Funcionário escuta",
+                "value": 6
+              },
+              {
+                "text": "Metas definidas",
+                "value": 6
+              },
+              {
+                "text": "Integração de equipe",
+                "value": 6
+              },
+              {
+                "text": "Programa de incentivo",
+                "value": 6
+              },
+              {
+                "text": "Comunicação interdepartamental",
+                "value": 6
+              },
+              {
+                "text": "Cultura organizacional",
+                "value": 6
+              },
+              {
+                "text": "Inclusão da diversidade",
+                "value": 5
+              },
+              {
+                "text": "Plano de carreira de acessibilidade",
+                "value": 5
+              },
+              {
+                "text": "Horário de trabalho flexível",
+                "value": 4
+              },
+              {
+                "text": "Feedback construtivo",
+                "value": 4
+              },
+              {
+                "text": "Melhoria interna do sistema",
+                "value": 4
+              },
+              {
+                "text": "Melhoria de produtividade",
+                "value": 4
+              },
+              {
+                "text": "Motivação da equipe",
+                "value": 4
+              },
+              {
+                "text": "Processo estruturado",
+                "value": 4
+              },
+              {
+                "text": "Evento de compartilhamento de conhecimento",
+                "value": 4
+              },
+              {
+                "text": "Flexibilidade de horário de trabalho",
+                "value": 3
+              },
+              {
+                "text": "Alinhamento entre vida profissional e pessoal",
+                "value": 3
+              },
+              {
+                "text": "Alinhamento trabalho diário",
+                "value": 3
+              },
+              {
+                "text": "Equipe de proximidade de liderança",
+                "value": 3
+              },
+              {
+                "text": "Clareza de objetivos",
+                "value": 3
+              },
+              {
+                "text": "Reconhecimento de funcionários",
+                "value": 3
+              },
+              {
+                "text": "Cultura de feedback",
+                "value": 2
+              },
+              {
+                "text": "Expectativa realista",
+                "value": 2
+              },
+              {
+                "text": "Objetivo realista",
+                "value": 2
+              },
+              {
+                "text": "Abordagem estruturada",
+                "value": 2
+              },
+              {
+                "text": "Colaboração entre equipes",
+                "value": 2
+              },
+              {
+                "text": "Inovação com abordagem estruturada",
+                "value": 1
+              },
+              {
+                "text": "Sessão de compartilhamento de conhecimento",
+                "value": 1
+              },
+              {
+                "text": "Alinhamento de metas",
+                "value": 1
+              },
+              {
+                "text": "Reconhecimento espontâneo",
+                "value": 1
+              },
+              {
+                "text": "Valorização dos funcionários",
+                "value": 1
+              },
+              {
+                "text": "Sessão de compartilhamento de experiências",
+                "value": 1
+              },
+              {
+                "text": "Voz do funcionário",
+                "value": 1
+              },
+              {
+                "text": "Alinhamento de valor",
+                "value": 1
+              },
+              {
+                "text": "Valor existe prática",
+                "value": 1
+              },
+              {
+                "text": "Reforço de valor",
+                "value": 1
+              },
+              {
+                "text": "Colaboração entre funcionários",
+                "value": 1
+              },
+              {
+                "text": "Acessibilidade ",
+                "value": 1
+              }
+            ],
+            "npsScore": null,
+            "sentimentCategories": [
+              {
+                "category": "valores e cultura organizacional",
+                "negative": 3.0,
+                "positive": 3.0,
+                "neutral": 0.0
+              },
+              {
+                "category": "processos organizacionais",
+                "negative": 1.0,
+                "positive": 3.0,
+                "neutral": 0.0
+              },
+              {
+                "category": "comunicação e transparência",
+                "negative": 3.0,
+                "positive": 0.0,
+                "neutral": 0.0
+              }
+            ],
+            "topicsByCategory": [
+              {
+                "category": "valores e cultura organizacional",
+                "positiveTopics": [
+                  "incentivo à inovação",
+                  "Alinhamento com o trabalho diário",
+                  "Expectativas realistas"
+                ],
+                "negativeTopics": [
+                  "Valores da empresa",
+                  "Cultura organizacional",
+                  "Diversidade e inclusão"
+                ],
+                "neutralTopics": []
+              },
+              {
+                "category": "processos organizacionais",
+                "positiveTopics": [
+                  "Melhoria dos sistemas internos",
+                  "melhoria de produtividade",
+                  "Processos estruturados"
+                ],
+                "negativeTopics": [
+                  "novas tecnologias"
+                ],
+                "neutralTopics": []
+              },
+              {
+                "category": "comunicação e transparência",
+                "positiveTopics": [],
+                "negativeTopics": [
+                  "Canais de comunicação",
+                  "Escuta dos funcionários",
+                  "comunicação interdepartamental"
+                ],
+                "neutralTopics": []
+              }
+            ]
+          },
+          "wordCloud": [],
+          "id": 10,
+          "questionType": "open-ended"
+        }
+      ],
+      "components": [],
+      "data": {
+        "config": {
+          "npsCategories": {
+            "detractor": "Detrator",
+            "promoter": "Promotor",
+            "neutral": "Neutro",
+            "labels": {
+              "detractors": "Detratores",
+              "neutrals": "Neutros",
+              "promoters": "Promotores"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "attributes",
+      "index": 3,
+      "name": "Análise por Atributos",
+      "icon": "Layers",
+      "defaultIcon": "Building",
+      "subsections": [
+        {
+          "id": "attributes-UnidadeOrganizacional",
+          "index": 0,
+          "name": "Unidade Organizacional",
+          "icon": "Layers",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Sumário",
+              "text": "O engajamento dos funcionários varia significativamente entre as unidades organizacionais, com a Vice-Presidência de Operações demonstrando engajamento relativamente forte por meio de maior satisfação, reconhecimento e orgulho, enquanto as Vice-Presidências de Inovação, Pessoas e Cultura, e Comercialização revelam lacunas críticas em reconhecimento, comunicação e clima organizacional que prejudicam o moral.  \nAs intervenções direcionadas devem focar em aprimorar a transparência da liderança, práticas consistentes de reconhecimento e oportunidades de desenvolvimento profissional personalizadas — particularmente em Inovação, Engenharia e Comercialização — para enfrentar a insatisfação e aumentar o alinhamento com os valores da empresa, como inovação e orientação para resultados.  \nFortalecer a comunicação interna e reforçar uma cultura de confiança e inclusividade será essencial para melhorar o orgulho e o engajamento dos funcionários, promovendo assim um clima organizacional mais positivo, adaptado às demandas dinâmicas da indústria de telecomunicações.",
+              "cardStyleVariant": "default"
+            },
+            {
+              "type": "card",
+              "index": 1,
+              "title": "Distribuição dos respondentes",
+              "cardStyleVariant": "flex-column",
+              "cardContentVariant": "with-charts",
+              "components": [
+                {
+                  "type": "barChart",
+                  "dataPath": "sectionData.UnidadeOrganizacional.distributionChart"
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 2,
+              "title": "Quão satisfeito você está em trabalhar nesta empresa?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A Vice-Presidência de Inovação apresenta o maior nível de insatisfação (45%) e satisfação muito baixa (20%), indicando desafios significativos de engajamento dos funcionários nessa área crítica para a inovação em telecomunicações. Por outro lado, a Vice-Presidência de Operações mostra um sentimento comparativamente equilibrado, com 50% combinados de satisfeitos ou muito satisfeitos, sugerindo um engajamento mais forte nas funções operacionais. A alta insatisfação na Vice-Presidência de Pessoas e Cultura (31,6% insatisfeitos e 26,3% muito insatisfeitos) é preocupante, dado seu papel em fomentar a cultura no ambiente de trabalho, destacando a necessidade urgente de intervenções direcionadas para melhorar o clima organizacional nessa área."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "stackedBarMECE",
+                      "index": 0,
+                      "dataPath": "sectionData.UnidadeOrganizacional.questions.quest01.stackedBarMECE",
+                      "config": {
+                        "yAxisDataKey": "option",
+                        "series": [
+                          {
+                            "dataKey": " Insatisfeito ",
+                            "name": " Insatisfeito  (%)"
+                          },
+                          {
+                            "dataKey": " Neutro ",
+                            "name": " Neutro  (%)"
+                          },
+                          {
+                            "dataKey": " Satisfeito ",
+                            "name": " Satisfeito  (%)"
+                          },
+                          {
+                            "dataKey": " Muito insatisfeito",
+                            "name": " Muito insatisfeito (%)"
+                          },
+                          {
+                            "dataKey": "Muito satisfeito ",
+                            "name": "Muito satisfeito  (%)"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "analyticalTable",
+                      "index": 1,
+                      "dataPath": "sectionData.UnidadeOrganizacional.questions.quest01.analyticalTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 3,
+              "title": "Com que frequência você se sente reconhecido pelo seu trabalho?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A Vice-Presidência de Operações apresenta o mais alto nível de reconhecimento dos funcionários, com 62,5% respondendo \"Sempre\", indicando forte engajamento nesta unidade. Por outro lado, a Vice-Presidência de Pessoas e Cultura tem os níveis mais baixos de reconhecimento, com 31,6% respondendo \"Nunca\" se sentindo reconhecidos, destacando uma área significativa para melhoria. Unidades como Inovação e Comercialização exibem sentimentos mistos, com percentuais mais altos de \"Raramente\" e \"Às vezes\", sugerindo práticas de reconhecimento inconsistentes que afetam o engajamento geral dos funcionários."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "stackedBarMECE",
+                      "index": 0,
+                      "dataPath": "sectionData.UnidadeOrganizacional.questions.quest03.stackedBarMECE",
+                      "config": {
+                        "yAxisDataKey": "option",
+                        "series": [
+                          {
+                            "dataKey": "Sempre ",
+                            "name": "Sempre  (%)"
+                          },
+                          {
+                            "dataKey": " Nunca",
+                            "name": " Nunca (%)"
+                          },
+                          {
+                            "dataKey": " Frequentemente ",
+                            "name": " Frequentemente  (%)"
+                          },
+                          {
+                            "dataKey": " Raramente ",
+                            "name": " Raramente  (%)"
+                          },
+                          {
+                            "dataKey": " Às vezes ",
+                            "name": " Às vezes  (%)"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "analyticalTable",
+                      "index": 1,
+                      "dataPath": "sectionData.UnidadeOrganizacional.questions.quest03.analyticalTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 4,
+              "title": "A empresa oferece oportunidades adequadas para o seu desenvolvimento e crescimento profissional?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A Vice-Presidência de Pessoas e Cultura apresenta o maior sentimento positivo em relação às oportunidades de desenvolvimento profissional, com mais de 50% dos colaboradores concordando ou concordando totalmente, indicando um engajamento mais forte nessa unidade. Por outro lado, as Vice-Presidências de Engenharia, Operações e Comercialização têm uma parcela significativa de colaboradores que discordam totalmente ou discordam, refletindo insatisfação notável e possíveis lacunas nos programas de desenvolvimento. Essa disparidade sugere que a empresa deve priorizar intervenções personalizadas nessas unidades para aprimorar as oportunidades de crescimento e o engajamento geral dos colaboradores."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "stackedBarMECE",
+                      "index": 0,
+                      "dataPath": "sectionData.UnidadeOrganizacional.questions.quest04.stackedBarMECE",
+                      "config": {
+                        "yAxisDataKey": "option",
+                        "series": [
+                          {
+                            "dataKey": " Concordo ",
+                            "name": " Concordo  (%)"
+                          },
+                          {
+                            "dataKey": " Discordo ",
+                            "name": " Discordo  (%)"
+                          },
+                          {
+                            "dataKey": "Totalmente concordo ",
+                            "name": "Totalmente concordo  (%)"
+                          },
+                          {
+                            "dataKey": " Totalmente discordo",
+                            "name": " Totalmente discordo (%)"
+                          },
+                          {
+                            "dataKey": " Neutro ",
+                            "name": " Neutro  (%)"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "analyticalTable",
+                      "index": 1,
+                      "dataPath": "sectionData.UnidadeOrganizacional.questions.quest04.analyticalTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 5,
+              "title": "Quais valores você considera mais presentes na cultura da empresa?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "Os dados revelam que a Orientação para Resultados é fortemente enfatizada nas Vice-Presidências de Engenharia, Operações e Pessoas e Cultura, indicando uma cultura orientada para desempenho nessas unidades que pode ser aproveitada para aumentar o engajamento dos funcionários por meio do alinhamento de metas.  \nPor outro lado, Responsabilidade Ambiental e Diversidade e Inclusão são mais reconhecidas na Vice-Presidência de Inovação e Engenharia, sugerindo que essas unidades priorizam sustentabilidade e valores inclusivos, o que pode aumentar o engajamento ao promover um senso de propósito e pertencimento.  \nA ênfase relativamente baixa na Transparência, especialmente na Vice-Presidência de Pessoas e Cultura, sinaliza uma área potencial para melhoria a fim de fortalecer a confiança e a comunicação aberta, fatores críticos para melhorar o clima organizacional e o engajamento dos funcionários."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "stackedBarMECE",
+                      "index": 0,
+                      "dataPath": "sectionData.UnidadeOrganizacional.questions.quest07.stackedBarMECE",
+                      "config": {
+                        "yAxisDataKey": "option",
+                        "series": [
+                          {
+                            "dataKey": "Colaboração ",
+                            "name": "Colaboração  (%)"
+                          },
+                          {
+                            "dataKey": " Diversidade e inclusão",
+                            "name": " Diversidade e inclusão (%)"
+                          },
+                          {
+                            "dataKey": " Responsabilidade ambiental ",
+                            "name": " Responsabilidade ambiental  (%)"
+                          },
+                          {
+                            "dataKey": " Inovação ",
+                            "name": " Inovação  (%)"
+                          },
+                          {
+                            "dataKey": " Orientação para resultados ",
+                            "name": " Orientação para resultados  (%)"
+                          },
+                          {
+                            "dataKey": " Transparência ",
+                            "name": " Transparência  (%)"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "analyticalTable",
+                      "index": 1,
+                      "dataPath": "sectionData.UnidadeOrganizacional.questions.quest07.analyticalTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 6,
+              "title": "Você sente orgulho em dizer que trabalha nesta empresa?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A Vice-Presidência de Operações demonstra o maior orgulho em trabalhar para a empresa, com 31,2% respondendo \"Sempre\", indicando forte engajamento dos funcionários nesta unidade. Por outro lado, a Vice-Presidência de Comercialização apresenta os níveis mais baixos de orgulho, com 30% respondendo \"Nunca\", sinalizando possível desengajamento e áreas que necessitam de intervenções culturais ou de liderança imediatas. No geral, o orgulho varia significativamente entre as unidades, sugerindo que estratégias personalizadas são necessárias para melhorar o clima organizacional e o comprometimento dos funcionários nas áreas com pontuações mais baixas."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "stackedBarMECE",
+                      "index": 0,
+                      "dataPath": "sectionData.UnidadeOrganizacional.questions.quest09.stackedBarMECE",
+                      "config": {
+                        "yAxisDataKey": "option",
+                        "series": [
+                          {
+                            "dataKey": "Sempre ",
+                            "name": "Sempre  (%)"
+                          },
+                          {
+                            "dataKey": " Nunca",
+                            "name": " Nunca (%)"
+                          },
+                          {
+                            "dataKey": " Frequentemente ",
+                            "name": " Frequentemente  (%)"
+                          },
+                          {
+                            "dataKey": " Raramente ",
+                            "name": " Raramente  (%)"
+                          },
+                          {
+                            "dataKey": " Às vezes ",
+                            "name": " Às vezes  (%)"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "analyticalTable",
+                      "index": 1,
+                      "dataPath": "sectionData.UnidadeOrganizacional.questions.quest09.analyticalTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 7,
+              "title": "O que você sugeriria para melhorar o engajamento dos colaboradores na empresa?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A Vice-Presidência de Engenharia e Inovação apresentam um sentimento negativo notavelmente alto (85% e 80%, respectivamente), principalmente devido a preocupações relacionadas à comunicação, transparência e liderança, sinalizando áreas críticas a serem abordadas para aumentar o engajamento.  \nEm todas as unidades, a melhoria dos processos organizacionais e o fortalecimento dos valores e da cultura organizacional surgem como principais fatores positivos, com ênfase particular na definição de metas e no incentivo à inovação para promover alinhamento e motivação.  \nIntervenções direcionadas para aprimorar a transparência do plano de carreira e os canais de comunicação, especialmente dentro de Comercialização e Engenharia, juntamente com programas de desenvolvimento de liderança, provavelmente resultarão em melhorias significativas no engajamento dos colaboradores no contexto das telecomunicações."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "container",
+                      "index": 0,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Análise de Sentimento"
+                        },
+                        {
+                          "type": "sentimentThreeColorChart",
+                          "index": 1,
+                          "dataPath": "sectionData.UnidadeOrganizacional.questions.quest10.satisfactionImpactSentimentChart"
+                        },
+                        {
+                          "type": "sentimentImpactTable",
+                          "index": 2,
+                          "dataPath": "sectionData.UnidadeOrganizacional.questions.quest10.satisfactionImpactSentimentTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento positivo - Top 3"
+                        },
+                        {
+                          "type": "positiveCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.UnidadeOrganizacional.questions.quest10.positiveCategoriesTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento negativo - Top 3"
+                        },
+                        {
+                          "type": "negativeCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.UnidadeOrganizacional.questions.quest10.negativeCategoriesTable"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "data": {
+            "distributionChart": [
+              {
+                "segment": "Vice-Presidência de Inovação",
+                "count": 20,
+                "percentage": 16.7
+              },
+              {
+                "segment": "Vice-Presidência de Comercialização",
+                "count": 20,
+                "percentage": 16.7
+              },
+              {
+                "segment": "Vice-Presidência de Pessoas e Cultura",
+                "count": 19,
+                "percentage": 15.8
+              },
+              {
+                "segment": "Vice-Presidência de Engenharia",
+                "count": 17,
+                "percentage": 14.2
+              },
+              {
+                "segment": "Vice-Presidência de Operações",
+                "count": 16,
+                "percentage": 13.3
+              },
+              {
+                "segment": "Vice-Presidência de Finanças",
+                "count": 14,
+                "percentage": 11.7
+              },
+              {
+                "segment": "Vice-Presidência de Sustentabilidade",
+                "count": 14,
+                "percentage": 11.7
+              }
+            ],
+            "distributionTable": [
+              {
+                "segment": "Vice-Presidência de Inovação",
+                "count": 20,
+                "percentage": 16.7
+              },
+              {
+                "segment": "Vice-Presidência de Comercialização",
+                "count": 20,
+                "percentage": 16.7
+              },
+              {
+                "segment": "Vice-Presidência de Pessoas e Cultura",
+                "count": 19,
+                "percentage": 15.8
+              },
+              {
+                "segment": "Vice-Presidência de Engenharia",
+                "count": 17,
+                "percentage": 14.2
+              },
+              {
+                "segment": "Vice-Presidência de Operações",
+                "count": 16,
+                "percentage": 13.3
+              },
+              {
+                "segment": "Vice-Presidência de Finanças",
+                "count": 14,
+                "percentage": 11.7
+              },
+              {
+                "segment": "Vice-Presidência de Sustentabilidade",
+                "count": 14,
+                "percentage": 11.7
+              }
+            ],
+            "questions": {
+              "quest01": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "stackedBarMECE": [
+                  {
+                    " Insatisfeito ": 20.0,
+                    " Neutro ": 25.0,
+                    " Satisfeito ": 30.0,
+                    " Muito insatisfeito": 20.0,
+                    "Muito satisfeito ": 5.0,
+                    "option": "Vice-Presidência de Comercialização"
+                  },
+                  {
+                    " Insatisfeito ": 23.5,
+                    " Neutro ": 17.6,
+                    " Satisfeito ": 23.5,
+                    " Muito insatisfeito": 17.6,
+                    "Muito satisfeito ": 17.6,
+                    "option": "Vice-Presidência de Engenharia"
+                  },
+                  {
+                    " Insatisfeito ": 45.0,
+                    " Neutro ": 35.0,
+                    " Satisfeito ": 5.0,
+                    " Muito insatisfeito": 0.0,
+                    "Muito satisfeito ": 15.0,
+                    "option": "Vice-Presidência de Inovação"
+                  },
+                  {
+                    " Insatisfeito ": 18.8,
+                    " Neutro ": 12.5,
+                    " Satisfeito ": 31.2,
+                    " Muito insatisfeito": 18.8,
+                    "Muito satisfeito ": 18.8,
+                    "option": "Vice-Presidência de Operações"
+                  },
+                  {
+                    " Insatisfeito ": 31.6,
+                    " Neutro ": 10.5,
+                    " Satisfeito ": 10.5,
+                    " Muito insatisfeito": 26.3,
+                    "Muito satisfeito ": 21.1,
+                    "option": "Vice-Presidência de Pessoas e Cultura"
+                  }
+                ],
+                "analyticalTable": [
+                  {
+                    "segment": " Insatisfeito ",
+                    "Vice-Presidência de Comercialização": 20.0,
+                    "Vice-Presidência de Engenharia": 23.5,
+                    "Vice-Presidência de Inovação": 45.0,
+                    "Vice-Presidência de Operações": 18.8,
+                    "Vice-Presidência de Pessoas e Cultura": 31.6
+                  },
+                  {
+                    "segment": " Neutro ",
+                    "Vice-Presidência de Comercialização": 25.0,
+                    "Vice-Presidência de Engenharia": 17.6,
+                    "Vice-Presidência de Inovação": 35.0,
+                    "Vice-Presidência de Operações": 12.5,
+                    "Vice-Presidência de Pessoas e Cultura": 10.5
+                  },
+                  {
+                    "segment": " Satisfeito ",
+                    "Vice-Presidência de Comercialização": 30.0,
+                    "Vice-Presidência de Engenharia": 23.5,
+                    "Vice-Presidência de Inovação": 5.0,
+                    "Vice-Presidência de Operações": 31.2,
+                    "Vice-Presidência de Pessoas e Cultura": 10.5
+                  },
+                  {
+                    "segment": " Muito insatisfeito",
+                    "Vice-Presidência de Comercialização": 20.0,
+                    "Vice-Presidência de Engenharia": 17.6,
+                    "Vice-Presidência de Inovação": 0.0,
+                    "Vice-Presidência de Operações": 18.8,
+                    "Vice-Presidência de Pessoas e Cultura": 26.3
+                  },
+                  {
+                    "segment": "Muito satisfeito ",
+                    "Vice-Presidência de Comercialização": 5.0,
+                    "Vice-Presidência de Engenharia": 17.6,
+                    "Vice-Presidência de Inovação": 15.0,
+                    "Vice-Presidência de Operações": 18.8,
+                    "Vice-Presidência de Pessoas e Cultura": 21.1
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "quest03": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "stackedBarMECE": [
+                  {
+                    "Sempre ": 25.0,
+                    " Nunca": 20.0,
+                    " Frequentemente ": 10.0,
+                    " Raramente ": 20.0,
+                    " Às vezes ": 25.0,
+                    "option": "Vice-Presidência de Comercialização"
+                  },
+                  {
+                    "Sempre ": 35.3,
+                    " Nunca": 11.8,
+                    " Frequentemente ": 23.5,
+                    " Raramente ": 17.6,
+                    " Às vezes ": 11.8,
+                    "option": "Vice-Presidência de Engenharia"
+                  },
+                  {
+                    "Sempre ": 15.0,
+                    " Nunca": 25.0,
+                    " Frequentemente ": 0.0,
+                    " Raramente ": 35.0,
+                    " Às vezes ": 25.0,
+                    "option": "Vice-Presidência de Inovação"
+                  },
+                  {
+                    "Sempre ": 62.5,
+                    " Nunca": 12.5,
+                    " Frequentemente ": 0.0,
+                    " Raramente ": 12.5,
+                    " Às vezes ": 12.5,
+                    "option": "Vice-Presidência de Operações"
+                  },
+                  {
+                    "Sempre ": 21.1,
+                    " Nunca": 31.6,
+                    " Frequentemente ": 10.5,
+                    " Raramente ": 21.1,
+                    " Às vezes ": 15.8,
+                    "option": "Vice-Presidência de Pessoas e Cultura"
+                  }
+                ],
+                "analyticalTable": [
+                  {
+                    "segment": "Sempre ",
+                    "Vice-Presidência de Comercialização": 25.0,
+                    "Vice-Presidência de Engenharia": 35.3,
+                    "Vice-Presidência de Inovação": 15.0,
+                    "Vice-Presidência de Operações": 62.5,
+                    "Vice-Presidência de Pessoas e Cultura": 21.1
+                  },
+                  {
+                    "segment": " Nunca",
+                    "Vice-Presidência de Comercialização": 20.0,
+                    "Vice-Presidência de Engenharia": 11.8,
+                    "Vice-Presidência de Inovação": 25.0,
+                    "Vice-Presidência de Operações": 12.5,
+                    "Vice-Presidência de Pessoas e Cultura": 31.6
+                  },
+                  {
+                    "segment": " Frequentemente ",
+                    "Vice-Presidência de Comercialização": 10.0,
+                    "Vice-Presidência de Engenharia": 23.5,
+                    "Vice-Presidência de Inovação": 0.0,
+                    "Vice-Presidência de Operações": 0.0,
+                    "Vice-Presidência de Pessoas e Cultura": 10.5
+                  },
+                  {
+                    "segment": " Raramente ",
+                    "Vice-Presidência de Comercialização": 20.0,
+                    "Vice-Presidência de Engenharia": 17.6,
+                    "Vice-Presidência de Inovação": 35.0,
+                    "Vice-Presidência de Operações": 12.5,
+                    "Vice-Presidência de Pessoas e Cultura": 21.1
+                  },
+                  {
+                    "segment": " Às vezes ",
+                    "Vice-Presidência de Comercialização": 25.0,
+                    "Vice-Presidência de Engenharia": 11.8,
+                    "Vice-Presidência de Inovação": 25.0,
+                    "Vice-Presidência de Operações": 12.5,
+                    "Vice-Presidência de Pessoas e Cultura": 15.8
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "quest04": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "stackedBarMECE": [
+                  {
+                    " Concordo ": 25.0,
+                    " Discordo ": 5.0,
+                    "Totalmente concordo ": 20.0,
+                    " Totalmente discordo": 30.0,
+                    " Neutro ": 20.0,
+                    "option": "Vice-Presidência de Comercialização"
+                  },
+                  {
+                    " Concordo ": 17.6,
+                    " Discordo ": 17.6,
+                    "Totalmente concordo ": 23.5,
+                    " Totalmente discordo": 29.4,
+                    " Neutro ": 11.8,
+                    "option": "Vice-Presidência de Engenharia"
+                  },
+                  {
+                    " Concordo ": 15.0,
+                    " Discordo ": 25.0,
+                    "Totalmente concordo ": 20.0,
+                    " Totalmente discordo": 15.0,
+                    " Neutro ": 25.0,
+                    "option": "Vice-Presidência de Inovação"
+                  },
+                  {
+                    " Concordo ": 25.0,
+                    " Discordo ": 6.2,
+                    "Totalmente concordo ": 12.5,
+                    " Totalmente discordo": 31.2,
+                    " Neutro ": 25.0,
+                    "option": "Vice-Presidência de Operações"
+                  },
+                  {
+                    " Concordo ": 21.1,
+                    " Discordo ": 26.3,
+                    "Totalmente concordo ": 31.6,
+                    " Totalmente discordo": 10.5,
+                    " Neutro ": 10.5,
+                    "option": "Vice-Presidência de Pessoas e Cultura"
+                  }
+                ],
+                "analyticalTable": [
+                  {
+                    "segment": " Concordo ",
+                    "Vice-Presidência de Comercialização": 25.0,
+                    "Vice-Presidência de Engenharia": 17.6,
+                    "Vice-Presidência de Inovação": 15.0,
+                    "Vice-Presidência de Operações": 25.0,
+                    "Vice-Presidência de Pessoas e Cultura": 21.1
+                  },
+                  {
+                    "segment": " Discordo ",
+                    "Vice-Presidência de Comercialização": 5.0,
+                    "Vice-Presidência de Engenharia": 17.6,
+                    "Vice-Presidência de Inovação": 25.0,
+                    "Vice-Presidência de Operações": 6.2,
+                    "Vice-Presidência de Pessoas e Cultura": 26.3
+                  },
+                  {
+                    "segment": "Totalmente concordo ",
+                    "Vice-Presidência de Comercialização": 20.0,
+                    "Vice-Presidência de Engenharia": 23.5,
+                    "Vice-Presidência de Inovação": 20.0,
+                    "Vice-Presidência de Operações": 12.5,
+                    "Vice-Presidência de Pessoas e Cultura": 31.6
+                  },
+                  {
+                    "segment": " Totalmente discordo",
+                    "Vice-Presidência de Comercialização": 30.0,
+                    "Vice-Presidência de Engenharia": 29.4,
+                    "Vice-Presidência de Inovação": 15.0,
+                    "Vice-Presidência de Operações": 31.2,
+                    "Vice-Presidência de Pessoas e Cultura": 10.5
+                  },
+                  {
+                    "segment": " Neutro ",
+                    "Vice-Presidência de Comercialização": 20.0,
+                    "Vice-Presidência de Engenharia": 11.8,
+                    "Vice-Presidência de Inovação": 25.0,
+                    "Vice-Presidência de Operações": 25.0,
+                    "Vice-Presidência de Pessoas e Cultura": 10.5
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "quest07": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "stackedBarMECE": [
+                  {
+                    "Colaboração ": 10.0,
+                    " Diversidade e inclusão": 15.0,
+                    " Responsabilidade ambiental ": 20.0,
+                    " Inovação ": 30.0,
+                    " Orientação para resultados ": 10.0,
+                    " Transparência ": 15.0,
+                    "option": "Vice-Presidência de Comercialização"
+                  },
+                  {
+                    "Colaboração ": 17.6,
+                    " Diversidade e inclusão": 23.5,
+                    " Responsabilidade ambiental ": 11.8,
+                    " Inovação ": 5.9,
+                    " Orientação para resultados ": 35.3,
+                    " Transparência ": 5.9,
+                    "option": "Vice-Presidência de Engenharia"
+                  },
+                  {
+                    "Colaboração ": 10.0,
+                    " Diversidade e inclusão": 20.0,
+                    " Responsabilidade ambiental ": 30.0,
+                    " Inovação ": 15.0,
+                    " Orientação para resultados ": 10.0,
+                    " Transparência ": 15.0,
+                    "option": "Vice-Presidência de Inovação"
+                  },
+                  {
+                    "Colaboração ": 18.8,
+                    " Diversidade e inclusão": 18.8,
+                    " Responsabilidade ambiental ": 6.2,
+                    " Inovação ": 6.2,
+                    " Orientação para resultados ": 43.8,
+                    " Transparência ": 6.2,
+                    "option": "Vice-Presidência de Operações"
+                  },
+                  {
+                    "Colaboração ": 26.3,
+                    " Diversidade e inclusão": 15.8,
+                    " Responsabilidade ambiental ": 15.8,
+                    " Inovação ": 10.5,
+                    " Orientação para resultados ": 31.6,
+                    " Transparência ": 0.0,
+                    "option": "Vice-Presidência de Pessoas e Cultura"
+                  }
+                ],
+                "analyticalTable": [
+                  {
+                    "segment": "Colaboração ",
+                    "Vice-Presidência de Comercialização": 10.0,
+                    "Vice-Presidência de Engenharia": 17.6,
+                    "Vice-Presidência de Inovação": 10.0,
+                    "Vice-Presidência de Operações": 18.8,
+                    "Vice-Presidência de Pessoas e Cultura": 26.3
+                  },
+                  {
+                    "segment": " Diversidade e inclusão",
+                    "Vice-Presidência de Comercialização": 15.0,
+                    "Vice-Presidência de Engenharia": 23.5,
+                    "Vice-Presidência de Inovação": 20.0,
+                    "Vice-Presidência de Operações": 18.8,
+                    "Vice-Presidência de Pessoas e Cultura": 15.8
+                  },
+                  {
+                    "segment": " Responsabilidade ambiental ",
+                    "Vice-Presidência de Comercialização": 20.0,
+                    "Vice-Presidência de Engenharia": 11.8,
+                    "Vice-Presidência de Inovação": 30.0,
+                    "Vice-Presidência de Operações": 6.2,
+                    "Vice-Presidência de Pessoas e Cultura": 15.8
+                  },
+                  {
+                    "segment": " Inovação ",
+                    "Vice-Presidência de Comercialização": 30.0,
+                    "Vice-Presidência de Engenharia": 5.9,
+                    "Vice-Presidência de Inovação": 15.0,
+                    "Vice-Presidência de Operações": 6.2,
+                    "Vice-Presidência de Pessoas e Cultura": 10.5
+                  },
+                  {
+                    "segment": " Orientação para resultados ",
+                    "Vice-Presidência de Comercialização": 10.0,
+                    "Vice-Presidência de Engenharia": 35.3,
+                    "Vice-Presidência de Inovação": 10.0,
+                    "Vice-Presidência de Operações": 43.8,
+                    "Vice-Presidência de Pessoas e Cultura": 31.6
+                  },
+                  {
+                    "segment": " Transparência ",
+                    "Vice-Presidência de Comercialização": 15.0,
+                    "Vice-Presidência de Engenharia": 5.9,
+                    "Vice-Presidência de Inovação": 15.0,
+                    "Vice-Presidência de Operações": 6.2,
+                    "Vice-Presidência de Pessoas e Cultura": 0.0
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "quest09": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "stackedBarMECE": [
+                  {
+                    "Sempre ": 15.0,
+                    " Nunca": 30.0,
+                    " Frequentemente ": 10.0,
+                    " Raramente ": 30.0,
+                    " Às vezes ": 15.0,
+                    "option": "Vice-Presidência de Comercialização"
+                  },
+                  {
+                    "Sempre ": 23.5,
+                    " Nunca": 5.9,
+                    " Frequentemente ": 17.6,
+                    " Raramente ": 23.5,
+                    " Às vezes ": 29.4,
+                    "option": "Vice-Presidência de Engenharia"
+                  },
+                  {
+                    "Sempre ": 25.0,
+                    " Nunca": 15.0,
+                    " Frequentemente ": 25.0,
+                    " Raramente ": 25.0,
+                    " Às vezes ": 10.0,
+                    "option": "Vice-Presidência de Inovação"
+                  },
+                  {
+                    "Sempre ": 31.2,
+                    " Nunca": 18.8,
+                    " Frequentemente ": 18.8,
+                    " Raramente ": 25.0,
+                    " Às vezes ": 6.2,
+                    "option": "Vice-Presidência de Operações"
+                  },
+                  {
+                    "Sempre ": 10.5,
+                    " Nunca": 21.1,
+                    " Frequentemente ": 31.6,
+                    " Raramente ": 26.3,
+                    " Às vezes ": 10.5,
+                    "option": "Vice-Presidência de Pessoas e Cultura"
+                  }
+                ],
+                "analyticalTable": [
+                  {
+                    "segment": "Sempre ",
+                    "Vice-Presidência de Comercialização": 15.0,
+                    "Vice-Presidência de Engenharia": 23.5,
+                    "Vice-Presidência de Inovação": 25.0,
+                    "Vice-Presidência de Operações": 31.2,
+                    "Vice-Presidência de Pessoas e Cultura": 10.5
+                  },
+                  {
+                    "segment": " Nunca",
+                    "Vice-Presidência de Comercialização": 30.0,
+                    "Vice-Presidência de Engenharia": 5.9,
+                    "Vice-Presidência de Inovação": 15.0,
+                    "Vice-Presidência de Operações": 18.8,
+                    "Vice-Presidência de Pessoas e Cultura": 21.1
+                  },
+                  {
+                    "segment": " Frequentemente ",
+                    "Vice-Presidência de Comercialização": 10.0,
+                    "Vice-Presidência de Engenharia": 17.6,
+                    "Vice-Presidência de Inovação": 25.0,
+                    "Vice-Presidência de Operações": 18.8,
+                    "Vice-Presidência de Pessoas e Cultura": 31.6
+                  },
+                  {
+                    "segment": " Raramente ",
+                    "Vice-Presidência de Comercialização": 30.0,
+                    "Vice-Presidência de Engenharia": 23.5,
+                    "Vice-Presidência de Inovação": 25.0,
+                    "Vice-Presidência de Operações": 25.0,
+                    "Vice-Presidência de Pessoas e Cultura": 26.3
+                  },
+                  {
+                    "segment": " Às vezes ",
+                    "Vice-Presidência de Comercialização": 15.0,
+                    "Vice-Presidência de Engenharia": 29.4,
+                    "Vice-Presidência de Inovação": 10.0,
+                    "Vice-Presidência de Operações": 6.2,
+                    "Vice-Presidência de Pessoas e Cultura": 10.5
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "quest10": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "stackedBarMECE": [],
+                "analyticalTable": [],
+                "satisfactionImpactSentimentChart": [
+                  {
+                    "sentiment": "negativo",
+                    "Vice-Presidência de Comercialização": 61.3,
+                    "Vice-Presidência de Engenharia": 84.9,
+                    "Vice-Presidência de Inovação": 80.0,
+                    "Vice-Presidência de Operações": 60.4,
+                    "Vice-Presidência de Pessoas e Cultura": 60.4
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "Vice-Presidência de Comercialização": 38.7,
+                    "Vice-Presidência de Engenharia": 15.1,
+                    "Vice-Presidência de Inovação": 20.0,
+                    "Vice-Presidência de Operações": 39.6,
+                    "Vice-Presidência de Pessoas e Cultura": 39.6
+                  }
+                ],
+                "satisfactionImpactSentimentTable": [
+                  {
+                    "sentiment": "negativo",
+                    "Vice-Presidência de Comercialização": 61.3,
+                    "Vice-Presidência de Engenharia": 84.9,
+                    "Vice-Presidência de Inovação": 80.0,
+                    "Vice-Presidência de Operações": 60.4,
+                    "Vice-Presidência de Pessoas e Cultura": 60.4
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "Vice-Presidência de Comercialização": 38.7,
+                    "Vice-Presidência de Engenharia": 15.1,
+                    "Vice-Presidência de Inovação": 20.0,
+                    "Vice-Presidência de Operações": 39.6,
+                    "Vice-Presidência de Pessoas e Cultura": 39.6
+                  }
+                ],
+                "positiveCategoriesTable": [
+                  {
+                    "category": "processos organizacionais",
+                    "Vice-Presidência de Comercialização": 33.3,
+                    "Vice-Presidência de Engenharia": 0.0,
+                    "Vice-Presidência de Inovação": 40.0,
+                    "Vice-Presidência de Operações": 31.6,
+                    "Vice-Presidência de Pessoas e Cultura": 31.6
+                  },
+                  {
+                    "category": "valores e cultura organizacional",
+                    "Vice-Presidência de Comercialização": 25.0,
+                    "Vice-Presidência de Engenharia": 25.0,
+                    "Vice-Presidência de Inovação": 40.0,
+                    "Vice-Presidência de Operações": 26.3,
+                    "Vice-Presidência de Pessoas e Cultura": 26.3
+                  },
+                  {
+                    "category": "liderança e gestão",
+                    "Vice-Presidência de Comercialização": 8.3,
+                    "Vice-Presidência de Engenharia": 25.0,
+                    "Vice-Presidência de Inovação": 0.0,
+                    "Vice-Presidência de Operações": 15.8,
+                    "Vice-Presidência de Pessoas e Cultura": 15.8
+                  }
+                ],
+                "negativeCategoriesTable": [
+                  {
+                    "category": "valores e cultura organizacional",
+                    "Vice-Presidência de Comercialização": 28.9,
+                    "Vice-Presidência de Engenharia": 13.3,
+                    "Vice-Presidência de Inovação": 35.0,
+                    "Vice-Presidência de Operações": 27.6,
+                    "Vice-Presidência de Pessoas e Cultura": 13.8
+                  },
+                  {
+                    "category": "comunicação e transparência",
+                    "Vice-Presidência de Comercialização": 7.9,
+                    "Vice-Presidência de Engenharia": 20.0,
+                    "Vice-Presidência de Inovação": 27.5,
+                    "Vice-Presidência de Operações": 13.8,
+                    "Vice-Presidência de Pessoas e Cultura": 6.9
+                  },
+                  {
+                    "category": "oportunidades de desenvolvimento e carreira",
+                    "Vice-Presidência de Comercialização": 26.3,
+                    "Vice-Presidência de Engenharia": 26.7,
+                    "Vice-Presidência de Inovação": 2.5,
+                    "Vice-Presidência de Operações": 3.4,
+                    "Vice-Presidência de Pessoas e Cultura": 13.8
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "id": "attributes-NveldeSenioridade",
+          "index": 1,
+          "name": "Nível de Senioridade",
+          "icon": "Layers",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Sumário",
+              "text": "A pesquisa destaca uma necessidade clara de estratégias de engajamento diferenciadas entre os níveis de senioridade, com analistas juniores e de nível médio buscando mais reconhecimento e desenvolvimento de carreira transparente, enquanto cargos seniores e de diretoria relatam insatisfação relacionada a oportunidades de crescimento e comunicação. Abordar sentimentos polarizados entre analistas seniores e melhorar o alinhamento da liderança em valores como sustentabilidade e processos transparentes pode promover um clima organizacional mais coeso. Priorizar programas de desenvolvimento personalizados e aprimorar a transparência na comunicação será crucial para aumentar o engajamento geral dos funcionários nesta empresa de Telecomunicações.",
+              "cardStyleVariant": "default"
+            },
+            {
+              "type": "card",
+              "index": 1,
+              "title": "Distribuição dos respondentes",
+              "cardStyleVariant": "flex-column",
+              "cardContentVariant": "with-charts",
+              "components": [
+                {
+                  "type": "barChart",
+                  "dataPath": "sectionData.NveldeSenioridade.distributionChart"
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 2,
+              "title": "Quão satisfeito você está em trabalhar nesta empresa?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "Os níveis de satisfação variam significativamente conforme a senioridade, com Analistas Seniores apresentando a maior satisfação geral (52,4% satisfeitos ou muito satisfeitos) e Diretores exibindo a maior insatisfação (68,4% insatisfeitos ou muito insatisfeitos). Funcionários em nível inicial (Analistas Júnior) e Analistas Plenos de nível intermediário relatam sentimentos mistos, mas tendem mais para a insatisfação e neutralidade, indicando possíveis problemas de engajamento nesses níveis. Intervenções direcionadas para abordar as preocupações nos níveis de diretor e júnior poderiam melhorar o clima organizacional geral e o engajamento dos funcionários nesta empresa de telecomunicações."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "stackedBarMECE",
+                      "index": 0,
+                      "dataPath": "sectionData.NveldeSenioridade.questions.quest01.stackedBarMECE",
+                      "config": {
+                        "yAxisDataKey": "option",
+                        "series": [
+                          {
+                            "dataKey": " Insatisfeito ",
+                            "name": " Insatisfeito  (%)"
+                          },
+                          {
+                            "dataKey": " Neutro ",
+                            "name": " Neutro  (%)"
+                          },
+                          {
+                            "dataKey": " Satisfeito ",
+                            "name": " Satisfeito  (%)"
+                          },
+                          {
+                            "dataKey": " Muito insatisfeito",
+                            "name": " Muito insatisfeito (%)"
+                          },
+                          {
+                            "dataKey": "Muito satisfeito ",
+                            "name": "Muito satisfeito  (%)"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "analyticalTable",
+                      "index": 1,
+                      "dataPath": "sectionData.NveldeSenioridade.questions.quest01.analyticalTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 3,
+              "title": "Com que frequência você se sente reconhecido pelo seu trabalho?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "Os dados revelam que os funcionários de nível médio ('Analista Pleno') se sentem mais reconhecidos, com 41,2% respondendo \"Sempre\", enquanto cargos seniores como 'Diretor' e 'Gerente' apresentam maior insatisfação, indicada pelas respostas \"Nunca\" em 21,1% e 29,4%, respectivamente. Analistas juniores experimentam reconhecimento inconsistente, evidenciado por um alto índice de 42,1% \"Raramente\" e 15,8% \"Nunca\", sinalizando possíveis lacunas na valorização dos funcionários de nível inicial. No geral, o reconhecimento parece desigual entre os níveis hierárquicos, sugerindo que estratégias de engajamento direcionadas são necessárias para melhorar o moral e a retenção na indústria de Telecomunicações."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "stackedBarMECE",
+                      "index": 0,
+                      "dataPath": "sectionData.NveldeSenioridade.questions.quest03.stackedBarMECE",
+                      "config": {
+                        "yAxisDataKey": "option",
+                        "series": [
+                          {
+                            "dataKey": "Sempre ",
+                            "name": "Sempre  (%)"
+                          },
+                          {
+                            "dataKey": " Nunca",
+                            "name": " Nunca (%)"
+                          },
+                          {
+                            "dataKey": " Frequentemente ",
+                            "name": " Frequentemente  (%)"
+                          },
+                          {
+                            "dataKey": " Raramente ",
+                            "name": " Raramente  (%)"
+                          },
+                          {
+                            "dataKey": " Às vezes ",
+                            "name": " Às vezes  (%)"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "analyticalTable",
+                      "index": 1,
+                      "dataPath": "sectionData.NveldeSenioridade.questions.quest03.analyticalTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 4,
+              "title": "A empresa oferece oportunidades adequadas para o seu desenvolvimento e crescimento profissional?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "Os dados revelam que analistas júnior e pleno geralmente percebem oportunidades de desenvolvimento profissional mais adequadas, refletidas por taxas combinadas de concordância mais altas em comparação com analistas sênior e diretores. Cargos seniores, especialmente Analista Sênior e Diretor, apresentam níveis elevados de neutralidade e discordância, indicando uma percepção de falta de oportunidades de crescimento em níveis mais altos. Para aumentar o engajamento, a empresa deve focar em adaptar programas de desenvolvimento para cargos seniores e de liderança, a fim de suprir essas lacunas."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "stackedBarMECE",
+                      "index": 0,
+                      "dataPath": "sectionData.NveldeSenioridade.questions.quest04.stackedBarMECE",
+                      "config": {
+                        "yAxisDataKey": "option",
+                        "series": [
+                          {
+                            "dataKey": " Concordo ",
+                            "name": " Concordo  (%)"
+                          },
+                          {
+                            "dataKey": " Discordo ",
+                            "name": " Discordo  (%)"
+                          },
+                          {
+                            "dataKey": "Totalmente concordo ",
+                            "name": "Totalmente concordo  (%)"
+                          },
+                          {
+                            "dataKey": " Totalmente discordo",
+                            "name": " Totalmente discordo (%)"
+                          },
+                          {
+                            "dataKey": " Neutro ",
+                            "name": " Neutro  (%)"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "analyticalTable",
+                      "index": 1,
+                      "dataPath": "sectionData.NveldeSenioridade.questions.quest04.analyticalTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 5,
+              "title": "Quais valores você considera mais presentes na cultura da empresa?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "Os dados revelam uma forte ênfase na orientação para resultados entre os níveis Analista Júnior, Analista Sênior e Diretor, indicando uma cultura orientada para o desempenho que pode motivar o engajamento dos funcionários por meio de metas claras. Diversidade e inclusão são mais reconhecidas por analistas de nível médio a sênior e diretores, destacando uma crescente conscientização sobre valores inclusivos em níveis hierárquicos mais altos, o que é fundamental para promover um ambiente de trabalho colaborativo e de apoio. A responsabilidade ambiental se destaca particularmente entre Gerentes, mas é minimamente mencionada pelos diretores, sugerindo uma oportunidade para alinhar melhor as prioridades da liderança com valores de sustentabilidade que ressoam com os papéis gerenciais emergentes."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "stackedBarMECE",
+                      "index": 0,
+                      "dataPath": "sectionData.NveldeSenioridade.questions.quest07.stackedBarMECE",
+                      "config": {
+                        "yAxisDataKey": "option",
+                        "series": [
+                          {
+                            "dataKey": "Colaboração ",
+                            "name": "Colaboração  (%)"
+                          },
+                          {
+                            "dataKey": " Diversidade e inclusão",
+                            "name": " Diversidade e inclusão (%)"
+                          },
+                          {
+                            "dataKey": " Responsabilidade ambiental ",
+                            "name": " Responsabilidade ambiental  (%)"
+                          },
+                          {
+                            "dataKey": " Inovação ",
+                            "name": " Inovação  (%)"
+                          },
+                          {
+                            "dataKey": " Orientação para resultados ",
+                            "name": " Orientação para resultados  (%)"
+                          },
+                          {
+                            "dataKey": " Transparência ",
+                            "name": " Transparência  (%)"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "analyticalTable",
+                      "index": 1,
+                      "dataPath": "sectionData.NveldeSenioridade.questions.quest07.analyticalTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 6,
+              "title": "Você sente orgulho em dizer que trabalha nesta empresa?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "Os dados revelam variação significativa no orgulho entre os níveis de senioridade, com Analista Sênior e Analista Júnior apresentando as maiores respostas de orgulho \"Sempre\" (33,3% e 31,6%, respectivamente), enquanto Gerentes e Analista Pleno mostram sentimentos mais mistos, com respostas mais frequentes em \"Frequentemente\" e \"Raramente\". Notavelmente, o Analista Sênior exibe tanto o maior orgulho (\"Sempre\") quanto a maior proporção de sentimento negativo (\"Nunca\" com 28,6%), indicando polarização no engajamento dentro desse grupo. Para melhorias no clima organizacional, ações direcionadas para abordar preocupações entre profissionais de nível médio (Analista Pleno e Gerente) poderiam aumentar o orgulho e o engajamento geral dos funcionários."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "stackedBarMECE",
+                      "index": 0,
+                      "dataPath": "sectionData.NveldeSenioridade.questions.quest09.stackedBarMECE",
+                      "config": {
+                        "yAxisDataKey": "option",
+                        "series": [
+                          {
+                            "dataKey": "Sempre ",
+                            "name": "Sempre  (%)"
+                          },
+                          {
+                            "dataKey": " Nunca",
+                            "name": " Nunca (%)"
+                          },
+                          {
+                            "dataKey": " Frequentemente ",
+                            "name": " Frequentemente  (%)"
+                          },
+                          {
+                            "dataKey": " Raramente ",
+                            "name": " Raramente  (%)"
+                          },
+                          {
+                            "dataKey": " Às vezes ",
+                            "name": " Às vezes  (%)"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "analyticalTable",
+                      "index": 1,
+                      "dataPath": "sectionData.NveldeSenioridade.questions.quest09.analyticalTable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 7,
+              "title": "O que você sugeriria para melhorar o engajamento dos colaboradores na empresa?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Sumário",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "A pesquisa revela um claro declínio no sentimento positivo sobre o engajamento dos funcionários à medida que a senioridade aumenta, com os gerentes expressando a maior negatividade, especialmente em relação aos processos organizacionais e à transparência na comunicação. Analistas juniores e de nível médio valorizam positivamente a cultura organizacional e a liderança, mas expressam preocupações sobre a comunicação e a transparência dos planos de carreira. Melhorar a comunicação transparente, alinhar as oportunidades de desenvolvimento de carreira e fomentar a inovação e o alinhamento de metas adaptados a cada nível de senioridade poderia melhorar significativamente o engajamento nesta empresa de Telecomunicações."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "container",
+                      "index": 0,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Análise de Sentimento"
+                        },
+                        {
+                          "type": "sentimentThreeColorChart",
+                          "index": 1,
+                          "dataPath": "sectionData.NveldeSenioridade.questions.quest10.satisfactionImpactSentimentChart"
+                        },
+                        {
+                          "type": "sentimentImpactTable",
+                          "index": 2,
+                          "dataPath": "sectionData.NveldeSenioridade.questions.quest10.satisfactionImpactSentimentTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento positivo - Top 3"
+                        },
+                        {
+                          "type": "positiveCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.NveldeSenioridade.questions.quest10.positiveCategoriesTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorias com sentimento negativo - Top 3"
+                        },
+                        {
+                          "type": "negativeCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.NveldeSenioridade.questions.quest10.negativeCategoriesTable"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "data": {
+            "distributionChart": [
+              {
+                "segment": "Analista Sênior",
+                "count": 21,
+                "percentage": 17.5
+              },
+              {
+                "segment": "Diretor",
+                "count": 19,
+                "percentage": 15.8
+              },
+              {
+                "segment": "Analista Júnior",
+                "count": 19,
+                "percentage": 15.8
+              },
+              {
+                "segment": "Gerente",
+                "count": 17,
+                "percentage": 14.2
+              },
+              {
+                "segment": "Analista Pleno",
+                "count": 17,
+                "percentage": 14.2
+              },
+              {
+                "segment": "Estagiário",
+                "count": 14,
+                "percentage": 11.7
+              },
+              {
+                "segment": "Coordenador",
+                "count": 13,
+                "percentage": 10.8
+              }
+            ],
+            "distributionTable": [
+              {
+                "segment": "Analista Sênior",
+                "count": 21,
+                "percentage": 17.5
+              },
+              {
+                "segment": "Diretor",
+                "count": 19,
+                "percentage": 15.8
+              },
+              {
+                "segment": "Analista Júnior",
+                "count": 19,
+                "percentage": 15.8
+              },
+              {
+                "segment": "Gerente",
+                "count": 17,
+                "percentage": 14.2
+              },
+              {
+                "segment": "Analista Pleno",
+                "count": 17,
+                "percentage": 14.2
+              },
+              {
+                "segment": "Estagiário",
+                "count": 14,
+                "percentage": 11.7
+              },
+              {
+                "segment": "Coordenador",
+                "count": 13,
+                "percentage": 10.8
+              }
+            ],
+            "questions": {
+              "quest01": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "stackedBarMECE": [
+                  {
+                    " Insatisfeito ": 31.6,
+                    " Neutro ": 26.3,
+                    " Satisfeito ": 10.5,
+                    " Muito insatisfeito": 21.1,
+                    "Muito satisfeito ": 10.5,
+                    "option": "Analista Júnior"
+                  },
+                  {
+                    " Insatisfeito ": 23.5,
+                    " Neutro ": 23.5,
+                    " Satisfeito ": 29.4,
+                    " Muito insatisfeito": 11.8,
+                    "Muito satisfeito ": 11.8,
+                    "option": "Analista Pleno"
+                  },
+                  {
+                    " Insatisfeito ": 23.8,
+                    " Neutro ": 4.8,
+                    " Satisfeito ": 42.9,
+                    " Muito insatisfeito": 19.0,
+                    "Muito satisfeito ": 9.5,
+                    "option": "Analista Sênior"
+                  },
+                  {
+                    " Insatisfeito ": 42.1,
+                    " Neutro ": 21.1,
+                    " Satisfeito ": 10.5,
+                    " Muito insatisfeito": 26.3,
+                    "Muito satisfeito ": 0.0,
+                    "option": "Diretor"
+                  },
+                  {
+                    " Insatisfeito ": 23.5,
+                    " Neutro ": 5.9,
+                    " Satisfeito ": 17.6,
+                    " Muito insatisfeito": 17.6,
+                    "Muito satisfeito ": 35.3,
+                    "option": "Gerente"
+                  }
+                ],
+                "analyticalTable": [
+                  {
+                    "segment": " Insatisfeito ",
+                    "Analista Júnior": 31.6,
+                    "Analista Pleno": 23.5,
+                    "Analista Sênior": 23.8,
+                    "Diretor": 42.1,
+                    "Gerente": 23.5
+                  },
+                  {
+                    "segment": " Neutro ",
+                    "Analista Júnior": 26.3,
+                    "Analista Pleno": 23.5,
+                    "Analista Sênior": 4.8,
+                    "Diretor": 21.1,
+                    "Gerente": 5.9
+                  },
+                  {
+                    "segment": " Satisfeito ",
+                    "Analista Júnior": 10.5,
+                    "Analista Pleno": 29.4,
+                    "Analista Sênior": 42.9,
+                    "Diretor": 10.5,
+                    "Gerente": 17.6
+                  },
+                  {
+                    "segment": " Muito insatisfeito",
+                    "Analista Júnior": 21.1,
+                    "Analista Pleno": 11.8,
+                    "Analista Sênior": 19.0,
+                    "Diretor": 26.3,
+                    "Gerente": 17.6
+                  },
+                  {
+                    "segment": "Muito satisfeito ",
+                    "Analista Júnior": 10.5,
+                    "Analista Pleno": 11.8,
+                    "Analista Sênior": 9.5,
+                    "Diretor": 0.0,
+                    "Gerente": 35.3
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "quest03": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "stackedBarMECE": [
+                  {
+                    "Sempre ": 26.3,
+                    " Nunca": 15.8,
+                    " Frequentemente ": 5.3,
+                    " Raramente ": 42.1,
+                    " Às vezes ": 10.5,
+                    "option": "Analista Júnior"
+                  },
+                  {
+                    "Sempre ": 41.2,
+                    " Nunca": 23.5,
+                    " Frequentemente ": 11.8,
+                    " Raramente ": 0.0,
+                    " Às vezes ": 23.5,
+                    "option": "Analista Pleno"
+                  },
+                  {
+                    "Sempre ": 23.8,
+                    " Nunca": 14.3,
+                    " Frequentemente ": 23.8,
+                    " Raramente ": 23.8,
+                    " Às vezes ": 14.3,
+                    "option": "Analista Sênior"
+                  },
+                  {
+                    "Sempre ": 10.5,
+                    " Nunca": 21.1,
+                    " Frequentemente ": 15.8,
+                    " Raramente ": 31.6,
+                    " Às vezes ": 21.1,
+                    "option": "Diretor"
+                  },
+                  {
+                    "Sempre ": 29.4,
+                    " Nunca": 29.4,
+                    " Frequentemente ": 11.8,
+                    " Raramente ": 0.0,
+                    " Às vezes ": 29.4,
+                    "option": "Gerente"
+                  }
+                ],
+                "analyticalTable": [
+                  {
+                    "segment": "Sempre ",
+                    "Analista Júnior": 26.3,
+                    "Analista Pleno": 41.2,
+                    "Analista Sênior": 23.8,
+                    "Diretor": 10.5,
+                    "Gerente": 29.4
+                  },
+                  {
+                    "segment": " Nunca",
+                    "Analista Júnior": 15.8,
+                    "Analista Pleno": 23.5,
+                    "Analista Sênior": 14.3,
+                    "Diretor": 21.1,
+                    "Gerente": 29.4
+                  },
+                  {
+                    "segment": " Frequentemente ",
+                    "Analista Júnior": 5.3,
+                    "Analista Pleno": 11.8,
+                    "Analista Sênior": 23.8,
+                    "Diretor": 15.8,
+                    "Gerente": 11.8
+                  },
+                  {
+                    "segment": " Raramente ",
+                    "Analista Júnior": 42.1,
+                    "Analista Pleno": 0.0,
+                    "Analista Sênior": 23.8,
+                    "Diretor": 31.6,
+                    "Gerente": 0.0
+                  },
+                  {
+                    "segment": " Às vezes ",
+                    "Analista Júnior": 10.5,
+                    "Analista Pleno": 23.5,
+                    "Analista Sênior": 14.3,
+                    "Diretor": 21.1,
+                    "Gerente": 29.4
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "quest04": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "stackedBarMECE": [
+                  {
+                    " Concordo ": 21.1,
+                    " Discordo ": 5.3,
+                    "Totalmente concordo ": 26.3,
+                    " Totalmente discordo": 21.1,
+                    " Neutro ": 26.3,
+                    "option": "Analista Júnior"
+                  },
+                  {
+                    " Concordo ": 29.4,
+                    " Discordo ": 23.5,
+                    "Totalmente concordo ": 23.5,
+                    " Totalmente discordo": 17.6,
+                    " Neutro ": 5.9,
+                    "option": "Analista Pleno"
+                  },
+                  {
+                    " Concordo ": 9.5,
+                    " Discordo ": 19.0,
+                    "Totalmente concordo ": 14.3,
+                    " Totalmente discordo": 19.0,
+                    " Neutro ": 38.1,
+                    "option": "Analista Sênior"
+                  },
+                  {
+                    " Concordo ": 21.1,
+                    " Discordo ": 31.6,
+                    "Totalmente concordo ": 15.8,
+                    " Totalmente discordo": 15.8,
+                    " Neutro ": 15.8,
+                    "option": "Diretor"
+                  },
+                  {
+                    " Concordo ": 29.4,
+                    " Discordo ": 11.8,
+                    "Totalmente concordo ": 29.4,
+                    " Totalmente discordo": 11.8,
+                    " Neutro ": 17.6,
+                    "option": "Gerente"
+                  }
+                ],
+                "analyticalTable": [
+                  {
+                    "segment": " Concordo ",
+                    "Analista Júnior": 21.1,
+                    "Analista Pleno": 29.4,
+                    "Analista Sênior": 9.5,
+                    "Diretor": 21.1,
+                    "Gerente": 29.4
+                  },
+                  {
+                    "segment": " Discordo ",
+                    "Analista Júnior": 5.3,
+                    "Analista Pleno": 23.5,
+                    "Analista Sênior": 19.0,
+                    "Diretor": 31.6,
+                    "Gerente": 11.8
+                  },
+                  {
+                    "segment": "Totalmente concordo ",
+                    "Analista Júnior": 26.3,
+                    "Analista Pleno": 23.5,
+                    "Analista Sênior": 14.3,
+                    "Diretor": 15.8,
+                    "Gerente": 29.4
+                  },
+                  {
+                    "segment": " Totalmente discordo",
+                    "Analista Júnior": 21.1,
+                    "Analista Pleno": 17.6,
+                    "Analista Sênior": 19.0,
+                    "Diretor": 15.8,
+                    "Gerente": 11.8
+                  },
+                  {
+                    "segment": " Neutro ",
+                    "Analista Júnior": 26.3,
+                    "Analista Pleno": 5.9,
+                    "Analista Sênior": 38.1,
+                    "Diretor": 15.8,
+                    "Gerente": 17.6
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "quest07": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "stackedBarMECE": [
+                  {
+                    "Colaboração ": 15.8,
+                    " Diversidade e inclusão": 10.5,
+                    " Responsabilidade ambiental ": 21.1,
+                    " Inovação ": 21.1,
+                    " Orientação para resultados ": 26.3,
+                    " Transparência ": 5.3,
+                    "option": "Analista Júnior"
+                  },
+                  {
+                    "Colaboração ": 17.6,
+                    " Diversidade e inclusão": 23.5,
+                    " Responsabilidade ambiental ": 29.4,
+                    " Inovação ": 17.6,
+                    " Orientação para resultados ": 11.8,
+                    " Transparência ": 0.0,
+                    "option": "Analista Pleno"
+                  },
+                  {
+                    "Colaboração ": 9.5,
+                    " Diversidade e inclusão": 28.6,
+                    " Responsabilidade ambiental ": 9.5,
+                    " Inovação ": 19.0,
+                    " Orientação para resultados ": 23.8,
+                    " Transparência ": 9.5,
+                    "option": "Analista Sênior"
+                  },
+                  {
+                    "Colaboração ": 21.1,
+                    " Diversidade e inclusão": 15.8,
+                    " Responsabilidade ambiental ": 0.0,
+                    " Inovação ": 10.5,
+                    " Orientação para resultados ": 21.1,
+                    " Transparência ": 31.6,
+                    "option": "Diretor"
+                  },
+                  {
+                    "Colaboração ": 17.6,
+                    " Diversidade e inclusão": 11.8,
+                    " Responsabilidade ambiental ": 41.2,
+                    " Inovação ": 0.0,
+                    " Orientação para resultados ": 17.6,
+                    " Transparência ": 11.8,
+                    "option": "Gerente"
+                  }
+                ],
+                "analyticalTable": [
+                  {
+                    "segment": "Colaboração ",
+                    "Analista Júnior": 15.8,
+                    "Analista Pleno": 17.6,
+                    "Analista Sênior": 9.5,
+                    "Diretor": 21.1,
+                    "Gerente": 17.6
+                  },
+                  {
+                    "segment": " Diversidade e inclusão",
+                    "Analista Júnior": 10.5,
+                    "Analista Pleno": 23.5,
+                    "Analista Sênior": 28.6,
+                    "Diretor": 15.8,
+                    "Gerente": 11.8
+                  },
+                  {
+                    "segment": " Responsabilidade ambiental ",
+                    "Analista Júnior": 21.1,
+                    "Analista Pleno": 29.4,
+                    "Analista Sênior": 9.5,
+                    "Diretor": 0.0,
+                    "Gerente": 41.2
+                  },
+                  {
+                    "segment": " Inovação ",
+                    "Analista Júnior": 21.1,
+                    "Analista Pleno": 17.6,
+                    "Analista Sênior": 19.0,
+                    "Diretor": 10.5,
+                    "Gerente": 0.0
+                  },
+                  {
+                    "segment": " Orientação para resultados ",
+                    "Analista Júnior": 26.3,
+                    "Analista Pleno": 11.8,
+                    "Analista Sênior": 23.8,
+                    "Diretor": 21.1,
+                    "Gerente": 17.6
+                  },
+                  {
+                    "segment": " Transparência ",
+                    "Analista Júnior": 5.3,
+                    "Analista Pleno": 0.0,
+                    "Analista Sênior": 9.5,
+                    "Diretor": 31.6,
+                    "Gerente": 11.8
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "quest09": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "stackedBarMECE": [
+                  {
+                    "Sempre ": 31.6,
+                    " Nunca": 15.8,
+                    " Frequentemente ": 10.5,
+                    " Raramente ": 26.3,
+                    " Às vezes ": 15.8,
+                    "option": "Analista Júnior"
+                  },
+                  {
+                    "Sempre ": 5.9,
+                    " Nunca": 5.9,
+                    " Frequentemente ": 35.3,
+                    " Raramente ": 29.4,
+                    " Às vezes ": 23.5,
+                    "option": "Analista Pleno"
+                  },
+                  {
+                    "Sempre ": 33.3,
+                    " Nunca": 28.6,
+                    " Frequentemente ": 4.8,
+                    " Raramente ": 23.8,
+                    " Às vezes ": 9.5,
+                    "option": "Analista Sênior"
+                  },
+                  {
+                    "Sempre ": 26.3,
+                    " Nunca": 15.8,
+                    " Frequentemente ": 10.5,
+                    " Raramente ": 21.1,
+                    " Às vezes ": 26.3,
+                    "option": "Diretor"
+                  },
+                  {
+                    "Sempre ": 23.5,
+                    " Nunca": 23.5,
+                    " Frequentemente ": 35.3,
+                    " Raramente ": 17.6,
+                    " Às vezes ": 0.0,
+                    "option": "Gerente"
+                  }
+                ],
+                "analyticalTable": [
+                  {
+                    "segment": "Sempre ",
+                    "Analista Júnior": 31.6,
+                    "Analista Pleno": 5.9,
+                    "Analista Sênior": 33.3,
+                    "Diretor": 26.3,
+                    "Gerente": 23.5
+                  },
+                  {
+                    "segment": " Nunca",
+                    "Analista Júnior": 15.8,
+                    "Analista Pleno": 5.9,
+                    "Analista Sênior": 28.6,
+                    "Diretor": 15.8,
+                    "Gerente": 23.5
+                  },
+                  {
+                    "segment": " Frequentemente ",
+                    "Analista Júnior": 10.5,
+                    "Analista Pleno": 35.3,
+                    "Analista Sênior": 4.8,
+                    "Diretor": 10.5,
+                    "Gerente": 35.3
+                  },
+                  {
+                    "segment": " Raramente ",
+                    "Analista Júnior": 26.3,
+                    "Analista Pleno": 29.4,
+                    "Analista Sênior": 23.8,
+                    "Diretor": 21.1,
+                    "Gerente": 17.6
+                  },
+                  {
+                    "segment": " Às vezes ",
+                    "Analista Júnior": 15.8,
+                    "Analista Pleno": 23.5,
+                    "Analista Sênior": 9.5,
+                    "Diretor": 26.3,
+                    "Gerente": 0.0
+                  }
+                ],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "quest10": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "stackedBarMECE": [],
+                "analyticalTable": [],
+                "satisfactionImpactSentimentChart": [
+                  {
+                    "sentiment": "negativo",
+                    "Analista Júnior": 62.7,
+                    "Analista Pleno": 63.8,
+                    "Analista Sênior": 66.2,
+                    "Diretor": 68.2,
+                    "Gerente": 70.5
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "Analista Júnior": 37.3,
+                    "Analista Pleno": 36.2,
+                    "Analista Sênior": 33.8,
+                    "Diretor": 31.8,
+                    "Gerente": 29.5
+                  }
+                ],
+                "satisfactionImpactSentimentTable": [
+                  {
+                    "sentiment": "negativo",
+                    "Analista Júnior": 62.7,
+                    "Analista Pleno": 63.8,
+                    "Analista Sênior": 66.2,
+                    "Diretor": 68.2,
+                    "Gerente": 70.5
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "Analista Júnior": 37.3,
+                    "Analista Pleno": 36.2,
+                    "Analista Sênior": 33.8,
+                    "Diretor": 31.8,
+                    "Gerente": 29.5
+                  }
+                ],
+                "positiveCategoriesTable": [
+                  {
+                    "category": "processos organizacionais",
+                    "Analista Júnior": 10.5,
+                    "Analista Pleno": 11.8,
+                    "Analista Sênior": 18.2,
+                    "Diretor": 19.0,
+                    "Gerente": 61.5
+                  },
+                  {
+                    "category": "valores e cultura organizacional",
+                    "Analista Júnior": 36.8,
+                    "Analista Pleno": 35.3,
+                    "Analista Sênior": 9.1,
+                    "Diretor": 33.3,
+                    "Gerente": 30.8
+                  },
+                  {
+                    "category": "liderança e gestão",
+                    "Analista Júnior": 26.3,
+                    "Analista Pleno": 23.5,
+                    "Analista Sênior": 36.4,
+                    "Diretor": 14.3,
+                    "Gerente": 0.0
+                  }
+                ],
+                "negativeCategoriesTable": [
+                  {
+                    "category": "valores e cultura organizacional",
+                    "Analista Júnior": 18.8,
+                    "Analista Pleno": 36.7,
+                    "Analista Sênior": 20.9,
+                    "Diretor": 26.7,
+                    "Gerente": 25.8
+                  },
+                  {
+                    "category": "comunicação e transparência",
+                    "Analista Júnior": 28.1,
+                    "Analista Pleno": 13.3,
+                    "Analista Sênior": 18.6,
+                    "Diretor": 13.3,
+                    "Gerente": 22.6
+                  },
+                  {
+                    "category": "oportunidades de desenvolvimento e carreira",
+                    "Analista Júnior": 12.5,
+                    "Analista Pleno": 10.0,
+                    "Analista Sênior": 20.9,
+                    "Diretor": 13.3,
+                    "Gerente": 16.1
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "uiTexts": {
+    "filterPanel": {
+      "all": "Todas",
+      "open-ended": "Campo Aberto",
+      "multiple-choice": "Múltipla Escolha",
+      "single-choice": "Escolha única",
+      "nps": "NPS"
+    },
+    "responseDetails": {
+      "all": "Todas",
+      "open-ended": "Pergunta Aberta",
+      "multiple-choice": "Múltipla Escolha",
+      "single-choice": "Escolha única",
+      "nps": "NPS",
+      "npsScore": "NPS Score",
+      "topCategories": "Principais categorias",
+      "wordCloud": "Nuvem de Palavras",
+      "mentions": "menções",
+      "positive": "Positivo",
+      "negative": "Negativo",
+      "noPositiveTopics": "Quantidade tópicos positivos",
+      "noNegativeTopics": "Quantidade tópicos negativos",
+      "filterQuestion": "Filtrar questão",
+      "questionPrefix": "Q",
+      "pdf": "PDF",
+      "summary": "Resumo",
+      "loadingFilteredData": "Carregando dados filtrados..."
+    },
+    "export": {
+      "title": "Export de Dados",
+      "description": "Exporte os dados da pesquisa em diferentes formatos",
+      "exportFullReport": "Exportar Relatório Completo",
+      "selectSpecificSections": "Selecionar Seções Específicas",
+      "exportAsPDF": "Exportar como PDF",
+      "selectAtLeastOneSection": "Selecione pelo menos uma seção"
+    },
+    "common": {
+      "loading": {
+        "loadingQuestions": "Carregando questões..."
+      },
+      "errors": {
+        "dataNotFound": "Dados não encontrados."
+      }
+    }
+  },
+  "surveyInfo": {
+    "title": "Demonstração ai2c Talent",
+    "company": "Engajamento do colaborador",
+    "period": "Data",
+    "totalRespondents": 120,
+    "responseRate": 100.0,
+    "questions": 10,
+    "nps": 0,
+    "npsCategory": "Bom"
+  }
+}

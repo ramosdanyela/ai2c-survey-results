@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/collapsible";
 import { COLOR_ORANGE_PRIMARY, RGBA_BLACK_SHADOW_20 } from "@/lib/colors";
 import { capitalizeTitle } from "@/lib/utils";
-import { getAllSubsectionsForSection } from "@/utils/exportHelpers";
+import { getAllSubsectionsForSection, getOrderedSelectedSubsectionIds } from "@/utils/exportHelpers";
 import { useSurveyData } from "@/hooks/useSurveyData";
 
 // Component for checkbox with indeterminate state
@@ -256,7 +256,11 @@ export default function Export() {
     params.set("fullReport", exportFullReport.toString());
 
     if (!exportFullReport && selectedSections.size > 0) {
-      params.set("sections", Array.from(selectedSections).join(","));
+      const orderedIds = getOrderedSelectedSubsectionIds(
+        Array.from(selectedSections),
+        data,
+      );
+      params.set("sections", orderedIds.join(","));
     }
 
     // Navigate to preview page

@@ -28,7 +28,7 @@ import { CHART_COLORS, CHART_PALETTE_MECE } from "@/lib/colors";
  */
 const DEFAULT_MARGIN = {
   top: 16,
-  right: 80,
+  right: 20,
   left: 12,
   bottom: 56,
 };
@@ -42,6 +42,7 @@ export function StackedBarMECE({
   margin,
   showGrid = true,
   showLegend = true,
+  yAxisWidth = 130,
   isExportImage = false,
 }) {
   const axisKey = yAxisDataKey ?? categoryKey ?? "option";
@@ -71,11 +72,22 @@ export function StackedBarMECE({
 
   const EXPORT_W = 800;
   const EXPORT_H = 400;
-  const chartHeight = isExportImage ? EXPORT_H : height;
+
+  // Dynamic height: ensure legend is never clipped.
+  // Estimate legend height based on series count (conservative ~3 items per row).
+  const legendRows = showLegend ? Math.ceil(series.length / 3) : 0;
+  const legendH = showLegend ? legendRows * 36 + 20 : 0;
+  // Bottom margin must be at least as tall as the legend
+  const effectiveBottom = Math.max(chartMargin.bottom, legendH);
+  const effectiveMargin = { ...chartMargin, bottom: effectiveBottom };
+  // Minimum chart height: each bar ~44px + x-axis ~30px + top/bottom margins
+  const BAR_SLOT = 44;
+  const minRequired = data.length * BAR_SLOT + effectiveMargin.top + 30 + effectiveBottom;
+  const chartHeight = isExportImage ? EXPORT_H : Math.max(height, minRequired);
 
   return (
     <div
-      className="min-w-0 overflow-hidden p-2"
+      className="min-w-0 p-2"
       style={{ height: chartHeight, width: isExportImage ? EXPORT_W : undefined }}
       role="img"
       aria-label="Gráfico de barras empilhadas MECE"
@@ -84,7 +96,7 @@ export function StackedBarMECE({
         width={isExportImage ? EXPORT_W : "100%"}
         height={isExportImage ? EXPORT_H : "100%"}
       >
-        <BarChart data={data} margin={chartMargin} layout="vertical" isAnimationActive={!isExportImage}>
+        <BarChart data={data} margin={effectiveMargin} layout="vertical" isAnimationActive={!isExportImage}>
           {showGrid && (
             <CartesianGrid
               strokeDasharray="3 3"
@@ -98,13 +110,14 @@ export function StackedBarMECE({
             domain={[0, 100]}
             tickFormatter={(v) => `${v}%`}
             stroke={CHART_COLORS.foreground}
-            tick={{ fill: CHART_COLORS.foreground }}
+            tick={{ fill: CHART_COLORS.foreground, fontSize: 11 }}
           />
           <YAxis
             type="category"
             dataKey={axisKey}
+            width={yAxisWidth}
             stroke={CHART_COLORS.foreground}
-            tick={{ fill: CHART_COLORS.foreground }}
+            tick={{ fill: CHART_COLORS.foreground, fontSize: 11 }}
           />
           {!isExportImage && (
           <Tooltip
@@ -124,15 +137,27 @@ export function StackedBarMECE({
               stackId="a"
               fill={serie.color ?? CHART_PALETTE_MECE[index % CHART_PALETTE_MECE.length]}
               name={serie.name}
+              maxBarSize={50}
               radius={index === series.length - 1 ? [4, 4, 4, 4] : [0, 0, 0, 0]}
             >
               <LabelList
                 dataKey={serie.dataKey}
-                position="right"
-                formatter={(value) => `${value}%`}
-                style={{
-                  fill: CHART_COLORS.foreground,
-                  fontSize: "12px",
+                content={({ viewBox, value }) => {
+                  if (!value || Number(value) < 8) return null;
+                  const { x, y, width, height } = viewBox;
+                  return (
+                    <text
+                      x={x + width / 2}
+                      y={y + height / 2}
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      fill="white"
+                      fontSize="11"
+                      fontWeight="500"
+                    >
+                      {`${value}%`}
+                    </text>
+                  );
                 }}
               />
             </Bar>
