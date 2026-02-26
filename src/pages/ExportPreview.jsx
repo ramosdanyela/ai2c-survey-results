@@ -32,6 +32,12 @@ export default function ExportPreview() {
   const [exportProgress, setExportProgress] = useState({ current: 0, total: 0 });
   const a4WrapperRef = useRef(null);
 
+  // Format chosen on Export page: "pdf" or "word". Preview and single Save button follow this.
+  const exportFormatFromUrl = (searchParams.get("format") || "pdf").toLowerCase();
+  const isWordFormat = exportFormatFromUrl === "word";
+  // Preview shows format-specific layout (Word = no pills/circles, PDF = with pills)
+  const isExportFormatWord = isWordFormat;
+
   // Parse URL parameters
   const exportFullReport = searchParams.get("fullReport") === "true";
   const selectedSectionsParam = searchParams.get("sections");
@@ -107,19 +113,24 @@ export default function ExportPreview() {
     if (!a4WrapperRef.current || !data || isExportingWord) return;
     setIsExportingWord(true);
     setExportProgress({ current: 0, total: 0 });
-    try {
-      const fileName = data?.surveyInfo?.title
-        ? data.surveyInfo.title.replace(/[^a-zA-Z0-9\s]/g, "").trim()
-        : "export";
-      await exportToWord(a4WrapperRef.current, fileName, (current, total) => {
-        setExportProgress({ current, total });
+    // Preview is already in Word style (isExportFormatWord from URL); wait for paint then capture.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(async () => {
+        try {
+          const fileName = data?.surveyInfo?.title
+            ? data.surveyInfo.title.replace(/[^a-zA-Z0-9\s]/g, "").trim()
+            : "export";
+          await exportToWord(a4WrapperRef.current, fileName, (current, total) => {
+            setExportProgress({ current, total });
+          });
+        } catch (err) {
+          console.error("Word export failed:", err);
+        } finally {
+          setIsExportingWord(false);
+          setExportProgress({ current: 0, total: 0 });
+        }
       });
-    } catch (err) {
-      console.error("Word export failed:", err);
-    } finally {
-      setIsExportingWord(false);
-      setExportProgress({ current: 0, total: 0 });
-    }
+    });
   }, [data, isExportingWord]);
 
   // Show loading state
@@ -236,6 +247,27 @@ export default function ExportPreview() {
         /* Tables in export: no horizontal scroll so Word/PDF capture shows full content */
         .export-preview-a4-wrapper div.relative.w-full.overflow-auto:has(> table) {
           overflow: visible !important;
+        }
+        /* Pills/circles (Q1–Q3 rank, severity badges): export Word - sem line-height:1 nem padding manual; testa leading-none (no Badge) + align-middle */
+        .export-preview-a4-wrapper .rounded-full.text-xs {
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          vertical-align: middle !important;
+          /* py-3 na versão export */
+          padding-top: 0.75rem !important;
+          padding-bottom: 0.75rem !important;
+        }
+        /* Do NOT set line-height on pill children - html2canvas can fail to render text */
+        .export-preview-a4-wrapper .w-6.h-6.rounded-full,
+        .export-preview-a4-wrapper .w-6.h-6.rounded-full span {
+          line-height: 1 !important;
+        }
+        .export-preview-a4-wrapper .w-6.h-6.rounded-full {
+          min-width: 1.5rem;
+          min-height: 1.5rem;
+          padding: 2px;
+          box-sizing: border-box;
         }
         .export-preview-a4-wrapper div.relative.w-full.overflow-auto:has(> table) table {
           table-layout: fixed;
@@ -357,41 +389,41 @@ export default function ExportPreview() {
                 />
               </div>
 
-              {/* Export PDF Button */}
-              <Button
-                onClick={handleExportPDF}
-                className="h-10 px-4"
-                style={{
-                  backgroundColor: COLOR_ORANGE_PRIMARY,
-                  color: "white",
-                }}
-              >
-                <Printer className="w-4 h-4 mr-2" />
-                Save as PDF
-              </Button>
-
-              {/* Export Word Button */}
-              <Button
-                onClick={handleExportWord}
-                disabled={isExportingWord}
-                variant="outline"
-                className="h-10 px-4"
-                style={{
-                  borderColor: COLOR_ORANGE_PRIMARY,
-                  color: COLOR_ORANGE_PRIMARY,
-                }}
-              >
-                {isExportingWord ? (
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                ) : (
-                  <FileText className="w-4 h-4 mr-2" />
-                )}
-                {isExportingWord
-                  ? exportProgress.total > 0
-                    ? `Capturing ${exportProgress.current}/${exportProgress.total}...`
-                    : "Preparing..."
-                  : "Save as Word"}
-              </Button>
+              {/* Single Save button: the format chosen on Export page */}
+              {isWordFormat ? (
+                <Button
+                  onClick={handleExportWord}
+                  disabled={isExportingWord}
+                  className="h-10 px-4"
+                  style={{
+                    backgroundColor: COLOR_ORANGE_PRIMARY,
+                    color: "white",
+                  }}
+                >
+                  {isExportingWord ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <FileText className="w-4 h-4 mr-2" />
+                  )}
+                  {isExportingWord
+                    ? exportProgress.total > 0
+                      ? `Capturing ${exportProgress.current}/${exportProgress.total}...`
+                      : "Preparing..."
+                    : "Save as Word"}
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleExportPDF}
+                  className="h-10 px-4"
+                  style={{
+                    backgroundColor: COLOR_ORANGE_PRIMARY,
+                    color: "white",
+                  }}
+                >
+                  <Printer className="w-4 h-4 mr-2" />
+                  Save as PDF
+                </Button>
+              )}
             </div>
           </div>
         </header>
@@ -563,6 +595,7 @@ export default function ExportPreview() {
                           subSection={item.subsectionId}
                           isExport={true}
                           exportWordCloud={showWordCloud}
+                          isExportFormatWord={isExportFormatWord}
                         />
                       </div>
                     ))}

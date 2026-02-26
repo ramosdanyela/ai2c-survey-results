@@ -53,7 +53,6 @@ export function SchemaCard({ component, data, children, isExport = false }) {
   }
 
   const useDescription = component.useDescription === true;
-  const ContentWrapper = useDescription ? CardDescription : "div";
 
   // Aplica cardContentVariant ao ContentWrapper (não ao CardContent)
   // O textClassName já contém o cardContentVariant resolvido (ex: "space-y-3" para "flat")
@@ -74,6 +73,11 @@ export function SchemaCard({ component, data, children, isExport = false }) {
   const hasText = text && text.trim() !== "";
   const bulletData = hasText ? parseBulletItems(text) : null;
   const isBulletList = bulletData && bulletData.items.length > 0;
+  // Avoid <p> inside <p>: use div when content has multiple paragraphs or list (CardDescription is <p>)
+  const contentHasBlockElements =
+    isBulletList || (hasText && text.trim().split("\n").length > 1);
+  const ContentWrapper =
+    useDescription && !contentHasBlockElements ? CardDescription : "div";
 
   // Text resolution - silently handle missing text (expected in some cases)
 
@@ -124,7 +128,7 @@ export function SchemaCard({ component, data, children, isExport = false }) {
             {...(isExport &&
               !isBulletList && {
                 "data-word-export": "text",
-                "data-word-text": text.replace(/\n/g, " ").trim(),
+                "data-word-text": text.trim(),
               })}
           >
             {isBulletList ? (
@@ -133,7 +137,7 @@ export function SchemaCard({ component, data, children, isExport = false }) {
                   isExport ? (
                     <div
                       data-word-export="text"
-                      data-word-text={bulletData.intro.replace(/\n/g, " ").trim()}
+                      data-word-text={bulletData.intro.trim()}
                     >
                       {bulletData.intro.split("\n").map((line, index) => (
                         <p key={index} className={line.trim() ? "" : "h-3"}>
@@ -238,11 +242,13 @@ export function SchemaNPSScoreCard({ component, data }) {
  * Render top categories cards component based on schema
  * All styling is hardcoded - no config needed
  * @param {boolean} isExport - When true, uses fixed layout and print-friendly styles (no hover, stable grid)
+ * @param {boolean} isExportFormatWord - When true (só no export Word), rank = só número na cor, sem círculo
  */
 export function SchemaTopCategoriesCards({
   component,
   data,
   isExport = false,
+  isExportFormatWord = false,
 }) {
   const categoriesData = resolveDataPath(
     data,
@@ -314,11 +320,22 @@ export function SchemaTopCategoriesCards({
                       (e.currentTarget.style.boxShadow = `0 4px 16px ${RGBA_BLACK_SHADOW_30}`)
               }
             >
-              <div className="flex items-center gap-2 mb-3 min-w-0">
-                <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold bg-primary text-primary-foreground shrink-0">
-                  {cat.rank}
-                </span>
-                <span className="font-bold text-sm break-words min-w-0">{cat.category}</span>
+              <div className="flex items-center gap-2 min-w-0">
+                {isExportFormatWord ? (
+                  <span className="text-sm font-bold text-primary shrink-0">
+                    {cat.rank}
+                  </span>
+                ) : (
+                  <span
+                    className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold bg-primary text-primary-foreground shrink-0 leading-none min-w-[1.5rem] min-h-[1.5rem]"
+                    style={{ lineHeight: 1 }}
+                  >
+                    {cat.rank}
+                  </span>
+                )}
+                <div className="flex flex-col justify-center min-h-[1.5rem] min-w-0">
+                  <span className="font-bold text-sm break-words">{cat.category}</span>
+                </div>
               </div>
               <div className="text-sm text-muted-foreground mb-3">
                 {cat.mentions}{" "}

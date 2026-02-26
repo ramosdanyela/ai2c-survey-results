@@ -17,6 +17,7 @@ import {
   User,
 } from "@/lib/icons";
 import { useSurveyData } from "@/hooks/useSurveyData";
+import { severityTextColors } from "@/lib/colors";
 
 // Helper function to get uiTexts with fallbacks
 function useTableTexts() {
@@ -405,6 +406,8 @@ export function RecommendationsTable({
   onToggleRec,
   getRecTasks,
   renderTasksTable,
+  isExport = false,
+  isExportFormatWord = false,
 }) {
   const texts = useTableTexts();
 
@@ -459,26 +462,47 @@ export function RecommendationsTable({
                   {rec.recommendation}
                 </TableCell>
                 <TableCell className="text-center py-2">
-                  <Badge
-                    className={
-                      severityColors[rec.severity] || severityColors.medium
-                    }
-                  >
-                    {severityLabel}
-                  </Badge>
+                  {isExportFormatWord ? (
+                    <span
+                      className={`text-xs font-semibold ${
+                        severityTextColors[rec.severity] ||
+                        severityTextColors.medium
+                      }`}
+                    >
+                      {severityLabel}
+                    </span>
+                  ) : (
+                    <Badge
+                      className={`leading-none align-middle ${severityColors[rec.severity] || severityColors.medium}`}
+                    >
+                      {severityLabel}
+                    </Badge>
+                  )}
                 </TableCell>
                 <TableCell className="p-0 py-2">
                   <div className="flex flex-wrap gap-1">
-                    {rec.stakeholders.map((stakeholder) => (
-                      <Badge
-                        key={stakeholder}
-                        variant="outline"
-                        className="text-sm"
-                      >
-                        <Users className="w-3 h-3 mr-1" />
-                        {stakeholder}
-                      </Badge>
-                    ))}
+                    {isExportFormatWord ? (
+                      rec.stakeholders.map((stakeholder, idx) => (
+                        <span
+                          key={stakeholder}
+                          className="text-sm text-foreground"
+                        >
+                          {stakeholder}
+                          {idx < rec.stakeholders.length - 1 ? ", " : ""}
+                        </span>
+                      ))
+                    ) : (
+                      rec.stakeholders.map((stakeholder) => (
+                        <Badge
+                          key={stakeholder}
+                          variant="outline"
+                          className="text-sm"
+                        >
+                          <Users className="w-3 h-3 mr-1" />
+                          {stakeholder}
+                        </Badge>
+                      ))
+                    )}
                   </div>
                 </TableCell>
                 <TableCell className="py-2">
@@ -528,7 +552,7 @@ export function RecommendationsTable({
 // 9. TASKS TABLE
 // ============================================================
 // Used in: ExecutiveReport - Tasks (nested inside Recommendations)
-export function TasksTable({ tasks, recId, checkedTasks, onToggleTask }) {
+export function TasksTable({ tasks, recId, checkedTasks, onToggleTask, isExportFormatWord = false }) {
   const texts = useTableTexts();
   return (
     <div className="pl-8 pr-4 py-4">
@@ -574,9 +598,13 @@ export function TasksTable({ tasks, recId, checkedTasks, onToggleTask }) {
                   {task.task}
                 </TableCell>
                 <TableCell>
-                  <Badge variant="outline" className="font-normal">
-                    {task.owner}
-                  </Badge>
+                  {isExportFormatWord ? (
+                    <span className="text-sm text-foreground">{task.owner}</span>
+                  ) : (
+                    <Badge variant="outline" className="font-normal">
+                      {task.owner}
+                    </Badge>
+                  )}
                 </TableCell>
               </TableRow>
             );

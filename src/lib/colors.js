@@ -316,6 +316,17 @@ export const severityColors = {
 };
 
 /**
+ * Severity text-only (for Word export: texto na cor da pill, sem fundo)
+ * Usa as mesmas variáveis CSS das pills.
+ */
+export const severityTextColors = {
+  critical: "text-[hsl(var(--severity-critical))]",
+  high: "text-[hsl(var(--severity-high))]",
+  medium: "text-[hsl(var(--severity-medium))]",
+  low: "text-[hsl(var(--severity-low))]",
+};
+
+/**
  * Severity CSS class names (from index.css)
  * These classes are defined in index.css with @apply directives
  */

@@ -47,7 +47,7 @@ export function buildDocxDocument(blocks) {
         children.push(buildHeadingParagraph(block));
         break;
       case "text":
-        children.push(buildTextParagraph(block));
+        children.push(...buildTextParagraphs(block));
         break;
       case "list":
         children.push(...buildListParagraphs(block));
@@ -142,17 +142,22 @@ function buildHeadingParagraph(block) {
   });
 }
 
-function buildTextParagraph(block) {
-  return new Paragraph({
-    spacing: { after: 120 },
-    children: [
-      new TextRun({
-        text: block.text,
-        font: "Arial",
-        size: 22, // 11pt in half-points
-      }),
-    ],
-  });
+function buildTextParagraphs(block) {
+  const lines = (block.text || "").split("\n");
+  return lines.map((line, i) =>
+    new Paragraph({
+      spacing: {
+        after: i < lines.length - 1 ? 80 : 120,
+      },
+      children: [
+        new TextRun({
+          text: line,
+          font: "Arial",
+          size: 22, // 11pt in half-points
+        }),
+      ],
+    }),
+  );
 }
 
 /**

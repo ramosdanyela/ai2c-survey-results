@@ -48,6 +48,7 @@ export function QuestionsList({
   data: externalData = null, // Allow external data to be passed (with sectionData injected)
   isExport = false,
   exportWordCloud = true,
+  isExportFormatWord = false,
 }) {
   const { data: hookData, loading } = useSurveyData();
   // Use external data if provided (from schema context with sectionData), otherwise use hook data
@@ -272,6 +273,7 @@ export function QuestionsList({
                   subSection: `responses-${question.id}`,
                   isExport,
                   exportWordCloud: isExport ? exportWordCloud : showWordCloud,
+                  isExportFormatWord,
                 },
               )}
             </div>
@@ -279,7 +281,7 @@ export function QuestionsList({
         })
         .filter(Boolean);
     },
-    [data, surveyInfo, showWordCloud, safeUiTexts, filteredData, isExport, exportWordCloud],
+    [data, surveyInfo, showWordCloud, safeUiTexts, filteredData, isExport, exportWordCloud, isExportFormatWord],
   );
 
   // Get all available questions filtered by selected type - MUST be before early returns

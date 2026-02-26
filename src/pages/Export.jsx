@@ -254,6 +254,7 @@ export default function Export() {
     // Build URL parameters
     const params = new URLSearchParams();
     params.set("fullReport", exportFullReport.toString());
+    params.set("format", format.toLowerCase()); // "pdf" or "word"
 
     if (!exportFullReport && selectedSections.size > 0) {
       const orderedIds = getOrderedSelectedSubsectionIds(
@@ -263,7 +264,7 @@ export default function Export() {
       params.set("sections", orderedIds.join(","));
     }
 
-    // Navigate to preview page
+    // Navigate to preview page (preview will show format-specific view and single Save as button)
     navigate(`/export/preview?${params.toString()}`);
   };
 

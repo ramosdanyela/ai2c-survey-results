@@ -164,6 +164,7 @@ export const renderComponent = (component, data, props = {}) => {
         subSection={subSection}
         isExport={isExport}
         exportWordCloud={exportWordCloud}
+        isExportFormatWord={props.isExportFormatWord}
       />
     );
   }

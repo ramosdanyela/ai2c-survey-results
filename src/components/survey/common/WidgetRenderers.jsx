@@ -410,6 +410,7 @@ export function SchemaQuestionsList({
   subSection,
   isExport = false,
   exportWordCloud = true,
+  isExportFormatWord = false,
 }) {
   // Extract questionId from subSection (e.g., "responses-1" -> 1)
   let questionId = null;
@@ -463,6 +464,7 @@ export function SchemaQuestionsList({
       data={data} // Pass enhancedData (with sectionData injected)
       isExport={isExport}
       exportWordCloud={exportWordCloud}
+      isExportFormatWord={isExportFormatWord}
     />
   );
 }

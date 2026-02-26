@@ -42,7 +42,7 @@ function inferSegmentKeyFromData(tableData, valueKeys) {
  * Render a recommendations table component based on schema
  * This component needs state management for expand/collapse
  */
-export function SchemaRecommendationsTable({ component, data, isExport = false }) {
+export function SchemaRecommendationsTable({ component, data, isExport = false, isExportFormatWord = false }) {
   // Hooks DEVEM ser chamados antes de qualquer return condicional
   // No export, começa tudo aberto. Na app, começa fechado (null = não inicializado)
   const [userExpandedRecs, setUserExpandedRecs] = useState(isExport ? "all" : null);
@@ -134,8 +134,10 @@ export function SchemaRecommendationsTable({ component, data, isExport = false }
                     recId={recId}
                     checkedTasks={checkedTasks}
                     onToggleTask={toggleTask}
+                    isExportFormatWord={isExportFormatWord}
                   />
                 )}
+                isExportFormatWord={isExportFormatWord}
               />
             </div>
           ))}

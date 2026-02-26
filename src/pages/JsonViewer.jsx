@@ -10,23 +10,7 @@ import {
   Maximize2,
   Minimize2,
 } from "lucide-react";
-
-// Escolha os JSONs pelo path (edite só esta lista). Inclui arquivos em subpastas de src/data.
-const SOURCE_PATHS = [
-  "@/data/json_file_app_05-02.json",
-  "@/data/surveyData.json",
-];
-const jsonModules = import.meta.glob("@/data/**/*.json", { eager: true });
-const globKeys = Object.keys(jsonModules);
-// Vite pode expor chaves como "src/data/arquivo.json" (sem @) — normalizar e buscar
-const getDataByPath = (path) => {
-  const filename = path.split("/").pop();
-  const key =
-    globKeys.find((k) => k === path) ??
-    globKeys.find((k) => k === path.replace(/^@\//, "src/")) ??
-    globKeys.find((k) => k.endsWith("/" + filename));
-  return (key && jsonModules[key]?.default) ?? null;
-};
+import { fetchSurveyData } from "@/services/surveyDataService";
 
 /**
  * Componente para renderizar um item da árvore JSON
@@ -297,28 +281,57 @@ function JsonViewerPanel({ data, title, panelId }) {
 }
 
 /**
- * Componente principal: dois viewers lado a lado para comparar JSONs
+ * Componente principal: exibe o JSON do surveyDataService em um único painel
  */
 export default function JsonViewer() {
+  const [data, setData] = useState(null);
+  const [source, setSource] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+    fetchSurveyData()
+      .then(({ data: d, source: s }) => {
+        if (!cancelled) {
+          setData(d);
+          setSource(s);
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err?.message ?? "Erro ao carregar dados");
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => { cancelled = true; };
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="container mx-auto p-6 max-w-7xl">
+        <p className="text-sm text-muted-foreground">Carregando JSON...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto p-6 max-w-7xl">
+        <p className="text-sm text-destructive">{error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto p-6 space-y-6 max-w-7xl">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <JsonViewerPanel
-          data={getDataByPath(SOURCE_PATHS[0])}
-          title={SOURCE_PATHS[0]}
-          panelId="a"
-        />
-        <JsonViewerPanel
-          data={getDataByPath(SOURCE_PATHS[1])}
-          title={SOURCE_PATHS[1]}
-          panelId="b"
-        />
-      </div>
-      <p className="text-xs text-muted-foreground text-center">
-        Edite a lista{" "}
-        <code className="bg-muted px-1 rounded">SOURCE_PATHS</code> no topo do
-        arquivo para trocar os JSONs (o título é o path).
-      </p>
+      <JsonViewerPanel
+        data={data}
+        title={source || "Survey JSON"}
+        panelId="survey"
+      />
     </div>
   );
 }

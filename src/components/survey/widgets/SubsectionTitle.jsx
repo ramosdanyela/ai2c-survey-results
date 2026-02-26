@@ -48,7 +48,7 @@ export function SubsectionTitle({
             className="text-base leading-relaxed space-y-3 mt-4 pt-5 text-center"
             {...(isExport && {
               "data-word-export": "text",
-              "data-word-text": breakLinesAfterPeriod(summary).replace(/\n/g, " ").trim(),
+              "data-word-text": breakLinesAfterPeriod(summary).trim(),
             })}
           >
             {breakLinesAfterPeriod(summary)

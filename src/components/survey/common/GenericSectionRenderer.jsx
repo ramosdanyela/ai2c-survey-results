@@ -48,6 +48,7 @@ function ComponentRenderer({
   subSection,
   isExport = false,
   exportWordCloud = true,
+  isExportFormatWord = false,
 }) {
   if (!shouldShowComponent(component, data)) {
     return null;
@@ -242,6 +243,7 @@ function ComponentRenderer({
                 subSection={subSection}
                 isExport={isExport}
                 exportWordCloud={exportWordCloud}
+                isExportFormatWord={isExportFormatWord}
               />
             );
             // Garante que o resultado é um elemento React válido
@@ -303,7 +305,7 @@ function ComponentRenderer({
                 <>
                   <div
                     data-word-export="text"
-                    data-word-text={bulletData.intro.replace(/\n/g, " ").trim()}
+                    data-word-text={bulletData.intro.trim()}
                   >
                     {bulletData.intro.split("\n").map((line, index) => (
                       <p key={index} className={line.trim() ? "" : "h-3"}>
@@ -354,7 +356,7 @@ function ComponentRenderer({
             {isExport ? (
               <div
                 data-word-export="text"
-                data-word-text={resolvedText.replace(/\n/g, " ").trim()}
+                data-word-text={resolvedText.trim()}
               >
                 {textContent}
               </div>
@@ -402,6 +404,7 @@ function ComponentRenderer({
               subSection={subSection}
               isExport={isExport}
               exportWordCloud={exportWordCloud}
+              isExportFormatWord={isExportFormatWord}
             />
           );
           // Garante que o resultado é um elemento React válido
@@ -474,6 +477,7 @@ function ComponentRenderer({
               subSection={subSection}
               isExport={isExport}
               exportWordCloud={exportWordCloud}
+              isExportFormatWord={isExportFormatWord}
             />
           );
           // Garante que o resultado é um elemento React válido
@@ -538,6 +542,7 @@ function ComponentRenderer({
               subSection={subSection}
               isExport={isExport}
               exportWordCloud={exportWordCloud}
+              isExportFormatWord={isExportFormatWord}
             />
           );
         });
@@ -556,6 +561,7 @@ function ComponentRenderer({
       subSection,
       isExport,
       exportWordCloud,
+      isExportFormatWord,
       renderComponentRenderer: (comp, idx) => (
         <ComponentRenderer
           key={`nested-${comp.index !== undefined ? comp.index : idx}-${
@@ -566,6 +572,7 @@ function ComponentRenderer({
           subSection={subSection}
           isExport={isExport}
           exportWordCloud={exportWordCloud}
+          isExportFormatWord={isExportFormatWord}
         />
       ),
     });
@@ -622,6 +629,7 @@ export function GenericSectionRenderer({
   subSection,
   isExport = false,
   exportWordCloud = true,
+  isExportFormatWord = false,
 }) {
   const { data } = useSurveyData();
 
@@ -1089,6 +1097,7 @@ export function GenericSectionRenderer({
                       subSection={subSection}
                       isExport={isExport}
                       exportWordCloud={exportWordCloud}
+                      isExportFormatWord={isExportFormatWord}
                     />
                   </div>
                 );
@@ -1121,6 +1130,7 @@ export function GenericSectionRenderer({
                     subSection={subSection}
                     isExport={isExport}
                     exportWordCloud={exportWordCloud}
+                    isExportFormatWord={isExportFormatWord}
                   />
                 );
               })}
@@ -1153,6 +1163,7 @@ export function GenericSectionRenderer({
                           subSection,
                           isExport,
                           exportWordCloud,
+                          isExportFormatWord,
                         })}
                       </React.Fragment>
                     );
@@ -1192,11 +1203,13 @@ export function GenericSectionRenderer({
                       subSection,
                       isExport,
                       exportWordCloud,
+                      isExportFormatWord,
                     })}
                     {renderComponent(questionsListComponent, enhancedData, {
                       subSection,
                       isExport,
                       exportWordCloud,
+                      isExportFormatWord,
                     })}
                   </div>
                 );
