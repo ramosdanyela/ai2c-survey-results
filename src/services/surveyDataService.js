@@ -9,10 +9,10 @@
 // ============================================================
 
 // Importa diretamente o JSON (simula API)
-import surveyDataJson from "../data/telcoempengdemo000000000_report_json.json";
+import surveyDataJson from "../data/pernamb_talent_demo_mto.json";
 
 /** Nome da fonte para exibição (ex.: Json Reference) */
-const DATA_SOURCE_LABEL = "telcoempengdemo000000000_report_json.json";
+const DATA_SOURCE_LABEL = "pernamb_talent_demo_mto.json";
 
 /**
  * Retorna os dados da pesquisa e o identificador da fonte.

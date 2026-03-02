@@ -114,14 +114,16 @@ export const iconMap = {
   X: LucideIcons.X,
 };
 
+const defaultIcon = LucideIcons.FileText;
+
 /**
  * Get icon component by name
  * @param {string} iconName - Name of the icon (e.g., "FileText", "BarChart3")
  * @returns {React.Component} - Icon component or FileText as fallback if not found
  */
 export function getIcon(iconName) {
-  if (!iconName) return FileText;
-  return iconMap[iconName] || FileText;
+  if (!iconName) return defaultIcon;
+  return iconMap[iconName] || defaultIcon;
 }
 
 /**
