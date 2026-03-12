@@ -8,7 +8,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { CHART_COLORS } from "@/lib/colors";
+import { CHART_COLORS, CHART_PALETTE_LINE } from "@/lib/colors";
 
 /**
  * Line Chart Component
@@ -126,7 +126,7 @@ export function LineChart({
               type="monotone"
               dataKey={line.dataKey}
               name={line.name}
-              stroke={line.color || CHART_COLORS.primary}
+              stroke={line.color ?? CHART_PALETTE_LINE[index % CHART_PALETTE_LINE.length]}
               isAnimationActive={!isExportImage}
               strokeWidth={line.strokeWidth || 2}
               dot={{ r: 4 }}

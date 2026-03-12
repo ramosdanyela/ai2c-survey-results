@@ -260,6 +260,17 @@ export const CHART_PALETTE_MECE = [
   "#5F7F6B", //
 ];
 
+/**
+ * Paleta de 4 cores para Line Chart quando a cor não é definida no JSON.
+ * Usar por índice: palette[index % palette.length] (após 4 linhas volta à primeira).
+ */
+export const CHART_PALETTE_LINE = [
+  "#8884d8", // azul-violeta
+  "#82ca9d", // verde
+  "#ffc658", // amarelo
+  "#ff8042", // laranja
+];
+
 // ============================================================================
 // Chart Color Mappings
 // ============================================================================

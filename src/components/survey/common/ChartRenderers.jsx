@@ -146,7 +146,7 @@ export function getBarChartConfig(component, isMobile, isExport = false) {
     showLabels: config.showLabels !== false,
     labelFormatter: labelFormatter,
     tooltipFormatter: tooltipFormatter,
-    sortData: config.sortData !== false,
+    sortData: config.sortData === true,
     sortDirection: config.sortDirection || "desc",
     hideXAxis: config.hideXAxis !== false,
     dynamicHeight: config.dynamicHeight !== false,
@@ -541,11 +541,18 @@ export function SchemaLineChart({ component, data, isExportImage = false }) {
     return null;
   }
 
+  // Normalize lines: support both "color" and "stroke" from JSON config
+  const rawLines = config.lines || [];
+  const lines = rawLines.map((line) => ({
+    ...line,
+    color: line.color ?? line.stroke,
+  }));
+
   return (
     <LineChart
       data={chartData}
       xAxisDataKey={config.xAxisDataKey || "x"}
-      lines={config.lines || []}
+      lines={lines}
       height={isExportImage ? EXPORT_IMAGE_HEIGHT : (config.height || 400)}
       margin={config.margin}
       showGrid={config.showGrid !== false}

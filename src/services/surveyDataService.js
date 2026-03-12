@@ -9,7 +9,7 @@
 // ============================================================
 
 // Importa diretamente o JSON (simula API)
-import surveyDataJson from "../data/pernamb_talent_demo_mto.json";
+import surveyDataJson from "../data/alloha_init_report_json.json";
 
 /** Nome da fonte para exibição (ex.: Json Reference) */
 const DATA_SOURCE_LABEL = "pernamb_talent_demo_mto.json";

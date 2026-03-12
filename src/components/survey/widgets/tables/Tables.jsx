@@ -114,9 +114,7 @@ export function DistributionTable({ data }) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {[...data]
-          .sort((a, b) => b.percentage - a.percentage)
-          .map((item) => (
+        {data.map((item) => (
             <TableRow key={item.segment}>
               <TableCell className="font-medium">{item.segment}</TableCell>
               <TableCell className="text-right">

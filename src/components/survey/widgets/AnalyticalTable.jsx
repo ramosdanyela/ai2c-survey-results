@@ -28,14 +28,7 @@ export function AnalyticalTable({
   defaultSort,
   rankingKey,
 }) {
-  const effectiveDefaultSort = useMemo(() => {
-    if (defaultSort) return defaultSort;
-    if (!columns?.length) return null;
-    const hasPercentage = columns.some((c) => c.key === "percentage" && c.sortable);
-    if (hasPercentage) return { key: "percentage", direction: "desc" };
-    const first = columns.find((c) => c.sortable);
-    return first ? { key: first.key, direction: "desc" } : null;
-  }, [defaultSort, columns]);
+  const effectiveDefaultSort = defaultSort ?? null;
 
   const [sortConfig, setSortConfig] = useState(null);
   const effectiveSort = sortConfig ?? effectiveDefaultSort;

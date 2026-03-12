@@ -21,14 +21,14 @@
               "type": "card",
               "index": 0,
               "title": "Visão geral do último mês",
-              "text": "Em setembro de 2025, a principal intenção entre os entrevistados permaneceu sendo “Muito satisfeito e recomendaria trabalhar na empresa” com 87,6%, mostrando um aumento positivo de 0,9% em relação ao mês anterior. Outras intenções notáveis foram “Pretende ficar, mas está desmotivado” com 5,7% e “Satisfeito e engajado” com 4,6%, ambas apresentando leves quedas na tendência média. As três principais categorias de impacto foram todas classes promotoras: “oportunidades de desenvolvimento e carreira” (cobertura 23,8%, pontuação líquida 22,1), embora tanto a cobertura quanto a pontuação líquida tenham diminuído; “valores e cultura organizacional”, que melhorou ligeiramente tanto na cobertura quanto na pontuação líquida; e “condições de trabalho”, que apresentou queda significativa na pontuação líquida e na cobertura entre os promotores, mas mostrou pequenas mudanças positivas entre os passivos. Categorias detratoras como “condições de trabalho” e “liderança e gestão” apresentaram padrões mistos, com alguma melhora nas pontuações líquidas apesar de pequenas flutuações na cobertura.",
+              "text": "Em setembro de 2025, as principais intenções entre os respondentes foram 'Muito satisfeito e recomendaria trabalhar na empresa' com 87,55%, mostrando um leve aumento, seguido por 'Pretende ficar, mas desmotivado' com 5,75%, e 'Satisfeito e engajado' com 4,60%. As três principais categorias que mais impactaram o feedback foram todas da classe promotor: 'oportunidades de desenvolvimento e carreira' (impacto 526,88), 'valores e cultura organizacional' (impacto 463,95) e 'condições de trabalho' (impacto 326,48). A cobertura diminuiu ligeiramente para oportunidades de desenvolvimento e condições de trabalho, enquanto valores e cultura organizacional tiveram um pequeno aumento na cobertura e na pontuação líquida. As categorias passivas e detratoras relacionadas a condições de trabalho e liderança apresentaram mudanças mistas, mas tiveram impacto geral menor do que as principais categorias promotoras. Dados de NPS não foram fornecidos para este mês.",
               "cardStyleVariant": "default"
             },
             {
               "type": "card",
               "index": 1,
               "title": "Agentes de mudança",
-              "text": "O leve aumento na principal intenção positiva correlaciona-se com o ganho modesto na percepção dos valores e cultura organizacional, que apresentou aumento no escore líquido e na cobertura. No entanto, quedas nas oportunidades de desenvolvimento e nas condições de trabalho entre os promotores provavelmente limitaram uma melhoria maior, já que essas categorias têm o maior impacto geral. Os sinais mistos nas percepções dos detratores sobre condições de trabalho e liderança também podem refletir uma visão nuançada entre os respondentes, equilibrando motivação com algumas preocupações contínuas, o que é consistente com os pequenos aumentos nos respondentes desmotivados, mas que permanecem.",
+              "text": "O aumento na principal intenção positiva está alinhado com pontuações positivas fortes e alta cobertura nas categorias de promotores, especialmente oportunidades de desenvolvimento e cultura organizacional, apesar de algumas quedas na cobertura e na pontuação líquida. A leve queda na pontuação líquida para condições de trabalho entre os promotores contrasta com sua melhora nas categorias passivas, indicando percepções mistas, mas ainda um sentimento geral positivo. A estabilidade e o leve aumento na participação dos permanentes desmotivados podem estar relacionados a pequenas mudanças negativas nas oportunidades de desenvolvimento, sugerindo áreas para atenção a fim de manter e melhorar o engajamento.",
               "cardStyleVariant": "default"
             }
           ]
@@ -38,27 +38,350 @@
     },
     {
       "id": "mto-overall",
-      "index": 1,
       "name": "Análise Geral",
       "icon": "TrendingUp",
       "subsections": [
         {
-          "id": "mto-overall-main",
-          "index": 0,
-          "name": "Análise Geral",
+          "id": "mto-overall-nps",
+          "name": "nps",
           "icon": "TrendingUp",
           "components": [
             {
-              "type": "lineChart",
+              "type": "card",
               "index": 0,
               "title": "Pontuação NPS",
-              "dataPath": "sectionData.npsScoreSeries",
+              "cardStyleVariant": "default",
+              "components": [
+                {
+                  "type": "analyticalTable",
+                  "index": 0,
+                  "title": "Pontuação NPS",
+                  "dataPath": "sectionData.npsScoreTable",
+                  "config": {
+                    "columns": [
+                      {
+                        "key": "Metric",
+                        "label": "métrica"
+                      },
+                      {
+                        "key": "Last",
+                        "label": "último"
+                      },
+                      {
+                        "key": "Δ Prev",
+                        "label": "δ prev"
+                      },
+                      {
+                        "key": "Avg",
+                        "label": "média"
+                      },
+                      {
+                        "key": "Δ Avg",
+                        "label": "δ médio"
+                      },
+                      {
+                        "key": "Avg (3m)",
+                        "label": "média (3m)"
+                      },
+                      {
+                        "key": "Avg (6m)",
+                        "label": "média (6m)"
+                      },
+                      {
+                        "key": "Δ Avg (3m)",
+                        "label": "δ médio (3m)"
+                      },
+                      {
+                        "key": "Δ Avg (6m)",
+                        "label": "δ médio (6m)"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "lineChart",
+                  "index": 1,
+                  "title": "Pontuação NPS",
+                  "dataPath": "sectionData.npsScoreSeries",
+                  "config": {
+                    "xAxisDataKey": "name",
+                    "lines": [
+                      {
+                        "dataKey": "nps_score",
+                        "stroke": "#8884d8",
+                        "label": "Pontuação NPS"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 1,
+              "title": "Mix de NPS (% dos respondentes)",
+              "cardStyleVariant": "default",
+              "components": [
+                {
+                  "type": "analyticalTable",
+                  "index": 0,
+                  "title": "Mix de NPS (% dos respondentes)",
+                  "dataPath": "sectionData.npsMixTable",
+                  "config": {
+                    "columns": [
+                      {
+                        "key": "Metric",
+                        "label": "métrica"
+                      },
+                      {
+                        "key": "Last",
+                        "label": "último"
+                      },
+                      {
+                        "key": "Δ Prev",
+                        "label": "δ prev"
+                      },
+                      {
+                        "key": "Avg",
+                        "label": "média"
+                      },
+                      {
+                        "key": "Δ Avg",
+                        "label": "δ médio"
+                      },
+                      {
+                        "key": "Avg (3m)",
+                        "label": "média (3m)"
+                      },
+                      {
+                        "key": "Avg (6m)",
+                        "label": "média (6m)"
+                      },
+                      {
+                        "key": "Δ Avg (3m)",
+                        "label": "δ médio (3m)"
+                      },
+                      {
+                        "key": "Δ Avg (6m)",
+                        "label": "δ médio (6m)"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "lineChart",
+                  "index": 1,
+                  "title": "Mix de NPS",
+                  "dataPath": "sectionData.npsMixSeries",
+                  "config": {
+                    "xAxisDataKey": "name",
+                    "lines": [
+                      {
+                        "dataKey": "promoter_pct",
+                        "stroke": "#2ca02c",
+                        "label": "promotores"
+                      },
+                      {
+                        "dataKey": "passive_pct",
+                        "stroke": "#ffbf00",
+                        "label": "Passivos"
+                      },
+                      {
+                        "dataKey": "detractor_pct",
+                        "stroke": "#d62728",
+                        "label": "detratores"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "data": {},
+          "index": 0
+        },
+        {
+          "id": "mto-overall-main-categories",
+          "name": "Categorias Principais",
+          "icon": "TrendingUp",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Top-3 em Promotor",
+              "cardStyleVariant": "default",
+              "components": [
+                {
+                  "type": "analyticalTable",
+                  "index": 0,
+                  "title": "Top-3 em Promotor",
+                  "dataPath": "sectionData.mainCategories_promoter",
+                  "config": {
+                    "columns": [
+                      {
+                        "key": "Category",
+                        "label": "categoria"
+                      },
+                      {
+                        "key": "Coverage (last)",
+                        "label": "cobertura (última)"
+                      },
+                      {
+                        "key": "Positive (last)",
+                        "label": "positivo (último)"
+                      },
+                      {
+                        "key": "Negative (last)",
+                        "label": "negativo (último)"
+                      },
+                      {
+                        "key": "Net score (last)",
+                        "label": "pontuação líquida (última)"
+                      },
+                      {
+                        "key": "Impact",
+                        "label": "impacto"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 1,
+              "title": "Top-3 em Passivo",
+              "cardStyleVariant": "default",
+              "components": [
+                {
+                  "type": "analyticalTable",
+                  "index": 0,
+                  "title": "Top-3 em Passivo",
+                  "dataPath": "sectionData.mainCategories_passive",
+                  "config": {
+                    "columns": [
+                      {
+                        "key": "Category",
+                        "label": "categoria"
+                      },
+                      {
+                        "key": "Coverage (last)",
+                        "label": "cobertura (última)"
+                      },
+                      {
+                        "key": "Positive (last)",
+                        "label": "positivo (último)"
+                      },
+                      {
+                        "key": "Negative (last)",
+                        "label": "negativo (último)"
+                      },
+                      {
+                        "key": "Net score (last)",
+                        "label": "pontuação líquida (última)"
+                      },
+                      {
+                        "key": "Impact",
+                        "label": "impacto"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 2,
+              "title": "Top-3 em Detrator",
+              "cardStyleVariant": "default",
+              "components": [
+                {
+                  "type": "analyticalTable",
+                  "index": 0,
+                  "title": "Top-3 em Detrator",
+                  "dataPath": "sectionData.mainCategories_detractor",
+                  "config": {
+                    "columns": [
+                      {
+                        "key": "Category",
+                        "label": "categoria"
+                      },
+                      {
+                        "key": "Coverage (last)",
+                        "label": "cobertura (última)"
+                      },
+                      {
+                        "key": "Positive (last)",
+                        "label": "positivo (último)"
+                      },
+                      {
+                        "key": "Negative (last)",
+                        "label": "negativo (último)"
+                      },
+                      {
+                        "key": "Net score (last)",
+                        "label": "pontuação líquida (última)"
+                      },
+                      {
+                        "key": "Impact",
+                        "label": "impacto"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "data": {},
+          "index": 1
+        },
+        {
+          "id": "mto-overall-intentions",
+          "name": "Intenções",
+          "icon": "TrendingUp",
+          "components": [
+            {
+              "type": "analyticalTable",
+              "index": 0,
+              "title": "Principais intenções (% dos entrevistados)",
+              "dataPath": "sectionData.intentionsTable",
               "config": {
-                "xAxisDataKey": "name",
-                "lines": [
+                "columns": [
                   {
-                    "dataKey": "nps_score",
-                    "stroke": "#8884d8"
+                    "key": "Intention",
+                    "label": "intenção"
+                  },
+                  {
+                    "key": "Last",
+                    "label": "último"
+                  },
+                  {
+                    "key": "Δ Prev",
+                    "label": "δ prev"
+                  },
+                  {
+                    "key": "Avg",
+                    "label": "média"
+                  },
+                  {
+                    "key": "Δ Avg",
+                    "label": "δ médio"
+                  },
+                  {
+                    "key": "Avg (3m)",
+                    "label": "média (3m)"
+                  },
+                  {
+                    "key": "Avg (6m)",
+                    "label": "média (6m)"
+                  },
+                  {
+                    "key": "Δ Avg (3m)",
+                    "label": "δ médio (3m)"
+                  },
+                  {
+                    "key": "Δ Avg (6m)",
+                    "label": "δ médio (6m)"
                   }
                 ]
               }
@@ -66,1893 +389,398 @@
             {
               "type": "lineChart",
               "index": 1,
-              "title": "Mix de NPS",
-              "dataPath": "sectionData.npsMixSeries",
-              "config": {
-                "xAxisDataKey": "name",
-                "lines": [
-                  {
-                    "dataKey": "promoter_pct",
-                    "stroke": "#8884d8"
-                  },
-                  {
-                    "dataKey": "passive_pct",
-                    "stroke": "#B97A57"
-                  },
-                  {
-                    "dataKey": "detractor_pct",
-                    "stroke": "#82ca9d"
-                  }
-                ]
-              }
-            },
-            {
-              "type": "lineChart",
-              "index": 2,
-              "title": "sentimento",
-              "dataPath": "sectionData.sentimentSeries",
-              "config": {
-                "xAxisDataKey": "name",
-                "lines": [
-                  {
-                    "dataKey": "net_sentiment",
-                    "stroke": "#8884d8"
-                  }
-                ]
-              }
-            },
-            {
-              "type": "lineChart",
-              "index": 3,
-              "title": "Intenções",
+              "title": "Intenções (% dos entrevistados)",
               "dataPath": "sectionData.intentionsSeries",
               "config": {
                 "xAxisDataKey": "name",
                 "lines": [
                   {
-                    "dataKey": "intention",
-                    "stroke": "#8884d8"
+                    "dataKey": "Very satisfied and would promote working at the company",
+                    "stroke": "#8884d8",
+                    "label": "Muito satisfeito e recomendaria trabalhar na empresa"
                   },
                   {
-                    "dataKey": "respondent_cnt",
-                    "stroke": "#B97A57"
+                    "dataKey": "Intends to stay but demotivated",
+                    "stroke": "#B97A57",
+                    "label": "Pretende ficar, mas está desmotivado"
                   },
                   {
-                    "dataKey": "base_resp",
-                    "stroke": "#82ca9d"
+                    "dataKey": "Satisfied and engaged",
+                    "stroke": "#82ca9d",
+                    "label": "Satisfeito e engajado"
                   },
                   {
-                    "dataKey": "intent_pct",
-                    "stroke": "#ff7300"
-                  }
-                ]
-              }
-            },
-            {
-              "type": "lineChart",
-              "index": 4,
-              "title": "Categorias",
-              "dataPath": "sectionData.categoriesSeries",
-              "config": {
-                "xAxisDataKey": "name",
-                "lines": [
-                  {
-                    "dataKey": "category",
-                    "stroke": "#8884d8"
+                    "dataKey": "Likely to exit company",
+                    "stroke": "#ff7300",
+                    "label": "Provavelmente sairá da empresa"
                   },
                   {
-                    "dataKey": "mentions_cnt",
-                    "stroke": "#B97A57"
-                  },
-                  {
-                    "dataKey": "base_resp",
-                    "stroke": "#82ca9d"
-                  },
-                  {
-                    "dataKey": "pos_share",
-                    "stroke": "#ff7300"
-                  },
-                  {
-                    "dataKey": "neg_share",
-                    "stroke": "#0088FE"
-                  },
-                  {
-                    "dataKey": "coverage_pct",
-                    "stroke": "#FF8042"
-                  },
-                  {
-                    "dataKey": "cat_net_score",
-                    "stroke": "#00C49F"
+                    "dataKey": "not applicable",
+                    "stroke": "#0088FE",
+                    "label": "não aplicável"
                   }
                 ]
               }
             }
-          ]
+          ],
+          "data": {},
+          "index": 2
         }
       ],
       "data": {
+        "npsScoreTable": [
+          {
+            "Metric": "Pontuação NPS",
+            "Last": 83.6,
+            "Δ Prev": 1.2,
+            "Avg": 80.9,
+            "Δ Avg": 2.7,
+            "Avg (3m)": 81.0,
+            "Δ Avg (3m)": 2.6,
+            "Avg (6m)": 80.1,
+            "Δ Avg (6m)": 3.5
+          }
+        ],
+        "npsMixTable": [
+          {
+            "Metric": "promotores",
+            "Last": 88.3,
+            "Δ Prev": 1.1,
+            "Avg": 86.5,
+            "Δ Avg": 1.8,
+            "Avg (3m)": 86.1,
+            "Δ Avg (3m)": 2.2,
+            "Avg (6m)": 86.0,
+            "Δ Avg (6m)": 2.3
+          },
+          {
+            "Metric": "Passivos",
+            "Last": 7.1,
+            "Δ Prev": -1.0,
+            "Avg": 8.0,
+            "Δ Avg": -0.9,
+            "Avg (3m)": 8.8,
+            "Δ Avg (3m)": -1.7,
+            "Avg (6m)": 8.1,
+            "Δ Avg (6m)": -1.0
+          },
+          {
+            "Metric": "detratores",
+            "Last": 4.6,
+            "Δ Prev": -0.1,
+            "Avg": 5.6,
+            "Δ Avg": -0.9,
+            "Avg (3m)": 5.1,
+            "Δ Avg (3m)": -0.4,
+            "Avg (6m)": 5.9,
+            "Δ Avg (6m)": -1.3
+          }
+        ],
         "npsScoreSeries": [
           {
             "name": "2025-01",
-            "nps_score": 85.98086124401914
+            "nps_score": 86.0
           },
           {
             "name": "2025-02",
-            "nps_score": 80.48140043763676
+            "nps_score": 80.5
           },
           {
             "name": "2025-03",
-            "nps_score": 78.96575821104122
+            "nps_score": 79.0
           },
           {
             "name": "2025-04",
-            "nps_score": 79.26898914905767
+            "nps_score": 79.3
           },
           {
             "name": "2025-05",
-            "nps_score": 79.37723328228688
+            "nps_score": 79.4
           },
           {
             "name": "2025-06",
-            "nps_score": 78.87323943661973
+            "nps_score": 78.9
           },
           {
             "name": "2025-07",
-            "nps_score": 81.73381143218731
+            "nps_score": 81.7
           },
           {
             "name": "2025-08",
-            "nps_score": 82.49042917590168
+            "nps_score": 82.5
           },
           {
             "name": "2025-09",
-            "nps_score": 83.6413149192764
+            "nps_score": 83.6
           }
         ],
         "npsMixSeries": [
           {
             "name": "2025-01",
-            "promoter_pct": 0.8952153110047847,
-            "passive_pct": 0.06937799043062201,
-            "detractor_pct": 0.0354066985645933
+            "promoter_pct": 89.5,
+            "passive_pct": 6.9,
+            "detractor_pct": 3.5
           },
           {
             "name": "2025-02",
-            "promoter_pct": 0.862582056892779,
-            "passive_pct": 0.07964989059080962,
-            "detractor_pct": 0.05776805251641138
+            "promoter_pct": 86.3,
+            "passive_pct": 8.0,
+            "detractor_pct": 5.8
           },
           {
             "name": "2025-03",
-            "promoter_pct": 0.8546470999301188,
-            "passive_pct": 0.0803633822501747,
-            "detractor_pct": 0.0649895178197065
+            "promoter_pct": 85.5,
+            "passive_pct": 8.0,
+            "detractor_pct": 6.5
           },
           {
             "name": "2025-04",
-            "promoter_pct": 0.8617932609937179,
-            "passive_pct": 0.06910336950314107,
-            "detractor_pct": 0.06910336950314107
+            "promoter_pct": 86.2,
+            "passive_pct": 6.9,
+            "detractor_pct": 6.9
           },
           {
             "name": "2025-05",
-            "promoter_pct": 0.8601327207759061,
-            "passive_pct": 0.07350689127105667,
-            "detractor_pct": 0.06636038795303727
+            "promoter_pct": 86.0,
+            "passive_pct": 7.4,
+            "detractor_pct": 6.6
           },
           {
             "name": "2025-06",
-            "promoter_pct": 0.8428571428571429,
-            "passive_pct": 0.10301810865191147,
-            "detractor_pct": 0.05412474849094567
+            "promoter_pct": 84.3,
+            "passive_pct": 10.3,
+            "detractor_pct": 5.4
           },
           {
             "name": "2025-07",
-            "promoter_pct": 0.8683821978485552,
-            "passive_pct": 0.0805737186247627,
-            "detractor_pct": 0.05104408352668213
+            "promoter_pct": 86.8,
+            "passive_pct": 8.1,
+            "detractor_pct": 5.1
           },
           {
             "name": "2025-08",
-            "promoter_pct": 0.8720531936328834,
-            "passive_pct": 0.08079790449325006,
-            "detractor_pct": 0.04714890187386661
+            "promoter_pct": 87.2,
+            "passive_pct": 8.1,
+            "detractor_pct": 4.7
           },
           {
             "name": "2025-09",
-            "promoter_pct": 0.8827076444271542,
-            "passive_pct": 0.07099786033845555,
-            "detractor_pct": 0.0462944952343902
+            "promoter_pct": 88.3,
+            "passive_pct": 7.1,
+            "detractor_pct": 4.6
           }
         ],
-        "sentimentSeries": [
+        "mainCategories_promoter": [
           {
-            "name": "2025-01",
-            "net_sentiment": 0.7691237830319888
+            "Category": "oportunidades de desenvolvimento e carreira",
+            "Coverage (last)": 23.8,
+            "Positive (last)": 23.0,
+            "Negative (last)": 0.8,
+            "Net score (last)": 22.1,
+            "Impact": 526.9
           },
           {
-            "name": "2025-02",
-            "net_sentiment": 0.5228070175438597
+            "Category": "valores e cultura organizacional",
+            "Coverage (last)": 22.7,
+            "Positive (last)": 21.6,
+            "Negative (last)": 1.1,
+            "Net score (last)": 20.4,
+            "Impact": 464.0
           },
           {
-            "name": "2025-03",
-            "net_sentiment": 0.4683544303797469
+            "Category": "condições de trabalho",
+            "Coverage (last)": 20.4,
+            "Positive (last)": 18.2,
+            "Negative (last)": 2.2,
+            "Net score (last)": 16.0,
+            "Impact": 326.5
+          }
+        ],
+        "mainCategories_passive": [
+          {
+            "Category": "condições de trabalho",
+            "Coverage (last)": 4.8,
+            "Positive (last)": 3.1,
+            "Negative (last)": 1.7,
+            "Net score (last)": 1.4,
+            "Impact": 6.7
           },
           {
-            "name": "2025-04",
-            "net_sentiment": 0.5869565217391304
+            "Category": "Remuneração e benefícios",
+            "Coverage (last)": 3.1,
+            "Positive (last)": 0.8,
+            "Negative (last)": 2.2,
+            "Net score (last)": -1.4,
+            "Impact": 4.3
           },
           {
-            "name": "2025-05",
-            "net_sentiment": 0.5121951219512195
+            "Category": "oportunidades de desenvolvimento e carreira",
+            "Coverage (last)": 3.1,
+            "Positive (last)": 2.2,
+            "Negative (last)": 0.8,
+            "Net score (last)": 1.4,
+            "Impact": 4.3
+          }
+        ],
+        "mainCategories_detractor": [
+          {
+            "Category": "liderança e gestão",
+            "Coverage (last)": 7.0,
+            "Positive (last)": 2.0,
+            "Negative (last)": 5.0,
+            "Net score (last)": -3.1,
+            "Impact": 21.6
           },
           {
-            "name": "2025-06",
-            "net_sentiment": 0.37414965986394555
+            "Category": "condições de trabalho",
+            "Coverage (last)": 6.4,
+            "Positive (last)": 0.3,
+            "Negative (last)": 6.2,
+            "Net score (last)": -5.9,
+            "Impact": 37.9
           },
           {
-            "name": "2025-07",
-            "net_sentiment": 0.5825049701789264
-          },
-          {
-            "name": "2025-08",
-            "net_sentiment": 0.5401785714285714
-          },
-          {
-            "name": "2025-09",
-            "net_sentiment": 0.5395348837209302
+            "Category": "Remuneração e benefícios",
+            "Coverage (last)": 4.5,
+            "Positive (last)": 0.8,
+            "Negative (last)": 3.6,
+            "Net score (last)": -2.8,
+            "Impact": 12.6
           }
         ],
         "intentionsSeries": [
           {
             "name": "2025-01",
-            "intention": "Intends to stay but demotivated",
-            "respondent_cnt": 165,
-            "base_resp": 2086,
-            "intent_pct": 0.07909875359539789
-          },
-          {
-            "name": "2025-01",
-            "intention": "Likely to exit company",
-            "respondent_cnt": 47,
-            "base_resp": 2086,
-            "intent_pct": 0.022531160115052733
-          },
-          {
-            "name": "2025-01",
-            "intention": "Satisfied and engaged",
-            "respondent_cnt": 95,
-            "base_resp": 2086,
-            "intent_pct": 0.04554170661553212
-          },
-          {
-            "name": "2025-01",
-            "intention": "Very satisfied and would promote working at the company",
-            "respondent_cnt": 1763,
-            "base_resp": 2086,
-            "intent_pct": 0.8451581975071908
-          },
-          {
-            "name": "2025-01",
-            "intention": "not applicable",
-            "respondent_cnt": 16,
-            "base_resp": 2086,
-            "intent_pct": 0.007670182166826462
+            "Intends to stay but demotivated": 7.9,
+            "Likely to exit company": 2.3,
+            "Satisfied and engaged": 4.6,
+            "Very satisfied and would promote working at the company": 84.5,
+            "not applicable": 0.8
           },
           {
             "name": "2025-02",
-            "intention": "Intends to stay but demotivated",
-            "respondent_cnt": 185,
-            "base_resp": 2282,
-            "intent_pct": 0.08106923751095531
-          },
-          {
-            "name": "2025-02",
-            "intention": "Likely to exit company",
-            "respondent_cnt": 79,
-            "base_resp": 2282,
-            "intent_pct": 0.034618755477651184
-          },
-          {
-            "name": "2025-02",
-            "intention": "Satisfied and engaged",
-            "respondent_cnt": 116,
-            "base_resp": 2282,
-            "intent_pct": 0.05083260297984225
-          },
-          {
-            "name": "2025-02",
-            "intention": "Very satisfied and would promote working at the company",
-            "respondent_cnt": 1898,
-            "base_resp": 2282,
-            "intent_pct": 0.8317265556529361
-          },
-          {
-            "name": "2025-02",
-            "intention": "not applicable",
-            "respondent_cnt": 4,
-            "base_resp": 2282,
-            "intent_pct": 0.0017528483786152498
+            "Intends to stay but demotivated": 8.1,
+            "Likely to exit company": 3.5,
+            "Satisfied and engaged": 5.1,
+            "Very satisfied and would promote working at the company": 83.2,
+            "not applicable": 0.2
           },
           {
             "name": "2025-03",
-            "intention": "Intends to stay but demotivated",
-            "respondent_cnt": 105,
-            "base_resp": 1429,
-            "intent_pct": 0.0734779566130161
-          },
-          {
-            "name": "2025-03",
-            "intention": "Likely to exit company",
-            "respondent_cnt": 53,
-            "base_resp": 1429,
-            "intent_pct": 0.0370888733379986
-          },
-          {
-            "name": "2025-03",
-            "intention": "Satisfied and engaged",
-            "respondent_cnt": 63,
-            "base_resp": 1429,
-            "intent_pct": 0.044086773967809655
-          },
-          {
-            "name": "2025-03",
-            "intention": "Very satisfied and would promote working at the company",
-            "respondent_cnt": 1205,
-            "base_resp": 1429,
-            "intent_pct": 0.8432470258922323
-          },
-          {
-            "name": "2025-03",
-            "intention": "not applicable",
-            "respondent_cnt": 3,
-            "base_resp": 1429,
-            "intent_pct": 0.002099370188943317
+            "Intends to stay but demotivated": 7.3,
+            "Likely to exit company": 3.7,
+            "Satisfied and engaged": 4.4,
+            "Very satisfied and would promote working at the company": 84.3,
+            "not applicable": 0.2
           },
           {
             "name": "2025-04",
-            "intention": "Intends to stay but demotivated",
-            "respondent_cnt": 114,
-            "base_resp": 1750,
-            "intent_pct": 0.06514285714285714
-          },
-          {
-            "name": "2025-04",
-            "intention": "Likely to exit company",
-            "respondent_cnt": 63,
-            "base_resp": 1750,
-            "intent_pct": 0.036
-          },
-          {
-            "name": "2025-04",
-            "intention": "Satisfied and engaged",
-            "respondent_cnt": 75,
-            "base_resp": 1750,
-            "intent_pct": 0.04285714285714286
-          },
-          {
-            "name": "2025-04",
-            "intention": "Very satisfied and would promote working at the company",
-            "respondent_cnt": 1493,
-            "base_resp": 1750,
-            "intent_pct": 0.8531428571428571
-          },
-          {
-            "name": "2025-04",
-            "intention": "not applicable",
-            "respondent_cnt": 5,
-            "base_resp": 1750,
-            "intent_pct": 0.002857142857142857
+            "Intends to stay but demotivated": 6.5,
+            "Likely to exit company": 3.6,
+            "Satisfied and engaged": 4.3,
+            "Very satisfied and would promote working at the company": 85.3,
+            "not applicable": 0.3
           },
           {
             "name": "2025-05",
-            "intention": "Intends to stay but demotivated",
-            "respondent_cnt": 121,
-            "base_resp": 1958,
-            "intent_pct": 0.06179775280898876
-          },
-          {
-            "name": "2025-05",
-            "intention": "Likely to exit company",
-            "respondent_cnt": 74,
-            "base_resp": 1958,
-            "intent_pct": 0.03779366700715015
-          },
-          {
-            "name": "2025-05",
-            "intention": "Satisfied and engaged",
-            "respondent_cnt": 90,
-            "base_resp": 1958,
-            "intent_pct": 0.045965270684371805
-          },
-          {
-            "name": "2025-05",
-            "intention": "Very satisfied and would promote working at the company",
-            "respondent_cnt": 1670,
-            "base_resp": 1958,
-            "intent_pct": 0.8529111338100103
-          },
-          {
-            "name": "2025-05",
-            "intention": "not applicable",
-            "respondent_cnt": 3,
-            "base_resp": 1958,
-            "intent_pct": 0.0015321756894790602
+            "Intends to stay but demotivated": 6.2,
+            "Likely to exit company": 3.8,
+            "Satisfied and engaged": 4.6,
+            "Very satisfied and would promote working at the company": 85.3,
+            "not applicable": 0.2
           },
           {
             "name": "2025-06",
-            "intention": "Intends to stay but demotivated",
-            "respondent_cnt": 367,
-            "base_resp": 4965,
-            "intent_pct": 0.07391742195367573
-          },
-          {
-            "name": "2025-06",
-            "intention": "Likely to exit company",
-            "respondent_cnt": 120,
-            "base_resp": 4965,
-            "intent_pct": 0.02416918429003021
-          },
-          {
-            "name": "2025-06",
-            "intention": "Satisfied and engaged",
-            "respondent_cnt": 306,
-            "base_resp": 4965,
-            "intent_pct": 0.06163141993957704
-          },
-          {
-            "name": "2025-06",
-            "intention": "Very satisfied and would promote working at the company",
-            "respondent_cnt": 4165,
-            "base_resp": 4965,
-            "intent_pct": 0.8388721047331319
-          },
-          {
-            "name": "2025-06",
-            "intention": "not applicable",
-            "respondent_cnt": 7,
-            "base_resp": 4965,
-            "intent_pct": 0.0014098690835850957
+            "Intends to stay but demotivated": 7.4,
+            "Likely to exit company": 2.4,
+            "Satisfied and engaged": 6.2,
+            "Very satisfied and would promote working at the company": 83.9,
+            "not applicable": 0.1
           },
           {
             "name": "2025-07",
-            "intention": "Intends to stay but demotivated",
-            "respondent_cnt": 298,
-            "base_resp": 4735,
-            "intent_pct": 0.06293558606124604
-          },
-          {
-            "name": "2025-07",
-            "intention": "Likely to exit company",
-            "respondent_cnt": 116,
-            "base_resp": 4735,
-            "intent_pct": 0.024498416050686377
-          },
-          {
-            "name": "2025-07",
-            "intention": "Satisfied and engaged",
-            "respondent_cnt": 243,
-            "base_resp": 4735,
-            "intent_pct": 0.051319957761351634
-          },
-          {
-            "name": "2025-07",
-            "intention": "Very satisfied and would promote working at the company",
-            "respondent_cnt": 4071,
-            "base_resp": 4735,
-            "intent_pct": 0.8597676874340021
-          },
-          {
-            "name": "2025-07",
-            "intention": "not applicable",
-            "respondent_cnt": 7,
-            "base_resp": 4735,
-            "intent_pct": 0.0014783526927138332
+            "Intends to stay but demotivated": 6.3,
+            "Likely to exit company": 2.4,
+            "Satisfied and engaged": 5.1,
+            "Very satisfied and would promote working at the company": 86.0,
+            "not applicable": 0.1
           },
           {
             "name": "2025-08",
-            "intention": "Intends to stay but demotivated",
-            "respondent_cnt": 282,
-            "base_resp": 4957,
-            "intent_pct": 0.056889247528747224
-          },
-          {
-            "name": "2025-08",
-            "intention": "Likely to exit company",
-            "respondent_cnt": 120,
-            "base_resp": 4957,
-            "intent_pct": 0.024208190437764777
-          },
-          {
-            "name": "2025-08",
-            "intention": "Satisfied and engaged",
-            "respondent_cnt": 255,
-            "base_resp": 4957,
-            "intent_pct": 0.05144240468025015
-          },
-          {
-            "name": "2025-08",
-            "intention": "Very satisfied and would promote working at the company",
-            "respondent_cnt": 4295,
-            "base_resp": 4957,
-            "intent_pct": 0.8664514827516643
-          },
-          {
-            "name": "2025-08",
-            "intention": "not applicable",
-            "respondent_cnt": 5,
-            "base_resp": 4957,
-            "intent_pct": 0.0010086746015735323
+            "Intends to stay but demotivated": 5.7,
+            "Likely to exit company": 2.4,
+            "Satisfied and engaged": 5.1,
+            "Very satisfied and would promote working at the company": 86.6,
+            "not applicable": 0.1
           },
           {
             "name": "2025-09",
-            "intention": "Intends to stay but demotivated",
-            "respondent_cnt": 295,
-            "base_resp": 5134,
-            "intent_pct": 0.05746007012076354
-          },
-          {
-            "name": "2025-09",
-            "intention": "Likely to exit company",
-            "respondent_cnt": 105,
-            "base_resp": 5134,
-            "intent_pct": 0.02045188936501753
-          },
-          {
-            "name": "2025-09",
-            "intention": "Satisfied and engaged",
-            "respondent_cnt": 236,
-            "base_resp": 5134,
-            "intent_pct": 0.04596805609661083
-          },
-          {
-            "name": "2025-09",
-            "intention": "Very satisfied and would promote working at the company",
-            "respondent_cnt": 4495,
-            "base_resp": 5134,
-            "intent_pct": 0.8755356447214647
-          },
-          {
-            "name": "2025-09",
-            "intention": "not applicable",
-            "respondent_cnt": 3,
-            "base_resp": 5134,
-            "intent_pct": 0.000584339696143358
+            "Intends to stay but demotivated": 5.7,
+            "Likely to exit company": 2.0,
+            "Satisfied and engaged": 4.6,
+            "Very satisfied and would promote working at the company": 87.6,
+            "not applicable": 0.1
           }
         ],
-        "categoriesSeries": [
-          {
-            "name": "2025-01",
-            "category": "communication and transparency",
-            "mentions_cnt": 19,
-            "base_resp": 2209,
-            "pos_share": 0.006790402897238569,
-            "neg_share": 0.0018107741059302852,
-            "coverage_pct": 0.8601177003168854,
-            "cat_net_score": 0.49796287913082843
-          },
-          {
-            "name": "2025-01",
-            "category": "compensation and benefits",
-            "mentions_cnt": 60,
-            "base_resp": 2209,
-            "pos_share": 0.017202354006337708,
-            "neg_share": 0.009959257582616569,
-            "coverage_pct": 2.7161611588954275,
-            "cat_net_score": 0.7243096423721139
-          },
-          {
-            "name": "2025-01",
-            "category": "direct manager",
-            "mentions_cnt": 31,
-            "base_resp": 2209,
-            "pos_share": 0.013128112267994568,
-            "neg_share": 0.0009053870529651426,
-            "coverage_pct": 1.4033499320959713,
-            "cat_net_score": 1.2222725215029424
-          },
-          {
-            "name": "2025-01",
-            "category": "human resources services",
-            "mentions_cnt": 8,
-            "base_resp": 2209,
-            "pos_share": 0.003168854685377999,
-            "neg_share": 0.0004526935264825713,
-            "coverage_pct": 0.362154821186057,
-            "cat_net_score": 0.2716161158895428
-          },
-          {
-            "name": "2025-01",
-            "category": "leadership and management",
-            "mentions_cnt": 219,
-            "base_resp": 2209,
-            "pos_share": 0.08736985061113627,
-            "neg_share": 0.011770031688546853,
-            "coverage_pct": 9.913988229968313,
-            "cat_net_score": 7.559981892258941
-          },
-          {
-            "name": "2025-01",
-            "category": "opportunities for development and career",
-            "mentions_cnt": 529,
-            "base_resp": 2209,
-            "pos_share": 0.23132639203259395,
-            "neg_share": 0.008148483476686284,
-            "coverage_pct": 23.947487550928024,
-            "cat_net_score": 22.317790855590765
-          },
-          {
-            "name": "2025-01",
-            "category": "organizational processes",
-            "mentions_cnt": 14,
-            "base_resp": 2209,
-            "pos_share": 0.005885015844273427,
-            "neg_share": 0.0004526935264825713,
-            "coverage_pct": 0.6337709370755998,
-            "cat_net_score": 0.5432322317790855
-          },
-          {
-            "name": "2025-01",
-            "category": "organizational values ​​and culture",
-            "mentions_cnt": 334,
-            "base_resp": 2209,
-            "pos_share": 0.13988229968311452,
-            "neg_share": 0.011317338162064282,
-            "coverage_pct": 15.119963784517882,
-            "cat_net_score": 12.856496152105024
-          },
-          {
-            "name": "2025-01",
-            "category": "other",
-            "mentions_cnt": 358,
-            "base_resp": 2209,
-            "pos_share": 0.1213218650973291,
-            "neg_share": 0.040742417383431415,
-            "coverage_pct": 16.20642824807605,
-            "cat_net_score": 8.057944771389769
-          },
-          {
-            "name": "2025-01",
-            "category": "recognition and appreciation",
-            "mentions_cnt": 168,
-            "base_resp": 2209,
-            "pos_share": 0.06926210955183341,
-            "neg_share": 0.006790402897238569,
-            "coverage_pct": 7.605251244907199,
-            "cat_net_score": 6.2471706654594845
-          },
-          {
-            "name": "2025-01",
-            "category": "team collaboration and respect",
-            "mentions_cnt": 123,
-            "base_resp": 2209,
-            "pos_share": 0.052059755545495696,
-            "neg_share": 0.0036215482118605704,
-            "coverage_pct": 5.568130375735627,
-            "cat_net_score": 4.843820733363512
-          },
-          {
-            "name": "2025-01",
-            "category": "work model",
-            "mentions_cnt": 9,
-            "base_resp": 2209,
-            "pos_share": 0.0036215482118605704,
-            "neg_share": 0.0004526935264825713,
-            "coverage_pct": 0.4074241738343142,
-            "cat_net_score": 0.3168854685377999
-          },
-          {
-            "name": "2025-01",
-            "category": "work-life balance and flexibility",
-            "mentions_cnt": 59,
-            "base_resp": 2209,
-            "pos_share": 0.02127659574468085,
-            "neg_share": 0.005432322317790856,
-            "coverage_pct": 2.6708918062471705,
-            "cat_net_score": 1.5844273426889994
-          },
-          {
-            "name": "2025-01",
-            "category": "working conditions",
-            "mentions_cnt": 272,
-            "base_resp": 2209,
-            "pos_share": 0.10909913988229969,
-            "neg_share": 0.01403349932095971,
-            "coverage_pct": 12.313263920325939,
-            "cat_net_score": 9.506564056133998
-          },
-          {
-            "name": "2025-01",
-            "category": "workplace safety and health",
-            "mentions_cnt": 6,
-            "base_resp": 2209,
-            "pos_share": 0.0018107741059302852,
-            "neg_share": 0.0009053870529651426,
-            "coverage_pct": 0.2716161158895428,
-            "cat_net_score": 0.09053870529651425
-          },
-          {
-            "name": "2025-02",
-            "category": "communication and transparency",
-            "mentions_cnt": 7,
-            "base_resp": 474,
-            "pos_share": 0.004219409282700422,
-            "neg_share": 0.010548523206751054,
-            "coverage_pct": 1.4767932489451476,
-            "cat_net_score": -0.6329113924050633
-          },
-          {
-            "name": "2025-02",
-            "category": "compensation and benefits",
-            "mentions_cnt": 29,
-            "base_resp": 474,
-            "pos_share": 0.023206751054852322,
-            "neg_share": 0.0379746835443038,
-            "coverage_pct": 6.118143459915612,
-            "cat_net_score": -1.4767932489451476
-          },
-          {
-            "name": "2025-02",
-            "category": "direct manager",
-            "mentions_cnt": 10,
-            "base_resp": 474,
-            "pos_share": 0.014767932489451477,
-            "neg_share": 0.006329113924050633,
-            "coverage_pct": 2.109704641350211,
-            "cat_net_score": 0.8438818565400845
-          },
-          {
-            "name": "2025-02",
-            "category": "human resources services",
-            "mentions_cnt": 1,
-            "base_resp": 474,
-            "pos_share": 0.002109704641350211,
-            "neg_share": 0.0,
-            "coverage_pct": 0.21097046413502107,
-            "cat_net_score": 0.21097046413502107
-          },
-          {
-            "name": "2025-02",
-            "category": "leadership and management",
-            "mentions_cnt": 55,
-            "base_resp": 474,
-            "pos_share": 0.05063291139240506,
-            "neg_share": 0.06540084388185655,
-            "coverage_pct": 11.60337552742616,
-            "cat_net_score": -1.4767932489451483
-          },
-          {
-            "name": "2025-02",
-            "category": "opportunities for development and career",
-            "mentions_cnt": 70,
-            "base_resp": 474,
-            "pos_share": 0.1350210970464135,
-            "neg_share": 0.012658227848101266,
-            "coverage_pct": 14.767932489451477,
-            "cat_net_score": 12.236286919831223
-          },
-          {
-            "name": "2025-02",
-            "category": "organizational processes",
-            "mentions_cnt": 5,
-            "base_resp": 474,
-            "pos_share": 0.004219409282700422,
-            "neg_share": 0.006329113924050633,
-            "coverage_pct": 1.0548523206751055,
-            "cat_net_score": -0.21097046413502113
-          },
-          {
-            "name": "2025-02",
-            "category": "organizational values ​​and culture",
-            "mentions_cnt": 65,
-            "base_resp": 474,
-            "pos_share": 0.11392405063291139,
-            "neg_share": 0.023206751054852322,
-            "coverage_pct": 13.71308016877637,
-            "cat_net_score": 9.071729957805907
-          },
-          {
-            "name": "2025-02",
-            "category": "other",
-            "mentions_cnt": 76,
-            "base_resp": 474,
-            "pos_share": 0.12869198312236288,
-            "neg_share": 0.03164556962025317,
-            "coverage_pct": 16.033755274261605,
-            "cat_net_score": 9.704641350210972
-          },
-          {
-            "name": "2025-02",
-            "category": "recognition and appreciation",
-            "mentions_cnt": 30,
-            "base_resp": 474,
-            "pos_share": 0.046413502109704644,
-            "neg_share": 0.016877637130801686,
-            "coverage_pct": 6.329113924050633,
-            "cat_net_score": 2.9535864978902957
-          },
-          {
-            "name": "2025-02",
-            "category": "team collaboration and respect",
-            "mentions_cnt": 29,
-            "base_resp": 474,
-            "pos_share": 0.04430379746835443,
-            "neg_share": 0.016877637130801686,
-            "coverage_pct": 6.118143459915612,
-            "cat_net_score": 2.7426160337552745
-          },
-          {
-            "name": "2025-02",
-            "category": "work model",
-            "mentions_cnt": 2,
-            "base_resp": 474,
-            "pos_share": 0.004219409282700422,
-            "neg_share": 0.0,
-            "coverage_pct": 0.42194092827004215,
-            "cat_net_score": 0.42194092827004215
-          },
-          {
-            "name": "2025-02",
-            "category": "work-life balance and flexibility",
-            "mentions_cnt": 17,
-            "base_resp": 474,
-            "pos_share": 0.010548523206751054,
-            "neg_share": 0.02531645569620253,
-            "coverage_pct": 3.5864978902953584,
-            "cat_net_score": -1.4767932489451476
-          },
-          {
-            "name": "2025-02",
-            "category": "working conditions",
-            "mentions_cnt": 74,
-            "base_resp": 474,
-            "pos_share": 0.10126582278481013,
-            "neg_share": 0.05485232067510549,
-            "coverage_pct": 15.611814345991561,
-            "cat_net_score": 4.641350210970463
-          },
-          {
-            "name": "2025-02",
-            "category": "workplace safety and health",
-            "mentions_cnt": 4,
-            "base_resp": 474,
-            "pos_share": 0.004219409282700422,
-            "neg_share": 0.004219409282700422,
-            "coverage_pct": 0.8438818565400843,
-            "cat_net_score": 0.0
-          },
-          {
-            "name": "2025-03",
-            "category": "communication and transparency",
-            "mentions_cnt": 7,
-            "base_resp": 290,
-            "pos_share": 0.006896551724137931,
-            "neg_share": 0.017241379310344827,
-            "coverage_pct": 2.413793103448276,
-            "cat_net_score": -1.0344827586206897
-          },
-          {
-            "name": "2025-03",
-            "category": "compensation and benefits",
-            "mentions_cnt": 15,
-            "base_resp": 290,
-            "pos_share": 0.010344827586206896,
-            "neg_share": 0.041379310344827586,
-            "coverage_pct": 5.172413793103448,
-            "cat_net_score": -3.103448275862069
-          },
-          {
-            "name": "2025-03",
-            "category": "direct manager",
-            "mentions_cnt": 8,
-            "base_resp": 290,
-            "pos_share": 0.010344827586206896,
-            "neg_share": 0.017241379310344827,
-            "coverage_pct": 2.7586206896551726,
-            "cat_net_score": -0.6896551724137931
-          },
-          {
-            "name": "2025-03",
-            "category": "human resources services",
-            "mentions_cnt": 2,
-            "base_resp": 290,
-            "pos_share": 0.0034482758620689655,
-            "neg_share": 0.0034482758620689655,
-            "coverage_pct": 0.6896551724137931,
-            "cat_net_score": 0.0
-          },
-          {
-            "name": "2025-03",
-            "category": "leadership and management",
-            "mentions_cnt": 32,
-            "base_resp": 290,
-            "pos_share": 0.05862068965517241,
-            "neg_share": 0.05172413793103448,
-            "coverage_pct": 11.03448275862069,
-            "cat_net_score": 0.6896551724137931
-          },
-          {
-            "name": "2025-03",
-            "category": "opportunities for development and career",
-            "mentions_cnt": 55,
-            "base_resp": 290,
-            "pos_share": 0.16551724137931034,
-            "neg_share": 0.02413793103448276,
-            "coverage_pct": 18.96551724137931,
-            "cat_net_score": 14.13793103448276
-          },
-          {
-            "name": "2025-03",
-            "category": "organizational processes",
-            "mentions_cnt": 6,
-            "base_resp": 290,
-            "pos_share": 0.006896551724137931,
-            "neg_share": 0.013793103448275862,
-            "coverage_pct": 2.0689655172413794,
-            "cat_net_score": -0.6896551724137931
-          },
-          {
-            "name": "2025-03",
-            "category": "organizational values ​​and culture",
-            "mentions_cnt": 41,
-            "base_resp": 290,
-            "pos_share": 0.1103448275862069,
-            "neg_share": 0.03103448275862069,
-            "coverage_pct": 14.13793103448276,
-            "cat_net_score": 7.93103448275862
-          },
-          {
-            "name": "2025-03",
-            "category": "other",
-            "mentions_cnt": 28,
-            "base_resp": 290,
-            "pos_share": 0.06896551724137931,
-            "neg_share": 0.027586206896551724,
-            "coverage_pct": 9.655172413793103,
-            "cat_net_score": 4.137931034482759
-          },
-          {
-            "name": "2025-03",
-            "category": "recognition and appreciation",
-            "mentions_cnt": 16,
-            "base_resp": 290,
-            "pos_share": 0.034482758620689655,
-            "neg_share": 0.020689655172413793,
-            "coverage_pct": 5.517241379310345,
-            "cat_net_score": 1.3793103448275863
-          },
-          {
-            "name": "2025-03",
-            "category": "team collaboration and respect",
-            "mentions_cnt": 22,
-            "base_resp": 290,
-            "pos_share": 0.05862068965517241,
-            "neg_share": 0.017241379310344827,
-            "coverage_pct": 7.586206896551724,
-            "cat_net_score": 4.137931034482759
-          },
-          {
-            "name": "2025-03",
-            "category": "work-life balance and flexibility",
-            "mentions_cnt": 14,
-            "base_resp": 290,
-            "pos_share": 0.020689655172413793,
-            "neg_share": 0.027586206896551724,
-            "coverage_pct": 4.827586206896552,
-            "cat_net_score": -0.6896551724137931
-          },
-          {
-            "name": "2025-03",
-            "category": "working conditions",
-            "mentions_cnt": 43,
-            "base_resp": 290,
-            "pos_share": 0.10344827586206896,
-            "neg_share": 0.04482758620689655,
-            "coverage_pct": 14.827586206896552,
-            "cat_net_score": 5.862068965517241
-          },
-          {
-            "name": "2025-03",
-            "category": "workplace safety and health",
-            "mentions_cnt": 1,
-            "base_resp": 290,
-            "pos_share": 0.0034482758620689655,
-            "neg_share": 0.0,
-            "coverage_pct": 0.3448275862068966,
-            "cat_net_score": 0.3448275862068966
-          },
-          {
-            "name": "2025-04",
-            "category": "communication and transparency",
-            "mentions_cnt": 8,
-            "base_resp": 347,
-            "pos_share": 0.01729106628242075,
-            "neg_share": 0.005763688760806916,
-            "coverage_pct": 2.3054755043227666,
-            "cat_net_score": 1.1527377521613833
-          },
-          {
-            "name": "2025-04",
-            "category": "compensation and benefits",
-            "mentions_cnt": 22,
-            "base_resp": 347,
-            "pos_share": 0.0345821325648415,
-            "neg_share": 0.02881844380403458,
-            "coverage_pct": 6.340057636887608,
-            "cat_net_score": 0.576368876080692
-          },
-          {
-            "name": "2025-04",
-            "category": "direct manager",
-            "mentions_cnt": 6,
-            "base_resp": 347,
-            "pos_share": 0.011527377521613832,
-            "neg_share": 0.005763688760806916,
-            "coverage_pct": 1.7291066282420746,
-            "cat_net_score": 0.5763688760806917
-          },
-          {
-            "name": "2025-04",
-            "category": "human resources services",
-            "mentions_cnt": 3,
-            "base_resp": 347,
-            "pos_share": 0.008645533141210375,
-            "neg_share": 0.0,
-            "coverage_pct": 0.8645533141210375,
-            "cat_net_score": 0.8645533141210375
-          },
-          {
-            "name": "2025-04",
-            "category": "leadership and management",
-            "mentions_cnt": 46,
-            "base_resp": 347,
-            "pos_share": 0.07204610951008646,
-            "neg_share": 0.06051873198847262,
-            "coverage_pct": 13.256484149855908,
-            "cat_net_score": 1.1527377521613833
-          },
-          {
-            "name": "2025-04",
-            "category": "opportunities for development and career",
-            "mentions_cnt": 52,
-            "base_resp": 347,
-            "pos_share": 0.12968299711815562,
-            "neg_share": 0.020172910662824207,
-            "coverage_pct": 14.985590778097983,
-            "cat_net_score": 10.951008645533141
-          },
-          {
-            "name": "2025-04",
-            "category": "organizational processes",
-            "mentions_cnt": 5,
-            "base_resp": 347,
-            "pos_share": 0.011527377521613832,
-            "neg_share": 0.002881844380403458,
-            "coverage_pct": 1.440922190201729,
-            "cat_net_score": 0.8645533141210373
-          },
-          {
-            "name": "2025-04",
-            "category": "organizational values ​​and culture",
-            "mentions_cnt": 48,
-            "base_resp": 347,
-            "pos_share": 0.11527377521613832,
-            "neg_share": 0.023054755043227664,
-            "coverage_pct": 13.832853025936597,
-            "cat_net_score": 9.221902017291066
-          },
-          {
-            "name": "2025-04",
-            "category": "other",
-            "mentions_cnt": 42,
-            "base_resp": 347,
-            "pos_share": 0.10086455331412104,
-            "neg_share": 0.020172910662824207,
-            "coverage_pct": 12.103746397694525,
-            "cat_net_score": 8.069164265129682
-          },
-          {
-            "name": "2025-04",
-            "category": "recognition and appreciation",
-            "mentions_cnt": 26,
-            "base_resp": 347,
-            "pos_share": 0.05763688760806916,
-            "neg_share": 0.01729106628242075,
-            "coverage_pct": 7.492795389048991,
-            "cat_net_score": 4.034582132564841
-          },
-          {
-            "name": "2025-04",
-            "category": "team collaboration and respect",
-            "mentions_cnt": 24,
-            "base_resp": 347,
-            "pos_share": 0.04899135446685879,
-            "neg_share": 0.020172910662824207,
-            "coverage_pct": 6.9164265129682985,
-            "cat_net_score": 2.881844380403458
-          },
-          {
-            "name": "2025-04",
-            "category": "work model",
-            "mentions_cnt": 1,
-            "base_resp": 347,
-            "pos_share": 0.0,
-            "neg_share": 0.002881844380403458,
-            "coverage_pct": 0.2881844380403458,
-            "cat_net_score": -0.2881844380403458
-          },
-          {
-            "name": "2025-04",
-            "category": "work-life balance and flexibility",
-            "mentions_cnt": 16,
-            "base_resp": 347,
-            "pos_share": 0.025936599423631124,
-            "neg_share": 0.020172910662824207,
-            "coverage_pct": 4.610951008645533,
-            "cat_net_score": 0.5763688760806917
-          },
-          {
-            "name": "2025-04",
-            "category": "working conditions",
-            "mentions_cnt": 44,
-            "base_resp": 347,
-            "pos_share": 0.09510086455331412,
-            "neg_share": 0.03170028818443804,
-            "coverage_pct": 12.680115273775217,
-            "cat_net_score": 6.340057636887608
-          },
-          {
-            "name": "2025-04",
-            "category": "workplace safety and health",
-            "mentions_cnt": 4,
-            "base_resp": 347,
-            "pos_share": 0.002881844380403458,
-            "neg_share": 0.008645533141210375,
-            "coverage_pct": 1.1527377521613833,
-            "cat_net_score": -0.5763688760806917
-          },
-          {
-            "name": "2025-05",
-            "category": "communication and transparency",
-            "mentions_cnt": 8,
-            "base_resp": 399,
-            "pos_share": 0.0,
-            "neg_share": 0.020050125313283207,
-            "coverage_pct": 2.0050125313283207,
-            "cat_net_score": -2.0050125313283207
-          },
-          {
-            "name": "2025-05",
-            "category": "compensation and benefits",
-            "mentions_cnt": 21,
-            "base_resp": 399,
-            "pos_share": 0.015037593984962405,
-            "neg_share": 0.03759398496240601,
-            "coverage_pct": 5.263157894736842,
-            "cat_net_score": -2.2556390977443606
-          },
-          {
-            "name": "2025-05",
-            "category": "direct manager",
-            "mentions_cnt": 9,
-            "base_resp": 399,
-            "pos_share": 0.017543859649122806,
-            "neg_share": 0.005012531328320802,
-            "coverage_pct": 2.2556390977443606,
-            "cat_net_score": 1.2531328320802004
-          },
-          {
-            "name": "2025-05",
-            "category": "human resources services",
-            "mentions_cnt": 2,
-            "base_resp": 399,
-            "pos_share": 0.002506265664160401,
-            "neg_share": 0.002506265664160401,
-            "coverage_pct": 0.5012531328320802,
-            "cat_net_score": 0.0
-          },
-          {
-            "name": "2025-05",
-            "category": "leadership and management",
-            "mentions_cnt": 48,
-            "base_resp": 399,
-            "pos_share": 0.07268170426065163,
-            "neg_share": 0.047619047619047616,
-            "coverage_pct": 12.030075187969924,
-            "cat_net_score": 2.506265664160401
-          },
-          {
-            "name": "2025-05",
-            "category": "opportunities for development and career",
-            "mentions_cnt": 63,
-            "base_resp": 399,
-            "pos_share": 0.15538847117794485,
-            "neg_share": 0.002506265664160401,
-            "coverage_pct": 15.789473684210526,
-            "cat_net_score": 15.288220551378446
-          },
-          {
-            "name": "2025-05",
-            "category": "organizational processes",
-            "mentions_cnt": 1,
-            "base_resp": 399,
-            "pos_share": 0.0,
-            "neg_share": 0.002506265664160401,
-            "coverage_pct": 0.2506265664160401,
-            "cat_net_score": -0.2506265664160401
-          },
-          {
-            "name": "2025-05",
-            "category": "organizational values ​​and culture",
-            "mentions_cnt": 48,
-            "base_resp": 399,
-            "pos_share": 0.10776942355889724,
-            "neg_share": 0.012531328320802004,
-            "coverage_pct": 12.030075187969924,
-            "cat_net_score": 9.523809523809524
-          },
-          {
-            "name": "2025-05",
-            "category": "other",
-            "mentions_cnt": 39,
-            "base_resp": 399,
-            "pos_share": 0.07268170426065163,
-            "neg_share": 0.02506265664160401,
-            "coverage_pct": 9.774436090225564,
-            "cat_net_score": 4.761904761904762
-          },
-          {
-            "name": "2025-05",
-            "category": "recognition and appreciation",
-            "mentions_cnt": 34,
-            "base_resp": 399,
-            "pos_share": 0.06015037593984962,
-            "neg_share": 0.02506265664160401,
-            "coverage_pct": 8.521303258145362,
-            "cat_net_score": 3.508771929824561
-          },
-          {
-            "name": "2025-05",
-            "category": "team collaboration and respect",
-            "mentions_cnt": 31,
-            "base_resp": 399,
-            "pos_share": 0.05513784461152882,
-            "neg_share": 0.022556390977443608,
-            "coverage_pct": 7.769423558897243,
-            "cat_net_score": 3.258145363408521
-          },
-          {
-            "name": "2025-05",
-            "category": "work model",
-            "mentions_cnt": 2,
-            "base_resp": 399,
-            "pos_share": 0.002506265664160401,
-            "neg_share": 0.002506265664160401,
-            "coverage_pct": 0.5012531328320802,
-            "cat_net_score": 0.0
-          },
-          {
-            "name": "2025-05",
-            "category": "work-life balance and flexibility",
-            "mentions_cnt": 25,
-            "base_resp": 399,
-            "pos_share": 0.03508771929824561,
-            "neg_share": 0.02756892230576441,
-            "coverage_pct": 6.265664160401002,
-            "cat_net_score": 0.7518796992481203
-          },
-          {
-            "name": "2025-05",
-            "category": "working conditions",
-            "mentions_cnt": 65,
-            "base_resp": 399,
-            "pos_share": 0.10025062656641603,
-            "neg_share": 0.06265664160401002,
-            "coverage_pct": 16.290726817042607,
-            "cat_net_score": 3.7593984962406015
-          },
-          {
-            "name": "2025-05",
-            "category": "workplace safety and health",
-            "mentions_cnt": 3,
-            "base_resp": 399,
-            "pos_share": 0.002506265664160401,
-            "neg_share": 0.005012531328320802,
-            "coverage_pct": 0.7518796992481203,
-            "cat_net_score": -0.2506265664160401
-          },
-          {
-            "name": "2025-06",
-            "category": "communication and transparency",
-            "mentions_cnt": 7,
-            "base_resp": 254,
-            "pos_share": 0.007874015748031496,
-            "neg_share": 0.01968503937007874,
-            "coverage_pct": 2.7559055118110236,
-            "cat_net_score": -1.1811023622047243
-          },
-          {
-            "name": "2025-06",
-            "category": "compensation and benefits",
-            "mentions_cnt": 40,
-            "base_resp": 254,
-            "pos_share": 0.07874015748031496,
-            "neg_share": 0.07874015748031496,
-            "coverage_pct": 15.748031496062993,
-            "cat_net_score": 0.0
-          },
-          {
-            "name": "2025-06",
-            "category": "direct manager",
-            "mentions_cnt": 6,
-            "base_resp": 254,
-            "pos_share": 0.015748031496062992,
-            "neg_share": 0.007874015748031496,
-            "coverage_pct": 2.3622047244094486,
-            "cat_net_score": 0.7874015748031495
-          },
-          {
-            "name": "2025-06",
-            "category": "human resources services",
-            "mentions_cnt": 5,
-            "base_resp": 254,
-            "pos_share": 0.003937007874015748,
-            "neg_share": 0.015748031496062992,
-            "coverage_pct": 1.968503937007874,
-            "cat_net_score": -1.1811023622047243
-          },
-          {
-            "name": "2025-06",
-            "category": "leadership and management",
-            "mentions_cnt": 15,
-            "base_resp": 254,
-            "pos_share": 0.03543307086614173,
-            "neg_share": 0.023622047244094488,
-            "coverage_pct": 5.905511811023622,
-            "cat_net_score": 1.1811023622047243
-          },
-          {
-            "name": "2025-06",
-            "category": "opportunities for development and career",
-            "mentions_cnt": 22,
-            "base_resp": 254,
-            "pos_share": 0.07480314960629922,
-            "neg_share": 0.011811023622047244,
-            "coverage_pct": 8.661417322834646,
-            "cat_net_score": 6.299212598425196
-          },
-          {
-            "name": "2025-06",
-            "category": "organizational processes",
-            "mentions_cnt": 5,
-            "base_resp": 254,
-            "pos_share": 0.003937007874015748,
-            "neg_share": 0.015748031496062992,
-            "coverage_pct": 1.968503937007874,
-            "cat_net_score": -1.1811023622047243
-          },
-          {
-            "name": "2025-06",
-            "category": "organizational values ​​and culture",
-            "mentions_cnt": 39,
-            "base_resp": 254,
-            "pos_share": 0.1062992125984252,
-            "neg_share": 0.047244094488188976,
-            "coverage_pct": 15.354330708661418,
-            "cat_net_score": 5.905511811023622
-          },
-          {
-            "name": "2025-06",
-            "category": "other",
-            "mentions_cnt": 50,
-            "base_resp": 254,
-            "pos_share": 0.15354330708661418,
-            "neg_share": 0.04330708661417323,
-            "coverage_pct": 19.68503937007874,
-            "cat_net_score": 11.023622047244094
-          },
-          {
-            "name": "2025-06",
-            "category": "recognition and appreciation",
-            "mentions_cnt": 7,
-            "base_resp": 254,
-            "pos_share": 0.01968503937007874,
-            "neg_share": 0.007874015748031496,
-            "coverage_pct": 2.7559055118110236,
-            "cat_net_score": 1.1811023622047243
-          },
-          {
-            "name": "2025-06",
-            "category": "team collaboration and respect",
-            "mentions_cnt": 10,
-            "base_resp": 254,
-            "pos_share": 0.027559055118110236,
-            "neg_share": 0.011811023622047244,
-            "coverage_pct": 3.937007874015748,
-            "cat_net_score": 1.574803149606299
-          },
-          {
-            "name": "2025-06",
-            "category": "work-life balance and flexibility",
-            "mentions_cnt": 8,
-            "base_resp": 254,
-            "pos_share": 0.007874015748031496,
-            "neg_share": 0.023622047244094488,
-            "coverage_pct": 3.149606299212598,
-            "cat_net_score": -1.574803149606299
-          },
-          {
-            "name": "2025-06",
-            "category": "working conditions",
-            "mentions_cnt": 39,
-            "base_resp": 254,
-            "pos_share": 0.07874015748031496,
-            "neg_share": 0.07480314960629922,
-            "coverage_pct": 15.354330708661418,
-            "cat_net_score": 0.3937007874015741
-          },
-          {
-            "name": "2025-06",
-            "category": "workplace safety and health",
-            "mentions_cnt": 1,
-            "base_resp": 254,
-            "pos_share": 0.0,
-            "neg_share": 0.003937007874015748,
-            "coverage_pct": 0.39370078740157477,
-            "cat_net_score": -0.39370078740157477
-          },
-          {
-            "name": "2025-07",
-            "category": "communication and transparency",
-            "mentions_cnt": 9,
-            "base_resp": 967,
-            "pos_share": 0.002068252326783868,
-            "neg_share": 0.007238883143743537,
-            "coverage_pct": 0.9307135470527405,
-            "cat_net_score": -0.5170630816959669
-          },
-          {
-            "name": "2025-07",
-            "category": "compensation and benefits",
-            "mentions_cnt": 51,
-            "base_resp": 967,
-            "pos_share": 0.01964839710444674,
-            "neg_share": 0.033092037228541885,
-            "coverage_pct": 5.274043433298862,
-            "cat_net_score": -1.3443640124095144
-          },
-          {
-            "name": "2025-07",
-            "category": "direct manager",
-            "mentions_cnt": 23,
-            "base_resp": 967,
-            "pos_share": 0.016546018614270942,
-            "neg_share": 0.007238883143743537,
-            "coverage_pct": 2.378490175801448,
-            "cat_net_score": 0.9307135470527407
-          },
-          {
-            "name": "2025-07",
-            "category": "human resources services",
-            "mentions_cnt": 14,
-            "base_resp": 967,
-            "pos_share": 0.007238883143743537,
-            "neg_share": 0.007238883143743537,
-            "coverage_pct": 1.4477766287487073,
-            "cat_net_score": 0.0
-          },
-          {
-            "name": "2025-07",
-            "category": "leadership and management",
-            "mentions_cnt": 94,
-            "base_resp": 967,
-            "pos_share": 0.0641158221302999,
-            "neg_share": 0.033092037228541885,
-            "coverage_pct": 9.720785935884178,
-            "cat_net_score": 3.1023784901758016
-          },
-          {
-            "name": "2025-07",
-            "category": "opportunities for development and career",
-            "mentions_cnt": 185,
-            "base_resp": 967,
-            "pos_share": 0.1768355739400207,
-            "neg_share": 0.014477766287487074,
-            "coverage_pct": 19.131334022750774,
-            "cat_net_score": 16.235780765253363
-          },
-          {
-            "name": "2025-07",
-            "category": "organizational processes",
-            "mentions_cnt": 12,
-            "base_resp": 967,
-            "pos_share": 0.010341261633919338,
-            "neg_share": 0.002068252326783868,
-            "coverage_pct": 1.2409513960703205,
-            "cat_net_score": 0.8273009307135472
-          },
-          {
-            "name": "2025-07",
-            "category": "organizational values ​​and culture",
-            "mentions_cnt": 135,
-            "base_resp": 967,
-            "pos_share": 0.11789038262668046,
-            "neg_share": 0.02171664943123061,
-            "coverage_pct": 13.96070320579111,
-            "cat_net_score": 9.617373319544985
-          },
-          {
-            "name": "2025-07",
-            "category": "other",
-            "mentions_cnt": 98,
-            "base_resp": 967,
-            "pos_share": 0.07859358841778696,
-            "neg_share": 0.022750775594622543,
-            "coverage_pct": 10.13443640124095,
-            "cat_net_score": 5.584281282316442
-          },
-          {
-            "name": "2025-07",
-            "category": "recognition and appreciation",
-            "mentions_cnt": 77,
-            "base_resp": 967,
-            "pos_share": 0.06928645294725956,
-            "neg_share": 0.010341261633919338,
-            "coverage_pct": 7.96277145811789,
-            "cat_net_score": 5.894519131334023
-          },
-          {
-            "name": "2025-07",
-            "category": "team collaboration and respect",
-            "mentions_cnt": 77,
-            "base_resp": 967,
-            "pos_share": 0.06101344364012409,
-            "neg_share": 0.01861427094105481,
-            "coverage_pct": 7.96277145811789,
-            "cat_net_score": 4.239917269906929
-          },
-          {
-            "name": "2025-07",
-            "category": "work model",
-            "mentions_cnt": 3,
-            "base_resp": 967,
-            "pos_share": 0.001034126163391934,
-            "neg_share": 0.002068252326783868,
-            "coverage_pct": 0.31023784901758017,
-            "cat_net_score": -0.1034126163391934
-          },
-          {
-            "name": "2025-07",
-            "category": "work-life balance and flexibility",
-            "mentions_cnt": 32,
-            "base_resp": 967,
-            "pos_share": 0.011375387797311272,
-            "neg_share": 0.02171664943123061,
-            "coverage_pct": 3.3092037228541886,
-            "cat_net_score": -1.034126163391934
-          },
-          {
-            "name": "2025-07",
-            "category": "working conditions",
-            "mentions_cnt": 147,
-            "base_resp": 967,
-            "pos_share": 0.10444674250258532,
-            "neg_share": 0.047569803516028956,
-            "coverage_pct": 15.201654601861428,
-            "cat_net_score": 5.687693898655636
-          },
-          {
-            "name": "2025-07",
-            "category": "workplace safety and health",
-            "mentions_cnt": 10,
-            "base_resp": 967,
-            "pos_share": 0.001034126163391934,
-            "neg_share": 0.009307135470527405,
-            "coverage_pct": 1.0341261633919339,
-            "cat_net_score": -0.8273009307135472
-          },
-          {
-            "name": "2025-08",
-            "category": "communication and transparency",
-            "mentions_cnt": 12,
-            "base_resp": 800,
-            "pos_share": 0.01,
-            "neg_share": 0.005,
-            "coverage_pct": 1.5,
-            "cat_net_score": 0.5
-          },
-          {
-            "name": "2025-08",
-            "category": "compensation and benefits",
-            "mentions_cnt": 53,
-            "base_resp": 800,
-            "pos_share": 0.03,
-            "neg_share": 0.03625,
-            "coverage_pct": 6.625,
-            "cat_net_score": -0.6249999999999999
-          },
-          {
-            "name": "2025-08",
-            "category": "direct manager",
-            "mentions_cnt": 17,
-            "base_resp": 800,
-            "pos_share": 0.02,
-            "neg_share": 0.00125,
-            "coverage_pct": 2.125,
-            "cat_net_score": 1.875
-          },
-          {
-            "name": "2025-08",
-            "category": "human resources services",
-            "mentions_cnt": 5,
-            "base_resp": 800,
-            "pos_share": 0.00375,
-            "neg_share": 0.0025,
-            "coverage_pct": 0.625,
-            "cat_net_score": 0.12499999999999999
-          },
-          {
-            "name": "2025-08",
-            "category": "leadership and management",
-            "mentions_cnt": 72,
-            "base_resp": 800,
-            "pos_share": 0.04875,
-            "neg_share": 0.04125,
-            "coverage_pct": 9.0,
-            "cat_net_score": 0.75
-          },
-          {
-            "name": "2025-08",
-            "category": "opportunities for development and career",
-            "mentions_cnt": 126,
-            "base_resp": 800,
-            "pos_share": 0.1475,
-            "neg_share": 0.01,
-            "coverage_pct": 15.75,
-            "cat_net_score": 13.749999999999998
-          },
-          {
-            "name": "2025-08",
-            "category": "organizational processes",
-            "mentions_cnt": 6,
-            "base_resp": 800,
-            "pos_share": 0.00375,
-            "neg_share": 0.00375,
-            "coverage_pct": 0.75,
-            "cat_net_score": 0.0
-          },
-          {
-            "name": "2025-08",
-            "category": "organizational values ​​and culture",
-            "mentions_cnt": 112,
-            "base_resp": 800,
-            "pos_share": 0.115,
-            "neg_share": 0.025,
-            "coverage_pct": 14.000000000000002,
-            "cat_net_score": 9.0
-          },
-          {
-            "name": "2025-08",
-            "category": "other",
-            "mentions_cnt": 108,
-            "base_resp": 800,
-            "pos_share": 0.09375,
-            "neg_share": 0.04125,
-            "coverage_pct": 13.5,
-            "cat_net_score": 5.25
-          },
-          {
-            "name": "2025-08",
-            "category": "recognition and appreciation",
-            "mentions_cnt": 52,
-            "base_resp": 800,
-            "pos_share": 0.0525,
-            "neg_share": 0.0125,
-            "coverage_pct": 6.5,
-            "cat_net_score": 3.9999999999999996
-          },
-          {
-            "name": "2025-08",
-            "category": "team collaboration and respect",
-            "mentions_cnt": 57,
-            "base_resp": 800,
-            "pos_share": 0.05625,
-            "neg_share": 0.015,
-            "coverage_pct": 7.125000000000001,
-            "cat_net_score": 4.125
-          },
-          {
-            "name": "2025-08",
-            "category": "work model",
-            "mentions_cnt": 4,
-            "base_resp": 800,
-            "pos_share": 0.005,
-            "neg_share": 0.0,
-            "coverage_pct": 0.5,
-            "cat_net_score": 0.5
-          },
-          {
-            "name": "2025-08",
-            "category": "work-life balance and flexibility",
-            "mentions_cnt": 38,
-            "base_resp": 800,
-            "pos_share": 0.0275,
-            "neg_share": 0.02,
-            "coverage_pct": 4.75,
-            "cat_net_score": 0.75
-          },
-          {
-            "name": "2025-08",
-            "category": "working conditions",
-            "mentions_cnt": 131,
-            "base_resp": 800,
-            "pos_share": 0.1125,
-            "neg_share": 0.05125,
-            "coverage_pct": 16.375,
-            "cat_net_score": 6.125000000000001
-          },
-          {
-            "name": "2025-08",
-            "category": "workplace safety and health",
-            "mentions_cnt": 7,
-            "base_resp": 800,
-            "pos_share": 0.00125,
-            "neg_share": 0.0075,
-            "coverage_pct": 0.8749999999999999,
-            "cat_net_score": -0.625
-          },
-          {
-            "name": "2025-09",
-            "category": "communication and transparency",
-            "mentions_cnt": 13,
-            "base_resp": 847,
-            "pos_share": 0.0070838252656434475,
-            "neg_share": 0.008264462809917356,
-            "coverage_pct": 1.5348288075560803,
-            "cat_net_score": -0.11806375442739081
-          },
-          {
-            "name": "2025-09",
-            "category": "compensation and benefits",
-            "mentions_cnt": 67,
-            "base_resp": 847,
-            "pos_share": 0.02715466351829988,
-            "neg_share": 0.05194805194805195,
-            "coverage_pct": 7.910271546635183,
-            "cat_net_score": -2.4793388429752072
-          },
-          {
-            "name": "2025-09",
-            "category": "direct manager",
-            "mentions_cnt": 25,
-            "base_resp": 847,
-            "pos_share": 0.021251475796930343,
-            "neg_share": 0.008264462809917356,
-            "coverage_pct": 2.95159386068477,
-            "cat_net_score": 1.2987012987012987
-          },
-          {
-            "name": "2025-09",
-            "category": "human resources services",
-            "mentions_cnt": 8,
-            "base_resp": 847,
-            "pos_share": 0.0023612750885478157,
-            "neg_share": 0.0070838252656434475,
-            "coverage_pct": 0.9445100354191263,
-            "cat_net_score": -0.47225501770956324
-          },
-          {
-            "name": "2025-09",
-            "category": "leadership and management",
-            "mentions_cnt": 85,
-            "base_resp": 847,
-            "pos_share": 0.06493506493506493,
-            "neg_share": 0.03541912632821724,
-            "coverage_pct": 10.035419126328216,
-            "cat_net_score": 2.9515938606847687
-          },
-          {
-            "name": "2025-09",
-            "category": "opportunities for development and career",
-            "mentions_cnt": 125,
-            "base_resp": 847,
-            "pos_share": 0.1357733175914994,
-            "neg_share": 0.011806375442739079,
-            "coverage_pct": 14.757969303423849,
-            "cat_net_score": 12.396694214876034
-          },
-          {
-            "name": "2025-09",
-            "category": "organizational processes",
-            "mentions_cnt": 15,
-            "base_resp": 847,
-            "pos_share": 0.004722550177095631,
-            "neg_share": 0.012987012987012988,
-            "coverage_pct": 1.770956316410862,
-            "cat_net_score": -0.8264462809917356
-          },
-          {
-            "name": "2025-09",
-            "category": "organizational values ​​and culture",
-            "mentions_cnt": 112,
-            "base_resp": 847,
-            "pos_share": 0.11216056670602124,
-            "neg_share": 0.020070838252656435,
-            "coverage_pct": 13.223140495867769,
-            "cat_net_score": 9.208972845336481
-          },
-          {
-            "name": "2025-09",
-            "category": "other",
-            "mentions_cnt": 88,
-            "base_resp": 847,
-            "pos_share": 0.08618654073199528,
-            "neg_share": 0.01770956316410862,
-            "coverage_pct": 10.38961038961039,
-            "cat_net_score": 6.847697756788665
-          },
-          {
-            "name": "2025-09",
-            "category": "recognition and appreciation",
-            "mentions_cnt": 56,
-            "base_resp": 847,
-            "pos_share": 0.049586776859504134,
-            "neg_share": 0.01652892561983471,
-            "coverage_pct": 6.6115702479338845,
-            "cat_net_score": 3.3057851239669422
-          },
-          {
-            "name": "2025-09",
-            "category": "team collaboration and respect",
-            "mentions_cnt": 64,
-            "base_resp": 847,
-            "pos_share": 0.06257378984651712,
-            "neg_share": 0.012987012987012988,
-            "coverage_pct": 7.556080283353012,
-            "cat_net_score": 4.958677685950414
-          },
-          {
-            "name": "2025-09",
-            "category": "work model",
-            "mentions_cnt": 3,
-            "base_resp": 847,
-            "pos_share": 0.0023612750885478157,
-            "neg_share": 0.0011806375442739079,
-            "coverage_pct": 0.3541912632821723,
-            "cat_net_score": 0.11806375442739078
-          },
-          {
-            "name": "2025-09",
-            "category": "work-life balance and flexibility",
-            "mentions_cnt": 44,
-            "base_resp": 847,
-            "pos_share": 0.020070838252656435,
-            "neg_share": 0.031877213695395513,
-            "coverage_pct": 5.194805194805195,
-            "cat_net_score": -1.1806375442739079
-          },
-          {
-            "name": "2025-09",
-            "category": "working conditions",
-            "mentions_cnt": 131,
-            "base_resp": 847,
-            "pos_share": 0.09681227863046045,
-            "neg_share": 0.05785123966942149,
-            "coverage_pct": 15.466351829988195,
-            "cat_net_score": 3.896103896103896
-          },
-          {
-            "name": "2025-09",
-            "category": "workplace safety and health",
-            "mentions_cnt": 11,
-            "base_resp": 847,
-            "pos_share": 0.008264462809917356,
-            "neg_share": 0.004722550177095631,
-            "coverage_pct": 1.2987012987012987,
-            "cat_net_score": 0.35419126328217243
+        "intentionsTable": [
+          {
+            "Last": 87.6,
+            "Δ Prev": 0.9,
+            "Avg": 84.9,
+            "Δ Avg": 2.7,
+            "Avg (3m)": 85.5,
+            "Δ Avg (3m)": 2.1,
+            "Avg (6m)": 85.2,
+            "Δ Avg (6m)": 2.3,
+            "Intention": "Muito satisfeito e recomendaria trabalhar na empresa"
+          },
+          {
+            "Last": 5.7,
+            "Δ Prev": 0.1,
+            "Avg": 6.9,
+            "Δ Avg": -1.2,
+            "Avg (3m)": 6.5,
+            "Δ Avg (3m)": -0.7,
+            "Avg (6m)": 6.6,
+            "Δ Avg (6m)": -0.8,
+            "Intention": "Pretende ficar, mas está desmotivado"
+          },
+          {
+            "Last": 4.6,
+            "Δ Prev": -0.5,
+            "Avg": 4.9,
+            "Δ Avg": -0.3,
+            "Avg (3m)": 5.5,
+            "Δ Avg (3m)": -0.9,
+            "Avg (6m)": 5.0,
+            "Δ Avg (6m)": -0.4,
+            "Intention": "Satisfeito e engajado"
+          },
+          {
+            "Last": 2.0,
+            "Δ Prev": -0.4,
+            "Avg": 3.0,
+            "Δ Avg": -1.0,
+            "Avg (3m)": 2.4,
+            "Δ Avg (3m)": -0.4,
+            "Avg (6m)": 3.1,
+            "Δ Avg (6m)": -1.0,
+            "Intention": "Provavelmente sairá da empresa"
+          },
+          {
+            "Last": 0.1,
+            "Δ Prev": -0.0,
+            "Avg": null,
+            "Δ Avg": null,
+            "Avg (3m)": null,
+            "Δ Avg (3m)": null,
+            "Avg (6m)": null,
+            "Δ Avg (6m)": null,
+            "Intention": "não aplicável"
           }
         ]
-      }
+      },
+      "index": 1
     },
     {
       "id": "mto-closed-questions",
@@ -1979,29 +807,29 @@
         "quest02": [
           {
             "question_id": "quest02",
-            "question_description": "Quais são os principais pontos que impactam sua satisfação?",
+            "question_description": "What are the main points that impact your satisfaction?",
             "month": "2025-09-01 00:00:00",
-            "answer": "Incentive to study",
+            "answer": "Incentivo para estudar",
             "respondent_cnt": 105,
             "base_resp": 2704,
-            "pct": 0.03883136094674556,
+            "pct": 0.0,
             "low_n": false
           },
           {
             "question_id": "quest02",
-            "question_description": "Quais são os principais pontos que impactam sua satisfação?",
+            "question_description": "What are the main points that impact your satisfaction?",
             "month": "2025-09-01 00:00:00",
-            "answer": "Others",
+            "answer": "Outros",
             "respondent_cnt": 124,
             "base_resp": 2704,
-            "pct": 0.04585798816568047,
+            "pct": 0.0,
             "low_n": false
           },
           {
             "question_id": "quest02",
-            "question_description": "Quais são os principais pontos que impactam sua satisfação?",
+            "question_description": "What are the main points that impact your satisfaction?",
             "month": "2025-09-01 00:00:00",
-            "answer": "Physical Environment",
+            "answer": "Ambiente Físico",
             "respondent_cnt": 0,
             "base_resp": 2704,
             "pct": 0.0,
@@ -2009,29 +837,29 @@
           },
           {
             "question_id": "quest02",
-            "question_description": "Quais são os principais pontos que impactam sua satisfação?",
+            "question_description": "What are the main points that impact your satisfaction?",
             "month": "2025-09-01 00:00:00",
-            "answer": "Recognition",
+            "answer": "Reconhecimento",
             "respondent_cnt": 778,
             "base_resp": 2704,
-            "pct": 0.28772189349112426,
+            "pct": 0.3,
             "low_n": false
           },
           {
             "question_id": "quest02",
-            "question_description": "Quais são os principais pontos que impactam sua satisfação?",
+            "question_description": "What are the main points that impact your satisfaction?",
             "month": "2025-09-01 00:00:00",
-            "answer": "Work-life balance",
+            "answer": "Equilíbrio entre vida pessoal e profissional",
             "respondent_cnt": 329,
             "base_resp": 2704,
-            "pct": 0.12167159763313609,
+            "pct": 0.1,
             "low_n": false
           },
           {
             "question_id": "quest02",
-            "question_description": "Quais são os principais pontos que impactam sua satisfação?",
+            "question_description": "What are the main points that impact your satisfaction?",
             "month": "2025-09-01 00:00:00",
-            "answer": "career opportunity",
+            "answer": "oportunidade de carreira",
             "respondent_cnt": 0,
             "base_resp": 2704,
             "pct": 0.0,
@@ -2039,29 +867,29 @@
           },
           {
             "question_id": "quest02",
-            "question_description": "Quais são os principais pontos que impactam sua satisfação?",
+            "question_description": "What are the main points that impact your satisfaction?",
             "month": "2025-09-01 00:00:00",
-            "answer": "diversity",
+            "answer": "diversidade ",
             "respondent_cnt": 812,
             "base_resp": 2704,
-            "pct": 0.30029585798816566,
+            "pct": 0.3,
             "low_n": false
           },
           {
             "question_id": "quest02",
-            "question_description": "Quais são os principais pontos que impactam sua satisfação?",
+            "question_description": "What are the main points that impact your satisfaction?",
             "month": "2025-09-01 00:00:00",
-            "answer": "leadership",
+            "answer": "liderança",
             "respondent_cnt": 556,
             "base_resp": 2704,
-            "pct": 0.20562130177514792,
+            "pct": 0.2,
             "low_n": false
           },
           {
             "question_id": "quest02",
-            "question_description": "Quais são os principais pontos que impactam sua satisfação?",
+            "question_description": "What are the main points that impact your satisfaction?",
             "month": "2025-09-01 00:00:00",
-            "answer": "work environment",
+            "answer": "ambiente de trabalho",
             "respondent_cnt": 0,
             "base_resp": 2704,
             "pct": 0.0,
