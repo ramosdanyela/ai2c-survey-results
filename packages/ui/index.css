@@ -1,0 +1,385 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+ * Design System - Dark Theme with Orange Highlights
+ * 
+ * NOTE: All colors are centralized in src/lib/colors.ts
+ * To use colors in TypeScript/TSX code, import constants from @/lib/colors
+ * 
+ * Main colors:
+ * - Orange: #ff9e2b (COLOR_ORANGE_PRIMARY)
+ * - Custom blue: #1982d8 (COLOR_BLUE_CUSTOM)
+ * - Title blue: #1982d8 (COLOR_BLUE_TITLE)
+ */
+
+@layer base {
+  :root {
+    /* Light Mode (default) */
+    --background: 0 0% 98%; /* #F9FAFB - Light gray background */
+    --foreground: 0 0% 0%; /* Black text */
+
+    --card: 0 0% 100%; /* White cards */
+    --card-foreground: 0 0% 0%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
+
+    --primary: 33 100% 58%; /* Orange for highlights - #ff9e2b */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 0%;
+
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%; /* Dark gray for muted text */
+
+    --accent: 33 100% 58%; /* Orange accent - #ff9e2b */
+    --accent-foreground: 0 0% 100%;
+
+    /* Blue for titles and subtitles - #001dc6 */
+    --title-blue: 231 100% 39%; /* #001dc6 - Dark blue for main titles */
+    --subtitle-blue: 231 100% 45%; /* Lighter shade of #001dc6 for subtitles */
+
+    /* Custom blue - #1982d8 (same as control buttons) */
+    --custom-blue: 207 79% 47%; /* #1982d8 */
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+
+    --info: 199 89% 48%;
+    --info-foreground: 0 0% 100%;
+
+    --border: 0 0% 90%; /* Light border */
+    --input: 0 0% 90%;
+    --ring: 33 100% 58%;
+
+    --radius: 0.75rem;
+
+    /* Orange highlight container */
+    --highlight-orange: 33 100% 58%; /* #ff9e2b */
+    --highlight-orange-foreground: 0 0% 100%;
+    --highlight-orange-light: 33 100% 95%; /* Light orange for subtle backgrounds */
+
+    /* Sidebar */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 0%;
+    --sidebar-primary: 33 100% 58%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 33 100% 58%;
+
+    /* Chart colors */
+    --chart-positive: 210 80% 50%;
+    --chart-neutral: 220 14% 50%;
+    --chart-negative: 0 84% 60%;
+    --chart-1: 33 100% 58%;
+    --chart-2: 20 90% 55%;
+    --chart-3: 30 85% 55%;
+    --chart-4: 15 95% 52%;
+    --chart-5: 25 90% 53%;
+
+    /* Severity colors */
+    --severity-critical: 0 84% 60%;
+    --severity-high: 25 95% 53%;
+    --severity-medium: 38 92% 50%;
+    --severity-low: 142 76% 36%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(
+      135deg,
+      hsl(33, 100%, 58%) 0%,
+      hsl(33, 100%, 63%) 100%
+    );
+    --gradient-sidebar: linear-gradient(
+      180deg,
+      hsl(0, 0%, 98%) 0%,
+      hsl(0, 0%, 100%) 100%
+    );
+  }
+
+  .dark {
+    --background: 0 0% 3%; /* Slightly lighter black */
+    --foreground: 0 0% 100%;
+
+    --card: 0 0% 8%; /* Lighter gray for cards */
+    --card-foreground: 0 0% 100%;
+
+    --popover: 0 0% 8%; /* Lighter gray for popovers */
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 33 100% 58%; /* #ff9e2b */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 12%; /* Lighter gray for secondary */
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 18%; /* Lighter gray for muted backgrounds */
+    --muted-foreground: 0 0% 60%;
+
+    --accent: 33 100% 58%; /* #ff9e2b */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%; /* #EF4444 - Unificado com light mode */
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 142 70% 45%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 90% 55%;
+    --warning-foreground: 0 0% 100%;
+
+    --info: 199 85% 55%;
+    --info-foreground: 0 0% 100%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 33 100% 58%;
+
+    /* Orange highlight container */
+    --highlight-orange: 33 100% 58%; /* #ff9e2b */
+    --highlight-orange-foreground: 0 0% 100%;
+    --highlight-orange-light: 33 100% 18%; /* Lighter dark orange for subtle backgrounds */
+
+    --sidebar-background: 0 0% 10%; /* Lighter gray for sidebar */
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 33 100% 58%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 18%; /* Lighter gray for sidebar accent */
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 33 100% 58%;
+
+    --chart-positive: 210 75% 55%;
+    --chart-neutral: 220 14% 60%;
+    --chart-negative: 0 70% 55%;
+    --chart-1: 33 100% 58%;
+    --chart-2: 20 90% 55%;
+    --chart-3: 30 85% 55%;
+    --chart-4: 15 95% 52%;
+    --chart-5: 25 90% 53%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+      "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+      "Helvetica Neue", sans-serif;
+    font-size: 16px; /* Base font size increased */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Root element styles */
+  #root {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+
+  /* Headings use Poppins for a more distinctive look */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .section-title,
+  .section-subtitle {
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
+      "Roboto", sans-serif;
+    font-weight: 700;
+  }
+}
+
+@layer components {
+  .card-elevated {
+    @apply bg-card rounded-lg border-0 shadow-[0_8px_32px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,158,43,0.1)] hover:shadow-[0_12px_48px_rgba(0,0,0,0.6),0_4px_16px_rgba(255,158,43,0.2)] transition-all duration-300;
+  }
+
+  /* Text styles matching the image */
+  .text-body {
+    @apply text-[hsl(var(--muted-foreground))] font-normal;
+  }
+
+  .text-body-bold {
+    @apply text-[hsl(var(--foreground))] font-semibold;
+  }
+
+  .header-title {
+    @apply text-2xl font-bold text-foreground;
+  }
+
+  .section-title {
+    @apply text-2xl font-bold text-foreground mb-4;
+  }
+
+  .section-subtitle {
+    @apply text-xl font-semibold text-foreground mb-3;
+  }
+
+  /* Orange highlight containers */
+  .highlight-container {
+    @apply bg-[hsl(var(--highlight-orange))] text-[hsl(var(--highlight-orange-foreground))] rounded-lg p-4 shadow-[0_8px_32px_rgba(255,158,43,0.3)];
+  }
+
+  .highlight-container-light {
+    @apply bg-[hsl(var(--highlight-orange-light))] border-0 rounded-lg p-4 shadow-[0_4px_16px_rgba(255,158,43,0.15)];
+  }
+
+  .badge-critical {
+    @apply bg-[hsl(var(--severity-critical))] text-white px-2 py-1 rounded-full text-xs font-medium;
+  }
+
+  .badge-high {
+    @apply bg-[hsl(var(--severity-high))] text-white px-2 py-1 rounded-full text-xs font-medium;
+  }
+
+  .badge-medium {
+    @apply bg-[hsl(var(--severity-medium))] text-white px-2 py-1 rounded-full text-xs font-medium;
+  }
+
+  .badge-low {
+    @apply bg-[hsl(var(--severity-low))] text-white px-2 py-1 rounded-full text-xs font-medium;
+  }
+
+  /* Navbar/Header Styles */
+  .navbar,
+  header[class*="navbar"],
+  header[class*="header"] {
+    @apply bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border;
+    background-color: hsl(var(--background));
+    border-bottom: 1px solid hsl(var(--border));
+    color: hsl(var(--foreground));
+  }
+
+  .navbar *,
+  header[class*="navbar"] *,
+  header[class*="header"] * {
+    color: hsl(var(--foreground));
+  }
+
+  .navbar-text {
+    @apply text-foreground;
+  }
+
+  .navbar-link {
+    @apply text-foreground hover:text-foreground/80 transition-colors;
+  }
+
+  .navbar-link-active {
+    @apply text-foreground border-b-2 border-[hsl(var(--primary))];
+  }
+
+  /* Text Highlight - Orange (for highlighting text, not main text) */
+  .text-highlight {
+    @apply bg-[hsl(var(--primary))] text-primary-foreground px-1 rounded;
+  }
+
+  .text-highlight-inline {
+    @apply text-[hsl(var(--primary))] font-semibold;
+  }
+
+  /* Mark/Highlight text with orange background */
+  mark.highlight-orange,
+  .highlight-orange {
+    @apply bg-[hsl(var(--primary))] text-primary-foreground px-1 rounded;
+  }
+
+  /* Orange accent line/divider */
+  .accent-line {
+    @apply h-1 bg-[hsl(var(--primary))] w-full;
+  }
+
+  .accent-line-orange {
+    height: 4px;
+    background-color: hsl(var(--primary));
+    width: 100%;
+    border-radius: 2px;
+  }
+
+  /* Text highlight variants (aliases for compatibility) */
+  .text-highlight-orange {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+  }
+
+  .text-orange-highlight {
+    color: hsl(var(--primary));
+    font-weight: 600;
+  }
+
+  /* Logo styles */
+  .logo {
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter;
+    transition: filter 300ms;
+  }
+
+  .logo:hover {
+    filter: drop-shadow(0 0 2em hsl(var(--primary) / 0.5));
+  }
+
+  .logo.react:hover {
+    filter: drop-shadow(0 0 2em hsl(var(--primary) / 0.5));
+  }
+
+  /* Card base styles */
+  .card {
+    padding: 2em;
+  }
+
+  /* Utility classes */
+  .read-the-docs {
+    color: hsl(var(--muted-foreground));
+  }
+}
+
+@layer utilities {
+  /* Highlight utility for text selection or emphasis */
+  .highlight-orange {
+    @apply bg-[hsl(var(--primary))] text-primary-foreground;
+  }
+
+  /* Orange divider line */
+  .divider-orange {
+    @apply border-t-2 border-[hsl(var(--primary))];
+  }
+}
+
+/* Animations */
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
