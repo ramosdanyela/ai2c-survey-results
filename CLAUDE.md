@@ -23,9 +23,6 @@ npm run validate      # All JSON files in src/data/
 # Analysis
 npm run analyze:all   # Unused code, unused fields, unused deps
 
-# Docker
-npm run build         # Build dist/ first
-docker-compose up     # Serves on http://localhost:8888/reports/
 ```
 
 No test framework is configured.
@@ -106,5 +103,4 @@ The app is designed to be served under the `/reports/` sub-path in production:
 
 - **Base URL:** `vite.config.js` sets `base: "/reports/"` when `mode === "production"`. In dev, base is `/`.
 - **Router:** `BrowserRouter` uses `basename={import.meta.env.BASE_URL}`, so all routes (e.g. `/export`) are automatically prefixed with `/reports/` in production.
-- **Nginx:** `nginx.conf` maps `/reports/` to `dist/` with `try_files` fallback to `index.html` for SPA routing. The docker-compose mounts `./dist` into the container at `/usr/share/nginx/html/reports`.
-- **Build before Docker:** Run `npm run build` to generate `dist/` before starting `docker-compose up`.
+- **Preview:** Run `npm run build` then `npm run preview` to serve `dist/` locally at `http://localhost:4173/reports/`.
