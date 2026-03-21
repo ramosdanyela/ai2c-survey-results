@@ -1,5 +1,6 @@
 import js from "@eslint/js";
 import globals from "globals";
+import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
@@ -28,15 +29,30 @@ export default tseslint.config(
   },
   {
     extends: [js.configs.recommended],
+    files: ["**/*.config.js"],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: { ...globals.browser, ...globals.node },
+      sourceType: "module",
+    },
+  },
+  {
+    extends: [js.configs.recommended],
     files: ["**/*.{js,jsx}"],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
       sourceType: "module",
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
     plugins: {
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
+      react,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -44,6 +60,7 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ],
+      "react/jsx-uses-vars": "error",
     },
   }
 );

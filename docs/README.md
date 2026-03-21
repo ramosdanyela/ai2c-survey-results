@@ -6,16 +6,29 @@ Aplicação de visualização de resultados de pesquisa **genérica e orientada 
 
 ## Início rápido
 
+### Pré-requisito: Node.js via nvm
+
+O projeto usa Node.js `v24.14.0` (definido em `.nvmrc`). Com [nvm](https://github.com/nvm-sh/nvm) instalado:
+
+```bash
+nvm install   # instala a versão correta (lê .nvmrc)
+nvm use       # ativa a versão correta
+```
+
+### Desenvolvimento local
+
 ```bash
 npm install
 npm run dev
 ```
 
-Abrir [http://localhost:5173](http://localhost:5173).
+Abrir [http://localhost:8080](http://localhost:8080).
+
+### Build de produção + preview
 
 ```bash
-npm run build      # build de produção
-npm run preview    # preview do build
+npm run build      # gera dist/ com base "/reports/"
+npm run preview    # serve em http://localhost:4173/reports/
 ```
 
 ---
@@ -165,10 +178,10 @@ Cada componente costuma ter `dataPath` (ex.: `sectionData.barChart`) e opcionalm
 
 | Script | Descrição |
 |--------|-----------|
-| `npm run dev` | Servidor de desenvolvimento (Vite). |
-| `npm run build` | Build de produção. |
+| `npm run dev` | Servidor de desenvolvimento (Vite) em `http://localhost:8080`. |
+| `npm run build` | Build de produção (base `/reports/`). Necessário antes de `npm run preview`. |
 | `npm run build:dev` | Build em modo development. |
-| `npm run preview` | Servir e visualizar o build. |
+| `npm run preview` | Servir e visualizar o build em `http://localhost:4173/reports/`. |
 | `npm run lint` | Executar ESLint. |
 | `npm run validate` | Valida todos os JSONs em `src/data/` (schema + regras customizadas). |
 | `npm run validate:json` | Valida um único arquivo; passar o caminho como argumento. |
