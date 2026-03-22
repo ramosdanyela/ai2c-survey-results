@@ -6,6 +6,7 @@ import {
   SurveySidebarMobile,
 } from "@/components/survey/components/SurveySidebar";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { X } from "@/lib/icons";
 
 export function SurveyLayout({ activeSection, onSectionChange }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -83,7 +84,19 @@ export function SurveyLayout({ activeSection, onSectionChange }) {
   };
 
   return (
-    <div className="min-h-screen flex w-full bg-background">
+    <div className="min-h-screen flex flex-col w-full bg-background">
+      {/* Close button bar - always visible on all screen sizes */}
+      <div className="flex justify-end px-3 h-8 items-center bg-background border-b border-border/40">
+        <button
+          onClick={() => window.close()}
+          className="flex items-center gap-1 text-xs text-foreground/50 hover:text-red-500 hover:bg-red-500/10 rounded px-2 py-0.5 transition-all duration-200"
+          title="Fechar"
+        >
+          <X className="w-6 h-6" />
+          <span>Fechar</span>
+        </button>
+      </div>
+      <div className="flex-1 flex w-full bg-background">
       {/* Desktop Sidebar - Always visible on large screens */}
       <SurveySidebar
         ref={sidebarRef}
@@ -124,6 +137,7 @@ export function SurveyLayout({ activeSection, onSectionChange }) {
             </div>
           </div>
         </main>
+      </div>
       </div>
     </div>
   );

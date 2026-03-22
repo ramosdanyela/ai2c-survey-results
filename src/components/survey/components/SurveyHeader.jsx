@@ -268,6 +268,17 @@ export function SurveyHeader({
         boxShadow: `0 2px 8px ${RGBA_BLACK_SHADOW_20}`,
       }}
     >
+      {/* TEST: Close button row - mobile only, above all other buttons */}
+      {/* <div className="min-[1480px]:hidden flex justify-end px-2 pt-1">
+        <button
+          onClick={() => window.close()}
+          className="rounded-lg px-2 py-0.5 flex items-center gap-1 text-xs text-foreground/50 hover:text-red-500 hover:bg-red-500/10 transition-all duration-200"
+          title="Fechar"
+        >
+          <X className="w-6 h-6" />
+          <span>Fechar</span>
+        </button>
+      </div> */}
       <div className="px-2 sm:px-4 lg:px-6 py-2 sm:py-4 flex items-center gap-1 sm:gap-0">
         {/* Hamburger Menu - Visible only on smaller screens */}
         <div className="min-[1480px]:hidden mr-2 sm:mr-3">

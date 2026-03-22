@@ -4,7 +4,7 @@ import {
   Users,
   TrendingUp,
   ClipboardList,
-  X,
+  ArrowLeft,
   getIcon,
 } from "@/lib/icons";
 import { cn, capitalizeTitle } from "@/lib/utils";
@@ -18,7 +18,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { resolveDataPath } from "@/services/dataResolver";
 import {
   RGBA_BLACK_SHADOW_20,
-  RGBA_ORANGE_SHADOW_20,
   COLOR_ORANGE_PRIMARY,
   COLOR_LIGHT_BACKGROUND,
   RGBA_ORANGE_SHADOW_15,
@@ -312,12 +311,12 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
     <TooltipProvider>
       <div className="flex flex-col h-full px-2 sm:px-3 w-full overflow-x-hidden">
         {/* Close button on mobile */}
-        <div className="min-[1480px]:hidden flex justify-end pt-2 sm:pt-3 pb-1.5 sm:pb-2">
+        <div className="min-[1480px]:hidden flex justify-start pt-2 sm:pt-3 pb-1.5 sm:pb-2">
           <button
             onClick={onItemClick}
             className="rounded-lg p-1.5 sm:p-2 text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 transition-all duration-200"
           >
-            <X className="w-4 h-4 sm:w-5 sm:h-5" />
+            <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
         </div>
         <div className="pt-2 sm:pt-3 mb-3 sm:mb-4 pb-3 sm:pb-4">
@@ -331,10 +330,21 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
           >
             <div className="space-y-1.5 sm:space-y-2">
               {/* Survey Title */}
+              {/* TEST: button after title */}
+              {/* <div className="mb-0.5 flex items-start justify-between gap-2">
+                <h2 className="text-sm sm:text-lg font-bold text-foreground leading-tight flex-1"> */}
               <div className="mb-0.5">
                 <h2 className="text-sm sm:text-lg font-bold text-foreground leading-tight">
                   {currentSurveyInfo?.title || "Carregando..."}
                 </h2>
+                {/* TEST: button after title */}
+                {/* <button
+                  onClick={() => window.close()}
+                  className="hidden min-[1480px]:flex rounded p-0.5 text-foreground/50 hover:text-red-500 hover:bg-red-500/10 transition-all duration-200 flex-shrink-0 mt-0.5"
+                  title="Fechar"
+                >
+                  <X className="w-5.5 h-5.5" />
+                </button> */}
               </div>
 
               {/* Company */}
@@ -801,7 +811,7 @@ export const SurveySidebar = forwardRef(
     return (
       <aside
         ref={ref}
-        className="hidden min-[1480px]:flex fixed left-0 top-0 h-full bg-sidebar z-20 overflow-y-auto"
+        className="hidden min-[1480px]:flex fixed left-0 top-8 h-[calc(100vh-2rem)] bg-sidebar z-20 overflow-y-auto"
         style={{
           width: "auto",
           minWidth: "fit-content",
