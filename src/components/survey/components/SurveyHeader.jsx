@@ -230,7 +230,7 @@ export function SurveyHeader({ activeSection, onSectionChange, onMenuClick, navi
     <header className="sticky top-0 z-10 bg-background">
       <div className="flex justify-end px-3 h-10 items-center bg-background border-b border-border/40">
         <button
-          onClick={() => window.close()}
+          onClick={() => window?.parent?.postMessage("close-dialog", "*")}
           className="flex items-center gap-1 text-xs text-foreground/50 hover:text-red-500 hover:bg-red-500/10 rounded px-2 py-0.5 transition-all duration-200"
           title="Fechar"
         >
