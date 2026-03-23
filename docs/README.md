@@ -27,8 +27,11 @@ Abrir [http://localhost:8080](http://localhost:8080).
 ### Build de produção + preview
 
 ```bash
-npm run build      # gera dist/ com base "/reports/"
-npm run preview    # serve em http://localhost:4173/reports/
+npm run build              # build padrão (base "/reports/")
+npm run build:staging      # build para staging
+npm run build:production-br  # build para produção BR
+npm run build:production-it  # build para produção IT
+npm run preview            # serve em http://localhost:4173/reports/
 ```
 
 ---
@@ -130,6 +133,10 @@ JSON do relatório (surveyDataService / API)
 │   ├── services/
 │   ├── styles/
 │   └── utils/
+├── .cicd/
+│   └── deploy.sh               # Script de deploy (S3 + CloudFront)
+├── .env.development            # Variáveis para modo development
+├── .env.staging                # Variáveis para modo staging
 ├── index.html
 ├── package.json
 ├── vite.config.js
@@ -178,9 +185,12 @@ Cada componente costuma ter `dataPath` (ex.: `sectionData.barChart`) e opcionalm
 
 | Script | Descrição |
 |--------|-----------|
-| `npm run dev` | Servidor de desenvolvimento (Vite) em `http://localhost:8080`. |
-| `npm run build` | Build de produção (base `/reports/`). Necessário antes de `npm run preview`. |
+| `npm run dev` | Servidor de desenvolvimento (Vite) na porta definida em `PORT` (padrão `5000` no `.env.development`). |
+| `npm run build` | Build padrão (base `/reports/`). |
 | `npm run build:dev` | Build em modo development. |
+| `npm run build:staging` | Build para o ambiente de staging. |
+| `npm run build:production-br` | Build para produção Brasil. |
+| `npm run build:production-it` | Build para produção Itália. |
 | `npm run preview` | Servir e visualizar o build em `http://localhost:4173/reports/`. |
 | `npm run lint` | Executar ESLint. |
 | `npm run validate` | Valida todos os JSONs em `src/data/` (schema + regras customizadas). |
@@ -207,18 +217,59 @@ Os scripts `validate-json.js` e `validate-all-jsons.js` carregam schema e regras
 
 ---
 
+## Deploy
+
+O script `.cicd/deploy.sh` automatiza o deploy para os ambientes hospedados na AWS (S3 + CloudFront).
+
+### Ambientes disponíveis
+
+| Ambiente | Subdomínio | CloudFront Distribution |
+|----------|------------|------------------------|
+| `staging` | `app.staging.ai2c.tech` | `E282R46CFVR1IV` |
+| `production-br` | `app.ai2c.tech` | `E2SG6SU94CQM35` |
+| `production-it` | `it-app.ai2c.tech` | `E1BT9HTX20C9ZH` |
+
+### Como executar
+
+```bash
+# Pré-requisito: AWS CLI configurado com o perfil "ai2c"
+./.cicd/deploy.sh staging
+./.cicd/deploy.sh production-br
+./.cicd/deploy.sh production-it
+```
+
+### O que o script faz
+
+1. Seleciona subdomínio e distribution ID com base no argumento.
+2. Exibe branch e versão (`package.json`) do deploy.
+3. Roda `nvm use` + `npm install`.
+4. Executa `npm run build:<ambiente>` (ex.: `build:staging`).
+5. Sincroniza `dist/` com `s3://<subdomain>.ai2c.tech/reports` (perfil AWS `ai2c`).
+6. Cria invalidação no CloudFront para `/reports*`.
+
+### Variáveis de ambiente por modo
+
+Os arquivos `.env.<modo>` são lidos automaticamente pelo Vite durante o build:
+
+| Variável | `.env.development` | `.env.staging` |
+|----------|--------------------|----------------|
+| `PORT` | `5000` | – |
+| `VITE_API_URL` | `http://localhost:8080` | `https://api.staging.ai2c.tech` |
+| `VITE_WEB_URL` | `http://localhost:8000` | `https://web.staging.ai2c.tech` |
+
+> Para os ambientes de produção (`production-br`, `production-it`), crie os arquivos `.env.production-br` e `.env.production-it` seguindo o mesmo padrão.
+
+---
+
 ## Dados e integração com API
 
-- **Origem dos dados:** O hook `useSurveyData()` chama `fetchSurveyData()` do **surveyDataService** (`src/services/surveyDataService.js`). Hoje o serviço retorna um JSON estático (ex.: `src/data/tests-06-02/json_file_app.json`).
-- **Integração com API real:** Ajustar `surveyDataService.js` para fazer `fetch` à API (por exemplo usando `VITE_API_URL` e `VITE_SURVEY_DATA_ENDPOINT`). Documentação passo a passo em **`docs/official_docs/MIGRACAO_MOCKS_PARA_API_REAL.md`** (variáveis de ambiente, autenticação, tratamento de erros).
+- **Origem dos dados:** O hook `useSurveyData()` chama `fetchSurveyData()` do **surveyDataService** (`src/services/surveyDataService.js`). O serviço carrega os dados a partir da API real usando `VITE_API_URL`.
+- **Referência de migração:** Documentação passo a passo em **`docs/official_docs/MIGRACAO_MOCKS_PARA_API_REAL.md`** (variáveis de ambiente, autenticação, tratamento de erros).
 
-Variáveis de ambiente úteis (prefixo `VITE_` para expor no front):
+Variáveis de ambiente (prefixo `VITE_` para expor no front):
 
-- `VITE_API_URL` – URL base da API.
-- `VITE_SURVEY_DATA_ENDPOINT` – Endpoint dos dados do relatório.
-- `VITE_API_TOKEN` – Token Bearer (opcional).
-- `VITE_API_TIMEOUT` – Timeout em ms.
-- `VITE_USE_MOCK_DATA` / `VITE_API_DELAY` – Uso de mock e delay (desenvolvimento).
+- `VITE_API_URL` – URL base da API (ex.: `https://api.staging.ai2c.tech`).
+- `VITE_WEB_URL` – URL base do frontend web.
 
 ---
 
