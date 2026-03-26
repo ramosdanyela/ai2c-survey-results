@@ -6,7 +6,7 @@ import { defineConfig, loadEnv } from "vite";
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   return {
-    base: ["production", "staging"].includes(mode) ? "/reports/" : "/",
+    base: ["production-br", "production-it", "staging"].includes(mode) ? "/reports/" : "/",
     server: {
       host: true,
       port: parseInt(env.PORT),
