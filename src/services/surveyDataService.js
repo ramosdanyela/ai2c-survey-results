@@ -30,12 +30,10 @@ export const fetchSurveyData = async ({ questionnaireId, reportId }) => {
   }
 
   const ai2cAuth = JSON.parse(localStorage.getItem("auth") || "{}");
-  console.log("===== auth:", ai2cAuth);
   if (!ai2cAuth.tokenType || !ai2cAuth.accessToken) {
     throw new Error("Token de autenticação não encontrado");
   }
   const url = `${API_URL}/questionnaires/${questionnaireId}/reports/download/${reportId}/reportJson`;
-  console.log("==== url:", url);
   const presignedResponse = await fetch(url, {
     headers: { Authorization: `${ai2cAuth.tokenType} ${ai2cAuth.accessToken}` },
   });
@@ -45,7 +43,6 @@ export const fetchSurveyData = async ({ questionnaireId, reportId }) => {
   }
 
   const presignedData = await presignedResponse.json();
-  console.log("==== presignedData:", presignedData);
 
   const response = await fetch(presignedData.url);
   if (!response.ok) {
