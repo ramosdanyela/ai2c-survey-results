@@ -1,27 +1,27 @@
-import { useEffect, useMemo, useState, useRef, useCallback } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { GenericSectionRenderer } from "@/components/survey/common/GenericSectionRenderer";
 import { ExportTimestamp } from "@/components/export/ExportTimestamp";
-import { parseSelectedSections } from "@/utils/exportHelpers";
-import { exportToWord } from "@/utils/wordExport";
-import { capitalizeTitle } from "@/lib/utils";
-import { useSurveyData } from "@/hooks/useSurveyData";
-import { Separator } from "@/components/ui/separator";
+import { GenericSectionRenderer } from "@/components/survey/common/GenericSectionRenderer";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
+import { useSurveyData } from "@/hooks/useSurveyData";
 import {
-  COLOR_ORANGE_PRIMARY,
-  RGBA_BLACK_SHADOW_20,
+  COLOR_GRAY_DARK,
   COLOR_LIGHT_BACKGROUND,
+  COLOR_ORANGE_PRIMARY,
   RGBA_BLACK_SHADOW_08,
   RGBA_BLACK_SHADOW_10,
+  RGBA_BLACK_SHADOW_20,
   RGBA_ORANGE_SHADOW_15,
-  COLOR_GRAY_DARK,
 } from "@/lib/colors";
-import { Download, Users, TrendingUp, ClipboardList } from "@/lib/icons";
+import { ClipboardList, Download, TrendingUp, Users, X } from "@/lib/icons";
+import { capitalizeTitle } from "@/lib/utils";
 import { getQuestionsFromData } from "@/services/dataResolver";
-import { Printer, Cloud, ArrowLeft, FileText, Loader2 } from "lucide-react";
+import { parseSelectedSections } from "@/utils/exportHelpers";
+import { exportToWord } from "@/utils/wordExport";
+import { ArrowLeft, FileText, Loader2, Printer } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function ExportPreview() {
   const navigate = useNavigate();
@@ -41,29 +41,18 @@ export default function ExportPreview() {
   // Parse URL parameters
   const exportFullReport = searchParams.get("fullReport") === "true";
   const selectedSectionsParam = searchParams.get("sections");
-  const selectedSectionsArray = selectedSectionsParam
-    ? selectedSectionsParam.split(",")
-    : [];
+  const selectedSectionsArray = selectedSectionsParam ? selectedSectionsParam.split(",") : [];
 
   // Parse and get all sections to render
   const sectionsToRender = useMemo(() => {
     if (!data) return [];
-    const parsed = parseSelectedSections(
-      selectedSectionsArray,
-      exportFullReport,
-      data
-    );
+    const parsed = parseSelectedSections(selectedSectionsArray, exportFullReport, data);
     return parsed;
   }, [data, selectedSectionsArray, exportFullReport]);
 
   // Redirect if no sections selected (only after data is loaded)
   useEffect(() => {
-    if (
-      !loading &&
-      data &&
-      sectionsToRender.length === 0 &&
-      !exportFullReport
-    ) {
+    if (!loading && data && sectionsToRender.length === 0 && !exportFullReport) {
       navigate("/export");
     }
   }, [sectionsToRender, exportFullReport, navigate, loading, data]);
@@ -75,9 +64,7 @@ export default function ExportPreview() {
       if (!groups[item.sectionId]) {
         groups[item.sectionId] = [];
       }
-      const exists = groups[item.sectionId].some(
-        (existing) => existing.subsectionId === item.subsectionId
-      );
+      const exists = groups[item.sectionId].some((existing) => existing.subsectionId === item.subsectionId);
       if (!exists) {
         groups[item.sectionId].push(item);
       }
@@ -97,9 +84,7 @@ export default function ExportPreview() {
 
   // Get section name from sections (capitalized)
   const getSectionName = (sectionId) => {
-    const section = data?.sections?.find(
-      (s) => s.id === sectionId
-    );
+    const section = data?.sections?.find((s) => s.id === sectionId);
     const name = section?.name || sectionId;
     return capitalizeTitle(name);
   };
@@ -346,14 +331,20 @@ export default function ExportPreview() {
             boxShadow: `0 2px 8px ${RGBA_BLACK_SHADOW_20}`,
           }}
         >
+          <div className="flex justify-end px-3 h-10 items-center bg-background border-b border-border/40">
+            <button
+              onClick={() => window?.parent?.postMessage("close-dialog", "*")}
+              className="flex items-center gap-1 text-xs text-foreground/50 hover:text-red-500 hover:bg-red-500/10 rounded px-2 py-0.5 transition-all duration-200"
+              title="Fechar"
+            >
+              <X className="w-6 h-6" />
+              <span>Fechar</span>
+            </button>
+          </div>
           <div className="px-6 sm:px-8 lg:px-24 py-4 flex items-center justify-between">
             <div className="flex items-center gap-4">
               {/* Back Button */}
-              <Button
-                onClick={() => navigate("/export")}
-                variant="outline"
-                className="h-10 px-4"
-              >
+              <Button onClick={() => navigate("/export")} variant="outline" className="h-10 px-4">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Voltar
               </Button>
@@ -366,9 +357,7 @@ export default function ExportPreview() {
                 }}
               >
                 <Download className="w-4 h-4 flex-shrink-0" />
-                <h1 className="text-2xl font-bold text-white whitespace-nowrap">
-                  Export Preview
-                </h1>
+                <h1 className="text-2xl font-bold text-white whitespace-nowrap">Export Preview</h1>
               </div>
             </div>
 
@@ -382,11 +371,7 @@ export default function ExportPreview() {
                 >
                   Word Cloud
                 </Label>
-                <Switch
-                  id="export-word-cloud-toggle"
-                  checked={showWordCloud}
-                  onCheckedChange={setShowWordCloud}
-                />
+                <Switch id="export-word-cloud-toggle" checked={showWordCloud} onCheckedChange={setShowWordCloud} />
               </div>
 
               {/* Single Save button: the format chosen on Export page */}
@@ -433,7 +418,10 @@ export default function ExportPreview() {
           <div className="export-preview-a4-wrapper" ref={a4WrapperRef}>
             {/* SurveyInfo card – above everything, centered */}
             {data?.surveyInfo && (
-              <div className="export-survey-info-block w-full flex justify-center mb-5 export-avoid-break" data-word-export="image">
+              <div
+                className="export-survey-info-block w-full flex justify-center mb-5 export-avoid-break"
+                data-word-export="image"
+              >
                 <div
                   className="w-full max-w-xl rounded-lg p-4 border border-border/50 text-center"
                   style={{
@@ -442,18 +430,12 @@ export default function ExportPreview() {
                   }}
                 >
                   <div className="flex flex-col items-center gap-1.5">
-                    <h2 className="text-base font-bold text-foreground">
-                      {data.surveyInfo.title || ""}
-                    </h2>
+                    <h2 className="text-base font-bold text-foreground">{data.surveyInfo.title || ""}</h2>
                     {data.surveyInfo.company && (
-                      <div className="text-xs text-foreground">
-                        {data.surveyInfo.company}
-                      </div>
+                      <div className="text-xs text-foreground">{data.surveyInfo.company}</div>
                     )}
                     {data.surveyInfo.period && (
-                      <div className="text-[10px] text-foreground/80">
-                        {data.surveyInfo.period}
-                      </div>
+                      <div className="text-[10px] text-foreground/80">{data.surveyInfo.period}</div>
                     )}
                     <div className="flex flex-wrap justify-center gap-2 mt-1">
                       <div
@@ -468,22 +450,13 @@ export default function ExportPreview() {
                             backgroundColor: RGBA_ORANGE_SHADOW_15,
                           }}
                         >
-                          <Users
-                            className="w-3.5 h-3.5"
-                            style={{ color: COLOR_ORANGE_PRIMARY }}
-                          />
+                          <Users className="w-3.5 h-3.5" style={{ color: COLOR_ORANGE_PRIMARY }} />
                         </div>
-                        <div
-                          className="text-sm font-bold"
-                          style={{ color: COLOR_GRAY_DARK }}
-                        >
-                          {data.surveyInfo.totalRespondents?.toLocaleString(
-                            "pt-BR"
-                          ) || "0"}
+                        <div className="text-sm font-bold" style={{ color: COLOR_GRAY_DARK }}>
+                          {data.surveyInfo.totalRespondents?.toLocaleString("pt-BR") || "0"}
                         </div>
                         <div className="text-[10px] text-foreground/70">
-                          {data?.uiTexts?.surveySidebar?.respondents ||
-                            "Respondentes"}
+                          {data?.uiTexts?.surveySidebar?.respondents || "Respondentes"}
                         </div>
                       </div>
                       <div
@@ -498,22 +471,13 @@ export default function ExportPreview() {
                             backgroundColor: RGBA_ORANGE_SHADOW_15,
                           }}
                         >
-                          <TrendingUp
-                            className="w-3.5 h-3.5"
-                            style={{ color: COLOR_ORANGE_PRIMARY }}
-                          />
+                          <TrendingUp className="w-3.5 h-3.5" style={{ color: COLOR_ORANGE_PRIMARY }} />
                         </div>
-                        <div
-                          className="text-sm font-bold"
-                          style={{ color: COLOR_GRAY_DARK }}
-                        >
-                          {data.surveyInfo.responseRate != null
-                            ? `${Math.round(data.surveyInfo.responseRate)}%`
-                            : "0%"}
+                        <div className="text-sm font-bold" style={{ color: COLOR_GRAY_DARK }}>
+                          {data.surveyInfo.responseRate != null ? `${Math.round(data.surveyInfo.responseRate)}%` : "0%"}
                         </div>
                         <div className="text-[10px] text-foreground/70">
-                          {data?.uiTexts?.surveySidebar?.responseRate ||
-                            "Taxa de Adesão"}
+                          {data?.uiTexts?.surveySidebar?.responseRate || "Taxa de Adesão"}
                         </div>
                       </div>
                       <div
@@ -528,22 +492,13 @@ export default function ExportPreview() {
                             backgroundColor: RGBA_ORANGE_SHADOW_15,
                           }}
                         >
-                          <ClipboardList
-                            className="w-3.5 h-3.5"
-                            style={{ color: COLOR_ORANGE_PRIMARY }}
-                          />
+                          <ClipboardList className="w-3.5 h-3.5" style={{ color: COLOR_ORANGE_PRIMARY }} />
                         </div>
-                        <div
-                          className="text-sm font-bold"
-                          style={{ color: COLOR_GRAY_DARK }}
-                        >
-                          {data.surveyInfo.questions ??
-                            (getQuestionsFromData(data) || []).length ??
-                            0}
+                        <div className="text-sm font-bold" style={{ color: COLOR_GRAY_DARK }}>
+                          {data.surveyInfo.questions ?? (getQuestionsFromData(data) || []).length ?? 0}
                         </div>
                         <div className="text-[10px] text-foreground/70">
-                          {data?.uiTexts?.surveySidebar?.questions ||
-                            "Perguntas"}
+                          {data?.uiTexts?.surveySidebar?.questions || "Perguntas"}
                         </div>
                       </div>
                     </div>
@@ -555,59 +510,56 @@ export default function ExportPreview() {
             {/* Render each section group in original display order (by section index) */}
             {orderedSectionIds.map((sectionId, sectionIndex) => {
               const subsections = groupedSections[sectionId] || [];
-              const isLastSection =
-                sectionIndex === orderedSectionIds.length - 1;
+              const isLastSection = sectionIndex === orderedSectionIds.length - 1;
 
-                return (
-                  <div
-                    key={sectionId}
-                    className={`w-full min-w-0 mb-8 export-avoid-break ${sectionIndex === 0 ? "export-first-section" : ""}`}
-                  >
-                    {/* Section Header (only show if section has multiple subsections) - same static style as Export Preview badge */}
-                    {subsections.length > 1 && (
-                      <div className="mb-6 flex justify-center">
-                        <div
-                          className="export-section-badge px-4 py-2 rounded-lg inline-flex items-center justify-center"
-                          style={{
-                            backgroundColor: COLOR_ORANGE_PRIMARY,
-                            boxShadow: COLOR_ORANGE_PRIMARY,
-                          }}
-                          data-word-export="h1"
-                          data-word-text={getSectionName(sectionId)}
-                        >
-                          <h2 className="text-2xl font-bold text-white">
-                            {getSectionName(sectionId)}
-                          </h2>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Render each subsection */}
-                    {subsections.map((item, subsectionIndex) => (
+              return (
+                <div
+                  key={sectionId}
+                  className={`w-full min-w-0 mb-8 export-avoid-break ${sectionIndex === 0 ? "export-first-section" : ""}`}
+                >
+                  {/* Section Header (only show if section has multiple subsections) - same static style as Export Preview badge */}
+                  {subsections.length > 1 && (
+                    <div className="mb-6 flex justify-center">
                       <div
-                        key={`${item.sectionId}-${item.subsectionId}`}
-                        className={`min-w-0 ${subsectionIndex > 0 ? "mt-8" : ""}`.trim()}
+                        className="export-section-badge px-4 py-2 rounded-lg inline-flex items-center justify-center"
+                        style={{
+                          backgroundColor: COLOR_ORANGE_PRIMARY,
+                          boxShadow: COLOR_ORANGE_PRIMARY,
+                        }}
+                        data-word-export="h1"
+                        data-word-text={getSectionName(sectionId)}
                       >
-                        {/* Render the subsection content */}
-                        <GenericSectionRenderer
-                          key={`renderer-${item.sectionId}-${item.subsectionId}`}
-                          sectionId={item.sectionId}
-                          subSection={item.subsectionId}
-                          isExport={true}
-                          exportWordCloud={showWordCloud}
-                          isExportFormatWord={isExportFormatWord}
-                        />
+                        <h2 className="text-2xl font-bold text-white">{getSectionName(sectionId)}</h2>
                       </div>
-                    ))}
+                    </div>
+                  )}
 
-                    {/* Section divider at the end (except for last section) */}
-                    {!isLastSection && (
-                      <div className="mt-8" data-word-export="separator">
-                        <Separator />
-                      </div>
-                    )}
-                  </div>
-                );
+                  {/* Render each subsection */}
+                  {subsections.map((item, subsectionIndex) => (
+                    <div
+                      key={`${item.sectionId}-${item.subsectionId}`}
+                      className={`min-w-0 ${subsectionIndex > 0 ? "mt-8" : ""}`.trim()}
+                    >
+                      {/* Render the subsection content */}
+                      <GenericSectionRenderer
+                        key={`renderer-${item.sectionId}-${item.subsectionId}`}
+                        sectionId={item.sectionId}
+                        subSection={item.subsectionId}
+                        isExport={true}
+                        exportWordCloud={showWordCloud}
+                        isExportFormatWord={isExportFormatWord}
+                      />
+                    </div>
+                  ))}
+
+                  {/* Section divider at the end (except for last section) */}
+                  {!isLastSection && (
+                    <div className="mt-8" data-word-export="separator">
+                      <Separator />
+                    </div>
+                  )}
+                </div>
+              );
             })}
 
             {/* Timestamp at the end */}
