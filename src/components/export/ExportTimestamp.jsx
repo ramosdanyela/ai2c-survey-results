@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 /**
  * Component to display the export timestamp at the end of the report
  */
-export function ExportTimestamp() {
+export function ExportTimestamp({ uiTexts }) {
   const now = new Date();
   
   // Format date: DD/MM/YYYY HH:MM
@@ -21,9 +21,9 @@ export function ExportTimestamp() {
       <div
         className="text-center text-sm text-muted-foreground"
         data-word-export="timestamp"
-        data-word-text={`Relatório extraído em: ${formattedDate}`}
+        data-word-text={`${uiTexts?.export?.reportExtractedAt || "Relatório extraído em:"} ${formattedDate}`}
       >
-        <p className="font-medium">Relatório extraído em: {formattedDate}</p>
+        <p className="font-medium">{uiTexts?.export?.reportExtractedAt || "Relatório extraído em:"} {formattedDate}</p>
       </div>
     </div>
   );

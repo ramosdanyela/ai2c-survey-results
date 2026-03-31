@@ -51,6 +51,15 @@ export const SEVERITY_TYPES = {
 // Question Badge Types
 // ============================================================================
 //
+// Static badge configuration for question types.
+// The "label" field here is a hardcoded fallback only.
+//
+// Labels are overridable per-language via the report JSON:
+//   uiTexts.responseDetails["open-ended"]    → overrides "Campo Aberto"
+//   uiTexts.responseDetails["multiple-choice"] → overrides "Múltipla Escolha"
+//   uiTexts.responseDetails["single-choice"] → overrides "Escolha única"
+//   uiTexts.responseDetails["nps"]           → overrides "NPS"
+//
 // Mapeamento de tipos de questão para configuração de badge
 // Os tipos são definidos nas questões do JSON:
 // - "nps": Questão de Net Promoter Score

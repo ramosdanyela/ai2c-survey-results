@@ -29,11 +29,16 @@ export default function ExportPreview() {
   const { data, loading } = useSurveyData();
   const [showWordCloud, setShowWordCloud] = useState(true);
   const [isExportingWord, setIsExportingWord] = useState(false);
-  const [exportProgress, setExportProgress] = useState({ current: 0, total: 0 });
+  const [exportProgress, setExportProgress] = useState({
+    current: 0,
+    total: 0,
+  });
   const a4WrapperRef = useRef(null);
 
   // Format chosen on Export page: "pdf" or "word". Preview and single Save button follow this.
-  const exportFormatFromUrl = (searchParams.get("format") || "pdf").toLowerCase();
+  const exportFormatFromUrl = (
+    searchParams.get("format") || "pdf"
+  ).toLowerCase();
   const isWordFormat = exportFormatFromUrl === "word";
   // Preview shows format-specific layout (Word = no pills/circles, PDF = with pills)
   const isExportFormatWord = isWordFormat;
@@ -51,7 +56,7 @@ export default function ExportPreview() {
     const parsed = parseSelectedSections(
       selectedSectionsArray,
       exportFullReport,
-      data
+      data,
     );
     return parsed;
   }, [data, selectedSectionsArray, exportFullReport]);
@@ -76,7 +81,7 @@ export default function ExportPreview() {
         groups[item.sectionId] = [];
       }
       const exists = groups[item.sectionId].some(
-        (existing) => existing.subsectionId === item.subsectionId
+        (existing) => existing.subsectionId === item.subsectionId,
       );
       if (!exists) {
         groups[item.sectionId].push(item);
@@ -97,9 +102,7 @@ export default function ExportPreview() {
 
   // Get section name from sections (capitalized)
   const getSectionName = (sectionId) => {
-    const section = data?.sections?.find(
-      (s) => s.id === sectionId
-    );
+    const section = data?.sections?.find((s) => s.id === sectionId);
     const name = section?.name || sectionId;
     return capitalizeTitle(name);
   };
@@ -120,9 +123,13 @@ export default function ExportPreview() {
           const fileName = data?.surveyInfo?.title
             ? data.surveyInfo.title.replace(/[^a-zA-Z0-9\s]/g, "").trim()
             : "export";
-          await exportToWord(a4WrapperRef.current, fileName, (current, total) => {
-            setExportProgress({ current, total });
-          });
+          await exportToWord(
+            a4WrapperRef.current,
+            fileName,
+            (current, total) => {
+              setExportProgress({ current, total });
+            },
+          );
         } catch (err) {
           console.error("Word export failed:", err);
         } finally {
@@ -433,7 +440,10 @@ export default function ExportPreview() {
           <div className="export-preview-a4-wrapper" ref={a4WrapperRef}>
             {/* SurveyInfo card – above everything, centered */}
             {data?.surveyInfo && (
-              <div className="export-survey-info-block w-full flex justify-center mb-5 export-avoid-break" data-word-export="image">
+              <div
+                className="export-survey-info-block w-full flex justify-center mb-5 export-avoid-break"
+                data-word-export="image"
+              >
                 <div
                   className="w-full max-w-xl rounded-lg p-4 border border-border/50 text-center"
                   style={{
@@ -478,7 +488,7 @@ export default function ExportPreview() {
                           style={{ color: COLOR_GRAY_DARK }}
                         >
                           {data.surveyInfo.totalRespondents?.toLocaleString(
-                            "pt-BR"
+                            "pt-BR",
                           ) || "0"}
                         </div>
                         <div className="text-[10px] text-foreground/70">
@@ -558,60 +568,60 @@ export default function ExportPreview() {
               const isLastSection =
                 sectionIndex === orderedSectionIds.length - 1;
 
-                return (
-                  <div
-                    key={sectionId}
-                    className={`w-full min-w-0 mb-8 export-avoid-break ${sectionIndex === 0 ? "export-first-section" : ""}`}
-                  >
-                    {/* Section Header (only show if section has multiple subsections) - same static style as Export Preview badge */}
-                    {subsections.length > 1 && (
-                      <div className="mb-6 flex justify-center">
-                        <div
-                          className="export-section-badge px-4 py-2 rounded-lg inline-flex items-center justify-center"
-                          style={{
-                            backgroundColor: COLOR_ORANGE_PRIMARY,
-                            boxShadow: COLOR_ORANGE_PRIMARY,
-                          }}
-                          data-word-export="h1"
-                          data-word-text={getSectionName(sectionId)}
-                        >
-                          <h2 className="text-2xl font-bold text-white">
-                            {getSectionName(sectionId)}
-                          </h2>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Render each subsection */}
-                    {subsections.map((item, subsectionIndex) => (
+              return (
+                <div
+                  key={sectionId}
+                  className={`w-full min-w-0 mb-8 export-avoid-break ${sectionIndex === 0 ? "export-first-section" : ""}`}
+                >
+                  {/* Section Header (only show if section has multiple subsections) - same static style as Export Preview badge */}
+                  {subsections.length > 1 && (
+                    <div className="mb-6 flex justify-center">
                       <div
-                        key={`${item.sectionId}-${item.subsectionId}`}
-                        className={`min-w-0 ${subsectionIndex > 0 ? "mt-8" : ""}`.trim()}
+                        className="export-section-badge px-4 py-2 rounded-lg inline-flex items-center justify-center"
+                        style={{
+                          backgroundColor: COLOR_ORANGE_PRIMARY,
+                          boxShadow: COLOR_ORANGE_PRIMARY,
+                        }}
+                        data-word-export="h1"
+                        data-word-text={getSectionName(sectionId)}
                       >
-                        {/* Render the subsection content */}
-                        <GenericSectionRenderer
-                          key={`renderer-${item.sectionId}-${item.subsectionId}`}
-                          sectionId={item.sectionId}
-                          subSection={item.subsectionId}
-                          isExport={true}
-                          exportWordCloud={showWordCloud}
-                          isExportFormatWord={isExportFormatWord}
-                        />
+                        <h2 className="text-2xl font-bold text-white">
+                          {getSectionName(sectionId)}
+                        </h2>
                       </div>
-                    ))}
+                    </div>
+                  )}
 
-                    {/* Section divider at the end (except for last section) */}
-                    {!isLastSection && (
-                      <div className="mt-8" data-word-export="separator">
-                        <Separator />
-                      </div>
-                    )}
-                  </div>
-                );
+                  {/* Render each subsection */}
+                  {subsections.map((item, subsectionIndex) => (
+                    <div
+                      key={`${item.sectionId}-${item.subsectionId}`}
+                      className={`min-w-0 ${subsectionIndex > 0 ? "mt-8" : ""}`.trim()}
+                    >
+                      {/* Render the subsection content */}
+                      <GenericSectionRenderer
+                        key={`renderer-${item.sectionId}-${item.subsectionId}`}
+                        sectionId={item.sectionId}
+                        subSection={item.subsectionId}
+                        isExport={true}
+                        exportWordCloud={showWordCloud}
+                        isExportFormatWord={isExportFormatWord}
+                      />
+                    </div>
+                  ))}
+
+                  {/* Section divider at the end (except for last section) */}
+                  {!isLastSection && (
+                    <div className="mt-8" data-word-export="separator">
+                      <Separator />
+                    </div>
+                  )}
+                </div>
+              );
             })}
 
             {/* Timestamp at the end */}
-            <ExportTimestamp />
+            <ExportTimestamp uiTexts={data?.uiTexts} />
           </div>
         </main>
       </div>

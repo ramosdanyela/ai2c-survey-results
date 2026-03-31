@@ -21,7 +21,8 @@ import { severityTextColors } from "@/lib/colors";
 
 // Helper function to get uiTexts with fallbacks
 function useTableTexts() {
-  const { uiTexts } = useSurveyData();
+  const { data } = useSurveyData();
+  const uiTexts = data?.uiTexts;
 
   return {
     attributeDeepDive: {
@@ -93,6 +94,49 @@ function useTableTexts() {
 // 8. RecommendationsTable - Recommendations table with expandable tasks
 // 9. TasksTable - Tasks table nested inside recommendations
 // 10. SegmentationTable - Segmentation table with clusters
+
+// ============================================================
+// UITEXTS JSON SCHEMA FOR TABLES
+// ============================================================
+// All table header text is configurable via the report JSON file.
+// Add these sections to `uiTexts` in your JSON to override defaults:
+//
+// "attributeDeepDive": {
+//   "segment": "Segmento",        // Column: segment label
+//   "quantity": "Quantidade",     // Column: count
+//   "percentage": "%",            // Column: percentage
+//   "positive": "Positivo",       // Column: positive sentiment
+//   "negative": "Negativo",       // Column: negative sentiment
+//   "promoters": "Promotores",    // Column: NPS promoters
+//   "neutrals": "Neutros",        // Column: NPS neutrals
+//   "detractors": "Detratores",   // Column: NPS detractors
+//   "nps": "NPS",                 // Column: NPS score
+//   "sentiment": "Sentimento",    // Column: sentiment label
+//   "category": "Categoria"       // Column: category label
+// },
+// "executiveReport": {
+//   "tableHeaders": {
+//     "number": "#",
+//     "recommendation": "Recomendação",
+//     "severity": "Severidade",
+//     "stakeholders": "Stakeholders"
+//   },
+//   "tasks": {
+//     "hideTasks": "Ocultar tarefas",
+//     "showTasks": "Mostrar tarefas",
+//     "hide": "Ocultar",
+//     "show": "Mostrar",
+//     "implementationTasks": "Tarefas de Implementação",
+//     "task": "Tarefa",
+//     "responsibleArea": "Área Responsável"
+//   }
+// },
+// "supportAnalysis": {
+//   "clusterLabel": "Cluster",
+//   "clusterDescription": "Descrição",
+//   "memberPercentage": "% Membros",
+//   "clusterId": "ID"
+// }
 
 // ============================================================
 // 1. DISTRIBUTION TABLE

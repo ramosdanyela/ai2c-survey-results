@@ -619,7 +619,10 @@ export function QuestionsList({
 
     const badgeConfig = getBadgeConfig(questionType);
     const badgeVariant = badgeConfig?.variant || "outline";
-    const badgeLabel = badgeConfig?.label || getQuestionType(question);
+    const badgeLabel =
+      mergedUiTexts?.responseDetails?.[questionType] ||
+      badgeConfig?.label ||
+      getQuestionType(question);
     const badgeIconName = badgeConfig?.icon;
     const BadgeIcon = badgeIconName
       ? getIcon(badgeIconName)

@@ -1,0 +1,1772 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "language": "it",
+    "surveyId": "telmob_it"
+  },
+  "sections": [
+    {
+      "id": "executive",
+      "index": 0,
+      "name": "Rapporto esecutivo",
+      "icon": "FileText",
+      "subsections": [
+        {
+          "id": "executive-summary",
+          "index": 0,
+          "name": "Sintesi",
+          "icon": "ClipboardList",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Approfondimenti chiave",
+              "text": "L'insoddisfazione dei clienti nella telefonia mobile è causata principalmente da guasti nei servizi di rete, che comportano un alto rischio di abbandono e un urgente bisogno di miglioramenti mirati all'infrastruttura e al supporto.\n[*] Il net promoter score è -21, con i detrattori che superano i promotori di 21 punti, segnalando un'insoddisfazione diffusa.  \n[*] I problemi di servizio di rete dominano il feedback negativo, interessando il 43% degli intervistati e causando il maggiore impatto sulla soddisfazione complessiva.  \n[*] Il supporto clienti e la copertura di rete mostrano risultati contrastanti ma rimangono aree chiave che influenzano la fedeltà e il rischio di abbandono.  \n[*] I clienti postpagati riportano una soddisfazione significativamente inferiore a causa della fatturazione e della qualità del servizio, mentre le regioni Veneto e Toscana mostrano la fedeltà più bassa.",
+              "cardStyleVariant": "default"
+            },
+            {
+              "type": "card",
+              "index": 1,
+              "title": "Principali implicazioni",
+              "text": "[*] L'elevato volume di detrattori e l'intenzione di abbandono (36%) minacciano la stabilità dei ricavi e la quota di mercato.  \n[*] L'affidabilità della rete e la trasparenza della fatturazione sono aree prioritarie per ridurre l'attrito dei clienti, specialmente nei segmenti postpagati e nelle aree regionali critiche.  \n[*] Rafforzare il supporto clienti nelle regioni critiche può migliorare la fidelizzazione e la promozione del marchio.",
+              "cardStyleVariant": "default"
+            },
+            {
+              "type": "grid-container",
+              "index": 2,
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Punti chiave",
+                  "text": "[*] Il supporto clienti mostra una forza relativa con un impatto positivo moderato in Toscana e Lazio.",
+                  "cardStyleVariant": "default"
+                },
+                {
+                  "type": "card",
+                  "index": 1,
+                  "title": "Opportunità di miglioramento",
+                  "text": "[*] Il servizio di rete è il principale fattore negativo, con un impatto severo sulla soddisfazione e sulla fedeltà.  \n[*] La copertura di rete e l'offerta/prezzi contribuiscono anch'essi negativamente, richiedendo attenzione.",
+                  "cardStyleVariant": "default"
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 3,
+              "title": "Linee guida strategiche",
+              "text": "[*] Dare priorità agli aggiornamenti dell'infrastruttura di rete e all'ottimizzazione della copertura nelle aree chiave con deficit.\n[*] Affrontare le problematiche di trasparenza nella fatturazione e qualità del servizio per i clienti postpagati.\n[*] Migliorare le capacità di supporto clienti e la comunicazione mirata nelle regioni con scarse prestazioni.",
+              "cardStyleVariant": "default"
+            }
+          ]
+        },
+        {
+          "id": "executive-recommendations",
+          "index": 1,
+          "name": "Raccomandazioni",
+          "icon": "AlertTriangle",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "",
+              "text": "",
+              "cardStyleVariant": "overflow-hidden",
+              "components": [
+                {
+                  "type": "recommendationsTable",
+                  "index": 0,
+                  "dataPath": "sectionData.recommendationsTable"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "data": {
+        "recommendationsTable": {
+          "config": {
+            "severityLabels": {
+              "high": "Alto",
+              "medium": "Medio",
+              "low": "Basso",
+              "critical": "Critico"
+            }
+          },
+          "items": [
+            {
+              "id": 1,
+              "recommendation": "Espandere e Ottimizzare la Copertura di Rete nelle Aree Chiave in Deficit",
+              "severity": "high",
+              "stakeholders": [
+                "Operazioni di Rete",
+                "Rete di Accesso Radio (RAN)",
+                "Ottimizzazione della Rete"
+              ],
+              "tasks": [
+                {
+                  "task": "Condurre un'analisi dettagliata della copertura per identificare le aree chiave di deficit",
+                  "owner": "Ottimizzazione della rete"
+                },
+                {
+                  "task": "Sviluppare un piano di espansione che includa infrastrutture e risorse necessarie",
+                  "owner": "Operazioni di rete"
+                },
+                {
+                  "task": "Coordinarsi con la Radio Access Network (RAN) per progettare configurazioni radio ottimali",
+                  "owner": "Rete di accesso radio (RAN)"
+                },
+                {
+                  "task": "Procura l'attrezzatura e i materiali necessari per l'espansione della rete",
+                  "owner": "Operazioni di rete"
+                },
+                {
+                  "task": "Installa e integra la nuova infrastruttura di rete nelle aree identificate",
+                  "owner": "Operazioni di rete"
+                },
+                {
+                  "task": "Eseguire la sintonizzazione e l'ottimizzazione della frequenza radio dopo l'installazione",
+                  "owner": "Rete di accesso radio (RAN)"
+                },
+                {
+                  "task": "Eseguire test di rete approfonditi e assicurazione della qualità nelle aree ampliate",
+                  "owner": "Ottimizzazione della rete"
+                },
+                {
+                  "task": "Monitorare le metriche di prestazione e regolare le configurazioni per l'ottimizzazione",
+                  "owner": "Ottimizzazione della rete"
+                },
+                {
+                  "task": "Segnalare regolarmente i progressi e le problematiche a tutti gli stakeholder",
+                  "owner": "Operazioni di rete"
+                }
+              ]
+            },
+            {
+              "id": 2,
+              "recommendation": "Migliora l'affidabilità della rete attraverso aggiornamenti infrastrutturali",
+              "severity": "high",
+              "stakeholders": [
+                "Rete Core",
+                "Rete di Trasporto",
+                "Ingegneria di Rete"
+              ],
+              "tasks": [
+                {
+                  "task": "Condurre una valutazione completa dell'infrastruttura di rete per identificare le debolezze",
+                  "owner": "Ingegneria di rete"
+                },
+                {
+                  "task": "Sviluppare un piano di aggiornamento dettagliato basato sui risultati della valutazione",
+                  "owner": "Ingegneria di rete"
+                },
+                {
+                  "task": "Acquistare hardware e software necessari per gli aggiornamenti dell'infrastruttura",
+                  "owner": "Rete centrale"
+                },
+                {
+                  "task": "Pianificare l'implementazione dell'aggiornamento minimizzando l'interruzione del servizio",
+                  "owner": "Rete di trasporto"
+                },
+                {
+                  "task": "Coordinarsi con i fornitori per la consegna puntuale delle attrezzature",
+                  "owner": "Rete centrale"
+                },
+                {
+                  "task": "Distribuire hardware e software aggiornati attraverso i nodi della rete",
+                  "owner": "Ingegneria di rete"
+                },
+                {
+                  "task": "Eseguire test rigorosi dell'infrastruttura aggiornata per la sua affidabilità",
+                  "owner": "Ingegneria di rete"
+                },
+                {
+                  "task": "Monitorare le prestazioni della rete dopo l'aggiornamento per garantire miglioramenti",
+                  "owner": "Rete centrale"
+                },
+                {
+                  "task": "Fornire formazione al personale operativo sulle nuove funzionalità dell'infrastruttura",
+                  "owner": "Ingegneria di rete"
+                },
+                {
+                  "task": "Documentare tutte le modifiche e aggiornare i manuali di funzionamento della rete",
+                  "owner": "Ingegneria di rete"
+                },
+                {
+                  "task": "Stabilire un programma di manutenzione continua per l'infrastruttura aggiornata",
+                  "owner": "Rete di trasporto"
+                }
+              ]
+            },
+            {
+              "id": 3,
+              "recommendation": "Migliora la qualità del segnale tramite tecnologie radio avanzate",
+              "severity": "medium",
+              "stakeholders": [
+                "Rete di Accesso Radio (RAN)",
+                "Ingegneria di Rete",
+                "Tecnologia e IT"
+              ],
+              "tasks": [
+                {
+                  "task": "Eseguire la valutazione della qualità del segnale corrente e la misurazione di base",
+                  "owner": "Rete di accesso radio (RAN)"
+                },
+                {
+                  "task": "Ricercare e selezionare tecnologie radio avanzate adatte all'implementazione",
+                  "owner": "Ingegneria di rete"
+                },
+                {
+                  "task": "Sviluppare specifiche tecniche dettagliate e un piano di integrazione per le tecnologie scelte",
+                  "owner": "Tecnologia e IT"
+                },
+                {
+                  "task": "Eseguire test pilota di tecnologie radio avanzate in aree di rete selezionate",
+                  "owner": "Rete di accesso radio (RAN)"
+                },
+                {
+                  "task": "Analizzare i risultati del test pilota e regolare le configurazioni tecnologiche secondo necessità",
+                  "owner": "Ingegneria di rete"
+                },
+                {
+                  "task": "Formare il personale operativo sulle nuove tecnologie e sulle procedure di rete aggiornate",
+                  "owner": "Tecnologia e IT"
+                },
+                {
+                  "task": "Implementare aggiornamenti tecnologici su segmenti di rete più ampi in base al successo del progetto pilota",
+                  "owner": "Rete di accesso radio (RAN)"
+                },
+                {
+                  "task": "Monitorare la qualità del segnale post-implementazione e generare rapporti sulle prestazioni",
+                  "owner": "Ingegneria di rete"
+                },
+                {
+                  "task": "Raccogliere il feedback degli utenti e condurre valutazioni di miglioramento continuo",
+                  "owner": "Tecnologia e IT"
+                }
+              ]
+            },
+            {
+              "id": 4,
+              "recommendation": "Rafforzare la formazione del supporto clienti e i tempi di risposta",
+              "severity": "medium",
+              "stakeholders": [
+                "Servizio Clienti",
+                "Call Center",
+                "Customer Experience (CX)",
+                "Formazione e Sviluppo"
+              ],
+              "tasks": [
+                {
+                  "task": "Valutare i programmi di formazione attuali per il supporto clienti e identificare le lacune",
+                  "owner": "Apprendimento e sviluppo"
+                },
+                {
+                  "task": "Sviluppare moduli di formazione avanzati incentrati sulle competenze chiave del servizio clienti",
+                  "owner": "Apprendimento e sviluppo"
+                },
+                {
+                  "task": "Pianificare e condurre sessioni di formazione per tutto il personale di assistenza clienti",
+                  "owner": "Apprendimento e sviluppo"
+                },
+                {
+                  "task": "Implementare una base di conoscenza centralizzata per i rappresentanti del supporto clienti",
+                  "owner": "assistenza clienti"
+                },
+                {
+                  "task": "Stabilire obiettivi chiari sui tempi di risposta basati sulle aspettative dei clienti e sugli standard del settore",
+                  "owner": "Esperienza del cliente (CX)"
+                },
+                {
+                  "task": "Aggiornare la tecnologia del call center per migliorare la gestione e il tracciamento delle chiamate",
+                  "owner": "Call Center"
+                },
+                {
+                  "task": "Monitorare e analizzare le metriche del tempo di risposta su base settimanale",
+                  "owner": "Esperienza del cliente (CX)"
+                },
+                {
+                  "task": "Fornire coaching continuo e feedback agli agenti del supporto clienti basati sui dati di performance",
+                  "owner": "assistenza clienti"
+                },
+                {
+                  "task": "Costituire un team interfunzionale per esaminare il feedback dei clienti e migliorare i processi",
+                  "owner": "Esperienza del cliente (CX)"
+                },
+                {
+                  "task": "Revisionare e adeguare trimestralmente gli obiettivi di formazione e tempi di risposta per un miglioramento continuo",
+                  "owner": "Apprendimento e sviluppo"
+                }
+              ]
+            },
+            {
+              "id": 5,
+              "recommendation": "Implementare una comunicazione proattiva su problemi di servizio e risoluzioni",
+              "severity": "low",
+              "stakeholders": [
+                "Comunicazioni Aziendali",
+                "Customer Experience (CX)",
+                "Operazioni Clienti"
+              ],
+              "tasks": [
+                {
+                  "task": "Sviluppare protocolli di comunicazione per le notifiche di problemi di servizio",
+                  "owner": "Comunicazioni aziendali"
+                },
+                {
+                  "task": "Crea messaggi modello per diversi tipi di problemi di servizio",
+                  "owner": "Comunicazioni aziendali"
+                },
+                {
+                  "task": "Stabilire un sistema di monitoraggio per la rilevazione precoce dei problemi di servizio",
+                  "owner": "Operazioni Clienti"
+                },
+                {
+                  "task": "Formare il team Customer Experience sui protocolli di comunicazione aggiornati",
+                  "owner": "Esperienza del cliente (CX)"
+                },
+                {
+                  "task": "Integrare i trigger di comunicazione con gli strumenti di monitoraggio dei problemi di servizio",
+                  "owner": "Operazioni Clienti"
+                },
+                {
+                  "task": "Pianificare riunioni di revisione regolari tra i team di Corporate Communications e CX",
+                  "owner": "Comunicazioni aziendali"
+                },
+                {
+                  "task": "Lanciare un programma pilota per la comunicazione proattiva con segmenti di clienti selezionati",
+                  "owner": "Esperienza del cliente (CX)"
+                },
+                {
+                  "task": "Raccogliere feedback dai clienti sull'efficacia della comunicazione",
+                  "owner": "Esperienza del cliente (CX)"
+                },
+                {
+                  "task": "Analizzare il feedback e perfezionare l'approccio comunicativo",
+                  "owner": "Comunicazioni aziendali"
+                },
+                {
+                  "task": "Implementare il lancio completo del sistema di comunicazione proattiva",
+                  "owner": "Operazioni Clienti"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "support",
+      "index": 1,
+      "name": "Analisi di supporto",
+      "icon": "Heart",
+      "subsections": [
+        {
+          "id": "support-sentiment",
+          "index": 0,
+          "name": "Analisi del sentiment per categorie chiave",
+          "icon": "Smile",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "useDescription": true,
+              "text": "Il servizio di rete è un chiaro punto dolente con un alto sentimento negativo e la quota totale di menzioni più grande, che porta a un impatto negativo significativo sulla soddisfazione del cliente. Il supporto clienti mostra un sentimento misto con menzioni positive e negative quasi equilibrate, riflettendo esperienze clienti variegate. Il team di rete dovrebbe indagare i problemi specifici che causano insoddisfazione nel servizio di rete e sviluppare miglioramenti mirati per ridurre il feedback negativo.",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-description",
+              "components": [
+                {
+                  "type": "sentimentDivergentChart",
+                  "index": 0,
+                  "dataPath": "sectionData.sentimentDivergentChart",
+                  "config": {
+                    "yAxisDataKey": "category"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "support-intent",
+          "index": 1,
+          "name": "Intenzioni del rispondente",
+          "icon": "Target",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "text": "I dati rivelano un rischio significativo per la fidelizzazione dei clienti, con il 36% che probabilmente smetterà di utilizzare il servizio e un ulteriore 34% che esprime preoccupazioni nonostante intenda rimanere, indicando un'insoddisfazione o incertezza diffusa. Solo il 28% è molto soddisfatto e probabilmente promuoverà il servizio, il che è insufficiente per generare passaparola positivo o crescita. È necessaria un'azione immediata per affrontare le preoccupazioni dei clienti e migliorare l'esperienza complessiva del servizio per ridurre l'attrito e convertire più clienti in promotori.",
+              "cardStyleVariant": "default",
+              "components": [
+                {
+                  "type": "barChart",
+                  "index": 0,
+                  "dataPath": "sectionData.respondentIntentChart",
+                  "config": {
+                    "dataKey": "percentage",
+                    "yAxisDataKey": "intent"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "support-segmentation",
+          "index": 2,
+          "name": "Segmentazione degli intervistati",
+          "icon": "Users2",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "",
+              "text": "",
+              "cardStyleVariant": "overflow-hidden",
+              "components": [
+                {
+                  "type": "segmentationTable",
+                  "index": 0,
+                  "dataPath": "sectionData.segmentationTable"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "data": {
+        "sentimentDivergentChart": [
+          {
+            "category": "servizio di rete",
+            "positive": 9.2,
+            "negative": 33.8
+          },
+          {
+            "category": "assistenza clienti",
+            "positive": 9.0,
+            "negative": 14.4
+          },
+          {
+            "category": "copertura di rete",
+            "positive": 2.4,
+            "negative": 11.6
+          },
+          {
+            "category": "offerta e prezzi",
+            "positive": 2.1,
+            "negative": 9.2
+          },
+          {
+            "category": "altro",
+            "positive": 2.4,
+            "negative": 5.9
+          }
+        ],
+        "segmentationTable": [
+          {
+            "cluster": "Detrattore — servizio di rete",
+            "description": "I detrattori menzionano principalmente il servizio di rete",
+            "percentage": 25.0,
+            "id": 1
+          },
+          {
+            "cluster": "Passivo — servizio di rete",
+            "description": "Individui con un atteggiamento passivo che si impegnano o si affidano al servizio di rete senza coinvolgimento attivo o iniziativa.",
+            "percentage": 22.0,
+            "id": 2
+          },
+          {
+            "cluster": "Promotore — servizio di rete",
+            "description": "Promotori che menzionano principalmente il servizio di rete",
+            "percentage": 14.0,
+            "id": 3
+          },
+          {
+            "cluster": "Promotore — assistenza clienti",
+            "description": "Promotori che menzionano principalmente il supporto clienti",
+            "percentage": 6.0,
+            "id": 4
+          },
+          {
+            "cluster": "Promotore — altro",
+            "description": "Promotori che menzionano principalmente altri",
+            "percentage": 5.0,
+            "id": 5
+          },
+          {
+            "cluster": "Detrattore — assistenza clienti",
+            "description": "I detrattori menzionano principalmente il supporto clienti",
+            "percentage": 5.0,
+            "id": 6
+          },
+          {
+            "cluster": "Passivo — altro",
+            "description": "Individui con un atteggiamento passivo influenzato da fattori classificati come altri, senza coinvolgimento attivo o fattori specificati.",
+            "percentage": 5.0,
+            "id": 7
+          },
+          {
+            "cluster": "Altri",
+            "description": "Gruppo di 10 piccoli segmenti che da soli non sono statisticamente rilevanti.",
+            "percentage": 18.0,
+            "id": " "
+          }
+        ],
+        "respondentIntentChart": [
+          {
+            "intent": "Probabilmente smetterà di utilizzare il prodotto/servizio",
+            "percentage": 36.0
+          },
+          {
+            "intent": "Intende restare ma esprime preoccupazione",
+            "percentage": 34.0
+          },
+          {
+            "intent": "Molto soddisfatto e promuoverei il prodotto/servizio",
+            "percentage": 28.0
+          },
+          {
+            "intent": "Soddisfatto e stabile",
+            "percentage": 2.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "questions",
+      "index": 2,
+      "name": "Analisi per domanda",
+      "icon": "MessageSquare",
+      "questions": [
+        {
+          "question_id": "question01",
+          "index": 0,
+          "question": "Quanto è probabile che consiglieresti la nostra azienda a un amico o collega su una scala da 0 a 10?",
+          "summary": "La distribuzione attuale mostra il 51% dei rispondenti come detrattori, suggerendo che oltre la metà è meno propensa a raccomandare l'azienda; dare priorità ai miglioramenti nelle aree di servizio identificate dai detrattori potrebbe aiutare ad aumentare la fedeltà complessiva dei clienti.",
+          "data": {
+            "npsScore": -21.0,
+            "npsStackedChart": [
+              {
+                "option": "Detrattore",
+                "value": 51,
+                "percentage": 51.0
+              },
+              {
+                "option": "Promotore",
+                "value": 30,
+                "percentage": 30.0
+              },
+              {
+                "option": "Neutro",
+                "value": 19,
+                "percentage": 19.0
+              }
+            ],
+            "wordCloud": [],
+            "sentimentCategories": [],
+            "topicsByCategory": []
+          },
+          "npsScore": null,
+          "id": 1,
+          "questionType": "nps"
+        },
+        {
+          "question_id": "question02",
+          "index": 1,
+          "question": "Quali sono i punti principali che incidono sulla tua soddisfazione?",
+          "summary": "I principali fattori di insoddisfazione dei clienti nella telefonia mobile sono problemi legati alla rete, principalmente scarsa qualità del servizio di rete (46 menzioni negative) e problemi di copertura (14 menzioni negative), mentre i feedback positivi sono per lo più legati alla qualità del servizio di rete (19 menzioni positive) e al supporto clienti (11 menzioni positive).",
+          "data": {
+            "sentimentDivergentChart": [
+              {
+                "value": "servizio di rete",
+                "positive": 9.2,
+                "negative": 33.8
+              },
+              {
+                "value": "assistenza clienti",
+                "positive": 9.0,
+                "negative": 14.4
+              },
+              {
+                "value": "copertura di rete",
+                "positive": 2.4,
+                "negative": 11.6
+              },
+              {
+                "value": "offerta e prezzi",
+                "positive": 2.1,
+                "negative": 9.2
+              },
+              {
+                "value": "altro",
+                "positive": 2.4,
+                "negative": 5.9
+              }
+            ],
+            "topCategoriesCards": [
+              {
+                "rank": 1,
+                "category": "servizio di rete",
+                "mentions": 182,
+                "percentage": 100,
+                "topics": [
+                  {
+                    "topic": "affidabilità di internet",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "velocità del servizio",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "velocità di internet",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "affidabilità della rete",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "affidabilità del servizio",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "qualità del segnale",
+                    "sentiment": "negative"
+                  }
+                ]
+              },
+              {
+                "rank": 2,
+                "category": "assistenza clienti",
+                "mentions": 99,
+                "percentage": 54,
+                "topics": [
+                  {
+                    "topic": "assistenza clienti",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "qualità del servizio",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "risoluzione dei problemi",
+                    "sentiment": "positive"
+                  },
+                  {
+                    "topic": "Preoccupazioni per la fidelizzazione dei clienti",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "assistenza clienti",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "soddisfazione del cliente",
+                    "sentiment": "negative"
+                  }
+                ]
+              },
+              {
+                "rank": 3,
+                "category": "copertura di rete",
+                "mentions": 59,
+                "percentage": 32,
+                "topics": [
+                  {
+                    "topic": "copertura di rete",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "qualità del segnale",
+                    "sentiment": "negative"
+                  },
+                  {
+                    "topic": "Problemi di accesso alla rete",
+                    "sentiment": "negative"
+                  }
+                ]
+              }
+            ],
+            "wordCloud": [
+              {
+                "text": "Copertura di rete",
+                "value": 18
+              },
+              {
+                "text": "Affidabilità della rete",
+                "value": 10
+              },
+              {
+                "text": "Affidabilità del servizio",
+                "value": 8
+              },
+              {
+                "text": "Qualità del segnale",
+                "value": 8
+              },
+              {
+                "text": "Velocità di rete",
+                "value": 7
+              },
+              {
+                "text": "Prezzi",
+                "value": 6
+              },
+              {
+                "text": "Soddisfazione del cliente",
+                "value": 6
+              },
+              {
+                "text": "Stabilità della rete",
+                "value": 5
+              },
+              {
+                "text": "Connettività internet",
+                "value": 5
+              },
+              {
+                "text": "Qualità del servizio",
+                "value": 4
+              },
+              {
+                "text": "Assistenza clienti",
+                "value": 3
+              },
+              {
+                "text": "Preoccupazione per la fidelizzazione dei clienti",
+                "value": 3
+              },
+              {
+                "text": "Assistenza clienti",
+                "value": 3
+              },
+              {
+                "text": "Velocità di connessione",
+                "value": 3
+              },
+              {
+                "text": "Affidabilità di internet",
+                "value": 3
+              },
+              {
+                "text": "Potenza del segnale 5 g",
+                "value": 2
+              },
+              {
+                "text": "Soddisfazione del servizio",
+                "value": 2
+              },
+              {
+                "text": "Problema di accesso alla rete",
+                "value": 2
+              },
+              {
+                "text": "Problema di rinnovo del piano",
+                "value": 2
+              },
+              {
+                "text": "Velocità di internet",
+                "value": 2
+              },
+              {
+                "text": "Chiamata interrotta",
+                "value": 2
+              },
+              {
+                "text": "Qualità di internet",
+                "value": 2
+              },
+              {
+                "text": "Connettività di rete",
+                "value": 2
+              },
+              {
+                "text": "Interruzione del servizio",
+                "value": 1
+              },
+              {
+                "text": "Accesso allo stream",
+                "value": 1
+              },
+              {
+                "text": "Trattamento rispettoso",
+                "value": 1
+              },
+              {
+                "text": "Efficienza della rete",
+                "value": 1
+              },
+              {
+                "text": "Problema tecnico",
+                "value": 1
+              },
+              {
+                "text": "Interruzione della rete",
+                "value": 1
+              },
+              {
+                "text": "Problema di rete",
+                "value": 1
+              },
+              {
+                "text": "Affidabilità del segnale",
+                "value": 1
+              },
+              {
+                "text": "Servizio di rete",
+                "value": 1
+              },
+              {
+                "text": "Valore del servizio",
+                "value": 1
+              },
+              {
+                "text": "Velocità del servizio",
+                "value": 1
+              },
+              {
+                "text": "Prestazioni di rete",
+                "value": 1
+              },
+              {
+                "text": "Rapporto di problema",
+                "value": 1
+              },
+              {
+                "text": "Problema di copertura",
+                "value": 1
+              },
+              {
+                "text": "Prontezza",
+                "value": 1
+              },
+              {
+                "text": "Risoluzione dei problemi",
+                "value": 1
+              },
+              {
+                "text": "Interruzione del servizio",
+                "value": 1
+              },
+              {
+                "text": "Promozionibonuse",
+                "value": 1
+              },
+              {
+                "text": "Stabilità della connessione",
+                "value": 1
+              },
+              {
+                "text": "Problema di modifica del piano",
+                "value": 1
+              },
+              {
+                "text": "Durata del piano",
+                "value": 1
+              },
+              {
+                "text": "Efficienza del servizio",
+                "value": 1
+              },
+              {
+                "text": "Esito positivo",
+                "value": 1
+              },
+              {
+                "text": "Difetto di servizio",
+                "value": 1
+              },
+              {
+                "text": "Reclamo di servizio",
+                "value": 1
+              },
+              {
+                "text": "Velocità di risposta",
+                "value": 1
+              },
+              {
+                "text": "Dipendenza energetica",
+                "value": 1
+              }
+            ],
+            "npsScore": null,
+            "sentimentCategories": [
+              {
+                "category": "servizio di rete",
+                "negative": 3.0,
+                "positive": 3.0,
+                "neutral": 0.0
+              },
+              {
+                "category": "assistenza clienti",
+                "negative": 3.0,
+                "positive": 3.0,
+                "neutral": 0.0
+              },
+              {
+                "category": "copertura di rete",
+                "negative": 3.0,
+                "positive": 0.0,
+                "neutral": 0.0
+              }
+            ],
+            "topicsByCategory": [
+              {
+                "category": "servizio di rete",
+                "positiveTopics": [
+                  "affidabilità di internet",
+                  "velocità del servizio",
+                  "velocità di internet"
+                ],
+                "negativeTopics": [
+                  "affidabilità della rete",
+                  "affidabilità del servizio",
+                  "qualità del segnale"
+                ],
+                "neutralTopics": []
+              },
+              {
+                "category": "assistenza clienti",
+                "positiveTopics": [
+                  "assistenza clienti",
+                  "qualità del servizio",
+                  "risoluzione dei problemi"
+                ],
+                "negativeTopics": [
+                  "Preoccupazioni per la fidelizzazione dei clienti",
+                  "assistenza clienti",
+                  "soddisfazione del cliente"
+                ],
+                "neutralTopics": []
+              },
+              {
+                "category": "copertura di rete",
+                "positiveTopics": [],
+                "negativeTopics": [
+                  "copertura di rete",
+                  "qualità del segnale",
+                  "Problemi di accesso alla rete"
+                ],
+                "neutralTopics": []
+              }
+            ]
+          },
+          "wordCloud": [],
+          "id": 2,
+          "questionType": "open-ended"
+        }
+      ],
+      "components": [],
+      "data": {
+        "config": {
+          "npsCategories": {
+            "detractor": "Detrattore",
+            "promoter": "Promotore",
+            "neutral": "Neutro",
+            "labels": {
+              "detractors": "Detrattori",
+              "neutrals": "Neutrali",
+              "promoters": "Promotori"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "attributes",
+      "index": 3,
+      "name": "Analisi degli attributi",
+      "icon": "Layers",
+      "defaultIcon": "Building",
+      "subsections": [
+        {
+          "id": "attributes-Tipodicliente",
+          "index": 0,
+          "name": "Tipo di cliente",
+          "icon": "Layers",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Riepilogo",
+              "text": "I clienti postpagati mostrano una soddisfazione e una fedeltà significativamente inferiori, principalmente a causa di problemi di fatturazione e qualità del servizio, indicando un urgente bisogno di migliorare la trasparenza e l'affidabilità della rete in questo segmento.  \nI clienti prepagati, pur essendo relativamente più soddisfatti, evidenziano opportunità per migliorare il supporto clienti, le prestazioni dell'app e la comunicazione per rafforzare ulteriormente la loro esperienza.  \nConcentrarsi su interventi mirati a questi specifici punti critici per tipo di cliente ottimizzerà l'allocazione delle risorse e favorirà la soddisfazione e la fidelizzazione complessive dei clienti nel settore della telefonia mobile.",
+              "cardStyleVariant": "default"
+            },
+            {
+              "type": "card",
+              "index": 1,
+              "title": "Distribuzione degli intervistati",
+              "cardStyleVariant": "flex-column",
+              "cardContentVariant": "with-charts",
+              "components": [
+                {
+                  "type": "barChart",
+                  "dataPath": "sectionData.Tipodicliente.distributionChart"
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 2,
+              "title": "Quanto è probabile che consiglieresti la nostra azienda a un amico o collega su una scala da 0 a 10?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Riepilogo",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "Il Net Promoter Score (NPS) indica una bassa soddisfazione dei clienti sia per la telefonia mobile postpagata che prepagata, con i clienti postpagati che mostrano un punteggio significativamente più negativo (-25,4) rispetto ai prepagati (-13,5). L'alta percentuale di detrattori tra gli utenti postpagati (52,4%) suggerisce una maggiore insoddisfazione potenzialmente legata a problemi di servizio o a preoccupazioni sui prezzi in questo segmento. Migliorare l'esperienza del cliente per i clienti postpagati dovrebbe essere una priorità per ridurre i detrattori e aumentare la fedeltà complessiva."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "h4",
+                      "index": 0,
+                      "text": "Promotori, Neutrali, Detrattori"
+                    },
+                    {
+                      "type": "npsDistributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.Tipodicliente.questions.question01.npsDistributionTable",
+                      "categoryName": "Tipo di cliente",
+                      "config": {
+                        "yAxisDataKey": "Tipo di cliente"
+                      }
+                    },
+                    {
+                      "type": "h4",
+                      "index": 2,
+                      "text": "NPS"
+                    },
+                    {
+                      "type": "npsTable",
+                      "index": 3,
+                      "dataPath": "sectionData.Tipodicliente.questions.question01.npsTable",
+                      "categoryName": "Tipo di cliente",
+                      "config": {
+                        "dataKey": "NPS",
+                        "yAxisDataKey": "Tipo di cliente"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 3,
+              "title": "Quali sono i punti principali che incidono sulla tua soddisfazione?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Riepilogo",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "I clienti prepagati mostrano un sentimento positivo più elevato, apprezzando il supporto clienti, la comunicazione e miglioramenti come la potenza del segnale 5G e le prestazioni dell'app, mentre i clienti postpagati esprimono prevalentemente un sentimento negativo, principalmente a causa di problemi di fatturazione e riscossione e problemi di servizio 4G/5G. La fatturazione e la riscossione si distinguono come un punto critico per gli utenti postpagati, mentre la comunicazione e la concorrenza sono fattori negativi più rilevanti per i clienti prepagati. Complessivamente, migliorare la trasparenza della fatturazione per i clienti postpagati e migliorare la qualità della rete e l'accessibilità dell'app per gli utenti prepagati potrebbe aumentare significativamente la soddisfazione in entrambi i segmenti."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "container",
+                      "index": 0,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Analisi del sentimento"
+                        },
+                        {
+                          "type": "sentimentThreeColorChart",
+                          "index": 1,
+                          "dataPath": "sectionData.Tipodicliente.questions.question02.satisfactionImpactSentimentChart"
+                        },
+                        {
+                          "type": "sentimentImpactTable",
+                          "index": 2,
+                          "dataPath": "sectionData.Tipodicliente.questions.question02.satisfactionImpactSentimentTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorie con sentimento positivo - Top 3"
+                        },
+                        {
+                          "type": "positiveCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.Tipodicliente.questions.question02.positiveCategoriesTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorie con sentimento negativo - Top 3"
+                        },
+                        {
+                          "type": "negativeCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.Tipodicliente.questions.question02.negativeCategoriesTable"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "data": {
+            "distributionChart": [
+              {
+                "segment": "postpagato",
+                "count": 63,
+                "percentage": 63.0
+              },
+              {
+                "segment": "prepagato",
+                "count": 37,
+                "percentage": 37.0
+              }
+            ],
+            "distributionTable": [
+              {
+                "segment": "postpagato",
+                "count": 63,
+                "percentage": 63.0
+              },
+              {
+                "segment": "prepagato",
+                "count": 37,
+                "percentage": 37.0
+              }
+            ],
+            "questions": {
+              "question01": {
+                "npsDistributionTable": [
+                  {
+                    "Tipo di cliente": "postpagato",
+                    "promoters": 27.0,
+                    "neutrals": 20.6,
+                    "detractors": 52.4
+                  },
+                  {
+                    "Tipo di cliente": "prepagato",
+                    "promoters": 35.1,
+                    "neutrals": 16.2,
+                    "detractors": 48.6
+                  }
+                ],
+                "npsTable": [
+                  {
+                    "Tipo di cliente": "postpagato",
+                    "NPS": -25.4
+                  },
+                  {
+                    "Tipo di cliente": "prepagato",
+                    "NPS": -13.5
+                  }
+                ],
+                "distributionChart": [],
+                "distributionTable": [],
+                "stackedBarMECE": [],
+                "analyticalTable": [],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "question02": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "stackedBarMECE": [],
+                "analyticalTable": [],
+                "satisfactionImpactSentimentChart": [
+                  {
+                    "sentiment": "negativo",
+                    "postpagato": 79.4,
+                    "prepagato": 65.0
+                  },
+                  {
+                    "sentiment": "non applicabile",
+                    "postpagato": 0.0,
+                    "prepagato": 0.7
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "postpagato": 20.6,
+                    "prepagato": 34.3
+                  }
+                ],
+                "satisfactionImpactSentimentTable": [
+                  {
+                    "sentiment": "negativo",
+                    "postpagato": 79.4,
+                    "prepagato": 65.0
+                  },
+                  {
+                    "sentiment": "non applicabile",
+                    "postpagato": 0.0,
+                    "prepagato": 0.7
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "postpagato": 20.6,
+                    "prepagato": 34.3
+                  }
+                ],
+                "positiveCategoriesTable": [
+                  {
+                    "category": "servizio di rete",
+                    "postpagato": 30.5,
+                    "prepagato": 44.7
+                  },
+                  {
+                    "category": "assistenza clienti",
+                    "postpagato": 42.4,
+                    "prepagato": 27.7
+                  },
+                  {
+                    "category": "copertura di rete",
+                    "postpagato": 10.2,
+                    "prepagato": 8.5
+                  }
+                ],
+                "negativeCategoriesTable": [
+                  {
+                    "category": "servizio di rete",
+                    "postpagato": 41.2,
+                    "prepagato": 55.1
+                  },
+                  {
+                    "category": "assistenza clienti",
+                    "postpagato": 23.7,
+                    "prepagato": 7.9
+                  },
+                  {
+                    "category": "copertura di rete",
+                    "postpagato": 15.4,
+                    "prepagato": 15.7
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "id": "attributes-Regione",
+          "index": 1,
+          "name": "Regione",
+          "icon": "Layers",
+          "components": [
+            {
+              "type": "card",
+              "index": 0,
+              "title": "Riepilogo",
+              "text": "Le regioni Veneto e Toscana mostrano i punteggi NPS più bassi, dovuti a elevate percentuali di detrattori, segnalando un urgente bisogno di miglioramenti nella affidabilità del servizio e nell’esperienza.  \nMentre il supporto clienti è un fattore positivo importante in Toscana e Lazio, la Sicilia affronta sfide critiche con la comunicazione, la fatturazione e le prestazioni 5G che incidono pesantemente sulla soddisfazione.  \nInterventi mirati che affrontino la qualità della rete e la trasparenza della fatturazione in Sicilia e Veneto, insieme al rafforzamento del supporto clienti in Lombardia e Sicilia, sono essenziali per ridurre il churn e aumentare la fedeltà.",
+              "cardStyleVariant": "default"
+            },
+            {
+              "type": "card",
+              "index": 1,
+              "title": "Distribuzione degli intervistati",
+              "cardStyleVariant": "flex-column",
+              "cardContentVariant": "with-charts",
+              "components": [
+                {
+                  "type": "barChart",
+                  "dataPath": "sectionData.Regione.distributionChart"
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 2,
+              "title": "Quanto è probabile che consiglieresti la nostra azienda a un amico o collega su una scala da 0 a 10?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Riepilogo",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "I punteggi NPS in tutte le regioni indicano un sentimento generalmente negativo dei clienti verso il servizio di telefonia mobile, con Veneto e Toscana che mostrano i punteggi più bassi (-29,1 e -28,6 rispettivamente), evidenziando un'insoddisfazione significativa. Lazio e Lombardia, pur essendo anch'esse negative, si comportano relativamente meglio con un NPS intorno a -12, trainato da una proporzione leggermente più alta di promotori e neutrali rispetto a regioni come Sicilia e Veneto, che presentano le percentuali più elevate di detrattori. Ciò suggerisce un urgente bisogno di miglioramenti mirati nell'esperienza del cliente e nell'affidabilità del servizio, specialmente nelle regioni con i rapporti più alti di detrattori, per aumentare la soddisfazione complessiva e ridurre il rischio di abbandono."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "h4",
+                      "index": 0,
+                      "text": "Promotori, Neutrali, Detrattori"
+                    },
+                    {
+                      "type": "npsDistributionTable",
+                      "index": 1,
+                      "dataPath": "sectionData.Regione.questions.question01.npsDistributionTable",
+                      "categoryName": "Regione",
+                      "config": {
+                        "yAxisDataKey": "Regione"
+                      }
+                    },
+                    {
+                      "type": "h4",
+                      "index": 2,
+                      "text": "NPS"
+                    },
+                    {
+                      "type": "npsTable",
+                      "index": 3,
+                      "dataPath": "sectionData.Regione.questions.question01.npsTable",
+                      "categoryName": "Regione",
+                      "config": {
+                        "dataKey": "NPS",
+                        "yAxisDataKey": "Regione"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "index": 3,
+              "title": "Quali sono i punti principali che incidono sulla tua soddisfazione?",
+              "cardStyleVariant": "default",
+              "cardContentVariant": "with-tables",
+              "components": [
+                {
+                  "type": "card",
+                  "index": 0,
+                  "title": "Riepilogo",
+                  "titleStyleVariant": "h3-style",
+                  "cardStyleVariant": "flat",
+                  "text": "Il supporto clienti è il fattore positivo più significativo per la soddisfazione del cliente, particolarmente forte in Toscana e Lazio, mentre il sentimento positivo complessivo è più alto in Lazio e Veneto ma notevolmente basso in Lombardia, Sicilia e Toscana.  \nLe principali preoccupazioni negative riguardano problemi di comunicazione e fatturazione, in particolare in Sicilia e Veneto, con la Sicilia che segnala anche un'insoddisfazione notevole relativa alle prestazioni del 5G e alla qualità del servizio.  \nRegioni come la Sicilia mostrano il sentimento negativo più elevato (86,1%), indicando un urgente bisogno di miglioramenti nelle prestazioni della rete, mentre il sentimento positivo in Toscana è strettamente legato all'efficacia del supporto clienti e della comunicazione."
+                },
+                {
+                  "type": "container",
+                  "index": 0,
+                  "components": [
+                    {
+                      "type": "container",
+                      "index": 0,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Analisi del sentimento"
+                        },
+                        {
+                          "type": "sentimentThreeColorChart",
+                          "index": 1,
+                          "dataPath": "sectionData.Regione.questions.question02.satisfactionImpactSentimentChart"
+                        },
+                        {
+                          "type": "sentimentImpactTable",
+                          "index": 2,
+                          "dataPath": "sectionData.Regione.questions.question02.satisfactionImpactSentimentTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorie con sentimento positivo - Top 3"
+                        },
+                        {
+                          "type": "positiveCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.Regione.questions.question02.positiveCategoriesTable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "index": 1,
+                      "components": [
+                        {
+                          "type": "h3",
+                          "index": 0,
+                          "text": "Categorie con sentimento negativo - Top 3"
+                        },
+                        {
+                          "type": "negativeCategoriesTable",
+                          "index": 2,
+                          "dataPath": "sectionData.Regione.questions.question02.negativeCategoriesTable"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "data": {
+            "distributionChart": [
+              {
+                "segment": "Lazio",
+                "count": 25,
+                "percentage": 25.0
+              },
+              {
+                "segment": "Veneto",
+                "count": 24,
+                "percentage": 24.0
+              },
+              {
+                "segment": "Sicilia",
+                "count": 19,
+                "percentage": 19.0
+              },
+              {
+                "segment": "Lombardia",
+                "count": 18,
+                "percentage": 18.0
+              },
+              {
+                "segment": "Toscana",
+                "count": 14,
+                "percentage": 14.0
+              }
+            ],
+            "distributionTable": [
+              {
+                "segment": "Lazio",
+                "count": 25,
+                "percentage": 25.0
+              },
+              {
+                "segment": "Veneto",
+                "count": 24,
+                "percentage": 24.0
+              },
+              {
+                "segment": "Sicilia",
+                "count": 19,
+                "percentage": 19.0
+              },
+              {
+                "segment": "Lombardia",
+                "count": 18,
+                "percentage": 18.0
+              },
+              {
+                "segment": "Toscana",
+                "count": 14,
+                "percentage": 14.0
+              }
+            ],
+            "questions": {
+              "question01": {
+                "npsDistributionTable": [
+                  {
+                    "Regione": "Lazio",
+                    "promoters": 36.0,
+                    "neutrals": 16.0,
+                    "detractors": 48.0
+                  },
+                  {
+                    "Regione": "Lombardia",
+                    "promoters": 27.8,
+                    "neutrals": 33.3,
+                    "detractors": 38.9
+                  },
+                  {
+                    "Regione": "Sicilia",
+                    "promoters": 31.6,
+                    "neutrals": 10.5,
+                    "detractors": 57.9
+                  },
+                  {
+                    "Regione": "Toscana",
+                    "promoters": 21.4,
+                    "neutrals": 28.6,
+                    "detractors": 50.0
+                  },
+                  {
+                    "Regione": "Veneto",
+                    "promoters": 29.2,
+                    "neutrals": 12.5,
+                    "detractors": 58.3
+                  }
+                ],
+                "npsTable": [
+                  {
+                    "Regione": "Lazio",
+                    "NPS": -12.0
+                  },
+                  {
+                    "Regione": "Lombardia",
+                    "NPS": -11.1
+                  },
+                  {
+                    "Regione": "Sicilia",
+                    "NPS": -26.3
+                  },
+                  {
+                    "Regione": "Toscana",
+                    "NPS": -28.6
+                  },
+                  {
+                    "Regione": "Veneto",
+                    "NPS": -29.1
+                  }
+                ],
+                "distributionChart": [],
+                "distributionTable": [],
+                "stackedBarMECE": [],
+                "analyticalTable": [],
+                "satisfactionImpactSentimentChart": [],
+                "satisfactionImpactSentimentTable": [],
+                "positiveCategoriesTable": [],
+                "negativeCategoriesTable": []
+              },
+              "question02": {
+                "npsDistributionTable": [],
+                "npsTable": [],
+                "distributionChart": [],
+                "distributionTable": [],
+                "stackedBarMECE": [],
+                "analyticalTable": [],
+                "satisfactionImpactSentimentChart": [
+                  {
+                    "sentiment": "negativo",
+                    "Lazio": 64.2,
+                    "Lombardia": 81.6,
+                    "Sicilia": 86.1,
+                    "Toscana": 83.1,
+                    "Veneto": 69.1
+                  },
+                  {
+                    "sentiment": "non applicabile",
+                    "Lazio": 0.8,
+                    "Lombardia": 0.0,
+                    "Sicilia": 0.0,
+                    "Toscana": 0.0,
+                    "Veneto": 0.0
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "Lazio": 35.0,
+                    "Lombardia": 18.4,
+                    "Sicilia": 13.9,
+                    "Toscana": 16.9,
+                    "Veneto": 30.9
+                  }
+                ],
+                "satisfactionImpactSentimentTable": [
+                  {
+                    "sentiment": "negativo",
+                    "Lazio": 64.2,
+                    "Lombardia": 81.6,
+                    "Sicilia": 86.1,
+                    "Toscana": 83.1,
+                    "Veneto": 69.1
+                  },
+                  {
+                    "sentiment": "non applicabile",
+                    "Lazio": 0.8,
+                    "Lombardia": 0.0,
+                    "Sicilia": 0.0,
+                    "Toscana": 0.0,
+                    "Veneto": 0.0
+                  },
+                  {
+                    "sentiment": "positivo",
+                    "Lazio": 35.0,
+                    "Lombardia": 18.4,
+                    "Sicilia": 13.9,
+                    "Toscana": 16.9,
+                    "Veneto": 30.9
+                  }
+                ],
+                "positiveCategoriesTable": [
+                  {
+                    "category": "servizio di rete",
+                    "Lazio": 34.9,
+                    "Lombardia": 33.3,
+                    "Sicilia": 30.0,
+                    "Toscana": 21.4,
+                    "Veneto": 50.0
+                  },
+                  {
+                    "category": "assistenza clienti",
+                    "Lazio": 41.9,
+                    "Lombardia": 22.2,
+                    "Sicilia": 10.0,
+                    "Toscana": 64.3,
+                    "Veneto": 26.7
+                  },
+                  {
+                    "category": "copertura di rete",
+                    "Lazio": 0.0,
+                    "Lombardia": 0.0,
+                    "Sicilia": 40.0,
+                    "Toscana": 0.0,
+                    "Veneto": 20.0
+                  }
+                ],
+                "negativeCategoriesTable": [
+                  {
+                    "category": "servizio di rete",
+                    "Lazio": 49.4,
+                    "Lombardia": 70.0,
+                    "Sicilia": 51.6,
+                    "Toscana": 24.6,
+                    "Veneto": 40.3
+                  },
+                  {
+                    "category": "assistenza clienti",
+                    "Lazio": 13.9,
+                    "Lombardia": 7.5,
+                    "Sicilia": 24.2,
+                    "Toscana": 29.0,
+                    "Veneto": 17.9
+                  },
+                  {
+                    "category": "copertura di rete",
+                    "Lazio": 13.9,
+                    "Lombardia": 10.0,
+                    "Sicilia": 6.5,
+                    "Toscana": 18.8,
+                    "Veneto": 25.4
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "uiTexts": {
+    "filterPanel": {
+      "all": "Tutti",
+      "open-ended": "Domanda Aperta",
+      "multiple-choice": "Scelta Multipla",
+      "single-choice": "Scelta Singola",
+      "nps": "NPS"
+    },
+    "responseDetails": {
+      "all": "Tutti",
+      "open-ended": "Domanda Aperta",
+      "multiple-choice": "Scelta Multipla",
+      "single-choice": "Scelta Singola",
+      "nps": "NPS",
+      "npsScore": "Punteggio NPS",
+      "topCategories": "Categorie principali",
+      "topCategoriesTopics": "Principali categorie e argomenti",
+      "wordCloud": "Nuvola di Parole",
+      "mentions": "menzioni",
+      "positive": "Positivo",
+      "negative": "Negativo",
+      "noPositiveTopics": "Nessun argomento positivo",
+      "noNegativeTopics": "Nessun argomento negativo",
+      "filterQuestion": "Filtra domanda",
+      "questionPrefix": "Q",
+      "pdf": "PDF",
+      "summary": "Riepilogo",
+      "loadingFilteredData": "Caricamento dati filtrati...",
+      "increase": "Aumento",
+      "decrease": "Riduzione",
+      "responsesCount": "risposte"
+    },
+    "export": {
+      "title": "Esportazione Dati",
+      "description": "Esporta i dati del sondaggio in diversi formati",
+      "exportFullReport": "Esporta Report Completo",
+      "selectSpecificSections": "Seleziona Sezioni Specifiche",
+      "exportAsPDF": "Esporta come PDF",
+      "selectAtLeastOneSection": "Seleziona almeno una sezione",
+      "reportExtractedAt": "Report estratto il:"
+    },
+    "common": {
+      "loading": {
+        "loadingQuestions": "Caricamento domande..."
+      },
+      "errors": {
+        "dataNotFound": "Dati non trovati."
+      }
+    },
+    "surveySidebar": {
+      "respondents": "Rispondenti",
+      "responseRate": "Tasso di adesione",
+      "questions": "Domande"
+    },
+    "executiveReport": {
+      "tableHeaders": {
+        "recommendation": "Raccomandazione",
+        "severity": "Gravità",
+        "stakeholders": "Stakeholder"
+      },
+      "tasks": {
+        "implementationTasks": "Attività di implementazione",
+        "task": "Attività",
+        "responsibleArea": "Area responsabile",
+        "hideTasks": "Nascondi attività",
+        "showTasks": "Mostra attività",
+        "hide": "Nascondi",
+        "show": "Mostra"
+      }
+    },
+    "supportAnalysis": {
+      "clusterLabel": "Cluster",
+      "clusterDescription": "Descrizione",
+      "memberPercentage": "% Membri",
+      "clusterId": "ID"
+    },
+    "attributeDeepDive": {
+      "segment": "Segmento",
+      "quantity": "Quantità",
+      "percentage": "%",
+      "positive": "Positivo",
+      "negative": "Negativo",
+      "nps": "NPS",
+      "sentiment": "Sentiment",
+      "category": "Categoria",
+      "promoters": "Promotori",
+      "neutrals": "Passivi",
+      "detractors": "Detrattori"
+    }
+  },
+  "surveyInfo": {
+    "title": "Rapporto di analisi",
+    "company": "Soddisfazione del cliente",
+    "period": "Data",
+    "totalRespondents": 100,
+    "responseRate": 3.33,
+    "questions": 2,
+    "nps": 0,
+    "npsCategory": "Buono"
+  }
+}

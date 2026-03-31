@@ -10,6 +10,7 @@ import {
   Cell,
 } from "recharts";
 import { CHART_COLORS, COLOR_BLUE_CUSTOM } from "@/lib/colors";
+import { useSurveyData } from "@/hooks/useSurveyData";
 
 /**
  * Waterfall Chart Component (Bridge Chart)
@@ -37,6 +38,8 @@ export function WaterfallChart({
   showGrid = true,
   isExportImage = false,
 }) {
+  const { uiTexts } = useSurveyData();
+
   if (!data || data.length === 0) {
     return (
       <div
@@ -167,8 +170,8 @@ export function WaterfallChart({
                   item.type === "start" || item.type === "end"
                     ? "Total"
                     : item.type === "positive"
-                    ? "Aumento"
-                    : "Redução",
+                    ? (uiTexts?.responseDetails?.increase || "Aumento")
+                    : (uiTexts?.responseDetails?.decrease || "Redução"),
                 ];
               }
               return [value, name];
