@@ -9,7 +9,7 @@
 // ============================================================
 
 // Importa diretamente o JSON (simula API)
-import surveyDataJson from "../data/telmob_it_report_json.json";
+import surveyDataJson from "../data/ital_telmob_it_report_json.json";
 
 /** Nome da fonte para exibição (ex.: Json Reference) */
 const DATA_SOURCE_LABEL = "pernamb_talent_demo_mto.json";
@@ -20,7 +20,6 @@ const DATA_SOURCE_LABEL = "pernamb_talent_demo_mto.json";
  */
 export const fetchSurveyData = async () => {
   const data = surveyDataJson;
-  const source =
-    data?.metadata?.surveyId ?? DATA_SOURCE_LABEL;
+  const source = data?.metadata?.surveyId ?? DATA_SOURCE_LABEL;
   return { data, source };
 };
