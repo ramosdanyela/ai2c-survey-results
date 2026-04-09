@@ -7,10 +7,7 @@ import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import Export from "./pages/Export";
 import ExportPreview from "./pages/ExportPreview";
-import Charts from "./pages/Charts";
 import NotFound from "./pages/NotFound";
-import JsonReference from "./pages/JsonReference";
-import JsonViewer from "./pages/JsonViewer";
 
 const queryClient = new QueryClient();
 
@@ -25,9 +22,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/export" element={<Export />} />
             <Route path="/export/preview" element={<ExportPreview />} />
-            <Route path="/json-reference" element={<JsonReference />} />
-            <Route path="/json-viewer" element={<JsonViewer />} />
-            <Route path="/charts" element={<Charts />} />
+           
             
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

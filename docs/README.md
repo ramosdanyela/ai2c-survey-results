@@ -140,6 +140,10 @@ JSON do relatório (surveyDataService / API)
 | `/json-viewer` | JsonViewer | Visualização/inspeção do JSON carregado. |
 | `/charts` | Charts | Página de exemplos de gráficos (barChart, lineChart, etc.) para desenvolvimento. |
 
+### Diferença entre branches (main e feature-B)
+
+A única diferença entre a branch **main** e a branch **feature-B** é que na **main** as rotas `/charts`, `/json-viewer` e `/json-reference` estão **ocultas** (não aparecem na navegação). Na **feature-B** essas rotas permanecem visíveis.
+
 ---
 
 ## Tipos de componentes (JSON → UI)
