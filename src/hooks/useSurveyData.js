@@ -52,10 +52,41 @@ export const SURVEY_DATA_QUERY_KEY = ["surveyData"];
  * const secao = getSectionById("executive");
  * const sectionData = secao?.data;
  */
+const STORAGE_KEY = "reportSurveyParams";
+
+const saveParams = (questionnaireId, reportId) => {
+  if (questionnaireId || reportId) {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ questionnaireId, reportId }));
+  }
+};
+
+const loadSavedParams = () => {
+  try {
+    const saved = sessionStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : {};
+  } catch {
+    return {};
+  }
+};
+
 export const useSurveyData = () => {
   const [searchParams] = useSearchParams();
-  const questionnaireId = searchParams.get("questionnaireId") ?? undefined;
-  const reportId = searchParams.get("reportId") ?? undefined;
+
+  const fromUrl = {
+    questionnaireId: searchParams.get("questionnaireId") ?? undefined,
+    reportId: searchParams.get("reportId") ?? undefined,
+  };
+
+  const fromStorage = loadSavedParams();
+
+  // URL tem prioridade; se não veio pela URL, usa o que está salvo
+  const questionnaireId = fromUrl.questionnaireId ?? fromStorage.questionnaireId;
+  const reportId = fromUrl.reportId ?? fromStorage.reportId;
+
+  // Persiste sempre que a URL trouxer os parâmetros
+  if (fromUrl.questionnaireId || fromUrl.reportId) {
+    saveParams(fromUrl.questionnaireId, fromUrl.reportId);
+  }
 
   const {
     data: raw,
