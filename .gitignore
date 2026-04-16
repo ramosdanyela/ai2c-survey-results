@@ -26,3 +26,6 @@ node_modules/.vite/
 *.sln
 *.sw?
 
+.env.staging
+.env.production-br
+.env.production-it

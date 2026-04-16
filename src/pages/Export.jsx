@@ -1,60 +1,36 @@
-import { useState, useRef, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  Download,
-  Menu,
-  FileText,
-  ChevronDown,
-  ChevronRight,
-  ArrowLeft,
-} from "@/lib/icons";
-import * as React from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  SurveySidebar,
-  SurveySidebarMobile,
-} from "@/components/survey/components/SurveySidebar";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { SurveySidebar, SurveySidebarMobile } from "@/components/survey/components/SurveySidebar";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { useSurveyData } from "@/hooks/useSurveyData";
 import { COLOR_ORANGE_PRIMARY, RGBA_BLACK_SHADOW_20 } from "@/lib/colors";
+import { ArrowLeft, ChevronDown, ChevronRight, Download, FileText, Menu, X } from "@/lib/icons";
 import { capitalizeTitle } from "@/lib/utils";
 import { getAllSubsectionsForSection, getOrderedSelectedSubsectionIds } from "@/utils/exportHelpers";
-import { useSurveyData } from "@/hooks/useSurveyData";
+import * as React from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Component for checkbox with indeterminate state
-const SectionCheckbox = React.forwardRef(
-  ({ checked, indeterminate, ...props }, ref) => {
-    const internalRef = React.useRef(null);
-    const checkboxRef = ref || internalRef;
+const SectionCheckbox = React.forwardRef(({ checked, indeterminate, ...props }, ref) => {
+  const internalRef = React.useRef(null);
+  const checkboxRef = ref || internalRef;
 
-    React.useEffect(() => {
-      if (checkboxRef.current) {
-        // Access the input element inside the Checkbox
-        const inputElement = checkboxRef.current.querySelector(
-          'input[type="checkbox"]'
-        );
-        if (inputElement) {
-          inputElement.indeterminate = indeterminate ?? false;
-        }
+  React.useEffect(() => {
+    if (checkboxRef.current) {
+      // Access the input element inside the Checkbox
+      const inputElement = checkboxRef.current.querySelector('input[type="checkbox"]');
+      if (inputElement) {
+        inputElement.indeterminate = indeterminate ?? false;
       }
-    }, [indeterminate, checkboxRef]);
+    }
+  }, [indeterminate, checkboxRef]);
 
-    return <Checkbox ref={checkboxRef} checked={checked} {...props} />;
-  }
-);
+  return <Checkbox ref={checkboxRef} checked={checked} {...props} />;
+});
 SectionCheckbox.displayName = "SectionCheckbox";
 
 export default function Export() {
@@ -71,27 +47,19 @@ export default function Export() {
   // Local texts for the Export component
   const exportTexts = {
     title: currentUiTexts?.export?.title || "Export  Data",
-    description:
-      currentUiTexts?.export?.description ||
-      "Export the survey data in different formats",
-    exportFullReport:
-      currentUiTexts?.export?.exportFullReport || "Export Full Report",
-    selectSpecificSections:
-      currentUiTexts?.export?.selectSpecificSections ||
-      "Select Specific Sections",
+    description: currentUiTexts?.export?.description || "Export the survey data in different formats",
+    exportFullReport: currentUiTexts?.export?.exportFullReport || "Export Full Report",
+    selectSpecificSections: currentUiTexts?.export?.selectSpecificSections || "Select Specific Sections",
     exportAsPDF: currentUiTexts?.export?.exportAsPDF || "Export as PDF",
     exportAsWord: currentUiTexts?.export?.exportAsWord || "Export as Word",
     exportAsPPT: currentUiTexts?.export?.exportAsPPT || "Export as PPT",
-    selectAtLeastOneSection:
-      currentUiTexts?.export?.selectAtLeastOneSection ||
-      "Select at least one section",
+    selectAtLeastOneSection: currentUiTexts?.export?.selectAtLeastOneSection || "Select at least one section",
   };
 
   // State for selection control
   const [exportFullReport, setExportFullReport] = useState(false);
   const [selectedSections, setSelectedSections] = useState(new Set());
-  const [isSpecificSectionsExpanded, setIsSpecificSectionsExpanded] =
-    useState(false);
+  const [isSpecificSectionsExpanded, setIsSpecificSectionsExpanded] = useState(false);
   const [expandedSections, setExpandedSections] = useState({
     executive: true,
     support: true,
@@ -101,8 +69,7 @@ export default function Export() {
 
   // Check if any specific section is selected
   // Only consider as selected if it's not a full report
-  const hasSpecificSectionsSelected =
-    !exportFullReport && selectedSections.size > 0;
+  const hasSpecificSectionsSelected = !exportFullReport && selectedSections.size > 0;
 
   // Build sections structure from sections using helper function
   const sections = useMemo(() => {
@@ -181,9 +148,7 @@ export default function Export() {
             <div className="absolute top-0 left-0 w-full h-full border-4 border-primary/20 rounded-full"></div>
             <div className="absolute top-0 left-0 w-full h-full border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
           </div>
-          <p className="text-sm text-muted-foreground animate-pulse">
-            Carregando...
-          </p>
+          <p className="text-sm text-muted-foreground animate-pulse">Carregando...</p>
         </div>
       </div>
     );
@@ -239,9 +204,7 @@ export default function Export() {
   const isSectionPartiallySelected = (sectionId) => {
     const section = sections.find((s) => s.id === sectionId);
     if (!section) return false;
-    const selectedCount = section.subsections.filter((sub) =>
-      selectedSections.has(sub.id)
-    ).length;
+    const selectedCount = section.subsections.filter((sub) => selectedSections.has(sub.id)).length;
     return selectedCount > 0 && selectedCount < section.subsections.length;
   };
 
@@ -257,10 +220,7 @@ export default function Export() {
     params.set("format", format.toLowerCase()); // "pdf" or "word"
 
     if (!exportFullReport && selectedSections.size > 0) {
-      const orderedIds = getOrderedSelectedSubsectionIds(
-        Array.from(selectedSections),
-        data,
-      );
+      const orderedIds = getOrderedSelectedSubsectionIds(Array.from(selectedSections), data);
       params.set("sections", orderedIds.join(","));
     }
 
@@ -279,19 +239,11 @@ export default function Export() {
   return (
     <div className="min-h-screen flex w-full bg-background">
       {/* Desktop Sidebar - Always visible on large screens */}
-      <SurveySidebar
-        ref={sidebarRef}
-        activeSection="export"
-        onSectionChange={handleSectionChange}
-      />
+      <SurveySidebar ref={sidebarRef} activeSection="export" onSectionChange={handleSectionChange} />
 
       {/* Mobile Sidebar - Hamburger menu */}
       <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-        <SheetContent
-          side="left"
-          className="p-0"
-          style={{ width: "auto", minWidth: "fit-content" }}
-        >
+        <SheetContent side="left" className="p-0" style={{ width: "auto", minWidth: "fit-content" }}>
           <SurveySidebarMobile
             activeSection="export"
             onSectionChange={handleSectionChange}
@@ -307,45 +259,50 @@ export default function Export() {
         }}
       >
         {/* Header */}
-        <header
-          className="sticky top-0 z-10 bg-background"
-          style={{
-            boxShadow: `0 2px 8px ${RGBA_BLACK_SHADOW_20}`,
-          }}
-        >
-          <div className="px-3 sm:px-4 lg:px-6 py-4 flex items-center gap-2">
-            <Button
-              onClick={() => navigate("/")}
-              variant="outline"
-              className="h-10 px-4 shrink-0"
+        <header className="sticky top-0 z-10 bg-background">
+          <div className="flex justify-end px-3 h-10 items-center bg-background border-b border-border/40">
+            <button
+              onClick={() => window?.parent?.postMessage("close-dialog", "*")}
+              className="flex items-center gap-1 text-xs text-foreground/50 hover:text-red-500 hover:bg-red-500/10 rounded px-2 py-0.5 transition-all duration-200"
+              title="Fechar"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Voltar
-            </Button>
-            {/* Hamburger Menu - Visible only on smaller screens */}
-            <div className="lg:hidden mr-1">
-              <Button
-                onClick={() => setIsMobileMenuOpen(true)}
-                variant="ghost"
-                size="icon"
-                className="text-foreground hover:bg-muted"
-              >
-                <Menu className="w-5 h-5" />
+              <X className="w-6 h-6" />
+              <span>Fechar</span>
+            </button>
+          </div>
+          <div
+            style={{
+              boxShadow: `0 2px 8px ${RGBA_BLACK_SHADOW_20}`,
+            }}
+          >
+            <div className="px-3 sm:px-4 lg:px-6 py-4 flex items-center gap-2">
+              <Button onClick={() => navigate("/")} variant="outline" className="h-10 px-4 shrink-0">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Voltar
               </Button>
-            </div>
+              {/* Hamburger Menu - Visible only on smaller screens */}
+              <div className="lg:hidden mr-1">
+                <Button
+                  onClick={() => setIsMobileMenuOpen(true)}
+                  variant="ghost"
+                  size="icon"
+                  className="text-foreground hover:bg-muted"
+                >
+                  <Menu className="w-5 h-5" />
+                </Button>
+              </div>
 
-            <div className="flex-1 flex justify-center">
-              <div
-                className="text-white px-4 py-2 rounded-lg flex items-center gap-2"
-                style={{
-                  backgroundColor: COLOR_ORANGE_PRIMARY,
-                  boxShadow: `0 4px 16px ${COLOR_ORANGE_PRIMARY}40`,
-                }}
-              >
-                <Download className="w-4 h-4 flex-shrink-0" />
-                <h1 className="text-2xl font-bold text-white whitespace-nowrap">
-                  {exportTexts.title}
-                </h1>
+              <div className="flex-1 flex justify-center">
+                <div
+                  className="text-white px-4 py-2 rounded-lg flex items-center gap-2"
+                  style={{
+                    backgroundColor: COLOR_ORANGE_PRIMARY,
+                    boxShadow: `0 4px 16px ${COLOR_ORANGE_PRIMARY}40`,
+                  }}
+                >
+                  <Download className="w-4 h-4 flex-shrink-0" />
+                  <h1 className="text-2xl font-bold text-white whitespace-nowrap">{exportTexts.title}</h1>
+                </div>
               </div>
             </div>
           </div>
@@ -363,18 +320,11 @@ export default function Export() {
                         backgroundColor: `${COLOR_ORANGE_PRIMARY}20`,
                       }}
                     >
-                      <Download
-                        className="w-5 h-5"
-                        style={{ color: COLOR_ORANGE_PRIMARY }}
-                      />
+                      <Download className="w-5 h-5" style={{ color: COLOR_ORANGE_PRIMARY }} />
                     </div>
                     <div>
-                      <CardTitle className="text-2xl">
-                        {exportTexts.title}
-                      </CardTitle>
-                      <CardDescription>
-                        {exportTexts.description}
-                      </CardDescription>
+                      <CardTitle className="text-2xl">{exportTexts.title}</CardTitle>
+                      <CardDescription>{exportTexts.description}</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
@@ -388,10 +338,7 @@ export default function Export() {
                         onCheckedChange={handleFullReportChange}
                         className="h-5 w-5"
                       />
-                      <label
-                        htmlFor="full-report"
-                        className="text-lg font-semibold cursor-pointer flex-1"
-                      >
+                      <label htmlFor="full-report" className="text-lg font-semibold cursor-pointer flex-1">
                         {exportTexts.exportFullReport}
                       </label>
                     </div>
@@ -399,10 +346,7 @@ export default function Export() {
                     <Separator />
 
                     {/* Sections */}
-                    <Collapsible
-                      open={isSpecificSectionsExpanded}
-                      onOpenChange={setIsSpecificSectionsExpanded}
-                    >
+                    <Collapsible open={isSpecificSectionsExpanded} onOpenChange={setIsSpecificSectionsExpanded}>
                       <div className="space-y-4">
                         <CollapsibleTrigger asChild>
                           <div className="flex items-center space-x-3 p-4 rounded-lg border-2 border-primary/20 bg-primary/5 cursor-pointer hover:bg-primary/10 transition-colors">
@@ -421,10 +365,7 @@ export default function Export() {
                               onClick={(e) => e.stopPropagation()}
                               className="h-5 w-5"
                             />
-                            <label
-                              htmlFor="specific-sections"
-                              className="text-lg font-semibold cursor-pointer flex-1"
-                            >
+                            <label htmlFor="specific-sections" className="text-lg font-semibold cursor-pointer flex-1">
                               {exportTexts.selectSpecificSections}
                             </label>
                             {isSpecificSectionsExpanded ? (
@@ -439,11 +380,8 @@ export default function Export() {
                           <div className="space-y-4 pt-2">
                             {sections.map((section) => {
                               const isExpanded = expandedSections[section.id];
-                              const isFullySelected = isSectionFullySelected(
-                                section.id
-                              );
-                              const isPartiallySelected =
-                                isSectionPartiallySelected(section.id);
+                              const isFullySelected = isSectionFullySelected(section.id);
+                              const isPartiallySelected = isSectionPartiallySelected(section.id);
 
                               return (
                                 <Collapsible
@@ -462,18 +400,11 @@ export default function Export() {
                                         <SectionCheckbox
                                           checked={isFullySelected}
                                           indeterminate={isPartiallySelected}
-                                          onCheckedChange={(checked) =>
-                                            handleSectionToggle(
-                                              section.id,
-                                              checked
-                                            )
-                                          }
+                                          onCheckedChange={(checked) => handleSectionToggle(section.id, checked)}
                                           onClick={(e) => e.stopPropagation()}
                                           className="h-5 w-5"
                                         />
-                                        <span className="flex-1 text-base font-semibold">
-                                          {section.label}
-                                        </span>
+                                        <span className="flex-1 text-base font-semibold">{section.label}</span>
                                         {isExpanded ? (
                                           <ChevronDown className="w-4 h-4" />
                                         ) : (
@@ -483,34 +414,24 @@ export default function Export() {
                                     </CollapsibleTrigger>
                                     <CollapsibleContent>
                                       <div className="px-4 pb-4 space-y-2 border-t">
-                                        {section.subsections.map(
-                                          (subsection) => (
-                                            <div
-                                              key={subsection.id}
-                                              className="flex items-center space-x-3 p-3 rounded hover:bg-muted/30"
-                                            >
-                                              <Checkbox
-                                                id={subsection.id}
-                                                checked={selectedSections.has(
-                                                  subsection.id
-                                                )}
-                                                onCheckedChange={(checked) =>
-                                                  handleSubsectionToggle(
-                                                    subsection.id,
-                                                    checked
-                                                  )
-                                                }
-                                                className="h-4 w-4"
-                                              />
-                                              <label
-                                                htmlFor={subsection.id}
-                                                className="text-sm cursor-pointer flex-1"
-                                              >
-                                                {subsection.label}
-                                              </label>
-                                            </div>
-                                          )
-                                        )}
+                                        {section.subsections.map((subsection) => (
+                                          <div
+                                            key={subsection.id}
+                                            className="flex items-center space-x-3 p-3 rounded hover:bg-muted/30"
+                                          >
+                                            <Checkbox
+                                              id={subsection.id}
+                                              checked={selectedSections.has(subsection.id)}
+                                              onCheckedChange={(checked) =>
+                                                handleSubsectionToggle(subsection.id, checked)
+                                              }
+                                              className="h-4 w-4"
+                                            />
+                                            <label htmlFor={subsection.id} className="text-sm cursor-pointer flex-1">
+                                              {subsection.label}
+                                            </label>
+                                          </div>
+                                        ))}
                                       </div>
                                     </CollapsibleContent>
                                   </div>
@@ -528,9 +449,7 @@ export default function Export() {
                     <div className="flex flex-col sm:flex-row gap-4 pt-4">
                       <Button
                         onClick={() => handleExport("PDF")}
-                        disabled={
-                          !exportFullReport && selectedSections.size === 0
-                        }
+                        disabled={!exportFullReport && selectedSections.size === 0}
                         className="flex-1 h-12 text-base font-semibold"
                         style={{
                           backgroundColor: COLOR_ORANGE_PRIMARY,
@@ -542,9 +461,7 @@ export default function Export() {
                       </Button>
                       <Button
                         onClick={() => handleExport("Word")}
-                        disabled={
-                          !exportFullReport && selectedSections.size === 0
-                        }
+                        disabled={!exportFullReport && selectedSections.size === 0}
                         className="flex-1 h-12 text-base font-semibold"
                         variant="outline"
                         style={{
@@ -558,9 +475,7 @@ export default function Export() {
                     </div>
 
                     {!exportFullReport && selectedSections.size === 0 && (
-                      <p className="text-sm text-muted-foreground text-center">
-                        {exportTexts.selectAtLeastOneSection}
-                      </p>
+                      <p className="text-sm text-muted-foreground text-center">{exportTexts.selectAtLeastOneSection}</p>
                     )}
                   </div>
                 </CardContent>

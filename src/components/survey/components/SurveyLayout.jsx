@@ -1,11 +1,8 @@
-import { useState, useRef, useEffect } from "react";
-import { SurveyHeader } from "@/components/survey/components/SurveyHeader";
 import { ContentRenderer } from "@/components/survey/components/ContentRenderer";
-import {
-  SurveySidebar,
-  SurveySidebarMobile,
-} from "@/components/survey/components/SurveySidebar";
+import { SurveyHeader } from "@/components/survey/components/SurveyHeader";
+import { SurveySidebar, SurveySidebarMobile } from "@/components/survey/components/SurveySidebar";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { useEffect, useRef, useState } from "react";
 
 export function SurveyLayout({ activeSection, onSectionChange }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -83,47 +80,42 @@ export function SurveyLayout({ activeSection, onSectionChange }) {
   };
 
   return (
-    <div className="min-h-screen flex w-full bg-background">
-      {/* Desktop Sidebar - Always visible on large screens */}
-      <SurveySidebar
-        ref={sidebarRef}
-        activeSection={activeSection}
-        onSectionChange={onSectionChange}
-      />
+    <div className="min-h-screen flex flex-col w-full bg-background">
+      <div className="flex-1 flex w-full bg-background">
+        {/* Desktop Sidebar - Always visible on large screens */}
+        <SurveySidebar ref={sidebarRef} activeSection={activeSection} onSectionChange={onSectionChange} />
 
-      {/* Mobile Sidebar - Hamburger menu */}
-      <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-        <SheetContent
-          side="left"
-          className="p-0 bg-sidebar border-0 h-full overflow-hidden w-full sm:w-[320px]"
+        {/* Mobile Sidebar - Hamburger menu */}
+        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+          <SheetContent side="left" className="p-0 bg-sidebar border-0 h-full overflow-hidden w-full sm:w-[320px]">
+            <SurveySidebarMobile
+              activeSection={activeSection}
+              onSectionChange={handleSectionChange}
+              onItemClick={() => setIsMobileMenuOpen(false)}
+            />
+          </SheetContent>
+        </Sheet>
+
+        <div
+          className="flex-1 flex flex-col transition-all duration-200"
+          style={{
+            marginLeft: isDesktop ? `${sidebarWidth}px` : "0",
+          }}
         >
-          <SurveySidebarMobile
+          <SurveyHeader
             activeSection={activeSection}
-            onSectionChange={handleSectionChange}
-            onItemClick={() => setIsMobileMenuOpen(false)}
+            onSectionChange={onSectionChange}
+            onMenuClick={() => setIsMobileMenuOpen(true)}
           />
-        </SheetContent>
-      </Sheet>
 
-      <div
-        className="flex-1 flex flex-col transition-all duration-200"
-        style={{
-          marginLeft: isDesktop ? `${sidebarWidth}px` : "0",
-        }}
-      >
-        <SurveyHeader
-          activeSection={activeSection}
-          onSectionChange={onSectionChange}
-          onMenuClick={() => setIsMobileMenuOpen(true)}
-        />
-
-        <main ref={mainRef} className="flex-1 flex flex-col overflow-auto">
-          <div className="flex-1 px-2 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
-            <div className="max-w-full xl:max-w-[98%] 2xl:max-w-[96%] mx-auto">
-              <ContentRenderer activeSection={activeSection} />
+          <main ref={mainRef} className="flex-1 flex flex-col overflow-auto">
+            <div className="flex-1 px-2 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
+              <div className="max-w-full xl:max-w-[98%] 2xl:max-w-[96%] mx-auto">
+                <ContentRenderer activeSection={activeSection} />
+              </div>
             </div>
-          </div>
-        </main>
+          </main>
+        </div>
       </div>
     </div>
   );

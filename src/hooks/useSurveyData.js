@@ -6,12 +6,13 @@
  * 3. Remova os estados de loading/error dos componentes
  */
 
-import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchSurveyData } from "@/services/surveyDataService";
 import { resolveDataPath } from "@/services/dataResolver";
+import { fetchSurveyData } from "@/services/surveyDataService";
+import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 
-// Query key para cache do React Query
+// Query key base para cache do React Query
 export const SURVEY_DATA_QUERY_KEY = ["surveyData"];
 
 /**
@@ -51,16 +52,58 @@ export const SURVEY_DATA_QUERY_KEY = ["surveyData"];
  * const secao = getSectionById("executive");
  * const sectionData = secao?.data;
  */
+const STORAGE_KEY = "reportSurveyParams";
+
+const saveParams = (questionnaireId, reportId) => {
+  if (questionnaireId || reportId) {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ questionnaireId, reportId }));
+  }
+};
+
+const loadSavedParams = () => {
+  try {
+    const saved = sessionStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : {};
+  } catch {
+    return {};
+  }
+};
+
 export const useSurveyData = () => {
-  const { data: raw, isLoading, isError, error, isFetching, isSuccess, refetch } =
-    useQuery({
-      queryKey: SURVEY_DATA_QUERY_KEY,
-      queryFn: fetchSurveyData,
-      staleTime: 5 * 60 * 1000, // 5 minutos - dados não ficam "stale" rapidamente
-      gcTime: 10 * 60 * 1000, // 10 minutos - cache mantido por 10min
-      retry: 2, // Tenta 2 vezes em caso de erro
-      retryDelay: 1000, // 1 segundo entre tentativas
-    });
+  const [searchParams] = useSearchParams();
+
+  const fromUrl = {
+    questionnaireId: searchParams.get("questionnaireId") ?? undefined,
+    reportId: searchParams.get("reportId") ?? undefined,
+  };
+
+  const fromStorage = loadSavedParams();
+
+  // URL tem prioridade; se não veio pela URL, usa o que está salvo
+  const questionnaireId = fromUrl.questionnaireId ?? fromStorage.questionnaireId;
+  const reportId = fromUrl.reportId ?? fromStorage.reportId;
+
+  // Persiste sempre que a URL trouxer os parâmetros
+  if (fromUrl.questionnaireId || fromUrl.reportId) {
+    saveParams(fromUrl.questionnaireId, fromUrl.reportId);
+  }
+
+  const {
+    data: raw,
+    isLoading,
+    isError,
+    error,
+    isFetching,
+    isSuccess,
+    refetch,
+  } = useQuery({
+    queryKey: [...SURVEY_DATA_QUERY_KEY, questionnaireId, reportId],
+    queryFn: (args) => fetchSurveyData({ ...args, questionnaireId, reportId }),
+    staleTime: 5 * 60 * 1000, // 5 minutos - dados não ficam "stale" rapidamente
+    gcTime: 10 * 60 * 1000, // 10 minutos - cache mantido por 10min
+    retry: 2, // Tenta 2 vezes em caso de erro
+    retryDelay: 1000, // 1 segundo entre tentativas
+  });
 
   // Suporta resposta { data, source } (novo) ou JSON direto (legado)
   const data = raw?.data ?? raw;
@@ -70,11 +113,7 @@ export const useSurveyData = () => {
   const getSectionById = useMemo(() => {
     return (sectionId) => {
       if (!data?.sections || !sectionId) return null;
-      return (
-        data.sections.find(
-          (section) => section.id === sectionId
-        ) || null
-      );
+      return data.sections.find((section) => section.id === sectionId) || null;
     };
   }, [data]);
 

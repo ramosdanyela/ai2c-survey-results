@@ -1,50 +1,26 @@
-import {
-  ChevronDown,
-  ChevronRight,
-  Users,
-  TrendingUp,
-  ClipboardList,
-  X,
-  getIcon,
-} from "@/lib/icons";
-import { cn, capitalizeTitle } from "@/lib/utils";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSurveyData } from "@/hooks/useSurveyData";
 import {
-  getQuestionsFromData,
-  isQuestionsSectionId,
-} from "@/services/dataResolver";
-import { forwardRef, useState, useMemo, useCallback, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { resolveDataPath } from "@/services/dataResolver";
-import {
-  RGBA_BLACK_SHADOW_20,
-  RGBA_ORANGE_SHADOW_20,
-  COLOR_ORANGE_PRIMARY,
-  COLOR_LIGHT_BACKGROUND,
-  RGBA_ORANGE_SHADOW_15,
   COLOR_GRAY_DARK,
+  COLOR_LIGHT_BACKGROUND,
+  COLOR_ORANGE_PRIMARY,
   RGBA_BLACK_SHADOW_08,
   RGBA_BLACK_SHADOW_10,
+  RGBA_BLACK_SHADOW_20,
+  RGBA_ORANGE_SHADOW_15,
 } from "@/lib/colors";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { ArrowLeft, ChevronDown, ChevronRight, ClipboardList, getIcon, TrendingUp, Users } from "@/lib/icons";
+import { capitalizeTitle, cn } from "@/lib/utils";
+import { getQuestionsFromData, isQuestionsSectionId, resolveDataPath } from "@/services/dataResolver";
+import { forwardRef, useCallback, useEffect, useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // Helper: monta itens do menu a partir de sections e injeta Export (nome/ícone de uiTexts; sempre no fim)
 function getMenuItems(sections, uiTexts) {
   const sectionsList = sections ?? [];
   // Ordena seções por index antes de mapear
-  const sortedSections = [...sectionsList].sort(
-    (a, b) => (a.index ?? 999) - (b.index ?? 999),
-  );
+  const sortedSections = [...sectionsList].sort((a, b) => (a.index ?? 999) - (b.index ?? 999));
   const items = sortedSections.map((section) => ({
     ...section,
     icon: getIcon(section.icon),
@@ -62,11 +38,7 @@ function getMenuItems(sections, uiTexts) {
  */
 function hasSubsections(item, data) {
   // Priority 1: Check if has subsections in config
-  if (
-    item.subsections &&
-    Array.isArray(item.subsections) &&
-    item.subsections.length > 0
-  ) {
+  if (item.subsections && Array.isArray(item.subsections) && item.subsections.length > 0) {
     return true;
   }
 
@@ -107,9 +79,7 @@ function getDynamicSubsections(section, data) {
 
   // Special handling for responses / questions (always works, even without dynamicSubsections flag)
   if (isQuestionsSectionId(section.id)) {
-    const questions = getQuestionsFromData(data).sort(
-      (a, b) => (a.index || 0) - (b.index || 0),
-    );
+    const questions = getQuestionsFromData(data).sort((a, b) => (a.index || 0) - (b.index || 0));
     return questions.map((question) => ({
       id: `responses-${question.id}`,
       name: question.question,
@@ -173,9 +143,7 @@ function getFirstSubsectionHelper(sectionId, data) {
 
   // Priority 1: Subsections from config (inclui attributes, executive, support)
   if (section.subsections?.length > 0) {
-    const sorted = [...section.subsections].sort(
-      (a, b) => (a.index ?? 999) - (b.index ?? 999),
-    );
+    const sorted = [...section.subsections].sort((a, b) => (a.index ?? 999) - (b.index ?? 999));
     return sorted[0].id;
   }
 
@@ -204,10 +172,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
   const sections = data?.sections;
 
   // Get menu items from sections + Export (injetado; nome em uiTexts.export.title)
-  const menuItems = useMemo(
-    () => getMenuItems(sections, currentUiTexts),
-    [sections, currentUiTexts],
-  );
+  const menuItems = useMemo(() => getMenuItems(sections, currentUiTexts), [sections, currentUiTexts]);
 
   // State to control which sections are expanded - initialize dynamically
   const [expandedSections, setExpandedSections] = useState(() => {
@@ -268,9 +233,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
       // Fallback for legacy behavior if helper returns null
       if (!result) {
         if (isQuestionsSectionId(sectionId)) {
-          return allQuestions.length > 0
-            ? `responses-${allQuestions[0].id}`
-            : null;
+          return allQuestions.length > 0 ? `responses-${allQuestions[0].id}` : null;
         }
       }
 
@@ -312,12 +275,12 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
     <TooltipProvider>
       <div className="flex flex-col h-full px-2 sm:px-3 w-full overflow-x-hidden">
         {/* Close button on mobile */}
-        <div className="min-[1480px]:hidden flex justify-end pt-2 sm:pt-3 pb-1.5 sm:pb-2">
+        <div className="min-[1480px]:hidden flex justify-start pt-2 sm:pt-3 pb-1.5 sm:pb-2">
           <button
             onClick={onItemClick}
             className="rounded-lg p-1.5 sm:p-2 text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 transition-all duration-200"
           >
-            <X className="w-4 h-4 sm:w-5 sm:h-5" />
+            <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
         </div>
         <div className="pt-2 sm:pt-3 mb-3 sm:mb-4 pb-3 sm:pb-4">
@@ -331,10 +294,21 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
           >
             <div className="space-y-1.5 sm:space-y-2">
               {/* Survey Title */}
+              {/* TEST: button after title */}
+              {/* <div className="mb-0.5 flex items-start justify-between gap-2">
+                <h2 className="text-sm sm:text-lg font-bold text-foreground leading-tight flex-1"> */}
               <div className="mb-0.5">
                 <h2 className="text-sm sm:text-lg font-bold text-foreground leading-tight">
                   {currentSurveyInfo?.title || "Carregando..."}
                 </h2>
+                {/* TEST: button after title */}
+                {/* <button
+                  onClick={() => window.close()}
+                  className="hidden min-[1480px]:flex rounded p-0.5 text-foreground/50 hover:text-red-500 hover:bg-red-500/10 transition-all duration-200 flex-shrink-0 mt-0.5"
+                  title="Fechar"
+                >
+                  <X className="w-5.5 h-5.5" />
+                </button> */}
               </div>
 
               {/* Company */}
@@ -367,23 +341,14 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         backgroundColor: RGBA_ORANGE_SHADOW_15,
                       }}
                     >
-                      <Users
-                        className="w-3 h-3 sm:w-4 sm:h-4"
-                        style={{ color: COLOR_ORANGE_PRIMARY }}
-                      />
+                      <Users className="w-3 h-3 sm:w-4 sm:h-4" style={{ color: COLOR_ORANGE_PRIMARY }} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div
-                        className="text-sm sm:text-lg font-bold mb-0.5 truncate"
-                        style={{ color: COLOR_GRAY_DARK }}
-                      >
-                        {currentSurveyInfo?.totalRespondents?.toLocaleString(
-                          "pt-BR",
-                        ) || "0"}
+                      <div className="text-sm sm:text-lg font-bold mb-0.5 truncate" style={{ color: COLOR_GRAY_DARK }}>
+                        {currentSurveyInfo?.totalRespondents?.toLocaleString("pt-BR") || "0"}
                       </div>
                       <div className="text-[9px] sm:text-[10px] font-normal text-foreground/70 truncate">
-                        {currentUiTexts?.surveySidebar?.respondents ||
-                          "Respondentes"}
+                        {currentUiTexts?.surveySidebar?.respondents || "Respondentes"}
                       </div>
                     </div>
                   </div>
@@ -403,24 +368,14 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         backgroundColor: RGBA_ORANGE_SHADOW_15,
                       }}
                     >
-                      <TrendingUp
-                        className="w-3 h-3 sm:w-4 sm:h-4"
-                        style={{ color: COLOR_ORANGE_PRIMARY }}
-                      />
+                      <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" style={{ color: COLOR_ORANGE_PRIMARY }} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div
-                        className="text-sm sm:text-lg font-bold mb-0.5 truncate"
-                        style={{ color: COLOR_GRAY_DARK }}
-                      >
-                        {currentSurveyInfo?.responseRate
-                          ? Math.round(currentSurveyInfo.responseRate)
-                          : 0}
-                        %
+                      <div className="text-sm sm:text-lg font-bold mb-0.5 truncate" style={{ color: COLOR_GRAY_DARK }}>
+                        {currentSurveyInfo?.responseRate ? Math.round(currentSurveyInfo.responseRate) : 0}%
                       </div>
                       <div className="text-[9px] sm:text-[10px] font-normal text-foreground/70 truncate">
-                        {currentUiTexts?.surveySidebar?.responseRate ||
-                          "Taxa de Adesão"}
+                        {currentUiTexts?.surveySidebar?.responseRate || "Taxa de Adesão"}
                       </div>
                     </div>
                   </div>
@@ -440,16 +395,10 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         backgroundColor: RGBA_ORANGE_SHADOW_15,
                       }}
                     >
-                      <ClipboardList
-                        className="w-3 h-3 sm:w-4 sm:h-4"
-                        style={{ color: COLOR_ORANGE_PRIMARY }}
-                      />
+                      <ClipboardList className="w-3 h-3 sm:w-4 sm:h-4" style={{ color: COLOR_ORANGE_PRIMARY }} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div
-                        className="text-sm sm:text-lg font-bold mb-0.5 truncate"
-                        style={{ color: COLOR_GRAY_DARK }}
-                      >
+                      <div className="text-sm sm:text-lg font-bold mb-0.5 truncate" style={{ color: COLOR_GRAY_DARK }}>
                         {currentSurveyInfo?.questions ||
                           (() => {
                             const questions = getQuestionsFromData(data);
@@ -457,8 +406,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                           })()}
                       </div>
                       <div className="text-[9px] sm:text-[10px] font-normal text-foreground/70 truncate">
-                        {currentUiTexts?.surveySidebar?.questions ||
-                          "Perguntas"}
+                        {currentUiTexts?.surveySidebar?.questions || "Perguntas"}
                       </div>
                     </div>
                   </div>
@@ -468,16 +416,11 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
           </div>
         </div>
         <nav className="flex flex-col gap-1.5 sm:gap-2 items-start w-full flex-1 overflow-x-hidden">
-          {menuItems &&
-          menuItems.length > 0 &&
-          currentSurveyInfo &&
-          currentUiTexts ? (
+          {menuItems && menuItems.length > 0 && currentSurveyInfo && currentUiTexts ? (
             menuItems.map((item) => {
               const isActive =
                 activeSection === item.id ||
-                (activeSection &&
-                  typeof activeSection === "string" &&
-                  activeSection.startsWith(item.id + "-"));
+                (activeSection && typeof activeSection === "string" && activeSection.startsWith(item.id + "-"));
 
               // Check if section has subsections (dynamic detection)
               const itemHasSubsections = hasSubsections(item, data);
@@ -495,9 +438,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                       <Collapsible
                         key={item.id}
                         open={isExpanded}
-                        onOpenChange={(open) =>
-                          handleSectionToggle(item.id, open)
-                        }
+                        onOpenChange={(open) => handleSectionToggle(item.id, open)}
                         className="w-full"
                       >
                         <CollapsibleTrigger asChild>
@@ -510,9 +451,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                                 : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20",
                             )}
                           >
-                            {item.icon && (
-                              <item.icon className="w-4 h-4 flex-shrink-0" />
-                            )}
+                            {item.icon && <item.icon className="w-4 h-4 flex-shrink-0" />}
                             <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
                               {capitalizeTitle(item.name)}
                             </span>
@@ -544,9 +483,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                                       : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/30",
                                   )}
                                 >
-                                  <span className="font-semibold shrink-0">
-                                    Q{displayNumber}
-                                  </span>
+                                  <span className="font-semibold shrink-0">Q{displayNumber}</span>
                                   {sub.name && sub.name.length > 60 ? (
                                     <Tooltip>
                                       <TooltipTrigger asChild>
@@ -554,19 +491,12 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                                           {capitalizeTitle(sub.name).substring(0, 60) + "..."}
                                         </span>
                                       </TooltipTrigger>
-                                      <TooltipContent
-                                        side="right"
-                                        className="max-w-xs p-3 text-sm"
-                                      >
-                                        <p className="whitespace-normal">
-                                          {capitalizeTitle(sub.name)}
-                                        </p>
+                                      <TooltipContent side="right" className="max-w-xs p-3 text-sm">
+                                        <p className="whitespace-normal">{capitalizeTitle(sub.name)}</p>
                                       </TooltipContent>
                                     </Tooltip>
                                   ) : (
-                                    <span className="flex-1 line-clamp-2">
-                                      {capitalizeTitle(sub.name)}
-                                    </span>
+                                    <span className="flex-1 line-clamp-2">{capitalizeTitle(sub.name)}</span>
                                   )}
                                 </button>
                               );
@@ -582,9 +512,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                     <Collapsible
                       key={item.id}
                       open={isExpanded}
-                      onOpenChange={(open) =>
-                        handleSectionToggle(item.id, open)
-                      }
+                      onOpenChange={(open) => handleSectionToggle(item.id, open)}
                       className="w-full"
                     >
                       <CollapsibleTrigger asChild>
@@ -597,9 +525,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                               : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20",
                           )}
                         >
-                          {item.icon && (
-                            <item.icon className="w-4 h-4 flex-shrink-0" />
-                          )}
+                          {item.icon && <item.icon className="w-4 h-4 flex-shrink-0" />}
                           <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
                             {capitalizeTitle(item.name)}
                           </span>
@@ -631,9 +557,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                                     : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/30",
                                 )}
                               >
-                                {SubIcon && (
-                                  <SubIcon className="w-4 h-4 shrink-0" />
-                                )}
+                                {SubIcon && <SubIcon className="w-4 h-4 shrink-0" />}
                                 <span className="flex-1">{capitalizeTitle(sub.name)}</span>
                               </button>
                             );
@@ -649,9 +573,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
               if (itemHasSubsections && dynamicSubs.length === 0) {
                 const isExpanded = expandedSections[item.id];
                 // Get subsections from data (dynamic) - must come from hook
-                const sectionConfig = data?.sections?.find(
-                  (s) => s.id === item.id,
-                );
+                const sectionConfig = data?.sections?.find((s) => s.id === item.id);
 
                 // Get subsections from config
                 let subsections = sectionConfig?.subsections
@@ -678,9 +600,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                             : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20",
                         )}
                       >
-                        {item.icon && (
-                          <item.icon className="w-4 h-4 flex-shrink-0" />
-                        )}
+                        {item.icon && <item.icon className="w-4 h-4 flex-shrink-0" />}
                         <span className="text-sm sm:text-lg font-bold whitespace-nowrap flex-1 truncate">
                           {capitalizeTitle(item.name)}
                         </span>
@@ -694,8 +614,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                     <CollapsibleContent className="w-full mt-1">
                       <div className="flex flex-col gap-1 ml-4 pl-4 border-l-2 border-[hsl(var(--custom-blue))]/30">
                         {subsections.map((subsection) => {
-                          const isSubsectionActive =
-                            activeSection === subsection.id;
+                          const isSubsectionActive = activeSection === subsection.id;
                           const SubsectionIcon = subsection.icon;
                           return (
                             <button
@@ -713,9 +632,7 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                                   : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/30",
                               )}
                             >
-                              {SubsectionIcon && (
-                                <SubsectionIcon className="w-4 h-4 shrink-0" />
-                              )}
+                              {SubsectionIcon && <SubsectionIcon className="w-4 h-4 shrink-0" />}
                               <span className="flex-1">{capitalizeTitle(subsection.name)}</span>
                             </button>
                           );
@@ -745,12 +662,8 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                         : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-[hsl(var(--custom-blue))]/20 border border-transparent hover:border-[hsl(var(--custom-blue))]/40",
                     )}
                   >
-                    {item.icon && (
-                      <item.icon className="w-4 h-4 flex-shrink-0" />
-                    )}
-                    <span className="text-lg font-bold whitespace-nowrap flex-1">
-                      {capitalizeTitle(item.name)}
-                    </span>
+                    {item.icon && <item.icon className="w-4 h-4 flex-shrink-0" />}
+                    <span className="text-lg font-bold whitespace-nowrap flex-1">{capitalizeTitle(item.name)}</span>
                   </button>
                 );
               }
@@ -778,16 +691,12 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
                   )}
                 >
                   {item.icon && <item.icon className="w-4 h-4 flex-shrink-0" />}
-                  <span className="text-lg font-bold whitespace-nowrap flex-1">
-                    {capitalizeTitle(item.name)}
-                  </span>
+                  <span className="text-lg font-bold whitespace-nowrap flex-1">{capitalizeTitle(item.name)}</span>
                 </button>
               );
             })
           ) : (
-            <div className="text-sm text-muted-foreground p-4">
-              Carregando dados...
-            </div>
+            <div className="text-sm text-muted-foreground p-4">Carregando dados...</div>
           )}
         </nav>
       </div>
@@ -796,41 +705,28 @@ function SidebarContent({ activeSection, onSectionChange, onItemClick }) {
 }
 
 // Desktop sidebar (always visible on large screens)
-export const SurveySidebar = forwardRef(
-  ({ activeSection, onSectionChange }, ref) => {
-    return (
-      <aside
-        ref={ref}
-        className="hidden min-[1480px]:flex fixed left-0 top-0 h-full bg-sidebar z-20 overflow-y-auto"
-        style={{
-          width: "auto",
-          minWidth: "fit-content",
-          boxShadow: `2px 0 8px ${RGBA_BLACK_SHADOW_20}`,
-        }}
-      >
-        <SidebarContent
-          activeSection={activeSection}
-          onSectionChange={onSectionChange}
-        />
-      </aside>
-    );
-  },
-);
+export const SurveySidebar = forwardRef(({ activeSection, onSectionChange }, ref) => {
+  return (
+    <aside
+      ref={ref}
+      className="hidden min-[1480px]:flex fixed left-0 top-10 h-[calc(100vh-2rem)] bg-sidebar z-20 overflow-y-auto"
+      style={{
+        width: "auto",
+        minWidth: "fit-content",
+        boxShadow: `2px 0 8px ${RGBA_BLACK_SHADOW_20}`,
+      }}
+    >
+      <SidebarContent activeSection={activeSection} onSectionChange={onSectionChange} />
+    </aside>
+  );
+});
 SurveySidebar.displayName = "SurveySidebar";
 
 // Component for mobile sidebar content (inside Sheet)
-export function SurveySidebarMobile({
-  activeSection,
-  onSectionChange,
-  onItemClick,
-}) {
+export function SurveySidebarMobile({ activeSection, onSectionChange, onItemClick }) {
   return (
     <div className="bg-sidebar h-screen overflow-y-auto w-full">
-      <SidebarContent
-        activeSection={activeSection}
-        onSectionChange={onSectionChange}
-        onItemClick={onItemClick}
-      />
+      <SidebarContent activeSection={activeSection} onSectionChange={onSectionChange} onItemClick={onItemClick} />
     </div>
   );
 }

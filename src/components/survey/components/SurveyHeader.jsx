@@ -1,18 +1,11 @@
-import { useMemo } from "react";
-import { FileText, Menu, getIcon } from "@/lib/icons";
-import { Button } from "@/components/ui/button";
-import {
-  COLOR_ORANGE_PRIMARY,
-  RGBA_ORANGE_SHADOW_40,
-  RGBA_BLACK_SHADOW_20,
-} from "@/lib/colors";
-import { useSurveyData } from "@/hooks/useSurveyData";
-import { capitalizeTitle } from "@/lib/utils";
 import { NavigationButtons } from "@/components/survey/components/NavigationButtons";
-import {
-  getQuestionsSection,
-  isQuestionsSectionId,
-} from "@/services/dataResolver";
+import { Button } from "@/components/ui/button";
+import { useSurveyData } from "@/hooks/useSurveyData";
+import { COLOR_ORANGE_PRIMARY, RGBA_BLACK_SHADOW_20, RGBA_ORANGE_SHADOW_40 } from "@/lib/colors";
+import { FileText, Menu, X, getIcon } from "@/lib/icons";
+import { capitalizeTitle } from "@/lib/utils";
+import { getQuestionsSection, isQuestionsSectionId } from "@/services/dataResolver";
+import { useMemo } from "react";
 
 /**
  * Extract section ID from activeSection by checking sections
@@ -35,19 +28,13 @@ function extractSectionId(data, activeSection) {
   for (const section of data.sections) {
     // Check subsections from config
     if (section.subsections) {
-      const subsection = section.subsections.find(
-        (sub) => sub.id === activeSection,
-      );
+      const subsection = section.subsections.find((sub) => sub.id === activeSection);
       if (subsection) {
         return section.id;
       }
     }
     // Check dynamic subsections (responses/questions - built from questions)
-    if (
-      isQuestionsSectionId(section.id) &&
-      activeSection &&
-      activeSection.startsWith("responses-")
-    ) {
+    if (isQuestionsSectionId(section.id) && activeSection && activeSection.startsWith("responses-")) {
       return section.id;
     }
   }
@@ -107,9 +94,7 @@ function getSectionTitleFromData(activeSection, data) {
 
   // Fallback: try simple split (e.g., "executive-summary" -> "executive")
   const baseSectionId =
-    activeSection && typeof activeSection === "string"
-      ? activeSection.split("-")[0]
-      : activeSection;
+    activeSection && typeof activeSection === "string" ? activeSection.split("-")[0] : activeSection;
 
   // Priority 1: Try to get from sections (most reliable)
   if (data?.sections) {
@@ -159,11 +144,7 @@ function getSectionIconFromData(sectionId, data) {
   }
 
   // Check if it's a question subsection
-  if (
-    sectionId &&
-    typeof sectionId === "string" &&
-    sectionId.startsWith("responses-")
-  ) {
+  if (sectionId && typeof sectionId === "string" && sectionId.startsWith("responses-")) {
     const questionsSection = getQuestionsSection(data);
     if (questionsSection?.icon) {
       return getIcon(questionsSection.icon);
@@ -174,12 +155,7 @@ function getSectionIconFromData(sectionId, data) {
   return FileText;
 }
 
-export function SurveyHeader({
-  activeSection,
-  onSectionChange,
-  onMenuClick,
-  navigationButtons,
-}) {
+export function SurveyHeader({ activeSection, onSectionChange, onMenuClick, navigationButtons }) {
   const { data } = useSurveyData();
 
   const title = useMemo(() => {
@@ -198,11 +174,7 @@ export function SurveyHeader({
   if (navigationButtons !== undefined) {
     // Custom navigationButtons provided - extract divs if it's an object with previousButtonDiv/nextButtonDiv
     // or render as provided if it's a React element
-    if (
-      navigationButtons &&
-      typeof navigationButtons === "object" &&
-      "previousButtonDiv" in navigationButtons
-    ) {
+    if (navigationButtons && typeof navigationButtons === "object" && "previousButtonDiv" in navigationButtons) {
       previousButtonDiv = navigationButtons.previousButtonDiv;
       nextButtonDiv = navigationButtons.nextButtonDiv;
     } else {
@@ -222,12 +194,7 @@ export function SurveyHeader({
           >
             <div className="px-2 sm:px-4 lg:px-6 py-2 sm:py-4 flex items-center gap-1 sm:gap-0">
               <div className="min-[1480px]:hidden mr-2 sm:mr-3">
-                <Button
-                  onClick={onMenuClick}
-                  variant="ghost"
-                  size="icon"
-                  className="text-foreground hover:bg-muted"
-                >
+                <Button onClick={onMenuClick} variant="ghost" size="icon" className="text-foreground hover:bg-muted">
                   <Menu className="w-5 h-5" />
                 </Button>
               </div>
@@ -241,9 +208,7 @@ export function SurveyHeader({
                   }}
                 >
                   <Icon className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                  <h1 className="text-sm sm:text-2xl font-bold text-white whitespace-nowrap">
-                    {title}
-                  </h1>
+                  <h1 className="text-sm sm:text-2xl font-bold text-white whitespace-nowrap">{title}</h1>
                 </div>
               </div>
             </div>
@@ -262,43 +227,47 @@ export function SurveyHeader({
   }
 
   return (
-    <header
-      className="sticky top-0 z-10 bg-background"
-      style={{
-        boxShadow: `0 2px 8px ${RGBA_BLACK_SHADOW_20}`,
-      }}
-    >
-      <div className="px-2 sm:px-4 lg:px-6 py-2 sm:py-4 flex items-center gap-1 sm:gap-0">
-        {/* Hamburger Menu - Visible only on smaller screens */}
-        <div className="min-[1480px]:hidden mr-2 sm:mr-3">
-          <Button
-            onClick={onMenuClick}
-            variant="ghost"
-            size="icon"
-            className="text-foreground hover:bg-muted"
-          >
-            <Menu className="w-5 h-5" />
-          </Button>
-        </div>
-
-        {previousButtonDiv}
-
-        <div className="flex-1 flex justify-center">
-          <div
-            className="text-white px-1.5 py-1 sm:px-4 sm:py-2 rounded-lg flex items-center gap-1 sm:gap-2"
-            style={{
-              backgroundColor: COLOR_ORANGE_PRIMARY,
-              boxShadow: `0 4px 16px ${RGBA_ORANGE_SHADOW_40}`,
-            }}
-          >
-            <Icon className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-            <h1 className="text-sm sm:text-2xl font-bold text-white whitespace-nowrap">
-              {title}
-            </h1>
+    <header className="sticky top-0 z-10 bg-background">
+      <div className="flex justify-end px-3 h-10 items-center bg-background border-b border-border/40">
+        <button
+          onClick={() => window?.parent?.postMessage("close-dialog", "*")}
+          className="flex items-center gap-1 text-xs text-foreground/50 hover:text-red-500 hover:bg-red-500/10 rounded px-2 py-0.5 transition-all duration-200"
+          title="Fechar"
+        >
+          <X className="w-6 h-6" />
+          <span>Fechar</span>
+        </button>
+      </div>
+      <div
+        style={{
+          boxShadow: `0 2px 8px ${RGBA_BLACK_SHADOW_20}`,
+        }}
+      >
+        <div className="px-2 sm:px-4 lg:px-6 py-2 sm:py-4 flex items-center gap-1 sm:gap-0">
+          {/* Hamburger Menu - Visible only on smaller screens */}
+          <div className="min-[1480px]:hidden mr-2 sm:mr-3">
+            <Button onClick={onMenuClick} variant="ghost" size="icon" className="text-foreground hover:bg-muted">
+              <Menu className="w-5 h-5" />
+            </Button>
           </div>
-        </div>
 
-        {nextButtonDiv}
+          {previousButtonDiv}
+
+          <div className="flex-1 flex justify-center">
+            <div
+              className="text-white px-1.5 py-1 sm:px-4 sm:py-2 rounded-lg flex items-center gap-1 sm:gap-2"
+              style={{
+                backgroundColor: COLOR_ORANGE_PRIMARY,
+                boxShadow: `0 4px 16px ${RGBA_ORANGE_SHADOW_40}`,
+              }}
+            >
+              <Icon className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+              <h1 className="text-sm sm:text-2xl font-bold text-white whitespace-nowrap">{title}</h1>
+            </div>
+          </div>
+
+          {nextButtonDiv}
+        </div>
       </div>
     </header>
   );

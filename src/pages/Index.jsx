@@ -1,10 +1,7 @@
-import { useState, useMemo, useEffect } from "react";
 import { SurveyLayout } from "@/components/survey/components/SurveyLayout";
 import { useSurveyData } from "@/hooks/useSurveyData";
-import {
-  getQuestionsFromData,
-  isQuestionsSectionId,
-} from "@/services/dataResolver";
+import { getQuestionsFromData, isQuestionsSectionId } from "@/services/dataResolver";
+import { useEffect, useMemo, useState } from "react";
 
 /**
  * Helper function to get first subsection of a section
@@ -19,17 +16,13 @@ function getFirstSubsectionHelper(sectionId, data) {
 
   // Priority 1: Subsections from config
   if (section.subsections?.length > 0) {
-    const sorted = [...section.subsections].sort(
-      (a, b) => (a.index ?? 999) - (b.index ?? 999),
-    );
+    const sorted = [...section.subsections].sort((a, b) => (a.index ?? 999) - (b.index ?? 999));
     return sorted[0].id;
   }
 
   // Priority 2: Dynamic subsections (responses / questions)
   if (isQuestionsSectionId(section.id)) {
-    const questions = getQuestionsFromData(data).sort(
-      (a, b) => (a.index ?? 999) - (b.index ?? 999),
-    );
+    const questions = getQuestionsFromData(data).sort((a, b) => (a.index ?? 999) - (b.index ?? 999));
     return questions.length > 0 ? `responses-${questions[0].id}` : null;
   }
 
@@ -45,9 +38,7 @@ function getInitialSection(data) {
   }
 
   // Get first section (sorted by index)
-  const sortedSections = [...data.sections].sort(
-    (a, b) => (a.index ?? 999) - (b.index ?? 999),
-  );
+  const sortedSections = [...data.sections].sort((a, b) => (a.index ?? 999) - (b.index ?? 999));
   const firstSection = sortedSections[0];
 
   // Get first subsection of first section
@@ -77,9 +68,7 @@ export default function Index() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4 max-w-md text-center px-4">
-          <p className="text-sm text-destructive font-medium">
-            Erro ao carregar os dados
-          </p>
+          <p className="text-sm text-destructive font-medium">Erro ao carregar os dados</p>
           <p className="text-xs text-muted-foreground">{error?.message}</p>
           <button
             type="button"
@@ -87,6 +76,13 @@ export default function Index() {
             className="px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium hover:opacity-90"
           >
             Tentar novamente
+          </button>
+          <button
+            type="button"
+            onClick={() => window.parent.postMessage("close-dialog", "*")}
+            className="px-4 py-2 rounded-md bg-secondary text-secondary-foreground text-sm font-medium hover:opacity-90"
+          >
+            Fechar
           </button>
         </div>
       </div>
@@ -101,18 +97,11 @@ export default function Index() {
             <div className="absolute top-0 left-0 w-full h-full border-4 border-primary/20 rounded-full"></div>
             <div className="absolute top-0 left-0 w-full h-full border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
           </div>
-          <p className="text-sm text-muted-foreground animate-pulse">
-            Carregando...
-          </p>
+          <p className="text-sm text-muted-foreground animate-pulse">Carregando...</p>
         </div>
       </div>
     );
   }
 
-  return (
-    <SurveyLayout
-      activeSection={activeSection}
-      onSectionChange={setActiveSection}
-    />
-  );
+  return <SurveyLayout activeSection={activeSection} onSectionChange={setActiveSection} />;
 }
